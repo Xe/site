@@ -73,7 +73,7 @@ func init() {
 		panic(err)
 	}
 
-	sort.Sort(posts)
+	sort.Sort(sort.Reverse(posts))
 }
 
 func main() {
