@@ -1,12 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
-	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
-	"path"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -19,7 +19,8 @@ import (
 type Post struct {
 	Title   string `json:"title"`
 	Link    string `json:"link"`
-	Summary string `json:"summary"`
+	Summary string `json:"summary,omitifempty"`
+	Body    string `json:"body, omitifempty"`
 	Date    string `json:"date"`
 }
 
@@ -53,17 +54,27 @@ func init() {
 		}
 		defer fin.Close()
 
+		content, err := ioutil.ReadAll(fin)
+		if err != nil {
+			// handle error
+		}
+
 		m := front.NewMatter()
 		m.Handle("---", front.YAMLHandler)
-		front, _, err := m.Parse(fin)
+		front, _, err := m.Parse(bytes.NewReader(content))
 		if err != nil {
 			return err
 		}
+
+		sp := strings.Split(string(content), "\n")
+		sp = sp[4:]
+		data := strings.Join(sp, "\n")
 
 		p := &Post{
 			Title: front["title"].(string),
 			Date:  front["date"].(string),
 			Link:  strings.Split(path, ".")[0],
+			Body:  data,
 		}
 
 		posts = append(posts, p)
@@ -80,24 +91,23 @@ func init() {
 
 func main() {
 	http.HandleFunc("/api/blog/posts", writeBlogPosts)
-	http.HandleFunc("/api/blog/name", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/blog/post", func(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query()
 		name := q.Get("name")
 
-		fin, err := os.Open(path.Join("./blog", name))
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+		if name == "" {
+			goto fail
 		}
-		defer fin.Close()
 
-		m := front.NewMatter()
-		m.Handle("---", front.YAMLHandler)
-		_, body, err := m.Parse(fin)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+		for _, p := range posts {
+			if strings.HasSuffix(p.Link, name) {
+				json.NewEncoder(w).Encode(p)
+				return
+			}
 		}
-		fmt.Fprintln(w, body)
+
+	fail:
+		http.Error(w, "Not Found", http.StatusNotFound)
 	})
 	http.Handle("/dist/", http.FileServer(http.Dir("./frontend/static/")))
 	http.HandleFunc("/", writeIndexHTML)
