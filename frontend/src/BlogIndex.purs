@@ -39,15 +39,15 @@ instance decodeJsonPost :: DecodeJson Post where
 init :: State
 init =
   { posts: []
-  , status: "Loading..." }
+  , status: "" }
 
 update :: Action -> State -> EffModel State Action (ajax :: AJAX, dom :: DOM)
 update (ReceivePosts (Left err)) state =
   noEffects $ state { status = ("error: " <> err) }
 update (ReceivePosts (Right posts)) state =
-  noEffects $ state { posts = posts, status = "Posts" }
+  noEffects $ state { posts = posts, status = "" }
 update RequestPosts state =
-  { state: state { status = "Fetching posts..." }
+  { state: state { status = "Loading..." }
   , effects: [ do
       res <- attempt $ get "/api/blog/posts"
       let decode r = decodeJson r.response :: Either String Posts
@@ -79,5 +79,6 @@ view :: State -> Html Action
 view state =
   div
     []
-    [ h1 [] [ text state.status ]
+    [ h1 [] [ text "Posts" ]
+    , p [] [ text state.status ]
     , div [ className "row" ] $ map post state.posts ]
