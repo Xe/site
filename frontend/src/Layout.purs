@@ -7,8 +7,8 @@ import DOM (DOM)
 import Network.HTTP.Affjax (AJAX)
 import Prelude (($), (#), map, pure)
 import Pux (EffModel, noEffects, mapEffects, mapState)
-import Pux.Html (Html, div, h1, nav, text)
-import Pux.Html.Attributes (className, id_, role)
+import Pux.Html (Html, div, h1, li, nav, text, ul)
+import Pux.Html.Attributes (classID, className, id_, role)
 import Pux.Router (link)
 
 data Action
@@ -55,7 +55,15 @@ navbar state =
     [ className "pink lighten-1", role "navigation" ]
     [ div
       [ className "nav-wrapper container" ]
-      [ link "/" [ className "brand-logo", id_ "logo-container" ] [ text "Christine Dodrill" ] ]
+      [ link "/" [ className "brand-logo", id_ "logo-container" ] [ text "Christine Dodrill" ]
+      , ul
+        [ className "right hide-on-med-and-down" ]
+        [ li [] [ link "/blog" [] [ text "Blog" ] ]
+        , li [] [ link "/projects" [] [ text "Projects" ] ]
+        , li [] [ link "/resume" [] [ text "Resume" ] ]
+        , li [] [ link "/contact" [] [ text "Contact" ] ]
+        ]
+      ]
     ]
 
 page :: Route -> State -> Html Action
