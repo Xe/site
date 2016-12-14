@@ -80,5 +80,4 @@ view state =
   div
     []
     [ h1 [] [ text state.status ]
-    , button [ onClick (const RequestPosts), id_ "requestbutton", className "hidden" ] [ text "Fetch posts" ]
     , div [ className "row" ] $ map post state.posts ]

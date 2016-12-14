@@ -28,11 +28,16 @@ init =
   , bistate: BlogIndex.init }
 
 update :: Action -> State -> EffModel State Action (ajax :: AJAX, dom :: DOM)
-update (PageView route) state = noEffects $ state { route = route }
+update (PageView route) state = routeEffects route $ state { route = route }
 update (BIChild action) state = BlogIndex.update action state.bistate
                               # mapState (state { bistate = _ })
                               # mapEffects BIChild
 update (Child action) state = noEffects $ state { count = Counter.update action state.count }
+
+routeEffects :: Route -> State -> EffModel State Action (dom :: DOM, ajax :: AJAX)
+routeEffects BlogIndex state = { state: state
+                               , effects: [ pure BlogIndex.RequestPosts ] } # mapEffects BIChild
+routeEffects _ state = noEffects $ state
 
 view :: State -> Html Action
 view state =

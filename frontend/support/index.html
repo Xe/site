@@ -14,30 +14,5 @@
   </head>
   <body>
     <div id="app"></div>
-
-    <script>
-    // Forgive me
-    function eventFire(el, etype){
-      if (el.fireEvent) {
-        el.fireEvent('on' + etype);
-      } else {
-        var evObj = document.createEvent('Events');
-        evObj.initEvent(etype, true, false);
-        el.dispatchEvent(evObj);
-      }
-    }
-
-    interval = setInterval(function() {
-      e = document.getElementById("requestbutton");
-      if(e != null) {
-        eventFire(e, "click");
-      } else {
-        console.log("Tried so hard been so far")
-      }
-      clearInterval(interval);
-
-      e.style.display = "none";
-    }, 250);
-    </script>
   </body>
 </html>
