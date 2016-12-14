@@ -72,7 +72,7 @@ view { id: id, status: status, post: (Post post) } =
         (Just _) ->
           div [ className "row" ]
           [ h1 [] [ text status ]
-          , div [ className "col s6 offset-s3" ]
+          , div [ className "col s8 offset-s2" ]
             [ p [ id_ "blogpost" ] [ text post.body ] ]
           ]
 
