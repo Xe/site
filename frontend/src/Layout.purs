@@ -47,7 +47,7 @@ view state =
 navbar :: State -> Html Action
 navbar state =
   nav
-    [ className "light-blue lighten-1", role "navigation" ]
+    [ className "pink lighten-1", role "navigation" ]
     [ div
       [ className "nav-wrapper container" ]
       [ link "/" [ className "brand-logo", id_ "logo-container" ] [ text "Christine Dodrill" ] ]

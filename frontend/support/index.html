@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pux Starter App</title>
+    <title>Christine Dodrill</title>
 
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
@@ -14,5 +14,30 @@
   </head>
   <body>
     <div id="app"></div>
+
+    <script>
+    // Forgive me
+    function eventFire(el, etype){
+      if (el.fireEvent) {
+        el.fireEvent('on' + etype);
+      } else {
+        var evObj = document.createEvent('Events');
+        evObj.initEvent(etype, true, false);
+        el.dispatchEvent(evObj);
+      }
+    }
+
+    interval = setInterval(function() {
+      e = document.getElementById("requestbutton");
+      if(e != null) {
+        eventFire(e, "click");
+      } else {
+        console.log("Tried so hard been so far")
+      }
+      clearInterval(interval);
+
+      e.style.display = "none";
+    }, 250);
+    </script>
   </body>
 </html>

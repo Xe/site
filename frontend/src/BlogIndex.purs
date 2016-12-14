@@ -8,8 +8,9 @@ import Network.HTTP.Affjax (AJAX, get)
 import Prelude (($), bind, map, const, show, (<>), pure, (<<<))
 import Pux (EffModel, noEffects)
 import Pux.Html (Html, br, div, h1, ol, li, button, text, span, p)
-import Pux.Html.Attributes (key, className)
+import Pux.Html.Attributes (key, className, id_)
 import Pux.Html.Events (onClick)
+import Pux.Router (link)
 
 data Action = RequestPosts
             | ReceivePosts (Either String Posts)
@@ -58,9 +59,9 @@ update RequestPosts state =
 post :: Post -> Html Action
 post (Post state) =
   div
-    [ className "col s4" ]
+    [ className "col s6" ]
     [ div
-      [ className "card pink lighten-1" ]
+      [ className "card pink lighten-4" ]
       [ div
         [ className "card-content black-text" ]
         [ span [ className "card-title" ] [ text state.title ]
@@ -68,6 +69,9 @@ post (Post state) =
         , p [] [ text ("Posted on: " <> state.date) ]
         , span [] [ text state.summary ]
         ]
+      , div
+        [ className "card-action pink" ]
+        [ link state.link [] [ text "Read More" ] ]
       ]
     ]
 
@@ -76,5 +80,5 @@ view state =
   div
     []
     [ h1 [] [ text state.status ]
-    , button [ onClick (const RequestPosts) ] [ text "Fetch posts" ]
+    , button [ onClick (const RequestPosts), id_ "requestbutton", className "hidden" ] [ text "Fetch posts" ]
     , div [ className "row" ] $ map post state.posts ]
