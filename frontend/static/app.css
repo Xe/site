@@ -1,0 +1,7 @@
+body {
+    font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande', 'Helvetica Neue', sans-serif;
+    text-rendering: optimizeLegibility;
+    font-size: 14px;
+    letter-spacing: .2px;
+    text-size-adjust: 100
+}
