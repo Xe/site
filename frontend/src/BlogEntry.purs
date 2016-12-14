@@ -8,8 +8,8 @@ import Data.Maybe (Maybe(..))
 import Network.HTTP.Affjax (AJAX, get)
 import Prelude (bind, pure, show, ($), (<>), (<<<))
 import Pux (EffModel, noEffects)
-import Pux.Html (Html, div, h1, h2, p, text)
-import Pux.Html.Attributes (id_)
+import Pux.Html (Html, div, h1, p, text)
+import Pux.Html.Attributes (className, id_)
 
 data Action = RequestPost
             | ReceivePost (Either String Post)
@@ -70,9 +70,9 @@ view { id: id, status: status, post: (Post post) } =
       case id of
         Nothing -> div [] []
         (Just _) ->
-          div []
+          div [ className "row" ]
           [ h1 [] [ text status ]
-          , div []
+          , div [ className "col s6 offset-s3" ]
             [ p [ id_ "blogpost" ] [ text post.body ] ]
           ]
 
