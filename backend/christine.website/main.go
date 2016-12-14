@@ -15,6 +15,7 @@ import (
 	"github.com/gernest/front"
 )
 
+// Post is a single post summary for the menu.
 type Post struct {
 	Title   string `json:"title"`
 	Link    string `json:"link"`
@@ -22,6 +23,7 @@ type Post struct {
 	Date    string `json:"date"`
 }
 
+// Posts implements sort.Interface for a slice of Post objects.
 type Posts []*Post
 
 func (p Posts) Len() int { return len(p) }
@@ -78,7 +80,7 @@ func init() {
 
 func main() {
 	http.HandleFunc("/api/blog/posts", writeBlogPosts)
-	http.HandleFunc("/api/blog/post", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/blog/name", func(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query()
 		name := q.Get("name")
 
