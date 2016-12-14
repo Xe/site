@@ -1,5 +1,6 @@
 module App.BlogEntry where
 
+import App.Utils (mdify)
 import Control.Monad.Aff (attempt)
 import DOM (DOM)
 import Data.Argonaut (class DecodeJson, decodeJson, (.?))
@@ -75,5 +76,3 @@ view { id: id, status: status, post: (Post post) } =
           , div [ className "col s8 offset-s2" ]
             [ p [ id_ "blogpost" ] [ text post.body ] ]
           ]
-
-foreign import mdify :: String -> String
