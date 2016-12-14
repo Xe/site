@@ -8,7 +8,9 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"sort"
 	"strings"
+	"time"
 
 	"github.com/gernest/front"
 )
@@ -20,7 +22,18 @@ type Post struct {
 	Date    string `json:"date"`
 }
 
-var posts []*Post
+type Posts []*Post
+
+func (p Posts) Len() int { return len(p) }
+func (p Posts) Less(i, j int) bool {
+	iDate, _ := time.Parse("2006-01-02", p[i].Date)
+	jDate, _ := time.Parse("2006-01-02", p[j].Date)
+
+	return iDate.Unix() < jDate.Unix()
+}
+func (p Posts) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
+
+var posts Posts
 
 func init() {
 	err := filepath.Walk("./blog/", func(path string, info os.FileInfo, err error) error {
@@ -59,6 +72,8 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	sort.Sort(posts)
 }
 
 func main() {
