@@ -1,8 +1,7 @@
 // Module App.BlogEntry
 
-function htmlDecode(input) {
-  var doc = new DOMParser().parseFromString(input, "text/html");
-  return doc.documentElement.textContent;
+function htmlDecode(value){
+  return $('<div/>').html(value).text();
 }
 
 exports.mdify = function(id) {
