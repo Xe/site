@@ -9,9 +9,11 @@ import DOM (DOM)
 import Network.HTTP.Affjax (AJAX)
 import Prelude (($), (#), map, pure)
 import Pux (EffModel, noEffects, mapEffects, mapState)
+import Pux.DocumentTitle (documentTitle)
 import Pux.Html as H
 import Pux.Html (style, Html, a, code, div, h1, h2, h3, h4, li, nav, p, pre, text, ul, img, span)
-import Pux.Html.Attributes (classID, className, id_, role, href, src, rel)
+import Pux.Html.Attributes (classID, className, id_, role, href, src, rel, title)
+import Pux.Html (Html, a, code, div, h1, h3, h4, li, nav, p, pre, text, ul)
 import Pux.Router (link)
 
 data Action
@@ -82,7 +84,8 @@ contact :: Html Action
 contact =
   div
     [ className "row" ]
-    [ div
+    [ documentTitle [ title "Contact - Christine Dodrill" ] []
+    , div
       [ className "col s6" ]
       [ h3 [] [ text "Email" ]
       , div [ className "email" ] [ text "me@christine.website" ]
@@ -121,7 +124,8 @@ index :: Html Action
 index =
   div
   [ className "row panel" ]
-  [ H.link [ rel "stylesheet", href "/static/css/about/main.css" ] []
+  [ documentTitle [ title "Christine Dodrill" ] []
+  , H.link [ rel "stylesheet", href "/static/css/about/main.css" ] []
   , div
     [ className "col m4 bg_blur valign-wrapper center-align" ]
     [ div

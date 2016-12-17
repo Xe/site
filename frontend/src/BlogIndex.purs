@@ -1,14 +1,15 @@
 module App.BlogIndex where
 
 import Control.Monad.Aff (attempt)
+import DOM (DOM)
 import Data.Argonaut (class DecodeJson, decodeJson, (.?))
 import Data.Either (Either(Left, Right), either)
-import DOM (DOM)
 import Network.HTTP.Affjax (AJAX, get)
 import Prelude (($), bind, map, const, show, (<>), pure, (<<<))
 import Pux (EffModel, noEffects)
+import Pux.DocumentTitle (documentTitle)
 import Pux.Html (Html, br, div, h1, ol, li, button, text, span, p)
-import Pux.Html.Attributes (key, className, id_)
+import Pux.Html.Attributes (className, id_, key, title)
 import Pux.Html.Events (onClick)
 import Pux.Router (link)
 
@@ -80,5 +81,6 @@ view state =
   div
     []
     [ h1 [] [ text "Posts" ]
+    , documentTitle [ title "Posts - Christine Dodrill" ] []
     , p [] [ text state.status ]
     , div [ className "row" ] $ map post state.posts ]
