@@ -110,6 +110,7 @@ func main() {
 		http.Error(w, "Not Found", http.StatusNotFound)
 	})
 	http.Handle("/dist/", http.FileServer(http.Dir("./frontend/static/")))
+	http.Handle("/static/", http.FileServer(http.Dir(".")))
 	http.HandleFunc("/", writeIndexHTML)
 
 	log.Fatal(http.ListenAndServe(":9090", nil))

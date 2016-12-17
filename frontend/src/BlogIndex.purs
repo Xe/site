@@ -61,7 +61,7 @@ post (Post state) =
   div
     [ className "col s6" ]
     [ div
-      [ className "card pink lighten-4" ]
+      [ className "card pink lighten-5" ]
       [ div
         [ className "card-content black-text" ]
         [ span [ className "card-title" ] [ text state.title ]
@@ -70,7 +70,7 @@ post (Post state) =
         , span [] [ text state.summary ]
         ]
       , div
-        [ className "card-action pink" ]
+        [ className "card-action pink lighten-5" ]
         [ link state.link [] [ text "Read More" ] ]
       ]
     ]

@@ -9,8 +9,9 @@ import DOM (DOM)
 import Network.HTTP.Affjax (AJAX)
 import Prelude (($), (#), map, pure)
 import Pux (EffModel, noEffects, mapEffects, mapState)
-import Pux.Html (Html, a, code, div, h1, h3, h4, li, nav, p, pre, text, ul)
-import Pux.Html.Attributes (classID, className, id_, role, href)
+import Pux.Html as H
+import Pux.Html (style, Html, a, code, div, h1, h2, h3, h4, li, nav, p, pre, text, ul, img, span)
+import Pux.Html.Attributes (classID, className, id_, role, href, src, rel)
 import Pux.Router (link)
 
 data Action
@@ -116,9 +117,47 @@ contact =
       ]
     ]
 
+index :: Html Action
+index =
+  div
+  [ className "row panel" ]
+  [ H.link [ rel "stylesheet", href "/static/css/about/main.css" ] []
+  , div
+    [ className "col m4 bg_blur valign-wrapper center-align" ]
+    [ div
+      [ className "valign center-align fb_wrap" ]
+      [ link "/contact"
+        [ className "btn follow_btn" ]
+        [ text "Contact Me" ]
+      ]
+    ]
+  , div
+    [ className "col m8" ]
+    [ div
+      [ className "header" ]
+      [ h1 [] [ text "Christine Dodrill" ]
+      , h4 [] [ text "Rockstar Hacker, Freelance Programmer, Gopher, Cloud Architect" ]
+      , span [] [ text "I am a GitHub power user. I am constantly learning new languages and tools. I strongly believe in knowing many languages and ways to do things so I can pick the right tool for the job." ]
+      , h2 [] [ text "Skills" ]
+      , ul
+        []
+        [ li [] [ text "Go, Moonscript, Lua, Python, C, Nim, Haskell" ]
+        , li [] [ text "Docker deployments" ]
+        , li [] [ text "Research, Development and Experimentation" ]
+        ]
+      , h2 [] [ text "Side Projects" ]
+      , ul
+        []
+        [ li [] [ text "Real-time globally distributed chat server maintenance" ]
+        , li [] [ text "Mashups of chat, video and music" ]
+        ]
+      ]
+    ]
+  ]
+
 page :: Route -> State -> Html Action
 page NotFound _ = h1 [] [ text "not found" ]
-page Home state = map Child $ Counter.view state.count
+page Home _ = index
 page Resume state = h1 [] [ text "Christine Dodrill" ]
 page BlogIndex state = map BIChild $ BlogIndex.view state.bistate
 page (BlogPost _) state = map BEChild $ BlogEntry.view state.bestate
