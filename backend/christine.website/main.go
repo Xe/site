@@ -134,7 +134,21 @@ func main() {
 }
 
 func writeBlogPosts(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(posts)
+	p := []interface{}{}
+	for _, post := range posts {
+		p = append(p, struct {
+			Title   string `json:"title"`
+			Link    string `json:"link"`
+			Summary string `json:"summary,omitifempty"`
+			Date    string `json:"date"`
+		}{
+			Title:   post.Title,
+			Link:    post.Link,
+			Summary: post.Summary,
+			Date:    post.Date,
+		})
+	}
+	json.NewEncoder(w).Encode(p)
 }
 
 func writeIndexHTML(w http.ResponseWriter, r *http.Request) {
