@@ -41,18 +41,18 @@ module.exports = {
     }),
     new FaviconsWebpackPlugin('../static/img/avatar.png'),
     new webpack.optimize.DedupePlugin(),
-    new webpackUglifyJsPlugin({
-      cacheFolder: path.resolve(__dirname, 'output/ug'),
-      debug: false,
-      minimize: true,
-      sourceMap: false,
-      output: {
-        comments: false
-    },
-      compressor: {
+    new webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+      mangle: true,
+      comments: false,
+      compress: {
+        dead_code: true,
+        loops: true,
+        if_return: true,
+        unused: true,
         warnings: false
       }
-    }),
+    })
   ],
   resolveLoader: {
     modules: [
