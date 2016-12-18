@@ -4,6 +4,7 @@ import App.BlogEntry as BlogEntry
 import App.BlogIndex as BlogIndex
 import App.Counter as Counter
 import App.Resume as Resume
+import Pux.Html as H
 import App.Routes (Route(..))
 import Control.Monad.RWS (state)
 import DOM (DOM)
@@ -11,10 +12,9 @@ import Network.HTTP.Affjax (AJAX)
 import Prelude (($), (#), map, pure)
 import Pux (EffModel, noEffects, mapEffects, mapState)
 import Pux.DocumentTitle (documentTitle)
-import Pux.Html as H
 import Pux.Html (style, Html, a, code, div, h1, h2, h3, h4, li, nav, p, pre, text, ul, img, span)
-import Pux.Html.Attributes (classID, className, id_, role, href, src, rel, title)
 import Pux.Html (Html, a, code, div, h1, h3, h4, li, nav, p, pre, text, ul)
+import Pux.Html.Attributes (attr, target, href, classID, className, id_, role, src, rel, title)
 import Pux.Router (link)
 
 data Action
@@ -83,7 +83,7 @@ navbar state =
       , ul
         [ className "right hide-on-med-and-down" ]
         [ li [] [ link "/blog" [] [ text "Blog" ] ]
-        , li [] [ link "/projects" [] [ text "Projects" ] ]
+        -- , li [] [ link "/projects" [] [ text "Projects" ] ]
         , li [] [ link "/resume" [] [ text "Resume" ] ]
         , li [] [ link "/contact" [] [ text "Contact" ] ]
         ]
@@ -105,6 +105,15 @@ contact =
         , text ". If you get an email that appears to be from me and the signature does not match that fingerprint, it is not from me. You may download a copy of my public key "
         , a [ href "/static/gpg.pub" ] [ text "here" ]
         , text "."
+        ]
+      , h3 [] [ text "Social Media" ]
+      , ul
+        [ className "browser-default" ]
+        [ li [] [ a [ href "https://github.com/Xe" ] [ text "Github" ] ]
+        , li [] [ a [ href "https://twitter.com/theprincessxena"] [ text "Twitter" ] ]
+        , li [] [ a [ href "https://keybase.io/xena" ] [ text "Keybase" ] ]
+        , li [] [ a [ href "https://www.coinbase.com/christinedodrill" ] [ text "Coinbase" ] ]
+        , li [] [ a [ href "https://www.facebook.com/chrissycade1337" ] [ text "Facebook" ] ]
         ]
       ]
     , div
