@@ -154,14 +154,14 @@ index =
       , span [] [ text "I am a GitHub power user. I am constantly learning new languages and tools. I strongly believe in knowing many languages and ways to do things so I can pick the right tool for the job." ]
       , h2 [] [ text "Skills" ]
       , ul
-        []
+        [ className "browser-default" ]
         [ li [] [ text "Go, Moonscript, Lua, Python, C, Nim, Haskell" ]
         , li [] [ text "Docker deployments" ]
         , li [] [ text "Research, Development and Experimentation" ]
         ]
       , h2 [] [ text "Side Projects" ]
       , ul
-        []
+        [ className "browser-default" ]
         [ li [] [ text "Real-time globally distributed chat server maintenance" ]
         , li [] [ text "Mashups of chat, video and music" ]
         ]
