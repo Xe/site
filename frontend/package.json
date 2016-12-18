@@ -1,6 +1,6 @@
 {
-  "name": "pux-starter-app",
-  "version": "9.0.0",
+  "name": "christine-website",
+  "version": "0.1.0",
   "description": "Starter Pux application using webpack with hot-reloading.",
   "main": "support/index.js",
   "keywords": [
@@ -12,7 +12,7 @@
   "scripts": {
     "postinstall": "bower cache clean && bower install",
     "clean": "rimraf static/dist && rimraf dist && rimraf output",
-    "build": "npm run clean && webpack --config ./webpack.production.config.js --progress --profile --colors",
+    "build": "webpack --config ./webpack.production.config.js --progress --profile --colors",
     "watch": "npm run clean && node ./webpack.config.js",
     "serve": "http-server static --cors -p 3000",
     "start": "npm run watch",
