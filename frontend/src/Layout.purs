@@ -79,6 +79,7 @@ navbar state =
     [ div
       [ className "nav-wrapper container" ]
       [ link "/" [ className "brand-logo", id_ "logo-container" ] [ text "Christine Dodrill" ]
+      , H.link [ rel "stylesheet", href "/static/css/about/main.css" ] []
       , ul
         [ className "right hide-on-med-and-down" ]
         [ li [] [ link "/blog" [] [ text "Blog" ] ]
@@ -134,14 +135,14 @@ index =
   div
   [ className "row panel" ]
   [ documentTitle [ title "Christine Dodrill" ] []
-  , H.link [ rel "stylesheet", href "/static/css/about/main.css" ] []
-  , div
-    [ className "col m4 bg_blur valign-wrapper center-align" ]
-    [ div
-      [ className "valign center-align fb_wrap" ]
-      [ link "/contact"
-        [ className "btn follow_btn" ]
-        [ text "Contact Me" ]
+  , div [] [ div
+      [ className "col m4 bg_blur valign-wrapper center-align" ]
+      [ div
+        [ className "valign center-align fb_wrap" ]
+        [ link "/contact"
+          [ className "btn follow_btn" ]
+          [ text "Contact Me" ]
+        ]
       ]
     ]
   , div

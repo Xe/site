@@ -24,10 +24,14 @@ img.textwrap-right {
 
 .bg_blur
 {
-	background-image:url('/static/img/avatar.png');
+	background: url('/static/img/avatar.png');
 	height: 512px;
 	background-size: cover;
 	overflow: visible;
+}
+
+.bgblurback {
+  height: 100%;
 }
 
 .fb_wrap {
