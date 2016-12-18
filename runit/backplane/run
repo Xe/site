@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -n "$BACKPLANE_TOKEN" ]
+then
+		/usr/bin/backplane connect
+else
+		sleep 999d
+fi

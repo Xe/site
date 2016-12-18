@@ -130,7 +130,12 @@ func main() {
 	http.Handle("/static/", http.FileServer(http.Dir(".")))
 	http.HandleFunc("/", writeIndexHTML)
 
-	log.Fatal(http.ListenAndServe(":9090", nil))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "9090"
+	}
+
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
 func writeBlogPosts(w http.ResponseWriter, r *http.Request) {

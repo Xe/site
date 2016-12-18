@@ -12,5 +12,8 @@
     "purescript-pux-devtool": "^4.1.0",
     "purescript-argonaut": "^2.0.0",
     "purescript-affjax": "^3.0.2"
+  },
+  "resolutions": {
+    "purescript-dom": "^3.1.0"
   }
 }
