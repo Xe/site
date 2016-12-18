@@ -9,9 +9,9 @@ import Data.Maybe (Maybe(..))
 import Network.HTTP.Affjax (AJAX, get)
 import Prelude (bind, pure, show, ($), (<>), (<<<))
 import Pux (EffModel, noEffects)
-import Pux.Html (Html, div, h1, p, text)
-import Pux.Html.Attributes (className, id_, title)
 import Pux.DocumentTitle (documentTitle)
+import Pux.Html (Html, div, h1, p, text)
+import Pux.Html.Attributes (dangerouslySetInnerHTML, className, id_, title)
 
 data Action = RequestPost
             | ReceivePost (Either String Post)
@@ -76,5 +76,5 @@ view { id: id, status: status, post: (Post post) } =
           [ h1 [] [ text status ]
           , documentTitle [ title $ post.title <> " - Christine Dodrill" ] []
           , div [ className "col s8 offset-s2" ]
-            [ p [ id_ "blogpost" ] [ text post.body ] ]
+            [ p [ id_ "blogpost", dangerouslySetInnerHTML post.body ] [] ]
           ]

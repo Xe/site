@@ -1,13 +1,13 @@
 module Main where
 
-import App.Routes (match)
 import App.Layout (Action(PageView), State, view, update)
+import App.Routes (match)
 import Control.Bind ((=<<))
 import Control.Monad.Eff (Eff)
 import DOM (DOM)
 import Network.HTTP.Affjax (AJAX)
 import Prelude (bind, pure)
-import Pux (App, Config, CoreEffects, renderToDOM, start)
+import Pux (renderToDOM, renderToString, App, Config, CoreEffects, start)
 import Pux.Devtool (Action, start) as Pux.Devtool
 import Pux.Router (sampleUrl)
 import Signal ((~>))
@@ -44,3 +44,10 @@ debug state = do
   renderToDOM "#app" app.html
   -- | Used by hot-reloading code in support/index.js
   pure app
+
+-- | Entry point for server side rendering
+ssr :: State -> Eff (CoreEffects AppEffects) String
+ssr state = do
+  app <- start =<< config state
+  res <- renderToString app.html
+  pure res

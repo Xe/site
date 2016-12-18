@@ -11,3 +11,15 @@ if (module.hot) {
 } else {
 	Main[debug ? 'debug' : 'main'](initialState)();
 }
+
+global.main = function(args, callback) {
+	var body = Main['ssr'](initialState)();
+
+	result = {
+		"app": body,
+		"uuid": args.uuid,
+		"title": "Christine Dodrill"
+	}
+
+	callback(result);
+};

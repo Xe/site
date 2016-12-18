@@ -1,6 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var webpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   entry: [ path.join(__dirname, 'support/index.js') ],
@@ -36,6 +38,20 @@ module.exports = {
       template: 'support/index.html',
       inject: 'body',
       filename: 'index.html'
+    }),
+    new FaviconsWebpackPlugin('../static/img/avatar.png'),
+    new webpack.optimize.DedupePlugin(),
+    new webpackUglifyJsPlugin({
+      cacheFolder: path.resolve(__dirname, 'output/ug'),
+      debug: false,
+      minimize: true,
+      sourceMap: false,
+      output: {
+        comments: false
+    },
+      compressor: {
+        warnings: false
+      }
     }),
   ],
   resolveLoader: {
