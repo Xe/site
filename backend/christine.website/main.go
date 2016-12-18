@@ -36,7 +36,10 @@ func (p Posts) Less(i, j int) bool {
 }
 func (p Posts) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
 
-var posts Posts
+var (
+	posts Posts
+	rbody string
+)
 
 func init() {
 	err := filepath.Walk("./blog/", func(path string, info os.FileInfo, err error) error {
@@ -87,6 +90,13 @@ func init() {
 	}
 
 	sort.Sort(sort.Reverse(posts))
+
+	resume, err := ioutil.ReadFile("./static/resume/resume.md")
+	if err != nil {
+		panic(err)
+	}
+
+	rbody = string(resume)
 }
 
 func main() {
@@ -108,6 +118,13 @@ func main() {
 
 	fail:
 		http.Error(w, "Not Found", http.StatusNotFound)
+	})
+	http.HandleFunc("/api/resume", func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(struct {
+			Body string `json:"body"`
+		}{
+			Body: rbody,
+		})
 	})
 	http.Handle("/dist/", http.FileServer(http.Dir("./frontend/static/")))
 	http.Handle("/static/", http.FileServer(http.Dir(".")))

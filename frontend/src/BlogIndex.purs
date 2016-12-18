@@ -82,5 +82,5 @@ view state =
     []
     [ h1 [] [ text "Posts" ]
     , documentTitle [ title "Posts - Christine Dodrill" ] []
-    , p [] [ text state.status ]
-    , div [ className "row" ] $ map post state.posts ]
+    , div [ className "row" ] $ map post state.posts
+    , p [] [ text state.status ] ]

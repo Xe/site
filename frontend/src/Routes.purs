@@ -27,3 +27,5 @@ match url = fromMaybe NotFound $ router url $
     BlogPost <$> (lit "blog" *> str) <* end
   <|>
     ContactPage <$ lit "contact" <* end
+  <|>
+    Resume <$ lit "resume" <* end
