@@ -1,2 +1,3 @@
 FROM xena/christine.website
-PORT 9090
+ENV PORT 9090
+EXPOSE 9090
