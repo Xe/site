@@ -1,9 +1,6 @@
 // Module App.BlogEntry
 
-exports.mdify = function(id) {
+exports.mdify = function(corpus) {
   var converter = new showdown.Converter()
-  elem = document.getElementById(id);
-  md = elem.innerHTML;
-  elem.innerHTML = converter.makeHtml(md);
-  return "done :)";
+  return converter.makeHtml(corpus);
 }
