@@ -14,6 +14,7 @@ import (
 
 	"github.com/Xe/asarfs"
 	"github.com/gernest/front"
+	"github.com/urfave/negroni"
 )
 
 // Post is a single post summary for the menu.
@@ -129,21 +130,23 @@ func main() {
 	})
 
 	if os.Getenv("USE_ASAR") == "yes" {
-		fe, err := asarfs.New("./frontend.asar", http.HandlerFunc(writeIndexHTML))
+		log.Println("serving site frontend from asar file")
+
+		do404 := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			http.Error(w, "Not found", http.StatusNotFound)
+		})
+		fe, err := asarfs.New("./frontend.asar", do404)
 		if err != nil {
-			log.Fatal(err)
-		}
-		st, err := asarfs.New("./static.asar", http.HandlerFunc(writeIndexHTML))
-		if err != nil {
-			log.Fatal(err)
+			log.Fatal("frontend: ", err)
 		}
 
 		http.Handle("/dist/", fe)
-		http.Handle("/static", st)
 	} else {
+		log.Println("serving site frontend from filesystem")
 		http.Handle("/dist/", http.FileServer(http.Dir("./frontend/static/")))
-		http.Handle("/static/", http.FileServer(http.Dir(".")))
 	}
+
+	http.Handle("/static/", http.FileServer(http.Dir(".")))
 	http.HandleFunc("/", writeIndexHTML)
 
 	port := os.Getenv("PORT")
@@ -151,7 +154,10 @@ func main() {
 		port = "9090"
 	}
 
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	n := negroni.Classic()
+	n.UseHandler(http.DefaultServeMux)
+
+	log.Fatal(http.ListenAndServe(":"+port, n))
 }
 
 func writeBlogPosts(w http.ResponseWriter, r *http.Request) {

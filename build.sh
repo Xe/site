@@ -1,27 +1,19 @@
-#!/bin/bash
+#!/bin/sh
 
+set -e
 set -x
 
-export PATH="$PATH:/usr/local/go/bin:/usr/local/node/bin"
+export PATH="$PATH:/usr/local/go/bin"
 export CI="true"
 
-npm install -g asar
-
-(cd /site/frontend
- yes | npm install
- npm install -g bower
- yes 2 | bower install --allow-root
- npm run build
- asar pack static ../frontend.asar
- rm -rf bower_components node_modules) &
-
 (cd /site/backend/christine.website
- go build
+ go get github.com/Xe/asarfs
+ go get github.com/gernest/front
+ go get layeh.com/asar
+ go get gopkg.in/yaml.v2
+ go get github.com/urfave/negroni
+
+ go build -v
  mv christine.website /usr/bin) &
 
-(cd /site
- asar pack static ./static.asar) &
-
 wait
-
-rm -rf /usr/lib/node_modules
