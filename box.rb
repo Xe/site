@@ -20,27 +20,37 @@ run %q[ cd /usr/local && curl -o node.tar.xz https://nodejs.org/dist/v6.9.2/node
 
 ### Copy files
 run "mkdir -p /site"
-copy "./backend", "/site/backend"
-copy "./blog", "/site/blog"
-copy "./frontend/package.json", "/site/frontend/package.json"
-copy "./frontend/bower.json", "/site/frontend/bower.json"
-copy "./frontend/webpack.production.config.js", "/site/frontend/webpack.production.config.js"
-copy "./frontend/src", "/site/frontend/src"
-copy "./frontend/support", "/site/frontend/support"
-copy "./static", "/site/static"
-copy "./build.sh", "/site/build.sh"
-copy "./run.sh", "/site/run.sh"
+
+def put(file)
+  copy "./#{file}", "/site/#{file}"
+end
+
+files = [
+  "backend",
+  "blog",
+  "frontend/package.json",
+  "frontend/bower.json",
+  "frontend/webpack.production.config.js",
+  "frontend/src",
+  "static",
+  "build.sh",
+  "run.sh",
+]
+
+files.each { |x| put(x) }
 
 ### Build
 run %q[ cd /site && bash ./build.sh ]
 
 ### Cleanup
-run %q[ rm -rf /usr/local/go /usr/local/node /site/frontend/node_modules /site/frontend/bower_components /go /site/backend ]
-run %q[ apt-get remove -y xz-utils bzip2 git-core ]
+run %q[ rm -rf /usr/local/go /usr/local/node /site/frontend/node_modules /site/frontend/bower_components /go /site/backend /tmp/phantomjs /site/frontend /site/static ]
+run %q[ apt-get remove -y xz-utils bzip2 git-core && apt-get -y autoremove && apt-get clean ]
 
 ### Runtime
 entrypoint "/sbin/my_init"
 cmd "/site/run.sh"
+
+env "USE_ASAR" => "yes"
 
 flatten
 tag "xena/christine.website"

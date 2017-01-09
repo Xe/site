@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Xe/asarfs"
 	"github.com/gernest/front"
 )
 
@@ -126,8 +127,23 @@ func main() {
 			Body: rbody,
 		})
 	})
-	http.Handle("/dist/", http.FileServer(http.Dir("./frontend/static/")))
-	http.Handle("/static/", http.FileServer(http.Dir(".")))
+
+	if os.Getenv("USE_ASAR") == "yes" {
+		fe, err := asarfs.New("./frontend.asar", http.HandlerFunc(writeIndexHTML))
+		if err != nil {
+			log.Fatal(err)
+		}
+		st, err := asarfs.New("./static.asar", http.HandlerFunc(writeIndexHTML))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		http.Handle("/dist/", fe)
+		http.Handle("/static", st)
+	} else {
+		http.Handle("/dist/", http.FileServer(http.Dir("./frontend/static/")))
+		http.Handle("/static/", http.FileServer(http.Dir(".")))
+	}
 	http.HandleFunc("/", writeIndexHTML)
 
 	port := os.Getenv("PORT")
