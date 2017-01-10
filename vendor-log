@@ -2,3 +2,6 @@
 a5b47d31c556af34a302ce5d659e6fea44d90de0	gopkg.in/yaml.v2
 b68094ba95c055dfda888baa8947dfe44c20b1ac	github.com/Xe/asarfs
 5e4d0891fe789f2da0c2d5afada3b6a1ede6d64c	layeh.com/asar
+33a50704c528b4b00db129f75c693facf7f3838b (dirty)	github.com/Xe/asarfs
+5e4d0891fe789f2da0c2d5afada3b6a1ede6d64c	layeh.com/asar
+3f7ce7b928e14ff890b067e5bbbc80af73690a9c	github.com/urfave/negroni
