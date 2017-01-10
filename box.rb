@@ -3,6 +3,18 @@ from "xena/go:1.7.4"
 ### Copy files
 run "mkdir -p /site"
 
+def debug?()
+  return getenv("DEBUG") == "yes"
+end
+
+def debug!()
+  run "apk add --no-cache bash"
+  debug
+  run "apk del bash"
+
+  puts "hint: flatten this image if deploying."
+end
+
 def put(file)
   copy "./#{file}", "/site/#{file}"
 end
@@ -22,12 +34,15 @@ files = [
 
 files.each { |x| put x }
 
+copy "vendor/", "/go/"
+run "rm /go/src -rf && mv /go/vendor /go/src"
+
 ### Build
-run "apk add --no-cache git"
 run %q[ cd /site && sh ./build.sh ]
+debug! if debug?
 
 ### Cleanup
-run %q[ rm -rf /usr/local/go /usr/local/node /site/frontend/node_modules /site/frontend/bower_components /go /site/backend /tmp/phantomjs ]
+run %q[ rm -rf /usr/local/go /go /site/backend ]
 run %q[ apk del go git ]
 
 ### Runtime
