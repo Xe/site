@@ -141,7 +141,7 @@ func main() {
 			log.Fatal("frontend: ", err)
 		}
 
-		http.Handle("/dist/", fe)
+		http.Handle("/dist/", http.FileServer(fe))
 	} else {
 		log.Println("serving site frontend from filesystem")
 		http.Handle("/dist/", http.FileServer(http.Dir("./frontend/static/")))
