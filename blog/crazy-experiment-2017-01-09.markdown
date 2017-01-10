@@ -1,7 +1,10 @@
 ---
-title: "Crazy Experiment: Frontend Shipping as asar"
+title: "Crazy Experiment: Ship the Frontend as an asar document"
 date: "2017-01-09"
 ---
+
+Crazy Experiment: Ship the Frontend as an asar document
+=======================================================
 
 Today's crazy experiment is using an [asar archive](https://github.com/electron/asar) for shipping around
 and mounting frontend Javascript applications. This is something I feel is worth doing because it allows
