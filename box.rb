@@ -1,4 +1,4 @@
-from "xena/go"
+from "xena/go:1.7.4"
 
 ### Copy files
 run "mkdir -p /site"
