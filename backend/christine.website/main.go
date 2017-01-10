@@ -102,6 +102,7 @@ func init() {
 }
 
 func main() {
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {})
 	http.HandleFunc("/api/blog/posts", writeBlogPosts)
 	http.HandleFunc("/api/blog/post", func(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query()
