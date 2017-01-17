@@ -34,8 +34,7 @@ files = [
 
 files.each { |x| put x }
 
-copy "vendor/", "/go/"
-run "rm /go/src -rf && mv /go/vendor /go/src"
+copy "vendor/", "/go/src/"
 
 ### Build
 run %q[ cd /site && sh ./build.sh ]
