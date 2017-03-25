@@ -1,4 +1,7 @@
-from "xena/go:1.7.4"
+from "xena/go-mini:1.8"
+
+### setup go
+run "go1.8 download"
 
 ### Copy files
 run "mkdir -p /site"
@@ -34,15 +37,15 @@ files = [
 
 files.each { |x| put x }
 
-copy "vendor/", "/go/src/"
+copy "vendor/", "/root/go/src/"
 
 ### Build
 run %q[ cd /site && sh ./build.sh ]
 debug! if debug?
 
 ### Cleanup
-run %q[ rm -rf /usr/local/go /go /site/backend ]
-run %q[ apk del go git ]
+run %q[ rm -rf /go /site/backend /root/sdk ]
+run %q[ apk del git go1.8 ]
 
 ### Runtime
 cmd "/site/run.sh"
