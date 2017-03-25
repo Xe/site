@@ -12,9 +12,9 @@ flag values, [debugging tools][manhole] or database drivers. With monorepo cultu
 prevalent in larger microservices based projects, this can lead to a few easily
 preventable problems:
 
-- Forgetting to set up a logger default, causing errors reported to go nowhere
-  or metrics submission, making operations teams blind to the performance of the
-  app.
+- Forgetting to set up a logger default or metrics submission, making operations
+  teams blind to the performance of the app and developer teams blind to errors
+  that come up during execution.
 - The requirement to make code changes to add things like metrics or HTTP routing
   extensions.
 
@@ -90,4 +90,5 @@ on the Gophers slack (I'm `@xena` there). For issues with gopreload please file
 [go-plugins]: https://golang.org/pkg/plugin/
 [manhole-tools]: https://github.com/Xe/gopreload/blob/master/manhole/server.go
 [ld-preload]: https://rafalcieslak.wordpress.com/2013/04/02/dynamic-linker-tricks-using-ld_preload-to-cheat-inject-features-and-investigate-programs/
+[twitter-addr]: https://twitter.com/theprincessxena
 [gopreload-issues]: https://github.com/Xe/gopreload/issues/new
