@@ -40,12 +40,13 @@ files.each { |x| put x }
 copy "vendor/", "/root/go/src/"
 
 ### Build
+run "apk add --no-cache --virtual site-builddep build-base"
 run %q[ cd /site && sh ./build.sh ]
 debug! if debug?
 
 ### Cleanup
-run %q[ rm -rf /go /site/backend /root/sdk ]
-run %q[ apk del git go1.8 ]
+run %q[ rm -rf /root/go /site/backend /root/sdk ]
+run %q[ apk del git go1.8 site-builddep ]
 
 ### Runtime
 cmd "/site/run.sh"
