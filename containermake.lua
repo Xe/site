@@ -20,9 +20,4 @@ print "packing frontend..."
 sh.asar("pack", "static", "../frontend.asar"):print()
 cd ".."
 
-if fs.exists "/usr/bin/keybase" then
-  print "signing frontend..."
-  sh.keybase("sign", "-d", "-i", "./frontend.asar", "-o", "./frontend.asar.sig"):print()
-end
-
 sh.box("box.rb"):print()

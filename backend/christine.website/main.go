@@ -159,6 +159,9 @@ func main() {
 
 	http.HandleFunc("/blog.rss", createFeed)
 	http.HandleFunc("/blog.atom", createAtom)
+	http.HandleFunc("/keybase.txt", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./static/keybase.txt")
+	})
 
 	n := negroni.Classic()
 	n.UseHandler(http.DefaultServeMux)

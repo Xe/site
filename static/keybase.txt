@@ -1,0 +1,67 @@
+==================================================================
+https://keybase.io/xena
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://christine.website
+  * I am xena (https://keybase.io/xena) on keybase.
+  * I have a public key with fingerprint CF54 AAE3 62BF 9C9F B79F  AA18 799F 9134 8118 1111
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "cf54aae362bf9c9fb79faa18799f913481181111",
+            "host": "keybase.io",
+            "key_id": "799f913481181111",
+            "kid": "0101d20fbebf676d50a60006e9d6d7a5ac1bed37d6cd9aab5d1098d7d59f66a7f3620a",
+            "uid": "c51a91a819ddafb3a17644abab032500",
+            "username": "xena"
+        },
+        "service": {
+            "hostname": "christine.website",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1426511662,
+    "expire_in": 157680000,
+    "prev": "e855b34f4b574813056786deecf96f8f4bfac209228ec4b8d35e1bedb2a8993b",
+    "seqno": 29,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.8
+Comment: https://keybase.io/crypto
+
+yMIdAnicbVJbSFRBGN5NW9KSonoq6uF0kUy2mXOZc2aLgjKiG10oqCxs5syc3UN1
+djvn7JZsG2gPgdAFk3qpoCIoIrqpUaGspZlKZIIoPUQXxO6J1FtYc6TegoFhvv/7
+vvm/n7+9pCBUHP5YkI0fGdpcGO5pW5UObY8MRLMSTbJqKZaV9vHxy7KdOHdTru34
+UkwyLU0lhCtIphY2sUV1bBECDR1jC0NFNSAUB0KpXEokvUAhbCjxeNROCkw8qmwm
+0P/w940XAASQycCinFpIR0wDBAEAEMcMMZ1oxISUM0VnyGSYEKoxCLDBdKZhCyGi
+W6I1QIRdetzO1CDBkBgQM0YsqhCoI1UllFCgyBoAAdHjrkMOcME+zB0i5colgWRs
+kwfxgxR/q2bCtT3fdnj0EKee7XMhTrlJP2km94tywvdTXiyQ+9WpgC9YVX+dqqjt
+MDFIochw17OTjhSDgmn6dmANVRlpECIkl0v8cMp2eZUdMDQdGSI8CP7hGWHJDU2j
+imqpVNPF7BSgId1AjHPTwsgyBG4RUwZYlg1uqtRgisaDeVGZGBgrVAqyHXSSUkzG
+ok8SF56eHXeIn3a5lHuc310YCheHIhMnBLsQKi6a9m9Ddj6cFLp5r/REvudnJH/k
+Y0NZ9+fKyoj77cFQaTRzpexqYcvbyrFHau3N6Tc2jp5rSG/IF25RH8xNy3sxyJT+
+Phtf0Ll1Y/T15Lb1jTUHsdbbXvHyTL1cV9l7a/j6unZvzf3G8Mie0/7FIltrndF5
+dW92ET/ZFc5fW/b9/rTbzS8W7mqac/rZh0utbRlz8MepC/Mvz6/eMzb3y4Tjnc/X
+AnOkY9uUyzXN2QqwYemOkq/n+yuKIqMFXU8HEx+ait5PzM2sa1vcXle94s3dxtpN
+n5Yfendn9tiTsmM57+uS4cSs1X0LN9cf7XjV19204ldLfcNyeVFZf254wCjpsT7N
+K+5YOeQODUw9tuYPmLMrAQ==
+=TR+Q
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/xena
+
+==================================================================
