@@ -102,9 +102,11 @@ func init() {
 }
 
 func main() {
-	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {})
-	http.HandleFunc("/api/blog/posts", writeBlogPosts)
-	http.HandleFunc("/api/blog/post", func(w http.ResponseWriter, r *http.Request) {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {})
+	mux.HandleFunc("/api/blog/posts", writeBlogPosts)
+	mux.HandleFunc("/api/blog/post", func(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query()
 		name := q.Get("name")
 
@@ -122,7 +124,7 @@ func main() {
 	fail:
 		http.Error(w, "Not Found", http.StatusNotFound)
 	})
-	http.HandleFunc("/api/resume", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/resume", func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(struct {
 			Body string `json:"body"`
 		}{
@@ -141,28 +143,28 @@ func main() {
 			log.Fatal("frontend: ", err)
 		}
 
-		http.Handle("/dist/", http.FileServer(fe))
+		mux.Handle("/dist/", http.FileServer(fe))
 	} else {
 		log.Println("serving site frontend from filesystem")
-		http.Handle("/dist/", http.FileServer(http.Dir("./frontend/static/")))
+		mux.Handle("/dist/", http.FileServer(http.Dir("./frontend/static/")))
 	}
 
-	http.Handle("/static/", http.FileServer(http.Dir(".")))
-	http.HandleFunc("/", writeIndexHTML)
+	mux.Handle("/static/", http.FileServer(http.Dir(".")))
+	mux.HandleFunc("/", writeIndexHTML)
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "9090"
 	}
 
-	http.HandleFunc("/blog.rss", createFeed)
-	http.HandleFunc("/blog.atom", createAtom)
-	http.HandleFunc("/keybase.txt", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/blog.rss", createFeed)
+	mux.HandleFunc("/blog.atom", createAtom)
+	mux.HandleFunc("/keybase.txt", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./static/keybase.txt")
 	})
 
 	n := negroni.Classic()
-	n.UseHandler(http.DefaultServeMux)
+	n.UseHandler(mux)
 
 	log.Fatal(http.ListenAndServe(":"+port, n))
 }
