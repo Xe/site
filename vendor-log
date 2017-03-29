@@ -6,3 +6,6 @@ b68094ba95c055dfda888baa8947dfe44c20b1ac	github.com/Xe/asarfs
 5e4d0891fe789f2da0c2d5afada3b6a1ede6d64c	layeh.com/asar
 3f7ce7b928e14ff890b067e5bbbc80af73690a9c	github.com/urfave/negroni
 f3687a5cd8e600f93e02174f5c0b91b56d54e8d0	github.com/Xe/gopreload
+49bd2f58881c34d534aa97bd64bdbdf37be0df91	github.com/Xe/ln
+441264de03a8117ed530ae8e049d8f601a33a099	github.com/gorilla/feeds
+ff09b135c25aae272398c51a07235b90a75aa4f0	github.com/pkg/errors
