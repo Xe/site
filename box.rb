@@ -1,7 +1,7 @@
-from "xena/go-mini:1.8"
+from "xena/go-mini:1.8.1"
 
 ### setup go
-run "go1.8 download"
+run "go1.8.1 download"
 
 ### Copy files
 run "mkdir -p /site"
