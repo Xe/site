@@ -1,8 +1,6 @@
 ---
-template: blog
 title: Voiding the Interview
 date: 2017-04-16
-sitename: Xena
 ---
 
 A young man walks into the room, slightly frustrated-looking. He's obviously had
@@ -143,3 +141,11 @@ looks like he's seen a ghost. Everyone's first time is rough.
 Everything has happened and will happen, there is nothing new in the universe.
 You know what's going to happen. They will decline, saying they are looking for
 a better "culture fit". They couldn't contain you.
+
+To run the code in this post:
+
+```
+$ go get github.com/zhemao/glisp
+$ glisp
+> [paste in blocks]
+```
