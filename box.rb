@@ -7,15 +7,12 @@ run "go1.8.1 download"
 run "mkdir -p /site"
 
 def debug?()
-  return getenv("DEBUG") == "yes"
+  getenv("DEBUG") == "yes"
 end
 
 def debug!()
   run "apk add --no-cache bash"
   debug
-  run "apk del bash"
-
-  puts "hint: flatten this image if deploying."
 end
 
 def put(file)
@@ -46,7 +43,7 @@ debug! if debug?
 
 ### Cleanup
 run %q[ rm -rf /root/go /site/backend /root/sdk ]
-run %q[ apk del git go1.8 site-builddep ]
+run %q[ apk del git go1.8.1 site-builddep ]
 
 ### Runtime
 cmd "/site/run.sh"
