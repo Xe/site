@@ -11,7 +11,7 @@ import (
 
 func logTemplateTime(name string, from time.Time) {
 	now := time.Now()
-	ln.Log(ln.F{"action": "template_rendered", "dur": now.Sub(from).String()})
+	ln.Log(ln.F{"action": "template_rendered", "dur": now.Sub(from).String(), "name": name})
 }
 
 func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.Handler {

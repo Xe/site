@@ -11,6 +11,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/GeertJohan/go.rice"
 	"github.com/Xe/jsonfeed"
 	"github.com/Xe/ln"
 	"github.com/gorilla/feeds"
@@ -30,6 +31,7 @@ func main() {
 		ln.Fatal(ln.F{"err": err, "action": "Build"})
 	}
 
+	ln.Log(ln.F{"action": "http_listening", "port": port})
 	http.ListenAndServe(":"+port, s)
 }
 
@@ -48,7 +50,7 @@ type Site struct {
 }
 
 func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	ln.Log(ln.F{"action": "Site.ServeHTTP"})
+	ln.Log(ln.F{"action": "Site.ServeHTTP", "user_ip_address": r.RemoteAddr, "path": r.RequestURI})
 	s.mux.ServeHTTP(w, r)
 }
 
@@ -132,12 +134,17 @@ func Build() (*Site, error) {
 
 	sort.Sort(sort.Reverse(s.Posts))
 
-	resume, err := ioutil.ReadFile("./static/resume/resume.md")
+	cb, err := rice.FindBox("css")
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	s.Resume = template.HTML(blackfriday.MarkdownCommon(resume))
+	sb, err := rice.FindBox("static")
+	if err != nil {
+		return nil, err
+	}
+
+	s.Resume = template.HTML(blackfriday.MarkdownCommon(sb.MustBytes("resume/resume.md")))
 
 	for _, item := range s.Posts {
 		itime, _ := time.Parse("2006-01-02", item.Date)
@@ -160,8 +167,12 @@ func Build() (*Site, error) {
 	s.mux.Handle("/", s.renderTemplatePage("index.html", nil))
 	s.mux.Handle("/resume", s.renderTemplatePage("resume.html", s.Resume))
 	s.mux.Handle("/blog", s.renderTemplatePage("blogindex.html", s.Posts))
+	s.mux.HandleFunc("/blog.rss", s.createFeed)
+	s.mux.HandleFunc("/blog.atom", s.createAtom)
+	s.mux.HandleFunc("/blog.json", s.createJsonFeed)
 	s.mux.HandleFunc("/blog/", s.showPost)
-	s.mux.Handle("/static/", http.FileServer(http.Dir(".")))
+	s.mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(sb.HTTPBox())))
+	s.mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(cb.HTTPBox())))
 
 	return s, nil
 }
