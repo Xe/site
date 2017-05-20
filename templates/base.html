@@ -1,0 +1,45 @@
+<html>
+    <head>
+        {{ template "title" . }}
+        <link rel="stylesheet" href="/static/css/hack.css" />
+        <link rel="stylesheet" href="/static/css/solarized-dark.css" />
+        <style>
+         .main {
+             padding: 20px 10px;
+         }
+
+         .hack h1 {
+             padding-top: 0;
+         }
+
+         footer.footer {
+             border-top: 1px solid #ccc;
+             margin-top: 80px;
+             margin-top: 5rem;
+             padding: 48px 0;
+             padding: 3rem 0;
+         }
+
+         img {
+             max-width: 100%;
+             max-height: 100%;
+         }
+        </style>
+        {{ template "styles" . }}
+    </head>
+    <body class="hack solarized-dark">
+        {{ template "scripts" . }}
+        <div class="container">
+            <header>
+                <p><a href="/">Christine Dodrill</a> - <a href="/blog">Blog</a> - <a href="/contact">Contact</a> - <a href="/resume">Resume</a></p>
+            </header>
+            {{ template "content" . }}
+            <footer>
+                <blockquote>Copyright 2017 Christine Dodrill. Any and all opinions listed here are my own and not representative of my employer.</blockquote>
+            </footer>
+        </div>
+    </body>
+</html>
+
+{{ define "scripts" }}{{ end }}
+{{ define "styles" }}{{ end }}
