@@ -160,6 +160,7 @@ func Build() (*Site, error) {
 			URL:           "https://christine.website/" + item.Link,
 			Title:         item.Title,
 			DatePublished: itime,
+			ContentHTML:   string(item.BodyHTML),
 		})
 	}
 
@@ -167,6 +168,7 @@ func Build() (*Site, error) {
 	s.mux.Handle("/", s.renderTemplatePage("index.html", nil))
 	s.mux.Handle("/resume", s.renderTemplatePage("resume.html", s.Resume))
 	s.mux.Handle("/blog", s.renderTemplatePage("blogindex.html", s.Posts))
+	s.mux.Handle("/contact", s.renderTemplatePage("contact.html", nil))
 	s.mux.HandleFunc("/blog.rss", s.createFeed)
 	s.mux.HandleFunc("/blog.atom", s.createAtom)
 	s.mux.HandleFunc("/blog.json", s.createJsonFeed)
