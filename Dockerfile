@@ -1,4 +1,4 @@
 FROM xena/christine.website
-ENV PORT 5000
-EXPOSE 5000
+ENV PORT 80
+EXPOSE 80
 RUN apk add --no-cache bash
