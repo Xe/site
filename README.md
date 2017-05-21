@@ -1,8 +1,5 @@
-# My Site
+# site
 
-Version 2
+My personal/portfolio website.
 
-This is intended as my portfolio site. This is a site made with [pux](https://github.com/alexmingoia/purescript-pux)
-and [Go](https://golang.org).
-
-![](http://i.imgur.com/MOhMzmB.png)
+![](https://puu.sh/vWnJx/57cda175d8.png)

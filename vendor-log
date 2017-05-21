@@ -1,11 +1,15 @@
-94c8a5673a78ada68d7b97e1d4657cffc6ec68d7	github.com/gernest/front
-a5b47d31c556af34a302ce5d659e6fea44d90de0	gopkg.in/yaml.v2
-b68094ba95c055dfda888baa8947dfe44c20b1ac	github.com/Xe/asarfs
-5e4d0891fe789f2da0c2d5afada3b6a1ede6d64c	layeh.com/asar
-33a50704c528b4b00db129f75c693facf7f3838b (dirty)	github.com/Xe/asarfs
-5e4d0891fe789f2da0c2d5afada3b6a1ede6d64c	layeh.com/asar
-3f7ce7b928e14ff890b067e5bbbc80af73690a9c	github.com/urfave/negroni
-f3687a5cd8e600f93e02174f5c0b91b56d54e8d0	github.com/Xe/gopreload
-49bd2f58881c34d534aa97bd64bdbdf37be0df91	github.com/Xe/ln
+c02ca9a983da5807ddf7d796784928f5be4afd09	github.com/GeertJohan/go.rice
+c02ca9a983da5807ddf7d796784928f5be4afd09	github.com/GeertJohan/go.rice/embedded
+a00a8beb369cafd88bb7b32f31fc4ff3219c3565	github.com/Xe/gopreload
+b685d4edebe855f8edbb4e605c0bf74e1e60b0e9	github.com/Xe/jsonfeed
+f759b797c0ff6b2c514202198fe5e8ba90094c14	github.com/Xe/ln
+a5fe2436ffcb3236e175e5149162b41cd28bd27d	github.com/daaku/go.zipexe
+62f833fc9f6c4d3223bdb37bd0c2f8951bed8596	github.com/google/gops/agent
+62f833fc9f6c4d3223bdb37bd0c2f8951bed8596	github.com/google/gops/internal
+62f833fc9f6c4d3223bdb37bd0c2f8951bed8596	github.com/google/gops/signal
 441264de03a8117ed530ae8e049d8f601a33a099	github.com/gorilla/feeds
+c2c54e542fb797ad986b31721e1baedf214ca413	github.com/kardianos/osext
 ff09b135c25aae272398c51a07235b90a75aa4f0	github.com/pkg/errors
+0ba0f2b6ed7c475a92e4df8641825cb7a11d1fa3	github.com/russross/blackfriday
+739be213b0a1c496dccaf9e5df1514150c9548e4	github.com/tj/front
+9f9df34309c04878acc86042b16630b0f696e1de	gopkg.in/yaml.v1

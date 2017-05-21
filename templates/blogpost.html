@@ -1,0 +1,11 @@
+{{ define "title" }}
+<title>{{ .Title }} - Christine Dodrill</title>
+{{ end }}
+
+{{ define "content" }}
+{{ .BodyHTML }}
+
+<hr />
+
+<i>Content posted on {{ .Date }}, opinions and preferences of the author may have changed since then.</i>
+{{ end }}

@@ -20,16 +20,14 @@ def put(file)
 end
 
 files = [
-  "backend",
   "blog",
-  "frontend.asar",
-  "static",
-  "build.sh",
-  "run.sh",
-
-  # This file is packaged in the asar file, but the go app relies on being
-  # able to read it so it can cache the contents in ram.
-  "frontend/static/dist/index.html",
+  "templates",
+  "gops.go",
+  "hash.go",
+  "html.go",
+  "main.go",
+  "rice-box.go",
+  "rss.go",
 ]
 
 files.each { |x| put x }
@@ -37,18 +35,13 @@ files.each { |x| put x }
 copy "vendor/", "/root/go/src/"
 
 ### Build
-run "apk add --no-cache --virtual site-builddep build-base"
-run %q[ cd /site && sh ./build.sh ]
-debug! if debug?
+run "cd /site && go1.8.1 build -v"
 
 ### Cleanup
-run %q[ rm -rf /root/go /site/backend /root/sdk ]
-run %q[ apk del git go1.8.1 site-builddep ]
+run %q[ rm -rf /root/go /site/backend /root/sdk /site/*.go ]
+run %q[ apk del git go1.8.1 ]
 
-### Runtime
-cmd "/site/run.sh"
-
-env "USE_ASAR" => "yes"
+cmd "/site/site"
 
 flatten
 tag "xena/christine.website"

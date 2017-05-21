@@ -43,7 +43,17 @@ func (t *TextFormatter) Format(e Event) ([]byte, error) {
 	writer.WriteString(e.Time.Format(t.TimeFormat))
 	writer.WriteString("\"")
 
-	for k, v := range e.Data {
+	keys := make([]string, len(e.Data))
+	i := 0
+
+	for k := range e.Data {
+		keys[i] = k
+		i++
+	}
+
+	for _, k := range keys {
+		v := e.Data[k]
+
 		writer.WriteByte(' ')
 		if shouldQuote(k) {
 			writer.WriteString(fmt.Sprintf("%q", k))

@@ -1,0 +1,22 @@
+{{ define "title" }}
+<title>Blog - Christine Dodrill</title>
+
+<style>
+.blogpost-card {
+    text-align: center;
+}
+</style>
+{{ end }}
+
+{{ define "content" }}
+<div class="grid">
+    {{ range . }}
+    <div class="card cell -4of12 blogpost-card">
+        <header class="card-header">{{ .Title }}</header>
+        <div class="card-content">
+            <p>Posted on {{ .Date }} <br> <a href="{{ .Link }}">Read Post</a></p>
+        </div>
+    </div>
+    {{ end }}
+</div>
+{{ end }}
