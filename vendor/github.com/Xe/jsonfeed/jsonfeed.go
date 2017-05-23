@@ -181,7 +181,7 @@ type Feed struct {
 	// required for Feeds on the public web.
 	//
 	// This field is strongly reccomended, but not required.
-	FeedURL string `json:"Feed_url,omitempty"`
+	FeedURL string `json:"feed_url,omitempty"`
 
 	// Description provides more detail, beyond the title, on what the Feed
 	// is about. A Feed reader may display this text.
