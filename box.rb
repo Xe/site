@@ -28,6 +28,7 @@ files = [
   "main.go",
   "rice-box.go",
   "rss.go",
+  "run.sh"
 ]
 
 files.each { |x| put x }
@@ -41,7 +42,7 @@ run "cd /site && go1.8.1 build -v"
 run %q[ rm -rf /root/go /site/backend /root/sdk /site/*.go ]
 run %q[ apk del git go1.8.1 ]
 
-cmd "/site/site"
+cmd "/site/run.sh"
 
 flatten
 tag "xena/christine.website"
