@@ -8,15 +8,15 @@
 
 ---
 ## Experience
-### Heroku - Software Engineer &emsp; <small>*2017 - current*</small>
-> [Heroku][heroku] is a cloud Platform-as-a-Service (PaaS) supporting 
-> several programming languages that is used as a web application deployment model. 
-> Heroku, one of the first cloud platforms, has been in development since June 2007, 
-> when it supported only the Ruby programming language, but now supports Java, 
+### Heroku - Senior Software Engineer &emsp; <small>*2017 - current*</small>
+> [Heroku][heroku] is a cloud Platform-as-a-Service (PaaS) supporting
+> several programming languages that is used as a web application deployment model.
+> Heroku, one of the first cloud platforms, has been in development since June 2007,
+> when it supported only the Ruby programming language, but now supports Java,
 > Node.js, Scala, Clojure, Python, PHP, and Go.
-> 
+>
 > #### Highlights
-> 
+>
 > - [JVM Application Metrics](https://devcenter.heroku.com/changelog-items/1133)
 > - [Go Runtime Metrics Agent](https://github.com/heroku/x/tree/master/runtime-metrics)
 > - Other backend fixes and improvements on [Threshold Autoscaling](https://blog.heroku.com/heroku-autoscaling) and [Threshold Alerting](https://devcenter.heroku.com/articles/metrics#threshold-alerting)
