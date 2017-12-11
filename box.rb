@@ -1,7 +1,7 @@
-from "xena/go-mini:1.8.1"
+from "xena/go-mini:1.9.2"
 
 ### setup go
-run "go1.8.1 download"
+run "go1.9.2 download"
 
 ### Copy files
 run "mkdir -p /site"
@@ -36,11 +36,11 @@ files.each { |x| put x }
 copy "vendor/", "/root/go/src/"
 
 ### Build
-run "cd /site && go1.8.1 build -v"
+run "cd /site && go1.9.2 build -v"
 
 ### Cleanup
 run %q[ rm -rf /root/go /site/backend /root/sdk /site/*.go ]
-run %q[ apk del git go1.8.1 ]
+run %q[ apk del git go1.9.2 ]
 
 cmd "/site/run.sh"
 
