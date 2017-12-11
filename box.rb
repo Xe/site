@@ -40,7 +40,7 @@ run "cd /site && go1.9.2 build -v"
 
 ### Cleanup
 run %q[ rm -rf /root/go /site/backend /root/sdk /site/*.go ]
-run %q[ apk del git go1.9.2 ]
+run %q[ apk del go1.9.2 ]
 
 cmd "/site/run.sh"
 
