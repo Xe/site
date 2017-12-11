@@ -3,6 +3,8 @@ title: How does into Meditation
 date: 2017-12-10
 ---
 
+# How does into Meditation
+
 tl;dr
 
 1. stop thinking
