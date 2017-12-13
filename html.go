@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -11,7 +12,7 @@ import (
 
 func logTemplateTime(name string, from time.Time) {
 	now := time.Now()
-	ln.Log(ln.F{"action": "template_rendered", "dur": now.Sub(from).String(), "name": name})
+	ln.Log(context.Background(), ln.F{"action": "template_rendered", "dur": now.Sub(from).String(), "name": name})
 }
 
 func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.Handler {
@@ -27,11 +28,11 @@ func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.H
 			t, err = template.ParseFiles("templates/base.html", "templates/"+templateFname)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
-				ln.Error(err, ln.F{"action": "renderTemplatePage", "page": templateFname})
+				ln.Error(context.Background(), err, ln.F{"action": "renderTemplatePage", "page": templateFname})
 				fmt.Fprintf(w, "error: %v", err)
 			}
 
-			ln.Log(ln.F{"action": "loaded_new_template", "fname": templateFname})
+			ln.Log(context.Background(), ln.F{"action": "loaded_new_template", "fname": templateFname})
 
 			s.tlock.RUnlock()
 			s.tlock.Lock()
