@@ -72,7 +72,7 @@ CMD /site/run.sh`
 	fout.Close()
 
 	do("git", "add", "Dockerfile")
-	do("git", "commit", "-m", "Dockerfile: update for deployment")
+	do("git", "commit", "-m", "Dockerfile: update for deployment of version "+tag)
 	do("git", "push", "dokku", "master")
 
 	return nil
