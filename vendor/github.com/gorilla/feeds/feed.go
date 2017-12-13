@@ -1,6 +1,7 @@
 package feeds
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"io"
 	"time"
@@ -14,14 +15,25 @@ type Author struct {
 	Name, Email string
 }
 
+type Image struct {
+	Url, Title, Link string
+	Width, Height    int
+}
+
+type Enclosure struct {
+	Url, Length, Type string
+}
+
 type Item struct {
 	Title       string
 	Link        *Link
+	Source      *Link
 	Author      *Author
 	Description string // used as description in rss, summary in atom
 	Id          string // used as guid in rss, id in atom
 	Updated     time.Time
 	Created     time.Time
+	Enclosure   *Enclosure
 }
 
 type Feed struct {
@@ -35,6 +47,7 @@ type Feed struct {
 	Subtitle    string
 	Items       []*Item
 	Copyright   string
+	Image       *Image
 }
 
 // add a new Item to a Feed
@@ -103,4 +116,20 @@ func (f *Feed) ToRss() (string, error) {
 // Writes an RSS representation of this feed to the writer.
 func (f *Feed) WriteRss(w io.Writer) error {
 	return WriteXML(&Rss{f}, w)
+}
+
+// ToJSON creates a JSON Feed representation of this feed
+func (f *Feed) ToJSON() (string, error) {
+	j := &JSON{f}
+	return j.ToJSON()
+}
+
+// WriteJSON writes an JSON representation of this feed to the writer.
+func (f *Feed) WriteJSON(w io.Writer) error {
+	j := &JSON{f}
+	feed := j.JSONFeed()
+
+	e := json.NewEncoder(w)
+	e.SetIndent("", "  ")
+	return e.Encode(feed)
 }

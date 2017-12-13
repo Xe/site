@@ -1,23 +1,24 @@
 package ln
 
 import (
+	"context"
 	"io"
 	"sync"
 )
 
 // Filter interface for defining chain filters
 type Filter interface {
-	Apply(Event) bool
+	Apply(ctx context.Context, e Event) bool
 	Run()
 	Close()
 }
 
 // FilterFunc allows simple functions to implement the Filter interface
-type FilterFunc func(e Event) bool
+type FilterFunc func(ctx context.Context, e Event) bool
 
 // Apply implements the Filter interface
-func (ff FilterFunc) Apply(e Event) bool {
-	return ff(e)
+func (ff FilterFunc) Apply(ctx context.Context, e Event) bool {
+	return ff(ctx, e)
 }
 
 // Run implements the Filter interface
@@ -45,8 +46,8 @@ func NewWriterFilter(out io.Writer, format Formatter) *WriterFilter {
 }
 
 // Apply implements the Filter interface
-func (w *WriterFilter) Apply(e Event) bool {
-	output, err := w.Formatter.Format(e)
+func (w *WriterFilter) Apply(ctx context.Context, e Event) bool {
+	output, err := w.Formatter.Format(ctx, e)
 	if err == nil {
 		w.Lock()
 		w.Out.Write(output)
@@ -63,4 +64,4 @@ func (w *WriterFilter) Run() {}
 func (w *WriterFilter) Close() {}
 
 // NilFilter is safe to return as a Filter, but does nothing
-var NilFilter = FilterFunc(func(e Event) bool { return true })
+var NilFilter = FilterFunc(func(_ context.Context, e Event) bool { return true })
