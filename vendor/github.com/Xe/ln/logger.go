@@ -1,7 +1,7 @@
 package ln
 
 import (
-	"fmt"
+	"context"
 	"os"
 	"time"
 
@@ -30,14 +30,28 @@ func init() {
 	DefaultLogger = &Logger{
 		Filters: defaultFilters,
 	}
-
 }
 
 // F is a key-value mapping for structured data.
 type F map[string]interface{}
 
+// Extend concatentates one F with one or many Fer instances.
+func (f F) Extend(other ...Fer) {
+	for _, ff := range other {
+		for k, v := range ff.F() {
+			f[k] = v
+		}
+	}
+}
+
+// F makes F an Fer
+func (f F) F() F {
+	return f
+}
+
+// Fer allows any type to add fields to the structured logging key->value pairs.
 type Fer interface {
-	F() map[string]interface{}
+	F() F
 }
 
 // Event represents an event
@@ -48,8 +62,7 @@ type Event struct {
 }
 
 // Log is the generic logging method.
-func (l *Logger) Log(xs ...interface{}) {
-	var bits []interface{}
+func (l *Logger) Log(ctx context.Context, xs ...Fer) {
 	event := Event{Time: time.Now()}
 
 	addF := func(bf F) {
@@ -62,18 +75,14 @@ func (l *Logger) Log(xs ...interface{}) {
 		}
 	}
 
-	// Assemble the event
-	for _, b := range xs {
-		if bf, ok := b.(F); ok {
-			addF(bf)
-		} else if fer, ok := b.(Fer); ok {
-			addF(F(fer.F()))
-		} else {
-			bits = append(bits, b)
-		}
+	for _, f := range xs {
+		addF(f.F())
 	}
 
-	event.Message = fmt.Sprint(bits...)
+	ctxf, ok := FFromContext(ctx)
+	if ok {
+		addF(ctxf)
+	}
 
 	if os.Getenv("LN_DEBUG_ALL_EVENTS") == "1" {
 		frame := callersFrame()
@@ -85,19 +94,19 @@ func (l *Logger) Log(xs ...interface{}) {
 		event.Data["_filename"] = frame.filename
 	}
 
-	l.filter(event)
+	l.filter(ctx, event)
 }
 
-func (l *Logger) filter(e Event) {
+func (l *Logger) filter(ctx context.Context, e Event) {
 	for _, f := range l.Filters {
-		if !f.Apply(e) {
+		if !f.Apply(ctx, e) {
 			return
 		}
 	}
 }
 
 // Error logs an error and information about the context of said error.
-func (l *Logger) Error(err error, xs ...interface{}) {
+func (l *Logger) Error(ctx context.Context, err error, xs ...Fer) {
 	data := F{}
 	frame := callersFrame()
 
@@ -113,12 +122,37 @@ func (l *Logger) Error(err error, xs ...interface{}) {
 
 	xs = append(xs, data)
 
-	l.Log(xs...)
+	l.Log(ctx, xs...)
 }
 
 // Fatal logs this set of values, then exits with status code 1.
-func (l *Logger) Fatal(xs ...interface{}) {
-	l.Log(xs...)
+func (l *Logger) Fatal(ctx context.Context, xs ...Fer) {
+	xs = append(xs, F{"fatal": true})
+
+	l.Log(ctx, xs...)
+
+	os.Exit(1)
+}
+
+// FatalErr combines Fatal and Error.
+func (l *Logger) FatalErr(ctx context.Context, err error, xs ...Fer) {
+	xs = append(xs, F{"fatal": true})
+
+	data := F{}
+	frame := callersFrame()
+
+	data["_lineno"] = frame.lineno
+	data["_function"] = frame.function
+	data["_filename"] = frame.filename
+	data["err"] = err
+
+	cause := errors.Cause(err)
+	if cause != nil {
+		data["cause"] = cause.Error()
+	}
+
+	xs = append(xs, data)
+	l.Log(ctx, xs...)
 
 	os.Exit(1)
 }
@@ -126,16 +160,21 @@ func (l *Logger) Fatal(xs ...interface{}) {
 // Default Implementation
 
 // Log is the generic logging method.
-func Log(xs ...interface{}) {
-	DefaultLogger.Log(xs...)
+func Log(ctx context.Context, xs ...Fer) {
+	DefaultLogger.Log(ctx, xs...)
 }
 
 // Error logs an error and information about the context of said error.
-func Error(err error, xs ...interface{}) {
-	DefaultLogger.Error(err, xs...)
+func Error(ctx context.Context, err error, xs ...Fer) {
+	DefaultLogger.Error(ctx, err, xs...)
 }
 
 // Fatal logs this set of values, then exits with status code 1.
-func Fatal(xs ...interface{}) {
-	DefaultLogger.Fatal(xs...)
+func Fatal(ctx context.Context, xs ...Fer) {
+	DefaultLogger.Fatal(ctx, xs...)
+}
+
+// FatalErr combines Fatal and Error.
+func FatalErr(ctx context.Context, err error, xs ...Fer) {
+	DefaultLogger.FatalErr(ctx, err, xs...)
 }

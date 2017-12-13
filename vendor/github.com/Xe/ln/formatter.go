@@ -2,6 +2,7 @@ package ln
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"time"
 )
@@ -13,7 +14,7 @@ var (
 
 // Formatter defines the formatting of events
 type Formatter interface {
-	Format(Event) ([]byte, error)
+	Format(ctx context.Context, e Event) ([]byte, error)
 }
 
 // DefaultFormatter is the default way in which to format events
@@ -36,7 +37,7 @@ func NewTextFormatter() Formatter {
 }
 
 // Format implements the Formatter interface
-func (t *TextFormatter) Format(e Event) ([]byte, error) {
+func (t *TextFormatter) Format(_ context.Context, e Event) ([]byte, error) {
 	var writer bytes.Buffer
 
 	writer.WriteString("time=\"")
