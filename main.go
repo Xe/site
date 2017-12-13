@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"html/template"
 	"io/ioutil"
 	"net/http"
@@ -15,7 +16,7 @@ import (
 	"github.com/Xe/jsonfeed"
 	"github.com/Xe/ln"
 	"github.com/gorilla/feeds"
-	"github.com/russross/blackfriday"
+	blackfriday "github.com/russross/blackfriday"
 	"github.com/tj/front"
 )
 
@@ -28,10 +29,10 @@ func main() {
 
 	s, err := Build()
 	if err != nil {
-		ln.Fatal(ln.F{"err": err, "action": "Build"})
+		ln.FatalErr(context.Background(), err, ln.Action("Build"))
 	}
 
-	ln.Log(ln.F{"action": "http_listening", "port": port})
+	ln.Log(context.Background(), ln.F{"action": "http_listening", "port": port})
 	http.ListenAndServe(":"+port, s)
 }
 
@@ -50,7 +51,7 @@ type Site struct {
 }
 
 func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	ln.Log(ln.F{"action": "Site.ServeHTTP", "user_ip_address": r.RemoteAddr, "path": r.RequestURI})
+	ln.Log(r.Context(), ln.F{"action": "Site.ServeHTTP", "user_ip_address": r.RemoteAddr, "path": r.RequestURI})
 	s.mux.ServeHTTP(w, r)
 }
 
@@ -114,7 +115,7 @@ func Build() (*Site, error) {
 			return err
 		}
 
-		output := blackfriday.MarkdownCommon(remaining)
+		output := blackfriday.Run(remaining)
 
 		p := &Post{
 			Title:    fm.Title,
@@ -144,7 +145,7 @@ func Build() (*Site, error) {
 		return nil, err
 	}
 
-	s.Resume = template.HTML(blackfriday.MarkdownCommon(sb.MustBytes("resume/resume.md")))
+	s.Resume = template.HTML(blackfriday.Run(sb.MustBytes("resume/resume.md")))
 
 	for _, item := range s.Posts {
 		itime, _ := time.Parse("2006-01-02", item.Date)

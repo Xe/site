@@ -20,7 +20,7 @@ func (s *Site) createFeed(w http.ResponseWriter, r *http.Request) {
 	err := s.rssFeed.WriteRss(w)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		ln.Error(err, ln.F{
+		ln.Error(r.Context(), err, ln.F{
 			"remote_addr": r.RemoteAddr,
 			"action":      "generating_rss",
 			"uri":         r.RequestURI,
@@ -36,7 +36,7 @@ func (s *Site) createAtom(w http.ResponseWriter, r *http.Request) {
 	err := s.rssFeed.WriteAtom(w)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		ln.Error(err, ln.F{
+		ln.Error(r.Context(), err, ln.F{
 			"remote_addr": r.RemoteAddr,
 			"action":      "generating_atom",
 			"uri":         r.RequestURI,
@@ -54,7 +54,7 @@ func (s *Site) createJsonFeed(w http.ResponseWriter, r *http.Request) {
 	err := e.Encode(s.jsonFeed)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		ln.Error(err, ln.F{
+		ln.Error(r.Context(), err, ln.F{
 			"remote_addr": r.RemoteAddr,
 			"action":      "generating_jsonfeed",
 			"uri":         r.RequestURI,
