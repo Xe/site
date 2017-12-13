@@ -74,6 +74,7 @@ CMD /site/run.sh`
 	do("git", "add", "Dockerfile")
 	do("git", "commit", "-m", "Dockerfile: update for deployment of version "+tag)
 	do("git", "push", "dokku", "master")
+	do("git", "push")
 
 	return nil
 }
