@@ -10,9 +10,16 @@ import (
 	"github.com/magefile/mage/mg"
 )
 
+func do(cmd string, args ...string) {
+	shouldWork(context.Background(), nil, wd, cmd, args...)
+}
+
 // Setup installs the tools that other parts of the build process depend on.
 func Setup(ctx context.Context) {
-	shouldWork(ctx, nil, wd, "go", "get", "-u", "-v", "github.com/GeertJohan/go.rice/rice")
+	// go tools
+	do("go", "get", "-u", "-v", "github.com/GeertJohan/go.rice/rice")
+
+	do("git", "remote", "add", "dokku", "dokku@minipaas.xeserv.us")
 }
 
 // Generate runs all of the code generation.
@@ -20,21 +27,19 @@ func Generate(ctx context.Context) {
 	shouldWork(ctx, nil, wd, "rice", "embed-go")
 }
 
-// Build creates the docker image xena/christine.website using box(1).
-func Build() {
+// Docker creates the docker image xena/christine.website using box(1).
+func Docker() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+
+	mg.Deps(Generate)
 
 	shouldWork(ctx, nil, wd, "box", "box.rb")
 }
 
 // Deploy does the work needed to deploy this image to the dokku server.
 func Deploy(ctx context.Context) error {
-	mg.Deps(Build)
-
-	do := func(cmd string, args ...string) {
-		shouldWork(ctx, nil, wd, cmd, args...)
-	}
+	mg.Deps(Docker)
 
 	tag, err := gitTag()
 	if err != nil {
@@ -45,7 +50,9 @@ func Deploy(ctx context.Context) error {
 	do("docker", "push", "xena/christine.website:"+tag)
 
 	const dockerfileTemplate = `FROM xena/christine.website:${VERSION}
-RUN apk add --no-cache bash`
+EXPOSE 5000
+RUN apk add --no-cache bash
+CMD /site/run.sh`
 	data := os.Expand(dockerfileTemplate, func(inp string) string {
 		switch inp {
 		case "VERSION":
@@ -61,7 +68,7 @@ RUN apk add --no-cache bash`
 		return err
 	}
 
-	fmt.Fprintln(fout, Dockerfile)
+	fmt.Fprintln(fout, data)
 	fout.Close()
 
 	do("git", "add", "Dockerfile")

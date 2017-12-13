@@ -6,29 +6,20 @@ run "go1.9.2 download"
 ### Copy files
 run "mkdir -p /site"
 
-def debug?()
-  getenv("DEBUG") == "yes"
-end
-
-def debug!()
-  run "apk add --no-cache bash"
-  debug
-end
-
 def put(file)
   copy "./#{file}", "/site/#{file}"
 end
 
 files = [
-  "blog",
-  "templates",
   "gops.go",
   "hash.go",
   "html.go",
   "main.go",
-  "rice-box.go",
   "rss.go",
-  "run.sh"
+  "run.sh",
+  "templates",
+  "blog",
+  "rice-box.go"
 ]
 
 files.each { |x| put x }

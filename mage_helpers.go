@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"runtime"
 	"strings"
 
 	"github.com/jtolds/qod"
@@ -73,14 +72,4 @@ func goBuild(ctx context.Context, env []string, dir string, pkgname string) {
 
 func goInstall(ctx context.Context, env []string, pkgname string) {
 	shouldWork(ctx, nil, wd, "go", "install", pkgBase+pkgname)
-}
-
-func goBuildPlugin(ctx context.Context, dir, pkgname, fname string) {
-	if runtime.GOOS != "linux" {
-		qod.Printlnf("plugins don't work on non-linux machines yet :(")
-		return
-	}
-
-	shouldWork(ctx, nil, dir, "go", "build", "-v", "-buildmode=plugin", "-o="+fname, pkgBase+pkgname)
-	qod.Printlnf("built %s for %s", fname, runtime.GOOS)
 }
