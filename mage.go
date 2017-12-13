@@ -4,6 +4,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"os"
 
 	"github.com/magefile/mage/mg"
 )
@@ -34,8 +36,37 @@ func Deploy(ctx context.Context) error {
 		shouldWork(ctx, nil, wd, cmd, args...)
 	}
 
-	do("docker", "save", "-o", "cw.tar", "xena/christine.website")
-	do("scp", "cw.tar", "root@apps.xeserv.us:cw.tar")
+	tag, err := gitTag()
+	if err != nil {
+		return err
+	}
+
+	do("docker", "tag", "xena/christine.website", "xena/christine.website:"+tag)
+	do("docker", "push", "xena/christine.website:"+tag)
+
+	const dockerfileTemplate = `FROM xena/christine.website:${VERSION}
+RUN apk add --no-cache bash`
+	data := os.Expand(dockerfileTemplate, func(inp string) string {
+		switch inp {
+		case "VERSION":
+			return tag
+		default:
+			return "<unknown arg " + inp + ">"
+		}
+	})
+
+	os.Remove("Dockerfile")
+	fout, err := os.Create("Dockerfile")
+	if err != nil {
+		return err
+	}
+
+	fmt.Fprintln(fout, Dockerfile)
+	fout.Close()
+
+	do("git", "add", "Dockerfile")
+	do("git", "commit", "-m", "Dockerfile: update for deployment")
+	do("git", "push", "dokku", "master")
 
 	return nil
 }
