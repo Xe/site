@@ -175,7 +175,7 @@ And in the repl:
 
 ```
 >>> increment(50)
-1
+51
 ```
 
 `increment` takes the integer given and increases it by 1, it is the same thing
