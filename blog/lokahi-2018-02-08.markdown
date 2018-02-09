@@ -27,7 +27,7 @@ webhook is sent out.
 
 Interrelation graph:
 
-![interrelation graph of lokahi components, see /static/img/lokahi.dot for the graphviz]("/static/img/lokahi.png")
+<img alt="interrelation graph of lokahi components, see /static/img/lokahi.dot for the graphviz" src="/static/img/lokahi.png" />
 
 ### lokahictl
 
