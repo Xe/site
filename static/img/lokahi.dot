@@ -1,0 +1,14 @@
+digraph G {
+  lokahictl -> lokahid [ label="http+twirp" ]
+
+  lokahid -> nats
+  lokahid -> postgres
+  
+  nats -> webhookworker [ label="webhook.egress" ]
+  webhookworker -> your_stack
+
+  healthworker -> nats [ label="replies" ]
+  nats -> healthworker [ label="check.run" ]
+  healthworker -> postgres
+  healthworker -> your_stack
+}
