@@ -6,21 +6,13 @@ github_issue: https://github.com/Xe/lokahi/issues/15
 
 # Introducing Lokahi
 
-This week at Heroku, there was a hackweek. I decided to tackle a few problems at
-once and this is the result. The two big things I wanted to tackle were building
-a scalable HTTP health checking service and unlocking the "flow" state of 
-consciousness to make developing, understanding and improving this project a lot
-easier.
-
-## lokahi
-
 Lokahi is a http service uptime checking and notification service. Currently
 lokahi does very little. Given a URL and a webhook URL, lokahi runs checks every
 minute on that URL and ensures it's up. If the URL goes down or the health 
 workers have trouble getting to the URL, the service is flagged as down and a
 webhook is sent out.
 
-### Stack
+## Stack
 
 | What      | Role          |
 | :-------- | :------------ |
@@ -31,13 +23,13 @@ webhook is sent out.
 | Nats      | Message queue |
 | Cobra     | CLI           |
 
-### Components
+## Components
 
 Interrelation graph:
 
 ![interrelation graph of lokahi components, see /static/img/lokahi.dot for the graphviz]("/static/img/lokahi.png")
 
-#### lokahictl
+### lokahictl
 
 The command line interface, currently outputs everything in JSON. It currently
 has a few options:
@@ -69,7 +61,7 @@ Use "lokahictl [command] --help" for more information about a command.
 
 Each of these subcommands has help and most of them have additional flags.
 
-#### lokahid
+### lokahid
 
 This is the main API server. It exposes twirp services defined in [`xe.github.lokahi`](https://github.com/Xe/lokahi/blob/master/rpc/lokahi/lokahi.proto)
 and [`xe.github.lokahi.admin`](https://github.com/Xe/lokahi/blob/master/rpc/lokahiadmin/lokahiadmin.proto).
@@ -93,19 +85,19 @@ PORT=9001
 Every minute, lokahid will scan for every check that is set to run minutely and
 run them. Running checks any time but minutely is currently unsupported.
 
-#### healthworker
+### healthworker
 
 healthworker listens on nats queue `check.run` and returns health information
 about that service. 
 
-#### webhookworker
+### webhookworker
 
 webhookworker listens on nats queue `webhook.egress` and sends webhooks based on
 the input it's given.
 
-### Challenges Faced During Development
+## Challenges Faced During Development
 
-#### ORM Issues
+### ORM Issues
 
 Initially, I implemented this using [gorm](https://github.com/jinzhu/gorm) and
 started to run into a lot of problems when using it in anything but small
@@ -117,7 +109,7 @@ I rewrote this to use [`database/sql`](https://godoc.org/database/sql) and
 [`sqlx`](https://godoc.org/github.com/jmoiron/sqlx) and all of the tests passed
 the first time I tried to run this, no joke.
 
-#### Scaling to 50,000 Checks
+### Scaling to 50,000 Checks
 
 This one was actually a lot harder than I thought it would be, and not for the
 reasons I thought it would be. One of the main things that I discovered when
@@ -134,7 +126,7 @@ This service can handle 50,000 HTTP checks in a minute. The only part that gets
 backed up currently is webhook egress, but that is likely fixable with further
 optimization on the HTTP checking and webhook egress paths.
 
-### Basic Usage
+## Basic Usage
 
 To set up an instance of lokahi on a machine with [Docker Compose](https://docs.docker.com/compose/)
 installed, create a docker compose manifest with the following in it:
@@ -222,7 +214,7 @@ services:
 
 Start this with `docker-compose up -d`.
 
-#### Configuration
+### Configuration
 
 Open `~/.lokahictl.hcl` and enter in the following:
 
@@ -232,7 +224,7 @@ server = "http://AzureDiamond:hunter2@127.0.0.1:24253"
 
 Save this and then lokahictl is now configured to work with the local copy of lokahi.
 
-#### Creating a check
+### Creating a check
 
 To create a check against duke reporting to samplehook:
 
@@ -260,7 +252,7 @@ $ docker-compose -f samplehook
   playbook url: https://github.com/Xe/lokahi/wiki/duke-of-york-Playbook
 ```
 
-### Webhooks
+## Webhooks
 
 Webhooks get a HTTP POST of a protobuf-encoded [`xe.github.lokahi.CheckStatus`](https://github.com/Xe/lokahi/blob/13bc98ff0665ab13044f08d51ed2141ca0c38647/rpc/lokahi/lokahi.proto#L83)
 with the following additional HTTP headers:
@@ -280,7 +272,7 @@ receivers.
 JSON webhook support is not currently implemented, but is being tracked at
 [this github issue](https://github.com/Xe/lokahi/issues/4). 
 
-### Call for Contributions
+## Call for Contributions
 
 Lokahi is pretty great as it is, but to be even better lokahi needs a bunch
 of work, experience reports and people willing to contribute to the project.
