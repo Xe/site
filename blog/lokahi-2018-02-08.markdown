@@ -6,7 +6,7 @@ github_issue: https://github.com/Xe/lokahi/issues/15
 
 # Introducing Lokahi
 
-Lokahi is a http service uptime checking and notification service. Currently
+[Lokahi](https://github.com/Xe/lokahi) is a http service uptime checking and notification service. Currently
 lokahi does very little. Given a URL and a webhook URL, lokahi runs checks every
 minute on that URL and ensures it's up. If the URL goes down or the health 
 workers have trouble getting to the URL, the service is flagged as down and a
