@@ -285,7 +285,8 @@ and help us all work together to make the best HTTP uptime service we can.
 
 Social media links for discussion on this article: 
 
-Mastodon:
-Reddit:
-Hacker News:
-Twitter:
+Mastodon: https://mst3k.interlinked.me/@cadey/99494112049682603
+
+Reddit: https://www.reddit.com/r/golang/comments/7wbr4o/introducting_lokahi_http_healthchecking_service/
+
+Hacker News: https://news.ycombinator.com/item?id=16338465
