@@ -1,5 +1,20 @@
 {{ define "title" }}
 <title>{{ .Title }} - Christine Dodrill</title>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@theprincessxena" />
+<meta name="twitter:title" content="{{ .Title }}" />
+<meta name="twitter:description" content="Posted on {{ .Date }}" />
+
+<!-- Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="{{ .Title }}" />
+<meta property="og:site_name" content="Christine Dodrill's Blog" />
+
+<!-- Description -->
+<meta name="description" content="{{ .Title }} - Christine Dodrill's Blog" />
+<meta name="author" content="Christine Dodrill">
 {{ end }}
 
 {{ define "content" }}
