@@ -1,5 +1,5 @@
 ---
-title: FFI-ing Golang from Nim for Fun and Profit
+title: FFI-ing Go from Nim for Fun and Profit
 date: 2015-12-20
 ---
 
