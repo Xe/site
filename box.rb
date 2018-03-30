@@ -1,7 +1,4 @@
-from "xena/go-mini:1.9.4"
-
-### setup go
-run "go1.9.4 download"
+from "xena/go:1.10"
 
 ### Copy files
 run "mkdir -p /site"
@@ -27,7 +24,7 @@ files.each { |x| put x }
 copy "vendor/", "/root/go/src/"
 
 ### Build
-run "cd /site && go1.9.4 build -v"
+run "cd /site && go build -v"
 
 ### Cleanup
 run %q[ rm -rf /root/go /site/backend /root/sdk /site/*.go ]
