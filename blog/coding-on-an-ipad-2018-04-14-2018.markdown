@@ -5,7 +5,7 @@ date: 2018-04-14
 
 # Coding on an iPad
 
-As people find out, I am an avid user of Emacs for a lot of my professional and
+As people notice, I am an avid user of Emacs for most of my professional and
 personal coding. I have things set up such that the center of my development
 environment is a shell (eshell), and most of my interactions are with emacs
 buffers from there. Recently when I purchased my iPad Pro (10.5", 512 GB, LTE,
@@ -14,14 +14,14 @@ such a large group of people who did a lot of their professional work from an
 iPad.
 
 The iPad is a remarkably capable device in its own right, even without the apps
-that let me do things like commit to git or edit text files in git repos. Out
-of the gate, if I did not work in a primarily code-focused industry, I am 
-certain that I could use an iPad for all of my work tasks and I would be more
-than happy with it. With just Notes, iWork and the other built-in apps even,
-you can do literally anything a consumer would want out of a computing device.
+that let me commit to git or edit text files in git repos. Out of the gate, if
+I did not work in a primarily code-focused industry, I am certain that I could
+use an iPad for all of my work tasks and I would be more than happy with it.
+With just Notes, iWork and the other built-in apps even, you can do literally
+anything a consumer would want out of a computing device.
 
-As things get more complicated though, you begin to want to be able to do 
-things like write code from it. My Macbook died recently, and as such I've 
+As projects and commitments get more complicated though, you begin to want to
+be able to write code from it. My Macbook died recently, and as such I've 
 taken the time to try to get to learn how the iPad workflow is a little more
 hands-on (this post is being written from my iPad even).
 
@@ -36,9 +36,9 @@ this iPad:
 I seem to have naturally developed two basic workflows for developing from this
 iPad: my "traditional" way of ssh-ing into a remote server via [Prompt][prompt]
 and then using emacs inside tmux and the local way of using [Texastic][texastic]
-for editing text and then [Working Copy][workingcopy] to interact with Git 
-along with [Workflow][workflow] and some custom JSON HTTP services to allow me
-to hack things together as needed.
+for editing text, [Working Copy][workingcopy] to interact with Git, and [Workflow][workflow]
+and some custom JSON HTTP services to allow me to hack things together as
+needed.
 
 ## The Traditional Way
 
@@ -64,13 +64,13 @@ the LTE.
 
 ## iPad-local Development
 
-This surprised me just about as much as this header is surpsing you to read it.
-Apple has done a phenomenal job at setting up a secure device. It is hard to 
-run arbitrary unsigned code on it.
+Of all of the things to say going into owning an iPad, I never thought I'd say
+that I like the experience of developing from it locally. Apple has done a 
+phenomenal job at setting up a secure device. It is hard to run arbitrary 
+unsigned code on it.
 
 However, development is more than just running the code, development is also
-writing the code. For writing the code, I've been loving Texastic and Working
-Copy:
+_writing_ it. For writing the code, I've been loving Texastic and Working Copy:
 
 ![](https://i.imgur.com/5RVt52w.png)
 
@@ -88,10 +88,10 @@ Copy. Then I commit when I'm done and push the code away.
 This is almost precisely my existing workflow with the shell, just with 
 Working Copy and Texastic instead.
 
-There are downsides to this though. The inability to test your code as
-effortlessly as it is to write it quickly becomes frustrating unless you have
-CI set up and people don't care about a larger commit history (or if you rebase
-changes onto master when merging). There is no code completion, gofmt or 
+There are downsides to this though. Not being able to test your code locally
+means you need to commit frequently. This can lead to cluttered commit graphs
+which some people will complain about. Rebasing your commits before merging
+branches is a viable workaround however. There is no code completion, gofmt or 
 goimports. There doesn't seem to be any advanced manipulation or linting tools
 available for Texastic either. I understand that there are fundamental 
 limitations involved when developing these kinds of mobile apps, but I wish 
@@ -103,23 +103,26 @@ really had the time to fully grok it yet. So far I have some glue that lets me
 do things like share URL's/articles to a Discord chatroom via a webhook (the
 iPad Discord client causes an amazing amount of battery life reduction for me),
 find the currently playing song on Apple Music on Youtube, copy an article into
-my Notes, turn the currently active thing into a PDF and some more that I've
+my Notes, turn the currently active thing into a PDF, and some more that I've
 been picking up and tinkering with as things go on.
 
 There are some limitations in Workflow as far as I've seen. I don't seem to be
-able to log arbitrary health events like mindfulness meditation into Workflow.
-I was kinda hoping that Workflow would let me do that, I've been wanting to log
-my mindfulness time with the Health app, but I can't find an app that acts as a
-dumb timer without an account for web synching. I'd love to have a few quick
-action workflows for doing things like logging 10 minutes of anapana, metta or
-a half hour of more focused work.
+able to log arbitrary health events like mindfulness meditation via Workflow as
+the Health app doesn't seem to let you do that directly. I was kinda hoping 
+that Workflow would let me do that. I've been wanting to log my mindfulness 
+time with the Health app, but I can't find an app that acts as a dumb timer
+without an account for web syncing. I'd love to have a few quick action 
+workflows for logging 10 minutes of anapana, metta or a half hour of more
+focused work.
 
 ## Conclusion
 
 The iPad is a fantastic developer box given its limitations. If you just want
-to get the code or blogpost out, this device will help you focus into the task
-at hand (literally) and just hammer out the functionality. You just need to get
-the idea and then you just act on it.
+to get the code or blogpost out of your head and into the computer, this device
+will help you focus into the task at hand so you can just hammer out the 
+functionality. You just need to get the idea and then you just act on it.
+There's just fundamentally fewer distractions when you are actively working
+with it.
 
 You just do thing and it does thing.
 
