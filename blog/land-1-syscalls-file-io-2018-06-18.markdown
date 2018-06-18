@@ -5,7 +5,7 @@ date: 2018-06-18
 
 # Land 1: Syscalls & File I/O
 
-[Webassembly][wasm] is a new technology aimed at being a vendor-independent virtual machine format. It has implementations by all major browser vendors. It looks like there's staying power in webassembly that could outlast staying power in other new technologies. 
+[Webassembly][wasm] is a new technology aimed at being a vendor-independent virtual machine format. It has implementations by all major browser vendors. It looks like there's staying power in webassembly that could outlast staying power in other new technologies.
 
 So, time's perfect to snipe it with something useful that you can target compilers to today. Hence: [Land][land].
 
@@ -37,7 +37,7 @@ type Process struct {
 }
 ```
 
-Creating a new process is done in the NewProcess function: 
+Creating a new process is done in the NewProcess function:
 
 ```
 // NewProcess constructs a new webassembly process based on the input webassembly module as a reader.
@@ -66,7 +66,7 @@ func NewProcess(fin io.Reader, name string) (*Process, error) {
 }
 ```
 
-The webassembly importer makes a [little shim module for importing host functions][importer] (not inlined due to size). 
+The webassembly importer makes a [little shim module for importing host functions][importer] (not inlined due to size).
 
 Memory operations are implemented on top of each WebAssembly process. The two most basic ones are `writeMem` and `readMem`:
 
@@ -124,7 +124,7 @@ func (p *Process) open(fnamesP int32, flags int32) int32 {
 			fi, err = p.fs.Create(str)
 		}
 	}
-    
+
 	if err != nil {
 		panic(err)
 	}
@@ -257,16 +257,16 @@ These calls are enough to make surprisingly nontrivial programs, considering sta
 
 This can be verified outside of the WebAssembly environment, I tested mine with the [pretty package][pretty].
 
-Right now this is very lean and mean, as such all errors instantly result in a panic which will kill the WebAssembly VM. I would like to fix this but I will need to make sure that programs don't use certain bits of memory where Land will communicate with the WebAssembly module. Other good steps are going to be setting up reserved areas of memory for things like error messages, [posix errno][errno] and other superglobals. 
+Right now this is very lean and mean, as such all errors instantly result in a panic which will kill the WebAssembly VM. I would like to fix this but I will need to make sure that programs don't use certain bits of memory where Land will communicate with the WebAssembly module. Other good steps are going to be setting up reserved areas of memory for things like error messages, [posix errno][errno] and other superglobals.
 
-A huge other feature is going to be the ability to read C structures out of the WebAssembly memory, this will let Land support calls like `stat()`. 
+A huge other feature is going to be the ability to read C structures out of the WebAssembly memory, this will let Land support calls like `stat()`.
 
-wasm: https://webassembly.org
-land: https://git.xeserv.us/xena/land
-syscall: https://en.wikipedia.org/wiki/System_call
-abi: https://en.m.wikipedia.org/wiki/Application_binary_interface
-afero: https://github.com/spf13/afero
-importer: https://gist.github.com/Xe/a29c86755a04a8096082ec8a32e0c13f
-open2: https://linux.die.net/man/2/open
-pretty: https://github.com/kr/pretty
-errno: http://man7.org/linux/man-pages/man3/errno.3.html
+[wasm]: https://webassembly.org
+[land]: https://git.xeserv.us/xena/land
+[syscall]: https://en.wikipedia.org/wiki/System_call
+[abi]: https://en.m.wikipedia.org/wiki/Application_binary_interface
+[afero]: https://github.com/spf13/afero
+[importer]: https://gist.github.com/Xe/a29c86755a04a8096082ec8a32e0c13f
+[open2]: https://linux.die.net/man/2/open
+[pretty]: https://github.com/kr/pretty
+[errno]: http://man7.org/linux/man-pages/man3/errno.3.html
