@@ -18,7 +18,7 @@ int read(int file, char *ptr, int len);
 int write(int file, char *ptr, int len);
 ```
 
-These are all fairly low-level file I/O operations (we're not dealing with structures for now, those are for another day) that all also are (simplified forms of) system calls (TODO: link to linux system call reference).
+These are all fairly low-level file I/O operations (we're not dealing with structures for now, those are for another day) that all also are (simplified forms of) system calls [like the ones the kernel uses][linux-syscalls].
 
 Effectively, the system calls of a program form the "API" with it and the rest of the computer. Commonly this is called the [ABI (Applcation Binary Interface)][abi] and is usually platform-specific. With Land, we are effectively creating a platform-independent ABI that just so happens to target Webassembly.
 
@@ -264,6 +264,7 @@ A huge other feature is going to be the ability to read C structures out of the 
 [wasm]: https://webassembly.org
 [land]: https://git.xeserv.us/xena/land
 [syscall]: https://en.wikipedia.org/wiki/System_call
+[linux-syscalls]: https://syscalls.kernelgrok.com
 [abi]: https://en.m.wikipedia.org/wiki/Application_binary_interface
 [afero]: https://github.com/spf13/afero
 [importer]: https://gist.github.com/Xe/a29c86755a04a8096082ec8a32e0c13f
