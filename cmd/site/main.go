@@ -12,7 +12,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/GeertJohan/go.rice"
 	"github.com/Xe/jsonfeed"
 	"github.com/Xe/ln"
 	"github.com/gorilla/feeds"
@@ -135,17 +134,12 @@ func Build() (*Site, error) {
 
 	sort.Sort(sort.Reverse(s.Posts))
 
-	cb, err := rice.FindBox("css")
+	resumeData, err := ioutil.ReadFile("./static/resume/resume.md")
 	if err != nil {
 		return nil, err
 	}
 
-	sb, err := rice.FindBox("static")
-	if err != nil {
-		return nil, err
-	}
-
-	s.Resume = template.HTML(blackfriday.Run(sb.MustBytes("resume/resume.md")))
+	s.Resume = template.HTML(blackfriday.Run(resumeData))
 
 	for _, item := range s.Posts {
 		itime, _ := time.Parse("2006-01-02", item.Date)
@@ -174,8 +168,8 @@ func Build() (*Site, error) {
 	s.mux.HandleFunc("/blog.atom", s.createAtom)
 	s.mux.HandleFunc("/blog.json", s.createJsonFeed)
 	s.mux.HandleFunc("/blog/", s.showPost)
-	s.mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(sb.HTTPBox())))
-	s.mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(cb.HTTPBox())))
+	s.mux.Handle("/css/", http.FileServer(http.Dir(".")))
+	s.mux.Handle("/static/", http.FileServer(http.Dir(".")))
 
 	return s, nil
 }
