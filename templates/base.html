@@ -1,8 +1,10 @@
+<!DOCTYPE html>
 <html>
     <head>
         {{ template "title" . }}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/css/hack.css" />
-        <link rel="stylesheet" href="/css/solarized-dark.css" />
+        <link rel="stylesheet" href="/css/gruvbox-dark.css" />
 
         <link rel="alternate" type="application/rss+xml" href="https://christine.website/blog.rss" />
         <link rel="alternate" type="application/atom+xml" href="https://christine.website/blog.atom" />
@@ -49,7 +51,7 @@
         </style>
         {{ template "styles" . }}
     </head>
-    <body class="hack solarized-dark">
+    <body class="hack gruvbox-dark">
         {{ template "scripts" . }}
         <div class="container">
             <header>
