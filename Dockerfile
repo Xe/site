@@ -6,7 +6,7 @@ FROM xena/alpine
 EXPOSE 5000
 RUN apk add --no-cache bash
 COPY --from=build /root/site /site/site
-COPY ./static2 /site/static
+COPY ./static /site/static
 COPY ./templates /site/templates
 COPY ./blog /site/blog
 COPY ./css /site/css
