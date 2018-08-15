@@ -1,5 +1,5 @@
 ---
-title: When Then Zen: Anapana
+title: "When Then Zen: Anapana"
 date: 2018-08-15
 for: those in need
 ---
