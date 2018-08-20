@@ -3,4 +3,4 @@
 set -e
 set -x
 
-git remote add dokku dooku@minipaas.xeserv.us:christine
+git remote add dokku dokku@minipaas.xeserv.us:christine
