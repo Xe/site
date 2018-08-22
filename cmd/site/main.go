@@ -60,7 +60,7 @@ func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if s.segment != nil {
 		if !strings.HasPrefix(r.RequestURI, "/blog/") {
 			err := s.segment.Enqueue(analytics.Track{
-				UserId:     Hash(r.RemoteAddr, r.Header.Get("X-Forwarded-For")),
+				UserId:     Hash("h", r.Header.Get("X-Forwarded-For")),
 				Event:      "Page Viewed",
 				Properties: analytics.NewProperties().SetURL(r.RequestURI),
 			})
