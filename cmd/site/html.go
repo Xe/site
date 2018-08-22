@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Xe/ln"
+	analytics "gopkg.in/segmentio/analytics-go.v3"
 )
 
 func logTemplateTime(name string, from time.Time) {
@@ -70,4 +71,12 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	s.renderTemplatePage("blogpost.html", p).ServeHTTP(w, r)
+
+	if s.segment != nil {
+		s.segment.Enqueue(&analytics.Track{
+			UserId:     Hash(r.RemoteAddr, r.Header.Get("X-Forwarded-For")),
+			Event:      "Post Viewed",
+			Properties: analytics.NewProperties().SetURL(r.RequestURI).SetTitle(p.Title),
+		})
+	}
 }

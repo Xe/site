@@ -1,0 +1,30 @@
+# github.com/Xe/gopreload v0.0.0-20170326043426-a00a8beb369c
+github.com/Xe/gopreload
+# github.com/Xe/jsonfeed v0.0.0-20170520170432-e21591505612
+github.com/Xe/jsonfeed
+# github.com/Xe/ln v0.0.0-20170921000907-466e05b2ef3e
+github.com/Xe/ln
+# github.com/google/gops v0.3.2
+github.com/google/gops/agent
+github.com/google/gops/internal
+github.com/google/gops/signal
+# github.com/gorilla/feeds v1.0.0
+github.com/gorilla/feeds
+# github.com/kardianos/osext v0.0.0-20170510131534-ae77be60afb1
+github.com/kardianos/osext
+# github.com/pkg/errors v0.8.0
+github.com/pkg/errors
+# github.com/russross/blackfriday v0.0.0-20170806171014-cadec560ec52
+github.com/russross/blackfriday
+# github.com/segmentio/backo-go v0.0.0-20160424052352-204274ad699c
+github.com/segmentio/backo-go
+# github.com/shurcooL/sanitized_anchor_name v0.0.0-20170918181015-86672fcb3f95
+github.com/shurcooL/sanitized_anchor_name
+# github.com/tj/front v0.0.0-20170212063142-739be213b0a1
+github.com/tj/front
+# github.com/xtgo/uuid v0.0.0-20140804021211-a0b114877d4c
+github.com/xtgo/uuid
+# gopkg.in/segmentio/analytics-go.v3 v3.0.0-20180814014620-14e03163be03
+gopkg.in/segmentio/analytics-go.v3
+# gopkg.in/yaml.v1 v1.0.0-20140924161607-9f9df34309c0
+gopkg.in/yaml.v1
