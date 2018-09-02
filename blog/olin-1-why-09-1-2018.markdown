@@ -5,7 +5,7 @@ date: 2018-09-01
 
 # [Olin][olin]: 1: Why
 
-[Olin][olin] is an attempt at defining a radically new primitive to make it 
+[Olin][olin] is an attempt at defining a radically new operating primitive to make it 
 easier to reason about, deploy and operate event-driven services that are
 independent of the OS or CPU of the computer they are running on. It will have 
 components that take care of the message queue offsetting, retry logic, 
@@ -26,11 +26,13 @@ message UserLoginEvent {
 }
 ```
 
-and when matching data is written to the queue for the event type `example.UserLoginEvent`,
+When matching data is written to the queue for the event type `example.UserLoginEvent`,
 all of the handlers registered to that data type will run with serialized protocol
 buffer bytes as its standard input. If the handlers return a nonzero exit status,
 they are retried up to three times, exponentially backing off.
 Handlers need to deal with the fact they can be run out of order.
+
+Consider an Olin handler equivalent to a Unix process. 
 
 ## Background
 
@@ -79,6 +81,17 @@ random readers, everything is done via filesystem system calls.
 Consider this the first draft of Dagger, everything here is subject to change.
 This is going to be the experimental phase.
 
+Consider Dagger at the level _below_ libc in most Linux environements. Dagger
+is the kind of API that libc would be implemented on top of.
+
+### VM
+
+Dagger processes will use [WebAssembly][wasm] as a platform-independent virtual
+machine format. WebAssembly is used here due to the large number of 
+implemetnations and compilers targeting it for the use in web programming. We can
+also benefit from the amazing work that has gone into the use of WebAssembly in
+front-end browser programming without having to need a browser!
+
 ### Base Environment
 
 When a dagger process is opened, the following files are open:
@@ -86,9 +99,6 @@ When a dagger process is opened, the following files are open:
 - 0: standard input: the semantic "input" of the program.
 - 1: standard output: the standard output of the program.
 - 2: standard error: error output for the program.
-
-Any memory address above byte 4096 is free for implementing applications to use.
-Memory addresses below byte 4096 are reserved for future internal-only use.
 
 ### File Handlers
 
@@ -110,6 +120,10 @@ I'd like to add the following handlers in the future:
 - rand - cryptographically secure random data good for use in crypto keys `rand://`
 - time - unix timestamp in a little-endian encoded int64 on every read() - `time://utc`
 
+In the future, users should be able to define arbitrary other protocol handlers
+with custom webassembly modules. More information about this feature will be
+posted if we choose to do this.
+
 ### Handler Function
 
 Each Dagger module can only handle one data type. This is intentional. This 
@@ -128,9 +142,11 @@ In clang in C mode, you could define the entrypoint for a handler module like th
 ```c
 // handle_nothing.c
 
+#include <dagger.h>
+
 __attribute__ ((visibility ("default")))
 int handle() {
-  // read all of standard input to memory and handle it
+  // read standard input as necessary and handle it
   return 0; // success
 }
 ```
@@ -138,11 +154,14 @@ int handle() {
 ### System Calls
 
 A [system call][syscall] is how computer programs interface with the outside
-world. When a dagger program makes a system call, the amount of time the program
+world. When a Dagger program makes a system call, the amount of time the program
 spends waiting for that system call is collected and recorded based on what
 underlying resource took care of the call. This means, in theory, users of olin
 could alert on HTTP requests from one service to another taking longer amounts
 of time very trivially.
+
+Future mechanisms will allow for introspection and checking the status of 
+handlers, as well as arbitrarily killing handlers that get stuck in a weird way.
 
 Dagger uses the following system calls:
 
@@ -265,3 +284,4 @@ a very long-term project that radically redesigns how software should be written
 [olin]: https://github.com/Xe/olin
 [goslack]: https://invite.slack.golangbridge.org
 [wasmgo]: https://github.com/Xe/olin/tree/master/internal/abi/wasmgo
+[wasm]: https://webassembly.org
