@@ -30,7 +30,10 @@ When matching data is written to the queue for the event type `example.UserLogin
 all of the handlers registered to that data type will run with serialized protocol
 buffer bytes as its standard input. If the handlers return a nonzero exit status,
 they are retried up to three times, exponentially backing off.
-Handlers need to deal with the fact they can be run out of order.
+Handlers need to deal with the fact they can be run out of order, and that multiple
+instances of them will can be running on physcially different servers in parallel.
+If a handler starts doing something and fails, it should back out any previously
+changed values using transactions or equivalent.
 
 Consider an Olin handler equivalent to a Unix process. 
 
@@ -88,7 +91,7 @@ is the kind of API that libc would be implemented on top of.
 
 Dagger processes will use [WebAssembly][wasm] as a platform-independent virtual
 machine format. WebAssembly is used here due to the large number of 
-implemetnations and compilers targeting it for the use in web programming. We can
+implementations and compilers targeting it for the use in web programming. We can
 also benefit from the amazing work that has gone into the use of WebAssembly in
 front-end browser programming without having to need a browser!
 
