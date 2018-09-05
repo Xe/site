@@ -85,7 +85,7 @@ extern int64 close(int64 handle);
 // invoke calls the given method with an input and output structure. This allows
 // the protocol buffer generators to more easily build the world for us.
 // 
-// The resulting int64 value is zero if everything suceeded, otherwise it is the
+// The resulting int64 value is zero if everything succeeded, otherwise it is the
 // error code (if any) times negative 1.
 //
 // The in and out pointers must be to a C-like representation of the protocol
@@ -96,13 +96,13 @@ extern int64 invoke(int64 handle, int64 method, void* in, void* out);
 ```
 
 (Yes, I know I made a lot of fuss about not just blindly following the design
-desicions of the past and then just suggested returning a negative value from a
+decisions of the past and then just suggested returning a negative value from a
 function to indicate the presence of an error. I just don't know of a better and
 more portable mechanism for errors yet. If you have one, please suggest it to me.)
 
 You may have noticed that the `invoke` function takes void pointers. This is
 intentional. This will require additional code generation on the server side to
-support copying the values out of webassembly memory. This may serve to be 
+support copying the values out of WebAssembly memory. This may serve to be 
 completely problematic, but I bet we can at least get Rust working with this.
 
 Using these basic primitives, we can actually model way more than you think would
@@ -133,7 +133,7 @@ service Writer {
 message Nil {}
 
 // LogMessage is an individual log message. This will get added to as it gets
-// propaged up through the layers of the program and out into the world, but 
+// propagated up through the layers of the program and out into the world, but 
 // those don't matter right now.
 message LogMessage {
   bytes message = 1;
@@ -173,9 +173,9 @@ own custom interfaces. This actually gives us the chance to make this a primitiv
 
 Some problems that probably are going to come up pretty quickly is that every
 language under the sun has their own idea of how to arrange memory. This may make
-directly scraping the values out of ram unviable in the future. 
+directly scraping the values out of ram inviable in the future. 
 
-If reading values out of memory does become unviable, I suggest the following
+If reading values out of memory does become inviable, I suggest the following
 changes:
 
 ```c
