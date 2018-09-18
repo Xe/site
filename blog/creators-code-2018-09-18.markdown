@@ -22,7 +22,7 @@ Valor, or the courage to speak up against things that are out of alignment with
 the whole. Forgiveness, because people change and it is not fair to let their
 past experiences sour things too much. Understanding is the key to our groups, 
 the knowledge of how complicated systems interact and how to explain it to people
-less familiar with them. Compassion for others hardships, even the ones we cannot
+less familiar with them. Compassion for others' hardships, even the ones we cannot
 as easily comprehend.
 
 I am basing this not on any world religion, but on a core I feel is condicuve to
@@ -33,8 +33,8 @@ source communities. I am not comfortable with more access to patterns of numbers
 being used as a means of leverage by people who otherwise have no stake in the
 project.
 If this adds any factor to my argument, I personally am transgender. I normally
-don't mention it because for the 99% of real-world cases (including my doctor)
-it is not relevant. It is mostly relevant when dealing with my doctor.
+don't mention it because for the 99% of real-world cases it is not relevant. 
+It is mostly relevant when dealing with my doctor.
 
 In meditation, it is often useful to lead a session with a statement of 
 intention. This statement helps set the tone for the session and can sometimes
