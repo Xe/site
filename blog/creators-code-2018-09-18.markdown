@@ -7,7 +7,7 @@ date: 2018-09-17
 # [Creator's Code](https://github.com/Xe/creators-code)
 
 I feel there is a large problem in the industry I have found myself in. There is,
-unfortunately, a need for these kinds of documents to help arrange and align
+unfortunately, a need for codes of behavioral conduct to help arrange and align
 collaboration across so many cultural and ideological barriers, as well as
 technological and understanding-based barriers. There are so many barriers that
 it becomes difficult for people from different backgrounds to get integrated into
