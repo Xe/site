@@ -41,7 +41,10 @@ intention. This statement helps set the tone for the session and can sometimes
 help as a guide to go back to when you feel you have gone astray. I want the
 [Creator's Code][cc] to be such a statement of intention. I want it to focus the 
 creations and using them to enrich their creators as well as others who just
-happen to read its code.
+happen to read its code, not to mention the end users and their users who don't
+even know or care about our role in their life. Our creations serve them too.
+
+We create things that let people create things for other people to enjoy.
 
 I hope this code of conduct helps to serve as a minimalist alternative to others.
 I do not want anyone to push this onto anyone. Making a decision to use a code
