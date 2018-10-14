@@ -30,9 +30,7 @@ sina wile jo tawa ala pi tenpo ni la sina wile tawa ni:
 sina lukin e ijo mute la sina lukin wawa e nena insa.
 
 sina ken tawa ijo mute la sina kepeken tawa ala pi tenpo ni e sina.
-
 sina jo e ni la sina jo lukin wawa pona.
-
 sina jo lukin wawa mute en tawa ala pi tenpo ni ale li pali pona e ilo suli.
 
 ---
