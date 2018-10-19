@@ -1,7 +1,8 @@
-FROM xena/go:1.11 AS build
-COPY . /root/go/src/github.com/Xe/site
-WORKDIR /root/go/src/github.com/Xe/site
-RUN GO111MODULE=on CGO_ENABLED=0 GOBIN=/root go install -v -mod=vendor ./cmd/site
+FROM xena/go:1.11.1 AS build
+ENV GOPROXY https://cache.greedo.xeserv.us
+COPY . /site
+WORKDIR /site
+RUN CGO_ENABLED=0 GOBIN=/root go install -v ./cmd/site
 
 FROM xena/alpine
 EXPOSE 5000
