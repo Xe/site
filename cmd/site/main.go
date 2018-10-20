@@ -17,7 +17,7 @@ import (
 	"github.com/gorilla/feeds"
 	blackfriday "github.com/russross/blackfriday"
 	"github.com/tj/front"
-	"gopkg.in/segmentio/analytics-go.v3"
+	analytics "gopkg.in/segmentio/analytics-go.v3"
 )
 
 var port = os.Getenv("PORT")
@@ -191,6 +191,9 @@ func Build() (*Site, error) {
 	s.mux.HandleFunc("/blog/", s.showPost)
 	s.mux.Handle("/css/", http.FileServer(http.Dir(".")))
 	s.mux.Handle("/static/", http.FileServer(http.Dir(".")))
+	s.mux.HandleFunc("/sw.js", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./static/js/sw.js")
+	})
 
 	return s, nil
 }
