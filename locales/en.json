@@ -1,0 +1,43 @@
+{
+    "header": {
+        "name": "Christine Dodrill",
+        "blog": "Blog",
+        "contact": "Contact",
+        "resume": "Resume"
+    },
+    "meta": {
+        "copyright": "Copyright %s Christine Dodrill. Any and all opinions listed here are my own, not my employer's.",
+        "rss_copyright": "This work is copyright Christine Dodrill. My viewpoints are my own and not the view of any employer past, current or future.",
+        "json_feed": "This is a JSON feed of my blogposts. For more information, read: https://jsonfeed.org/version/1"
+    },
+    "index": {
+        "contact_me": "Contact Me",
+        "title": "Web and Backend Services Devops Specialist",
+        "skills": "Skills",
+        "highlighted_projects": "Highlighted Projects"
+    },
+    "blog": {
+        "index_title": "Blogposts",
+        "blogroll": "Other Blogs I Find Interesting",
+        "description": "My blog posts and rants about various technology things.",
+        "title": "Christine Dodrill's Blog",
+        "posted_on": "Posted on %s",
+        "read_this": "Read Post",
+        "disclaimer": "Content posted on %s, opinions and preferences of the author may have changed since then."
+    },
+    "contact": {
+        "header": "Contact Information",
+        "email": "Email",
+        "social_media": "Social Media",
+        "other_info": "Other Information",
+        "donations": "To send me donations, my bitcoin address is: ",
+        "irc_comment": "I am on many IRC networks. On Freenode I am using the nick Xe but elsewhere I will use the nick Xena or Cadey."
+    },
+    "error": {
+        "title": "Error",
+        "post_not_found": "no such post found: %s"
+    },
+    "resume": {
+        "plaintext": "Plain-text version of this resume here"
+    }
+}

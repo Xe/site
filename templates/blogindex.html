@@ -1,5 +1,5 @@
 {{ define "title" }}
-<title>Blog - Christine Dodrill</title>
+<title>{{ trans "header" "blog" }} - {{ trans "header" "name" }}</title>
 
 <style>
 .blogpost-card {
@@ -9,14 +9,14 @@
 {{ end }}
 
 {{ define "content" }}
-<h1>Blogposts</h1>
+<h1>{{ trans "blog" "index_title" }}</h1>
 
 <div class="grid">
     {{ range . }}
     <div class="card cell -4of12 blogpost-card">
         <header class="card-header">{{ .Title }}</header>
         <div class="card-content">
-            <p>Posted on {{ .Date }} <br> <a href="{{ .Link }}">Read Post</a></p>
+            <p>{{ trans "blog" "posted_on" .Date }} <br> <a href="{{ .Link }}">{{ trans "blog" "read_this" }}</a></p>
         </div>
     </div>
     {{ end }}
@@ -24,7 +24,7 @@
 
 <br />
 
-<h2>Other Blogs I Find Interesting</h2>
+<h2>{{ trans "blog" "blogroll" }}</h2>
 
 <ul>
     <li><a href="https://write.as/excerpts/">Excerpts</a></li>

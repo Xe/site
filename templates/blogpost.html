@@ -1,5 +1,5 @@
 {{ define "title" }}
-<title>{{ .Title }} - Christine Dodrill</title>
+<title>{{ .Title }} - {{ trans "header" "name" }}</title>
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary" />
@@ -10,11 +10,11 @@
 <!-- Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:title" content="{{ .Title }}" />
-<meta property="og:site_name" content="Christine Dodrill's Blog" />
+<meta property="og:site_name" content="{{ trans "blog" "title" }}" />
 
 <!-- Description -->
-<meta name="description" content="{{ .Title }} - Christine Dodrill's Blog" />
-<meta name="author" content="Christine Dodrill">
+<meta name="description" content="{{ .Title }} - {{ trans "blog" "title" }}" />
+<meta name="author" content="{{ trans "header" "name" }}">
 {{ end }}
 
 {{ define "content" }}
@@ -22,5 +22,5 @@
 
 <hr />
 
-<i>Content posted on {{ .Date }}, opinions and preferences of the author may have changed since then.</i>
+<i>{{ trans "blog" "disclaimer" .Date }}</i>
 {{ end }}

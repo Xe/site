@@ -1,29 +1,36 @@
-{{ define "title" }}<title>Christine Dodrill</title>{{ end }}
+{{ define "title" }}<title>{{ trans "header" "name" }}</title>{{ end }}
 
 {{ define "content" }}
 <div class="grid">
     <div class="cell -3of12 content">
         <img src="/static/img/avatar.png">
         <br />
-        <a href="/contact" class="justify-content-center">Contact Me</a>
+        <a href="/contact" class="justify-content-center">{{ trans "index" "contact_me" }}</a>
     </div>
     <div class="cell -9of12 content">
-        <h1>Christine Dodrill</h1>
-        <h4>Web and Backend Services Devops Specialist</h4>
-        <h5>Skills</h5>
+        <h1>{{ trans "header" "name" }}</h1>
+        <h4>{{ trans "index" "title" }}</h4>
+        <h5>{{ trans "index" "skills" }}</h5>
         <ul>
             <li>Go, Lua, Nim, Haskell, C, Python (3.x) and other languages</li>
             <li>Docker (deployment, development & more)</li>
             <li>Mashups of data</li>
             <li>Package maintainer for Alpine Linux</li>
+            <li>Speaks English, toki pona, and la .lojban.</li>
         </ul>
 
-        <h5>Highlighted Projects</h5>
+        <h5>{{ trans "index" "highlighted_projects" }}</h5>
         <ul>
             <li><a href="https://github.com/Xe/PonyAPI">PonyAPI</a> - My Little Pony: Friendship is Magic Episode information API</li>
             <li><a href="https://github.com/PonyvilleFM/aura">Aura</a> - PonyvilleFM live DJ recording bot</li>
             <li><a href="https://github.com/Elemental-IRCd/elemental-ircd">Elemental-IRCd</a> - IRC Server Software</li>
             <li><a href="https://github.com/Xe/site">This website</a> - The backend and templates for this website</li>
+            <li><a href="https://github.com/Xe/olin">Olin</a> - WebAssembly on the server</li>
+            <li><a href="https://github.com/Xe/aports">aports</a> - Alpine Linux ports</li>
+            <li><a href="https://github.com/Xe/when-then-zen">when-then-zen</a> - Meditation instructions in Gherkin</li>
+            <li><a href="https://github.com/Xe/creators-code">Creator's Code</a> - Minimal code of conduct for communities</li>
+            <li><a href="https://github.com/Xe/printerfacts">printerfacts</a> - Informative facts about printers</li>
+            <li><a href="https://github.com/Xe/x">x</a> - Experiments and toys</li>
         </ul>
     </div>
 </div>

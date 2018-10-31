@@ -19,29 +19,39 @@ func logTemplateTime(name string, from time.Time) {
 func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer logTemplateTime(templateFname, time.Now())
-		s.tlock.RLock()
-		defer s.tlock.RUnlock()
 
-		var t *template.Template
-		var err error
-
-		if s.templates[templateFname] == nil {
-			t, err = template.ParseFiles("templates/base.html", "templates/"+templateFname)
+		getTranslation := func(group, key string, vals ...interface{}) string {
+			var lc locale
+			var ok bool
+			locale, err := GetPreferredLocale(r)
 			if err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
-				ln.Error(context.Background(), err, ln.F{"action": "renderTemplatePage", "page": templateFname})
-				fmt.Fprintf(w, "error: %v", err)
+				ln.Error(r.Context(), err)
+				lc = s.t.locales["en"]
+				goto overwith
 			}
 
-			ln.Log(context.Background(), ln.F{"action": "loaded_new_template", "fname": templateFname})
+			lc, ok = s.t.Get(locale.Lang)
+			if !ok {
+				ln.Log(r.Context(), ln.F{"msg": "unknown language requested", "lang": locale.Lang, "header": r.Header.Get("Accept-Language")})
+				lc = s.t.locales["en"]
+				goto overwith
+			}
 
-			s.tlock.RUnlock()
-			s.tlock.Lock()
-			s.templates[templateFname] = t
-			s.tlock.Unlock()
-			s.tlock.RLock()
-		} else {
-			t = s.templates[templateFname]
+		overwith:
+			return lc.Value(group, key, vals...)
+		}
+		funcMap := template.FuncMap{
+			"trans": getTranslation,
+		}
+
+		var t *template.Template = template.New(templateFname).Funcs(funcMap)
+		var err error
+
+		t, err = t.ParseFiles("templates/base.html", "templates/"+templateFname)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			ln.Error(context.Background(), err, ln.F{"action": "renderTemplatePage", "page": templateFname})
+			fmt.Fprintf(w, "error: %v", err)
 		}
 
 		err = t.Execute(w, data)

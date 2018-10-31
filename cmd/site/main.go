@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/Xe/jsonfeed"
@@ -46,10 +45,8 @@ type Site struct {
 
 	mux *http.ServeMux
 
-	templates map[string]*template.Template
-	tlock     sync.RWMutex
-
 	segment analytics.Client
+	t       *translations
 }
 
 func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -78,31 +75,49 @@ func Build() (*Site, error) {
 		Date  string
 	}
 
+	t := &translations{
+		locales: map[string]locale{},
+	}
+
+	for _, lang := range []string{"en", "tp"} {
+		fin, err := os.Open(filepath.Join("locales", lang+".json"))
+		if err != nil {
+			return nil, err
+		}
+		defer fin.Close()
+
+		err = t.LoadLocale(lang, fin)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	l := t.locales["en"]
+
 	s := &Site{
 		rssFeed: &feeds.Feed{
-			Title:       "Christine Dodrill's Blog",
+			Title:       l.Value("blog", "title"),
 			Link:        &feeds.Link{Href: "https://christine.website/blog"},
-			Description: "My blog posts and rants about various technology things.",
+			Description: l.Value("blog", "description"),
 			Author:      &feeds.Author{Name: "Christine Dodrill", Email: "me@christine.website"},
 			Created:     bootTime,
-			Copyright:   "This work is copyright Christine Dodrill. My viewpoints are my own and not the view of any employer past, current or future.",
+			Copyright:   l.Value("meta", "rss_copyright"),
 		},
 		jsonFeed: &jsonfeed.Feed{
 			Version:     jsonfeed.CurrentVersion,
-			Title:       "Christine Dodrill's Blog",
+			Title:       l.Value("blog", "title"),
 			HomePageURL: "https://christine.website",
 			FeedURL:     "https://christine.website/blog.json",
-			Description: "My blog posts and rants about various technology things.",
-			UserComment: "This is a JSON feed of my blogposts. For more information read: https://jsonfeed.org/version/1",
+			Description: l.Value("blog", "description"),
+			UserComment: l.Value("meta", "json_feed"),
 			Icon:        icon,
 			Favicon:     icon,
 			Author: jsonfeed.Author{
-				Name:   "Christine Dodrill",
+				Name:   l.Value("header", "name"),
 				Avatar: icon,
 			},
 		},
-		mux:       http.NewServeMux(),
-		templates: map[string]*template.Template{},
+		mux: http.NewServeMux(),
 	}
 
 	if wk := os.Getenv("SEGMENT_WRITE_KEY"); wk != "" {
