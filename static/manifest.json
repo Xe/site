@@ -1,0 +1,17 @@
+{
+    "name": "Christine Dodrill",
+    "short_name": "Christine",
+    "theme_color": "#ffcbe4",
+    "background_color": "#fa99ca",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "https://christine.website/",
+    "description": "Blog and Resume for Christine Dodrill",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "https://christine.website/static/img/avatar.png",
+            "sizes": "1024x1024"
+        }
+    ]
+}

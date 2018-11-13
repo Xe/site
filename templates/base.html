@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/css/hack.css" />
         <link rel="stylesheet" href="/css/gruvbox-dark.css" />
+        <link rel="manifest" href="/static/manifest.json" />
 
         <link rel="alternate" type="application/rss+xml" href="https://christine.website/blog.rss" />
         <link rel="alternate" type="application/atom+xml" href="https://christine.website/blog.atom" />
@@ -61,6 +62,15 @@
             <footer>
                 <blockquote>Copyright 2018 Christine Dodrill. Any and all opinions listed here are my own and not representative of my employer.</blockquote>
             </footer>
+            <script>
+             if (navigator.serviceWorker.controller) {
+                 console.log("Active service worker found, no need to register");
+             } else {
+                 navigator.serviceWorker.register("/sw.js").then(function(reg) {
+                     console.log("Service worker has been registered for scope:" + reg.scope);
+                 });
+             }
+            </script>
         </div>
     </body>
 </html>
