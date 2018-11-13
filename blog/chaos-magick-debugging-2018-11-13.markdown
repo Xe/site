@@ -100,7 +100,7 @@ We build models so that we can say that certain things are true and work a certa
  
 - Aleister Crowley
 
-This may sound frustrating. After all, most of us are paid to understand what's going on in there, and do something about it. And while this is ultimately a naÃ¯ve view, it is at least partially correct; after all, we do make things with computers that look like they do what we told them to, and they turn useful in such a way, so there's not too much to complain. 
+This may sound frustrating. After all, most of us are paid to understand what's going on in there, and do something about it. And while this is ultimately a naiive view, it is at least partially correct; after all, we do make things with computers that look like they do what we told them to, and they turn useful in such a way, so there's not too much to complain. 
 
 While this *does* happen, it should not distract us from the realization that errors and misunderstandings still happen. You and the lightning sand speak different languages, and think in different ways. It is, as some fundamental level, inevitable.
 
