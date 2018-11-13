@@ -1,6 +1,6 @@
 ---
 title: "Chaos Magick Debugging"
-date: "11-13-2018"
+date: 2018-11-13
 thanks: CelestialBoon
 ---
 
