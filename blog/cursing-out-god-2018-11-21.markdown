@@ -5,7 +5,7 @@ date: 2018-11-21
 
 # My Experience Cursing Out God
 
-One of the ways that I communicate with spirits is via the concept of a dream environment. They create the scenario, details and the like and I am thrust into it to live it out and rake the meaning out of what is otherwise meaningless noise. This is a synthesis of one of these scenarios, one of the ones that has left one of the largest impact on me. I hope this will help you as much as it has me. This dream kinda fucked me up.
+This was a hell of a dream.
 
 It was a simple landscape: a hill, a sky, a sun, a distance, naturalistic buildings dotting a small village to the east. I noticed that I felt different somehow, like I was less chained down. A genderless but somehow masculine moved and stood next to me, gesturing towards me: "It's beautiful isn't it? The village has existed like this for thousands of years in perfect harmony with its world. Even though there's volcano eruptions every decade that burn everything down. It's been nine years and 350 days, but they aren't keeping track. How does that thought make you feel, Creator?"
 
