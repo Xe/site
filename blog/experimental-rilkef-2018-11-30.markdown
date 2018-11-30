@@ -20,7 +20,3 @@ What? The code for that? It's obvious, figure it out.
 See? Five times as fast. Who cares that you have to throw out basically all your existing stuff, and if you mix rilkef and non-rilkef you're gonna run into problems.
 
 So yeah, I put words on a page so you have to listen to me now. Use experimental rilkef at the cost of everything else.
-
----
-
-This is seriously what a lot of programming articles on Medium feel like.
