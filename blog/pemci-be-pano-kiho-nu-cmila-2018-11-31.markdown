@@ -1,7 +1,9 @@
 ---
-title: "pemci be pano ki'o nu cmila"
+title: "Ten Thousand Laughs"
 date: "2018-11-31"
 ---
+
+# Ten Thousand Laughs
 
 ```
 pemci zo'e la xades  
