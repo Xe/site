@@ -17,7 +17,6 @@ import (
 	"github.com/gorilla/feeds"
 	blackfriday "github.com/russross/blackfriday"
 	"github.com/tj/front"
-	analytics "gopkg.in/segmentio/analytics-go.v3"
 )
 
 var port = os.Getenv("PORT")
@@ -48,27 +47,12 @@ type Site struct {
 
 	templates map[string]*template.Template
 	tlock     sync.RWMutex
-
-	segment analytics.Client
 }
 
 func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ln.Log(r.Context(), ln.F{"action": "Site.ServeHTTP", "user_ip_address": r.RemoteAddr, "path": r.RequestURI})
 
 	s.mux.ServeHTTP(w, r)
-
-	if s.segment != nil {
-		if !strings.HasPrefix(r.RequestURI, "/blog/") {
-			err := s.segment.Enqueue(analytics.Track{
-				UserId:     Hash("h", r.Header.Get("X-Forwarded-For")),
-				Event:      "Page Viewed",
-				Properties: analytics.NewProperties().SetURL(r.RequestURI),
-			})
-			if err != nil {
-				ln.Error(r.Context(), err)
-			}
-		}
-	}
 }
 
 // Build creates a new Site instance or fails.
@@ -103,10 +87,6 @@ func Build() (*Site, error) {
 		},
 		mux:       http.NewServeMux(),
 		templates: map[string]*template.Template{},
-	}
-
-	if wk := os.Getenv("SEGMENT_WRITE_KEY"); wk != "" {
-		s.segment = analytics.New(wk)
 	}
 
 	err := filepath.Walk("./blog/", func(path string, info os.FileInfo, err error) error {
