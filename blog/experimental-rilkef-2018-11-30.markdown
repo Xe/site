@@ -13,7 +13,7 @@ Guess what suckers, there is other thing that I can use that is newer. Who cares
 
 Look at this graph at how many femtoseconds it takes to flopnax the ropjar vs the experimental rilkef:
 
-![](https://i.imgur.com/yOzgykI.png)
+![](/static/img/rilkef.png)
 
 What? The code for that? It's obvious, figure it out.
 
