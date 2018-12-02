@@ -1,3 +1,5 @@
+github.com/Unknwon/i18n v0.0.0-20171114194641-b64d33658966 h1:Mp8GNJ/tdTZIEdLdZfykEJaL3mTyEYrSzYNcdoQKpJk=
+github.com/Unknwon/i18n v0.0.0-20171114194641-b64d33658966/go.mod h1:SFtfq0zFPsENI7DpE87QM2hcYu5QQ0fRdCgP+P1Hrqo=
 github.com/Xe/gopreload v0.0.0-20170326043426-a00a8beb369c h1:lqTJqaoonxgJMvvfl1ukr/3qCEGWC0nQxzPezbJrhHs=
 github.com/Xe/gopreload v0.0.0-20170326043426-a00a8beb369c/go.mod h1:0aSWHJguPNHo6zlU7A4Ktua1A/VUr5Jdr1QZ2amOkAQ=
 github.com/Xe/jsonfeed v0.0.0-20170520170432-e21591505612 h1:5cPld6YTMozzm3lK9VCnOErgoFbADM2hZc4KDu0YNKs=
@@ -33,5 +35,7 @@ github.com/tj/front v0.0.0-20170212063142-739be213b0a1 h1:lA+aPRvltlx2fwv/BnxyYS
 github.com/tj/front v0.0.0-20170212063142-739be213b0a1/go.mod h1:deJrtusCTptAW4EUn5vBLpl3dhNqPqUwEjWJz5UNxpQ=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 h1:qIbj1fsPNlZgppZ+VLlY7N33q108Sa+fhmuc+sWQYwY=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/ini.v1 v1.39.0 h1:Jf2sFGT+sAd7i+4ftUN1Jz90uw8XNH8NXbbOY16taA8=
+gopkg.in/ini.v1 v1.39.0/go.mod h1:pNLf8WUiyNEtQjuu5G5vTm06TEv9tsIgeAvK8hOrP4k=
 gopkg.in/yaml.v1 v1.0.0-20140924161607-9f9df34309c0 h1:POO/ycCATvegFmVuPpQzZFJ+pGZeX22Ufu6fibxDVjU=
 gopkg.in/yaml.v1 v1.0.0-20140924161607-9f9df34309c0/go.mod h1:WDnlLJ4WF5VGsH/HVa3CI79GS0ol3YnhVnKP89i0kNg=

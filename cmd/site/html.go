@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Unknwon/i18n"
 	"github.com/Xe/ln"
 )
 
@@ -21,7 +22,32 @@ func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.H
 		s.tlock.RLock()
 		defer s.tlock.RUnlock()
 
-		var t *template.Template
+		const fallbackLang = `en-US`
+
+		getTranslation := func(group, key string, vals ...interface{}) string {
+			var lang string
+			locale, err := GetPreferredLocale(r)
+			if err != nil {
+				ln.Error(r.Context(), err)
+				lang = fallbackLang
+				goto skip
+			}
+
+			if !i18n.IsExist(locale.Lang) {
+				lang = fallbackLang
+				goto skip
+			}
+
+			lang = locale.Lang
+		skip:
+			return i18n.Tr(lang, group+"."+key, vals...)
+		}
+
+		funcMap := template.FuncMap{
+			"trans": getTranslation,
+		}
+
+		var t = template.New(templateFname).Funcs(funcMap)
 		var err error
 
 		if s.templates[templateFname] == nil {

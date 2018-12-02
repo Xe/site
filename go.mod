@@ -1,6 +1,7 @@
 module github.com/Xe/site
 
 require (
+	github.com/Unknwon/i18n v0.0.0-20171114194641-b64d33658966 // indirect
 	github.com/Xe/gopreload v0.0.0-20170326043426-a00a8beb369c
 	github.com/Xe/jsonfeed v0.0.0-20170520170432-e21591505612
 	github.com/Xe/ln v0.0.0-20170921000907-466e05b2ef3e
@@ -17,5 +18,6 @@ require (
 	github.com/stretchr/testify v1.2.2 // indirect
 	github.com/tj/front v0.0.0-20170212063142-739be213b0a1
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
+	gopkg.in/ini.v1 v1.39.0 // indirect
 	gopkg.in/yaml.v1 v1.0.0-20140924161607-9f9df34309c0 // indirect
 )

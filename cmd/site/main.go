@@ -12,6 +12,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Unknwon/i18n"
 	"github.com/Xe/jsonfeed"
 	"github.com/Xe/ln"
 	"github.com/gorilla/feeds"
@@ -61,6 +62,10 @@ func Build() (*Site, error) {
 		Title string
 		Date  string
 	}
+
+	i18n.SetMessage("en-US", "conf/locale/locale_en-US.ini")
+	i18n.SetMessage("toki", "conf/locale/locale_toki.ini")
+	i18n.SetDefaultLang("en-US")
 
 	s := &Site{
 		rssFeed: &feeds.Feed{
