@@ -1,26 +1,17 @@
 {{ define "title" }}
 <title>Blog - Christine Dodrill</title>
-
-<style>
-.blogpost-card {
-    text-align: center;
-}
-</style>
 {{ end }}
 
 {{ define "content" }}
 <h1>Blogposts</h1>
 
-<div class="grid">
-    {{ range . }}
-    <div class="card cell -4of12 blogpost-card">
-        <header class="card-header">{{ .Title }}</header>
-        <div class="card-content">
-            <p>Posted on {{ .Date }} <br> <a href="{{ .Link }}">Read Post</a></p>
-        </div>
-    </div>
-    {{ end }}
-</div>
+<p>
+    <ul>
+        {{ range . }}
+            <li>{{ .Date }} - <a href="{{ .Link }}">{{ .Title }}</a></li>
+        {{ end }}
+    </ul>
+</p>
 
 <br />
 
@@ -33,4 +24,33 @@
     <li><a href="https://slatestarcodex.com/">Star Slate Codex</a></li>
     <li><a href="https://shamanic.vision/">Shamanic Vision</a></li>
 </ul>
+
+<h2>Selected Commentary on These Blogposts</h2>
+
+<h3><a href="/blog/experimental-rilkef-2018-11-30">I Put Words on this Webpage so You Have to Listen to Me Now</a></h3>
+
+<p>
+    <blockquote>
+        Top tier satire. Won't be read by anyone who should read it, and will be ignored/laughed at by anyone who does/already agrees.
+
+        Literally preaching to the literal choir.
+    </blockquote>
+
+    <blockquote>
+        Hired.
+    </blockquote>
+
+    <blockquote>
+        It’s things like this that make me realize just how bizarre this profession really is.
+    </blockquote>
+
+    <blockquote>
+        Meanwhile, in two weeks the entire Haskell ecosystem will adapt.
+    </blockquote>
+
+    <blockquote>
+        dont read any of the other posts if u dont want to melt ur brain backwards
+    </blockquote>
+</p>
+
 {{ end }}
