@@ -56,11 +56,11 @@
         {{ template "scripts" . }}
         <div class="container">
             <header>
-                <p><a href="/">Christine Dodrill</a> - <a href="/blog">Blog</a> - <a href="/contact">Contact</a> - <a href="/resume">Resume</a></p>
+                <p><a href="/">{{ trans "header" "name" }}</a> - <a href="/blog">{{ trans "header" "blog" }}</a> - <a href="/contact">{{ trans "header" "contact" }}</a> - <a href="/resume">{{ trans "header" "resume" }}</a></p>
             </header>
             {{ template "content" . }}
             <footer>
-                <blockquote>Copyright 2018 Christine Dodrill. Any and all opinions listed here are my own and not representative of my employer.</blockquote>
+                <blockquote>{{ trans "meta" "copyright" "2018" }}</blockquote>
             </footer>
             <script>
              if (navigator.serviceWorker.controller) {

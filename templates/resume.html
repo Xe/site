@@ -1,9 +1,9 @@
-{{ define "title" }}<title>Resume - Christine Dodrill</title>{{ end }}
+{{ define "title" }}<title>{{ trans "header" "resume" }} - {{ trans "header" "name" }}</title>{{ end }}
 
 {{ define "content" }}
 {{ . }}
 
 <hr />
 
-<a href="/static/resume/resume.md">Plain-text version of this resume here</a>
+<a href="/static/resume/resume.md">{{ trans "resume" "plaintext" }}</a>
 {{ end }}

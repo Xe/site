@@ -1,21 +1,21 @@
 {{ define "title" }}
-<title>Blog - Christine Dodrill</title>
+<title>{{ trans "header" "blog" }} - {{ trans "header" "name" }}</title>
 {{ end }}
 
 {{ define "content" }}
-<h1>Blogposts</h1>
+<h1>{{ trans "blog" "index_title" }}</h1>
 
 <p>
     <ul>
         {{ range . }}
-            <li>{{ .Date }} - <a href="{{ .Link }}">{{ .Title }}</a></li>
+            <li>{{ trans "blog" "posted_on" .Date }} - <a href="{{ .Link }}">{{ .Title }}</a></li>
         {{ end }}
     </ul>
 </p>
 
 <br />
 
-<h2>Other Blogs I Find Interesting</h2>
+<h2>{{ trans "blog" "blogroll" }}</h2>
 
 <ul>
     <li><a href="https://write.as/excerpts/">Excerpts</a></li>
@@ -25,6 +25,7 @@
     <li><a href="https://shamanic.vision/">Shamanic Vision</a></li>
 </ul>
 
+<h2>{{ trans "blog" "comments" }}</h2>
 <h2>Selected Commentary on These Blogposts</h2>
 
 <h3><a href="/blog/experimental-rilkef-2018-11-30">I Put Words on this Webpage so You Have to Listen to Me Now</a></h3>
@@ -32,6 +33,8 @@
 <p>
     <blockquote>
         Top tier satire. Won't be read by anyone who should read it, and will be ignored/laughed at by anyone who does/already agrees.
+
+        <br />
 
         Literally preaching to the literal choir.
     </blockquote>
