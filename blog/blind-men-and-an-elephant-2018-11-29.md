@@ -13,13 +13,13 @@ or
 
 | [KOhA4](http://lojban.org/publications/cll/cll_v1.1_xhtml-section-chunks/section-koha-broda-series.html) | lojban | english |
 | --- | --- | --- |
-| ko'a | le'i ka na viska kakne | the blind people |
+| ko'a | le'i na viska kakne | the blind people |
 | ko'e | le xanto | the elephant |
 | ko'i | le cizra danlu | the strange animal |
 
 A group of blind men heard that a strange animal, called an elephant, had been brought to the town, but none of them were aware of its shape and form.
 
-> ni'o le'i ka na viska kakne goi ko'a e le xanto goi ko'e  
+> ni'o le'i na viska kakne goi ko'a e le xanto goi ko'e  
 > .i ko'a cu ti'erna lo nu cizra danlu goi ko'i noi ko'e cu se bevri fi lo tcadu  
 > .i ku'i no ko'a cu sanji lo tarmi be ko'i
 
