@@ -41,8 +41,6 @@ It hit you like a ton of bricks, but each brick was made out of its own componen
 
 You knew the truth. Everything was truly an illusion. It was all bricks. It was always bricks. It will always be bricks. It has always been bricks. There was never anything but bricks arranged in such fine arrangements that their interactions created the quantum fields that defined what you ended up interpreting as the grand experiment of reality in your frame of existence. The utter meaninglessness of it all was the most comforting thought that hit you.
 
-"Yes, Creator, yes. You see now. Welcome to the greater expanse."
-
 You would say everything turned into a brilliant white light, but that wouldn't begin to describe the color, texture, taste, sight, sound, thought, aether, and other senses you couldn't even begin to describe unfold as you started to experience All as it truly is.
 
 It was/is/will be the kind of thing the Buddha would stay silent for. You never really understood why until now.
