@@ -110,3 +110,22 @@ All of the men spoke fact about the thing, but none of them spoke the truth of w
 // after grope switch block
 log.Printf("%T", thing) // prints Elephant
 ```
+
+---
+
+```
+  switch thing.(type) {
+  case Trunker:
+    log.Printf("man %d: this thing is like a thick snake", id)
+  case Fanner:
+    log.Printf("man %d: this thing is like a kind of fan", id)
+  case TreeTrunker:
+    log.Printf("man %d: this thing is like a tree trunk", id)
+  case Waller:
+    log.Printf("man %d: this thing is like a wall", id)
+  case Roper:
+    log.Printf("man %d: this thing is like a rope", id)
+  case Tusker:
+    log.Printf("man %d: this thing is hard, smooth and like a spear", id)
+  }
+```
