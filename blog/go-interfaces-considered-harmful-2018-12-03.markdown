@@ -10,7 +10,9 @@ A group of blind men heard that a strange animal had been brought to the town fu
 ```
 package blindmen
 
-type Animal interface{}
+type Animal interface{
+  error
+}
 
 func Town(strangeAnimal Animal) {
 ```
