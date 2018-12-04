@@ -40,7 +40,7 @@ type Snaker interface {
 
 func grope(id int, thing interface{}) {
   switch thing.(type) {
-  case Trunker:
+  case Snaker:
     log.Printf("man %d: this thing is like a thick snake", id)
 ```
 
