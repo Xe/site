@@ -56,9 +56,10 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	cmp := r.URL.Path[1:]
 	var p *Post
 	for _, pst := range s.Posts {
-		if pst.Link == r.RequestURI[1:] {
+		if pst.Link == cmp {
 			p = pst
 		}
 	}
