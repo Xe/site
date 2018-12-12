@@ -1,9 +1,9 @@
 ---
-title: Go Interfaces Considered Harmful
-date: 2018-12-03
+title: The Blind Men and The Animal Interface
+date: 2018-12-12
 ---
 
-# Go Interfaces Considered Harmful
+# The Blind Men and The Animal Interface
 
 A group of blind men heard that a strange animal had been brought to the town function, but none of them were aware of its type.
 
@@ -131,3 +131,13 @@ log.Printf("%T", thing) // prints Elephant
     log.Printf("man %d: this thing is hard, smooth and like a spear", id)
   }
 ```
+
+---
+
+Much later, after the other men had left the animal, a final blind man came over and looked the elephant right in the eye. He took a moment to compose himself, dusted his cloak off and spoke: "Hello. I am a blind man. I cannot see, but I would like to learn more about you and what it's like to be you. Who are you and what is it like? How does that help you? Also, I don't mean to be imposing, but how can I help you?"
+
+The elephant started to hug his new friend, the blind man, close to him, crying with tears of joy. This blind man could see what the other blind men did not, even though he was blind.
+
+---
+
+[Alternate Ending](https://write.as/7mrvks0tq3jnpfoe.md)
