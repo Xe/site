@@ -139,7 +139,6 @@ An experimental take on a metalanguage analysis package for [Toki Pona](http://t
 - [My Blog](https://christine.website/blog)
 - [I Put Words on This Webpage so You Have to Listen to Me Now](https://christine.website/blog/experimental-rilkef-2018-11-30)
 
----
 [homepage]: https://christine.website
 [twitter]: https://twitter.com/theprincessxena
 [twit]: http://cdn-careers.sstatic.net/careers/Img/icon-twitter.png?v=b1bd58ad2034
