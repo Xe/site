@@ -161,7 +161,15 @@ func Build() (*Site, error) {
 	}
 
 	// Add HTTP routes here
-	s.mux.Handle("/", s.renderTemplatePage("index.html", nil))
+	s.mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			w.WriteHeader(http.StatusNotFound)
+			s.renderTemplatePage("error.html", "can't find " + r.URL.Path).ServeHTTP(w,r)
+			return
+		}
+
+		s.renderTemplatePage("index.html", nil).ServeHTTP(w, r)
+	})
 	s.mux.Handle("/resume", s.renderTemplatePage("resume.html", s.Resume))
 	s.mux.Handle("/blog", s.renderTemplatePage("blogindex.html", s.Posts))
 	s.mux.Handle("/contact", s.renderTemplatePage("contact.html", nil))

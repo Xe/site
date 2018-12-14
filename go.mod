@@ -1,4 +1,4 @@
-module github.com/Xe/site
+module christine.website
 
 require (
 	github.com/Xe/gopreload v0.0.0-20170326043426-a00a8beb369c
