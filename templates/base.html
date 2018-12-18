@@ -6,6 +6,7 @@
         <meta name="go-import" content="christine.website git https://github.com/Xe/site">
         <link rel="stylesheet" href="/css/hack.css" />
         <link rel="stylesheet" href="/css/gruvbox-dark.css" />
+        <link rel="stylesheet" href="/css/snow.css" />
         <link rel="manifest" href="/static/manifest.json" />
 
         <link rel="alternate" type="application/rss+xml" href="https://christine.website/blog.rss" />
@@ -53,16 +54,21 @@
         </style>
         {{ template "styles" . }}
     </head>
-    <body class="hack gruvbox-dark">
+    <body class="snow hack gruvbox-dark">
         {{ template "scripts" . }}
         <div class="container">
             <header>
                 <p><a href="/">Christine Dodrill</a> - <a href="/blog">Blog</a> - <a href="/contact">Contact</a> - <a href="/resume">Resume</a></p>
             </header>
-            {{ template "content" . }}
+
+            <div class="snowframe">
+                {{ template "content" . }}
+            </div>
+
             <footer>
                 <blockquote>Copyright 2018 Christine Dodrill. Any and all opinions listed here are my own and not representative of my employer.</blockquote>
             </footer>
+
             <script>
              if (navigator.serviceWorker.controller) {
                  console.log("Active service worker found, no need to register");

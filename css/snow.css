@@ -1,0 +1,16 @@
+.snow {
+    background-image:
+        url(/static/img/snow/snow1.png),
+        url(/static/img/snow/snow2.png);
+    animation: snow 30s linear infinite;
+}
+
+.snowframe {
+    opacity: 1.0;
+    background-color: #282828;
+}
+
+@keyframes snow {
+    0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+    100% {background-position: 500px 1000px, 400px 400px, 300px 300px}
+}
