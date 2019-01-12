@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Xe/ln"
+	"within.website/ln"
 )
 
 func logTemplateTime(name string, from time.Time) {

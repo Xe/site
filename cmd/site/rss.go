@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Xe/ln"
+	"within.website/ln"
 )
 
 var bootTime = time.Now()

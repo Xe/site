@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/Xe/jsonfeed"
-	"github.com/Xe/ln"
+	"within.website/ln"
 	"github.com/gorilla/feeds"
 	blackfriday "github.com/russross/blackfriday"
 	"github.com/tj/front"
