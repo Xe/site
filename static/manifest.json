@@ -3,7 +3,7 @@
     "short_name": "Christine",
     "theme_color": "#ffcbe4",
     "background_color": "#fa99ca",
-    "display": "minimal-ui",
+    "display": "standalone",
     "scope": "/",
     "start_url": "https://christine.website/",
     "description": "Blog and Resume for Christine Dodrill",
