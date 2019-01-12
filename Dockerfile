@@ -1,8 +1,7 @@
 FROM xena/go:1.11.1 AS build
-#ENV GOPROXY https://cache.greedo.xeserv.us
+ENV GOPROXY https://cache.greedo.xeserv.us
 COPY . /site
 WORKDIR /site
-RUN apk --no-cache add git
 RUN CGO_ENABLED=0 GOBIN=/root go install -v ./cmd/site
 
 FROM xena/alpine
