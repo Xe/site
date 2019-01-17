@@ -3,7 +3,7 @@
 #### Web and Backend Services Devops Specialist
 ##### Bellevue, WA &emsp; [christine.website][homepage]
 
-`Docker`, `Git`, `Go`, `C`, `CentOS`, `CoreOS`, `IRC`, `Stenography`, `DevOps`, `Continuous Integration/Delivery`, `Event Sourcing`
+`Docker`, `Git`, `Go`, `C`, `CentOS`, `CoreOS`, `IRC`, `Stenography`, `DevOps`, `Continuous Integration/Delivery`, `Event Sourcing`, `WebAssembly`
 
 ## Experience
 ### Heroku - Senior Software Engineer &emsp; <small>*2017 - current*</small>
