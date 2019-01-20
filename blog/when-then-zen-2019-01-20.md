@@ -106,7 +106,7 @@ themselves can be confused with the culture.
 I do not plan to set too many expectations for what people will experience.
 When possible, [I tell people to avoid having "spiritual experiences"](https://github.com/Xe/when-then-zen/blob/master/meditation/quantum-pause.feature#L12-L16).
 The only point in the project where I could be interpreted as telling people
-how to have a "spiritual experience" is probably the [paracom immersion](https://github.com/Xe/when-then-zen/blob/master/skills/paracosm-immersion.feature)
+how to have a "spiritual experience" is probably the [paracosm immersion](https://github.com/Xe/when-then-zen/blob/master/skills/paracosm-immersion.feature)
 feature. But even then, [paracosms](https://en.m.wikipedia.org/wiki/Paracosm) are
 a well-known psychological phenomenon.
 
