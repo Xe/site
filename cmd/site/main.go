@@ -13,10 +13,10 @@ import (
 	"time"
 
 	"github.com/Xe/jsonfeed"
-	"within.website/ln"
 	"github.com/gorilla/feeds"
 	blackfriday "github.com/russross/blackfriday"
 	"github.com/tj/front"
+	"within.website/ln"
 )
 
 var port = os.Getenv("PORT")
@@ -164,11 +164,14 @@ func Build() (*Site, error) {
 	s.mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
 			w.WriteHeader(http.StatusNotFound)
-			s.renderTemplatePage("error.html", "can't find " + r.URL.Path).ServeHTTP(w,r)
+			s.renderTemplatePage("error.html", "can't find "+r.URL.Path).ServeHTTP(w, r)
 			return
 		}
 
 		s.renderTemplatePage("index.html", nil).ServeHTTP(w, r)
+	})
+	s.mux.HandleFunc("/.within/health", func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "OK", http.StatusOK)
 	})
 	s.mux.Handle("/resume", s.renderTemplatePage("resume.html", s.Resume))
 	s.mux.Handle("/blog", s.renderTemplatePage("blogindex.html", s.Posts))

@@ -182,7 +182,7 @@ And then deploy these changes – you should see your service worker posting log
 
 ## Deploying
 
-Deploying your web app is going to be specific to how your app is developed. If you don't have a place to put it already, [Heroku](https://heroku.com) offers a nice and simple way to host progressive web apps. Using [the static buildpack](https://github.com/heroku/heroku-buildpack-static) is the fastest way to deploy a static application already built to Javascript and HTML. You can look at [my fork of GraphvizOnline](https://github.com/Xe/GraphvizOnline) for an example of a Heroku-compatible progressive web app. Note that if you deploy this, you will need to edit the start URL in [the manifest](https://github.com/Xe/GraphvizOnline/blob/master/manifest.json#L8) to the URL that will reach the deployed website – for instance, `sandy-beach-3033.herokuapp.com`.
+Deploying your web app is going to be specific to how your app is developed. If you don't have a place to put it already, [Heroku](https://heroku.com) offers a nice and simple way to host progressive web apps. Using [the static buildpack](https://github.com/heroku/heroku-buildpack-static) is the fastest way to deploy a static application already built to Javascript and HTML. You can look at [my fork of GraphvizOnline](https://github.com/Xe/GraphvizOnline) for an example of a Heroku-compatible progressive web app. 
 
 ## Using Your Progressive Web App
 
