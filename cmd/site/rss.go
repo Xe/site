@@ -9,6 +9,7 @@ import (
 )
 
 var bootTime = time.Now()
+var etag = Hash(bootTime.String(), IncrediblySecureSalt)
 
 // IncrediblySecureSalt *******
 const IncrediblySecureSalt = "hunter2"

@@ -10,14 +10,24 @@ import (
 	"within.website/ln"
 )
 
-func logTemplateTime(name string, from time.Time) {
+func logTemplateTime(name string, f ln.F, from time.Time) {
 	now := time.Now()
-	ln.Log(context.Background(), ln.F{"action": "template_rendered", "dur": now.Sub(from).String(), "name": name})
+	ln.Log(context.Background(), f, ln.F{"action": "template_rendered", "dur": now.Sub(from).String(), "name": name})
 }
 
 func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		defer logTemplateTime(templateFname, time.Now())
+		fetag := "W/" + Hash(templateFname, etag) + "-1"
+
+		f := ln.F{"etag": fetag, "if-none-match": r.Header.Get("If-None.Match")}
+
+		if r.Header.Get("If-None-Match") == fetag {
+			http.Error(w, "Cached data OK", http.StatusNotModified)
+			ln.Log(r.Context(), f, ln.Info("Cache hit"))
+			return
+		}
+
+		defer logTemplateTime(templateFname, f, time.Now())
 		s.tlock.RLock()
 		defer s.tlock.RUnlock()
 
@@ -42,6 +52,9 @@ func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.H
 		} else {
 			t = s.templates[templateFname]
 		}
+
+		w.Header().Set("ETag", fetag)
+		w.Header().Set("Cache-Control", "max-age=432000")
 
 		err = t.Execute(w, data)
 		if err != nil {
