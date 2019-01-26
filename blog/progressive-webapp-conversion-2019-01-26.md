@@ -19,7 +19,7 @@ In this post, we’ll show you how to convert your existing website into a progr
 * Adding it to your base HTML template
 * Creating the [service worker](https://developers.google.com/web/fundamentals/primers/service-workers/)
     * Serving the service worker on the root of the scope you used in the manifest
-* Adding a <script> block to your base HTML template to load the service worker
+* Adding a `<script>` block to your base HTML template to load the service worker
 * Deploying
 * Using Your Progressive Web App
 
