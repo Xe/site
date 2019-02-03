@@ -5,7 +5,7 @@
   "background_color": "#fa99ca",
   "display": "standalone",
   "scope": "/",
-  "start_url": "https://christine.website/",
+  "start_url": "/",
   "description": "Blog and Resume for Christine Dodrill",
   "orientation": "any",
   "icons": [
@@ -52,6 +52,6 @@
     {
       "src": "/static/favicon/android-launchericon-512-512.png",
       "sizes": "512x512"
-    },
+    }
   ]
 }
