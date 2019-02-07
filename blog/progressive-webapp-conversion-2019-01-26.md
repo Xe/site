@@ -7,11 +7,11 @@ thanks: Nathanial, Andrew Konoff
 
 # How To Make a Progressive Web App Out Of Your Existing Website
 
-[Progressive web apps](https://developer.mozilla.org/en-US/docs/Web/Apps/Progressive) enable websites to trade some flexibility to function more like native apps, without all the overhead of app store approvals and tons of platform-specific native code. Progressive web apps allow users to install them to their home screen and launch them into their own pseudo-app frame. However, that frame is locked down and restricted, and only allows access to pages that are subpaths of the scope of the progressive web app. They also have to be served over HTTPS. Updates to these can be deployed without needing to wait for app store approval. 
+[Progressive web apps](https://developer.mozilla.org/en-US/docs/Web/Apps/Progressive) enable websites to trade some flexibility to function more like native apps, without all the overhead of app store approvals and tons of platform-specific native code. Progressive web apps allow users to install them to their home screen and launch them into their own pseudo-app frame. However, that frame is locked down and restricted, and only allows access to pages that are subpaths of the scope of the progressive web app. They also have to be served over HTTPS. Updates to these can be deployed without needing to wait for app store approval.
 
 The core of progressive web apps are [service workers](https://developers.google.com/web/fundamentals/primers/service-workers/), which are effectively client-side Javascript daemons. Service workers can listen for a few kinds of events and react to them. One of the most commonly supported events is the [fetch event](https://jakearchibald.github.io/isserviceworkerready/#fetch-event); this can be used to cache web content offline as explained below.
 
-There are a large number of web apps that fit just fine within these [rules and restrictions](https://developer.mozilla.org/en-US/docs/Web/Apps/Progressive/App_structure), however there could potentially be compatibility issues with existing code. Service worker updates will be pushed out [with respect to standard HTTP caching responses](https://stackoverflow.com/questions/38843970/service-worker-javascript-update-frequency-every-24-hours). Plus, you get to use plenty of native APIs, including geolocation, camera, and sensor APIs that only native mobile apps used to be able to take advantage of.
+There are a large number of web apps that fit just fine within these [rules and restrictions](https://developer.mozilla.org/en-US/docs/Web/Apps/Progressive/App_structure), however there could potentially be compatibility issues with existing code. Instead of waiting for Apple or Google to approve and push out app updates, service worker (and by extension Progressive Web App) updates will be fetched [following standard HTTP caching rules](https://stackoverflow.com/questions/38843970/service-worker-javascript-update-frequency-every-24-hours). Plus, you get to use plenty of native APIs, including geolocation, camera, and sensor APIs that only native mobile apps used to be able to take advantage of.
 
 In this post, we’ll show you how to convert your existing website into a progressive web app. It’s fairly simple, only really requiring the following steps:
 
@@ -39,7 +39,7 @@ An [app manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest) is a co
 * Orientation restrictions (it is unwise to change this from `"any"` without a hard technical limit)
 * Any icons for your website to be used on the home screen (see the above manifest generator for autogenerating icons)
 
-This information will be used as the OS-level metadata for your progressive web app when it is installed. 
+This information will be used as the OS-level metadata for your progressive web app when it is installed.
 
 Here is an example web app manifest [from my portfolio site](https://github.com/Xe/site/blob/master/static/manifest.json).
 
@@ -182,7 +182,7 @@ And then deploy these changes – you should see your service worker posting log
 
 ## Deploying
 
-Deploying your web app is going to be specific to how your app is developed. If you don't have a place to put it already, [Heroku](https://heroku.com) offers a nice and simple way to host progressive web apps. Using [the static buildpack](https://github.com/heroku/heroku-buildpack-static) is the fastest way to deploy a static application already built to Javascript and HTML. You can look at [my fork of GraphvizOnline](https://github.com/Xe/GraphvizOnline) for an example of a Heroku-compatible progressive web app. 
+Deploying your web app is going to be specific to how your app is developed. If you don't have a place to put it already, [Heroku](https://heroku.com) offers a nice and simple way to host progressive web apps. Using [the static buildpack](https://github.com/heroku/heroku-buildpack-static) is the fastest way to deploy a static application already built to Javascript and HTML. You can look at [my fork of GraphvizOnline](https://github.com/Xe/GraphvizOnline) for an example of a Heroku-compatible progressive web app.
 
 ## Using Your Progressive Web App
 
@@ -191,4 +191,3 @@ For iOS Safari, go to the webpage you want to add as an app, then click the shar
 For Android with Chrome, tap on the hamburger menu in the upper right hand corner of the browser window and then tap "Add to Home screen.” This may prompt you for confirmation, then it will put the icon on your homescreen and you can launch, multitask or delete it like any other app. Unlike iOS, you cannot edit the starting URL or name of a progressive web app with Android.
 
 After all of these steps, you will have a progressive web app. Any page or asset that the users of that progressive web app (or any browser that supports service workers) loads will seamlessly be cached for future offline access. It will be exciting to see how service workers develop in the future. I'm personally excited the most for [background sync](https://developers.google.com/web/updates/2015/12/background-sync) – I feel it could enable some fascinatingly robust experiences.
-
