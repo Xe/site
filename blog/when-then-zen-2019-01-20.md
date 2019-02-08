@@ -27,7 +27,7 @@ generally described using whatever comparators the author of the meditation
 guide is comfortable with. This can lead to confusion.
 
 The way I am teaching meditation is simple: teach the method and have people do
-it and see what happens. I've decided to teach methods using [Gherkin](https://github.com/cucumber/cucumber/wiki/Gherkin).
+it and see what happens. I've decided to teach methods using [Gherkin](https://docs.cucumber.io/gherkin/).
 Gherkin can be kind of strange to read if you are not used to it, so consider
 the game of baseball, specifically the act of the batter hitting a home run. 
 
