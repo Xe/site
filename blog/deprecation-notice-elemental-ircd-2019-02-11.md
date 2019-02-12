@@ -5,7 +5,7 @@ date: 2019-02-11
 
 # Deprecation Notice: Elemental-IRCd
 
-[Elemental-IRCd](https://github.com/Elemental-IRCd/elemental-ircd) is a scalable, lightweight, hight-performance IRC daemon written in C with heritage in the original IRC daemon. It is a fork of the now-defunct ShadowIRCD and sought to continue in the direction ShadowIRCD was headed. This software has scaled to support live chat for thousands of users at once in one->one and one->many groups. Working on this software has legitimately been a vital driving force to my career and skill balance between administration, development, moderation and operations of distirbuted communities at scale. Without this software, my closest friends (and even my fiancé) would be strangers to me.
+[Elemental-IRCd](https://github.com/Elemental-IRCd/elemental-ircd) is a scalable, lightweight, high-performance IRC daemon written in C with heritage in the original IRC daemon. It is a fork of the now-defunct ShadowIRCD and sought to continue in the direction ShadowIRCD was headed. This software has scaled to support live chat for thousands of users at once in one->one and one->many groups. Working on this software has legitimately been a vital driving force to my career and skill balance between administration, development, moderation and operations of distirbuted communities at scale. Without this software, my closest friends (and even my fiancé) would be strangers to me.
 
 However, the result is something I don't know if I can continue to keep maintaining. It's been through a lot. The code has been through so many hands, some files had different licenses compared to the rest of the software. It is a patchwork of patches on top of a roughly solid core, and it's become a burden to maintain.
 
