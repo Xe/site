@@ -1,5 +1,5 @@
 ---
-title: Deprecation Notice: Elemental-IRCd
+title: "Deprecation Notice: Elemental-IRCd"
 date: 2019-02-11
 ---
 
