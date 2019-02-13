@@ -15,6 +15,29 @@
 <!-- Description -->
 <meta name="description" content="{{ .Title }} - Christine Dodrill's Blog" />
 <meta name="author" content="Christine Dodrill">
+
+<script type="application/ld+json">
+ {
+   "@context": "http://schema.org",
+   "@type": "Article",
+   "headline": "{{ .Title }}",
+   "image": "https://christine.website/static/img/avatar.png",
+   "url": "https://christine.website/{{ .Link }}",
+   "datePublished": "{{ .Date }}",
+   "mainEntityOfPage": {
+       "@type": "WebPage",
+       "@id": "https://christine.website/{{ .Link }}"
+   },
+   "author": {
+       "@type": "Person",
+       "name": "Christine Dodrill"
+   },
+   "publisher": {
+       "@type": "Person",
+       "name": "Christine Dodrill"
+   }
+ }
+</script>
 {{ end }}
 
 {{ define "content" }}
