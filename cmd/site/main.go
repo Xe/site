@@ -75,7 +75,7 @@ func main() {
 	}
 
 	ln.Log(context.Background(), ln.F{"action": "http_listening", "port": port})
-	http.ListenAndServe(":"+port, altOnionHandler(s))
+	ln.FatalErr(context.Background(), http.ListenAndServe(":"+port, altOnionHandler(s)))
 }
 
 func requestIDMiddleware(next http.Handler) http.Handler {
