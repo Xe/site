@@ -6,7 +6,7 @@
 `Docker`, `Git`, `Go`, `C`, `CentOS`, `CoreOS`, `IRC`, `Stenography`, `DevOps`, `Continuous Integration/Delivery`, `Event Sourcing`, `WebAssembly`
 
 ## Experience
-### Heroku - Senior Software Engineer &emsp; <small>*2017 - current*</small>
+### Heroku - Senior Software Engineer &emsp; <small>*2017 - 2019*</small>
 
 > [Heroku][heroku] is a cloud Platform-as-a-Service (PaaS) supporting
 > several programming languages that is used as a web application deployment model.
