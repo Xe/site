@@ -1,0 +1,7 @@
+language: generic
+
+services:
+  - docker
+
+script:
+  - docker build .
