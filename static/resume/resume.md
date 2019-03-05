@@ -19,6 +19,7 @@
 - [JVM Application Metrics](https://devcenter.heroku.com/changelog-items/1133)
 - [Go Runtime Metrics Agent](https://github.com/heroku/x/tree/master/runtime-metrics)
 - Other backend fixes and improvements on [Threshold Autoscaling](https://blog.heroku.com/heroku-autoscaling) and [Threshold Alerting](https://devcenter.heroku.com/articles/metrics#threshold-alerting)
+- [How to Make a Progressive Web App From Your Existing Website](https://blog.heroku.com/how-to-make-progressive-web-app)
 
 ### Backplane.io - Software Engineer &emsp; <small>*2016 - 2016*</small>
 
