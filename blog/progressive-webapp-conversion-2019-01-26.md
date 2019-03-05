@@ -191,3 +191,7 @@ For iOS Safari, go to the webpage you want to add as an app, then click the shar
 For Android with Chrome, tap on the hamburger menu in the upper right hand corner of the browser window and then tap "Add to Home screen.” This may prompt you for confirmation, then it will put the icon on your homescreen and you can launch, multitask or delete it like any other app. Unlike iOS, you cannot edit the starting URL or name of a progressive web app with Android.
 
 After all of these steps, you will have a progressive web app. Any page or asset that the users of that progressive web app (or any browser that supports service workers) loads will seamlessly be cached for future offline access. It will be exciting to see how service workers develop in the future. I'm personally excited the most for [background sync](https://developers.google.com/web/updates/2015/12/background-sync) – I feel it could enable some fascinatingly robust experiences.
+
+---
+
+Also posted on the [Heroku Engineering Blog](https://blog.heroku.com/how-to-make-progressive-web-app).
