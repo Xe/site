@@ -5,7 +5,7 @@ date: 2019-03-14
 
 # My Career So Far in Dates/Titles/Salaries
 
-The following tables are a view on my software career in dates/titles/salaries I was employed (company names omitted). Let this be inspiration to whoever is afraid of trying, failing and being fired. Every single one of these jobs has taught me lessons I've used daily in my career. 
+Let this be inspiration to whoever is afraid of trying, failing and being fired. Every single one of these jobs has taught me lessons I've used daily in my career.
 
 ## First Jobs
 
@@ -15,16 +15,18 @@ I don't have exact dates on these, but my first jobs were:
 - Pizza Delivery Driver - late high school early college
 - Paper Grader - Fall quarter of 2012
 
-I ended up walking out on the delivery job, that's a story for another day.
+I ended up walking out on the delivery job, but that's a story for another day.
 
 Most of what I learned from these jobs were the value of labor and when to just shut up and give people exactly what they are asking for. Even if it's what they might not want.
 
 ## Salaried Jobs
 
+The following table is a history of my software career by title, date and salary (company names are omitted).
+
 | Title | Start Date | End Date | Days Worked | Days Between Jobs | Salary | How I Left |
 |:----- |:---------- |:-------- |:----------- |:----------------- |:------ |:---------- |
 | Junior Systems Administrator | November 11, 2013 | January 06, 2014 | 56 days | n/a | $50,000/year | Terminated |
-| Software Engineering Intern | July 14, 2014 | August 27, 2014 | 44 days | 189 days | $35,000/year I think? | Terminated |
+| Software Engineering Intern | July 14, 2014 | August 27, 2014 | 44 days | 189 days | $35,000/year | Terminated |
 | Consultant | September 17, 2014 | October 15, 2014 | 28 days | 21 days | $90/hour | Contract Lapsed |
 | Consultant | October 27, 2014 | Feburary 9, 2015 | 105 days | 12 days | $90/hour | Contract Lapsed |
 | Site Reliability Engineer | March 30, 2015 | March 7, 2016 | 343 days | 49 days | $125,000/year | Demoted |
@@ -35,7 +37,7 @@ Most of what I learned from these jobs were the value of labor and when to just 
 | Senior Software Engineer | November 13, 2017 | March 8, 2019 | 480 days | 0 days | $150,000/year | Voulntary quit |
 | Senior Site Reliability Expert | ??? 2019 | (will be current) | n/a | n/a | not set in stone yet | n/a |
 
-Even though I've been fired three times, I don't regret my career as it's been so far. I've been able to work on experimental technology integrating into phone systems. I've worked in a mixed PHP/Haskell/Erlang/Go/Perl production environment. I've literally rebuilt most of the tool that was catalytic to my career a few times over. It's been the ride of a lifetime. 
+Even though I've been fired three times, I don't regret my career as it's been thus far. I've been able to work on experimental technology integrating into phone systems. I've worked in a mixed PHP/Haskell/Erlang/Go/Perl production environment. I've literally rebuilt most of the tool that was catalytic to my career a few times over. It's been the ride of a lifetime. 
 
 Even though I was fired, each of these failures in this chain of jobs enabled me to succeed the way I have. I can't wait to see what's next out of it. I only wonder how I can be transformed even more. I really wonder what it's gonna be like with the company that hired me over the border.
 
