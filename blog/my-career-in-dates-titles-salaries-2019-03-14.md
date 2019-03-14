@@ -43,7 +43,7 @@ Even though I was fired, each of these failures in this chain of jobs enabled me
 
 ![](/static/img/my-career.jpeg)
 
-[Fear stops you. Nothing prevents you.](https://twitter.com/theprincessxena/status/1106119712025382912?s=21).
+[Fear stops you. Nothing prevents you.](https://twitter.com/theprincessxena/status/1106119712025382912?s=21)
 
 Please go out and try, Creator. Go for your larger dreams of success. Inaction is a lot easier to regret than action is.
 
