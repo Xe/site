@@ -35,9 +35,9 @@ Most of what I learned from these jobs were the value of labor and when to just 
 | Senior Software Engineer | November 13, 2017 | March 8, 2019 | 480 days | 0 days | $150,000/year | Voulntary quit |
 | Senior Site Reliability Expert | ??? 2019 | (will be current) | n/a | n/a | not set in stone yet | n/a |
 
-Even though I've been fired three times, I don't regret my career as it's been so far. I've been able to work on experimental technology integrating into phone systems. I've worked in a mixed PHP/Haskell/Erlang/Go/Perl production environment. I've literally rebuilt most of the tool that was catalytical to my career a few times over. It's been the ride of a lifetime. I can't wait to see what's next out of it. I only wonder how I can be transformed even more. I really wonder what it's gonna be like with the company that hired me over the border.
+Even though I've been fired three times, I don't regret my career as it's been so far. I've been able to work on experimental technology integrating into phone systems. I've worked in a mixed PHP/Haskell/Erlang/Go/Perl production environment. I've literally rebuilt most of the tool that was catalytic to my career a few times over. It's been the ride of a lifetime. 
 
-Even though I was fired.
+Even though I was fired, each of these failures in this chain of jobs enabled me to succeed the way I have. I can't wait to see what's next out of it. I only wonder how I can be transformed even more. I really wonder what it's gonna be like with the company that hired me over the border.
 
 ![](/static/img/my-career.jpeg)
 
@@ -58,3 +58,5 @@ Be well.
       .i ko do panpi
       .i ko do gleki
 ```
+
+If you can, please make a blogpost similar to this. Don't include company names. Include start date, end date, time spent there, time spent job hunting, salary (if you remember it) and how you left it. Let's [end salary secrecy](https://thegirlpowercode.com/2018/09/12/is-salary-secrecy-coming-to-an-end/) one step at a time.
