@@ -28,8 +28,8 @@ Most of what I learned from these jobs were the value of labor and when to just 
 | Consultant | September 17, 2014 | October 15, 2014 | 28 days | 21 days | $90/hour | Contract Lapsed |
 | Consultant | October 27, 2014 | Feburary 9, 2015 | 105 days | 12 days | $90/hour | Contract Lapsed |
 | Site Reliability Engineer | March 30, 2015 | March 7, 2016 | 343 days | 49 days | $125,000/year | Demoted |
-| Systems Administrator | March 8, 2016 | April 1, 2016 | 24 days | 1 day | $105,000/year | Kinda badly |
-| Member of Technical Staff | April 4, 2016 | August 3, 2016 | 121 days | 3 days | $135,000/year | Kinda badly |
+| Systems Administrator | March 8, 2016 | April 1, 2016 | 24 days | 1 day | $105,000/year | Bad terms |
+| Member of Technical Staff | April 4, 2016 | August 3, 2016 | 121 days | 3 days | $135,000/year | Bad terms |
 | Software Engineer | August 24, 2016 | November 22, 2016 | 90 days | 21 days | $105,000/year | Terminated |
 | Consultant | Feburary 13, 2017 | November 13, 2017 | 273 days | 83 days | don't remember | Hired |
 | Senior Software Engineer | November 13, 2017 | March 8, 2019 | 480 days | 0 days | $150,000/year | Voulntary quit |
