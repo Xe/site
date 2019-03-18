@@ -55,6 +55,7 @@
 - Continuous learning of a lot of very powerful systems and improving upon them when it is needed
 
 ### VTCSecure - Deis Consultant (contract) &emsp; <small>*2014 - 2015*</small>
+
 > VTCSecure is a company dedicated to helping with custom and standard
 > audio/video conferencing solutions. They specialize in helping the deaf and
 > blind communicate over today's infrastructure without any trouble on their end.
@@ -67,6 +68,7 @@
 - Learning Freeswitch
 
 ### Crowdflower - Deis Consultant (Contract) &emsp; <small>*2014 - 2014*</small>
+
 > Crowdflower is a company that uses crowdsourcing to have its customers submit
 > tasks to be done, similar to Amazon's Mechanical Turk. CrowdFlower has over 50
 > labor channel partners, and its network has more than 5 million contributors
@@ -79,6 +81,7 @@
 - Laid groundwork on the creation and use of better tools for managing large clusters of CoreOS and Fleet machines
 
 ### OpDemand - Software Engineering Intern &emsp; <small>*2014 - 2014*</small>
+
 > OpDemand is the company behind the open source project Deis, a distributed
 > platform-as-a-service (PaaS) designed from the ground up to emulate Heroku but
 > on privately owned servers.
@@ -91,6 +94,7 @@
 ## Portfolio Highlights
 
 ### [Olin](https://github.com/Xe/olin)
+
 A work-in-progress event sourcing platform built with WebAssembly. This would allow you to load data in on one end and then let the machine take care of it without having to care about it. Worker functions would be compiled to WebAssembly to make the resulting code independent of any individual CPU, allowing for an easier migration to another CPU architecture (such as aarch64 or ppc64be) without having to recompile existing code.
 
 I have written multiple blogposts on this project:
@@ -99,9 +103,11 @@ I have written multiple blogposts on this project:
 - https://christine.website/blog/olin-2-the-future-09-5-2018
 
 ### [ilo Kesi](https://github.com/Xe/x/tree/master/discord/ilo-kesi)
+
 A chatbot that parses its commands through the grammar of the constructed language [Toki Pona](http://tokipona.org), then figures out what the user is asking for using a lookup table and executes that request.
 
 ### [When Then Zen](https://github.com/Xe/when-then-zen)
+
 This is meditation instructions translated into Gherkin, a-la:
 
 ```
@@ -129,9 +135,6 @@ Feature: Anapana (mindfulness via breathing) meditation
 ```
 
 This has been well-recieved by coworkers, friends and others. I have written more on the subject [here](https://christine.website/blog/when-then-zen-anapana-2018-08-15).
-
-### [xultybau](https://github.com/Xe/xultybau)
-An experimental take on a metalanguage analysis package for [Toki Pona](http://tokipona.org) text. This would then be consumed by ilo Kesi (see above) or other future projects like a text-based adventure game. This is still heavily experimental and there is not much to show yet other than the ideas that it will build up to.
 
 ## Writing
 
