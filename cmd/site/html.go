@@ -5,8 +5,11 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"path/filepath"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"within.website/ln"
 )
 
@@ -49,6 +52,11 @@ func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.H
 	})
 }
 
+var postView = promauto.NewCounterVec(prometheus.CounterOpts{
+	Name: "posts_viewed",
+	Help: "The number of views per post",
+}, []string{"base"})
+
 func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 	if r.RequestURI == "/blog/" {
 		http.Redirect(w, r, "/blog", http.StatusSeeOther)
@@ -70,4 +78,5 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	s.renderTemplatePage("blogpost.html", p).ServeHTTP(w, r)
+	postView.With(prometheus.Labels{"base": filepath.Base(p.Link)}).Inc()
 }
