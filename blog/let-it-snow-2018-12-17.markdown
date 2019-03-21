@@ -12,6 +12,8 @@ Happy holidays, all.
 
 ---
 
+<link rel="stylesheet" href="/css/snow.css" />
+
 More detailed usage:
 
 ```
