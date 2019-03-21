@@ -2,7 +2,8 @@ FROM xena/go:1.12.1 AS build
 ENV GOPROXY https://cache.greedo.xeserv.us
 COPY . /site
 WORKDIR /site
-RUN CGO_ENABLED=0 GOBIN=/root go install -v ./cmd/site
+RUN CGO_ENABLED=0 go test ./...
+RUN CGO_ENABLED=0 GOBIN=/root go install ./cmd/site
 
 FROM xena/alpine
 EXPOSE 5000

@@ -14,7 +14,9 @@ require (
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/snabb/sitemap v1.0.0
 	github.com/stretchr/testify v1.3.0
+	github.com/tj/front v0.0.0-20170212063142-739be213b0a1
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
+	gopkg.in/yaml.v1 v1.0.0-20140924161607-9f9df34309c0 // indirect
 	gopkg.in/yaml.v2 v2.2.1
 	within.website/ln v0.5.2
 )
