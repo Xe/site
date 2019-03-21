@@ -1,0 +1,7 @@
+{
+    "scripts": {
+        "dokku": {
+            "postdeploy": "curl https://www.google.com/ping?sitemap=https://christine.website/sitemap.xml"
+        }
+    }
+}
