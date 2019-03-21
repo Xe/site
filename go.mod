@@ -1,12 +1,9 @@
 module christine.website
 
 require (
-	github.com/Xe/gopreload v0.0.0-20170326043426-a00a8beb369c
 	github.com/Xe/jsonfeed v0.0.0-20170520170432-e21591505612
 	github.com/golang/protobuf v1.3.1 // indirect
-	github.com/google/gops v0.3.6
 	github.com/gorilla/feeds v1.1.0
-	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/povilasv/prommod v0.0.11
