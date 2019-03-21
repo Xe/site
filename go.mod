@@ -10,6 +10,8 @@ require (
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/povilasv/prommod v0.0.11
+	github.com/prometheus/client_golang v0.9.2
 	github.com/russross/blackfriday v0.0.0-20170806171014-cadec560ec52
 	github.com/shurcooL/sanitized_anchor_name v0.0.0-20170918181015-86672fcb3f95 // indirect
 	github.com/st3fan/jsonfeed v0.0.0-20170519104842-498b2850d26b // indirect

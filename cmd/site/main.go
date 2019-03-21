@@ -14,6 +14,9 @@ import (
 
 	"github.com/Xe/jsonfeed"
 	"github.com/gorilla/feeds"
+	"github.com/povilasv/prommod"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	blackfriday "github.com/russross/blackfriday"
 	"github.com/tj/front"
 	"within.website/ln"
@@ -21,10 +24,45 @@ import (
 
 var port = os.Getenv("PORT")
 
+var (
+	requestCounter = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "handler_requests_total",
+			Help: "Total number of request/responses by HTTP status code.",
+		}, []string{"handler", "code"})
+
+	requestDuration = prometheus.NewHistogramVec(prometheus.HistogramOpts{
+		Name: "handler_request_duration",
+		Help: "Handler request duration.",
+	}, []string{"handler", "method"})
+
+	requestInFlight = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "handler_requests_in_flight",
+		Help: "Current number of requests being served.",
+	}, []string{"handler"})
+)
+
+func init() {
+	prometheus.Register(requestCounter)
+	prometheus.Register(requestDuration)
+	prometheus.Register(requestInFlight)
+}
+
+func middlewareMetrics(family string, next http.Handler) http.Handler {
+	return promhttp.InstrumentHandlerDuration(
+		requestDuration.MustCurryWith(prometheus.Labels{"handler": family}),
+		promhttp.InstrumentHandlerCounter(requestCounter.MustCurryWith(prometheus.Labels{"handler": family}),
+			promhttp.InstrumentHandlerInFlight(requestInFlight.With(prometheus.Labels{"handler": family}), next),
+		),
+	)
+}
+
 func main() {
 	if port == "" {
 		port = "29384"
 	}
+
+	prometheus.Register(prommod.NewCollector("christine"))
 
 	s, err := Build()
 	if err != nil {
@@ -173,13 +211,14 @@ func Build() (*Site, error) {
 	s.mux.HandleFunc("/.within/health", func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "OK", http.StatusOK)
 	})
-	s.mux.Handle("/resume", s.renderTemplatePage("resume.html", s.Resume))
-	s.mux.Handle("/blog", s.renderTemplatePage("blogindex.html", s.Posts))
-	s.mux.Handle("/contact", s.renderTemplatePage("contact.html", nil))
-	s.mux.HandleFunc("/blog.rss", s.createFeed)
-	s.mux.HandleFunc("/blog.atom", s.createAtom)
-	s.mux.HandleFunc("/blog.json", s.createJsonFeed)
-	s.mux.HandleFunc("/blog/", s.showPost)
+	s.mux.Handle("/metrics", promhttp.Handler())
+	s.mux.Handle("/resume", middlewareMetrics("resume", s.renderTemplatePage("resume.html", s.Resume)))
+	s.mux.Handle("/blog", middlewareMetrics("blog", s.renderTemplatePage("blogindex.html", s.Posts)))
+	s.mux.Handle("/contact", middlewareMetrics("contact", s.renderTemplatePage("contact.html", nil)))
+	s.mux.Handle("/blog.rss", middlewareMetrics("blog.rss", http.HandlerFunc(s.createFeed)))
+	s.mux.Handle("/blog.atom", middlewareMetrics("blog.atom", http.HandlerFunc(s.createAtom)))
+	s.mux.Handle("/blog.json", middlewareMetrics("blog.json", http.HandlerFunc(s.createJsonFeed)))
+	s.mux.Handle("/blog/", middlewareMetrics("blogpost", http.HandlerFunc(s.showPost)))
 	s.mux.Handle("/css/", http.FileServer(http.Dir(".")))
 	s.mux.Handle("/static/", http.FileServer(http.Dir(".")))
 	s.mux.HandleFunc("/sw.js", func(w http.ResponseWriter, r *http.Request) {
