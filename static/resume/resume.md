@@ -3,7 +3,7 @@
 #### Web and Backend Services Devops Specialist
 ##### Bellevue, WA &emsp; [christine.website][homepage]
 
-`Docker`, `Git`, `Go`, `C`, `CentOS`, `CoreOS`, `IRC`, `Stenography`, `DevOps`, `Continuous Integration/Delivery`, `Event Sourcing`, `WebAssembly`
+`Docker`, `Git`, `Go`, `C`, `CentOS`, `CoreOS`, `IRC`, `Stenography`, `DevOps`, `Heroku`, `Continuous Integration/Delivery`, `Event Sourcing`, `WebAssembly`, `Lua`, `Haskell`, `Nim`, `Python`, `Java`, `Rust`, `Javascript`, `Gherkin`, `Mindfulness`, `Lojban`, `HTTP/2`, `Rails`, `Ruby`, `Sinatra`, `Alpine Linux`, `Ubuntu`, `Debian`, `Linux`, `Dart`, `Flutter`, `TCL`, `Emacs Lisp`, `MoonScript`, `RPM`, `Node.js`, `npm`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`, `Postgres`, `MySQL`, `SQLite`
 
 ## Experience
 ### Heroku - Senior Software Engineer &emsp; <small>*2017 - 2019*</small>
@@ -26,7 +26,6 @@
 > [Backplane](https://backplane.io) is an innovative reverse reverse proxy that
 > helps administrators and startups simplify their web application routing.
 
-
 #### Highlights
 
 - Performance monitoring of production servers
@@ -43,6 +42,7 @@
 - Code maintenance
 
 ### IMVU - Site Reliability Engineer &emsp; <small>*2015 - 2016*</small>
+
 > IMVU, inc is a company whose mission is to help people find and communicate
 > with eachother. Their main product is a 3D avatar-based chat client and its
 > surrounding infrastructure allowing creators to make content for the avatars
@@ -101,6 +101,8 @@ I have written multiple blogposts on this project:
 
 - https://christine.website/blog/olin-1-why-09-1-2018
 - https://christine.website/blog/olin-2-the-future-09-5-2018
+
+As of March 21, 2019, Olin is able to run binaries compiled with [Go 1.12.x WebAssembly support](https://github.com/golang/go/wiki/WebAssembly). 
 
 ### [ilo Kesi](https://github.com/Xe/x/tree/master/discord/ilo-kesi)
 
