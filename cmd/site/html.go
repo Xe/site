@@ -19,7 +19,7 @@ func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.H
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fetag := "W/" + Hash(templateFname, etag) + "-1"
 
-		f := ln.F{"etag": fetag, "if-none-match": r.Header.Get("If-None.Match")}
+		f := ln.F{"etag": fetag, "if_none_match": r.Header.Get("If-None-Match")}
 
 		if r.Header.Get("If-None-Match") == fetag {
 			http.Error(w, "Cached data OK", http.StatusNotModified)
@@ -28,29 +28,15 @@ func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.H
 		}
 
 		defer logTemplateTime(templateFname, f, time.Now())
-		s.tlock.RLock()
-		defer s.tlock.RUnlock()
 
 		var t *template.Template
 		var err error
 
-		if s.templates[templateFname] == nil {
-			t, err = template.ParseFiles("templates/base.html", "templates/"+templateFname)
-			if err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
-				ln.Error(context.Background(), err, ln.F{"action": "renderTemplatePage", "page": templateFname})
-				fmt.Fprintf(w, "error: %v", err)
-			}
-
-			ln.Log(context.Background(), ln.F{"action": "loaded_new_template", "fname": templateFname})
-
-			s.tlock.RUnlock()
-			s.tlock.Lock()
-			s.templates[templateFname] = t
-			s.tlock.Unlock()
-			s.tlock.RLock()
-		} else {
-			t = s.templates[templateFname]
+		t, err = template.ParseFiles("templates/base.html", "templates/"+templateFname)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			ln.Error(context.Background(), err, ln.F{"action": "renderTemplatePage", "page": templateFname})
+			fmt.Fprintf(w, "error: %v", err)
 		}
 
 		w.Header().Set("ETag", fetag)

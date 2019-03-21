@@ -1,7 +1,6 @@
 module christine.website
 
 require (
-	github.com/Xe/jsonfeed v0.0.0-20170520170432-e21591505612
 	github.com/golang/protobuf v1.3.1 // indirect
 	github.com/gorilla/feeds v1.1.0
 	github.com/kr/pretty v0.1.0 // indirect
@@ -13,10 +12,8 @@ require (
 	github.com/prometheus/procfs v0.0.0-20190319124303-40f3c57fb198 // indirect
 	github.com/russross/blackfriday v2.0.0+incompatible
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
-	github.com/st3fan/jsonfeed v0.0.0-20170519104842-498b2850d26b // indirect
-	github.com/stretchr/testify v1.3.0 // indirect
-	github.com/tj/front v0.0.0-20170212063142-739be213b0a1
+	github.com/stretchr/testify v1.3.0
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
-	gopkg.in/yaml.v1 v1.0.0-20140924161607-9f9df34309c0 // indirect
+	gopkg.in/yaml.v2 v2.2.1
 	within.website/ln v0.5.2
 )

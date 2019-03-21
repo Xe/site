@@ -12,13 +12,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Xe/jsonfeed"
+	"christine.website/internal/front"
+	"christine.website/internal/jsonfeed"
 	"github.com/gorilla/feeds"
 	"github.com/povilasv/prommod"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	blackfriday "github.com/russross/blackfriday"
-	"github.com/tj/front"
 	"within.website/ln"
 )
 
