@@ -19,6 +19,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	blackfriday "github.com/russross/blackfriday"
+	"github.com/snabb/sitemap"
 	"within.website/ln"
 )
 
@@ -81,7 +82,8 @@ type Site struct {
 	rssFeed  *feeds.Feed
 	jsonFeed *jsonfeed.Feed
 
-	mux *http.ServeMux
+	mux     *http.ServeMux
+	sitemap []byte
 
 	templates map[string]*template.Template
 	tlock     sync.RWMutex
@@ -93,12 +95,39 @@ func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.mux.ServeHTTP(w, r)
 }
 
+var arbDate = time.Date(2019, time.March, 21, 18, 0, 0, 0, time.UTC)
+
 // Build creates a new Site instance or fails.
 func Build() (*Site, error) {
 	type postFM struct {
 		Title string
 		Date  string
 	}
+
+	smi := sitemap.New()
+	smi.Add(&sitemap.URL{
+		Loc:        "https://christine.website/resume",
+		LastMod:    &arbDate,
+		ChangeFreq: sitemap.Monthly,
+	})
+
+	smi.Add(&sitemap.URL{
+		Loc:        "https://christine.website/contact",
+		LastMod:    &arbDate,
+		ChangeFreq: sitemap.Monthly,
+	})
+
+	smi.Add(&sitemap.URL{
+		Loc:        "https://christine.website/",
+		LastMod:    &arbDate,
+		ChangeFreq: sitemap.Monthly,
+	})
+
+	smi.Add(&sitemap.URL{
+		Loc:        "https://christine.website/blog",
+		LastMod:    &arbDate,
+		ChangeFreq: sitemap.Weekly,
+	})
 
 	s := &Site{
 		rssFeed: &feeds.Feed{
@@ -135,7 +164,7 @@ func Build() (*Site, error) {
 		if info.IsDir() {
 			return nil
 		}
-
+		
 		fin, err := os.Open(path)
 		if err != nil {
 			return err
@@ -164,6 +193,12 @@ func Build() (*Site, error) {
 		}
 
 		s.Posts = append(s.Posts, p)
+		itime, _ := time.Parse("2006-01-02", p.Date)
+		smi.Add(&sitemap.URL{
+			Loc:        "https://christine.website/" + p.Link,
+			LastMod:    &itime,
+			ChangeFreq: sitemap.Monthly,
+		})
 
 		return nil
 	})
@@ -224,6 +259,13 @@ func Build() (*Site, error) {
 	s.mux.HandleFunc("/sw.js", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./static/js/sw.js")
 	})
+	s.mux.HandleFunc("/robots.txt", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./static/robots.txt")
+	})
+	s.mux.Handle("/sitemap.xml", middlewareMetrics("sitemap", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/xml")
+		smi.WriteTo(w)
+	})))
 
 	return s, nil
 }
