@@ -11,26 +11,36 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"within.website/ln"
+	"within.website/ln/opname"
 )
 
-func logTemplateTime(name string, f ln.F, from time.Time) {
-	now := time.Now()
-	ln.Log(context.Background(), f, ln.F{"action": "template_rendered", "dur": now.Sub(from).String(), "name": name})
+var (
+	templateRenderTime = promauto.NewHistogramVec(prometheus.HistogramOpts{
+		Name: "template_render_time",
+		Help: "Template render time in nanoseconds",
+	}, []string{"name"})
+)
+
+func logTemplateTime(ctx context.Context, name string, f ln.F, from time.Time) {
+	dur := time.Since(from)
+	templateRenderTime.With(prometheus.Labels{"name": name}).Observe(float64(dur))
+	ln.Log(ctx, f, ln.F{"dur": dur, "name": name})
 }
 
 func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := opname.With(r.Context(), "renderTemplatePage")
 		fetag := "W/" + Hash(templateFname, etag) + "-1"
 
 		f := ln.F{"etag": fetag, "if_none_match": r.Header.Get("If-None-Match")}
 
 		if r.Header.Get("If-None-Match") == fetag {
 			http.Error(w, "Cached data OK", http.StatusNotModified)
-			ln.Log(r.Context(), f, ln.Info("Cache hit"))
+			ln.Log(ctx, f, ln.Info("Cache hit"))
 			return
 		}
 
-		defer logTemplateTime(templateFname, f, time.Now())
+		defer logTemplateTime(ctx, templateFname, f, time.Now())
 
 		var t *template.Template
 		var err error
@@ -38,7 +48,7 @@ func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.H
 		t, err = template.ParseFiles("templates/base.html", "templates/"+templateFname)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			ln.Error(context.Background(), err, ln.F{"action": "renderTemplatePage", "page": templateFname})
+			ln.Error(ctx, err, ln.F{"action": "renderTemplatePage", "page": templateFname})
 			fmt.Fprintf(w, "error: %v", err)
 		}
 

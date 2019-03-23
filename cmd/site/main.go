@@ -14,13 +14,17 @@ import (
 
 	"christine.website/internal/front"
 	"christine.website/internal/jsonfeed"
+	"github.com/celrenheit/sandflake"
 	"github.com/gorilla/feeds"
 	"github.com/povilasv/prommod"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	blackfriday "github.com/russross/blackfriday"
+	"github.com/sebest/xff"
 	"github.com/snabb/sitemap"
 	"within.website/ln"
+	"within.website/ln/ex"
+	"within.website/ln/opname"
 )
 
 var port = os.Getenv("PORT")
@@ -74,6 +78,27 @@ func main() {
 	http.ListenAndServe(":"+port, s)
 }
 
+func requestIDMiddleware(next http.Handler) http.Handler {
+	var g sandflake.Generator
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		id := g.Next().String()
+
+		if rid := r.Header.Get("X-Request-Id"); rid != "" {
+			id = rid + "," + id
+		}
+
+		ctx := ln.WithF(r.Context(), ln.F{
+			"request_id": id,
+		})
+		r = r.WithContext(ctx)
+
+		w.Header().Set("X-Request-Id", id)
+		r.Header.Set("X-Request-Id", id)
+
+		next.ServeHTTP(w, r)
+	})
+}
+
 // Site is the parent object for https://christine.website's backend.
 type Site struct {
 	Posts  Posts
@@ -84,15 +109,17 @@ type Site struct {
 
 	mux     *http.ServeMux
 	sitemap []byte
+	xffmw *xff.XFF
 
 	templates map[string]*template.Template
 	tlock     sync.RWMutex
 }
 
 func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	ln.Log(r.Context(), ln.F{"action": "Site.ServeHTTP", "user_ip_address": r.RemoteAddr, "path": r.RequestURI})
+	ctx := opname.With(r.Context(), "site.ServeHTTP")
+	r = r.WithContext(ctx)
 
-	s.mux.ServeHTTP(w, r)
+	requestIDMiddleware(s.xffmw.Handler(ex.HTTPLog(s.mux))).ServeHTTP(w, r)
 }
 
 var arbDate = time.Date(2019, time.March, 21, 18, 0, 0, 0, time.UTC)
@@ -129,6 +156,12 @@ func Build() (*Site, error) {
 		ChangeFreq: sitemap.Weekly,
 	})
 
+
+	xffmw, err := xff.Default()
+	if err != nil {
+		return nil, err
+	}
+
 	s := &Site{
 		rssFeed: &feeds.Feed{
 			Title:       "Christine Dodrill's Blog",
@@ -153,10 +186,10 @@ func Build() (*Site, error) {
 			},
 		},
 		mux:       http.NewServeMux(),
-		templates: map[string]*template.Template{},
+		xffmw: xffmw,
 	}
 
-	err := filepath.Walk("./blog/", func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk("./blog/", func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -164,7 +197,7 @@ func Build() (*Site, error) {
 		if info.IsDir() {
 			return nil
 		}
-		
+
 		fin, err := os.Open(path)
 		if err != nil {
 			return err

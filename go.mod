@@ -1,6 +1,7 @@
 module christine.website
 
 require (
+	github.com/celrenheit/sandflake v0.0.0-20171226210037-92cb626f32dc
 	github.com/golang/protobuf v1.3.1 // indirect
 	github.com/gorilla/feeds v1.1.0
 	github.com/kr/pretty v0.1.0 // indirect
@@ -11,6 +12,7 @@ require (
 	github.com/prometheus/common v0.2.0 // indirect
 	github.com/prometheus/procfs v0.0.0-20190319124303-40f3c57fb198 // indirect
 	github.com/russross/blackfriday v2.0.0+incompatible
+	github.com/sebest/xff v0.0.0-20160910043805-6c115e0ffa35
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/snabb/sitemap v1.0.0
 	github.com/stretchr/testify v1.3.0
