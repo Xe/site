@@ -91,6 +91,17 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	s.renderTemplatePage("blogpost.html", p).ServeHTTP(w, r)
+	const dateFormat = `2006-01-02`
+	s.renderTemplatePage("blogpost.html", struct {
+		Title    string
+		Link     string
+		BodyHTML template.HTML
+		Date     string
+	}{
+		Title:    p.Title,
+		Link:     p.Link,
+		BodyHTML: p.BodyHTML,
+		Date:     p.Date.Format(dateFormat),
+	}).ServeHTTP(w, r)
 	postView.With(prometheus.Labels{"base": filepath.Base(p.Link)}).Inc()
 }

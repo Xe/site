@@ -15,12 +15,13 @@ import (
 
 // Post is a single blogpost.
 type Post struct {
-	Title    string        `json:"title"`
-	Link     string        `json:"link"`
-	Summary  string        `json:"summary,omitifempty"`
-	Body     string        `json:"-"`
-	BodyHTML template.HTML `json:"body"`
-	Date     time.Time     `json:"date"`
+	Title      string        `json:"title"`
+	Link       string        `json:"link"`
+	Summary    string        `json:"summary,omitifempty"`
+	Body       string        `json:"-"`
+	BodyHTML   template.HTML `json:"body"`
+	Date       time.Time
+	DateString string `json:"date"`
 }
 
 // Posts implements sort.Interface for a slice of Post objects.
@@ -78,11 +79,12 @@ func LoadPosts(path string) (Posts, error) {
 		}
 
 		p := Post{
-			Title:    fm.Title,
-			Date:     date,
-			Link:     strings.Split(path, ".")[0],
-			Body:     string(remaining),
-			BodyHTML: template.HTML(output),
+			Title:      fm.Title,
+			Date:       date,
+			DateString: fm.Date,
+			Link:       strings.Split(path, ".")[0],
+			Body:       string(remaining),
+			BodyHTML:   template.HTML(output),
 		}
 		result = append(result, p)
 

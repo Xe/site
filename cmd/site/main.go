@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"sync"
 	"time"
 
 	"christine.website/internal/blog"
@@ -38,8 +37,14 @@ func main() {
 		ln.FatalErr(context.Background(), err, ln.Action("Build"))
 	}
 
+	mux := http.NewServeMux()
+	mux.HandleFunc("/.within/health", func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "OK", http.StatusOK)
+	})
+	mux.Handle("/", s)
+
 	ln.Log(context.Background(), ln.F{"action": "http_listening", "port": port})
-	http.ListenAndServe(":"+port, s)
+	http.ListenAndServe(":"+port, mux)
 }
 
 // Site is the parent object for https://christine.website's backend.
@@ -53,9 +58,6 @@ type Site struct {
 	mux     *http.ServeMux
 	sitemap []byte
 	xffmw   *xff.XFF
-
-	templates map[string]*template.Template
-	tlock     sync.RWMutex
 }
 
 func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -168,9 +170,6 @@ func Build() (*Site, error) {
 		}
 
 		s.renderTemplatePage("index.html", nil).ServeHTTP(w, r)
-	})
-	s.mux.HandleFunc("/.within/health", func(w http.ResponseWriter, r *http.Request) {
-		http.Error(w, "OK", http.StatusOK)
 	})
 	s.mux.Handle("/metrics", promhttp.Handler())
 	s.mux.Handle("/resume", middleware.Metrics("resume", s.renderTemplatePage("resume.html", s.Resume)))
