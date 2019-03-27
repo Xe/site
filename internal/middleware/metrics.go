@@ -26,9 +26,9 @@ var (
 )
 
 func init() {
-	prometheus.Register(requestCounter)
-	prometheus.Register(requestDuration)
-	prometheus.Register(requestInFlight)
+	_ = prometheus.Register(requestCounter)
+	_ = prometheus.Register(requestDuration)
+	_ = prometheus.Register(requestInFlight)
 }
 
 // Metrics captures request duration, request count and in-flight request count

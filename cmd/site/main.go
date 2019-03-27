@@ -30,11 +30,15 @@ func main() {
 		port = "29384"
 	}
 
+	ctx := ln.WithF(opname.With(context.Background(), "main"), ln.F{
+		"port": port,
+	})
+
 	prometheus.Register(prommod.NewCollector("christine"))
 
 	s, err := Build()
 	if err != nil {
-		ln.FatalErr(context.Background(), err, ln.Action("Build"))
+		ln.FatalErr(ctx, err, ln.Action("Build"))
 	}
 
 	mux := http.NewServeMux()
@@ -43,8 +47,8 @@ func main() {
 	})
 	mux.Handle("/", s)
 
-	ln.Log(context.Background(), ln.F{"action": "http_listening", "port": port})
-	http.ListenAndServe(":"+port, mux)
+	ln.Log(ctx, ln.Action("http_listening"))
+	ln.FatalErr(ctx, http.ListenAndServe(":"+port, mux))
 }
 
 // Site is the parent object for https://christine.website's backend.
@@ -56,7 +60,6 @@ type Site struct {
 	jsonFeed *jsonfeed.Feed
 
 	mux     *http.ServeMux
-	sitemap []byte
 	xffmw   *xff.XFF
 }
 
@@ -189,7 +192,7 @@ func Build() (*Site, error) {
 	})
 	s.mux.Handle("/sitemap.xml", middleware.Metrics("sitemap", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/xml")
-		smi.WriteTo(w)
+		_, _ = smi.WriteTo(w)
 	})))
 
 	return s, nil
