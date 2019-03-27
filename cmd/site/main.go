@@ -34,7 +34,7 @@ func main() {
 		"port": port,
 	})
 
-	prometheus.Register(prommod.NewCollector("christine"))
+	_ = prometheus.Register(prommod.NewCollector("christine"))
 
 	s, err := Build()
 	if err != nil {
