@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"time"
 
+	"christine.website/internal"
+	"christine.website/internal/blog"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"within.website/ln"
@@ -30,7 +32,7 @@ func logTemplateTime(ctx context.Context, name string, f ln.F, from time.Time) {
 func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := opname.With(r.Context(), "renderTemplatePage")
-		fetag := "W/" + Hash(templateFname, etag) + "-1"
+		fetag := "W/" + internal.Hash(templateFname, etag) + "-1"
 
 		f := ln.F{"etag": fetag, "if_none_match": r.Header.Get("If-None-Match")}
 
@@ -74,19 +76,32 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	cmp := r.URL.Path[1:]
-	var p *Post
+	var p blog.Post
+	var found bool
 	for _, pst := range s.Posts {
 		if pst.Link == cmp {
 			p = pst
+			found = true
 		}
 	}
 
-	if p == nil {
+	if !found {
 		w.WriteHeader(http.StatusNotFound)
 		s.renderTemplatePage("error.html", "no such post found: "+r.RequestURI).ServeHTTP(w, r)
 		return
 	}
 
-	s.renderTemplatePage("blogpost.html", p).ServeHTTP(w, r)
+	const dateFormat = `2006-01-02`
+	s.renderTemplatePage("blogpost.html", struct {
+		Title    string
+		Link     string
+		BodyHTML template.HTML
+		Date     string
+	}{
+		Title:    p.Title,
+		Link:     p.Link,
+		BodyHTML: p.BodyHTML,
+		Date:     p.Date.Format(dateFormat),
+	}).ServeHTTP(w, r)
 	postView.With(prometheus.Labels{"base": filepath.Base(p.Link)}).Inc()
 }

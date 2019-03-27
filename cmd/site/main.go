@@ -6,15 +6,11 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"path/filepath"
-	"sort"
-	"strings"
-	"sync"
 	"time"
 
-	"christine.website/internal/front"
+	"christine.website/internal/blog"
 	"christine.website/internal/jsonfeed"
-	"github.com/celrenheit/sandflake"
+	"christine.website/internal/middleware"
 	"github.com/gorilla/feeds"
 	"github.com/povilasv/prommod"
 	"github.com/prometheus/client_golang/prometheus"
@@ -29,108 +25,58 @@ import (
 
 var port = os.Getenv("PORT")
 
-var (
-	requestCounter = prometheus.NewCounterVec(
-		prometheus.CounterOpts{
-			Name: "handler_requests_total",
-			Help: "Total number of request/responses by HTTP status code.",
-		}, []string{"handler", "code"})
-
-	requestDuration = prometheus.NewHistogramVec(prometheus.HistogramOpts{
-		Name: "handler_request_duration",
-		Help: "Handler request duration.",
-	}, []string{"handler", "method"})
-
-	requestInFlight = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "handler_requests_in_flight",
-		Help: "Current number of requests being served.",
-	}, []string{"handler"})
-)
-
-func init() {
-	prometheus.Register(requestCounter)
-	prometheus.Register(requestDuration)
-	prometheus.Register(requestInFlight)
-}
-
-func middlewareMetrics(family string, next http.Handler) http.Handler {
-	return promhttp.InstrumentHandlerDuration(
-		requestDuration.MustCurryWith(prometheus.Labels{"handler": family}),
-		promhttp.InstrumentHandlerCounter(requestCounter.MustCurryWith(prometheus.Labels{"handler": family}),
-			promhttp.InstrumentHandlerInFlight(requestInFlight.With(prometheus.Labels{"handler": family}), next),
-		),
-	)
-}
-
 func main() {
 	if port == "" {
 		port = "29384"
 	}
 
+	ctx := ln.WithF(opname.With(context.Background(), "main"), ln.F{
+		"port": port,
+	})
+
 	prometheus.Register(prommod.NewCollector("christine"))
 
 	s, err := Build()
 	if err != nil {
-		ln.FatalErr(context.Background(), err, ln.Action("Build"))
+		ln.FatalErr(ctx, err, ln.Action("Build"))
 	}
 
-	ln.Log(context.Background(), ln.F{"action": "http_listening", "port": port})
-	http.ListenAndServe(":"+port, s)
-}
-
-func requestIDMiddleware(next http.Handler) http.Handler {
-	var g sandflake.Generator
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		id := g.Next().String()
-
-		if rid := r.Header.Get("X-Request-Id"); rid != "" {
-			id = rid + "," + id
-		}
-
-		ctx := ln.WithF(r.Context(), ln.F{
-			"request_id": id,
-		})
-		r = r.WithContext(ctx)
-
-		w.Header().Set("X-Request-Id", id)
-		r.Header.Set("X-Request-Id", id)
-
-		next.ServeHTTP(w, r)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/.within/health", func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "OK", http.StatusOK)
 	})
+	mux.Handle("/", s)
+
+	ln.Log(ctx, ln.Action("http_listening"))
+	ln.FatalErr(ctx, http.ListenAndServe(":"+port, mux))
 }
 
 // Site is the parent object for https://christine.website's backend.
 type Site struct {
-	Posts  Posts
+	Posts  blog.Posts
 	Resume template.HTML
 
 	rssFeed  *feeds.Feed
 	jsonFeed *jsonfeed.Feed
 
 	mux     *http.ServeMux
-	sitemap []byte
-	xffmw *xff.XFF
-
-	templates map[string]*template.Template
-	tlock     sync.RWMutex
+	xffmw   *xff.XFF
 }
 
 func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := opname.With(r.Context(), "site.ServeHTTP")
+	ctx = ln.WithF(ctx, ln.F{
+		"user_agent": r.Header.Get("User-Agent"),
+	})
 	r = r.WithContext(ctx)
 
-	requestIDMiddleware(s.xffmw.Handler(ex.HTTPLog(s.mux))).ServeHTTP(w, r)
+	middleware.RequestID(s.xffmw.Handler(ex.HTTPLog(s.mux))).ServeHTTP(w, r)
 }
 
 var arbDate = time.Date(2019, time.March, 21, 18, 0, 0, 0, time.UTC)
 
 // Build creates a new Site instance or fails.
 func Build() (*Site, error) {
-	type postFM struct {
-		Title string
-		Date  string
-	}
-
 	smi := sitemap.New()
 	smi.Add(&sitemap.URL{
 		Loc:        "https://christine.website/resume",
@@ -155,7 +101,6 @@ func Build() (*Site, error) {
 		LastMod:    &arbDate,
 		ChangeFreq: sitemap.Weekly,
 	})
-
 
 	xffmw, err := xff.Default()
 	if err != nil {
@@ -185,61 +130,15 @@ func Build() (*Site, error) {
 				Avatar: icon,
 			},
 		},
-		mux:       http.NewServeMux(),
+		mux:   http.NewServeMux(),
 		xffmw: xffmw,
 	}
 
-	err = filepath.Walk("./blog/", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			return nil
-		}
-
-		fin, err := os.Open(path)
-		if err != nil {
-			return err
-		}
-		defer fin.Close()
-
-		content, err := ioutil.ReadAll(fin)
-		if err != nil {
-			return err
-		}
-
-		var fm postFM
-		remaining, err := front.Unmarshal(content, &fm)
-		if err != nil {
-			return err
-		}
-
-		output := blackfriday.Run(remaining)
-
-		p := &Post{
-			Title:    fm.Title,
-			Date:     fm.Date,
-			Link:     strings.Split(path, ".")[0],
-			Body:     string(remaining),
-			BodyHTML: template.HTML(output),
-		}
-
-		s.Posts = append(s.Posts, p)
-		itime, _ := time.Parse("2006-01-02", p.Date)
-		smi.Add(&sitemap.URL{
-			Loc:        "https://christine.website/" + p.Link,
-			LastMod:    &itime,
-			ChangeFreq: sitemap.Monthly,
-		})
-
-		return nil
-	})
+	posts, err := blog.LoadPosts("./blog/")
 	if err != nil {
 		return nil, err
 	}
-
-	sort.Sort(sort.Reverse(s.Posts))
+	s.Posts = posts
 
 	resumeData, err := ioutil.ReadFile("./static/resume/resume.md")
 	if err != nil {
@@ -249,19 +148,18 @@ func Build() (*Site, error) {
 	s.Resume = template.HTML(blackfriday.Run(resumeData))
 
 	for _, item := range s.Posts {
-		itime, _ := time.Parse("2006-01-02", item.Date)
 		s.rssFeed.Items = append(s.rssFeed.Items, &feeds.Item{
 			Title:       item.Title,
 			Link:        &feeds.Link{Href: "https://christine.website/" + item.Link},
 			Description: item.Summary,
-			Created:     itime,
+			Created:     item.Date,
 		})
 
 		s.jsonFeed.Items = append(s.jsonFeed.Items, jsonfeed.Item{
 			ID:            "https://christine.website/" + item.Link,
 			URL:           "https://christine.website/" + item.Link,
 			Title:         item.Title,
-			DatePublished: itime,
+			DatePublished: item.Date,
 			ContentHTML:   string(item.BodyHTML),
 		})
 	}
@@ -276,17 +174,14 @@ func Build() (*Site, error) {
 
 		s.renderTemplatePage("index.html", nil).ServeHTTP(w, r)
 	})
-	s.mux.HandleFunc("/.within/health", func(w http.ResponseWriter, r *http.Request) {
-		http.Error(w, "OK", http.StatusOK)
-	})
 	s.mux.Handle("/metrics", promhttp.Handler())
-	s.mux.Handle("/resume", middlewareMetrics("resume", s.renderTemplatePage("resume.html", s.Resume)))
-	s.mux.Handle("/blog", middlewareMetrics("blog", s.renderTemplatePage("blogindex.html", s.Posts)))
-	s.mux.Handle("/contact", middlewareMetrics("contact", s.renderTemplatePage("contact.html", nil)))
-	s.mux.Handle("/blog.rss", middlewareMetrics("blog.rss", http.HandlerFunc(s.createFeed)))
-	s.mux.Handle("/blog.atom", middlewareMetrics("blog.atom", http.HandlerFunc(s.createAtom)))
-	s.mux.Handle("/blog.json", middlewareMetrics("blog.json", http.HandlerFunc(s.createJsonFeed)))
-	s.mux.Handle("/blog/", middlewareMetrics("blogpost", http.HandlerFunc(s.showPost)))
+	s.mux.Handle("/resume", middleware.Metrics("resume", s.renderTemplatePage("resume.html", s.Resume)))
+	s.mux.Handle("/blog", middleware.Metrics("blog", s.renderTemplatePage("blogindex.html", s.Posts)))
+	s.mux.Handle("/contact", middleware.Metrics("contact", s.renderTemplatePage("contact.html", nil)))
+	s.mux.Handle("/blog.rss", middleware.Metrics("blog.rss", http.HandlerFunc(s.createFeed)))
+	s.mux.Handle("/blog.atom", middleware.Metrics("blog.atom", http.HandlerFunc(s.createAtom)))
+	s.mux.Handle("/blog.json", middleware.Metrics("blog.json", http.HandlerFunc(s.createJSONFeed)))
+	s.mux.Handle("/blog/", middleware.Metrics("blogpost", http.HandlerFunc(s.showPost)))
 	s.mux.Handle("/css/", http.FileServer(http.Dir(".")))
 	s.mux.Handle("/static/", http.FileServer(http.Dir(".")))
 	s.mux.HandleFunc("/sw.js", func(w http.ResponseWriter, r *http.Request) {
@@ -295,34 +190,12 @@ func Build() (*Site, error) {
 	s.mux.HandleFunc("/robots.txt", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./static/robots.txt")
 	})
-	s.mux.Handle("/sitemap.xml", middlewareMetrics("sitemap", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	s.mux.Handle("/sitemap.xml", middleware.Metrics("sitemap", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/xml")
-		smi.WriteTo(w)
+		_, _ = smi.WriteTo(w)
 	})))
 
 	return s, nil
 }
 
 const icon = "https://christine.website/static/img/avatar.png"
-
-// Post is a single blogpost.
-type Post struct {
-	Title    string        `json:"title"`
-	Link     string        `json:"link"`
-	Summary  string        `json:"summary,omitifempty"`
-	Body     string        `json:"-"`
-	BodyHTML template.HTML `json:"body"`
-	Date     string        `json:"date"`
-}
-
-// Posts implements sort.Interface for a slice of Post objects.
-type Posts []*Post
-
-func (p Posts) Len() int { return len(p) }
-func (p Posts) Less(i, j int) bool {
-	iDate, _ := time.Parse("2006-01-02", p[i].Date)
-	jDate, _ := time.Parse("2006-01-02", p[j].Date)
-
-	return iDate.Unix() < jDate.Unix()
-}
-func (p Posts) Swap(i, j int) { p[i], p[j] = p[j], p[i] }

@@ -10,7 +10,7 @@
 <p>
     <ul>
         {{ range . }}
-            <li>{{ .Date }} - <a href="{{ .Link }}">{{ .Title }}</a></li>
+            <li>{{ .DateString }} - <a href="{{ .Link }}">{{ .Title }}</a></li>
         {{ end }}
     </ul>
 </p>
