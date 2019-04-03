@@ -49,7 +49,7 @@ Home: 10.13.37.0/24
 Work: 10.0.0.0/13
 ```
 
-Generally people will pick routes out of the lower /12 of 10.0.0.0/8. This example will use the network range 10.55.0.0/16. Because WireGuard requires us to create configuration for each device connecting to the network, let's draw out a map of the entire network as we intend to set it up:
+Generally people will pick routes out of the lower /12 of `10.0.0.0/8`. This example will use the network range `10.55.0.0/16`. Because WireGuard requires us to create configuration for each device connecting to the network, let's draw out a map of the entire network as we intend to set it up:
 
 ```
 # pele Network Map
@@ -184,12 +184,12 @@ On your iOS device, install the [WireGuard app](https://itunes.apple.com/us/app/
 - Create from Scratch
 - name: pele
 - Hit "Generate keypair"
-- Addresses: 10.55.1.1/16
+- Addresses: `10.55.1.1/16`
 - Hit "Add peer"
 - Paste the public key from /etc/wireguard/pele-publickey into "Public key"
-- Put the publicly visible IP of the Alpine host : 51820 in "Endpoint", IE: 192.0.2.243:51820
+- Put the publicly visible IP of the Alpine host : 51820 in "Endpoint", IE: `192.0.2.243:51820`
   - The actual IP, not a DNS name
-- Put 10.55.0.0/16 in Allowed IPs
+- Put `10.55.0.0/16` in Allowed IPs
 - Save
 
 To add this client to the WireGuard server, add the following lines to the config file:
