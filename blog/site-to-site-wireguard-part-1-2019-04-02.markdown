@@ -36,7 +36,7 @@ Names are known to be hard with computer science things. The annoying part about
 - Curse words
 - The last name of a famous person you like (that is alive for extra credit)
 
-As such, this example will be using [pele](https://en.m.wikipedia.org/wiki/Pele_(deity)) as the custom top level domain and name for this network.
+As such, this example will be using [pele](https://bit.ly/2TSNTVB) as the custom top level domain and name for this network.
 
 ### Numbering
 
