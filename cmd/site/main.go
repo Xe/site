@@ -162,6 +162,12 @@ func Build() (*Site, error) {
 			DatePublished: item.Date,
 			ContentHTML:   string(item.BodyHTML),
 		})
+
+		smi.Add(&sitemap.URL{
+			Loc:        "https://christine.website/" + item.Link,
+			LastMod:    &item.Date,
+			ChangeFreq: sitemap.Monthly,
+		})
 	}
 
 	// Add HTTP routes here
