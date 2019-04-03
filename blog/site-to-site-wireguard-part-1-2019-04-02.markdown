@@ -111,6 +111,30 @@ To install WireGuard and all of the needed tools, run the following:
 # apk -U add wireguard-vanilla wireguard-tools
 ```
 
+For those of you using other distributions, here is the version information from my WireGuard master:
+
+```
+luna [/etc/wireguard]# apk info wireguard-tools
+wireguard-tools-0.0.20190227-r0 description:
+Next generation secure network tunnel: userspace tools
+
+wireguard-tools-0.0.20190227-r0 webpage:
+https://www.wireguard.com
+
+wireguard-tools-0.0.20190227-r0 installed size:
+20480
+
+luna [/etc/wireguard]# apk info wireguard-vanilla
+wireguard-vanilla-4.19.30-r0 description:
+Next generation secure network tunnel: kernel modules for vanilla
+
+wireguard-vanilla-4.19.30-r0 webpage:
+https://www.wireguard.com
+
+wireguard-vanilla-4.19.30-r0 installed size:
+352256
+```
+
 #### Ubuntu
 
 ```console
