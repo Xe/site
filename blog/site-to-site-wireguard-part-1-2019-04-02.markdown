@@ -15,6 +15,13 @@ This series is going to be broken up into multiple posts about as follows:
 - Setting up iOS, macOS, Android and Linux clients
 - Other future fun things (seamless tor2web routing, etc)
 
+By the end of this series you should be able to:
+
+- Expose arbitrary TCP/UDP services to a few machines that span network segments without having to do as much work securing the services
+- Create absolutely arbitrary domain name to IP address mappings should you need it
+- Have seamless ADBlock DNS for your phone, tablet and laptop
+- Create custom TLS certificates for any domain should you need it
+
 ## Network Naming and Numbering
 
 One of the most annoying parts of this exercise is going to be naming and numbering things, so let's get that out of the way as soon as possible. 
