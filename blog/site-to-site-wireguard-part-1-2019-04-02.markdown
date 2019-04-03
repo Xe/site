@@ -195,9 +195,7 @@ If this fails or you don't see the connection handshake timer in the WireGuard a
 
 ### Add to /etc/network/interfaces
 
-TODO: https://wiki.alpinelinux.org/wiki/Configure_a_Wireguard_interface_(wg)
-
-For convenience, we can add this to the system networking configuration so it starts automatically on boot. Add the following to your /etc/network/interfaces file:
+For convenience, we can add this to the [system networking configuration](https://wiki.alpinelinux.org/wiki/Configure_a_Wireguard_interface_(wg)) so it starts automatically on boot. Add the following to your /etc/network/interfaces file:
 
 ```
 auto pele
