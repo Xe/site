@@ -184,7 +184,7 @@ On your iOS device, install the [WireGuard app](https://itunes.apple.com/us/app/
 - Create from Scratch
 - name: pele
 - Hit "Generate keypair"
-- Addresses: 10.77.0.128/24
+- Addresses: 10.55.1.1/16
 - Hit "Add peer"
 - Paste the public key from /etc/wireguard/pele-publickey into "Public key"
 - Put the publicly visible IP of the Alpine host : 51820 in "Endpoint", IE: 192.0.2.243:51820
