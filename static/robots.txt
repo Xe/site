@@ -1,2 +1,4 @@
 User-Agent: *
 Sitemap: https://christine.website/sitemap.xml
+Disallow: /metrics
+Disallow: /.within/health
