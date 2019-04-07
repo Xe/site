@@ -14,7 +14,7 @@ This is the second in my Site to Site WireGuard VPN series. You can read the oth
 
 ## What is DNS and How Does it Work?
 
-DNS, or the [Domain Name Service](https://en.wikipedia.org/wiki/Domain_Name_System) is one of the core protocols of the internet. Its main job is to turn names like `google.com` into IP addresses for the lower layers of the networking stack to communicate. Semantically, clients ask questions to the DNS server (such as "what is the IP address for google.com") and get answers back ("the IP address for Google.com is 172.217.7.206"). This is a very simple protocol that predates the internet, and is tied into the core of nearly how every single program accesses the internet in some way or another. DNS allows users to not have to memorize IP addresses of services in order to connect to and use them. If anything on the internet is truly considered "infrastructure", it is DNS.
+DNS, or the [Domain Name Service](https://en.wikipedia.org/wiki/Domain_Name_System) is one of the core protocols of the internet. Its main job is to turn names like `google.com` into IP addresses for the lower layers of the networking stack to communicate. Semantically, clients ask questions to the DNS server (such as "what is the IP address for google.com") and get answers back ("the IP address for Google.com is 172.217.7.206"). This is a very simple protocol that predates the internet, and is tied into the core of how nearly every single program accesses the internet. DNS allows users to not have to memorize IP addresses of services in order to connect to and use them. If anything on the internet is truly considered "infrastructure", it is DNS.
 
 A common tool in Linux and macOS to query DNS is [`dig`](https://www.cyberciti.biz/faq/linux-unix-dig-command-examples-usage-syntax/). You can install it in Ubuntu with the following command:
 
@@ -25,7 +25,7 @@ $ sudo apt install -y dnsutils
 A side note for [Alpine Linux](https://alpinelinux.org) users: for some reason the `dig` tool is not packaged in Alpine. Instead you will need to use the basically identical `drill` tool. You can install it like this:
 
 ```console
-# apk add drill
+$ sudo apk add drill
 ```
 
 As an example of it in action, let's look up `google.com` with the `dig` tool (edited for clarity):
@@ -49,12 +49,12 @@ google.com.             299     IN      A       172.217.7.206
 A DNS answer or record has several parts to it:
 
 - The name (with a terminating `.`)
-- The time-to-live in caches
+- The time-to-live, which tells DNS caches how long they can wait before looking up the domain again
 - The kind of address being served (DNS supports multiple network kinds, though only `IN`ternet records are used nowadays)
 - The kind of record this is
 - Any additional data for that record
 
-Interpreting the question and answer from above: this means that the client asked for the IPv4 address (DNS calls this an `A` record) for `google.com.` and got back `172.217.7.206`, with all of this from the dns server at `8.8.8.8`.
+Interpreting the question and answer from above: this means that the client asked for the IPv4 address (DNS calls this an `A` record) for `google.com.` and got back `172.217.7.206` as an answer from the dns server at `8.8.8.8`.
 
 DNS supports many other kinds of records, such as `PTR` or "reverse" records that map an IP address back to a name (again, edited for clarity):
 
@@ -79,9 +79,9 @@ As seen above, DNS supports having multiple answers to a single name. This is us
 
 ## Why Should I Create a Custom DNS Server?
 
-There are two main benefits to creating a custom DNS server like this: ad blocking in DNS and custom DNS routes. The main benefit is having seamless [AdBlock DNS](https://adguard.com/en/adguard-dns/overview.html), kind of like a PiHole built into your VPN for free. The benefits of the AdBlock DNS cannot be understated. It literally makes it impossible to see ads for a large number of websites without triggering the adblock protection scripts news sites like to use. This will be covered in more detail below.  Custom DNS routes sound like they would be overkill for keeping things private, but people can't easily get into names that literally only exist in your domain.
+There are two main benefits to creating a custom DNS server like this: ad blocking in DNS and custom DNS routes. The main benefit is having seamless [AdBlock DNS](https://adguard.com/en/adguard-dns/overview.html), kind of like a [Pi-hole](https://pi-hole.net) built into your VPN for free. The benefits of the AdBlock DNS cannot be understated. It literally makes it impossible to see ads for a large number of websites without triggering the adblock protection scripts news sites like to use. This will be covered in more detail below.  Custom DNS routes sound like they would be overkill for keeping things private, but people can't easily get information on names that literally only exist in your domain.
 
-However, there are reasons why you would NOT want to create a custom DNS server. By creating a custom DNS server, you effectively put yourself in charge of an internet infrastrcture component that is usually handled by people who are 24/7 dedicated to keeping it working. You may not be able to provide the same uptime guarantees as your current DNS provider. You are not CloudFlare, Comcast or Google. It's perfectly okay to not want to go through with this.
+However, there are reasons why you would NOT want to create a custom DNS server. By creating a custom DNS server, you effectively put yourself in charge of an internet infrastrcture component that is usually handled by people who are dedicated to keeping it working 24/7. You may not be able to provide the same uptime guarantees as your current DNS provider. You are not CloudFlare, Comcast or Google. It's perfectly okay to not want to go through with this.
 
 I think the benefits are worth the risks though.
 
@@ -96,11 +96,11 @@ There are many DNS servers out there, each with their benefits and shortcomings.
 - Hosting the zonefile over HTTP/HTTPS
 - Adding ad-blocking DNS rules
 - Installing `dnsd` with Docker
-- Using with the WireGuard app
+- Using the DNS server with the iOS WireGuard app
 
 ### Creating a DNS Zonefile
 
-`dnsd` requires a [RFC 1035](https://tools.ietf.org/html/rfc1035) compliant DNS zone file. In short, it's a file that looks something like this:
+`dnsd` requires an [RFC 1035](https://tools.ietf.org/html/rfc1035) compliant DNS zone file. In short, it's a file that looks something like this:
 
 ```rfc1035
 ; pele.zone
@@ -177,7 +177,7 @@ This is the "draw the rest of the owl" part of this article, worst case somethin
 
 ### Adding Ad-Blocking DNS Rules
 
-A friend of mine adapted her DNSMasq scripts to [generate RFC 1035 DNS zonefiles](https://github.com/faithanalog/x/blob/master/dns-adblock/download-lists-and-generate-zonefile.sh). In order to generate `adblock.zone` do the following:
+A friend of mine adapted her dnsmasq scripts to [generate RFC 1035 DNS zonefiles](https://github.com/faithanalog/x/blob/master/dns-adblock/download-lists-and-generate-zonefile.sh). In order to generate `adblock.zone` do the following:
 
 ```console
 $ cd ~/tmp
@@ -230,9 +230,9 @@ $ dig @127.0.0.1 -x 10.55.0.1
 ...
 ```
 
-### Using With the WireGuard App
+### Using With the iOS WireGuard App
 
-In order to configure [iOS WireGuard clients](https://itunes.apple.com/us/app/wireguard/id1441195209?mt=8) to use this DNS server, open the WireGuard app and tap the name of the configuration we created in the last post. Hit "Edit" in the upper right hand corner and select the "DNS Servers" box. Put `10.55.0.1` in it and hit "Save". Be sure to confirm the VPN is active, then open [LibTerm](https://itunes.apple.com/us/app/libterm/id1380911705?mt=8) and enter in the following:
+In order to configure [iOS WireGuard clients](https://itunes.apple.com/us/app/wireguard/id1441195209?mt=8) to use this DNS server, open the WireGuard app and tap the name of the configuration we created in the [last post](https://christine.website/blog/site-to-site-wireguard-part-1-2019-04-02). Hit "Edit" in the upper right hand corner and select the "DNS Servers" box. Put `10.55.0.1` in it and hit "Save". Be sure to confirm the VPN is active, then open [LibTerm](https://itunes.apple.com/us/app/libterm/id1380911705?mt=8) and enter in the following:
 
 ```
 $ dig oho.pele
