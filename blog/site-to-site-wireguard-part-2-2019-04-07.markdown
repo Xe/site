@@ -25,7 +25,7 @@ $ sudo apt install -y dnsutils
 A side note for [Alpine Linux](https://alpinelinux.org) users: for some reason the `dig` tool is not packaged in Alpine. Instead you will need to use the basically identical `drill` tool. You can install it like this:
 
 ```console
-$ apk add drill
+$ sudo apk add drill
 ```
 
 As an example of it in action, let's look up `google.com` with the `dig` tool (edited for clarity):
