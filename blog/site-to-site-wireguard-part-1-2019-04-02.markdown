@@ -9,10 +9,10 @@ In this blogpost series I'm going to go over how I created a [site to site](http
 
 This series is going to be broken up into multiple posts about as follows:
 
-- Base core network setup and naming (this post)
-- Setting up DNS (including reverse DNS) and custom endpoints
+- Part 1 - Names and Numbers (this post)
+- [Part 2 - DNS](https://christine.website/blog/site-to-site-wireguard-part-2-2019-04-07)
 - Setting up a custom TLS Certificate Authority
-- Setting up iOS, macOS, Android and Linux clients
+- Setting up additional iOS, macOS, Android and Linux clients
 - Other future fun things (seamless tor2web routing, etc)
 
 By the end of this series you should be able to:

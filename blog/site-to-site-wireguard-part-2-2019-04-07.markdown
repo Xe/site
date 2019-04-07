@@ -8,12 +8,27 @@ date: 2019-04-07
 This is the second in my Site to Site WireGuard VPN series. You can read the other articles here:
 
 - [Part 1 - Names and Numbers](https://christine.website/blog/site-to-site-wireguard-part-1-2019-04-02)
-
-<!-- TODO(Xe): update the title of part 1 -->
+- Part 2 - DNS (this post)
+- Setting up a custom TLS Certificate Authority
+- Setting up additional iOS, macOS, Android and Linux clients
 
 ## What is DNS and How Does it Work?
 
-DNS, or the [Domain Name Service](https://en.wikipedia.org/wiki/Domain_Name_System) is one of the core protocols of the internet. Its main job is to turn names like `google.com` into IP addresses for the lower layers of the networking stack to communicate. As an example of it in action, let's look up `google.com` with the `dig` tool (edited for clarity):
+DNS, or the [Domain Name Service](https://en.wikipedia.org/wiki/Domain_Name_System) is one of the core protocols of the internet. Its main job is to turn names like `google.com` into IP addresses for the lower layers of the networking stack to communicate. Semantically, clients ask questions to the DNS server (such as "what is the IP address for google.com") and get answers back ("the IP address for Google.com is 172.217.7.206"). This is a very simple protocol that predates the internet, and is tied into the core of nearly how every single program accesses the internet in some way or another. DNS allows users to not have to memorize IP addresses of services in order to connect to and use them. If anything on the internet is truly considered "infrastructure", it is DNS.
+
+A common tool in Linux and macOS to query DNS is [`dig`](https://www.cyberciti.biz/faq/linux-unix-dig-command-examples-usage-syntax/). You can install it in Ubuntu with the following command:
+
+```console
+$ sudo apt install -y dnsutils
+```
+
+A side note for [Alpine Linux](https://alpinelinux.org) users: for some reason the `dig` tool is not packaged in Alpine. Instead you will need to use the basically identical `drill` tool. You can install it like this:
+
+```console
+# apk add drill
+```
+
+As an example of it in action, let's look up `google.com` with the `dig` tool (edited for clarity):
 
 ```console
 $ dig google.com
