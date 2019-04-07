@@ -1,9 +1,9 @@
 ---
-title: "Site to Site WireGuard: Part 1"
+title: "Site to Site WireGuard: Part 1 - Names and Numbers"
 date: "2019-04-02"
 ---
 
-# Site to Site WireGuard: Part 1
+# Site to Site WireGuard: Part 1 - Names and Numbers
 
 In this blogpost series I'm going to go over how I created a [site to site](https://computer.howstuffworks.com/vpn4.htm) [Virtual Private Network](https://en.m.wikipedia.org/wiki/Virtual_private_network) (abbreviated as VPN) for all of my personal devices. The best way to think about what this is doing is creating a _logical_ (or imaginary) network on top of the network infrastructure that really exists. This allows me to expose private services so that only people I trust can even know how to connect to them. For extra convenience and battery saving power, I'm going to use [WireGuard](https://www.wireguard.com) as the VPN protocol.
 
@@ -256,4 +256,4 @@ Reboot your box. After it comes back up, try and use the WireGuard tunnel. If it
 
 ---
 
-Please give me feedback on my approach to this. I hope this is useful to you all in some way. Stay tuned for the future parts of this series as I build up the network infrastructure from scratch. Be well.
+Please give me [feedback](/contact) on my approach to this. I also have a [Patreon](https://www.patreon.com/cadey) and a [Ko-Fi](https://ko-fi.com/A265JE0) in case you want to support this series. I hope this is useful to you all in some way. Stay tuned for the future parts of this series as I build up the network infrastructure from scratch. Be well.
