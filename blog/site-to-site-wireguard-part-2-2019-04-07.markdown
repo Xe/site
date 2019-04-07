@@ -87,9 +87,6 @@ I think the benefits are worth the risks though.
 
 ## How Do I Create a Custom DNS Server?
 
-* How do I create a custom DNS server?
-  * My example will use `dnsd`.
-
 There are many DNS servers out there, each with their benefits and shortcomings. In order to make this tutorial simpler, I'm going to be using a self-created DNS server named [`dnsd`](https://github.com/Xe/x/tree/master/cmd/dnsd). This server is extremely simple and reloads its zone files every minute over HTTP, to make updating records easier. There are going to be a few steps to setting this up:
 
 - Creating a DNS zonefile
@@ -139,7 +136,7 @@ grafana.pele. IN CNAME oho.pele.
 
 Save this file somewhere and get it ready to host somewhere.
 
-If you would like to have some of this generated for you, fill out http://zonefile.org with the following information:
+If you would like to have some of this generated for you, fill out [http://zonefile.org](http://zonefile.org) with the following information:
 
 * Base data
   * Domain: pele
