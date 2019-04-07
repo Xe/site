@@ -63,7 +63,7 @@ Generally people will pick routes out of the lower /12 of `10.0.0.0/8`. This exa
     - 10.55.1.3/32: MacBook (om)
 ```
 
-Depending on free network space, it may be preferable to split the first /24 block up into two logical /25 blocks (10.55.0.0/25 and 10.55.128.0/25). This is all a matter of taste and has no functional impact on the network. I'd suggest using consistent conventions in your subnetting whenever possible.
+Depending on free network space, it may be preferable to split the first /24 block up into two logical /25 blocks (10.55.0.0/25 and 10.55.0.128/25). This is all a matter of taste and has no functional impact on the network. I'd suggest using consistent conventions in your subnetting whenever possible.
 
 ### WireGuard Port Allocation
 
