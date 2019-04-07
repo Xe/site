@@ -115,7 +115,7 @@ $ORIGIN pele.
 ; servers
 
 ;; Map the name oho.pele. to 10.55.0.1
-oho IN A 10.55.0.1
+oho.pele. IN A 10.55.0.1
 
 ;; Map the IP address 10.55.0.1 to the name oho.pele.
 1.0.55.10.in-addr.arpa. IN PTR oho.pele.
@@ -123,7 +123,7 @@ oho IN A 10.55.0.1
 ; clients
 
 ;; Map the name sitelen-sona.pele. to 10.55.1.1
-sitelen-sona IN A 10.55.1.1
+sitelen-sona.pele. IN A 10.55.1.1
 
 ;; Map the IP address 10.55.1.1 to sitelen-sona.pele.
 1.1.55.10.in-addr.arpa. IN PTR sitelen-sona.pele.
@@ -160,14 +160,15 @@ Note that this will include a [Start of Authority or `SOA`](https://en.m.wikiped
 
 ```
 @       IN      SOA     oho.pele.       some@email.address. (
-                        2019040602      ; serial number YYMMDDNN
+                        2019040602      ; serial number YYYYMMDDNN
                         28800           ; Refresh
                         7200            ; Retry
                         864000          ; Expire
                         60              ; Min TTL
                         )
 
-        IN      NS      oho.pele.
+; Also not required but some weird clients may want this.
+@       IN      NS      oho.pele.
 ```
 
 ### Hosting the Zonefile Over HTTP/HTTPS
