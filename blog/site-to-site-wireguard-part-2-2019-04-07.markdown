@@ -74,27 +74,12 @@ I think the benefits are worth the risks though.
 
 * How do I create a custom DNS server?
   * My example will use `dnsd`.
-  * Fill out http://zonefile.org
-    * Base data
-      * Domain: pele
-      * Adminmail: your@email.address
-      * $TTL: 60
-      * IP Address or PTR Name: 10.55.0.1
-    * DNS Server
-      * Primary host name: ns.pele
-      * Primary IP-Addr: 10.55.0.1
-      * Primary comment: The volcano
-      * Clear all other boxes in this section
-    * Mail Server
-      * Clear all boxes in this section
-    * Click Create
-    * Save this as pele.zone somewhere
 
 There are many DNS servers out there, each with their benefits and shortcomings. In order to make this tutorial simpler, I'm going to be using a self-created DNS server named [`dnsd`](https://github.com/Xe/x/tree/master/cmd/dnsd). This server is extremely simple and reloads its zone files every minute over HTTP, to make updating records easier. There are going to be a few steps to setting this up:
 
 - Creating a DNS zonefile
-- Adding ad-blocking DNS rules
 - Hosting the zonefile over HTTP/HTTPS
+- Adding ad-blocking DNS rules
 - Installing `dnsd` with Docker
 - Using with the WireGuard app
 
@@ -139,9 +124,42 @@ grafana.pele. IN CNAME oho.pele.
 
 Save this file somewhere and get it ready to host somewhere.
 
-### Adding Ad-Blocking DNS Rules
+If you would like to have some of this generated for you, fill out http://zonefile.org with the following information:
 
-​* TODO: AdBlock DNS: https://github.com/faithanalog/x/tree/master/dns-adblock
+* Base data
+  * Domain: pele
+  * Adminmail: your@email.address
+  * $TTL: 60
+  * IP Address or PTR Name: 10.55.0.1
+* DNS Server
+  * Primary host name: ns.pele
+  * Primary IP-Addr: 10.55.0.1
+  * Primary comment: The volcano
+  * Clear all other boxes in this section
+* Mail Server
+  * Clear all boxes in this section
+* Click Create
+* Save this as pele.zone
+
+Note that this will include a [Start of Authority or `SOA`](https://en.m.wikipedia.org/wiki/SOA_record) record, which is not strictly required, but may be nice to include too. If you want to include this in your manually made zonefile, it should look something like this:
+
+```
+@       IN      SOA     oho.pele.       some@email.address. (
+                        2019040602      ; serial number YYMMDDNN
+                        28800           ; Refresh
+                        7200            ; Retry
+                        864000          ; Expire
+                        60              ; Min TTL
+                        )
+
+        IN      NS      oho.pele.
+```
+
+### Hosting the Zonefile Over HTTP/HTTPS
+
+This is the "draw the rest of the owl" part of this article, worst case something like [GitHub Gists](https://gist.github.com/) works. Once you have the URL of your zonefiles and a reliable way to update them, you can move to the next step: installing `dnsd`.
+
+### Adding Ad-Blocking DNS Rules
 
 A friend of mine adapted her DNSMasq scripts to [generate RFC 1035 DNS zonefiles](https://github.com/faithanalog/x/blob/master/dns-adblock/download-lists-and-generate-zonefile.sh). In order to generate `adblock.zone` do the following:
 
@@ -152,11 +170,9 @@ $ cd faithanalog-x/dns-adblock
 $ sh ./download-lists-and-generate-zonefile.sh
 ```
 
-This should produce `adblock.zone` in the current working directory. If you are unable to run this script for whatever reason, I update my [adblock.zone file](https://xena.greedo.xeserv.us/files/adblock.zone) weekly (please download this file instead of configuring your copy of `dnsd` to use this URL).
+This should produce `adblock.zone` in the current working directory. Put this file in the same place you put your custom zone.
 
-### Hosting the Zonefile Over HTTP/HTTPS
-
-This is a "draw the rest of the own" part of this article, worst case something like [GitHub Gists](https://gist.github.com/) works. Once you have the URL of your zonefiles and a reliable way to update them, you can move to the next step: installing `dnsd`.
+ If you are unable to run this script for whatever reason, I update my [adblock.zone file](https://xena.greedo.xeserv.us/files/adblock.zone) weekly (please download this file instead of configuring your copy of `dnsd` to use this URL).
 
 ### Installing `dnsd` with Docker
 
@@ -196,7 +212,6 @@ $ dig @127.0.0.1 -x 10.55.0.1
 ...
 ;; SERVER: 127.0.0.1#53(127.0.0.1)
 ...
-
 ```
 
 ### Using With the WireGuard App
@@ -204,9 +219,15 @@ $ dig @127.0.0.1 -x 10.55.0.1
 In order to configure [iOS WireGuard clients](https://itunes.apple.com/us/app/wireguard/id1441195209?mt=8) to use this DNS server, open the WireGuard app and tap the name of the configuration we created in the last post. Hit "Edit" in the upper right hand corner and select the "DNS Servers" box. Put `10.55.0.1` in it and hit "Save". Be sure to confirm the VPN is active, then open [LibTerm](https://itunes.apple.com/us/app/libterm/id1380911705?mt=8) and enter in the following:
 
 ```
-$ dig @10.55.0.1 oho.pele
+$ dig oho.pele
 ```
 
 And make sure it works.
 
+Once this is done, you should be good to go! Updates to the zone files will be picked up by `dnsd` within a minute or two of the files being changed on the remote servers. Please be sure the server you are using tags the files appropriately with the ETag header, as `dnsd` uses that to determine if the zonefile has changed or not.
 
+---
+
+Please give me [feedback](/contact) on my approach to this. I also have a [Patreon](https://www.patreon.com/cadey) and a [Ko-Fi](https://ko-fi.com/A265JE0) in case you want to support this series. I hope this is useful to you all in some way. Stay tuned for the future parts of this series as I build up the network infrastructure from scratch. If you would like to give feedback on the posts as they are written, please watch [this page](https://github.com/Xe/site/pulls) for new pull requests.
+
+Be well.
