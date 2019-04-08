@@ -22,10 +22,10 @@ A common tool in Linux and macOS to query DNS is [`dig`](https://www.cyberciti.b
 $ sudo apt install -y dnsutils
 ```
 
-A side note for [Alpine Linux](https://alpinelinux.org) users: for some reason the `dig` tool is not packaged in Alpine. Instead you will need to use the basically identical `drill` tool. You can install it like this:
+A side note for [Alpine Linux](https://alpinelinux.org) users: for some reason the `dig` tool is packaged in `bind-tools` there. You can install it like this:
 
 ```console
-$ sudo apk add drill
+$ sudo apk add bind-tools
 ```
 
 As an example of it in action, let's look up `google.com` with the `dig` tool (edited for clarity):
