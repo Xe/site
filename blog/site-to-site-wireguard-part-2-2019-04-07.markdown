@@ -170,7 +170,7 @@ Note that this will include a [Start of Authority or `SOA`](https://en.m.wikiped
 
 ### Hosting the Zonefile Over HTTP/HTTPS
 
-This is the "draw the rest of the owl" part of this article, worst case something like [GitHub Gists](https://gist.github.com/) works. Once you have the URL of your zonefiles and a reliable way to update them, you can move to the next step: installing `dnsd`.
+This is the "[draw the rest of the owl](https://knowyourmeme.com/memes/how-to-draw-an-owl)" part of this article, worst case something like [GitHub Gists](https://gist.github.com/) works. Once you have the URL of your zonefiles and a reliable way to update them, you can move to the next step: installing `dnsd`.
 
 ### Adding Ad-Blocking DNS Rules
 
