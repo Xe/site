@@ -140,9 +140,10 @@ If you get the secure connection working like normal (without prompting or nag s
 
 [Caddy](https://caddyserver.com) is a general-purpose HTTP server. One of its main features is automatic [Let's Encrypt](https://letsencrypt.org) support. We are using it here to serve HTTPS because it has a very, very simple configuration file format.
 
+* Caddy
     * Setup Caddy
-        * Docker
         * Systemd
+        * Certificate permissions
     * Configure Caddy for static file serving for aloha.pele
         * root directive
         * browse directive
@@ -174,14 +175,6 @@ If you get the secure connection working like normal (without prompting or nag s
     * Test
         * cURL
         * Safari
-* CA Test site
-    * Create DNS entries
-    * Create TLS certificate
-    * Configure Caddy
-        * markdown directive
-        * internal directive
-        * ext directive
-    * Test
 
 ---
 
