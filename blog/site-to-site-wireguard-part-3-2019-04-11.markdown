@@ -1,19 +1,20 @@
 ---
-title: "Site to Site WireGuard: Part 3 - TLS and HTTPS"
+title: "Site to Site WireGuard: Part 3 - Custom TLS Certificate Authority"
 date: 2019-04-11
 ---
 
-# Site to Site WireGuard: Part 3 - TLS and HTTPS
+# Site to Site WireGuard: Part 3 - Custom TLS Certificate Authority
 
 This is the third in my Site to Site WireGuard VPN series. You can read the other articles here:
 
 - [Part 1 - Names and Numbers](https://christine.website/blog/site-to-site-wireguard-part-1-2019-04-02)
 - [Part 2 - DNS](https://christine.website/blog/site-to-site-wireguard-part-2-2019-04-07)
-- Part 3 - TLS and HTTPS (this post)
+- Part 3 - Custom TLS Certificate Authority (this post)
 - Setting up additional iOS, macOS, Android and Linux clients
 - Other future fun things (seamless tor2web routing, etc)
 
-In this article, we are going to create a custom [Transport Layer Security (TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security) [Certificate Authority](https://en.wikipedia.org/wiki/Certificate_authority), trust it on iOS and macOS, and then use it for serving a [URL Shortener](https://github.com/Xe/surl) at `https://g.o/`. We are going to be using [Caddy](https://caddyserver.com) as our webserver, as it has many useful directives.
+In this article, we are going to create a custom [Transport Layer Security (TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security) [Certificate Authority](https://en.wikipedia.org/wiki/Certificate_authority), trust it on iOS and macOS.  
+In the next part we will use it for serving a [URL Shortener](https://github.com/Xe/surl) at `https://g.o/`.
 
 ## What's TLS?
 
@@ -54,35 +55,6 @@ mkdir -p /srv/within/certs
 chmod 750 /srv/within/certs
 chown root:www-data /srv/within/certs
 ```
-
-<!-- TODO(Xe): Move this to caddy section when that's a thing -->
-
-And in that folder create a script called `fixperms.sh`:
-
-```shell
-#!/bin/sh
-
-chmod -R 750 .
-chown -R root:www-data .
-
-chmod 600 minica-key.pem
-```
-
-Then mark it executable:
-
-```
-chmod +x fixperms.sh
-```
-
-These permissions are set as such:
-
-| Facet            | Read | Write | Execute/Directory Listing |
-| :--------------- | :--- | :---- | :------------------------ |
-| User (root)      | Yes  | Yes   | Yes                       |
-| Group (www-data) | Yes  | No    | Yes                       |
-| Others           | No   | No    | No                        |
-
-This will allow Caddy to be able to read the certificates later in the post.
 
 ### Creating And Using Your First Certificate
 
@@ -136,47 +108,9 @@ Then you should be ready to open [https://aloha.pele:2848](https://aloha.pele:28
 
 If you get the secure connection working like normal (without prompting or nag screens), everything is working perfectly.
 
-## HTTPS
-
-[Caddy](https://caddyserver.com) is a general-purpose HTTP server. One of its main features is automatic [Let's Encrypt](https://letsencrypt.org) support. We are using it here to serve HTTPS because it has a very, very simple configuration file format.
-
-* Caddy
-    * Setup Caddy
-        * Systemd
-        * Certificate permissions
-    * Configure Caddy for static file serving for aloha.pele
-        * root directive
-        * browse directive
-    * Link to Caddy documentation
-* URL shortener
-    * Decide domain
-        * suggest 
-    * Install surl in Docker
-        * Configuration
-        * Create Docker volume
-        * docker volume create surl
-        * docker run --name surl -v surl:/data --restart always -dit xena/surl:v0.4.0
-    * Create DNS entry
-        * g.o. IN CNAME oho.pele.
-    * Create TLS certificate
-        * cd ~/backups/CA && minica -domains 'g.o'
-    * Configure Caddy
-        * g.o:80 {
-        *   tls off
-        * 
-        *   redir / https://g.o
-        * }
-        * 
-        * g.o:443 {
-        *         tls /srv/within/certs/g.o/cert.pem /srv/within/certs/g.o/key.pem
-        * 
-        *         proxy / http://10.77.0.1:5000
-        * }
-    * Test
-        * cURL
-        * Safari
-
 ---
+
+That's about it for this time around. In the next part, we will set up HTTPS serving with [Caddy](https://caddyserver.com).
 
 Please give me [feedback](/contact) on my approach to this. I also have a [Patreon](https://www.patreon.com/cadey) and a [Ko-Fi](https://ko-fi.com/A265JE0) in case you want to support this series. I hope this is useful to you all in some way. Stay tuned for the future parts of this series as I build up the network infrastructure from scratch. If you would like to give feedback on the posts as they are written, please watch [this page](https://github.com/Xe/site/pulls) for new pull requests.
 
