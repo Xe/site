@@ -5,6 +5,11 @@ date: 2017-02-08
 
 # textile-conversion Main
 
+Author's Note: this was intended to be documentation for a service that never ended
+up being implemented. It was going to help [Derpibooru](https://derpibooru.org)
+convert its existing markup to [Markdown](https://github.github.com/gfm/). This
+never happened.
+
 This program listens on port 5000 and serves an unchecked-path web handler that
 converts Derpibooru Textile via HTML into Markdown, using a two-step process.
 
