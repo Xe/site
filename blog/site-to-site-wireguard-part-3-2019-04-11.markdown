@@ -10,7 +10,7 @@ This is the third in my Site to Site WireGuard VPN series. You can read the othe
 - [Part 1 - Names and Numbers](https://christine.website/blog/site-to-site-wireguard-part-1-2019-04-02)
 - [Part 2 - DNS](https://christine.website/blog/site-to-site-wireguard-part-2-2019-04-07)
 - Part 3 - Custom TLS Certificate Authority (this post)
-- [Part 4 - HTTPS](https://christine.website/blog/site-to-site-wireguard-part-4-2019-04-19)
+- [Part 4 - HTTPS](https://christine.website/blog/site-to-site-wireguard-part-4-2019-04-16)
 - Setting up additional iOS, macOS, Android and Linux clients
 - Other future fun things (seamless tor2web routing, etc)
 

@@ -1,6 +1,6 @@
 ---
 title: "Site to Site WireGuard: Part 4 - HTTPS"
-date: 2019-04-19
+date: 2019-04-16
 series: site-to-site-wireguard
 ---
 
