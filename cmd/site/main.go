@@ -59,8 +59,8 @@ type Site struct {
 	rssFeed  *feeds.Feed
 	jsonFeed *jsonfeed.Feed
 
-	mux     *http.ServeMux
-	xffmw   *xff.XFF
+	mux   *http.ServeMux
+	xffmw *xff.XFF
 }
 
 func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -153,6 +153,7 @@ func Build() (*Site, error) {
 			Link:        &feeds.Link{Href: "https://christine.website/" + item.Link},
 			Description: item.Summary,
 			Created:     item.Date,
+			Content:     string(item.BodyHTML),
 		})
 
 		s.jsonFeed.Items = append(s.jsonFeed.Items, jsonfeed.Item{
