@@ -18,27 +18,26 @@ This is the fourth post in my Site to Site WireGuard VPN series. You can read th
 In this article, we are going to install [Caddy](https://caddyserver.com) and set up the following:
 
 - A plaintext markdown site to demonstrate the process
-- A URL shortener at https://g.o/
+- A URL shortener at https://g.o/ (with DNS and TLS certificates too)
 
 ## HTTPS and Caddy
 
 [Caddy](https://caddyserver.com) is a general-purpose HTTP server. One of its main features is automatic [Let's Encrypt](https://letsencrypt.org) support. We are using it here to serve HTTPS because it has a very, very simple configuration file format.
 
-Caddy doesn't have a stable package in Ubuntu yet, but it is fairly simple to do it by hand.
+Caddy doesn't have a stable package in Ubuntu yet, but it is fairly simple to install it by hand.
 
-### Installing Caddy
+## Installing Caddy
 
 One of the first things you should do when installing Caddy is picking the list of extra plugins you want in addition to the core ones. I generally suggest the following plugins:
 
-- http.cors - [Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), because we can't trust browsers
-- http.git - it facilitates automatic deployment
-- http.supervisor - run background processes
-- tls.dns.yourprovider - enables Let's Encrypt via DNS (in my case tls.dns.cloudflare)
+- [`http.cors`](https://caddyserver.com/docs/http.cors) - [Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), because we can't trust browsers
+- [`http.git`](https://caddyserver.com/docs/http.git) - it facilitates automatic deployment
+- [`http.supervisor`](https://caddyserver.com/docs/http.supervisor) - run background processes
 
 First we are going to need to download Caddy (please do this as root):
 
 ```console
-curl https://getcaddy.com | bash -s personal http.cors,http.git,http.supervisor,tls.dns.cloudflare
+curl https://getcaddy.com | bash -s personal http.cors,http.git,http.supervisor
 chown root:root /usr/local/bin/caddy
 chmod 755 /usr/local/bin/caddy
 ```
@@ -314,6 +313,15 @@ systemctl status caddy
 ```
 
 And open [https://g.o](https://g.o) on your iOS device:
+
+<style>
+img {
+  max-width: 400px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
 
 ![An image of the URL shortener in action](/static/img/site-to-site-part-4-gdoto.jpg)
 
