@@ -37,7 +37,8 @@ One of the first things you should do when installing Caddy is picking the list 
 First we are going to need to download Caddy (please do this as root):
 
 ```console
-curl https://getcaddy.com | bash -s personal http.cors,http.git,http.supervisor
+curl https://getcaddy.com > install_caddy.sh
+bash install_caddy.sh -s personal http.cors,http.git,http.supervisor
 chown root:root /usr/local/bin/caddy
 chmod 755 /usr/local/bin/caddy
 ```
