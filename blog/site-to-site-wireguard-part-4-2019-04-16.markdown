@@ -43,6 +43,14 @@ chown root:root /usr/local/bin/caddy
 chmod 755 /usr/local/bin/caddy
 ```
 
+These permissions are set as such:
+
+| Facet            | Read | Write | Directory Listing |
+| :--------------- | :--- | :---- | :---------------- |
+| User (www-data)  | Yes  | Yes   | Yes               |
+| Group (www-data) | Yes  | No    | Yes               |
+| Others           | Yes  | No    | Yes               |
+
 In order for Caddy to bind to the standard HTTP and HTTPS ports as non-root (this is a workaround for the fact that [Go can't currently drop permissions with suid() cleanly](https://github.com/golang/go/issues/1435)), run the following:
 
 ```console
