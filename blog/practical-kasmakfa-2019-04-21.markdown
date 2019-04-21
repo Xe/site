@@ -35,7 +35,7 @@ When you find something that works, great! This is a signal that you should prob
 
 > The sin which is unpardonable is knowingly and willfully to reject truth, to fear knowledge lest that knowledge pander not to thy prejudices.
 
-- Aleister Crowley
+\- Aleister Crowley
 
 ## Help Others When it Makes Sense
 
@@ -62,7 +62,7 @@ We're all in this together. Try and brighten the path when possible. You individ
 > We brighten the path.
 > We brighten the path.
 
-- Flow in Compassion - James
+\- Flow in Compassion - James
 
 Helping others is an imperfect science. You will "fail". You may end up accidentally upsetting people. It happens. Let it pass like all the rest.
 
