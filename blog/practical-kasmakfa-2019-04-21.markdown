@@ -19,7 +19,7 @@ From Within
 
 It is a sad thing in my opinion that people will blindly believe in things just because other people do. People will adopt their core views as they do and then never question or change them, even when those views come into direct conflict with information or experiences they are having. This is frustrating to watch externally and internally. We don't need to do this, so I propose that we don't have any blind faith in anything. To quote the Principia Discordia: "It is my firm belief that it is a mistake to hold firm beliefs". 
 
-Question the reason behind beliefs. Don't just blindly repeat things without rationale. Don't take any string of text on a screen more seriously just because it's on a screen. Even this string of text. Don't takethis seriously unless it helps you. Don't get scammed by energy healing teachers and books. Seriously, there's so many scams out there it breaks my heart. Any price for entry is too high.
+Question the reason behind beliefs. Don't just blindly repeat things without rationale. Don't take any string of text on a screen more seriously just because it's on a screen. Even this string of text. Don't take this seriously unless it helps you. Don't get scammed by energy healing teachers and books. Seriously, there's so many scams out there it breaks my heart. Any price for entry is too high.
 
 ## Try Many Things, Do What Works
 
