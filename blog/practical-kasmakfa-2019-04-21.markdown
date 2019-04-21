@@ -43,23 +43,23 @@ We're all pretty much as lost as anyone else in this stuff, to be honest. Recogn
 
 We're all in this together. Try and brighten the path when possible. You individually may not be able to do much, but the next step will be just that little bit more clearer for the next person who walks down it. 
 
-> Flow in compassion 
-> Release what is divine 
-> Like cells awakening 
-> We spark the others who walk beside us. 
+> Flow in compassion  
+> Release what is divine  
+> Like cells awakening  
+> We spark the others who walk beside us.  
 > We brighten the path.
 > 
-> Flow in compassion
-> In doing this we are one being
-> Calling the rays of light 
-> To descend on all.
+> Flow in compassion  
+> In doing this we are one being  
+> Calling the rays of light  
+> To descend on all.  
 > We brighten the path.
 >
-> Flow in compassion
-> Bring the healing of your deepest self
-> Giving what is endless
-> To those who believe their end is in sight.
-> We brighten the path.
+> Flow in compassion  
+> Bring the healing of your deepest self  
+> Giving what is endless  
+> To those who believe their end is in sight.  
+> We brighten the path.  
 > We brighten the path.
 
 \- Flow in Compassion - James
