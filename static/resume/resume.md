@@ -6,6 +6,19 @@
 `Docker`, `Git`, `Go`, `C`, `CentOS`, `CoreOS`, `IRC`, `Stenography`, `DevOps`, `Heroku`, `Continuous Integration/Delivery`, `Event Sourcing`, `WebAssembly`, `Lua`, `Haskell`, `Nim`, `Python`, `Java`, `Rust`, `Javascript`, `Gherkin`, `Mindfulness`, `Lojban`, `HTTP/2`, `Rails`, `Ruby`, `Sinatra`, `Alpine Linux`, `Ubuntu`, `Debian`, `Linux`, `Dart`, `Flutter`, `TCL`, `Emacs Lisp`, `MoonScript`, `RPM`, `Node.js`, `npm`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`, `Postgres`, `MySQL`, `SQLite`
 
 ## Experience
+
+### Lightspeed - Expert principal en fiabilité du site &emsp; <small>*2019 - current*</small>
+
+(Senior Site Reliability Expert)
+
+> [Lightspeed][lightspeedhq] is a provider of retail, ecommerce and point-of-sale
+> solutions for small and medium scale businesses. 
+
+#### Highlights
+
+- Migration from cloud to cloud
+- Crafting reliable infrastructure for clients of customers
+
 ### Heroku - Senior Software Engineer &emsp; <small>*2017 - 2019*</small>
 
 > [Heroku][heroku] is a cloud Platform-as-a-Service (PaaS) supporting
@@ -149,3 +162,4 @@ This has been well-recieved by coworkers, friends and others. I have written mor
 [twitter]: https://twitter.com/theprincessxena
 [twit]: http://cdn-careers.sstatic.net/careers/Img/icon-twitter.png?v=b1bd58ad2034
 [heroku]: https://www.heroku.com
+[lightspeed]: https://www.lightspeedhq.com

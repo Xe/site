@@ -35,7 +35,7 @@ The following table is a history of my software career by title, date and salary
 | Software Engineer | August 24, 2016 | November 22, 2016 | 90 days | 21 days | $105,000/year | Terminated |
 | Consultant | Feburary 13, 2017 | November 13, 2017 | 273 days | 83 days | don't remember | Hired |
 | Senior Software Engineer | November 13, 2017 | March 8, 2019 | 480 days | 0 days | $150,000/year | Voulntary quit |
-| Senior Site Reliability Expert | ??? 2019 | (will be current) | n/a | n/a | not set in stone yet | n/a |
+| Senior Site Reliability Expert | May 6, 2019 | (will be current) | n/a | n/a | CAD$105,000/year (about USD$ 80k and change) | n/a |
 
 Even though I've been fired three times, I don't regret my career as it's been thus far. I've been able to work on experimental technology integrating into phone systems. I've worked in a mixed PHP/Haskell/Erlang/Go/Perl production environment. I've literally rebuilt most of the tool that was catalytic to my career a few times over. It's been the ride of a lifetime. 
 
