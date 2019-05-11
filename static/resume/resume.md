@@ -8,6 +8,19 @@
 
 ## Experience
 
+### Lightspeed - Expert principal en fiabilité du site &emsp; <small>*2019 - current*</small>
+
+(Senior Site Reliability Expert)
+
+> [Lightspeed][lightspeedhq] is a provider of retail, ecommerce and point-of-sale
+> solutions for small and medium scale businesses. 
+
+#### Highlights
+
+- Migration from cloud to cloud
+- Work on the cloud platform initiative
+- Crafting reliable infrastructure for clients of customers
+
 ### Heroku - Senior Software Engineer &emsp; <small>*2017 - 2019*</small>
 
 > [Heroku][heroku] is a cloud Platform-as-a-Service (PaaS) that created the term "platform as a service". Heroku currnetly supports
@@ -155,3 +168,4 @@ I am an ordained minister with the [Church of the Latter-day Dude](https://dudei
 [twitter]: https://twitter.com/theprincessxena
 [twit]: http://cdn-careers.sstatic.net/careers/Img/icon-twitter.png?v=b1bd58ad2034
 [heroku]: https://www.heroku.com
+[lightspeed]: https://www.lightspeedhq.com
