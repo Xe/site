@@ -1,9 +1,10 @@
 # Christine Dodrill
 
 #### Web and Backend Services Devops Specialist
+
 ##### Bellevue, WA &emsp; [christine.website][homepage]
 
-`Docker`, `Git`, `Go`, `C`, `CentOS`, `CoreOS`, `IRC`, `Stenography`, `DevOps`, `Heroku`, `Continuous Integration/Delivery`, `Event Sourcing`, `WebAssembly`, `Lua`, `Haskell`, `Nim`, `Python`, `Java`, `Rust`, `Javascript`, `Gherkin`, `Mindfulness`, `Lojban`, `HTTP/2`, `Rails`, `Ruby`, `Sinatra`, `Alpine Linux`, `Ubuntu`, `Debian`, `Linux`, `Dart`, `Flutter`, `TCL`, `Emacs Lisp`, `MoonScript`, `RPM`, `Node.js`, `npm`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`, `Postgres`, `MySQL`, `SQLite`
+`Docker`, `Git`, `Go`, `C`, `CentOS`, `CoreOS`, `IRC`, `Stenography`, `DevOps`, `Heroku`, `Continuous Integration/Delivery`, `Event Sourcing`, `WebAssembly`, `Lua`, `Haskell`, `Nim`, `Python`, `Java`, `Rust`, `Javascript`, `Gherkin`, `Mindfulness`, `Lojban`, `HTTP/2`, `Rails`, `Ruby`, `Sinatra`, `Alpine Linux`, `Ubuntu`, `Debian`, `Linux`, `Dart`, `Flutter`, `TCL`, `Emacs Lisp`, `MoonScript`, `RPM`, `Node.js`, `npm`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`, `Postgres`, `MySQL`, `SQLite`, `Ordained Minister`, `Dudeism`
 
 ## Experience
 
@@ -17,12 +18,13 @@
 #### Highlights
 
 - Migration from cloud to cloud
+- Work on the cloud platform initiative
 - Crafting reliable infrastructure for clients of customers
 
 ### Heroku - Senior Software Engineer &emsp; <small>*2017 - 2019*</small>
 
-> [Heroku][heroku] is a cloud Platform-as-a-Service (PaaS) supporting
-> several programming languages that is used as a web application deployment model.
+> [Heroku][heroku] is a cloud Platform-as-a-Service (PaaS) that created the term "platform as a service". Heroku currnetly supports
+> several programming languages that are commonly used on the web.
 > Heroku, one of the first cloud platforms, has been in development since June 2007,
 > when it supported only the Ruby programming language, but now supports Java,
 > Node.js, Scala, Clojure, Python, PHP, and Go.
@@ -36,7 +38,7 @@
 
 ### Backplane.io - Software Engineer &emsp; <small>*2016 - 2016*</small>
 
-> [Backplane](https://backplane.io) is an innovative reverse reverse proxy that
+> [Backplane](https://backplane.io) (now defunct) was an innovative reverse reverse proxy that
 > helps administrators and startups simplify their web application routing.
 
 #### Highlights
@@ -121,9 +123,9 @@ As of March 21, 2019, Olin is able to run binaries compiled with [Go 1.12.x WebA
 
 A chatbot that parses its commands through the grammar of the constructed language [Toki Pona](http://tokipona.org), then figures out what the user is asking for using a lookup table and executes that request.
 
-### [When Then Zen](https://github.com/Xe/when-then-zen)
+### When Then Zen
 
-This is meditation instructions translated into Gherkin, a-la:
+[When Then Zen](https://when-then-zen.christine.website) is meditation instructions translated into Gherkin, a-la:
 
 ```
 Feature: Anapana (mindfulness via breathing) meditation
@@ -157,6 +159,10 @@ This has been well-recieved by coworkers, friends and others. I have written mor
 
 - [My Blog](https://christine.website/blog)
 - [I Put Words on This Webpage so You Have to Listen to Me Now](https://christine.website/blog/experimental-rilkef-2018-11-30)
+
+## Ordination
+
+I am an ordained minister with the [Church of the Latter-day Dude](https://dudeism.com). This allows me to officiate religious ceremonies in at least the United States. I would be honored if you were to choose me to officiate anything for any reason. Please [contact](/contact) me if you have any questions.
 
 [homepage]: https://christine.website
 [twitter]: https://twitter.com/theprincessxena
