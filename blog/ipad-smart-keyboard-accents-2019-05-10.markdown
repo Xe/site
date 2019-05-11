@@ -9,9 +9,9 @@ The following is the results of both blind googling and brute forcing the keyboa
 
 | Accent/Ligature | How to type | Example |
 | :-------------- | :---------- | :------ |
-| é (forward facing accent on vowel) | Alt-e | entrée |
-| è (backward facing accent on vowel) | Alt-` | fières |
-| ï (two dots above a vowel) | Alt-u | naïve |
+| é (acute) | Alt-e | entrée |
+| è (grave) | Alt-` | fières |
+| ï (umlat) | Alt-u | naïve |
 | ç (cedelia) | Alt-c | français |
 | œ (oe ligature) | Alt-q | œuf |
 | û (circumflex) | Alt-i | hôtel |
