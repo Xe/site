@@ -18,7 +18,7 @@ This is outsider art. The artist of this art, [Terry A. Davis](https://en.wikipe
 
 However, in direct spite of this, I believe that TempleOS has immediately applicable lessons to teach about OS and compiler design. I want to use this blogpost series to break the genius down and separate it out from the insanity, bit by bit.
 
-This is not intended to make fun of the mentally ill, disabled or otherwise incapacitated. This is not an endorsement of any of Davis' political views. This is intended to glorify and preserve his life's work that so few can really grasp the scope of.
+This is not intended to make fun of the mentally ill, disabled or otherwise incapacitated. This is not an endorsement of any of Davis' political views. This is intended to glorify and preserve his life's work that so few can currently really grasp the scope of.
 
 If for some reason you are having issues downloading the TempleOS ISO, I have uploaded my copy of it [here](/static/tos/TOS_Distro.ISO). Here is its SHA512 sum:
 
@@ -82,7 +82,7 @@ TempleOS actually includes an installer on the live CD. Power up your hardware a
 
 ![TempleOS installation, adding live cd to virtual machine](/static/img/tos/tos_install_1.png)
 
-Within a few seconds, the VM compiles the compiler, kernel and userland and then dumps you to this screen, which should look familiar to most people:
+Within a few seconds, the VM compiles the compiler, kernel and userland and then dumps you to this screen, which should look conceptually familiar:
 
 ![TempleOS installation, immediately after boot](/static/img/tos/tos_install_2.png)
 
@@ -120,7 +120,7 @@ The first boot requires the dictionary to be uncompressed as well as other house
 ![TempleOS boot, chores](/static/img/tos/tos_boot_2.png)
 </center>
 
-Once it is done, you will see if the option to take the tour. I highly suggest going through this tour, but that is beyond the scope of this article, so press `n`:
+Once it is done, you will see if the option to take the tour. I highly suggest going through this tour, but that is beyond the scope of this article, so we'll assume you pressed `n`:
 
 <center>
 ![TempleOS boot, denying the tour](/static/img/tos/tos_boot_3.png)
