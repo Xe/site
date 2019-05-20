@@ -5,6 +5,13 @@ date: 2019-05-20
 
 # TempleOS: 1 - Installation
 
+<style>
+img {
+  margin: auto;
+  text-align: center;
+}
+</style>
+
 [TempleOS](https://templeos.org) is a public domain, open source (requires source code to boot) multitasking OS for [amd64](https://en.wikipedia.org/wiki/X86-64) processors without EFI support. It's fully cooperatively multitasked and all code runs in [Ring 0](https://en.wikipedia.org/wiki/Protection_ring). This means that system calls that normally require a context switch are just normal function calls. All ram is identity-mapped too, so sharing memory between tasks is as easy as passing a pointer. There's a locking intrinsyc too. It has full documentation (with graphical diagrams) embedded directly in source code.
 
 This is outsider art. The artist of this art, [Terry A. Davis](https://en.wikipedia.org/wiki/Terry_A._Davis) (1969-2018, RIP), had very poor mental health before he was struck by a train and died. I hope he is at peace.
@@ -103,23 +110,33 @@ Make sure to remove the TempleOS live CD from your hardware or it will be booted
 
 The [TempleOS Bootloader](https://github.com/Xe/TempleOS/blob/1dd8859b7803355f41d75222d01ed42d5dda057f/Adam/Opt/Boot/BootMHDIns.HC#L69) presents a helpful menu to let you choose if you want to boot from a copy of the old boot record (preserved at install time), drive C or drive D. Press 1:
 
+<center>
 ![TempleOS boot, picking the partition](/static/img/tos/tos_boot_1.png)
+</center>
 
 The first boot requires the dictionary to be uncompressed as well as other housekeeping chores, so let it do its thing:
 
+<center>
 ![TempleOS boot, chores](/static/img/tos/tos_boot_2.png)
+</center>
 
 Once it is done, you will see if the option to take the tour. I highly suggest going through this tour, but that is beyond the scope of this article, so press `n`:
 
+<center>
 ![TempleOS boot, denying the tour](/static/img/tos/tos_boot_3.png)
+</center>
 
 ### Using the Compiler
 
+<center>
 ![TempleOS boot, HolyC prompt](/static/img/tos/tos_boot_4.png)
+</center>
 
 The "shell" is itself an interface to the HolyC (similar to C) compiler. There is no difference between a "shell" REPL and a HolyC repl. This is stupidly powerful:
 
+<center>
 ![TempleOS hello world](/static/img/tos/tos_compiler_1.png)
+</center>
 
 ```
 "Hello, world\n";
@@ -129,25 +146,37 @@ Let's make this into a "program" and disassemble it. This is way easier than it 
 
 Open a new file with `Ed("HelloWorld.HC");` (the semicolon is important):
 
+<center>
 ![TempleOS opening a file](/static/img/tos/tos_compiler_2.png)
+</center>
 
+<center>
 ![TempleOS editor screen](/static/img/tos/tos_compiler_3.png)
+</center>
 
 Now press Alt-Shift-a to kill autocomplete:
 
+<center>
 ![TempleOS sans autocomplete](/static/img/tos/tos_compiler_4.png)
+</center>
 
 Click the `X` in the upper right-hand corner to close the other shell window:
 
+<center>
 ![TempleOS sans other window](/static/img/tos/tos_compiler_5.png)
+</center>
 
 Finally press drag the right side of the window to maximize the editor pane:
 
+<center>
 ![TempleOS full screen editor](/static/img/tos/tos_compiler_6.png)
+</center>
 
 Let's put the hello word example into the program and press `F5` to run it:
 
+<center>
 ![TempleOS hello world in a file](/static/img/tos/tos_compiler_7.png)
+</center>
 
 Neat! Close that shell window that just popped up. Let's put this hello world code into a function:
 
@@ -161,7 +190,9 @@ HelloWorld;
 
 Now press `F5` again:
 
+<center>
 ![TempleOS hello world from a function](/static/img/tos/tos_compiler_8.png)
+</center>
 
 Let's disassemble it:
 
@@ -173,7 +204,9 @@ U0 HelloWorld() {
 Uf("HelloWorld");
 ```
 
+<center>
 ![TempleOS hello world disassembled](/static/img/tos/tos_compiler_9.png)
+</center>
 
 The `Uf` function also works with anything else, including things like the editor:
 
@@ -181,11 +214,15 @@ The `Uf` function also works with anything else, including things like the edito
 Uf("Ed");
 ```
 
+<center>
 ![TempleOS editor disassembled](/static/img/tos/tos_compiler_10.png)
+</center>
 
 All of the red underscored things that look like links actually are links to the source code of functions. While the HolyC compiler builds things, it internally keeps a sourcemap (much like webapp sourcemaps or how gcc relates errors at runtime to lines of code for the developer) of all of the functions it compiles. Let's look at the definition of `Free()`:
 
+<center>
 ![TempleOS Free() function](/static/img/tos/tos_compiler_11.png)
+</center>
 
 And from here you can dig deeper into the kernel source code.
 
