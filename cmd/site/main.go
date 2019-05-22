@@ -149,13 +149,8 @@ func Build() (*Site, error) {
 	s.Talks = talks
 
 	var everything blog.Posts
-	for _, p := range posts {
-		everything = append(everything, p)
-	}
-
-	for _, p := range talks {
-		everything = append(everything, p)
-	}
+	everything = append(everything, posts...)
+	everything = append(everything, talks...)
 
 	sort.Sort(sort.Reverse(everything))
 
