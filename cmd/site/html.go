@@ -66,8 +66,52 @@ func (s *Site) renderTemplatePage(templateFname string, data interface{}) http.H
 
 var postView = promauto.NewCounterVec(prometheus.CounterOpts{
 	Name: "posts_viewed",
-	Help: "The number of views per post",
+	Help: "The number of views per post or talk",
 }, []string{"base"})
+
+func (s *Site) showTalk(w http.ResponseWriter, r *http.Request) {
+	if r.RequestURI == "/talks/" {
+		http.Redirect(w, r, "/talks", http.StatusSeeOther)
+		return
+	}
+
+	cmp := r.URL.Path[1:]
+	var p blog.Post
+	var found bool
+	for _, pst := range s.Talks {
+		if pst.Link == cmp {
+			p = pst
+			found = true
+		}
+	}
+
+	if !found {
+		w.WriteHeader(http.StatusNotFound)
+		s.renderTemplatePage("error.html", "no such post found: "+r.RequestURI).ServeHTTP(w, r)
+		return
+	}
+
+	const dateFormat = `2006-01-02`
+	h := s.renderTemplatePage("talkpost.html", struct {
+		Title      string
+		Link       string
+		BodyHTML   template.HTML
+		Date       string
+		SlidesLink string
+	}{
+		Title:      p.Title,
+		Link:       p.Link,
+		BodyHTML:   p.BodyHTML,
+		Date:       p.Date.Format(dateFormat),
+		SlidesLink: p.SlidesLink,
+	})
+
+	if h == nil {
+		panic("how did we get here?")
+	}
+
+	h.ServeHTTP(w, r)
+}
 
 func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 	if r.RequestURI == "/blog/" {

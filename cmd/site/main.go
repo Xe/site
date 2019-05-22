@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"sort"
 	"time"
 
 	"christine.website/internal/blog"
@@ -54,6 +55,7 @@ func main() {
 // Site is the parent object for https://christine.website's backend.
 type Site struct {
 	Posts  blog.Posts
+	Talks  blog.Posts
 	Resume template.HTML
 
 	rssFeed  *feeds.Feed
@@ -134,11 +136,28 @@ func Build() (*Site, error) {
 		xffmw: xffmw,
 	}
 
-	posts, err := blog.LoadPosts("./blog/")
+	posts, err := blog.LoadPosts("./blog/", "blog")
 	if err != nil {
 		return nil, err
 	}
 	s.Posts = posts
+
+	talks, err := blog.LoadPosts("./talks", "talks")
+	if err != nil {
+		return nil, err
+	}
+	s.Talks = talks
+
+	var everything blog.Posts
+	for _, p := range posts {
+		everything = append(everything, p)
+	}
+
+	for _, p := range talks {
+		everything = append(everything, p)
+	}
+
+	sort.Sort(sort.Reverse(everything))
 
 	resumeData, err := ioutil.ReadFile("./static/resume/resume.md")
 	if err != nil {
@@ -147,7 +166,7 @@ func Build() (*Site, error) {
 
 	s.Resume = template.HTML(blackfriday.Run(resumeData))
 
-	for _, item := range s.Posts {
+	for _, item := range everything {
 		s.rssFeed.Items = append(s.rssFeed.Items, &feeds.Item{
 			Title:       item.Title,
 			Link:        &feeds.Link{Href: "https://christine.website/" + item.Link},
@@ -184,11 +203,13 @@ func Build() (*Site, error) {
 	s.mux.Handle("/metrics", promhttp.Handler())
 	s.mux.Handle("/resume", middleware.Metrics("resume", s.renderTemplatePage("resume.html", s.Resume)))
 	s.mux.Handle("/blog", middleware.Metrics("blog", s.renderTemplatePage("blogindex.html", s.Posts)))
+	s.mux.Handle("/talks", middleware.Metrics("talks", s.renderTemplatePage("talkindex.html", s.Talks)))
 	s.mux.Handle("/contact", middleware.Metrics("contact", s.renderTemplatePage("contact.html", nil)))
 	s.mux.Handle("/blog.rss", middleware.Metrics("blog.rss", http.HandlerFunc(s.createFeed)))
 	s.mux.Handle("/blog.atom", middleware.Metrics("blog.atom", http.HandlerFunc(s.createAtom)))
 	s.mux.Handle("/blog.json", middleware.Metrics("blog.json", http.HandlerFunc(s.createJSONFeed)))
 	s.mux.Handle("/blog/", middleware.Metrics("blogpost", http.HandlerFunc(s.showPost)))
+	s.mux.Handle("/talks/", middleware.Metrics("talks", http.HandlerFunc(s.showTalk)))
 	s.mux.Handle("/css/", http.FileServer(http.Dir(".")))
 	s.mux.Handle("/static/", http.FileServer(http.Dir(".")))
 	s.mux.HandleFunc("/sw.js", func(w http.ResponseWriter, r *http.Request) {

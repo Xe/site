@@ -5,11 +5,13 @@ self.addEventListener('install', function(event) {
   event.waitUntil(preLoad());
 });
 
+const cacheName = "cache-2019-05-21";
+
 var preLoad = function(){
   console.log('[PWA Builder] Install Event processing');
-  return caches.open('offline').then(function(cache) {
+  return caches.open(cacheName).then(function(cache) {
     console.log('[PWA Builder] Cached index and offline page during Install');
-    return cache.addAll(['/blog/', '/blog', '/', '/contact', '/resume']);
+    return cache.addAll(['/blog/', '/blog', '/', '/contact', '/resume', '/talks']);
   });
 };
 
@@ -37,7 +39,7 @@ var checkResponse = function(request){
 };
 
 var addToCache = function(request){
-  return caches.open('offline').then(function (cache) {
+  return caches.open(cacheName).then(function (cache) {
     return fetch(request).then(function (response) {
       console.log('[PWA Builder] add page to offline: ' + response.url);
       return cache.put(request, response);
@@ -46,7 +48,7 @@ var addToCache = function(request){
 };
 
 var returnFromCache = function(request){
-  return caches.open('offline').then(function (cache) {
+  return caches.open(cacheName).then(function (cache) {
     return cache.match(request).then(function (matching) {
      if(!matching || matching.status == 404) {
        return cache.match('offline.html');

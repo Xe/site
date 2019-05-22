@@ -20,6 +20,7 @@ type Post struct {
 	Summary    string        `json:"summary,omitifempty"`
 	Body       string        `json:"-"`
 	BodyHTML   template.HTML `json:"body"`
+	SlidesLink string        `json:"slides_link"`
 	Date       time.Time
 	DateString string `json:"date"`
 }
@@ -37,10 +38,11 @@ func (p Posts) Less(i, j int) bool {
 func (p Posts) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
 
 // LoadPosts loads posts for a given directory.
-func LoadPosts(path string) (Posts, error) {
+func LoadPosts(path string, prepend string) (Posts, error) {
 	type postFM struct {
-		Title string
-		Date  string
+		Title      string
+		Date       string
+		SlidesLink string `yaml:"slides_link"`
 	}
 	var result Posts
 
@@ -78,13 +80,17 @@ func LoadPosts(path string) (Posts, error) {
 			return err
 		}
 
+		fname := filepath.Base(path)
+		fname = strings.TrimSuffix(fname, filepath.Ext(fname))
+
 		p := Post{
 			Title:      fm.Title,
 			Date:       date,
 			DateString: fm.Date,
-			Link:       strings.Split(path, ".")[0],
+			Link:       filepath.Join(prepend, fname),
 			Body:       string(remaining),
 			BodyHTML:   template.HTML(output),
+			SlidesLink: fm.SlidesLink,
 		}
 		result = append(result, p)
 
