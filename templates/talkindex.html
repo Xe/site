@@ -1,0 +1,20 @@
+{{ define "title" }}
+<title>Blog - Christine Dodrill</title>
+{{ end }}
+
+{{ define "content" }}
+<h1>Talks</h1>
+
+<p>Here is a link to all of the talks I have done at conferences. Each of these will have links to the slides (PDF) as well as some brief information about them.</p>
+
+<p>If you have a compatible reader, be sure to check out my <a href="/blog.rss">RSS Feed</a> for automatic updates. Also check out the <a href="/blog.json">JSONFeed</a>.</p>
+
+<p>
+    <ul>
+        {{ range . }}
+            <li>{{ .DateString }} - <a href="{{ .Link }}">{{ .Title }}</a></li>
+        {{ end }}
+    </ul>
+</p>
+
+{{ end }}
