@@ -3,7 +3,7 @@ module christine.website
 require (
 	github.com/celrenheit/sandflake v0.0.0-20171226210037-92cb626f32dc
 	github.com/golang/protobuf v1.3.1 // indirect
-	github.com/gorilla/feeds v1.1.0
+	github.com/gorilla/feeds v1.1.1
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/povilasv/prommod v0.0.11
