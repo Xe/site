@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"christine.website/internal"
-	"christine.website/internal/blog"
+	"christine.website/v1/internal"
+	"christine.website/v1/internal/blog"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"within.website/ln"

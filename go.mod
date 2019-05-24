@@ -1,4 +1,4 @@
-module christine.website
+module christine.website/v1
 
 require (
 	github.com/celrenheit/sandflake v0.0.0-20171226210037-92cb626f32dc
