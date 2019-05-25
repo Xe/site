@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"christine.website/internal/jsonfeed"
+	"christine.website/v1/internal/jsonfeed"
 	"github.com/stretchr/testify/assert"
 )
 
