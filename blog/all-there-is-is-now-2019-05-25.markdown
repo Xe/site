@@ -1,6 +1,6 @@
 ---
 title: All There is is Now
-date: 2018-06-16
+date: 2019-05-25
 series: dreams
 ---
 
