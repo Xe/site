@@ -9,9 +9,9 @@ import (
 	"sort"
 	"time"
 
-	"christine.website/v1/internal/blog"
-	"christine.website/v1/internal/jsonfeed"
-	"christine.website/v1/internal/middleware"
+	"christine.website/internal/blog"
+	"christine.website/internal/jsonfeed"
+	"christine.website/internal/middleware"
 	"github.com/gorilla/feeds"
 	"github.com/povilasv/prommod"
 	"github.com/prometheus/client_golang/prometheus"
