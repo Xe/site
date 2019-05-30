@@ -102,7 +102,6 @@ Since the vocabulary list is pretty safely not going to change at this point, we
 const words = @embedFile("./Vocab.DD");
 const numWordsInFile = 7570;
 
-const Allocator = mem.Allocator;
 var alloc = @import("std").heap.wasm_allocator;
 
 const God = struct {
@@ -124,14 +123,18 @@ const God = struct {
 }
 
 fn splitWords(data: []const u8, numWords: u32) ![][]const u8 {
+    // make a bucket big enough for all of god's words
     var result: [][]const u8 = try alloc.alloc([]const u8, numWords);
     var ctr: usize = 0;
 
+    // iterate over the wordlist (one word per line)
     var itr = mem.separate(data, "\n");
     var done = false;
     while (!done) {
         var val = itr.next();
+        // val is of type ?u8, so resolve that
         if (val) |str| {
+            // for some reason the last line in the file is a zero-length string
             if (str.len == 0) {
                 done = true;
                 continue;
@@ -179,6 +182,8 @@ bits = GodBits(64, "a demo for the blog");
 
 ![the result as an i64](/static/blog/tos_2/resp.png)
 
+This is actually also a generic userspace function that applications can call. [Here's an example of `god` drawing tarot cards](https://github.com/Xe/TempleOS-tools/blob/master/Programs/Tarot.HC). 
+
 So let's translate this to Zig:
 
 ```
@@ -187,7 +192,9 @@ So let's translate this to Zig:
     fn add_bits(self: *God, num_bits: i64, n: i64) void {
         var i: i64 = 0;
         var nn = n;
+        // loop over each bit in n, up to num_bits
         while (i < num_bits) : (i += 1) {
+            // create the new stack node (== to pushing to the fifo)
             var node = alloc.create(Stack(u8).Node) catch unreachable;
             node.* = Stack(u8).Node {
                 .next = undefined,
@@ -210,6 +217,8 @@ So let's translate this to Zig:
         while (i < num_bits) : (i += 1) {
             const n = self.bits.pop();
 
+            // n is an optional (type: ?*Stack(u8).Node), so resolve it
+            // TODO(Xe): automatically refill data if stack is empty
             if (n) |nn| {
                 result = result + @intCast(i64, nn.data);
                 result = result << 1;
@@ -230,11 +239,12 @@ const Resource = olin.resource.Resource;
 
 fn main() !void {
     var god = try God.init();
+    // open standard output for writing
     const stdout = try Resource.stdout();
     const nl = "\n";
     
     god.add_bits(32, olin.random.int32());
-    // I copypasted this a few times in the original code
+    // I copypasted this a few times (16) in the original code
     // to ensure sufficient entropy
     
     const w = god.get_word();
@@ -258,7 +268,7 @@ uncultivated
 2019/05/29 20:43:43 memory pages:      3
 ```
 
-Yikes! Loading the wordlist is expensive (alternatively: my arbitrary gas limit is set way too low), so it's a good thing it's only done once and at boot. Still, regardless of this TempleOS boots in only a few seconds anyways.
+Yikes! Loading the wordlist is expensive (alternatively: my arbitrary gas limit is set way too low), so it's a good thing it's only done once and at boot. Still, regardless of this TempleOS boots in [only a few seconds anyways](https://i.imgur.com/O3FFsqA.png).
 
 The final product is runnable via [this link](/static/blog/tos_2/wasm_exec.html). Please note that this is not currently supported on big-endian CPU's in browsers because Mozilla and Google have totally dropped the ball in this court, and trying to load that link will probably crash your browser.
 
