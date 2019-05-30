@@ -1,14 +1,14 @@
 ---
 title: "TempleOS: 2 - god, the Random Number Generator"
-date: 2019-05-29
-series: TempleOS
+date: 2019-05-30
+series: templeos
 ---
 
 # TempleOS: 2 - `god`, the Random Number Generator
 
 The [last post](https://christine.website/blog/templeos-1-installation-and-basic-use-2019-05-20) covered a lot of the basic usage of TempleOS. This post is going to be significantly different, as I'm going to be porting part of the TempleOS kernel to WebAssembly as a live demo. 
 
-This post may contain words used in ways and places that look blasphemous. No blasphemy is intended, though it is an unfortunate requirement for covering this part of TempleOS' kernel. It's worth noting that Terry Davis [legitimately believed that TempleOS is a temple of the Lord Yahweh](https://templeos.holyc.xyz/Wb/Doc/Charter.html):
+This post may contain words used in ways and places that look blasphemous at first glance. No blasphemy is intended, though it is an unfortunate requirement for covering this part of TempleOS' kernel. It's worth noting that Terry Davis [legitimately believed that TempleOS is a temple of the Lord Yahweh](https://templeos.holyc.xyz/Wb/Doc/Charter.html):
 
 ```
 * TempleOS is God's official temple.  Just like Solomon's temple, this is a 
@@ -45,7 +45,7 @@ public class CGodGlbls
 } god;
 ```
 
-This is about equivalent to the following Zig code:
+This is about equivalent to the following Zig code (I would just be embedding TempleOS directly in a webpage but I can't figure out how to do that yet, please help if you can):
 
 ```
 const Stack = @import("std").atomic.Stack;
