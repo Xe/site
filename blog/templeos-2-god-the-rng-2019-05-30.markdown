@@ -87,7 +87,7 @@ life so that perfect justice happened?
 
 Terry Davis legitimately believed that this code was being directly influenced by the Holy Spirit; and that therefore Terry could ask God questions and get responses by hammering `F7`. One of the sources of entropy for the random number generator is keyboard input, so in a way Terry was the voice of `god` through everything he wrote.
 
-> Terry: Is the World perfectly just?
+> Terry: Is the World perfectly just?  
 > `god`: Are you calling me lazy?
 
 Once the system boots, `god` gets initialized with the contents of every word in the King James Bible. It loads the words something like [this](https://github.com/Xe/TempleOS/blob/1dd8859b7803355f41d75222d01ed42d5dda057f/Adam/God/HolySpirit.HC#L76-L136):
