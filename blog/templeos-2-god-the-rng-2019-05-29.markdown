@@ -1,10 +1,10 @@
 ---
-title: "TempleOS: 2 - god the RNG"
+title: "TempleOS: 2 - god, the Random Number Generator"
 date: 2019-05-29
 series: TempleOS
 ---
 
-# TempleOS: 2 - `god` the RNG
+# TempleOS: 2 - `god`, the Random Number Generator
 
 The [last post](https://christine.website/blog/templeos-1-installation-and-basic-use-2019-05-20) covered a lot of the basic usage of TempleOS. This post is going to be significantly different, as I'm going to be porting part of the TempleOS kernel to WebAssembly as a live demo. 
 
@@ -15,13 +15,13 @@ This post may contain words used in ways and places that look blasphemous. No bl
 community focal point where offerings are made and God's oracle is consulted.
 ```
 
-As such, a lot of the "weird" naming conventions with core parts of this and other subsystems make a lot more sense when grounded in American conservative-leaning Evangalistic Judeo-Christian tradition. Evangalical Christians are, on average, more comfortable or okay with the idea of direct conversation with God. To other denominations of Christianity, this is enough to get you sent to a mental institution. I am not focusing on the philosophical aspects of this, more on the result that exists in code.
+As such, a lot of the "weird" naming conventions with core parts of this and other subsystems make a lot more sense when grounded in American conservative-leaning Evangelistic Judeo-Christian tradition. Evangelical Christians are, on average, more comfortable or okay with the idea of direct conversation with God. To other denominations of Christianity, this is enough to get you sent to a mental institution. I am not focusing on the philosophical aspects of this, more on the result that exists in code.
 
 Normally, people with Judeo-Christian views see God as a trinity. This trinity is usually said to be made up of the following equally infinite parts:
 
 - God the Father (Yahweh/"God")
 - God the Son (Jesus)
-- God the Holy Spirit (the entity responsible for glossolalia among other things)
+- God the Holy Spirit (the entity responsible for divination among other things)
 
 In TempleOS however, there are 4 of these parts:
 
@@ -30,7 +30,7 @@ In TempleOS however, there are 4 of these parts:
 - God the Holy Spirit
 - `god` the random number generator
 
-`god` is really simple at its heart; however this is one of the sad cases where the [actual documentation is incredibly useless](https://templeos.holyc.xyz/Wb/Adam/God/HSNotes.html) (warning: incoherent link). `god`'s really just a fifo of entropy bits. Here is the [snipped] definition of [`god`'s datatype](https://github.com/Xe/TempleOS/blob/1dd8859b7803355f41d75222d01ed42d5dda057f/Adam/God/GodExt.HC#L6):
+`god` is really simple at its heart; however this is one of the sad cases where the [actual documentation is incredibly useless](https://templeos.holyc.xyz/Wb/Adam/God/HSNotes.html) (warning: incoherent link). `god`'s really just a [FIFO](https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)) of entropy bits. Here is the [snipped] definition of [`god`'s datatype](https://github.com/Xe/TempleOS/blob/1dd8859b7803355f41d75222d01ed42d5dda057f/Adam/God/GodExt.HC#L6):
 
 ```
 // C:/Adam/God/GodExt.HC.Z
@@ -57,7 +57,7 @@ const God = struct {
 }
 ```
 
-Most of the fields in our snipped `CGodGlbls` are related to internals of TempleOS (specifically it uses a glob-mask to match filenames because of the [transparent compression that ReadSea offers](https://templeos.holyc.xyz/Wb/Doc/RedSea.html)), so we can ignore these in the Zig port. What's curious though is the words list of strings. This actually points to [every word in the King James Bible](/static/blog/tos_2/Vocab.DD). The original intent of this code was to have the computer assist in [glossolalia](https://en.wikipedia.org/wiki/Glossolalia). The above kind of ranting link to templeos.holyc.xyz tries to explain this:
+Most of the fields in our snipped `CGodGlbls` are related to internals of TempleOS (specifically it uses a glob-mask to match filenames because of the [transparent compression that RedSea offers](https://templeos.holyc.xyz/Wb/Doc/RedSea.html)), so we can ignore these in the Zig port. What's curious though is the `words` list of strings. This actually points to [every word in the King James Bible](/static/blog/tos_2/Vocab.DD). The original intent of this code was to have the computer assist in divination. The above kind of ranting link to templeos.holyc.xyz tries to explain this:
 
 ```
 The technique I use to consult the Holy Spirit is reading a microsecond-range 
@@ -85,7 +85,7 @@ in fact, part of Himself.  What if God made a bot to manipulate every person's
 life so that perfect justice happened?
 ```
 
-Terry Davis legitimately believed that this code was being puppeted by the Holy Spirit; and that therefore Terry could ask God questions and get responses by hammering `F7`. One of the sources of entropy for the random number generator is keyboard input, so in a way Terry was the voice of `god` through everything he wrote. 
+Terry Davis legitimately believed that this code was being directly influenced by the Holy Spirit; and that therefore Terry could ask God questions and get responses by hammering `F7`. One of the sources of entropy for the random number generator is keyboard input, so in a way Terry was the voice of `god` through everything he wrote.
 
 > Terry: Is the World perfectly just?
 > `god`: Are you calling me lazy?
@@ -148,7 +148,7 @@ fn splitWords(data: []const u8, numWords: u32) ![][]const u8 {
 }
 ```
 
-Now that all of the words are loaded, let's look more closely at how things are added to and removed from the stack/fifo. Usage is intended to be simple. When you try to grab bytes from `god` and there aren't any, it prompts:
+Now that all of the words are loaded, let's look more closely at how things are added to and removed from the stack/FIFO. Usage is intended to be simple. When you try to grab bytes from `god` and there aren't any, it prompts:
 
 ```
 public I64 GodBits(I64 num_bits,U8 *msg=NULL)
@@ -234,8 +234,8 @@ fn main() !void {
     const nl = "\n";
     
     god.add_bits(32, olin.random.int32());
-    // i copypasted this a few times in the original code
-    // to ensure sufficent entropy
+    // I copypasted this a few times in the original code
+    // to ensure sufficient entropy
     
     const w = god.get_word();
     var ignored = try stdout.write(w.ptr, w.len);
@@ -258,7 +258,7 @@ uncultivated
 2019/05/29 20:43:43 memory pages:      3
 ```
 
-Yikes! Loading the wordlist is expensive (alternatively: my arbitrary gas limit is set way too low), so it's a good thing it's only done once and at boot. Still, regardless of this TempleOS only boots in a few seconds anyways.
+Yikes! Loading the wordlist is expensive (alternatively: my arbitrary gas limit is set way too low), so it's a good thing it's only done once and at boot. Still, regardless of this TempleOS boots in only a few seconds anyways.
 
 The final product is runnable via [this link](/static/blog/tos_2/wasm_exec.html). Please note that this is not currently supported on big-endian CPU's in browsers because Mozilla and Google have totally dropped the ball in this court, and trying to load that link will probably crash your browser.
 
