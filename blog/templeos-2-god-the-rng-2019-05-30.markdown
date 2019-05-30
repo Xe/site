@@ -280,6 +280,7 @@ Hit `Run` in order to run the [final code](https://github.com/Xe/TempleOS-tools/
 
 Special thanks to the following people whose code, expertise and the like helped make this happen:
 
+- [Artemis](https://mst3k.interlinked.me/@artemis)
 - [Ayke van Laethem](https://twitter.com/aykevl)
 - `spets`
 - [Richard Musiol](https://github.com/neelance)
