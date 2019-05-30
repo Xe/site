@@ -15,9 +15,9 @@ This post may contain words used in ways and places that look blasphemous at fir
 community focal point where offerings are made and God's oracle is consulted.
 ```
 
-As such, a lot of the "weird" naming conventions with core parts of this and other subsystems make a lot more sense when grounded in American conservative-leaning Evangelistic Judeo-Christian tradition. Evangelical Christians are, on average, more comfortable or okay with the idea of direct conversation with God. To other denominations of Christianity, this is enough to get you sent to a mental institution. I am not focusing on the philosophical aspects of this, more on the result that exists in code.
+As such, a lot of the "weird" naming conventions with core parts of this and other subsystems make a lot more sense when grounded in American conservative-leaning Evangelistic Christian tradition. Evangelical Christians are, in my subjective experience, more comfortable or okay with the idea of direct conversation with God. To other denominations of Christianity, this is enough to get you sent to a mental institution. I am not focusing on the philosophical aspects of this, more on the result that exists in code.
 
-Normally, people with Judeo-Christian views see God as a trinity. This trinity is usually said to be made up of the following equally infinite parts:
+Normally, people with Christian/Evangelical views see God as a trinity. This trinity is usually said to be made up of the following equally infinite parts:
 
 - God the Father (Yahweh/"God")
 - God the Son (Jesus)
