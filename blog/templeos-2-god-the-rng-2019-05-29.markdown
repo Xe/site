@@ -265,3 +265,12 @@ The final product is runnable via [this link](/static/blog/tos_2/wasm_exec.html)
 Hit `Run` in order to run the [final code](https://github.com/Xe/TempleOS-tools/blob/master/god/god.zig). You should get output that looks something like this after pressing it a few times:
 
 ![](/static/blog/tos_2/browser.png)
+
+---
+
+Special thanks to the following people whose code, expertise and the like helped make this happen:
+
+- [Ayke van Laethem](https://twitter.com/aykevl)
+- `spets`
+- [Richard Musiol](https://github.com/neelance)
+- Terry Davis (RIP)
