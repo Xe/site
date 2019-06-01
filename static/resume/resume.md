@@ -2,9 +2,9 @@
 
 #### Web and Backend Services Devops Specialist
 
-##### Bellevue, WA &emsp; [christine.website][homepage]
+##### Montreal, QC &emsp; [christine.website][homepage]
 
-`Docker`, `Git`, `Go`, `C`, `CentOS`, `CoreOS`, `IRC`, `Stenography`, `DevOps`, `Heroku`, `Continuous Integration/Delivery`, `Event Sourcing`, `WebAssembly`, `Lua`, `Haskell`, `Nim`, `Python`, `Java`, `Rust`, `Javascript`, `Gherkin`, `Mindfulness`, `Lojban`, `HTTP/2`, `Rails`, `Ruby`, `Sinatra`, `Alpine Linux`, `Ubuntu`, `Debian`, `Linux`, `Dart`, `Flutter`, `TCL`, `Emacs Lisp`, `MoonScript`, `RPM`, `Node.js`, `npm`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`, `Postgres`, `MySQL`, `SQLite`, `Ordained Minister`, `Dudeism`
+`Docker`, `Git`, `Go`, `C`, `CentOS`, `CoreOS`, `IRC`, `Stenography`, `DevOps`, `Heroku`, `Continuous Integration/Delivery`, `Event Sourcing`, `WebAssembly`, `Lua`, `Haskell`, `Nim`, `Python`, `Java`, `Rust`, `Javascript`, `Gherkin`, `Mindfulness`, `Lojban`, `HTTP/2`, `Rails`, `Ruby`, `Sinatra`, `Alpine Linux`, `Ubuntu`, `Debian`, `Linux`, `Dart`, `Flutter`, `TCL`, `Emacs Lisp`, `MoonScript`, `RPM`, `Node.js`, `npm`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`, `Postgres`, `MySQL`, `SQLite`, `Ordained Minister`, `Dudeism`, `Tech Writing`
 
 ## Experience
 
@@ -117,7 +117,7 @@ I have written multiple blogposts on this project:
 - https://christine.website/blog/olin-1-why-09-1-2018
 - https://christine.website/blog/olin-2-the-future-09-5-2018
 
-As of March 21, 2019, Olin is able to run binaries compiled with [Go 1.12.x WebAssembly support](https://github.com/golang/go/wiki/WebAssembly). 
+As of March 21, 2019, Olin is able to run binaries compiled with [Go 1.12.x WebAssembly support](https://github.com/golang/go/wiki/WebAssembly). Olin also is known to work on big-endian systems with no changes needed to source code or binaries.
 
 ### [ilo Kesi](https://github.com/Xe/x/tree/master/discord/ilo-kesi)
 
@@ -160,6 +160,13 @@ This has been well-recieved by coworkers, friends and others. I have written mor
 - [My Blog](https://christine.website/blog)
 - [I Put Words on This Webpage so You Have to Listen to Me Now](https://christine.website/blog/experimental-rilkef-2018-11-30)
 
+I have gotten to the front page of [Hacker News](https://news.ycombinator.com) several times. Here are a few of the comment threads:
+
+- [I Put Words on This Webpage so You Have to Listen to Me now](https://news.ycombinator.com/item?id=18577758)
+- [TempleOS: 1 - Installation](https://news.ycombinator.com/item?id=19961082)
+- [WebAssembly on the Server: How System Calls Work](https://news.ycombinator.com/item?id=20066204)
+- [Olin: Defining a New Primitive for Event-Driven Services](https://news.ycombinator.com/item?id=17896307)
+
 ## Ordination
 
 I am an ordained minister with the [Church of the Latter-day Dude](https://dudeism.com). This allows me to officiate religious ceremonies in at least the United States. I would be honored if you were to choose me to officiate anything for any reason. Please [contact](/contact) me if you have any questions.
@@ -168,4 +175,4 @@ I am an ordained minister with the [Church of the Latter-day Dude](https://dudei
 [twitter]: https://twitter.com/theprincessxena
 [twit]: http://cdn-careers.sstatic.net/careers/Img/icon-twitter.png?v=b1bd58ad2034
 [heroku]: https://www.heroku.com
-[lightspeed]: https://www.lightspeedhq.com
+[lightspeedhq]: https://www.lightspeedhq.com
