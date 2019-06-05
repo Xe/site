@@ -1,9 +1,9 @@
-image: alpine/3.9
+image: alpine/edge
 packages:
   - go
 sources:
   - https://github.com/Xe/site
 tasks:
-  - test |
+  - test: |
       cd site
       go test ./...
