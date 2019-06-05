@@ -65,12 +65,17 @@ type Site struct {
 	xffmw *xff.XFF
 }
 
+var gitRev = os.Getenv("GIT_REV")
+
 func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := opname.With(r.Context(), "site.ServeHTTP")
 	ctx = ln.WithF(ctx, ln.F{
 		"user_agent": r.Header.Get("User-Agent"),
 	})
 	r = r.WithContext(ctx)
+	if gitRev != "" {
+		w.Header().Add("X-Git-Rev", gitRev)
+	}
 
 	middleware.RequestID(s.xffmw.Handler(ex.HTTPLog(s.mux))).ServeHTTP(w, r)
 }
