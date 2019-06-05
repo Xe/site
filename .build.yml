@@ -6,5 +6,6 @@ sources:
 tasks:
   - test: |
       export GOPROXY=https://cache.greedo.xeserv.us
+      export CGO_ENABLED=0
       cd site
       go test ./...
