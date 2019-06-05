@@ -1,0 +1,9 @@
+image: alpine/3.9
+packages:
+  - go
+sources:
+  - https://github.com/Xe/site
+tasks:
+  - test |
+      cd site
+      go test ./...
