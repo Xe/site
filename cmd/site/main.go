@@ -32,7 +32,8 @@ func main() {
 	}
 
 	ctx := ln.WithF(opname.With(context.Background(), "main"), ln.F{
-		"port": port,
+		"port":    port,
+		"git_rev": gitRev,
 	})
 
 	_ = prometheus.Register(prommod.NewCollector("christine"))
