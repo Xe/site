@@ -111,6 +111,7 @@ func (s *Site) showTalk(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.ServeHTTP(w, r)
+	postView.With(prometheus.Labels{"base": filepath.Base(p.Link)}).Inc()
 }
 
 func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
