@@ -87,7 +87,9 @@ Oh, right, this is a challenge. The last two people to be in the room together w
 
 Well the people are screaming for entertainment. That's not unexpected, but that's just how it goes I guess. Quality. Content.
 
-> Let's have a dance party and then Chandler can poop. Rate who dances better in the comments section.  - MrBeast, 10:22-ish
+> Let's have a dance party and then Chandler can poop. Rate who dances better in the comments section.
+
+  - MrBeast, 10:22-ish
 
 What.
 
