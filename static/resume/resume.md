@@ -4,7 +4,7 @@
 
 ##### Montreal, QC &emsp; [christine.website][homepage]
 
-`Docker`, `Git`, `Go`, `C`, `CentOS`, `CoreOS`, `IRC`, `Stenography`, `DevOps`, `Heroku`, `Continuous Integration/Delivery`, `Event Sourcing`, `WebAssembly`, `Lua`, `Haskell`, `Nim`, `Python`, `Java`, `Rust`, `Javascript`, `Gherkin`, `Mindfulness`, `Lojban`, `HTTP/2`, `Rails`, `Ruby`, `Sinatra`, `Alpine Linux`, `Ubuntu`, `Debian`, `Linux`, `Dart`, `Flutter`, `TCL`, `Emacs Lisp`, `MoonScript`, `RPM`, `Node.js`, `npm`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`, `Postgres`, `MySQL`, `SQLite`, `Ordained Minister`, `Dudeism`, `Tech Writing`
+`Docker`, `Git`, `Go`, `C`, `Stenography`, `DevOps`, `Heroku`, `Continuous Integration/Delivery`, `WebAssembly`, `Lua`, `Mindfulness`, `HTTP/2`, `Alpine Linux`, `Ubuntu`, `Linux`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`, `Postgres`, `MySQL`, `SQLite`, `Ordained Minister`, `Dudeism`, `Tech Writing`
 
 ## Experience
 
