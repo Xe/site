@@ -155,6 +155,9 @@ A few things I've found work really well for this:
 - "Do you know of anyone who left this company and then came back?"
 - "What is your favorite part of your workday?"
 - "What is your least favorite part of your workday?"
+- "Do postmortems have formal blame as a part of the process?"
+- "Does code get reviewed before it ships into production?"
+- "Are there any employee run interest groups for things like mindfulness?"
 
 And then finally as your last question:
 
