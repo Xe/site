@@ -111,7 +111,7 @@ to see requirements for jobs like this:
 > - Ropjar, HTML/CSS
 
 and feel really disheartened. That "must" there seldom actually is a hard 
-requirement. Many companies will be willing to hire someone for at a junior 
+requirement. Many companies will be willing to hire someone for a junior 
 level. You can learn the skills you miss as a natural part of doing your job.
 There's support structures at nearly every company for things like this. You
 don't need to be perfect out of the gate.
