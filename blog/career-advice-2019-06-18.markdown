@@ -93,7 +93,7 @@ is by doing. The best way to do things is to just do them and then let other
 people see the results.
 
 Your first programs will be inelegant, but that's okay.  
-Your first repositories will be bloated or inefficent, but that's okay.  
+Your first repositories will be bloated or inefficient, but that's okay.  
 Nobody expects perfection out of the gate, and honestly even for skilled experts
 perfection is probably too high of a bar. We're human. We make mistakes. Our job
 is to turn the results of these mistakes into the products and services that
