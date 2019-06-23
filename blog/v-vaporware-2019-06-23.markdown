@@ -358,32 +358,6 @@ _libcurl provides for free_.
 I wasn't expecting it to have HTTP support out of the box, but even then I still
 feel disappointed.
 
-## Random Number Generation
-
-Randomness is important for programming languages to get right. Here is how V
-implements randomness:
-
-```
-module rand
-
-#include <time.h>
-// #include <stdlib.h>
-fn seed() {
-	# time_t t;
-	# srand((unsigned) time(&t));
-}
-
-fn next(max int) int {
-	# return  rand() % max;
-	return 0
-}
-```
-
-I mean I guess this is technically a valid implementation of randomness, but
-this is how you get security vulnerabilities because people 
-[thought random values were random](https://www.rapid7.com/db/vulnerabilities/openssl-debian-weak-keys).
-A correct implementation is commented out. Yay.
-
 ## Suggestions for Improvement
 
 I would like to see V be a tool for productive development. I can't see it doing
@@ -423,9 +397,6 @@ don't show anything about the "built-in web framework" until you have code to
 back your claim. If there is no code to back it up, you have backed yourself 
 into a corner where you are looking like you are lying. I would have loved to
 benchmark V's web framework against Nim's Jester and Go's net/http, but I can't.
-
-Please fix the implementation of randomness. Holy crap that is a billion 
-security bugs waiting to happen.
 
 Thanks for reading this far. I hope this feedback can help make V a productive
 tool for programming. It's a shame it seems to have been hyped so much for
