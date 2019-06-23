@@ -424,6 +424,9 @@ back your claim. If there is no code to back it up, you have backed yourself
 into a corner where you are looking like you are lying. I would have loved to
 benchmark V's web framework against Nim's Jester and Go's net/http, but I can't.
 
+Please fix the implementation of randomness. Holy crap that is a billion 
+security bugs waiting to happen.
+
 Thanks for reading this far. I hope this feedback can help make V a productive
 tool for programming. It's a shame it seems to have been hyped so much for
 comparatively so little as a result. The developer has been hyping and selling 
