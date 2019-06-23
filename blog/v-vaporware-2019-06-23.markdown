@@ -277,8 +277,30 @@ RUN apk --no-cache add build-base libexecinfo-dev clang git \
  && apk del clang
 ```
 
-Except it doesn't build on Alpine. Annoying, but we can adjust to Ubuntu fairly 
-easily:
+Except it doesn't build on Alpine:
+
+```
+/usr/bin/ld: /tmp/v-c9fb07.o: in function `os__print_backtrace':
+v.c:(.text+0x84d9): undefined reference to `backtrace'
+/usr/bin/ld: v.c:(.text+0x8514): undefined reference to `backtrace_symbols_fd'
+clang-8: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+
+It looks like `backtrace()` is a glibc-specific addon. Let's link against
+[`libexecinfo`](https://www.freshports.org/devel/libexecinfo) to fix this:
+
+```
+ && clang -Dlinux -lexecinfo -std=c11 -w -o vc v.c \
+```
+
+```
+Cloning into '/root/code/v'...
+Connecting to vlang.io (3.91.188.13:443)
+v.c                  100% |********************************|  310k  0:00:00 ETA
+Segmentation fault (core dumped)
+```
+
+Annoying, but we can adjust to Ubuntu fairly easily:
 
 ```
 FROM ubuntu:latest
