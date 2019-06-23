@@ -334,7 +334,7 @@ the compilation of "Hello, world".
 ## HTTP Module
 
 V has a [http module](https://github.com/vlang/v/tree/master/http). It leaves a
-lot to be desired. My favorite part is the implementation of [`download_file` on macOS](https://github.com/vlang/v/blob/master/http/download_mac.v#L60-L67):
+lot to be desired. My favorite part is the implementation of [`download_file` on macOS](https://github.com/vlang/v/blob/978ec58fe300929555786fdf58cae1969ea317ba/http/download_mac.v):
 
 ```
 fn download_file(url, out string) {
