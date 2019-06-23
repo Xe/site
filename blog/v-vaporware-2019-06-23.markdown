@@ -309,10 +309,6 @@ the resulting `du` command should show 400 KB in total, right?
 Coincidentally, the compiler uses about as much disk space as it leaks during
 the compilation of "Hello, world".
 
-Please build my Dockerfile and compare this disk usage for yourself. The 
-resulting image is 700-ish megabytes. This is almost 2000% more disk space usage 
-than is claimed on the main page.
-
 ## HTTP Module
 
 V has a [http module](https://github.com/vlang/v/tree/master/http). It leaves a
