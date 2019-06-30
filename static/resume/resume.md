@@ -23,7 +23,7 @@
 
 ### Heroku - Senior Software Engineer &emsp; <small>*2017 - 2019*</small>
 
-> [Heroku][heroku] is a cloud Platform-as-a-Service (PaaS) that created the term "platform as a service". Heroku currnetly supports
+> [Heroku][heroku] is a cloud Platform-as-a-Service (PaaS) that created the term "platform as a service". Heroku currently supports
 > several programming languages that are commonly used on the web.
 > Heroku, one of the first cloud platforms, has been in development since June 2007,
 > when it supported only the Ruby programming language, but now supports Java,
