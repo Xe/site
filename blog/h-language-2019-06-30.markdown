@@ -196,7 +196,7 @@ big of a program it can run. The playground server works like this:
 - The user program is sent over HTTP with Content-Type [text/plain](https://github.com/Xe/x/blob/v1.1.7/cmd/h/http.go#L402-L413)
 - The program is [limited to 75 bytes on the server](https://github.com/Xe/x/blob/v1.1.7/cmd/h/http.go#L44) (though this is [configurable](https://github.com/Xe/x/blob/v1.1.7/cmd/h/http.go#L15) via flags or envvars)
 - The program is [compiled](https://github.com/Xe/x/blob/v1.1.7/cmd/h/http.go#L53)
-- The program is [ran](https://github.com/Xe/x/blob/v1.1.7/cmd/h/http.go#L59)
+- The program is [run](https://github.com/Xe/x/blob/v1.1.7/cmd/h/http.go#L59)
 - The output is [returned via JSON](https://github.com/Xe/x/blob/v1.1.7/cmd/h/http.go#L65-L72)
 - This output is then put [into the playground page with JavaScript](https://github.com/Xe/x/blob/v1.1.7/cmd/h/http.go#L389-L394)
 
