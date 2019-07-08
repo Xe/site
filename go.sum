@@ -106,3 +106,5 @@ within.website/ln v0.5.2 h1:4pTM2wzpLjeZAputLf2U29HD79vcmdoEI/VPm2QEYgs=
 within.website/ln v0.5.2/go.mod h1:ifURKqsCJekcsdUE+hyCdcuhQqQ+9v9DfA++ZqYxZFE=
 within.website/ln v0.6.0 h1:zn8vE9f0biSTNIpHFc7kOPH+SitLsWrU1MfrwMSS4cM=
 within.website/ln v0.6.0/go.mod h1:ifURKqsCJekcsdUE+hyCdcuhQqQ+9v9DfA++ZqYxZFE=
+within.website/ln v0.7.0 h1:cZUc53cZF/+hWuEAv1VbqlYJ5czuPFHKfH0hLKmlIUA=
+within.website/ln v0.7.0/go.mod h1:ifURKqsCJekcsdUE+hyCdcuhQqQ+9v9DfA++ZqYxZFE=
