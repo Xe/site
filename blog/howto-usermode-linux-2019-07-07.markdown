@@ -800,3 +800,9 @@ Since Docker container images are just glorified tarballs, you should be able to
 extract an image with `docker export` and then set the root filesystem location
 in the guest kernel to that location. Then run the command that the Dockerfile
 expects via a shell script.
+
+Special thanks to rkeene of #lobsters on Freenode. Without his help with
+attempting to debug slirp, I wouldn't have gotten this far. I have no idea how
+his Slackware system works fine with slirp but my Ubuntu and Alpine systems
+don't, and why the binary he gave me also didn't work; but I got something
+working and that's good enough for me.
