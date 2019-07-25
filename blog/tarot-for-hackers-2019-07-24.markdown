@@ -34,8 +34,8 @@ made it harder to see into individual parts of the whole, so every little bit
 helps to focus things in.
 
 The first card is the Motive, so draw it and place it in the center off your 
-spread. Look up the meaning on a site like biddytarot.com (googling "<name of 
-card> tarot meaning" helps a lot here) and consider how it relates back to the 
+spread. Look up the meaning on a site like biddytarot.com (googling "[name of 
+card] tarot meaning" helps a lot here) and consider how it relates back to the 
 other factors at play.
 
 The second card is the Facet, or the part of the system that is failing. This 
