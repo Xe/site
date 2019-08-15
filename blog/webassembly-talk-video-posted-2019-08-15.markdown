@@ -10,7 +10,7 @@ and some of the inherent challenges and problems with trying to do it as things
 exist currently. It's taken a while, but the [video](https://www.youtube.com/watch?v=G4l8RX0tA3E)
 of that talk has been posted.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/G4l8RX0tA3E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<center><iframe width="560" height="315" src="https://www.youtube.com/embed/G4l8RX0tA3E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
 
 I hope you enjoy! I have some more blogposts in the queue but I've been sleeping horribly lately. Here's hoping that clears up.
 
