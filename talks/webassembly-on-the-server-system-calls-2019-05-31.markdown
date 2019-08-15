@@ -6,7 +6,7 @@ slides_link: /static/talks/wasm-on-the-server-system-calls.pdf
 
 # WebAssembly on the Server: How System Calls Work
 
-TODO(Xe): put link to talk here once it gets posted
+[Video](https://www.youtube.com/watch?v=G4l8RX0tA3E)
 
 ## My Speaker Notes
 
