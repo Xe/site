@@ -6,7 +6,7 @@ require (
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/povilasv/prommod v0.0.12
-	github.com/prometheus/client_golang v0.9.4
+	github.com/prometheus/client_golang v1.1.0
 	github.com/prometheus/common v0.4.1 // indirect
 	github.com/prometheus/procfs v0.0.0-20190523193104-a7aeb8df3389 // indirect
 	github.com/russross/blackfriday v2.0.0+incompatible
