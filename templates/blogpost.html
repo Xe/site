@@ -18,6 +18,9 @@
 
 <link rel="canonical" href="https://christine.website/{{ .Link }}">
 
+<!-- Metrics -->
+<script src="/static/js/pageview_timer.js"></script>
+
 <script type="application/ld+json">
  {
    "@context": "http://schema.org",
@@ -69,11 +72,11 @@ function share_on_mastodon() {
                 if ( !instance.startsWith("https://") && !instance.startsWith("http://") )
                         instance = "https://" + instance;  
 
-                // Get the current page's URL
+                // get the current page's url
                 var url   = window.location.href;
         
-                // Get the page title from the og:title meta tag, if it exists.
-                var title = document.querySelectorAll('meta[property="og:title"]')[0].getAttribute("content"); 
+                // get the page title from the og:title meta tag, if it exists.
+                var title = document.queryselectorall('meta[property="og:title"]')[0].getattribute("content"); 
         
                 // Otherwise, use the <title> tag as the title
                 if (!title)    var title = document.getElementsByTagName("title")[0].innerHTML;
@@ -98,7 +101,7 @@ function share_on_mastodon() {
                 // Open a new window at the share location   
                 window.open(mastodon_url, '_blank');
         }
-}
+ }
 </script>
 
 {{ end }}
