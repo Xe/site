@@ -223,6 +223,7 @@ func Build() (*Site, error) {
 		w.Header().Set("Content-Type", "application/xml")
 		_, _ = smi.WriteTo(w)
 	})))
+	s.mux.HandleFunc("/api/pageview-timer", handlePageViewTimer)
 
 	return s, nil
 }
