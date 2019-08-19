@@ -76,7 +76,7 @@ function share_on_mastodon() {
                 var url   = window.location.href;
         
                 // get the page title from the og:title meta tag, if it exists.
-                var title = document.queryselectorall('meta[property="og:title"]')[0].getattribute("content"); 
+                var title = document.querySelectorAll('meta[property="og:title"]')[0].getattribute("content"); 
         
                 // Otherwise, use the <title> tag as the title
                 if (!title)    var title = document.getElementsByTagName("title")[0].innerHTML;

@@ -12,7 +12,7 @@
 
 (function() {
     let dnt = navigator.doNotTrack;
-    if (dnt == "1") {
+    if (dnt === "1") {
         return;
     }
 
@@ -20,15 +20,11 @@
 
     function logTime() {
         let stopTime = new Date();
-        let message = JSON.stringify(
-            {
-                "path": window.location.pathname,
-                "start_time": startTime.toISOString(),
-                "end_time": stopTime.toISOString(),
-            }
-        );
-
-        window.navigator.sendBeacon("/api/pageview-timer", message);
+        window.navigator.sendBeacon("/api/pageview-timer", JSON.stringify({
+            "path": window.location.pathname,
+            "start_time": startTime.toISOString(),
+            "end_time": stopTime.toISOString()
+        }));
     }
 
     window.addEventListener("pagehide", logTime, false);
