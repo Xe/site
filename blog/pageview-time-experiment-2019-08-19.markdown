@@ -19,9 +19,9 @@ make this data anonymous, simplistic and (reasonably) public.
 
 Here is how it works:
 
-![A diagram on how this works](/static/img/pageview_flowchart.png)
+<center>![A diagram on how this works](/static/img/pageview_flowchart.png)</center>
 
-When the page is loaded, a [javascript file records the start time](/static/js/pateview_timer.js).
+When the page is loaded, a [javascript file records the start time](/static/js/pageview_timer.js).
 This then sets a [pagehide handler](https://developer.mozilla.org/en-US/docs/Web/API/Window/pagehide_event)
 to send a [navigator beacon](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon)
 containing the following data:
@@ -56,7 +56,7 @@ intend to use it for any moneymaking purposes (though I doubt it could be to beg
 with).
 
 I fully respect the [do not track](https://allaboutdnt.com) header and flag in browsers.
-If [`pageview_timer.js`](/static/js/pateview_timer.js) detects the presence of
+If [`pageview_timer.js`](/static/js/pageview_timer.js) detects the presence of
 do not track in the browser, it stops running immediately and does not set the pagehide
 handler. If that somehow fails, the server looks for the presence of the `DNT` header
 set to `1` and instantly discards the data and replies with a 404.
