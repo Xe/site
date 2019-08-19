@@ -10,21 +10,26 @@
   be ineffectual.
 */
 
-let startTime = new Date();
-
-function logTime() {
-    let stopTime = new Date();
-    let message = JSON.stringify(
-        {
-            "path": window.location.pathname,
-            "start_time": startTime.toISOString(),
-            "end_time": stopTime.toISOString(),
-        }
-    );
-
-    if (!window.navigator.sendBeacon("/api/pageview-timer", message)) {
-        alert("wtf");
+(function() {
+    let dnt = navigator.doNotTrack;
+    if (dnt == "1") {
+        return;
     }
-}
 
-window.addEventListener("pagehide", logTime, false);
+    let startTime = new Date();
+
+    function logTime() {
+        let stopTime = new Date();
+        let message = JSON.stringify(
+            {
+                "path": window.location.pathname,
+                "start_time": startTime.toISOString(),
+                "end_time": stopTime.toISOString(),
+            }
+        );
+
+        window.navigator.sendBeacon("/api/pageview-timer", message);
+    }
+
+    window.addEventListener("pagehide", logTime, false);
+})();

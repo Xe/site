@@ -22,6 +22,11 @@ func init() {
 }
 
 func handlePageViewTimer(w http.ResponseWriter, r *http.Request) {
+	if r.Header.Get("DNT") == "1" {
+		http.NotFound(w, r)
+		return
+	}
+
 	data, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		ln.Error(r.Context(), err, ln.Info("while reading data"))
