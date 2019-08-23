@@ -39,13 +39,15 @@ $ source env/bin/activate
 (env) $ python3 setup.py install
 ```
 
-Then I ran it with the following settings to get this first result:
+Then I ran it with the following settings to get [this first result][firstgif]:
 
 ```
 (env) $ gif_your_nifti christine_brain.nii.gz --mode pseudocolor --cmap plasma
 ```
 
-<center><video src="/static/blog/christine-frmi-raw.mp4">A sideways view of the brain</video></center>
+<center><video controls> <source src="https://xena.greedo.xeserv.us/files/christine-fmri-raw.mp4" type="video/mp4">A sideways view of the brain</video></center>
+
+<small>(sorry the video embed isn't working in safari)</small>
 
 It looked weird though, that's because the fMRI scanner I used has a different
 rotation to what's considered "normal". The gif\_your\_nifti repo mentioned a
@@ -66,10 +68,12 @@ $ fslreorient2std christine_brain.nii.gz christine_brain_reoriented.nii.gz
 
 This produced a slightly smaller [reoriented file][secondniifile].
 
-I reran gif\_your\_nifti on this reoriented file and got this result
+I reran gif\_your\_nifti on this reoriented file and got [this result][secondgif]
 which looked a _lot_ better:
 
-<center><video src="/static/blog/christine-fmri-reoriented.mp4">A properly reoriented brain</video></center>
+<center><video controls> <source src="https://xena.greedo.xeserv.us/files/christine-fmri-reoriented.mp4">A properly reoriented brain</video></center>
+
+<small>(sorry again the video embed isn't working in safari)</small>
 
 ### FreeSurfer
 
@@ -140,8 +144,8 @@ things I've ever done (if not the coolest) and I'm going to be able to get a
 [r3dprinting]: https://www.reddit.com/r/3Dprinting/comments/2w0zxx/magnetic_resonance_image_nii_to_stl/
 [freesurfer]: https://surfer.nmr.mgh.harvard.edu/fswiki/FreeSurferWiki
 [gyn]: https://github.com/miykael/gif_your_nifti
-[firstgif]: https://xena.greedo.xeserv.us/files/christine_brain_plasma.gif
-[secondgif]: https://xena.greedo.xeserv.us/files/christine_brain_reoriented_plasma.gif
+[firstgif]: /static/blog/christine-fmri-raw.mp4
+[secondgif]: /static/blog/christine-fmri-reoriented.mp4
 [fsl]: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/
 [blender]: https://www.blender.org
 [galaxybrain]: https://knowyourmeme.com/memes/expanding-brain
