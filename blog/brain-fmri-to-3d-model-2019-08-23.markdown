@@ -134,7 +134,7 @@ I'll be sure to write more about this in the future!
 
 Here are my citations in [BibTex format][citations].
 
-Special thanks goes to Micheal Lifshitz for organizing the study that I 
+Special thanks goes to Michael Lifshitz for organizing the study that I 
 participated in that got me this fMRI data file. It was one of the coolest
 things I've ever done (if not the coolest) and I'm going to be able to get a
 3D printed model of my brain out of it.
