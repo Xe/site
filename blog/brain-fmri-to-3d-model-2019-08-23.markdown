@@ -1,14 +1,13 @@
 ---
-title: How to Convert a Brain fMRI to a 3D Model
+title: How I Converted my Brain fMRI to a 3D Model
 date: 2019-08-23
 ---
 
-# How to Convert a Brain fMRI to a 3D Model
+# How I Converted my Brain fMRI to a 3D Model
 
-AUTHOR'S NOTE: I just want to start this out by saying I do not know what I am 
-doing here. I am not an expert, nothing in this blogpost should be construed 
-as medical advice. I just wanted to see what kind of pretty pictures I could 
-get out of an fMRI data file.
+AUTHOR'S NOTE: I just want to start this out by saying I am not an expert, and
+nothing in this blogpost should be construed as medical advice. I just wanted 
+to see what kind of pretty pictures I could get out of an fMRI data file.
 
 So this week I flew out to Stanford to participate in a study that involved a
 fMRI of my brain while I was doing some things. I asked for (and recieved) a
@@ -40,11 +39,13 @@ $ source env/bin/activate
 (env) $ python3 setup.py install
 ```
 
-Then I ran it with the following settings to get [this first result (30 MB)][firstgif].
+Then I ran it with the following settings to get this first result:
 
 ```
 (env) $ gif_your_nifti christine_brain.nii.gz --mode pseudocolor --cmap plasma
 ```
+
+<center><video src="/static/blog/christine-frmi-raw.mp4">A sideways view of the brain</video></center>
 
 It looked weird though, that's because the fMRI scanner I used has a different
 rotation to what's considered "normal". The gif\_your\_nifti repo mentioned a
@@ -63,10 +64,12 @@ to a server of mine and ran the conversion command:
 $ fslreorient2std christine_brain.nii.gz christine_brain_reoriented.nii.gz
 ```
 
-This produced a slightly smaller [reoriented file][secondniifile]
+This produced a slightly smaller [reoriented file][secondniifile].
 
-I reran gif\_your\_nifti on this reoriented file and got [this result (30 MB)][secondgif]
-which looked a _lot_ better.
+I reran gif\_your\_nifti on this reoriented file and got this result
+which looked a _lot_ better:
+
+<center><video src="/static/blog/christine-fmri-reoriented.mp4">A properly reoriented brain</video></center>
 
 ### FreeSurfer
 
@@ -103,7 +106,7 @@ files, I got a view that looked something like this:
 
 <center><blockquote class="twitter-tweet"><p lang="en" dir="ltr">BRAIN <a href="https://t.co/kGSrPj0kgP">pic.twitter.com/kGSrPj0kgP</a></p>&mdash; Cadey Ratio 🌐 (@theprincessxena) <a href="https://twitter.com/theprincessxena/status/1164526098526478336?ref_src=twsrc%5Etfw">August 22, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></center>
 
-I have absolutely no idea what to do from here in Blender, so I exported the
+I had absolutely no idea what to do from here in Blender, so I exported the
 whole thing to a stl file and sent it to a coworker for 3D printing (he said
 it was going to be "the coolest thing he's ever printed").
 
