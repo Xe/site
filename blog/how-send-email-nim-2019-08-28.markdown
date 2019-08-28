@@ -126,7 +126,7 @@ Options(opt-arg sep :|=|spc):
   -b=, --body=     string  REQUIRED  set body
 ```
 
-I hope this helps, this module is gong to be used in my future post on how to
+I hope this helps, this module is going to be used in my future post on how to
 create an application using Nim's [Jester][jester] framework.
 
 [nimsmtp]: https://nim-lang.org/docs/smtp.html
