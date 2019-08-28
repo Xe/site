@@ -33,7 +33,7 @@ GMail to accept them. They are:
 
 For a more complete example, let's create a `Mailer` type and a constructor:
 
-```
+```nim
 # mailer.nim
 import asyncdispatch, logging, smtp, strformat, strutils
 
@@ -58,7 +58,7 @@ proc newMailer*(address, port, myAddress, myName, username, password: string): M
 
 And let's write a `mail` method to send out email:
 
-```
+```nim
 proc mail(m: Mailer, to, toName, subject, body: string) {.async.} =
   let
     toList = @[fmt"{toName} <{to}>"]
@@ -86,13 +86,13 @@ email provider that offers TLS/SSL-encrypted SMTP support. This also means that
 you need to compile this code with `--define: ssl`, so create `config.nims` and
 add the following:
 
-```
+```nimscript
 --define: ssl
 ```
 
 Here's a little wrapper using [cligen][cligen]:
 
-```
+```nim
 when isMailModule:
   import cligen, os
   
@@ -113,7 +113,7 @@ when isMailModule:
 
 Usage is simple:
 
-```
+```console
 $ nim c -r mailer.nim --help
 Usage:
   sendAnEmail [required&optional-params]
