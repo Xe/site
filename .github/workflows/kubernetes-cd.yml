@@ -16,8 +16,8 @@ jobs:
     - name: Build/Push Docker Image
       run: |
         set -x
-        docker build . -t xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
-        docker push xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
+        docker build . -t docker.io/within/christinewebsite:$(echo $GITHUB_SHA | head -c7)
+        docker push docker.io/within/christinewebsite:$(echo $GITHUB_SHA | head -c7)
     - name: Download secrets
       run: |
         mkdir ~/.ssh
