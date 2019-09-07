@@ -355,4 +355,4 @@ Thanks for reading, I hope this was entertaining. Be well.
 [marketplacereadmeexample]: https://github.com/marketplace/actions/github-action-for-digitalocean-doctl
 [monster]: https://github.com/Xe/site/blob/master/.github/workflows/kubernetes-cd.yml#L53-L65
 [dotutorialkube]: https://blog.digitalocean.com/how-to-deploy-to-digitalocean-kubernetes-with-github-actions/
-[dogithubaction]: https://github.com/digitalocean/action-doctl
+[doctlgithubaction]: https://github.com/digitalocean/action-doctl
