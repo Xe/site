@@ -55,6 +55,8 @@ jobs:
       with:
         entrypoint: /usr/local/bin/doctl
         args: kubernetes cluster kubeconfig show kubermemes > $HOME/.kubeconfig
+      env:
+        DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
     - name: Deploy
       uses: docker://lachlanevenson/k8s-kubectl
       with:
