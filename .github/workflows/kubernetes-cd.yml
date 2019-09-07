@@ -31,7 +31,8 @@ jobs:
         curl https://xena.greedo.xeserv.us/files/dyson-linux-amd64-0.1.0.tgz | tar xz 
         cp ./dyson-linux-amd64-0.1.0/dyson .
         rm -rf dyson-linux-amd64-0.1.0
-        mkdir ~/.config/dyson 
+        mkdir -p ~/.config/dyson
+        
         echo '[DigitalOcean]
         Token = ""
         
@@ -41,6 +42,7 @@ jobs:
         
         [Secrets]
         GitCheckout = "./within-terraform-secret"' > ~/.config/dyson/dyson.ini
+        
         dyson manifest \
           --name=christinewebsite \
           --domain=christine.website \
