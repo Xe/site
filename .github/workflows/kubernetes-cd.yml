@@ -8,15 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Docker Login
+      uses: actions/docker/login@master
+      env:
+        DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }"
+        DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }"
     - name: Build/Push Docker Image
       run: |
-        mkdir -p ~/.docker
-        echo $DOCKER_CONFIG | base64 -d > ~/.docker/config
-        md5sum ~/.docker/config
         docker build . -t xena/christine.website:$(echo $GITHUB_SHA | head -c7)
         docker push xena/christine.website:$(echo $GITHUB_SHA | head -c7)
-      env:
-        DOCKER_CONFIG: "$${ secrets.DOCKER_CONFIG }"
     - name: Download secrets
       run: |
         mkdir ~/.ssh
