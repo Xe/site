@@ -52,7 +52,7 @@ jobs:
           --useProdLE=true > deploy.yml
     - name: Configure Kubernetes
       run: |
-        curl https://github.com/digitalocean/doctl/releases/download/v1.30.0/doctl-1.30.0-linux-amd64.tar.gz | tar xz
+        curl -L https://github.com/digitalocean/doctl/releases/download/v1.30.0/doctl-1.30.0-linux-amd64.tar.gz | tar xz
         ./doctl auth login -t $DIGITALOCEAN_ACCESS_TOKEN
         ./doctl kubernetes cluster kubeconfig show kubermemes > $HOME/.kubeconfig
       env:
