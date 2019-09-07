@@ -320,6 +320,8 @@ the only thing I could get working (for some definition of "working").
 Now when I git push things to the master branch of my blog repo, it will
 automatically get deployed to my Kubernetes cluster.
 
+<center><blockquote class="twitter-tweet"><p lang="hu" dir="ltr">kubernetes is a cult</p>&mdash; Andrew Kelley (@andy_kelley) <a href="https://twitter.com/andy_kelley/status/1169999209438859264?ref_src=twsrc%5Etfw">September 6, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></center>
+
 If you work at DigitalOcean and are reading this post. Please get someone to
 update [this tutorial][dotutorialkube] and the README of [this repo][marketplacereadmeexample].
 The examples listed _DO NOT WORK_ for me because I was not in the private beta
@@ -329,8 +331,6 @@ wanted to download the kubernetes configuration file and run apply against a yam
 file.
 
 Thanks for reading, I hope this was entertaining. Be well.
-
-<center><blockquote class="twitter-tweet"><p lang="hu" dir="ltr">kubernetes is a cult</p>&mdash; Andrew Kelley (@andy_kelley) <a href="https://twitter.com/andy_kelley/status/1169999209438859264?ref_src=twsrc%5Etfw">September 6, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></center>
 
 [dokku]: http://dokku.viewdocs.io/dokku/
 [dok8s]: https://www.digitalocean.com/products/kubernetes/
