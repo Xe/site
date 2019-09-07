@@ -58,8 +58,8 @@ jobs:
         
         curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
         chmod +x kubectl
-        ./kubectl --kubeconfig .kubeconfig apply -f deploy.yml
+        ./kubectl --kubeconfig .kubeconfig apply -n apps -f deploy.yml
         sleep 2
-        ./kubectl --kubeconfig .kubeconfig rollout status deployment/christinewebsite
+        ./kubectl --kubeconfig .kubeconfig rollout -n apps status deployment/christinewebsite
       env:
         DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
