@@ -1,0 +1,47 @@
+name: "CI/CD"
+on: 
+  push:
+    branches:
+    - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build Docker Image
+      run: |
+        docker build . -t xena/christine.website:$(echo $GITHUB_SHA | head -c7)
+    - name: Setup Docker Hub
+      run: |
+        mkdir -p ~/.docker && echo $DOCKER_CONFIG > ~/.docker/config
+    - name: Push Docker Image
+      run: |
+        docker push xena/christine.website:$(echo $GITHUB_SHA | head -c7)
+    - name: Setup SSH
+      run: mkdir ~/.ssh
+    - name: Write SSH Key
+      run: echo $FILE_DATA > temp && cat temp | base64 -d > ~/.ssh/id_rsa && rm temp && md5sum ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+      env:
+        FILE_DATA: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Download secrets
+      run: git clone git@git.xeserv.us:xena/within-terraform-secret
+      env:
+        GIT_SSH_COMMAND: "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    - name: Install Dyson
+      run: |
+        curl https://xena.greedo.xeserv.us/files/dyson-linux-amd64-0.1.0.tgz | tar xz && cp ./dyson-linux-amd64-0.1.0/dyson .
+    - name: Configure Dyson
+      run: |
+        mkdir ~/.config/dyson && echo '[DigitalOcean]\nToken = ""\n\n[Cloudflare]\nEmail = ""\nToken = ""\n\n[Secrets]\nGitCheckout = "./within-terraform-secret"' > ~/.config/dyson/dyson.ini
+    - name: Generate Kubernetes manifest
+      run: |
+        dyson manifest --name=christinewebsite --domain=christine.website --dockerImage=xena/christine.website:$(echo $GITHUB_SHA | head -c7) --containerPort=5000 --replicas=1 --useProdLE=true > deploy.yml
+    - name: Configure Kubernetes
+      uses: digitalocean/action-doctl@v1.3.0
+      run: kubernetes cluster kubeconfig show kubermemes > $HOME/.kubeconfig
+    - name: Deploy
+      uses: docker://lachlanevenson/k8s-kubectl
+      run: kubectl --kubeconfig=$HOME/.kubeconfig apply -f deploy.yml
+    - name: Verify
+      uses: docker://lachlanevenson/k8s-kubectl
+      run: kubectl --kubeconfig=$HOME/.kubeconfig rollout status deployment/christinewebsite
