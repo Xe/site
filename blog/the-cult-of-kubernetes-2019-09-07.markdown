@@ -19,7 +19,7 @@ This is how I deployed my blog (the one you are reading right now) to Kubernetes
 
 ## The Old State of the World
 
-Before I deployed my blog to Kubernetes, I used [dokku][dokku], as I had been
+Before I deployed my blog to Kubernetes, I used [Dokku][dokku], as I had been
 for years. Dokku is great. It emulates most of the Heroku "git push; don't care"
 workflow, but on your own server that you can self-manage.
 
