@@ -11,8 +11,8 @@ jobs:
     - name: Docker Login
       uses: actions/docker/login@master
       env:
-        DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }"
-        DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }"
+        DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
+        DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
     - name: Build/Push Docker Image
       run: |
         docker build . -t xena/christine.website:$(echo $GITHUB_SHA | head -c7)
