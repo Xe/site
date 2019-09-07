@@ -58,6 +58,7 @@ jobs:
       env:
         DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
     - name: Deploy
+      uses: docker://lachlanevenson/k8s-kubectl
       with:
         entrypoint: /usr/local/bin/kubectl
         args: |
