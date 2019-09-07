@@ -11,8 +11,8 @@ jobs:
     - name: Build/Push Docker Image
       run: |
         docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD 
-        docker build . -t docker.io/within/christinewebsite:$(echo $GITHUB_SHA | head -c7)
-        docker push docker.io/within/christinewebsite:$(echo $GITHUB_SHA | head -c7)
+        docker build . -t xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
+        docker push xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
       env:
         DOCKER_USERNAME: "xena"
         DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
