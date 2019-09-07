@@ -53,7 +53,7 @@ jobs:
     - name: Configure/Deploy/Verify Kubernetes
       run: |
         curl -L https://github.com/digitalocean/doctl/releases/download/v1.30.0/doctl-1.30.0-linux-amd64.tar.gz | tar xz
-        ./doctl auth login -t $DIGITALOCEAN_ACCESS_TOKEN
+        ./doctl auth init -t $DIGITALOCEAN_ACCESS_TOKEN
         ./doctl kubernetes cluster kubeconfig show kubermemes > .kubeconfig
         
         curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
