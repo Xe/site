@@ -50,22 +50,16 @@ jobs:
           --containerPort=5000 \
           --replicas=1 \
           --useProdLE=true > deploy.yml
-    - name: Configure Kubernetes
+    - name: Configure/Deploy/Verify Kubernetes
       run: |
         curl -L https://github.com/digitalocean/doctl/releases/download/v1.30.0/doctl-1.30.0-linux-amd64.tar.gz | tar xz
         ./doctl auth login -t $DIGITALOCEAN_ACCESS_TOKEN
-        ./doctl kubernetes cluster kubeconfig show kubermemes > $HOME/.kubeconfig
+        ./doctl kubernetes cluster kubeconfig show kubermemes > .kubeconfig
+        
+        curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+        chmod +x kubectl
+        ./kubectl --kubeconfig .kubeconfig apply -f deploy.yml
+        sleep 2
+        ./kubectl --kubeconfig=$HOME/.kubeconfig rollout status deployment/christinewebsite
       env:
         DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
-    - name: Deploy
-      uses: docker://lachlanevenson/k8s-kubectl
-      with:
-        entrypoint: /usr/local/bin/kubectl
-        args: |
-          --kubeconfig=$HOME/.kubeconfig apply -f deploy.yml
-    - name: Verify
-      uses: docker://lachlanevenson/k8s-kubectl
-      with:
-        entrypoint: /usr/local/bin/kubectl
-        args: |
-          --kubeconfig=$HOME/.kubeconfig rollout status deployment/christinewebsite
