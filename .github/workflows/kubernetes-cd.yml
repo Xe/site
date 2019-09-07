@@ -51,10 +51,12 @@ jobs:
           --replicas=1 \
           --useProdLE=true > deploy.yml
     - name: Configure Kubernetes
-      uses: digitalocean/action-doctl@v1.3.0
+      uses: docker://digitalocean/doctl:1.30.0
       with:
-        entrypoint: /bin/sh
-        args: -c 'doctl auth login -t $DIGITALOCEAN_ACCESS_TOKEN && doctl kubernetes cluster kubeconfig show kubermemes > $HOME/.kubeconfig'
+        entrypoint: /bin/sh -c
+        args: |
+          doctl auth login -t $DIGITALOCEAN_ACCESS_TOKEN
+          doctl kubernetes cluster kubeconfig show kubermemes > $HOME/.kubeconfig
       env:
         DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
     - name: Deploy
