@@ -11,7 +11,7 @@ jobs:
     - name: Docker Login
       uses: actions/docker/login@master
       env:
-        DOCKER_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
+        DOCKER_USERNAME: "xena"
         DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
     - name: Build/Push Docker Image
       run: |
