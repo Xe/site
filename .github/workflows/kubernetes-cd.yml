@@ -53,7 +53,7 @@ jobs:
     - name: Configure Kubernetes
       uses: digitalocean/action-doctl@v1.3.0
       with:
-        entrypoint: /usr/bin/sh
+        entrypoint: /bin/sh
         args: -c 'doctl auth login -t $DIGITALOCEAN_ACCESS_TOKEN && doctl kubernetes cluster kubeconfig show kubermemes > $HOME/.kubeconfig'
       env:
         DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
