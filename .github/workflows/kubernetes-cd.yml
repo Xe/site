@@ -15,8 +15,8 @@ jobs:
         DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
     - name: Build/Push Docker Image
       run: |
-        docker build . -t xena/christine.website:$(echo $GITHUB_SHA | head -c7)
-        docker push xena/christine.website:$(echo $GITHUB_SHA | head -c7)
+        docker build . -t xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
+        docker push xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
     - name: Download secrets
       run: |
         mkdir ~/.ssh
@@ -45,7 +45,7 @@ jobs:
         dyson manifest \
           --name=christinewebsite \
           --domain=christine.website \
-          --dockerImage=xena/christine.website:$(echo $GITHUB_SHA | head -c7) \
+          --dockerImage=xena/christinewebsite:$(echo $GITHUB_SHA | head -c7) \
           --containerPort=5000 \
           --replicas=1 \
           --useProdLE=true > deploy.yml
