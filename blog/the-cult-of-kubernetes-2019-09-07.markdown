@@ -262,6 +262,8 @@ in the future. All I have to do is create a docker image somehow, identify what
 port should be exposed, give it a domain name and number of replicas and just
 send it on its merry way.
 
+<center><blockquote class="twitter-tweet"><p lang="hu" dir="ltr">kubernetes is a cult</p>&mdash; Andrew Kelley (@andy_kelley) <a href="https://twitter.com/andy_kelley/status/1169999209438859264?ref_src=twsrc%5Etfw">September 6, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></center>
+
 ## GitHub Actions
 
 This does however mean that deployment is no longer as simple as 
@@ -319,8 +321,6 @@ the only thing I could get working (for some definition of "working").
 
 Now when I git push things to the master branch of my blog repo, it will
 automatically get deployed to my Kubernetes cluster.
-
-<center><blockquote class="twitter-tweet"><p lang="hu" dir="ltr">kubernetes is a cult</p>&mdash; Andrew Kelley (@andy_kelley) <a href="https://twitter.com/andy_kelley/status/1169999209438859264?ref_src=twsrc%5Etfw">September 6, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></center>
 
 If you work at DigitalOcean and are reading this post. Please get someone to
 update [this tutorial][dotutorialkube] and the README of [this repo][marketplacereadmeexample].
