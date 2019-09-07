@@ -59,6 +59,7 @@ jobs:
       with:
         entrypoint: /usr/local/bin/kubectl
         args: |
+          --kubeconfig=$HOME/.kubeconfig apply -f deploy.yml
     - name: Verify
       uses: docker://lachlanevenson/k8s-kubectl
       with:
