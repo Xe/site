@@ -60,6 +60,6 @@ jobs:
         chmod +x kubectl
         ./kubectl --kubeconfig .kubeconfig apply -f deploy.yml
         sleep 2
-        ./kubectl --kubeconfig=$HOME/.kubeconfig rollout status deployment/christinewebsite
+        ./kubectl --kubeconfig .kubeconfig rollout status deployment/christinewebsite
       env:
         DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
