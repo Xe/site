@@ -10,10 +10,10 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build/Push Docker Image
       run: |
-        docker build . -t xena/christine.website:$(echo $GITHUB_SHA | head -c7)
         mkdir -p ~/.docker
         echo $DOCKER_CONFIG | base64 -d > ~/.docker/config
         md5sum ~/.docker/config
+        docker build . -t xena/christine.website:$(echo $GITHUB_SHA | head -c7)
         docker push xena/christine.website:$(echo $GITHUB_SHA | head -c7)
       env:
         DOCKER_CONFIG: "$${ secrets.DOCKER_CONFIG }"
