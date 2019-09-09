@@ -8,26 +8,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Build/Push Docker Image
-      run: |
-        docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD 
-        docker build . -t xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
-        docker push xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
+    - name: Build container image
+      uses: actions/docker/cli@master
+      with:
+        args: build -t xena/christinewebsite:$(echo $GITHUB_SHA | head -c7) .
+    - name: Docker Login
+      uses: actions/docker/login@master
       env:
         DOCKER_USERNAME: "xena"
-        DOCKER_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
-    - name: Download secrets
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Push image to Docker Hub
+      uses: actions/docker/cli@master
+      with:
+        args: push xena/christinewebsite
+    - name: Download secrets/Install/Configure/Use Dyson
       run: |
         mkdir ~/.ssh
         echo $FILE_DATA | base64 -d > ~/.ssh/id_rsa
         md5sum ~/.ssh/id_rsa 
         chmod 600 ~/.ssh/id_rsa
         git clone git@git.xeserv.us:xena/within-terraform-secret
-      env:
-        FILE_DATA: ${{ secrets.SSH_PRIVATE_KEY }}
-        GIT_SSH_COMMAND: "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-    - name: Install/Configure/Use Dyson
-      run: |
         curl https://xena.greedo.xeserv.us/files/dyson-linux-amd64-0.1.0.tgz | tar xz 
         cp ./dyson-linux-amd64-0.1.0/dyson .
         rm -rf dyson-linux-amd64-0.1.0
@@ -49,17 +49,21 @@ jobs:
           --dockerImage=xena/christinewebsite:$(echo $GITHUB_SHA | head -c7) \
           --containerPort=5000 \
           --replicas=1 \
-          --useProdLE=true > deploy.yml
-    - name: Configure/Deploy/Verify Kubernetes
-      run: |
-        curl -L https://github.com/digitalocean/doctl/releases/download/v1.30.0/doctl-1.30.0-linux-amd64.tar.gz | tar xz
-        ./doctl auth init -t $DIGITALOCEAN_ACCESS_TOKEN
-        ./doctl kubernetes cluster kubeconfig show kubermemes > .kubeconfig
-        
-        curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
-        chmod +x kubectl
-        ./kubectl --kubeconfig .kubeconfig apply -n apps -f deploy.yml
-        sleep 2
-        ./kubectl --kubeconfig .kubeconfig rollout -n apps status deployment/christinewebsite
+          --useProdLE=true > $GITHUB_WORKSPACE/deploy.yml
+      env:
+        FILE_DATA: ${{ secrets.SSH_PRIVATE_KEY }}
+        GIT_SSH_COMMAND: "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    - name: Save DigitalOcean kubeconfig
+      uses: digitalocean/action-doctl@master
       env:
         DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+      with:
+        args: kubernetes cluster kubeconfig show kubermemes > $GITHUB_WORKSPACE/.kubeconfig
+    - name: Deploy to DigitalOcean Kubernetes
+      uses: docker://lachlanevenson/k8s-kubectl
+      with:
+        args: --kubeconfig=/github/workspace/.kubeconfig apply -n apps -f /github/workspace/deploy.yml
+    - name: Verify deployment
+      uses: docker://lachlanevenson/k8s-kubectl
+      with:
+        args: --kubeconfig=/github/workspace/.kubeconfig rollout status -n apps deployment/christinewebsite
