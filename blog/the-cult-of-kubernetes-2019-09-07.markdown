@@ -311,9 +311,11 @@ This is how I ended up with [this monstrosity][monster]:
     DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
 ```
 
-I am almost _certain_ that I am doing it wrong here, I don't know how robust this
+~~I am almost _certain_ that I am doing it wrong here, I don't know how robust this
 is and I'm very sure that this can and should be done another way; but this is
-the only thing I could get working (for some definition of "working").
+the only thing I could get working (for some definition of "working").~~
+
+EDIT: it got fixed, see below
 
 <center><blockquote class="twitter-tweet"><p lang="hu" dir="ltr">kubernetes is a cult</p>&mdash; Andrew Kelley (@andy_kelley) <a href="https://twitter.com/andy_kelley/status/1169999209438859264?ref_src=twsrc%5Etfw">September 6, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></center>
 
@@ -322,13 +324,16 @@ the only thing I could get working (for some definition of "working").
 Now when I git push things to the master branch of my blog repo, it will
 automatically get deployed to my Kubernetes cluster.
 
-If you work at DigitalOcean and are reading this post. Please get someone to
+~~If you work at DigitalOcean and are reading this post. Please get someone to
 update [this tutorial][dotutorialkube] and the README of [this repo][marketplacereadmeexample].
 The examples listed _DO NOT WORK_ for me because I was not in the private beta
 of GitHub Actions. It would also be nice if you had better documentation on how
 to use [your premade action][doctlgithubaction] for usecases like mine. I just
 wanted to download the kubernetes configuration file and run apply against a yaml
-file.
+file.~~
+
+EDIT: The above complaint has been fixed! See [here](https://github.com/Xe/site/commit/a9329bfbeffc4a290876a56795c23286c537ca94)
+for the simpler way of doing things.
 
 Thanks for reading, I hope this was entertaining. Be well.
 
