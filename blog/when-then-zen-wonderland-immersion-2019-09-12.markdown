@@ -8,7 +8,7 @@ tags:
 
 # When Then Zen: Wonderland Immersion
 
-Wonderland immersion is a topic that has interested me for years. I have only recently started to get better at it, and I would like to document the methods I have been using for this. A wonderland is a mental world, but more persistent than usual "imagination". It can be as alive or as dead as you want. My wonderland has a rather large (40km x 40km) island on it that is full of varied locales.
+Wonderland immersion is a topic that has interested me for years. I have only recently started to get better at it, and I would like to document the methods I have been using for this. A wonderland (blame someone named Alice for that name) is a mental world, but more persistent than usual "imagination". It can be as alive or as dead as you want. My wonderland has a rather large (40km x 40km) island on it that is full of varied locales.
 
 At a high level, the approach I am using for this is based on [philosophical metaphysical analysis](https://en.m.wikipedia.org/wiki/Metaphysics), or in short answering two questions for the world and various things in it:
 
