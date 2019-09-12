@@ -2,6 +2,8 @@
 title: Let it Snow
 date: 2018-12-17
 for: the lols
+tags:
+ - fluff
 ---
 
 # Let it Snow

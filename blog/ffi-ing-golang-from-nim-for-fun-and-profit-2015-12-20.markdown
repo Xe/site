@@ -1,6 +1,10 @@
 ---
 title: FFI-ing Go from Nim for Fun and Profit
 date: 2015-12-20
+series: howto
+tags:
+ - go
+ - nim
 ---
 
 FFI-ing Golang from Nim for Fun and Profit

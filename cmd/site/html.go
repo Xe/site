@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"christine.website/internal"
@@ -164,6 +165,14 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var tags string
+
+	if len(p.Tags) != 0 {
+		for _, t := range p.Tags {
+			tags = tags + " #" + strings.Replace(t, "-", "")
+		}
+	}
+
 	const dateFormat = `2006-01-02`
 	s.renderTemplatePage("blogpost.html", struct {
 		Title    string
@@ -171,12 +180,14 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 		BodyHTML template.HTML
 		Date     string
 		Series   string
+		Tags     string
 	}{
 		Title:    p.Title,
 		Link:     p.Link,
 		BodyHTML: p.BodyHTML,
 		Date:     p.Date.Format(dateFormat),
-		Series:   p.Series,
+		Series:   strings.ReplaceAll(p.Series, "-", ""),
+		Tags:     tags,
 	}).ServeHTTP(w, r)
 	postView.With(prometheus.Labels{"base": filepath.Base(p.Link)}).Inc()
 }

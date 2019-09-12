@@ -2,6 +2,8 @@
 title: The Beautiful in the Ugly
 date: 2018-04-23
 for: Silver
+tags:
+ - shell
 ---
 
 # The Beautiful in the Ugly

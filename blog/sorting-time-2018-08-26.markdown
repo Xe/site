@@ -1,6 +1,10 @@
 ---
 title: Sorting Time
 date: 2018-08-26
+tags:
+ - time
+ - javascript
+ - tale-of-woe
 ---
 
 # Sorting Time

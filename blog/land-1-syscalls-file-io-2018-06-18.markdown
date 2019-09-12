@@ -2,6 +2,8 @@
 title: "Land 1: Syscalls & File I/O"
 date: 2018-06-18
 series: olin
+tags:
+ - wasm
 ---
 
 # Land 1: Syscalls & File I/O

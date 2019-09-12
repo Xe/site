@@ -1,6 +1,10 @@
 ---
 title: MrBeast is Postmodern Gold
 date: 2019-06-05
+tags:
+ - mrbeast
+ - postmodern
+ - youtube
 ---
 
 Author's note: I've been going through a lot lately. This Monday I was in the emergency room after having a panic attack. I have a folder of writing in my notes that I use to help work off steam. I don't know why, but writing this article really helped me feel better. I can only hope it helps make your day feel better too. 

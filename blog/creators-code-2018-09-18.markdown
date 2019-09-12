@@ -2,6 +2,9 @@
 title: "Creator's Code"
 author: Christine Dodrill
 date: 2018-09-17
+tags:
+ - release
+ - coc
 ---
 
 # [Creator's Code](https://github.com/Xe/creators-code)

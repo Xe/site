@@ -59,6 +59,10 @@
 <p>Series: <a href="/blog/series/{{ .Series }}">{{ .Series }}</a></p>
 {{ end }}
 
+{{ if ne .Tags "" }}
+<p>Tags:{{.Tags}}</p>
+{{ end }}
+
 <script>
 
 // The actual function. Set this as an onclick function for your "Share on Mastodon" button
@@ -96,6 +100,7 @@ function share_on_mastodon() {
                 var hashtags = "#blogpost";
 
                 {{ if ne .Series "" }}hashtags += " #{{ .Series }}";{{ end }}
+                {{ if ne .Tags "" }}hashtags += "{{ .Tags }}";{{ end }}
 
                 // Tagging users, such as offical accounts or the author of the post 
                 var author   = "@cadey@mst3k.interlinked.me"; 

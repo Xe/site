@@ -1,6 +1,9 @@
 ---
 title: The h Programming Language
 date: 2019-06-30
+tags:
+ - wasm
+ - release
 ---
 
 # The h Programming Language

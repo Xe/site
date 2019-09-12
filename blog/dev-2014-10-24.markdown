@@ -1,6 +1,8 @@
 ---
 title: Instant Development Environments in Docker
 date: 2014-10-24
+tags:
+ - release
 ---
 
 Instant Development Environments in Docker

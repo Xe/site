@@ -1,7 +1,10 @@
 ---
 title: My Experience with Atom as A Vim User
 date: 2014-11-18
-from: medium
+series: medium-archive
+tags:
+ - atom
+ - vim
 ---
 
 My Experience with Atom as A Vim User

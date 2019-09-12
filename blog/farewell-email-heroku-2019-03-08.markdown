@@ -3,6 +3,9 @@ title: "Farewell Email - Heroku"
 date: 2019-03-08
 for: Herokai
 subject: May our paths cross again
+tags:
+ - personal
+ - heroku
 ---
 
 # Farewell Email - Heroku

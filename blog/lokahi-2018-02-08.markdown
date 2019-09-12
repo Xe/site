@@ -2,6 +2,11 @@
 title: Introducing Lokahi
 date: 2018-02-08
 github_issue: https://github.com/Xe/lokahi/issues/15
+tags:
+ - hackweek
+ - release
+ - go
+ - monitoring
 ---
 
 # Introducing Lokahi

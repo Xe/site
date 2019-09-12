@@ -1,6 +1,8 @@
 ---
 title: Coding on an iPad
 date: 2018-04-14
+tags:
+ - ipad
 ---
 
 # Coding on an iPad

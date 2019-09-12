@@ -1,6 +1,8 @@
 ---
 title: Coming Out
 date: 2015-12-01
+tags:
+ - personal
 ---
 
 Coming Out
