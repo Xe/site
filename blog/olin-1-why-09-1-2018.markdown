@@ -1,6 +1,7 @@
 ---
 title: "Olin: 1: Why"
 date: 2018-09-01
+series: olin
 ---
 
 # [Olin][olin]: 1: Why

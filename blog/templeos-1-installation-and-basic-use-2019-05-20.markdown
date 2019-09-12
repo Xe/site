@@ -1,6 +1,7 @@
 ---
 title: "TempleOS: 1 - Installation"
 date: 2019-05-20
+series: templeos
 ---
 
 # TempleOS: 1 - Installation

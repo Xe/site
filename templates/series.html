@@ -1,0 +1,16 @@
+{{ define "title" }}
+<title>Blog Series - Christine Dodrill</title>
+{{ end }}
+
+{{ define "content" }}
+<h1>Series</h1>
+
+<p>
+    <ul>
+        {{ range . }}
+            <li><a href="/blog/series/{{ . }}">{{ . }}</a></li>
+        {{ end }}
+    </ul>
+</p>
+
+{{ end }}

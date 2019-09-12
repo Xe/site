@@ -1,6 +1,9 @@
 ---
 title: "RSS Feed Generation"
 date: "2017-03-29"
+tags: 
+ - rss
+ - atom
 ---
 
 RSS Feed Generation

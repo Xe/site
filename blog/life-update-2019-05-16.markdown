@@ -2,6 +2,8 @@
 title: "Life Update - Montréal" 
 date: "2019-05-16"
 for: "Vic"
+tags:
+ - personal
 ---
 
 # Life Update - Montréal

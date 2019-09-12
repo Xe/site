@@ -1,6 +1,7 @@
 ---
 title: "Site to Site WireGuard: Part 2 - DNS"
 date: 2019-04-07
+series: site-to-site-wireguard
 ---
 
 # Site to Site WireGuard: Part 2 - DNS

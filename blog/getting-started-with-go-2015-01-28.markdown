@@ -1,6 +1,7 @@
 ---
 title: Getting Started with Go
 date: 2015-01-28
+series: howto
 ---
 
 Getting Started with Go

@@ -1,6 +1,10 @@
 ---
 title: How I Converted my Brain fMRI to a 3D Model
 date: 2019-08-23
+series: howto
+tags:
+ - python
+ - blender
 ---
 
 # How I Converted my Brain fMRI to a 3D Model

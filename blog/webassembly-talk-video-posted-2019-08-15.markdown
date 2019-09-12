@@ -1,6 +1,8 @@
 ---
 title: WebAssembly Talk Video Posted
 date: 2019-08-15
+tags:
+ - wasm
 ---
 
 # WebAssembly Talk Video Posted

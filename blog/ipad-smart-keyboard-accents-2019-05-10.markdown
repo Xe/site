@@ -1,6 +1,7 @@
 ---
 title: "iPad Smart Keyboard: French Accents/Ligatures"
 date: 2019-05-10
+series: howto
 ---
 
 # iPad Smart Keyboard: French Accents/Ligatures

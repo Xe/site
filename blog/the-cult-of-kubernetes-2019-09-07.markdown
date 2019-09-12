@@ -1,6 +1,11 @@
 ---
 title: The Cult of Kubernetes
 date: 2019-09-07
+series: howto
+tags:
+ - kubernetes
+ - digitalocean
+ - githubactions
 ---
 
 # The Cult of Kubernetes

@@ -1,6 +1,7 @@
 ---
 title: "Blind Men and an Elephant"
 date: 2018-11-29
+series: conlangs
 ---
 
 # Blind Men and an Elephant

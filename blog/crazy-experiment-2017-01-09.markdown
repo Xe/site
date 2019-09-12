@@ -1,6 +1,9 @@
 ---
 title: "Crazy Experiment: Ship the Frontend as an asar document"
 date: "2017-01-09"
+tags:
+ - asar
+ - frontend
 ---
 
 Crazy Experiment: Ship the Frontend as an asar document

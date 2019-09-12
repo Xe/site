@@ -1,6 +1,7 @@
 ---
 title: "Site to Site WireGuard: Part 3 - Custom TLS Certificate Authority"
 date: 2019-04-11
+series: site-to-site-wireguard
 ---
 
 # Site to Site WireGuard: Part 3 - Custom TLS Certificate Authority

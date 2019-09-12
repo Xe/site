@@ -1,6 +1,7 @@
 ---
 title: "Site to Site WireGuard: Part 1 - Names and Numbers"
 date: "2019-04-02"
+series: site-to-site-wireguard
 ---
 
 # Site to Site WireGuard: Part 1 - Names and Numbers

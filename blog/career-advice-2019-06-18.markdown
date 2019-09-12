@@ -1,6 +1,8 @@
 ---
 title: Advice to People Nurturing a Career in Computering
 date: 2019-06-18
+tags:
+ - career
 ---
 
 # Advice to People Nurturing a Career in Computering

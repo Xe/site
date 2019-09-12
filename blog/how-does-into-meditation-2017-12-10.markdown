@@ -1,6 +1,7 @@
 ---
 title: How does into Meditation
 date: 2017-12-10
+series: when-then-zen
 ---
 
 # How does into Meditation

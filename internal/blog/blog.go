@@ -20,6 +20,8 @@ type Post struct {
 	Summary    string        `json:"summary,omitifempty"`
 	Body       string        `json:"-"`
 	BodyHTML   template.HTML `json:"body"`
+	Series     string        `json:"series"`
+	Tags       []string      `json:"tags"`
 	SlidesLink string        `json:"slides_link"`
 	Date       time.Time
 	DateString string `json:"date"`
@@ -27,6 +29,24 @@ type Post struct {
 
 // Posts implements sort.Interface for a slice of Post objects.
 type Posts []Post
+
+func (p Posts) Series() []string {
+	names := map[string]struct{}{}
+
+	for _, ps := range p {
+		if ps.Series != "" {
+			names[ps.Series] = struct{}{}
+		}
+	}
+
+	var result []string
+
+	for name := range names {
+		result = append(result, name)
+	}
+
+	return result
+}
 
 func (p Posts) Len() int { return len(p) }
 func (p Posts) Less(i, j int) bool {
@@ -42,6 +62,8 @@ func LoadPosts(path string, prepend string) (Posts, error) {
 	type postFM struct {
 		Title      string
 		Date       string
+		Series     string
+		Tags       []string
 		SlidesLink string `yaml:"slides_link"`
 	}
 	var result Posts
@@ -91,6 +113,8 @@ func LoadPosts(path string, prepend string) (Posts, error) {
 			Body:       string(remaining),
 			BodyHTML:   template.HTML(output),
 			SlidesLink: fm.SlidesLink,
+			Series:     fm.Series,
+			Tags:       fm.Tags,
 		}
 		result = append(result, p)
 
