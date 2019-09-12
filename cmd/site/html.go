@@ -169,7 +169,7 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 
 	if len(p.Tags) != 0 {
 		for _, t := range p.Tags {
-			tags = tags + " #" + strings.Replace(t, "-", "")
+			tags = tags + " #" + strings.ReplaceAll(t, "-", "")
 		}
 	}
 
