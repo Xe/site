@@ -69,6 +69,34 @@ var postView = promauto.NewCounterVec(prometheus.CounterOpts{
 	Help: "The number of views per post or talk",
 }, []string{"base"})
 
+func (s *Site) listSeries(w http.ResponseWriter, r *http.Request) {
+	s.renderTemplatePage("series.html", s.Series).ServeHTTP(w, r)
+}
+
+func (s *Site) showSeries(w http.ResponseWriter, r *http.Request) {
+	if r.RequestURI == "/blog/series/" {
+		http.Redirect(w, r, "/blog/series", http.StatusSeeOther)
+		return
+	}
+
+	series := filepath.Base(r.URL.Path)
+	var posts []blog.Post
+
+	for _, p := range s.Posts {
+		if p.Series == series {
+			posts = append(posts, p)
+		}
+	}
+
+	s.renderTemplatePage("serieslist.html", struct {
+		Name  string
+		Posts []blog.Post
+	}{
+		Name:  series,
+		Posts: posts,
+	}).ServeHTTP(w, r)
+}
+
 func (s *Site) showTalk(w http.ResponseWriter, r *http.Request) {
 	if r.RequestURI == "/talks/" {
 		http.Redirect(w, r, "/talks", http.StatusSeeOther)
@@ -142,11 +170,13 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 		Link     string
 		BodyHTML template.HTML
 		Date     string
+		Series   string
 	}{
 		Title:    p.Title,
 		Link:     p.Link,
 		BodyHTML: p.BodyHTML,
 		Date:     p.Date.Format(dateFormat),
+		Series:   p.Series,
 	}).ServeHTTP(w, r)
 	postView.With(prometheus.Labels{"base": filepath.Base(p.Link)}).Inc()
 }

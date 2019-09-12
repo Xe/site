@@ -1,6 +1,7 @@
 ---
 title: Tarot for Hackers
 date: 2019-07-24
+series: magick
 ---
 
 # Tarot for Hackers

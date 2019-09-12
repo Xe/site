@@ -1,6 +1,7 @@
 ---
 title: The Saga of plt, Part 1
 date: 2015-02-14
+series: plt
 ---
 
 The Saga of plt, Part 1

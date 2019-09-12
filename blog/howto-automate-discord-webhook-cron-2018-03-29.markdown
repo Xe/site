@@ -1,6 +1,7 @@
 ---
 title: How to Automate Discord Message Posting With Webhooks and Cron
 date: 2018-03-29
+series: howto
 ---
 
 # How to Automate Discord Message Posting With Webhooks and Cron

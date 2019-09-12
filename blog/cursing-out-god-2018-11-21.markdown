@@ -1,6 +1,7 @@
 ---
 title: My Experience Cursing Out God
 date: 2018-11-21
+series: dreams
 ---
 
 # My Experience Cursing Out God

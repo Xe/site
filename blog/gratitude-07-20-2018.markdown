@@ -3,6 +3,7 @@ title: Gratitude
 date: 2018-07-20
 thanks: CelestialBoon
 for: Mother Aya
+series: magick
 ---
 
 # Gratitude

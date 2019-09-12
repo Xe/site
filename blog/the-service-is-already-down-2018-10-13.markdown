@@ -1,6 +1,7 @@
 ---
 title: The Service is Already Down
 date: 2018-10-13
+series: stories
 ---
 
 # The Service is Already Down

@@ -1,6 +1,7 @@
 ---
 title: How to Use User Mode Linux
 date: 2019-07-07
+series: howto
 ---
 
 # How to Use User Mode Linux

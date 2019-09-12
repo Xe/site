@@ -1,6 +1,7 @@
 ---
 title: How to Send Email with Nim
 date: 2019-08-28
+series: howto
 ---
 
 # How to Send Email with Nim

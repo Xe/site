@@ -2,6 +2,7 @@
 title: "Chaos Magick Debugging"
 date: 2018-11-13
 thanks: CelestialBoon
+series: magick
 ---
 
 # Chaos Magick Debugging

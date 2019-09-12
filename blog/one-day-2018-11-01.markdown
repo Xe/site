@@ -2,6 +2,7 @@
 title: "One Day"
 date: 2018-11-01
 for: "Nicole"
+series: stories
 ---
 
 # One Day

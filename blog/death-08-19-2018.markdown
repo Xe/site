@@ -2,6 +2,7 @@
 title: Death
 date: 2018-08-19
 thanks: Sygma
+series: magick
 ---
 
 # Death

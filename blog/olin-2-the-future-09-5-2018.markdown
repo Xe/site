@@ -1,6 +1,7 @@
 ---
 title: "Olin: 2: The Future"
 date: 2018-09-05
+series: olin
 ---
 
 # [Olin](https://github.com/Xe/olin): 2: The Future

@@ -58,6 +58,7 @@ type Site struct {
 	Posts  blog.Posts
 	Talks  blog.Posts
 	Resume template.HTML
+	Series []string
 
 	rssFeed  *feeds.Feed
 	jsonFeed *jsonfeed.Feed
@@ -147,6 +148,8 @@ func Build() (*Site, error) {
 		return nil, err
 	}
 	s.Posts = posts
+	s.Series = posts.Series()
+	sort.Strings(s.Series)
 
 	talks, err := blog.LoadPosts("./talks", "talks")
 	if err != nil {
@@ -210,6 +213,8 @@ func Build() (*Site, error) {
 	s.mux.Handle("/blog.atom", middleware.Metrics("blog.atom", http.HandlerFunc(s.createAtom)))
 	s.mux.Handle("/blog.json", middleware.Metrics("blog.json", http.HandlerFunc(s.createJSONFeed)))
 	s.mux.Handle("/blog/", middleware.Metrics("blogpost", http.HandlerFunc(s.showPost)))
+	s.mux.Handle("/blog/series", http.HandlerFunc(s.listSeries))
+	s.mux.Handle("/blog/series/", http.HandlerFunc(s.showSeries))
 	s.mux.Handle("/talks/", middleware.Metrics("talks", http.HandlerFunc(s.showTalk)))
 	s.mux.Handle("/css/", http.FileServer(http.Dir(".")))
 	s.mux.Handle("/static/", http.FileServer(http.Dir(".")))

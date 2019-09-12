@@ -2,6 +2,7 @@
 title: Narrative of Sickness
 date: 2018-08-13
 for: awakening
+series: magick
 ---
 
 # Narrative of Sickness

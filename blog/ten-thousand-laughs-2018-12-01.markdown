@@ -1,6 +1,7 @@
 ---
 title: "Ten Thousand Laughs"
 date: "2018-12-01"
+series: conlangs
 ---
 
 # Ten Thousand Laughs
