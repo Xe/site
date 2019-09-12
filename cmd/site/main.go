@@ -82,7 +82,7 @@ func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	middleware.RequestID(s.xffmw.Handler(ex.HTTPLog(s.mux))).ServeHTTP(w, r)
 }
 
-var arbDate = time.Date(2019, time.May, 20, 18, 0, 0, 0, time.UTC)
+var arbDate = time.Date(2019, time.September, 12, 0, 0, 0, 0, time.UTC)
 
 // Build creates a new Site instance or fails.
 func Build() (*Site, error) {
