@@ -175,19 +175,20 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 
 	const dateFormat = `2006-01-02`
 	s.renderTemplatePage("blogpost.html", struct {
-		Title    string
-		Link     string
-		BodyHTML template.HTML
-		Date     string
-		Series   string
-		Tags     string
+		Title             string
+		Link              string
+		BodyHTML          template.HTML
+		Date              string
+		Series, SeriesTag string
+		Tags              string
 	}{
-		Title:    p.Title,
-		Link:     p.Link,
-		BodyHTML: p.BodyHTML,
-		Date:     p.Date.Format(dateFormat),
-		Series:   strings.ReplaceAll(p.Series, "-", ""),
-		Tags:     tags,
+		Title:     p.Title,
+		Link:      p.Link,
+		BodyHTML:  p.BodyHTML,
+		Date:      p.Date.Format(dateFormat),
+		Series:    p.Series,
+		SeriesTag: strings.ReplaceAll(p.Series, "-", ""),
+		Tags:      tags,
 	}).ServeHTTP(w, r)
 	postView.With(prometheus.Labels{"base": filepath.Base(p.Link)}).Inc()
 }

@@ -99,7 +99,7 @@ function share_on_mastodon() {
                 // Hashtags 
                 var hashtags = "#blogpost";
 
-                {{ if ne .Series "" }}hashtags += " #{{ .Series }}";{{ end }}
+                {{ if ne .SeriesTag "" }}hashtags += " #{{ .SeriesTag }}";{{ end }}
                 {{ if ne .Tags "" }}hashtags += "{{ .Tags }}";{{ end }}
 
                 // Tagging users, such as offical accounts or the author of the post 
