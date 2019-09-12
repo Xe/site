@@ -1,6 +1,9 @@
 ---
 title: "When Then Zen: Site Announcement"
 date: 2019-04-09
+series: when-then-zen
+tags:
+ - release
 ---
 
 # When Then Zen: Site Announcement

@@ -1,6 +1,9 @@
 ---
 date: 2019-01-20
 title: When Then Zen
+series: when-then-zen
+tags:
+ - meditation
 ---
 
 # When Then Zen
