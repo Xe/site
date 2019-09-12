@@ -3,6 +3,9 @@ title: "When Then Zen: Anapana"
 date: 2018-08-15
 for: those in need
 series: when-then-zen
+tags:
+ - anapana
+ - meditation
 ---
 
 # When Then Zen: Anapana
