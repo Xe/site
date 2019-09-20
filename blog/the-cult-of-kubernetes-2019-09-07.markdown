@@ -156,7 +156,7 @@ I wanted to do the following:
 
 - setup [helm][helm] to install packages for things like DNS management and HTTP/HTTPS ingress
 - setup [automatic certificate management][certmanager] with [Let's Encrypt][letsencrypt]
-- setup HTTP/HTTPS request ingress with [nginx-ingress][nginxingress]
+- setup HTTP/HTTPS request ingress with [nginx-ingress][nginxingress] (which uses [nginx](https://www.nginx.com/))
 - setup [automatic DNS management][autodns] because the external IP addresses of Kubernetes nodes can and will change
 
 After a lot of trial, error, pain, suffering and the like, I created 
