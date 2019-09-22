@@ -11,7 +11,7 @@ tags:
 
 I've been working on a project in the [Conlang Critic][conlangcritic] Discord with some friends for a while now, and I'd like to summarize what we've been doing and why here. We've been working on creating a constructed language (conlang) with the end goal of each of us going off and evolving it in our own separate ways. Our goal in this project is really to create a microcosm of the natural process of language development.
 
-**## Why**
+## Why
 
 One of the questions you, as the reader, might be asking is "why?" To which I say "why not?" This is a tool I use to define, explore and challenge my fundamental understanding of reality. I don't expect anything I do with this tool to be useful to anyone other than myself. I just want to create something by throwing things at the wall and seeing what makes sense for _me_. If other people like it or end up benefitting from it I consider that icing on the cake.
 
@@ -19,7 +19,7 @@ A language is a surprisingly complicated thing. There's lots of nuance and cultu
 
 So, like I mentioned earlier, I've been working on a conlang with some friends, and here's what we've been creating.
 
-**## mapatei grammar**
+## mapatei grammar
 
 mapatei is the language spoken by a primitive culture of people we call maparaja (people of the language). It is designed to be very simple to understand, speak and learn.
 
