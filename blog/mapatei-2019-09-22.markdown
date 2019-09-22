@@ -369,3 +369,5 @@ Creating a language from scratch is surprisingly hard work. These resources help
 Thanks for reading this! I hope this blogpost helps to kick off mapatei development into unique and more fleshed out derivative conlangs. Have fun!
 
 Special thanks to jan Misali for encouraging this to happen.
+
+[conlangcritic]: https://www.youtube.com/user/HBMmaster8472
