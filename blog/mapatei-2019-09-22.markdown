@@ -57,12 +57,12 @@ The consonants are:
 | ᵐb | mb | a combination of the m in mother and the b in baker |
 | ⁿd | nd | as in handle |
 | ᵑg | ng | as in finger |
-| p | p | the p in parking |
-| t | t | the t in twin |
-| k | k | the k in koolaid |
-| pʰ | ph | the ph in pin |
-| tʰ | th | the th in tower |
-| kʰ | kh | the kh in kin |
+| p | p | the p in spool |
+| t | t | the t in stool |
+| k | k | the k in school |
+| pʰ | ph | the ph in pool |
+| tʰ | th | the th in tool |
+| kʰ | kh | the kh in cool |
 | ɸ~f | f | the f in father |
 | s | s | the s in shock |
 | w | w | the w in water |
