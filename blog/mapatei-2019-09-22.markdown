@@ -64,7 +64,7 @@ The consonants are:
 | tʰ | th | the th in tool |
 | kʰ | kh | the kh in cool |
 | ɸ~f | f | the f in father |
-| s | s | the s in shock |
+| s | s | the s in sock |
 | w | w | the w in water |
 | l | l | the l in lie |
 | j | j or y | the y in young |
