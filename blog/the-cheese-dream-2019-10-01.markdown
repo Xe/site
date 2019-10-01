@@ -88,3 +88,7 @@ I grabbed another bowl out of my bag and served myself some poutine, it was some
 Bleu took a bite and his cheese eyes went wide open. Without another word, he ran towards the cheese town to tell the people of the feast waiting for them. He came back with the remainder of the town and we had a feast of poutine, declaring the day "Poutine Day" for the rest of time.
 
 After some time celebrating, I woke up in my bed. I was really confused and having trouble processing what had just happened to me. I was also craving poutine.
+
+---
+
+Based on [this twitter thread](https://twitter.com/theprincessxena/status/1178996989385740288).
