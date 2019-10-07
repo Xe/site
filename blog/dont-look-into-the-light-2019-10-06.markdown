@@ -92,7 +92,7 @@ application over HTTP.
 
 > If you 'future proof' a system you build today, chances are when the future
 > arrives the system will be unmaintainable or incomprehensible.
-- [John Murphy](https://twitter.com/murphybytes/status/1180131195537039360)
+\- [John Murphy](https://twitter.com/murphybytes/status/1180131195537039360)
 
 ---
 
