@@ -5,7 +5,7 @@ self.addEventListener('install', function(event) {
   event.waitUntil(preLoad());
 });
 
-const cacheName = "cache-2019-05-21";
+const cacheName = "cache-2019-10-15";
 
 var preLoad = function(){
   console.log('[PWA Builder] Install Event processing');
