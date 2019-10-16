@@ -9,25 +9,20 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build container image
-      uses: actions/docker/cli@master
-      with:
-        args: build -t xena/christinewebsite:$(echo $GITHUB_SHA | head -c7) .
-    - name: Docker Login
-      uses: actions/docker/login@master
+      run: |
+        docker build -t xena/christinewebsite:$(echo $GITHUB_SHA | head -c7) .
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        docker push xena/christinewebsite
       env:
         DOCKER_USERNAME: "xena"
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Push image to Docker Hub
-      uses: actions/docker/cli@master
-      with:
-        args: push xena/christinewebsite
     - name: Download secrets/Install/Configure/Use Dyson
       run: |
         mkdir ~/.ssh
         echo $FILE_DATA | base64 -d > ~/.ssh/id_rsa
         md5sum ~/.ssh/id_rsa 
         chmod 600 ~/.ssh/id_rsa
-        git clone git@git.xeserv.us:xena/within-terraform-secret
+        git clone git@ssh.tulpa.dev:cadey/within-terraform-secret
         curl https://xena.greedo.xeserv.us/files/dyson-linux-amd64-0.1.0.tgz | tar xz 
         cp ./dyson-linux-amd64-0.1.0/dyson .
         rm -rf dyson-linux-amd64-0.1.0
