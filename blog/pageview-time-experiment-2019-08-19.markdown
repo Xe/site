@@ -70,3 +70,10 @@ benefit in that timespan, I will disable this and post a follow-up explaining ho
 I believe it wasn't useful.
 
 Thanks and be well.
+
+---
+
+EDIT 2019-10-15: browsers disable this call from the context I am using and I don't 
+really care enough to figure out how to fix it. This experiment is over. Thank you 
+to everyone that participated. All data will be scrubbed and a followup will be 
+posted soon.
