@@ -6,7 +6,7 @@ require (
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/povilasv/prommod v0.0.12
-	github.com/prometheus/client_golang v1.0.0
+	github.com/prometheus/client_golang v1.2.0
 	github.com/russross/blackfriday v2.0.0+incompatible
 	github.com/sebest/xff v0.0.0-20160910043805-6c115e0ffa35
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
