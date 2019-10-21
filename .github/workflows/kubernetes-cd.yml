@@ -62,3 +62,14 @@ jobs:
       uses: docker://lachlanevenson/k8s-kubectl
       with:
         args: --kubeconfig=/github/workspace/.kubeconfig rollout status -n apps deployment/christinewebsite
+    - name: Ping Google
+      uses: docker://lachlanevenson/k8s-kubectl
+      with:
+        args: --kubeconfig=/github/workspace/.kubeconfig apply -f /github/workspace/k8s/job/yml
+    - name: Sleep
+      run: |
+        sleep 5
+    - name: Don't Ping Google
+      uses: docker://lachlanevenson/k8s-kubectl
+      with:
+        args: --kubeconfig=/github/workspace/.kubeconfig delete -f /github/workspace/k8s/job/yml
