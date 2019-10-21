@@ -14,7 +14,5 @@ COPY ./templates /site/templates
 COPY ./blog /site/blog
 COPY ./talks /site/talks
 COPY ./css /site/css
-COPY ./app /app
-COPY ./app.json .
 HEALTHCHECK CMD wget --spider http://127.0.0.1:5000/.within/health || exit 1
 CMD ./site
