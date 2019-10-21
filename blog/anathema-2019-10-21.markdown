@@ -93,6 +93,10 @@ I'm just challenging you, the reader, to really think about what/who is and is n
 
 Be well.
 
+---
+
+Special thanks to CelestialBoon, Grapz and MoonGoodGryph for proofreading and helping with this post. This would be a very different article without their feedback and input.
+
 [urbit]: https://urbit.org
 [liquidsoftware]: https://liquidsoftware.com
 [monalisa]: https://xena.greedo.xeserv.us/files/monalisa_small.jpg
