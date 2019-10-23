@@ -120,7 +120,6 @@ func (s *Site) showTalk(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	const dateFormat = `2006-01-02`
 	h := s.renderTemplatePage("talkpost.html", struct {
 		Title      string
 		Link       string
@@ -131,7 +130,7 @@ func (s *Site) showTalk(w http.ResponseWriter, r *http.Request) {
 		Title:      p.Title,
 		Link:       p.Link,
 		BodyHTML:   p.BodyHTML,
-		Date:       p.Date.Format(dateFormat),
+		Date:       internal.IOS13Detri(p.Date),
 		SlidesLink: p.SlidesLink,
 	})
 
@@ -173,7 +172,6 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	const dateFormat = `2006-01-02`
 	s.renderTemplatePage("blogpost.html", struct {
 		Title             string
 		Link              string
@@ -185,7 +183,7 @@ func (s *Site) showPost(w http.ResponseWriter, r *http.Request) {
 		Title:     p.Title,
 		Link:      p.Link,
 		BodyHTML:  p.BodyHTML,
-		Date:      p.Date.Format(dateFormat),
+		Date:      internal.IOS13Detri(p.Date),
 		Series:    p.Series,
 		SeriesTag: strings.ReplaceAll(p.Series, "-", ""),
 		Tags:      tags,
