@@ -5,6 +5,7 @@ series: get-going
 tags:
  - golang
  - book
+ - draft
 ---
 
 # Get Going: Hello, World!
