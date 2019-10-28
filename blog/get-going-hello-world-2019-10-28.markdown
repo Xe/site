@@ -10,7 +10,7 @@ tags:
 
 # Get Going: Hello, World!
 
-This post is the first in a book I'm writing to help people learn the
+This post is a draft of the first chapter in a book I'm writing to help people learn the
 [Go][go] programming language. It's aimed at people who understand the high
 level concepts of programming, but haven't had much practical experience with
 it. This is a sort of spiritual successor to my old 
