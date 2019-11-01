@@ -29,6 +29,24 @@ func TestLoadTalks(t *testing.T) {
 	}
 }
 
+func TestLoadGallery(t *testing.T) {
+	gallery, err := LoadPosts("../../gallery", "gallery")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for _, art := range gallery {
+		t.Run(art.Link, art.test)
+		if art.ImageURL == "" {
+			t.Errorf("art %s (%s) doesn't have an image link", art.Title, art.DateString)
+		}
+		if art.ThumbURL == "" {
+			t.Errorf("art %s (%s) doesn't have a thumbnail link", art.Title, art.DateString)
+		}
+
+	}
+}
+
 func (p Post) test(t *testing.T) {
 	if p.Title == "" {
 		t.Error("no post title")

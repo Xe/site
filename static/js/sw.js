@@ -5,13 +5,13 @@ self.addEventListener('install', function(event) {
   event.waitUntil(preLoad());
 });
 
-const cacheName = "cache-2019-10-15";
+const cacheName = "cache-2019-11-01";
 
 var preLoad = function(){
   console.log('[PWA Builder] Install Event processing');
   return caches.open(cacheName).then(function(cache) {
     console.log('[PWA Builder] Cached index and offline page during Install');
-    return cache.addAll(['/blog/', '/blog', '/', '/contact', '/resume', '/talks']);
+    return cache.addAll(['/blog/', '/blog', '/', '/contact', '/resume', '/talks', '/gallery']);
   });
 };
 

@@ -55,10 +55,11 @@ func main() {
 
 // Site is the parent object for https://christine.website's backend.
 type Site struct {
-	Posts  blog.Posts
-	Talks  blog.Posts
-	Resume template.HTML
-	Series []string
+	Posts   blog.Posts
+	Talks   blog.Posts
+	Gallery blog.Posts
+	Resume  template.HTML
+	Series  []string
 
 	rssFeed  *feeds.Feed
 	jsonFeed *jsonfeed.Feed
@@ -82,7 +83,7 @@ func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	middleware.RequestID(s.xffmw.Handler(ex.HTTPLog(s.mux))).ServeHTTP(w, r)
 }
 
-var arbDate = time.Date(2019, time.September, 12, 0, 0, 0, 0, time.UTC)
+var arbDate = time.Date(2019, time.November, 2, 0, 0, 0, 0, time.UTC)
 
 // Build creates a new Site instance or fails.
 func Build() (*Site, error) {
@@ -157,9 +158,16 @@ func Build() (*Site, error) {
 	}
 	s.Talks = talks
 
+	gallery, err := blog.LoadPosts("./gallery", "gallery")
+	if err != nil {
+		return nil, err
+	}
+	s.Gallery = gallery
+
 	var everything blog.Posts
 	everything = append(everything, posts...)
 	everything = append(everything, talks...)
+	everything = append(everything, gallery...)
 
 	sort.Sort(sort.Reverse(everything))
 
@@ -208,6 +216,7 @@ func Build() (*Site, error) {
 	s.mux.Handle("/resume", middleware.Metrics("resume", s.renderTemplatePage("resume.html", s.Resume)))
 	s.mux.Handle("/blog", middleware.Metrics("blog", s.renderTemplatePage("blogindex.html", s.Posts)))
 	s.mux.Handle("/talks", middleware.Metrics("talks", s.renderTemplatePage("talkindex.html", s.Talks)))
+	s.mux.Handle("/gallery", middleware.Metrics("gallery", s.renderTemplatePage("galleryindex.html", s.Gallery)))
 	s.mux.Handle("/contact", middleware.Metrics("contact", s.renderTemplatePage("contact.html", nil)))
 	s.mux.Handle("/blog.rss", middleware.Metrics("blog.rss", http.HandlerFunc(s.createFeed)))
 	s.mux.Handle("/blog.atom", middleware.Metrics("blog.atom", http.HandlerFunc(s.createAtom)))
@@ -216,6 +225,7 @@ func Build() (*Site, error) {
 	s.mux.Handle("/blog/series", http.HandlerFunc(s.listSeries))
 	s.mux.Handle("/blog/series/", http.HandlerFunc(s.showSeries))
 	s.mux.Handle("/talks/", middleware.Metrics("talks", http.HandlerFunc(s.showTalk)))
+	s.mux.Handle("/gallery/", middleware.Metrics("gallery", http.HandlerFunc(s.showGallery)))
 	s.mux.Handle("/css/", http.FileServer(http.Dir(".")))
 	s.mux.Handle("/static/", http.FileServer(http.Dir(".")))
 	s.mux.HandleFunc("/sw.js", func(w http.ResponseWriter, r *http.Request) {

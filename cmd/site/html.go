@@ -98,6 +98,59 @@ func (s *Site) showSeries(w http.ResponseWriter, r *http.Request) {
 	}).ServeHTTP(w, r)
 }
 
+func (s *Site) showGallery(w http.ResponseWriter, r *http.Request) {
+	if r.RequestURI == "/gallery/" {
+		http.Redirect(w, r, "/gallery", http.StatusSeeOther)
+		return
+	}
+
+	cmp := r.URL.Path[1:]
+	var p blog.Post
+	var found bool
+	for _, pst := range s.Gallery {
+		if pst.Link == cmp {
+			p = pst
+			found = true
+		}
+	}
+
+	if !found {
+		w.WriteHeader(http.StatusNotFound)
+		s.renderTemplatePage("error.html", "no such post found: "+r.RequestURI).ServeHTTP(w, r)
+		return
+	}
+
+	var tags string
+	if len(p.Tags) != 0 {
+		for _, t := range p.Tags {
+			tags = tags + " #" + strings.ReplaceAll(t, "-", "")
+		}
+	}
+
+	h := s.renderTemplatePage("gallerypost.html", struct {
+		Title    string
+		Link     string
+		BodyHTML template.HTML
+		Date     string
+		Tags     string
+		Image    string
+	}{
+		Title:    p.Title,
+		Link:     p.Link,
+		BodyHTML: p.BodyHTML,
+		Date:     internal.IOS13Detri(p.Date),
+		Tags:     tags,
+		Image:    p.ImageURL,
+	})
+
+	if h == nil {
+		panic("how did we get here?")
+	}
+
+	h.ServeHTTP(w, r)
+	postView.With(prometheus.Labels{"base": filepath.Base(p.Link)}).Inc()
+}
+
 func (s *Site) showTalk(w http.ResponseWriter, r *http.Request) {
 	if r.RequestURI == "/talks/" {
 		http.Redirect(w, r, "/talks", http.StatusSeeOther)
