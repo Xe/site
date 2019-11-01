@@ -97,7 +97,8 @@ function share_on_mastodon() {
                 localStorage['mastodon_instance'] = instance; 
 
                 // Hashtags 
-                var hashtags = "#talk";
+                var hashtags = "#art";
+                {{ if ne .Tags "" }}hashtags += " {{ .Tags }}";{{ end }}
 
                 // Tagging users, such as offical accounts or the author of the post 
                 var author   = "@cadey@mst3k.interlinked.me"; 
