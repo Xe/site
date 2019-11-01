@@ -23,6 +23,8 @@ type Post struct {
 	Series     string        `json:"series"`
 	Tags       []string      `json:"tags"`
 	SlidesLink string        `json:"slides_link"`
+	ImageURL   string        `json:"image_url"`
+	ThumbURL   string        `json:"thumb_url"`
 	Date       time.Time
 	DateString string `json:"date"`
 }
@@ -65,6 +67,8 @@ func LoadPosts(path string, prepend string) (Posts, error) {
 		Series     string
 		Tags       []string
 		SlidesLink string `yaml:"slides_link"`
+		Image      string
+		Thumb      string
 	}
 	var result Posts
 
@@ -115,6 +119,8 @@ func LoadPosts(path string, prepend string) (Posts, error) {
 			SlidesLink: fm.SlidesLink,
 			Series:     fm.Series,
 			Tags:       fm.Tags,
+			ImageURL:   fm.Image,
+			ThumbURL:   fm.Thumb,
 		}
 		result = append(result, p)
 
