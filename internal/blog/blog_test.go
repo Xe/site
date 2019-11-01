@@ -40,13 +40,12 @@ func TestLoadGallery(t *testing.T) {
 		if art.ImageURL == "" {
 			t.Errorf("art %s (%s) doesn't have an image link", art.Title, art.DateString)
 		}
-    if art.ThumbURL == "" {
+		if art.ThumbURL == "" {
 			t.Errorf("art %s (%s) doesn't have a thumbnail link", art.Title, art.DateString)
 		}
 
 	}
 }
-
 
 func (p Post) test(t *testing.T) {
 	if p.Title == "" {

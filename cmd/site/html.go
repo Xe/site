@@ -122,7 +122,7 @@ func (s *Site) showGallery(w http.ResponseWriter, r *http.Request) {
 
 	var tags string
 	if len(p.Tags) != 0 {
-		for _, t := range p.Tags{
+		for _, t := range p.Tags {
 			tags = tags + " #" + strings.ReplaceAll(t, "-", "")
 		}
 	}
