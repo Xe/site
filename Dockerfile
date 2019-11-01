@@ -13,6 +13,7 @@ COPY ./static /site/static
 COPY ./templates /site/templates
 COPY ./blog /site/blog
 COPY ./talks /site/talks
+COPY ./gallery /site/gallery
 COPY ./css /site/css
 HEALTHCHECK CMD wget --spider http://127.0.0.1:5000/.within/health || exit 1
 CMD ./site
