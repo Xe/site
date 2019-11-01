@@ -2,6 +2,7 @@
 title: Bokoblin
 date: 2018-11-01
 tags:
+ - botw
  - raster
 image: /static/art/Bokoblin.png
 thumb: /static/art/Bokoblin_tn.jpg
