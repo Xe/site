@@ -6,8 +6,11 @@
 }
 
 .snowframe {
-    opacity: 1.0;
-    background-color: #282828;
+}
+
+.container{
+    backdrop-filter: blur(3px);
+    padding: 1em;
 }
 
 @keyframes snow {
