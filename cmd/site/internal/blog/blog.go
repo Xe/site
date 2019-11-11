@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"christine.website/internal/front"
+	"christine.website/cmd/site/internal/front"
 	"github.com/russross/blackfriday"
 )
 
