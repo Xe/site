@@ -22,6 +22,41 @@ At a high level the following principles should be followed:
 - Documentation helps understand _why_, not _how_
 - More people can reuse your code than you think
 
+## Additional Code
+
+If there is code that should be available for other people outside of this
+project to use, it is better to make it a publicly available (not internal)
+package. If the code is also used across multiple parts of your program or is
+only intended for outside use, it should be in the repository root. If not, it
+should be as close to where it is used as makes sense. Consider this directory
+layout:
+
+```
+repo-root
+├── cmd
+│   ├── bar
+│   │   ├── create
+│   │   │   └── create.go
+│   │   └── main.go
+│   ├── foo
+│   │   ├── internal
+│   │   │   └── operate.go
+│   │   └── main.go
+│   └── foobar
+│       ├── integrate.go
+│       └── main.go
+├── internal
+│   └── logmeta.go
+└── web
+    ├── error.go
+    └── instrument.go
+```
+
+This would expose packages `repo-root/web` and `repo-root/cmd/bar/create` to be
+consumed by outside users. This would allow reuse of the error handling in
+package `web`, but it would not allow reuse of whatever manipulation is done to
+logging in package `repo-root/internal`. 
+
 ## Folder Structure
 
 At a minimum, the following folders should be present in the repository:
@@ -124,40 +159,25 @@ operations. This could be for running fully automated tests in a docker
 container or packaging the program for distribution. These files should be
 documented as makes sense.
 
-## Additional Code
+## Test Code
 
-If there is code that should be available for other people outside of this
-project to use, it is better to make it a publicly available (not internal)
-package. If the code is also used across multiple parts of your program or is
-only intended for outside use, it should be in the repository root. If not, it
-should be as close to where it is used as makes sense. Consider this directory
-layout:
+Code should be tested in the same folder that it's written in. See the [upstream
+testing documentation][gotest] for more information.
 
-```
-repo-root
-├── cmd
-│   ├── bar
-│   │   ├── create
-│   │   │   └── create.go
-│   │   └── main.go
-│   ├── foo
-│   │   ├── internal
-│   │   │   └── operate.go
-│   │   └── main.go
-│   └── foobar
-│       ├── integrate.go
-│       └── main.go
-├── internal
-│   └── logmeta.go
-└── web
-    ├── error.go
-    └── instrument.go
-```
+Integration tests or other things should be done in an internal subpackage
+called "integration" or similar.
 
-This would expose packages `repo-root/web` and `repo-root/cmd/bar/create` to be
-consumed by outside users. This would allow reuse of the error handling in
-package `web`, but it would not allow reuse of whatever manipulation is done to
-logging in package `repo-root/internal`. 
+## Questions and Answers
+
+### Why not use `pkg/` for packages you intend others to use?
+
+The name `pkg` is already well-known in the Go compiler. It is [the folder that
+compiled packages (not command binaries) go][pkgfolder]. Using it creates the
+potential for confusion between code that others are encouraged to use and the
+meaning that the Go compiler toolchain has.
+
+If a package prefix for publicly available code is really needed, choose a name
+not already known to the Go compiler toolchain such as "public".
 
 ## Examples of This in Action
 
