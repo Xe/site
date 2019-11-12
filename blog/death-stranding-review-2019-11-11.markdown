@@ -97,4 +97,4 @@ that America needs.
 By [mmmintdesign](https://twitter.com/mmmintdesign) [source](https://twitter.com/mmmintdesign/status/1192856164331114497)
 
 Score: 10 out of 10  
-Christine Dodril's Game of the Year 2019
+Christine Dodrill's Game of the Year 2019
