@@ -5,6 +5,12 @@
     animation: snow 30s linear infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .snow {
+        animation: none;
+    }
+}
+
 .snowframe {
 }
 
