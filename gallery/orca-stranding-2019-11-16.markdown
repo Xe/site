@@ -4,7 +4,7 @@ date: 2019-11-16
 tags:
  - furry
  - orca
- - vector
+ - raster
  - tpose
  - deathstranding
 image: /static/art/Orca_Stranding.png
