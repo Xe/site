@@ -9,6 +9,4 @@ image: /static/art/Orca.png
 thumb: /static/art/Orca_tn.jpg
 ---
 
-# Orca
-
 Created with Affinity Designer on iPadOS using an iPad Pro and an Apple Pencil.

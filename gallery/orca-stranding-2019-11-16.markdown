@@ -11,8 +11,6 @@ image: /static/art/Orca_Stranding.png
 thumb: /static/art/Orca_Stranding_tn.jpg
 ---
 
-# Orca Stranding
-
 Created with Procreate on iPadOS using an iPad Pro and an Apple Pencil.
 
 [Time-lapse video](https://twitter.com/theprincessxena/status/1195735704103538688)
