@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"christine.website/internal"
+	"christine.website/cmd/site/internal"
 	"within.website/ln"
 	"within.website/ln/opname"
 )

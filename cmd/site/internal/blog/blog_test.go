@@ -5,7 +5,7 @@ import (
 )
 
 func TestLoadPosts(t *testing.T) {
-	posts, err := LoadPosts("../../blog", "blog")
+	posts, err := LoadPosts("../../../../blog", "blog")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -16,7 +16,7 @@ func TestLoadPosts(t *testing.T) {
 }
 
 func TestLoadTalks(t *testing.T) {
-	talks, err := LoadPosts("../../talks", "talks")
+	talks, err := LoadPosts("../../../../talks", "talks")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -30,7 +30,7 @@ func TestLoadTalks(t *testing.T) {
 }
 
 func TestLoadGallery(t *testing.T) {
-	gallery, err := LoadPosts("../../gallery", "gallery")
+	gallery, err := LoadPosts("../../../../gallery", "gallery")
 	if err != nil {
 		t.Fatal(err)
 	}
