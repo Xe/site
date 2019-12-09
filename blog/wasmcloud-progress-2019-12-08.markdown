@@ -206,7 +206,7 @@ In the future I hope to do the following things:
 
 ## GReeTZ
 
-Every single one of these people was immesurably helpful in this research over
+Every single one of these people was immeasurably helpful in this research over
 the years.
 
 - A. Wilcox
