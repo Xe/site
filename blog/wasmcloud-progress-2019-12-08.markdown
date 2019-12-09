@@ -81,7 +81,7 @@ be.
 I ended up implementing a [Rust implementation][olincwarust] of the guest ->
 host API for the Webassembly side of things. I forked some of the existing Rust
 code for this and gradually started adding more and more things. The [test
-harness][olintests] is the biggest wasm program I've written for a while.
+harness][olincwatest] is the biggest wasm program I've written for a while.
 Seriously, there's a lot going on there. It tests every single function exposed
 in the CWA spec as well as all of the schemes I had implemented. 
 
@@ -229,6 +229,7 @@ keep the dream alive!
 [land]: http://tulpa.dev/cadey/land
 [newlib]: https://wiki.osdev.org/Porting_Newlib
 [cwa]: https://github.com/CommonWA
+[olincwa]: https://github.com/Xe/olin/tree/master/docs/cwa-spec
 [olincwarust]: https://github.com/Xe/olin/tree/master/cwa/olin
 [olincwatest]: https://github.com/Xe/olin/blob/master/cwa/tests/src/main.rs
 [olintempleos]: https://christine.website/blog/templeos-2-god-the-rng-2019-05-30
