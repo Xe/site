@@ -43,7 +43,7 @@ Here is what has been done since the [last Olin post][last-olin-post]:
 
 ### Official Docker Hub Build
 
-The Docker Hub repo [xena/olin][docker-hub] now is automatically build off of the latest master release of Olin. 
+The Docker Hub repo [xena/olin][docker-hub] now is automatically built off of the latest master release of Olin. 
 
 [docker-hub]: https://hub.docker.com/r/xena/olin
 
@@ -58,16 +58,16 @@ Then you can use the `cwa` tool to run programs in `/wasm`. See `cwa -help` for 
 
 ### Deprecation of Go Support
 
-For the moment, I am deprecating support for [Go][golang] in `GOOS=js GOARCH=wasm`. The ABI for the Go compiler in this mode is too unstable for me right now. If other people want to fix [abi/wasmgo][abi-wasmgo] to support Go 1.13 and newer, I would be _very_ welcome to the patches.
+For the moment, I am deprecating support for [Go][golang] in `GOOS=js GOARCH=wasm`. The ABI for the Go compiler in this mode is too unstable for me right now. If other people want to fix [`abi/wasmgo`][abi-wasmgo] to support Go 1.13 and newer, I would be _very_ welcome to the patches.
 
 [golang]: https://golang.org
 [abi-wasmgo]: https://github.com/Xe/olin/tree/master/abi/wasmgo
 
-### The Entrypoint is Now `_start`
+### The Entrypoint is Now `_start()`
 
 Early on in the experiments that make up Olin, I have made a mistake in my fundamental understanding of how operating systems run programs. I thought that the main function would return the exit code of the program. This is not the case. There is a small shim that wraps the main function of your language and passes the result of it to `exit()`. Olin now copies this behavior. In order to return a value to the Olin runtime, you can either call `runtime_exit()` or return from the `_start()` function to exit with 0. Many thanks to Andrew Kelly for helping me realize this error.
 
-This behavior is copied in the [Olin rust package][olin-rust-entrypoint], which now has a fancy macro to automate the creation of the `_start` function.
+This behavior is copied in the [Olin rust package][olin-rust-entrypoint], which now has a fancy macro to automate the creation of the `_start()` function.
 
 [olin-rust-entrypoint]: https://github.com/Xe/olin/blob/ffc4ec5d436b6536d8b3917990ac6c53650f4297/rust/olin/src/lib.rs#L424
 
@@ -92,7 +92,7 @@ For a while I've had a [binfmt_misc][binfmt-misc] configuration floating around 
 [binfmt-misc]: https://en.wikipedia.org/wiki/Binfmt_misc
 [olin-binfmt]: https://github.com/Xe/olin/blob/master/run/binfmt_misc/cwa.cfg
 
-First, install Olin's `cmd/cwa` to /usr/local/bin:
+First, install Olin's `cmd/cwa` to `/usr/local/bin`:
 
 ```console
 $ cd cmd/cwa
@@ -158,14 +158,17 @@ When policies are violated, the error thrown is a [vibe check failure][vibe-chec
 
 ```console
 $ cwa -policy ../policy/testdata/gitea.policy httptest.wasm
-httptest.wasm: 2019/12/13 13:16:15 info: making request to https://xena.greedo.xeserv.us/files/hello_olin.txt
-httptest.wasm: 2019/12/13 13:16:15 vibe check failed: https://xena.greedo.xeserv.us/files/hello_olin.txt forbidden by policy
+httptest.wasm: 2019/12/13 13:16:15 info: making request 
+  to https://xena.greedo.xeserv.us/files/hello_olin.txt
+httptest.wasm: 2019/12/13 13:16:15 vibe check failed: 
+  https://xena.greedo.xeserv.us/files/hello_olin.txt 
+  forbidden by policy
 2019/12/13 13:16:15 httptest.wasm: exit status -1
 ```
 
-### `runtime_exit` System Call
+### `runtime_exit()` System Call
 
-Along with making `_start()` the entrypoint, there comes a new problem: exiting. I fixed this by adding a [`runtime_exit`][runtime-exit] system call in Olin. When you call this function with the status code you want to return, execution of the Olin program instantly ends, uncleanly stopping everything and closing all files the program has open. This is similar to Linux's `exit()` system call.
+Along with making `_start()` the entrypoint, there comes a new problem: exiting. I fixed this by adding a [`runtime_exit()`][runtime-exit] system call in Olin. When you call this function with the status code you want to return, execution of the Olin program instantly ends, uncleanly stopping everything and closing all files the program has open. This is similar to Linux's `exit()` system call.
 
 [runtime-exit]: https://github.com/Xe/olin/commit/0036ee8620abe8a25b24c5b7feb76caefba35a8f
 
