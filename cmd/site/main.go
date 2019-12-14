@@ -79,6 +79,7 @@ func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if gitRev != "" {
 		w.Header().Add("X-Git-Rev", gitRev)
 	}
+	w.Header().Add("X-Clacks-Overhead", "GNU Ashlynn")
 
 	middleware.RequestID(s.xffmw.Handler(ex.HTTPLog(s.mux))).ServeHTTP(w, r)
 }
