@@ -6,7 +6,7 @@ tags:
  - logo
  - raster
 image: /static/art/Olin_Logo_V1.png
-thumb: /static/art/Orca_Logo_V1_tn.jpg
+thumb: /static/art/Olin_Logo_V1_tn.jpg
 ---
 
 Created with Procreate on iPadOS using an iPad Pro and an Apple Pencil.
