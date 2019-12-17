@@ -4,7 +4,11 @@
 
 ##### Montreal, QC &emsp; [christine.website][homepage]
 
-`Docker`, `Git`, `Go`, `C`, `Stenography`, `DevOps`, `Heroku`, `Continuous Integration/Delivery`, `WebAssembly`, `Lua`, `Mindfulness`, `HTTP/2`, `Alpine Linux`, `Ubuntu`, `Linux`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`, `Postgres`, `MySQL`, `SQLite`, `Ordained Minister`, `Dudeism`, `Tech Writing`
+`Docker`, `Git`, `Go`, `C`, `Stenography`, `DevOps`, `Heroku`, `Continuous
+Integration/Delivery`, `WebAssembly`, `Lua`, `Mindfulness`, `HTTP/2`, `Alpine
+Linux`, `Ubuntu`, `Linux`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`,
+`Postgres`, `MySQL`, `SQLite`, `Ordained Minister`, `Dudeism`, `Tech Writing`,
+`Kubernetes`, `Command Line Apps`
 
 ## Experience
 
@@ -20,14 +24,17 @@
 - Migration from cloud to cloud
 - Work on the cloud platform initiative
 - Crafting reliable infrastructure for clients of customers
+- Creation of an internally consistent and extensible command line interface for
+  internal tooling
 
 ### Heroku - Senior Software Engineer &emsp; <small>*2017 - 2019*</small>
 
-> [Heroku][heroku] is a cloud Platform-as-a-Service (PaaS) that created the term "platform as a service". Heroku currently supports
-> several programming languages that are commonly used on the web.
-> Heroku, one of the first cloud platforms, has been in development since June 2007,
-> when it supported only the Ruby programming language, but now supports Java,
-> Node.js, Scala, Clojure, Python, PHP, and Go.
+> [Heroku][heroku] is a cloud Platform-as-a-Service (PaaS) that created the term
+> "platform as a service". Heroku currently supports several programming
+> languages that are commonly used on the web. Heroku, one of the first cloud
+> platforms, has been in development since June 2007, when it supported only the
+> Ruby programming language, but now supports Java, Node.js, Scala, Clojure,
+> Python, PHP, and Go. 
 
 #### Highlights
 
@@ -67,7 +74,8 @@
 
 - Wrote up technical designs
 - Implemented technical designs on an over 800 machine cluster
-- Continuous learning of a lot of very powerful systems and improving upon them when it is needed
+- Continuous learning of a lot of very powerful systems and improving upon them
+  when it is needed 
 
 ### VTCSecure - Deis Consultant (contract) &emsp; <small>*2014 - 2015*</small>
 
@@ -77,7 +85,8 @@
 
 #### Highlights
 
-- Started groundwork for a dynamically scalable infrastructure on a project for helping the blind see things
+- Started groundwork for a dynamically scalable infrastructure on a project for
+  helping the blind see things 
 - Developed a prototype of a new website for VTCSecure
 - Education on best practices using Docker and CoreOS
 - Learning Freeswitch
@@ -91,9 +100,11 @@
 
 #### Highlights
 
-- Research and development on scalable Linux deployments on AWS via CoreOS and Docker
+- Research and development on scalable Linux deployments on AWS via CoreOS and
+  Docker
 - Development of in-house tools to speed instance creation
-- Laid groundwork on the creation and use of better tools for managing large clusters of CoreOS and Fleet machines
+- Laid groundwork on the creation and use of better tools for managing large
+  clusters of CoreOS and Fleet machines
 
 ### OpDemand - Software Engineering Intern &emsp; <small>*2014 - 2014*</small>
 
@@ -110,18 +121,42 @@
 
 ### [Olin](https://github.com/Xe/olin)
 
-A work-in-progress event sourcing platform built with WebAssembly. This would allow you to load data in on one end and then let the machine take care of it without having to care about it. Worker functions would be compiled to WebAssembly to make the resulting code independent of any individual CPU, allowing for an easier migration to another CPU architecture (such as aarch64 or ppc64be) without having to recompile existing code.
+An embeddable userspace kernel for executing WebAssembly programs.
+The main goal of this is to allow for an easier migration to another CPU
+architecture (such as RISC-V, aarch64 or ppc64be) without having to recompile
+existing code.
 
 I have written multiple blogposts on this project:
 
 - https://christine.website/blog/olin-1-why-09-1-2018
 - https://christine.website/blog/olin-2-the-future-09-5-2018
+- https://christine.website/blog/olin-progress-2019-12-14
 
-As of March 21, 2019, Olin is able to run binaries compiled with [Go 1.12.x WebAssembly support](https://github.com/golang/go/wiki/WebAssembly). Olin also is known to work on big-endian systems with no changes needed to source code or binaries.
+As of March 21, 2019, Olin is able to run binaries compiled with [Go 1.12.x
+WebAssembly support](https://github.com/golang/go/wiki/WebAssembly). Olin also
+is known to work on big-endian systems with no changes needed to source code or
+binaries.
+
+It also supports security policies similar to a combination of the OSX sandbox
+profiles and OpenBSD's pledge() system call. This allows users to limit the
+scope of what resources an Olin program can access, including file URLs, the
+amount of ram that can be used or the number of WebAssembly instructions that
+can be executed.
+
+### [Wasmcloud](https://tulpa.dev/within/wasmcloud)
+
+Wasmcloud is a Heroku or AWS Lambda-like functions as a service backend and
+platform for event-driven architecture built on top of WebAssembly. It wraps
+[Olin](https://github.com/Xe/olin) and provides a lot of higher-level
+conveniences for users. I have written [a
+blogpost](https://christine.website/blog/wasmcloud-progress-2019-12-08) on my
+progress and where I'm wanting to go with this project.
 
 ### [ilo Kesi](https://github.com/Xe/x/tree/master/discord/ilo-kesi)
 
-A chatbot that parses its commands through the grammar of the constructed language [Toki Pona](http://tokipona.org), then figures out what the user is asking for using a lookup table and executes that request.
+A chatbot that parses its commands through the grammar of the constructed
+language [Toki Pona](http://tokipona.org), then figures out what the user is
+asking for using a lookup table and executes that request.
 
 ### When Then Zen
 
