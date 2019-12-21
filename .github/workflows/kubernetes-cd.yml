@@ -24,8 +24,8 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         git clone git@ssh.tulpa.dev:cadey/within-terraform-secret
         curl https://xena.greedo.xeserv.us/files/dyson-linux-amd64-0.1.0.tgz | tar xz 
-        cp ./dyson-linux-amd64-0.1.0/dyson .
-        rm -rf dyson-linux-amd64-0.1.0
+        cp ./dyson-linux-amd64-0.1.1/dyson .
+        rm -rf dyson-linux-amd64-0.1.1
         mkdir -p ~/.config/dyson
         
         echo '[DigitalOcean]
