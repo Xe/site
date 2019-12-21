@@ -270,7 +270,8 @@ $ scripts/makeoper.sh h >> opers.conf
 ```
 
 And then create the webirc password:
- ```console
+
+```console
 $ echo "[Options]
 WebircPassword = $(uuidgen)" >> webirc.conf
 ```
