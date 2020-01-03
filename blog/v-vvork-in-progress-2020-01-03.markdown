@@ -12,6 +12,8 @@ So, December has come and passed. I'm excited to see [V][vlang] 1.0 get released
 as a stable production-ready release so I can write production applications in
 it!
 
+NOTE: I was asked to write this post after version 1.0 was released in December.
+
 [vlang]: https://vlang.io
 
 Looking at the [description of their github repo][v-github] over time, let's see
@@ -231,7 +233,17 @@ $ du -hs main
 121M    main
 ```
 
-Well that's a good chunk of it shaved off at least.
+Well that's a good chunk of it shaved off at least. It looks like there's no
+dead code elimination at play. This probably explains why the binary is so big.
+
+```console
+$ strings main | grep hello | wc -l
+1200000
+```
+
+Yep! It has all the strings. That's gonna be big no matter what you do. Maybe there
+could be some clever snipping of things, but it's reasonable for that to not happen
+by default.
 
 ## Hello World Leak
 
