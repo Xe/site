@@ -172,7 +172,12 @@ main.v:1:14: cannot import module "mymodule" (not found)
     3| fn main() {
 ```
 
-...oh dear. Can we recover this with gcc? Let's get the symbol name with `nm(1)`:
+...oh dear. Can someone file this as an issue for me? I was following the directions
+[here](https://vlang.io/docs#modules) and I wasn't able to get things working. I can't
+open issues myself because I've been banned from the V issue tracker, or I would have
+already.
+
+Can we recover this with gcc? Let's get the symbol name with `nm(1)`:
 
 ```console
 $ nm hellomodule.o  | grep print_1_1'$'
@@ -186,7 +191,8 @@ declared as:
 pub fn print_1_1() { println('hello, 1 1!') }
 ```
 
-This means we should be able to declare/use it like we would a normal C function:
+This means we should be able to declare/use it like we would a normal C function
+that returns void and without arguments:
 
 ```
 // main.c
@@ -202,7 +208,8 @@ I copied hellomodule.o to the current working directory to test this. I also
 used the C output of the `hello world` program below and replaced the
 `main__main` function with a forward declaration. I called this
 [hello.c](https://clbin.com/7Yisp). This is a very horrible no good hack but
-it worked enough to pass the linker's muster.
+it worked enough to pass the linker's muster. Not doing this caused this
+[shower of linker errors](https://twitter.com/theprincessxena/status/1213161054777331713).
 
 ```console
 $ gcc -o main.o -c main.c
@@ -370,4 +377,5 @@ going to have to do.
 > Don’t ever, ever try to lie to the Internet, because they will catch you. They
 > will deconstruct your spin. They will remember everything you ever say for
 > eternity.  
+
 \- Gabe Newell
