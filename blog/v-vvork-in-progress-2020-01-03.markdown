@@ -42,7 +42,7 @@ how things changed:
 As of the time of writing this post, it is January third, 2020 and the roadmap
 is apparently to release V 0.2 this month.
 
-Let's see what's been fixed since my last article.
+Let's see what's been fixed since [my last article](https://christine.website/blog/v-vaporware-2019-06-23).
 
 ## Compile Speed
 
