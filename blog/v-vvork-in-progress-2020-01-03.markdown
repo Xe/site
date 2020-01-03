@@ -177,7 +177,21 @@ main.v:1:14: cannot import module "mymodule" (not found)
     3| fn main() {
 ```
 
-...oh dear. Can we recover this with gcc?
+...oh dear. Can we recover this with gcc? Let's get the symbol name with `nm`:
+
+```console
+$ nm hellomodule.o  | grep print_1_1'$'
+0000000000000000 T hellomodule__print_1_1
+```
+
+So the first print function is exported as `hellomodule__print_1_1`, and it was
+declared as:
+
+```v
+pub fn print_1_1() { println('hello, 1 1!') }
+```
+
+This means we should be able to declare/use it like we would a normal C function:
 
 ```
 // main.c
@@ -192,7 +206,8 @@ void main__main() {
 I copied hellomodule.o to the current working directory to test this. I also
 used the C output of the `hello world` program below and replaced the
 `main__main` function with a forward declaration. I called this
-[hello.c](https://clbin.com/7Yisp).
+[hello.c](https://clbin.com/7Yisp). This is a very horrible no good hack but
+it worked enough to pass the linker's muster.
 
 ```console
 $ gcc -o main.o -c main.c
@@ -345,3 +360,12 @@ Overall, V is a work in progress. It has made a lot of progress since the last
 time I talked about it, but the 1.0 release promise has been shattered. If I was
 going to suggest anything to the V author, don't give release dates or
 timetables. This kind of thing needs to be ready when it's ready and no sooner.
+
+Also if you are writing a compiler and posting benchmarks, please make my life
+easier when trying to verify them. Put the entire repo you're using for the
+benchmarks somewhere. Include the exact commands you used to collect those
+benchmarks. Make it obvious how they were collected, what hardware they were run
+on, etc. This stuff really helps a lot when trying to verify them. Otherwise I
+have to guess, and I might get it wrong. I don't know if my benchmark is an entirely
+fair one, but given the lack of information on how to replicate it it's probably
+going to have to do.
