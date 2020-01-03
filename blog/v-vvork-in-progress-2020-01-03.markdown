@@ -309,6 +309,10 @@ means that the compiler has overall gained 0.8 megabytes of leak in the last 6
 months. This is worrying, given that V claims to not have a garbage collector. I
 can only wonder how much ram was leaked when building that giant module.
 
+> If your V program compiles, it's guaranteed that it's going to be leak free.
+
+Quoted [from here](https://web.archive.org/web/20200103220131/https://vlang.io/docs).
+
 For giggles, let's see if V in module mode leaks ram somehow:
 
 ```console
