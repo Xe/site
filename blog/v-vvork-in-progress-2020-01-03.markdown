@@ -8,11 +8,6 @@ tags:
 
 # V is for Vvork in Progress
 
-> Don’t ever, ever try to lie to the Internet, because they will catch you. They
-> will deconstruct your spin. They will remember everything you ever say for
-> eternity.  
-\- Gabe Newell
-
 So, December has come and passed. I'm excited to see [V][vlang] 1.0 get released
 as a stable production-ready release so I can write production applications in
 it!
@@ -33,7 +28,7 @@ how things changed:
 | [September 8, 2019][9082019]  | 1.0            | December 2019 |
 | [October 26, 2019][10262019]  | 1.0            | December 2019 |
 | [November 19, 2019][11192019] | 0.2            | November 2019 |
-| [December 4, 2019][12282019]    | 0.2            | December 2019 |
+| [December 4, 2019][12282019]  | 0.2            | December 2019 |
 
 [4242019]: https://web.archive.org/web/20190424002131/https://github.com/vlang/v
 [6222019]: https://web.archive.org/web/20190622113157/https://github.com/vlang/v
@@ -148,7 +143,7 @@ The resulting object file is 280 MB (surprising given the output of the
 generator script was only 67 MB).
 
 ```console
-$ cd home/cadey/tmp/vmeme/moon/
+$ cd ~/.vmodules/home/cadey/tmp/vmeme/moon/
 
 $ ls
 hellomodule.o
@@ -177,7 +172,7 @@ main.v:1:14: cannot import module "mymodule" (not found)
     3| fn main() {
 ```
 
-...oh dear. Can we recover this with gcc? Let's get the symbol name with `nm`:
+...oh dear. Can we recover this with gcc? Let's get the symbol name with `nm(1)`:
 
 ```console
 $ nm hellomodule.o  | grep print_1_1'$'
@@ -215,6 +210,7 @@ $ gcc -o hello.o -c hello.c
 $ gcc -o main hellomodule.o main.o hello.o
 $ ./main
 hello, 1 1!
+
 $ du -hs main
 179M    main
 ```
@@ -332,6 +328,7 @@ Let's see if you can use it.
 ```
 $ ~/code/v/v help | grep translate
   translate         Translates C to V. [wip, will be available in V 0.3]
+
 $ ~/code/v/v translate
 Translating C to V will be available in V 0.3 (January)
 ```
@@ -369,3 +366,8 @@ on, etc. This stuff really helps a lot when trying to verify them. Otherwise I
 have to guess, and I might get it wrong. I don't know if my benchmark is an entirely
 fair one, but given the lack of information on how to replicate it it's probably
 going to have to do.
+
+> Don’t ever, ever try to lie to the Internet, because they will catch you. They
+> will deconstruct your spin. They will remember everything you ever say for
+> eternity.  
+\- Gabe Newell
