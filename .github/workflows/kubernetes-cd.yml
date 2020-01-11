@@ -73,3 +73,8 @@ jobs:
       uses: docker://lachlanevenson/k8s-kubectl
       with:
         args: --kubeconfig=/github/workspace/.kubeconfig delete -f /github/workspace/k8s/job.yml
+    - name: POSSE
+      env:
+        MI_TOKEN: ${{ secrets.MI_TOKEN }}
+      run: |
+        curl -H "Authorization: $MI_TOKEN" --data "https://christine.website/blog.json" https://mi.within.website/blog/refresh
