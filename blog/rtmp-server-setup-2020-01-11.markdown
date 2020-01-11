@@ -12,7 +12,7 @@ tags:
 I have set up my own [RTMP][rtmp] server that allows me to live stream to [my own
 infrastructure][streampage]. This allows me to own my own setup and not need to
 rely on other services such as Twitch or YouTube. As a side effect of doing
-this, I can enable people who use my streaming server to use picture in picture
+this, I can enable people who use my streaming server to use picture-in-picture
 mode in iPadOS without having to hack the streaming app, among other things.
 
 This is part of my 2020 goal to reduce my dependencies on corporate social
