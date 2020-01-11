@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"christine.website/cmd/site/internal/blog"
-	"christine.website/cmd/site/internal/jsonfeed"
 	"christine.website/cmd/site/internal/middleware"
+	"christine.website/jsonfeed"
 	"github.com/gorilla/feeds"
 	"github.com/povilasv/prommod"
 	"github.com/prometheus/client_golang/prometheus"
@@ -194,6 +194,7 @@ func Build() (*Site, error) {
 			Title:         item.Title,
 			DatePublished: item.Date,
 			ContentHTML:   string(item.BodyHTML),
+			Tags:          item.Tags,
 		})
 
 		smi.Add(&sitemap.URL{

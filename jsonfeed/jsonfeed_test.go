@@ -2,22 +2,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
-package jsonfeed_test
+package jsonfeed
 
 import (
 	"os"
 	"testing"
 	"time"
 
-	"christine.website/cmd/site/internal/jsonfeed"
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_ParseSimple(t *testing.T) {
+func TestParseSimple(t *testing.T) {
 	r, err := os.Open("testdata/feed.json")
 	assert.NoError(t, err, "Could not open testdata/feed.json")
 
-	feed, err := jsonfeed.Parse(r)
+	feed, err := Parse(r)
 	assert.NoError(t, err, "Could not parse testdata/feed.json")
 
 	assert.Equal(t, "https://jsonfeed.org/version/1", feed.Version)
