@@ -115,7 +115,7 @@ There isn't a good story for recording or announcing streams to this server
 automatically. I don't consider this a problem, as links can always be sent out
 manually on social media platforms.
 
-Overall, enjoy! I hope this little overview of my setup was informative. I'll be
+I hope this little overview of my setup was informative. I'll be
 streaming [there][streampage] very irregularly, mostly as time permits/the
 spirit moves me. I plan to stream art, gaming and code.
 
