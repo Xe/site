@@ -110,7 +110,7 @@ Upgrade all of the packages on the system and then reboot:
 To install WireGuard and all of the needed tools, run the following:
 
 ```console
-# apk -U add wireguard-vanilla wireguard-tools
+# apk -U add wireguard-lts wireguard-tools
 ```
 
 For those of you using other distributions, here is the version information from my WireGuard master:
