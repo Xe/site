@@ -27,7 +27,7 @@ my apps, but it is difficult to extend at this point for a few reasons:
 [dyson]: https://github.com/Xe/within-terraform/tree/master/dyson
 [template]: https://github.com/Xe/within-terraform/blob/master/dyson/src/dysonPkg/deployment_with_ingress.yaml
 
-- It assumes that everything passed to it is already valid yaml terms
+- It assumes that everything passed to it are already valid yaml terms
 - It doesn't assert the type of any values passed to it
 - It is difficult to add another container to a given deployment
 - Environment variables implicitly depend on the presence of a private git repo
