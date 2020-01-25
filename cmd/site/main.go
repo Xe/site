@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"html/template"
 	"io/ioutil"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 	"christine.website/cmd/site/internal/blog"
 	"christine.website/cmd/site/internal/middleware"
 	"christine.website/jsonfeed"
+	"github.com/facebookarchive/flagenv"
 	"github.com/gorilla/feeds"
 	"github.com/povilasv/prommod"
 	"github.com/prometheus/client_golang/prometheus"
@@ -19,21 +21,25 @@ import (
 	blackfriday "github.com/russross/blackfriday"
 	"github.com/sebest/xff"
 	"github.com/snabb/sitemap"
+	"within.website/gopher"
 	"within.website/ln"
 	"within.website/ln/ex"
 	"within.website/ln/opname"
 )
 
-var port = os.Getenv("PORT")
+var (
+	httpPort   = flag.String("PORT", "29384", "HTTP port to listen on")
+	gopherPort = flag.String("GOPHER_PORT", "29385", "Gopher port to listen on")
+)
 
 func main() {
-	if port == "" {
-		port = "29384"
-	}
+	flagenv.Parse()
+	flag.Parse()
 
 	ctx := ln.WithF(opname.With(context.Background(), "main"), ln.F{
-		"port":    port,
-		"git_rev": gitRev,
+		"port":        *httpPort,
+		"gopher_port": *gopherPort,
+		"git_rev":     gitRev,
 	})
 
 	_ = prometheus.Register(prommod.NewCollector("christine"))
@@ -50,7 +56,7 @@ func main() {
 	mux.Handle("/", s)
 
 	ln.Log(ctx, ln.Action("http_listening"))
-	ln.FatalErr(ctx, http.ListenAndServe(":"+port, mux))
+	ln.FatalErr(ctx, http.ListenAndServe(":"+*httpPort, mux))
 }
 
 // Site is the parent object for https://christine.website's backend.
@@ -65,6 +71,7 @@ type Site struct {
 	jsonFeed *jsonfeed.Feed
 
 	mux   *http.ServeMux
+	gmux  *gopher.ServeMux
 	xffmw *xff.XFF
 }
 
@@ -142,6 +149,7 @@ func Build() (*Site, error) {
 			},
 		},
 		mux:   http.NewServeMux(),
+		gmux:  gopher.NewServeMux(),
 		xffmw: xffmw,
 	}
 
