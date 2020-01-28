@@ -13,7 +13,7 @@ func TestIOS13Detri(t *testing.T) {
 	}{
 		{
 			in:  time.Date(2019, time.March, 30, 0, 0, 0, 0, time.FixedZone("UTC", 0)),
-			out: "2019 M3 30",
+			out: "2019 M03 30",
 		},
 	}
 

@@ -18,13 +18,13 @@ type Post struct {
 	Title      string        `json:"title"`
 	Link       string        `json:"link"`
 	Summary    string        `json:"summary,omitifempty"`
-	Body       string        `json:"-"`
-	BodyHTML   template.HTML `json:"body"`
-	Series     string        `json:"series"`
-	Tags       []string      `json:"tags"`
-	SlidesLink string        `json:"slides_link"`
-	ImageURL   string        `json:"image_url"`
-	ThumbURL   string        `json:"thumb_url"`
+	Body       string        `json:"body_markdown"`
+	BodyHTML   template.HTML `json:"body,omitempty"`
+	Series     string        `json:"series,omitempty"`
+	Tags       []string      `json:"tags,omitempty"`
+	SlidesLink string        `json:"slides_link,omitempty"`
+	ImageURL   string        `json:"image_url,omitempty"`
+	ThumbURL   string        `json:"thumb_url,omitempty"`
 	Date       time.Time
 	DateString string `json:"date"`
 }
