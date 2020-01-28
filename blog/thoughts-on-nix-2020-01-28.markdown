@@ -7,6 +7,8 @@ tags:
   - dependencies
 ---
 
+# Thoughts on Nix
+
 I don't really know how I feel about [Nix][nix]. It's a functional package
 manager that's designed to help with dependency hell. It also lets you define
 packages using [Nix][nixlang], which is an identically named yet separate thing.
