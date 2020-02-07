@@ -9,7 +9,7 @@ let
 
   dockerImage = pkg:
     pkgs.dockerTools.buildImage {
-      name = pkg.name;
+      name = "xena/christinewebsite";
       tag = pkg.version;
 
       contents = [ pkg ];
