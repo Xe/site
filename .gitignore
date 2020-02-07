@@ -2,3 +2,5 @@
 cw.tar
 .env
 .DS_Store
+/result-*
+/result
