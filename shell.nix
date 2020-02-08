@@ -1,4 +1,5 @@
 let
   pkgs = import <nixpkgs> { };
   sources = import ./nix/sources.nix;
-in pkgs.mkShell { buildInputs = [ pkgs.go sources.vgo2nix sources.niv ]; }
+  vgo2nix = (import sources.vgo2nix { });
+in pkgs.mkShell { buildInputs = [ pkgs.go pkgs.niv vgo2nix ]; }
