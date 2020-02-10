@@ -12,7 +12,10 @@ buildGoPackage rec {
 
   goDeps = ./deps.nix;
   allowGoReference = false;
-  CGO_ENABLED = "0";
+  preBuild = ''
+    export CGO_ENABLED=0
+    buildFlagsArray+=(-pkgdir "$TMPDIR")
+  '';
 
   postInstall = ''
     cp -rf $src/blog $bin/blog
