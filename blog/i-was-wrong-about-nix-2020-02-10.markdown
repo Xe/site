@@ -428,4 +428,8 @@ can avoid needing to set up language servers or the like _at all_. I can define
 them as part of the _project environment_ and then trust the tools I build on
 top of to take care of that for me.
 
+[withinbot]: https://github.com/Xe/withinbot
+[direnv]: https://direnv.net
+[lorri]: https://github.com/target/lorri
+
 Give Nix a try. It's worth at least that much in my opinion.
