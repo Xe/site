@@ -10,5 +10,11 @@
         "type": "tarball",
         "url": "https://github.com/adisbladis/vgo2nix/archive/1288e3dbf23ed79cef237661225df0afa30f8510.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "xepkgs": {
+        "ref": "master",
+        "repo": "https://tulpa.dev/Xe/nixpkgs",
+        "rev": "71488e7dd46c9530d6781ab7845e6f720591a0b0",
+        "type": "git"
     }
 }
