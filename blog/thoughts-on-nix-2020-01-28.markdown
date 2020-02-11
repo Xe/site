@@ -9,6 +9,10 @@ tags:
 
 # Thoughts on Nix
 
+EDIT(M02 20 2020): I've written a bit of a rebuttal to my own post
+[here](https://christine.website/blog/i-was-wrong-about-nix-2020-02-10). I am
+keeping this post up for posterity.
+
 I don't really know how I feel about [Nix][nix]. It's a functional package
 manager that's designed to help with dependency hell. It also lets you define
 packages using [Nix][nixlang], which is an identically named yet separate thing.
