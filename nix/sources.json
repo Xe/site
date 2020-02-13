@@ -12,15 +12,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
-        "branch": "master",
-        "description": "Nix Packages collection",
-        "homepage": null,
+        "branch": "nixpkgs-unstable",
+        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
+        "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "48704fbd4fc4dc9660ab04f938048b4894ecb140",
-        "sha256": "1yghh74jw93air3jwljiyl79iypl9rgr4x4aag0f2jyq73vhzf8p",
+        "repo": "nixpkgs-channels",
+        "rev": "cc1ae9f21b9e0ce998e706a3de1bad0b5259f22d",
+        "sha256": "0zjafww05h50ncapw51b5qxgbv9prjyag0j22jnfc3kcs5xr4ap0",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/48704fbd4fc4dc9660ab04f938048b4894ecb140.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/cc1ae9f21b9e0ce998e706a3de1bad0b5259f22d.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "vgo2nix": {
