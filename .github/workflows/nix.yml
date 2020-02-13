@@ -17,5 +17,5 @@ jobs:
     - run: |
         nix-channel --add https://hydra.dhall-lang.org/jobset/dhall-haskell/master/channel/latest
         nix-channel --update
-        nix-env -i "$(curl -L https://hydra.dhall-lang.org/job/dhall-haskell/master/linux-dhall/latest/api/get-info | jq -r .outPath)"
+        nix-env -i $(curl -L https://hydra.dhall-lang.org/job/dhall-haskell/master/linux-dhall/latest/api/get-info | jq -r .outPath)
         dhall-to-yaml-ng --omit-empty --file site.dhall
