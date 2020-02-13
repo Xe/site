@@ -50,7 +50,7 @@
     "xepkgs": {
         "ref": "master",
         "repo": "https://tulpa.dev/Xe/nixpkgs",
-        "rev": "71488e7dd46c9530d6781ab7845e6f720591a0b0",
+        "rev": "e0027d79c85aab9411c69acaadaabd2189400cc9",
         "type": "git"
     }
 }

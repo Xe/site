@@ -1,7 +1,11 @@
 let
   sources = import ./nix/sources.nix;
-  niv = (import sources.niv { }).niv;
   pkgs = import sources.nixpkgs { };
-  xepkgs = import sources.xepkgs { };
-  vgo2nix = import sources.vgo2nix { };
-in pkgs.mkShell { buildInputs = [ pkgs.go xepkgs.gopls niv vgo2nix ]; }
+  niv = (import sources.niv { }).niv;
+  dhall-yaml =
+    (import sources.easy-dhall-nix { inherit pkgs; }).dhall-yaml-simple;
+  xepkgs = import sources.xepkgs { inherit pkgs; };
+  vgo2nix = import sources.vgo2nix { inherit pkgs; };
+in pkgs.mkShell {
+  buildInputs = [ pkgs.go xepkgs.gopls dhall-yaml niv vgo2nix ];
+}
