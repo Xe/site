@@ -15,7 +15,6 @@ jobs:
         docker load -i result
         docker tag xena/christinewebsite:latest xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
     - run: |
-        nix-channel --add https://hydra.dhall-lang.org/jobset/dhall-haskell/master/channel/latest
-        nix-channel --update
-        nix-env -i dhall-yaml
-        dhall-to-yaml-ng --omit-empty --file site.dhall
+        wget -O dhall-yaml.tar.bz2 https://github.com/dhall-lang/dhall-haskell/releases/download/1.29.0/dhall-yaml-1.0.1-x86_64-linux.tar.bz2
+        tar xf dhall-yaml.tar.bz2
+        ./bin/dhall-to-yaml-ng --omit-empty --file site.dhall
