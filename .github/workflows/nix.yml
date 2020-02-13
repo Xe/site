@@ -15,6 +15,5 @@ jobs:
         docker load -i result
         docker tag xena/christinewebsite:latest xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
     - run: |
-        wget -O dhall-yaml.tar.bz2 https://github.com/dhall-lang/dhall-haskell/releases/download/1.29.0/dhall-yaml-1.0.1-x86_64-linux.tar.bz2
-        tar xf dhall-yaml.tar.bz2
-        ./bin/dhall-to-yaml-ng --omit-empty --file site.dhall
+        nix-env -if ./nix/dhall-yaml.nix
+        dhall-to-yaml-ng --omit-empty --file site.dhall
