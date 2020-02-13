@@ -6,7 +6,7 @@ let
   site = callPackage ./site.nix { };
 
   dockerImage = pkg:
-    pkgs.dockerTools.buildImage {
+    pkgs.dockerTools.buildLayeredImage {
       name = "xena/christinewebsite";
       tag = pkg.version;
 
