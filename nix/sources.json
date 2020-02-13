@@ -1,4 +1,16 @@
 {
+    "easy-dhall-nix": {
+        "branch": "master",
+        "description": "Derivations for easily downloading Dhall binaries and putting them to use.",
+        "homepage": "",
+        "owner": "justinwoo",
+        "repo": "easy-dhall-nix",
+        "rev": "735ad924fd829c9bbee0a167e0b2bbbf91e2cad5",
+        "sha256": "1r3sqs1cz0mcfwfvaq1d21vnppg5sqzqdl6w9krsw5ad5czkk190",
+        "type": "tarball",
+        "url": "https://github.com/justinwoo/easy-dhall-nix/archive/735ad924fd829c9bbee0a167e0b2bbbf91e2cad5.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "niv": {
         "branch": "master",
         "description": "Easy dependency management for Nix projects",
