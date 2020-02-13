@@ -14,5 +14,8 @@ jobs:
         nix-build docker.nix
         docker load -i result
         docker tag xena/christinewebsite:latest xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
+    - run: |
+        nix-channel --add https://hydra.dhall-lang.org/jobset/dhall-haskell/master/channel/latest
+        nix-channel --update
         nix-env -i "$(curl -L https://hydra.dhall-lang.org/job/dhall-haskell/master/linux-dhall/latest/api/get-info | jq -r .outPath)"
         dhall-to-yaml-ng --omit-empty --file site.dhall
