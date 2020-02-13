@@ -1,3 +1,6 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ }:
 
-pkgs.callPackage ./site.nix {}
+let
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+in pkgs.callPackage ./site.nix { inherit pkgs; }

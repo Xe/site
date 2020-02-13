@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import (import ./nix/sources.nix).nixpkgs }:
 with pkgs;
 
 assert lib.versionAtLeast go.version "1.13";
@@ -8,10 +8,9 @@ buildGoPackage rec {
   version = "latest";
   goPackagePath = "christine.website";
   src = ./.;
-  nativeBuildInputs = [ makeWrapper ];
-
   goDeps = ./deps.nix;
   allowGoReference = false;
+
   preBuild = ''
     export CGO_ENABLED=0
     buildFlagsArray+=(-pkgdir "$TMPDIR")

@@ -1,4 +1,40 @@
 {
+    "easy-dhall-nix": {
+        "branch": "master",
+        "description": "Derivations for easily downloading Dhall binaries and putting them to use.",
+        "homepage": "",
+        "owner": "justinwoo",
+        "repo": "easy-dhall-nix",
+        "rev": "735ad924fd829c9bbee0a167e0b2bbbf91e2cad5",
+        "sha256": "1r3sqs1cz0mcfwfvaq1d21vnppg5sqzqdl6w9krsw5ad5czkk190",
+        "type": "tarball",
+        "url": "https://github.com/justinwoo/easy-dhall-nix/archive/735ad924fd829c9bbee0a167e0b2bbbf91e2cad5.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "niv": {
+        "branch": "master",
+        "description": "Easy dependency management for Nix projects",
+        "homepage": "https://github.com/nmattia/niv",
+        "owner": "nmattia",
+        "repo": "niv",
+        "rev": "2ecfd86b631714b457e56d70dd83fa60435baeb6",
+        "sha256": "01j6727cws8blg1npp54b4w6xa0gpgyzhyws2vqgp8clnlnmqqhi",
+        "type": "tarball",
+        "url": "https://github.com/nmattia/niv/archive/2ecfd86b631714b457e56d70dd83fa60435baeb6.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs": {
+        "branch": "nixpkgs-unstable",
+        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
+        "homepage": "https://github.com/NixOS/nixpkgs",
+        "owner": "NixOS",
+        "repo": "nixpkgs-channels",
+        "rev": "cc1ae9f21b9e0ce998e706a3de1bad0b5259f22d",
+        "sha256": "0zjafww05h50ncapw51b5qxgbv9prjyag0j22jnfc3kcs5xr4ap0",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/cc1ae9f21b9e0ce998e706a3de1bad0b5259f22d.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "vgo2nix": {
         "branch": "master",
         "description": null,
@@ -14,7 +50,7 @@
     "xepkgs": {
         "ref": "master",
         "repo": "https://tulpa.dev/Xe/nixpkgs",
-        "rev": "71488e7dd46c9530d6781ab7845e6f720591a0b0",
+        "rev": "e0027d79c85aab9411c69acaadaabd2189400cc9",
         "type": "git"
     }
 }

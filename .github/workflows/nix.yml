@@ -10,3 +10,10 @@ jobs:
     - uses: cachix/cachix-action@v3
       with:
         name: xe
+    - run: |
+        nix-build docker.nix
+        docker load -i result
+        docker tag xena/christinewebsite:latest xena/christinewebsite:$(echo $GITHUB_SHA | head -c7)
+    - run: |
+        nix-env -if ./nix/dhall-yaml.nix
+        dhall-to-yaml-ng --omit-empty --file site.dhall
