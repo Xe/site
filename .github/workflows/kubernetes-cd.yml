@@ -43,7 +43,7 @@ jobs:
           --domain=christine.website \
           --dockerImage=xena/christinewebsite:$(echo $GITHUB_SHA | head -c7) \
           --containerPort=5000 \
-          --replicas=1 \
+          --replicas=2 \
           --useProdLE=true > $GITHUB_WORKSPACE/deploy.yml
       env:
         FILE_DATA: ${{ secrets.SSH_PRIVATE_KEY }}
