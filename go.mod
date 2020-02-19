@@ -9,7 +9,7 @@ require (
 	github.com/sebest/xff v0.0.0-20160910043805-6c115e0ffa35
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/snabb/sitemap v1.0.0
-	github.com/stretchr/testify v1.4.0
+	github.com/stretchr/testify v1.5.0
 	gopkg.in/yaml.v2 v2.2.8
 	within.website/ln v0.8.0
 )
