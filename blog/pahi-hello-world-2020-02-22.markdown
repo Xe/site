@@ -31,7 +31,7 @@ is a [Lojban][lojban] [rafsi][rafsi] for the word prami which means love.
 [wasmer]: https://wasmer.io
 [wasmercustomabisample]: https://github.com/wasmerio/wasmer-rust-customabi-example
 [lojban]: https://mw.lojban.org/papri/Lojban
-[lujvo]: http://lojban.org/publications/cll/cll_v1.1_xhtml-section-chunks/section-rafsi.html
+[rafsi]: http://lojban.org/publications/cll/cll_v1.1_xhtml-section-chunks/section-rafsi.html
 
 [pa'i][pahi] is written in [Rust][rust]. It is built with [Nix][nix]. It
 requires a nightly version of Rust because the WebAssembly code it compiles
