@@ -22,10 +22,11 @@ running tooling has been written in Rust, and as far as I know I was the only
 holdout still using Go. This left me kinda stranded and on my own, seeing as the
 libraries that I was using were starting to die.
 
-
 I have been following the [wasmer][wasmer] project for a while and thanks to
 their recent [custom ABI sample][wasmercustomabisample], I was able to start
-re-implementing the Olin API in it. I call this pa'i (/pa.hi/, paw-hee), which
+re-implementing the Olin API in it. Wasmer uses a JIT for handling WebAssembly,
+so I'm able to completely destroy the original Go implementation in terms of
+performance. I call this newer, faster runtime pa'i (/pa.hi/, paw-hee), which
 is a [Lojban][lojban] [rafsi][rafsi] for the word prami which means love.
 
 [wasmer]: https://wasmer.io
