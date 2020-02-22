@@ -57,6 +57,8 @@ and then `nix-build` will take care of:
 - building the documentation from [dhall][dhall] files
 - building a small test runner
 
+[dhall]: https://dhall-lang.org
+
 If you want to try this out in a more predictable environment, you can also
 `nix-build docker.nix`. This will create a Docker image as the result of the Nix
 build. This docker image includes [the pa'i composite package][pahidefaultnix],
