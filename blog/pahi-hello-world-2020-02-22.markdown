@@ -162,7 +162,7 @@ of "a future after programs".
 pa'i is chugging along. When I have closed the [compatibility todo
 list][compattodo] for all of the Olin API calls, I'll write more. For now, pa'i
 is a very complicated tool that lets you print "Hello, world" in new and
-exciting ways (but that will change once I get resource calls into it), but it's
+exciting ways (this will change once I get resource calls into it), but it's
 getting there.
 
 I hope this was interesting. Be well.
