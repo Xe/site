@@ -1,6 +1,15 @@
 # file generated from go.mod using vgo2nix (https://github.com/adisbladis/vgo2nix)
 [
   {
+    goPackagePath = "cloud.google.com/go";
+    fetch = {
+      type = "git";
+      url = "https://code.googlesource.com/gocloud";
+      rev = "v0.34.0";
+      sha256 = "1kclgclwar3r37zbvb9gg3qxbgzkb50zk3s9778zlh2773qikmai";
+    };
+  }
+  {
     goPackagePath = "github.com/alecthomas/template";
     fetch = {
       type = "git";
@@ -127,6 +136,15 @@
     };
   }
   {
+    goPackagePath = "github.com/joho/godotenv";
+    fetch = {
+      type = "git";
+      url = "https://github.com/joho/godotenv";
+      rev = "v1.3.0";
+      sha256 = "0ri8if0pc3x6jg4c3i8wr58xyfpxkwmcjk3rp8gb398a1aa3gpjm";
+    };
+  }
+  {
     goPackagePath = "github.com/json-iterator/go";
     fetch = {
       type = "git";
@@ -223,6 +241,15 @@
       url = "https://github.com/mwitkow/go-conntrack";
       rev = "cc309e4a2223";
       sha256 = "0nbrnpk7bkmqg9mzwsxlm0y8m7s9qd9phr1q30qlx2qmdmz7c1mf";
+    };
+  }
+  {
+    goPackagePath = "github.com/mxpv/patreon-go";
+    fetch = {
+      type = "git";
+      url = "https://github.com/mxpv/patreon-go";
+      rev = "646111f1d983";
+      sha256 = "0cksf3andl8z04lychay2j0l8wrpdq7j5pdb6zy5yr4990iab6aa";
     };
   }
   {
@@ -379,6 +406,15 @@
     };
   }
   {
+    goPackagePath = "golang.org/x/oauth2";
+    fetch = {
+      type = "git";
+      url = "https://go.googlesource.com/oauth2";
+      rev = "bf48bf16ab8d";
+      sha256 = "1sirdib60zwmh93kf9qrx51r8544k1p9rs5mk0797wibz3m4mrdg";
+    };
+  }
+  {
     goPackagePath = "golang.org/x/sync";
     fetch = {
       type = "git";
@@ -415,6 +451,15 @@
     };
   }
   {
+    goPackagePath = "google.golang.org/appengine";
+    fetch = {
+      type = "git";
+      url = "https://github.com/golang/appengine";
+      rev = "v1.4.0";
+      sha256 = "06zl7w4sxgdq2pl94wy9ncii6h0z3szl4xpqds0sv3b3wbdlhbnn";
+    };
+  }
+  {
     goPackagePath = "gopkg.in/alecthomas/kingpin.v2";
     fetch = {
       type = "git";
@@ -430,6 +475,15 @@
       url = "https://gopkg.in/check.v1";
       rev = "41f04d3bba15";
       sha256 = "0vfk9czmlxmp6wndq8k17rhnjxal764mxfhrccza7nwlia760pjy";
+    };
+  }
+  {
+    goPackagePath = "gopkg.in/mxpv/patreon-go.v1";
+    fetch = {
+      type = "git";
+      url = "https://gopkg.in/mxpv/patreon-go.v1";
+      rev = "1d2f253ac700";
+      sha256 = "115ayhv1lh4idgi52p34589xayv0g9zy7knsfq5nv51zfpr853my";
     };
   }
   {

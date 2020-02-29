@@ -1,0 +1,77 @@
+#+TITLE: Patron Page
+
+#+BEGIN: clocktable :maxlevel 2 :emphasize nil :scope file
+#+CAPTION: Clock summary at [2020-02-29 Sat 20:47]
+| Headline                                 |   Time |      |
+|------------------------------------------+--------+------|
+| *Total time*                             | *1:36* |      |
+|------------------------------------------+--------+------|
+| figure out how to get list of patrons    |   1:05 |      |
+| \_  get patreon credentials into site    |        | 0:08 |
+| \_  figure out patreon id of my campaign |        | 0:25 |
+| \_  get list of patrons                  |        | 0:25 |
+| \_  show in HTML                         |        | 0:07 |
+| figure out how to handle the secrets...  |   0:03 |      |
+| Links                                    |   0:28 |      |
+| \_  Announcement blogpost                |        | 0:28 |
+#+END: clocktable
+
+* DONE figure out how to get list of patrons
+  CLOSED: [2020-02-29 Sat 20:18]
+** DONE get patreon credentials into site
+   CLOSED: [2020-02-29 Sat 19:14]
+   :LOGBOOK:
+   CLOCK: [2020-02-29 Sat 19:06]--[2020-02-29 Sat 19:14] =>  0:08
+   :END:
+
+Added envvars
+
++ =PATREON_CLIENT_ID=
++ =PATREON_CLIENT_SECRET=
++ =PATREON_ACCESS_TOKEN=
++ =PATREON_REFRESH_TOKEN=
+** DONE figure out patreon id of my campaign
+   CLOSED: [2020-02-29 Sat 19:39]
+   :LOGBOOK:
+   CLOCK: [2020-02-29 Sat 19:14]--[2020-02-29 Sat 19:39] =>  0:25
+   :END:
+** DONE get list of patrons
+   CLOSED: [2020-02-29 Sat 20:05]
+   :LOGBOOK:
+   CLOCK: [2020-02-29 Sat 19:40]--[2020-02-29 Sat 20:05] =>  0:25
+   :END:
+** DONE show in HTML
+   CLOSED: [2020-02-29 Sat 20:12]
+   :LOGBOOK:
+   CLOCK: [2020-02-29 Sat 20:05]--[2020-02-29 Sat 20:12] =>  0:07
+   :END:
+* DONE figure out how to handle the secrets for patreon
+  CLOSED: [2020-02-29 Sat 20:18]
+  :LOGBOOK:
+  CLOCK: [2020-02-29 Sat 20:15]--[2020-02-29 Sat 20:18] =>  0:03
+  :END:
+Currently putting them in the dyson secret store, will need to figure out
+something else for dhall.
+* DONE Links
+  CLOSED: [2020-02-29 Sat 20:47]
+** DONE Add link in footer
+   CLOSED: [2020-02-29 Sat 20:13]
+** DONE Add into sitemap
+   CLOSED: [2020-02-29 Sat 20:13]
+** DONE Announcement blogpost
+   CLOSED: [2020-02-29 Sat 20:47]
+   :LOGBOOK:
+   CLOCK: [2020-02-29 Sat 20:37]--[2020-02-29 Sat 20:47] =>  0:10
+   CLOCK: [2020-02-29 Sat 20:19]--[2020-02-29 Sat 20:37] =>  0:18
+   :END:
+
+* How to refresh credentials
+
+1. Go to https://www.patreon.com/portal/registration/register-clients
+2. Open Mi (API v1)
+3. Hit "Refresh Token"
+4. Copy access token and refresh token to
+   ~/code/within-terraform-secret/christinewebsite.env as =PATREON_ACCESS_TOKEN=
+   and =PATREON_REFRESH_TOKEN=
+5. Commit file to repo and push
+6. Retry deployment of the site
