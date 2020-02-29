@@ -8,7 +8,7 @@ buildGoPackage rec {
   version = "latest";
   goPackagePath = "christine.website";
   src = ./.;
-  goDeps = ./deps.nix;
+  goDeps = ./nix/deps.nix;
   allowGoReference = false;
 
   preBuild = ''

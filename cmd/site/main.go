@@ -13,6 +13,7 @@ import (
 	"christine.website/cmd/site/internal/middleware"
 	"christine.website/jsonfeed"
 	"github.com/gorilla/feeds"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/povilasv/prommod"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -60,6 +61,7 @@ type Site struct {
 	Gallery blog.Posts
 	Resume  template.HTML
 	Series  []string
+	patrons []string
 
 	rssFeed  *feeds.Feed
 	jsonFeed *jsonfeed.Feed
@@ -84,10 +86,20 @@ func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	middleware.RequestID(s.xffmw.Handler(ex.HTTPLog(s.mux))).ServeHTTP(w, r)
 }
 
-var arbDate = time.Date(2020, time.January, 9, 0, 0, 0, 0, time.UTC)
+var arbDate = time.Date(2020, time.February, 29, 0, 0, 0, 0, time.UTC)
 
 // Build creates a new Site instance or fails.
 func Build() (*Site, error) {
+	pc, err := NewPatreonClient()
+	if err != nil {
+		return nil, err
+	}
+
+	pledges, err := GetPledges(pc)
+	if err != nil {
+		return nil, err
+	}
+
 	smi := sitemap.New()
 	smi.Add(&sitemap.URL{
 		Loc:        "https://christine.website/resume",
@@ -105,6 +117,12 @@ func Build() (*Site, error) {
 		Loc:        "https://christine.website/",
 		LastMod:    &arbDate,
 		ChangeFreq: sitemap.Monthly,
+	})
+
+	smi.Add(&sitemap.URL{
+		Loc:        "https://christine.website/patrons",
+		LastMod:    &arbDate,
+		ChangeFreq: sitemap.Weekly,
 	})
 
 	smi.Add(&sitemap.URL{
@@ -143,6 +161,8 @@ func Build() (*Site, error) {
 		},
 		mux:   http.NewServeMux(),
 		xffmw: xffmw,
+
+		patrons: pledges,
 	}
 
 	posts, err := blog.LoadPosts("./blog/", "blog")
@@ -215,6 +235,7 @@ func Build() (*Site, error) {
 		s.renderTemplatePage("index.html", nil).ServeHTTP(w, r)
 	})
 	s.mux.Handle("/metrics", promhttp.Handler())
+	s.mux.Handle("/patrons", middleware.Metrics("patrons", s.renderTemplatePage("patrons.html", s.patrons)))
 	s.mux.Handle("/resume", middleware.Metrics("resume", s.renderTemplatePage("resume.html", s.Resume)))
 	s.mux.Handle("/blog", middleware.Metrics("blog", s.renderTemplatePage("blogindex.html", s.Posts)))
 	s.mux.Handle("/talks", middleware.Metrics("talks", s.renderTemplatePage("talkindex.html", s.Talks)))
