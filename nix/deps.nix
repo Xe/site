@@ -478,15 +478,6 @@
     };
   }
   {
-    goPackagePath = "gopkg.in/mxpv/patreon-go.v1";
-    fetch = {
-      type = "git";
-      url = "https://gopkg.in/mxpv/patreon-go.v1";
-      rev = "1d2f253ac700";
-      sha256 = "115ayhv1lh4idgi52p34589xayv0g9zy7knsfq5nv51zfpr853my";
-    };
-  }
-  {
     goPackagePath = "gopkg.in/yaml.v2";
     fetch = {
       type = "git";
