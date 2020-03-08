@@ -11,9 +11,11 @@ tags:
 
 [Nix][nix] is a tool that helps people create reproducible builds. This means that
 given the a known input, you can get the same output on other machines.Let's
-build and deploy a small Rust service with Nix.
+build and deploy a small Rust service with Nix. This will not require the Rust
+compiler to be installed with [rustup] or similar.
 
 [nix]: https://nixos.org/nix/
+[rustup]: https://rustup.rs
 
 1. Setting up your environment
 2. A new project
@@ -42,7 +44,7 @@ Try 'nix-env --help' for more information.
 ```
 
 Let's install a few other tools to help us with development. First, let's
-install [lorri][lorri] to help us manage the shell path:
+install [lorri][lorri] to help us manage our development shell:
 
 [lorri]: https://github.com/target/lorri
 
@@ -567,3 +569,4 @@ For some "extra credit" tasks, try and see if you can do the following:
 - Read the [Nix
   documentation](https://nixos.org/nix/manual/#chap-writing-nix-expressions) and
   learn more about writing Nix expressions
+- Configure your editor/IDE to use the `direnv` path
