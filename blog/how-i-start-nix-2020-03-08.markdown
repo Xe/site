@@ -312,6 +312,8 @@ environment set up, let's serve HTTP.
 [Rocket][rocket] is a popular web framework for Rust programs. Let's use that to
 create a small "hello, world" server. We will need to do the following:
 
+[rocket]: https://rocket.rs
+
 - Create the new Rust project
 - Add Rocket as a dependency
 - Write our "hello world" route
@@ -552,3 +554,15 @@ this post in [this GitHub repo][helloworldrepo] in case it helps. Have fun and
 be well.
 
 [helloworldrepo]: https://github.com/Xe/helloworld
+
+---
+
+For some "extra credit" tasks, try and see if you can do the following:
+
+- Use the version of [niv][niv] that niv pinned
+- Customize the environment of the container by following the [Rocket
+  configuration documentation](https://rocket.rs/v0.4/guide/configuration/)
+- Add some more routes to the program
+- Read the [Nix
+  documentation](https://nixos.org/nix/manual/#chap-writing-nix-expressions) and
+  learn more about writing Nix expressions
