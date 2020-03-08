@@ -9,10 +9,11 @@ tags:
 
 # How I Start: Nix
 
-Nix is a tool that helps people create reproducible builds. This means that
-given the a known input, you can get the same output on other machines. Nix is
-simple, and this article will help to understand that. Let's build and deploy a
-small Rust service with Nix.
+[Nix][nix] is a tool that helps people create reproducible builds. This means that
+given the a known input, you can get the same output on other machines.Let's
+build and deploy a small Rust service with Nix.
+
+[nix]: https://nixos.org/nix/
 
 1. Setting up your environment
 2. A new project
