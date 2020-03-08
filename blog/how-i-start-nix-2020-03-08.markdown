@@ -34,7 +34,7 @@ $ curl https://nixos.org/nix/install | sh
 ```
 
 This will prompt you for more information as it goes on, so be sure to follow
-the instructions carefully. Once it is done, close and re-open your shell. Once
+the instructions carefully. Once it is done, close and re-open your shell. After
 you have done this, `nix-env` should exist in your shell. Try to run it:
 
 ```console
