@@ -495,6 +495,8 @@ Now that we have a package built, let's ship it in a docker image. nixpkgs
 provides [dockerTools][dockertools] which helps us create docker images out of
 Nix packages. Let's create `default.nix` with the following contents:
 
+[dockertools]: https://nixos.org/nixpkgs/manual/#sec-pkgs-dockerTools
+
 ```nix
 { system ? builtins.currentSystem }:
 
