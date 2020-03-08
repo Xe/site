@@ -17,12 +17,12 @@ compiler to be installed with [rustup] or similar.
 [nix]: https://nixos.org/nix/
 [rustup]: https://rustup.rs
 
-1. Setting up your environment
-2. A new project
-3. Setting up the Rust compiler
-4. Serving HTTP
-5. A simple package build
-6. Shipping it in a docker image
+- Setting up your environment
+- A new project
+- Setting up the Rust compiler
+- Serving HTTP
+- A simple package build
+- Shipping it in a docker image
 
 ## Setting up your environment
 
