@@ -10,9 +10,9 @@ tags:
 # How I Start: Nix
 
 [Nix][nix] is a tool that helps people create reproducible builds. This means that
-given the a known input, you can get the same output on other machines.Let's
-build and deploy a small Rust service with Nix. This will not require the Rust
-compiler to be installed with [rustup][rustup] or similar.
+given a known input, you can get the same output on other machines. Let's build 
+and deploy a small Rust service with Nix. This will not require the Rust compiler 
+to be installed with [rustup][rustup] or similar.
 
 [nix]: https://nixos.org/nix/
 [rustup]: https://rustup.rs
@@ -353,7 +353,7 @@ Then download/build Rocket with `cargo build`:
 $ cargo build
 ```
 
-This will download all of the dependencies you need and precompile Rocket. This
+This will download all of the dependencies you need and precompile Rocket, and it
 will help speed up later builds.
 
 ### Write our "hello world" route
