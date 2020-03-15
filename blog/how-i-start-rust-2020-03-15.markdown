@@ -102,7 +102,7 @@ will help speed up later builds.
 Now put the following in `src/main.rs`:
 
 ```rust
-#![feature(proc_macro_hygiene, decl_macro)] // language features needed by Rocket
+#![feature(proc_macro_hygiene, decl_macro)] // Nightly-only language features needed by Rocket
 
 // Import the rocket macros
 #[macro_use]
@@ -144,7 +144,8 @@ $ fg
 ```
 
 The HTTP service works. We have a binary that is created with the Rust compiler.
-However, it could use some tests.
+This binary will be available at `./target/debug/helloworld`. However, it could
+use some tests.
 
 ## Testing
 
@@ -155,7 +156,7 @@ module and verify this route in testing.
 
 ### Create a tests module
 
-Rust allows you to create other [modules][rustmod] inside crates. Create a
+Rust allows you to nest modules within files using the `mod` keyword. Create a
 `tests` module that will only build when testing is requested:
 
 [rustmod]: https://doc.rust-lang.org/rust-by-example/mod/visibility.html
@@ -231,9 +232,9 @@ serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 ```
 
-This enables serde's derivation support, which will allow us to automate away
-the JSON generation code _at compile time_. For more information about
-derivation in Rust, see [here][rustderive].
+This lets us use `#[derive(Serialize, Deserialize)]` on our Rust structs, which
+will allow us to automate away the JSON generation code _at compile time_. For
+more information about derivation in Rust, see [here][rustderive].
 
 [rustderive]: https://doc.rust-lang.org/rust-by-example/trait/derive.html
 
@@ -311,7 +312,7 @@ fn main() {
 }
 ```
 
-Now rebuild the project:
+Now rebuild the project and run the server:
 
 ```console
 $ cargo build
@@ -368,7 +369,7 @@ to
 #[derive(Serialize, JsonSchema, Debug)]
 ```
 
-to add them.
+to generate the OpenAPI code for our type.
 
 Next we can add the `/hostinfo` route to the OpenAPI schema:
 
@@ -402,7 +403,7 @@ fn main() {
 }
 ```
 
-And then rebuild it:
+Then rebuild it and run the server:
 
 ```console
 $ cargo build
@@ -552,3 +553,6 @@ For some "extra credit" tasks, try and see if you can do the following:
 
 [dockerenvvars]: https://docs.docker.com/engine/reference/builder/#env
 [rockettemplate]: https://api.rocket.rs/v0.4/rocket_contrib/templates/index.html
+
+Many thanks to [Coleman McFarland](https://coleman.codes/) for proofreading this
+post.
