@@ -196,7 +196,6 @@ mod tests {
 
 ```console
 $ cargo test
-$ cargo test
    Compiling helloworld v0.1.0 (/home/cadey/code/helloworld)
     Finished test [unoptimized + debuginfo] target(s) in 1.80s
      Running target/debug/deps/helloworld-49d1bd4d4f816617
