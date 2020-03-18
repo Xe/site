@@ -5,6 +5,7 @@ require (
 	github.com/gorilla/feeds v1.1.1
 	github.com/joho/godotenv v1.3.0
 	github.com/mxpv/patreon-go v0.0.0-20190917022727-646111f1d983
+	github.com/philandstuff/dhall-golang v1.0.0
 	github.com/povilasv/prommod v0.0.12
 	github.com/prometheus/client_golang v1.5.0
 	github.com/russross/blackfriday v2.0.0+incompatible

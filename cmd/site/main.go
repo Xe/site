@@ -56,13 +56,14 @@ func main() {
 
 // Site is the parent object for https://christine.website's backend.
 type Site struct {
-	Posts   blog.Posts
-	Talks   blog.Posts
-	Gallery blog.Posts
-	Resume  template.HTML
-	Series  []string
-	patrons []string
+	Posts       blog.Posts
+	Talks       blog.Posts
+	Gallery     blog.Posts
+	Resume      template.HTML
+	Series      []string
+	SignalBoost []Person
 
+	patrons  []string
 	rssFeed  *feeds.Feed
 	jsonFeed *jsonfeed.Feed
 
@@ -96,6 +97,11 @@ func Build() (*Site, error) {
 	}
 
 	pledges, err := GetPledges(pc)
+	if err != nil {
+		return nil, err
+	}
+
+	people, err := loadPeople("./signalboost.dhall")
 	if err != nil {
 		return nil, err
 	}
@@ -162,7 +168,8 @@ func Build() (*Site, error) {
 		mux:   http.NewServeMux(),
 		xffmw: xffmw,
 
-		patrons: pledges,
+		patrons:     pledges,
+		SignalBoost: people,
 	}
 
 	posts, err := blog.LoadPosts("./blog/", "blog")
@@ -236,6 +243,7 @@ func Build() (*Site, error) {
 	})
 	s.mux.Handle("/metrics", promhttp.Handler())
 	s.mux.Handle("/patrons", middleware.Metrics("patrons", s.renderTemplatePage("patrons.html", s.patrons)))
+	s.mux.Handle("/signalboost", middleware.Metrics("signalboost", s.renderTemplatePage("signalboost.html", s.SignalBoost)))
 	s.mux.Handle("/resume", middleware.Metrics("resume", s.renderTemplatePage("resume.html", s.Resume)))
 	s.mux.Handle("/blog", middleware.Metrics("blog", s.renderTemplatePage("blogindex.html", s.Posts)))
 	s.mux.Handle("/talks", middleware.Metrics("talks", s.renderTemplatePage("talkindex.html", s.Talks)))
