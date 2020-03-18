@@ -12,6 +12,25 @@ in  [ Person::{
       , twitter = "https://twitter.com/aisstern"
       }
     , Person::{
+      , name = "Astrid Bek"
+      , tags =
+        [ "dotnet"
+        , "java"
+        , "python"
+        , "typescript"
+        , "rust"
+        , "c"
+        , "cpp"
+        , "full-stack"
+        , "devops"
+        , "linux"
+        , "docker"
+        , "gamedev"
+        ]
+      , gitLink = "https://github.com/xSke"
+      , twitter = "https://twitter.com/floofstrid"
+      }
+    , Person::{
       , name = "Christian Sullivan"
       , tags =
         [ "go"
