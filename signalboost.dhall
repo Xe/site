@@ -68,8 +68,25 @@ in  [ Person::{
         , "hardware"
         , "compilers"
         , "machine-learning"
-      }
+        ]
       , gitLink = "https://github.com/jaddr2line"
       , twitter = "https://twitter.com/jaddr2line"
+      }
+    , Person::{
+      , name = "Prajjwal Singh"
+      , tags =
+        [ "full-stack javascript"
+        , "ruby"
+        , "rails"
+        , "vuejs"
+        , "emberjs"
+        , "golang"
+        , "linux"
+        , "docker"
+        , "google-cloud"
+        , "typescript"
+        ]
+      , gitLink = "https://github.com/Prajjwal"
+      , twitter = "https://twitter.com/prajjwalsin"
       }
     ]
