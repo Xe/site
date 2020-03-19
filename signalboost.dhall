@@ -55,4 +55,21 @@ in  [ Person::{
       , gitLink = "https://github.com/astronouth7303"
       , twitter = "https://twitter.com/AstraLuma"
       }
+    , Person::{
+      , name = "Prajjwal Singh"
+      , tags =
+        [ "full-stack javascript"
+        , "ruby"
+        , "rails"
+        , "vuejs"
+        , "emberjs"
+        , "golang"
+        , "linux"
+        , "docker"
+        , "google-cloud"
+        , "typescript"
+        ]
+      , gitLink = "https://github.com/Prajjwal"
+      , twitter = "https://twitter.com/prajjwalsin"
+      }
     ]
