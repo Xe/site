@@ -55,4 +55,21 @@ in  [ Person::{
       , gitLink = "https://github.com/astronouth7303"
       , twitter = "https://twitter.com/AstraLuma"
       }
+    , Person::{
+      , name = "Jaden Weiss"
+      , tags =
+        [ "go"
+        , "wasm"
+        , "docker"
+        , "kubernetes"
+        , "java"
+        , "linux"
+        , "c"
+        , "hardware"
+        , "compilers"
+        , "machine-learning"
+      }
+      , gitLink = "https://github.com/jaddr2line"
+      , twitter = "https://twitter.com/jaddr2line"
+      }
     ]
