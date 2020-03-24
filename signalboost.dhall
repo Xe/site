@@ -89,4 +89,17 @@ in  [ Person::{
       , gitLink = "https://github.com/Prajjwal"
       , twitter = "https://twitter.com/prajjwalsin"
       }
+    , Person::{
+      , name = "Piyushh Bhutoria"
+      , tags =
+        [ "golang"
+        , "react-native"
+        , "full-stack developer"
+        , "javascript"
+        , "PHP"
+        , "google-cloud"
+        ]
+      , gitLink = "https://github.com/Piyushhbhutoria"
+      , twitter = "https://twitter.com/PiyushhB"
+      }
     ]
