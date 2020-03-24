@@ -96,7 +96,7 @@ in  [ Person::{
         , "react-native"
         , "full-stack developer"
         , "javascript"
-        , "PHP"
+        , "php"
         , "google-cloud"
         ]
       , gitLink = "https://github.com/Piyushhbhutoria"
