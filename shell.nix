@@ -23,5 +23,8 @@ mkShell {
 
     # dependency manager
     niv
+
+    # tools
+    ispell
   ];
 }
