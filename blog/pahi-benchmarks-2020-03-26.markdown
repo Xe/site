@@ -1,11 +1,12 @@
 ---
-title: "pa'i benchmarks"
+title: "pa'i Benchmarks"
 date: 2020-03-26
 series: olin
 tags:
   - wasm
   - rust
   - golang
+  - pahi
 ---
 
 # pa'i Benchmarks
@@ -198,6 +199,8 @@ This decodes and encodes this [kubernetes manifest set from my
 cluster][k8sparseyaml]. This is a set of a few normal kubernetes deployments and
 isn't as much of a worse-case scenario as it could be with the other tests.
 
+[k8sparseyaml]: https://github.com/Xe/pahi/blob/96f051d16df35cbceb8bf802e7dd7482b41b7d8a/wasm/cpustrain/src/bin/k8sparse.yaml#L1
+
 Here are the results I got from running the following command:
 
 ```console
@@ -216,6 +219,8 @@ $ hyperfine --warmup 3 --prepare './result/bin/pahi result/wasm/k8sparse.wasm' \
 
 This is implemented as [`fibber.wasm`][fibber]. Here is the source code used in
 the benchmark:
+
+[fibber]: https://github.com/Xe/pahi/blob/96f051d16df35cbceb8bf802e7dd7482b41b7d8a/wasm/cpustrain/src/bin/fibber.rs
 
 ```rust
 #![no_main]
@@ -264,6 +269,8 @@ $ hyperfine --warmup 3 --prepare './result/bin/pahi result/wasm/fibber.wasm' \
 
 This is implemented as [`blake2stress.wasm`][blake2stress]. Here's the source
 code for this benchmark:
+
+[blake2stress]: https://github.com/Xe/pahi/blob/96f051d16df35cbceb8bf802e7dd7482b41b7d8a/wasm/cpustrain/src/bin/blake2stress.rs
 
 ```rust
 #![no_main]
