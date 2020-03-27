@@ -102,4 +102,22 @@ in  [ Person::{
       , gitLink = "https://github.com/Piyushhbhutoria"
       , twitter = "https://twitter.com/PiyushhB"
       }
+     , Person::{
+      , name = "Ryan Casalino"
+      , tags =
+        [ "golang"
+        , "react"
+        , "python"
+        , "javascript"
+        , "aws"
+        , "vue"
+        , "sql"
+        , "ruby"
+        , "rails"
+        , "flask"
+        , "unix"
+        ]
+      , gitLink = "https://github.com/rjpcasalino"
+      , twitter = "N/A"
+      }
     ]
