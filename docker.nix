@@ -10,7 +10,7 @@ let
       name = "xena/christinewebsite";
       tag = pkg.version;
 
-      contents = [ pkg ];
+      contents = [ pkg pkgs.cacert ];
 
       config = {
         Cmd = [ "/bin/site" ];
