@@ -338,8 +338,8 @@
     fetch = {
       type = "git";
       url = "https://github.com/prometheus/client_golang";
-      rev = "v1.5.0";
-      sha256 = "0cqcrzvzvzc5jj1zpmvbig3aj3a2vxaixfz5r3nprgxc9jryqpp9";
+      rev = "v1.5.1";
+      sha256 = "0nkhjpwpqr3iz2jsqrl37qkj1g4i8jvi5smgbvhxcpyinjj00067";
     };
   }
   {
