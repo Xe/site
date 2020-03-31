@@ -120,4 +120,25 @@ in  [ Person::{
       , gitLink = "https://github.com/rjpcasalino"
       , twitter = "N/A"
       }
+    , Person::{
+      , name = "Berwyn Jamesson"
+      , tags =
+        [ "angular"
+        , "typescript"
+        , "javascript"
+        , "azure"
+        , "linux"
+        , "docker"
+        , "kubernetes"
+        , "rust"
+        , "dotnet"
+        , "csharp"
+        , "ruby"
+        , "rails"
+        , "react"
+        , "vue"
+        ]
+      , gitLink = "https://github.com/berwyn"
+      , twitter = "_berwyn_"
+      }
     ]
