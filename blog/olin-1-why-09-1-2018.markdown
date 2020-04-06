@@ -46,7 +46,7 @@ right code runs as a response. I then have to make sure these things get put
 in the right places and then that the right versions of things are running for
 each of the relevant services. This doesn't scale very well, not to mention is 
 hard to secure. This leads to a lot of duplicate infrastructure over time and 
-as things grow. Not to mention adding in tracing, metrics and log aggreation.
+as things grow. Not to mention adding in tracing, metrics and log aggregation.
 
 I would like to change this.
 
@@ -58,7 +58,7 @@ need to be maintained in parallel, so it might be good to get used to that early
 on.
 
 You should not have to write ANY code but the bare minimum needed in order to
-perform your buisiness logic. You don't need to care about distributed tracing.
+perform your business logic. You don't need to care about distributed tracing.
 You don't need to care about logging. 
 
 I want this project to last decades. I want the binary modules any user of Olin 
