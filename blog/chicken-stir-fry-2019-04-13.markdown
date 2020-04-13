@@ -20,7 +20,7 @@ this every week or so.
 ### Ingredients
 
 - Pack of 4 chicken breasts
-- A fair amount of montreal flavored seasoning (garlic, onion, salt, oregano)
+- A fair amount of Montreal seasoning (garlic, onion, salt, oregano)
 - 3 cups basmati rice
 - 3.75 cups water
 - 1/4th bag of frozen stir fry vegetables
