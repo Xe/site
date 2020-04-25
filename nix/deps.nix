@@ -572,8 +572,8 @@
     fetch = {
       type = "git";
       url = "https://github.com/Xe/ln";
-      rev = "v0.8.0";
-      sha256 = "16wkjsbnn2ww7d6ihh6gaan8v3l9919qmx52jcjl5zx9w9y7yry6";
+      rev = "v0.9.0";
+      sha256 = "1djbjwkyqlvf5gy5jvx0z9mm3g56fg2jjmv0ghwzlvwwpx5h338l";
     };
   }
 ]
