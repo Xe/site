@@ -7,7 +7,7 @@ require (
 	github.com/mxpv/patreon-go v0.0.0-20190917022727-646111f1d983
 	github.com/philandstuff/dhall-golang v1.0.0
 	github.com/povilasv/prommod v0.0.12
-	github.com/prometheus/client_golang v1.5.1
+	github.com/prometheus/client_golang v1.6.0
 	github.com/russross/blackfriday v2.0.0+incompatible
 	github.com/sebest/xff v0.0.0-20160910043805-6c115e0ffa35
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
