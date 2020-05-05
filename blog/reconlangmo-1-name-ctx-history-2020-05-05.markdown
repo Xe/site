@@ -69,6 +69,11 @@ features I plan to include are:
 - Typeable with standard QWERTY en-US keyboards
 - A decorative script that I'll turn into a font
 
+[seximal]: https://www.seximal.net
+[lojban]: https://lojban.pw/cll/uncll-1.2.6/xhtml_section_chunks/chapter-tour.html#section-bridi
+[salishan]: https://en.wikipedia.org/wiki/Salishan_languages
+[apriori]: https://en.wikipedia.org/wiki/Constructed_language#A_priori_and_a_posteriori_languages
+
 ## L'wea as A Diary Language
 
 When I was younger, I used to keep a diary/journal file on my computers off and
