@@ -113,8 +113,8 @@
     fetch = {
       type = "git";
       url = "https://github.com/golang/protobuf";
-      rev = "v1.3.2";
-      sha256 = "1k1wb4zr0qbwgpvz9q5ws9zhlal8hq7dmq62pwxxriksayl6hzym";
+      rev = "v1.4.0";
+      sha256 = "1fjvl5n77abxz5qsd4mgyvjq19x43c5bfvmq62mq3m5plx6zksc8";
     };
   }
   {
@@ -338,8 +338,8 @@
     fetch = {
       type = "git";
       url = "https://github.com/prometheus/client_golang";
-      rev = "v1.5.1";
-      sha256 = "0nkhjpwpqr3iz2jsqrl37qkj1g4i8jvi5smgbvhxcpyinjj00067";
+      rev = "v1.6.0";
+      sha256 = "0wwkx69in9dy5kzd3z6rrqf5by8cwl9r7r17fswcpx9rl3g61x1l";
     };
   }
   {
@@ -365,8 +365,8 @@
     fetch = {
       type = "git";
       url = "https://github.com/prometheus/procfs";
-      rev = "v0.0.8";
-      sha256 = "076wblhz8fjdc73fmz1lg0hafbwg1xv8hszm78lbg9anjpfgacvq";
+      rev = "v0.0.11";
+      sha256 = "1msc8bfywsmrgr2ryqjdqwkxiz1ll08r3qgvaka2507z1wpcpj2c";
     };
   }
   {
@@ -491,8 +491,8 @@
     fetch = {
       type = "git";
       url = "https://go.googlesource.com/sys";
-      rev = "e047566fdf82";
-      sha256 = "1xazqxggwb834clbdqxl65xkbb45jich0nb09b4gynrp27wyy7h4";
+      rev = "1957bb5e6d1f";
+      sha256 = "0imqk4l9785rw7ddvywyf8zn7k3ga6f17ky8rmf8wrri7nknr03f";
     };
   }
   {
@@ -520,6 +520,15 @@
       url = "https://github.com/golang/appengine";
       rev = "v1.4.0";
       sha256 = "06zl7w4sxgdq2pl94wy9ncii6h0z3szl4xpqds0sv3b3wbdlhbnn";
+    };
+  }
+  {
+    goPackagePath = "google.golang.org/protobuf";
+    fetch = {
+      type = "git";
+      url = "https://go.googlesource.com/protobuf";
+      rev = "v1.21.0";
+      sha256 = "12bwln8z1lf9105gdp6ip0rx741i4yfz1520gxnp8861lh9wcl63";
     };
   }
   {
