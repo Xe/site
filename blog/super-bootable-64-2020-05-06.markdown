@@ -222,6 +222,8 @@ Now, for the creme de la creme of this project, let's build Super Mario 64. You
 will need to get the base rom into your system's Nix store somehow. A half
 decent way to do this is with [quickserv][quickserv]:
 
+[quickserv]: https://tulpa.dev/Xe/quickserv
+
 ```console
 $ nix-env -if https://tulpa.dev/Xe/quickserv/archive/master.tar.gz
 $ cd /path/to/folder/with/baserom.us.z64
