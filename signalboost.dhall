@@ -56,23 +56,6 @@ in  [ Person::{
       , twitter = "https://twitter.com/AstraLuma"
       }
     , Person::{
-      , name = "Jaden Weiss"
-      , tags =
-        [ "go"
-        , "wasm"
-        , "docker"
-        , "kubernetes"
-        , "java"
-        , "linux"
-        , "c"
-        , "hardware"
-        , "compilers"
-        , "machine-learning"
-        ]
-      , gitLink = "https://github.com/jaddr2line"
-      , twitter = "https://twitter.com/jaddr2line"
-      }
-    , Person::{
       , name = "Prajjwal Singh"
       , tags =
         [ "full-stack javascript"
