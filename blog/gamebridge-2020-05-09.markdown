@@ -54,7 +54,8 @@ When implementing gamebridge, I had a few goals in mind:
 - Only have one binary to start, the game itself
 
 As a first step of implementing this, I went through the source code of the
-Mario 64 PC port (as fetched from GitHub) and began to look for anything that
+Mario 64 PC port (but in theory this could also work for other emulators or even
+Nintendo 64 emulators with enough work) and began to look for anything that
 might be useful to understand how parts of the game work. I stumbled across
 `src/pc/controller` and then found two gems that really stood out. I found the
 interface for adding new input methods to the game and an example input method
