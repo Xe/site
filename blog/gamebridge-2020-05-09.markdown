@@ -1,5 +1,5 @@
 ---
-title: "Gamebridge: A Tool to Fit Square Pegs into Round Holes"
+title: "Gamebridge: Fitting Square Pegs into Round Holes since 2020"
 date: 2020-05-09
 series: howto
 tags:
@@ -8,7 +8,7 @@ tags:
   - twitch
 ---
 
-# Gamebridge: A Tool to Fit Square Pegs into Round Holes
+# Gamebridge: Fitting Square Pegs into Round Holes since 2020
 
 Recently I did a stream called [Twitch Plays Super Mario 64][tpsm64]. During
 that stream I both demonstrated and hacked on a tool I'm calling
