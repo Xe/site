@@ -4,7 +4,7 @@
 
 ##### Montreal, QC &emsp; [christine.website][homepage]
 
-`Docker`, `Git`, `Go`, `C`, `Stenography`, `DevOps`, `Heroku`, `Continuous
+`Docker`, `Git`, `Go`, `Rust`, `C`, `Stenography`, `DevOps`, `Heroku`, `Continuous
 Integration/Delivery`, `WebAssembly`, `Lua`, `Mindfulness`, `HTTP/2`, `Alpine
 Linux`, `Ubuntu`, `Linux`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`,
 `Postgres`, `MySQL`, `SQLite`, `Ordained Minister`, `Dudeism`, `Tech Writing`,
