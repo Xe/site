@@ -208,19 +208,19 @@ This implements the following commands:
 
 | Command  | Meaning                          |
 |----------|----------------------------------|
-| =a=      | Press the A button               |
-| =b=      | Press the B button               |
-| =z=      | Press the Z button               |
-| =r=      | Press the R button               |
-| =cup=    | Press the C-up button            |
-| =cdown=  | Press the C-down button          |
-| =cleft=  | Press the C-left button          |
-| =cright= | Press the C-right button         |
-| =start=  | Press the start button           |
-| =up=     | Press up on the analog stick     |
-| =down=   | Press down on the analog stick   |
-| =left=   | Press left on the analog stick   |
-| =stop=   | Reset the analog stick to center |
+| `a`      | Press the A button               |
+| `b`      | Press the B button               |
+| `z`      | Press the Z button               |
+| `r`      | Press the R button               |
+| `cup`    | Press the C-up button            |
+| `cdown`  | Press the C-down button          |
+| `cleft`  | Press the C-left button          |
+| `cright` | Press the C-right button         |
+| `start`  | Press the start button           |
+| `up`     | Press up on the analog stick     |
+| `down`   | Press down on the analog stick   |
+| `left`   | Press left on the analog stick   |
+| `stop`   | Reset the analog stick to center |
 
 Currently analog stick inputs will stick for about 270 frames and button inputs
 will stick for about 20 frames before drifting back to neutral. The start button
