@@ -31,7 +31,7 @@ gamebridge stack](/static/blog/gamebridge.png)
 You can view the [source code of this diagram in GraphViz dot format
 here](/static/blog/gamebridge.dot).
 
-The main magic that keeps this glued together is the use of _non-blocking_ I/O.
+The main magic that keeps this glued together is the use of _blocking_ I/O.
 This means that the bridge input thread will be blocked _at the kernel level_
 for the vblank signal to be written, and the game will also be blocked at the
 kernel level for the bridge input thread to write the desired input. This
