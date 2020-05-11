@@ -83,7 +83,7 @@ Particles will mostly fall into the following forms:
 Proper names _should_ end with consonants, but there is no hard requirement.
 
 L'ewa is a stressed language, with stress on the second-to-last (penultimate)
-syllable. For example, the word "[zh]asko" would be pronounced "[ZH]Asko".
+syllable. For example, the word "[z]asko" would be pronounced "[Z]Asko".
 
 Syllables end on stop consonants if one is present in a consonant cluster. Two
 stop consonants cannot follow eachother in a row. 
