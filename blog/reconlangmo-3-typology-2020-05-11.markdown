@@ -74,7 +74,8 @@ someone would mean by a fast kind of language (would they be referencing
 L'ewa doesn't always require a subject or object if it can be figured out from
 context. You can just say "rain" instead of "it's raining". By default, the
 first word in a sentence without an article is the verb. The ka/ke/ku series
-needs to be used if the 
+needs to be used if the word order deviates from Subject-Verb-Object (it
+functions a lot like the selma'o FA from Lojban).
 
 ## Morphological Typology
 
