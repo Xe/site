@@ -14,7 +14,7 @@ require (
 	github.com/snabb/sitemap v1.0.0
 	github.com/stretchr/testify v1.5.1
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	gopkg.in/yaml.v2 v2.2.8
+	gopkg.in/yaml.v2 v2.3.0
 	within.website/ln v0.9.0
 )
 
