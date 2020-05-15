@@ -79,6 +79,7 @@ Particles will mostly fall into the following forms:
 - VV (/ai/)
 - CV (/ba/)
 - CVV (/bai/)
+- CV'V (/baʔ.i)
 
 Proper names _should_ end with consonants, but there is no hard requirement.
 
