@@ -147,6 +147,7 @@ words, I guess. The entire vocabulary of the language can now be listed below:
 | L'ewa word | IPA  | English                   |
 | ---------- | ---  | -------                   |
 | lo         | /lo/ | a, an, indefinite article |
+| le         | /lɛ/ | the, definite article     |
 | ka         | /ka/ | subject marker            |
 | ke         | /kɛ/ | verb marker               |
 | ku         | /ku/ | object marker             |
