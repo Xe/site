@@ -93,7 +93,7 @@ marked with particles. Here's a table of the common ones:
 | ----------        | ----- |
 | past tense        | qu    |
 | present tense     | qa    |
-| future tense      | qi    |
+| future tense      | qo    |
 | perfective aspect | qe    |
 
 ## Modality
