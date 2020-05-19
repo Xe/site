@@ -72,7 +72,7 @@ The DNS server then unwraps the ethernet frame into an IP packet and then as a
 UDP packet and a DNS request. It checks its database for a match and if one is
 not found, it attempts to discover the correct name server to contact by using a
 NS record query to its upstreams or the authoritative name server for the
-WEBSITE namespace. This then creates another process of ethernet frames and IP
+WEBSITE namespace. This then creates another process of ethernet frames and UDP
 packets until it reaches the upstream DNS server which hopefully should reply
 with the correct address. Once the DNS server gets the information that is
 needed, it sends this back the results to the client as a wire-format DNS
