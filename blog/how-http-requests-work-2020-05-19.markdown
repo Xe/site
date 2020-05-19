@@ -4,6 +4,7 @@ date: 2020-05-19
 tags:
  - http
  - ohgod
+ - philosophy
 ---
 
 # How HTTP Requests Work
