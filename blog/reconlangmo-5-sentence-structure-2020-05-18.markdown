@@ -15,7 +15,7 @@ vocabulary to make examples with). I'll fix this in the future, but for now
 let's continue on with sentence structure goodness. This is a response to [this
 prompt][rclm5].
 
-[reconlangmoseries]: /blog/series/reconlangmo
+[reconlangmo]: /blog/series/reconlangmo
 [rclm5]: https://www.reddit.com/r/conlangs/comments/gmbwb5/reconlangmo_5_sentence_structure/
 
 ## Independent Clause Structure
