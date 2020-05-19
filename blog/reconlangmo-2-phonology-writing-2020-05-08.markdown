@@ -32,15 +32,15 @@ L'ewa, consonants and vowels.
 
 ### Consonants
 
-*Consonant inventory*: /d g h j k l m n p q s t w ʃ ʒ ʔ ʙ̥/
+*Consonant inventory*: /d f g h j k l m n p q s t w ʃ ʒ ʔ ʙ̥/
 
 | Manner/Place        | Bilabial | Alveolar | Palato-alveolar | Palatal | Velar | Labio-velar | Uvular | Glottal |
 |---------------------|----------|----------|-----------------|---------|-------|-------------|--------|---------|
 | Nasal               | m        | n        |                 |         |       |             |        |         |
 | Stop                | p        | t d      |                 |         | k g   |             | q      | ʔ       |
-| Fricative           |          | s        | ʃ ʒ             |         |       |             |        | h       |
+| Fricative           | f        | s        | ʃ ʒ             |         |       |             |        | h       |
 | Approximant         |          |          |                 | j       |       | w           |        |         |
-| Trill               | ʙ̥        |          |                 |         |       |             |        |         |
+| Trill               | ʙ̥        | r        |                 |         |       |             |        |         |
 | Lateral approximant |          | l        |                 |         |       |             |        |         |
 
 The weirdest consonant is /ʙ̥/, which is a voiceless bilabial trill, or blowing
