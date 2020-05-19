@@ -13,6 +13,8 @@ tens of thousands of actors across thousands of companies. At some level it's a
 minor miracle that this all works at all. Here's a preview into the madness that
 goes into hitting enter on christine.website and this website being loaded.
 
+## Beginnings
+
 The user types in `https://christine.website` into the address bar and hits
 enter on the keyboard. This sends a signal over USB to the computer and the
 kernel polls the USB controller for a new message. It's recognized as from the
@@ -31,6 +33,8 @@ compression methods the browser understands, and what browser is being used to
 make the request.
 
 [rfc3986]: https://tools.ietf.org/html/rfc3986
+
+## Connections
 
 The browser then checks if it has a connection to christine.website open
 already. If it does not, then it creates a new one. It creates a new connection
@@ -79,6 +83,8 @@ the remote server and back, but it usually works the first time. The response to
 this request is cached based on the time-to-live specified in the DNS response.
 The response also contains the IP address of christine.website.
 
+## Security
+
 The protocol used in the URL determines which TCP port the browser connects to.
 If it is http, it uses port 80. If it is https, it uses port 443. The user
 specified HTTPS, so port 443 on whatever IP address DNS returned is dialed using
@@ -112,6 +118,8 @@ for the other parts of the browser stack.
 The browser then uses the information in the ClientHelloResponse to decide how
 to proceed from here.
 
+## HTTP
+
 If the browser notices the server supports HTTP/2 it sets up a HTTP/2 session
 (with a handshake that involves a few roundtrips like what I described for DNS)
 and creates a new stream for this request. The browser then formats the request
@@ -131,6 +139,8 @@ by creating a TCP session to that backend, writing the HTTP request and waiting
 for a response over that TCP session. Depending on site-local configuration
 there may be layers of encryption involved.
 
+## Application Server
+
 Now, the request finally gets to the application server. This TCP session is
 accepted by the application server and the headers are read into memory. The
 path is read by the application server and the correct handler is chosen. The
@@ -141,9 +151,13 @@ decrypts it and starts to parse and display the website. The browser will run
 into places where it needs more resources (such as stylesheets or images), so it will
 make additional HTTP requests to the load balancer to grab those too.
 
+---
+
 The end result is that the user sees the website in all its glory. Given all
 these moving parts it's astounding that this works as reliably as it does. Each
 of the TCP, ARP and DNS requests also happen at each level of the stack. There
 are layers upon layers upon layers of interacting protocols and implementations.
 
-This is why it is hard to reliably put a website on the internet.
+This is why it is hard to reliably put a website on the internet. If there is a
+god, they are surely the one holding all these potentially unreliable systems
+together to make everything appear like it is working.
