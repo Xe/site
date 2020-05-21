@@ -93,10 +93,18 @@ func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("X-Git-Rev", gitRev)
 	}
 
-	s.clacks.Middleware(middleware.RequestID(s.xffmw.Handler(ex.HTTPLog(s.mux)))).ServeHTTP(w, r)
+	w.Header().Add("X-Hacker", "If you are reading this, check out /signalboost to find people for your team")
+
+	s.clacks.Middleware(
+		middleware.RequestID(
+			s.xffmw.Handler(
+				ex.HTTPLog(s.mux),
+			),
+		),
+	).ServeHTTP(w, r)
 }
 
-var arbDate = time.Date(2020, time.February, 29, 0, 0, 0, 0, time.UTC)
+var arbDate = time.Date(2020, time.May, 21, 0, 0, 0, 0, time.UTC)
 
 // Build creates a new Site instance or fails.
 func Build() (*Site, error) {
