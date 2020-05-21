@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"sort"
+	"strings"
 	"time"
 
 	"christine.website/cmd/site/internal/blog"
@@ -63,6 +64,7 @@ type Site struct {
 	Series      []string
 	SignalBoost []Person
 
+	clacks   ClackSet
 	patrons  []string
 	rssFeed  *feeds.Feed
 	jsonFeed *jsonfeed.Feed
@@ -73,6 +75,14 @@ type Site struct {
 
 var gitRev = os.Getenv("GIT_REV")
 
+func envOr(key, or string) string {
+	if result, ok := os.LookupEnv(key); ok {
+		return result
+	}
+
+	return or
+}
+
 func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := opname.With(r.Context(), "site.ServeHTTP")
 	ctx = ln.WithF(ctx, ln.F{
@@ -82,9 +92,8 @@ func (s *Site) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if gitRev != "" {
 		w.Header().Add("X-Git-Rev", gitRev)
 	}
-	w.Header().Add("X-Clacks-Overhead", "GNU Ashlynn")
 
-	middleware.RequestID(s.xffmw.Handler(ex.HTTPLog(s.mux))).ServeHTTP(w, r)
+	s.clacks.Middleware(middleware.RequestID(s.xffmw.Handler(ex.HTTPLog(s.mux)))).ServeHTTP(w, r)
 }
 
 var arbDate = time.Date(2020, time.February, 29, 0, 0, 0, 0, time.UTC)
@@ -168,6 +177,7 @@ func Build() (*Site, error) {
 		mux:   http.NewServeMux(),
 		xffmw: xffmw,
 
+		clacks:      ClackSet(strings.Split(envOr("CLACK_SET", "Ashlynn"), ",")),
 		patrons:     pledges,
 		SignalBoost: people,
 	}

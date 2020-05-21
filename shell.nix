@@ -27,4 +27,6 @@ mkShell {
     # tools
     ispell
   ];
+
+  CLACK_SET = "Ashlynn,Terry Davis,Dennis Ritchie";
 }
