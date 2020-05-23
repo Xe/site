@@ -15,7 +15,7 @@ this doesn't really make L'ewa a _language_. Most of the difficulty in making a
 language like this is the vocabulary. In this post I'll be describing how I am
 making the vocabulary for L'ewa and I'll include an entire table of the
 dictionary words. This answers [this
-prompt](https://www.reddit.com/r/conlangs/comments/gojncp/reconlangmo_6_lexicon/)
+prompt](https://www.reddit.com/r/conlangs/comments/gojncp/reconlangmo_6_lexicon/).
 
 [reconlangmo]: https://christine.website/blog/series/reconlangmo
 
