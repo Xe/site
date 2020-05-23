@@ -1,6 +1,6 @@
 # Christine Dodrill
 
-#### Web and Backend Services Devops Specialist
+#### Full-stack Engineer
 
 ##### Montreal, QC &emsp; [christine.website][homepage]
 
