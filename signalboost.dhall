@@ -140,6 +140,6 @@ in  [ Person::{
         , "gunicorn"
         ]
       , gitlink = "https://github.com/ZacharyRMcKee"
-      , twitter = ""
+      , twitter = "N/A"
       }
     ]
