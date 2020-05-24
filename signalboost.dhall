@@ -124,4 +124,22 @@ in  [ Person::{
       , gitLink = "https://github.com/berwyn"
       , twitter = "_berwyn_"
       }
+    , Person::{
+      , name = "Zachary McKee"
+      , tags = 
+        [ "javascipt"
+        , "django"
+        , "react"
+        , "postgresql"
+        , "firebase"
+        , "aws"
+        , "python"
+        , "csharp"
+        , "java"
+        , "nginx"
+        , "gunicorn"
+        ]
+      , gitlink = "https://github.com/ZacharyRMcKee"
+      , twitter = "N/A"
+      }
     ]
