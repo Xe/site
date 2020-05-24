@@ -139,7 +139,7 @@ in  [ Person::{
         , "nginx"
         , "gunicorn"
         ]
-      , gitlink = "https://github.com/ZacharyRMcKee"
+      , gitLink = "https://github.com/ZacharyRMcKee"
       , twitter = "N/A"
       }
     ]
