@@ -35,18 +35,6 @@
         "url": "https://github.com/NixOS/nixpkgs-channels/archive/48723f48ab92381f0afd50143f38e45cf3080405.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "vgo2nix": {
-        "branch": "master",
-        "description": null,
-        "homepage": null,
-        "owner": "adisbladis",
-        "repo": "vgo2nix",
-        "rev": "1288e3dbf23ed79cef237661225df0afa30f8510",
-        "sha256": "1xcf2g4n38zbizgqhyrmh440bdg3yap6h9nr22dmgm5hsml6mdia",
-        "type": "tarball",
-        "url": "https://github.com/adisbladis/vgo2nix/archive/1288e3dbf23ed79cef237661225df0afa30f8510.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "xepkgs": {
         "ref": "master",
         "repo": "https://tulpa.dev/Xe/nixpkgs",

@@ -6,7 +6,6 @@ let
   dhall-yaml = dhallpkgs.dhall-yaml-simple;
   dhall = dhallpkgs.dhall-simple;
   xepkgs = import sources.xepkgs { inherit pkgs; };
-  vgo2nix = import sources.vgo2nix { inherit pkgs; };
 in with pkgs;
 with xepkgs;
 mkShell {
