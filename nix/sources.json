@@ -24,15 +24,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
-        "branch": "nixpkgs-unstable",
+        "branch": "nixos-20.03",
         "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
         "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
         "repo": "nixpkgs-channels",
-        "rev": "7401afc428799acb19f72028d0914092a978c909",
-        "sha256": "1ngwkklj2h7shcc3lphdy9b9kqpdfqq6wzqkq74qypw0xkz3dsr8",
+        "rev": "48723f48ab92381f0afd50143f38e45cf3080405",
+        "sha256": "0h3b3l867j3ybdgimfn76lw7w6yjhszd5x02pq5827l659ihcf53",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/7401afc428799acb19f72028d0914092a978c909.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/48723f48ab92381f0afd50143f38e45cf3080405.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "vgo2nix": {
