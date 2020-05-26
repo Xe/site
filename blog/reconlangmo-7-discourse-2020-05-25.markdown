@@ -280,4 +280,6 @@ complicated than simple "I eat an apple" or "Do you like eating plants?". One of
 the first things I want to translate is the classic [tower of babel
 story][babel].
 
+[babel]: https://en.wikipedia.org/wiki/Tower_of_Babel
+
 Be well.
