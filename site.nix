@@ -1,4 +1,4 @@
-{ pkgs ? import (import ./nix/sources.nix).nixpkgs }:
+{ pkgs ? import (import ./nix/sources.nix).nixpkgs { } }:
 with pkgs;
 
 assert lib.versionAtLeast go.version "1.13";
