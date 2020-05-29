@@ -1,7 +1,6 @@
 let
   sources = import ./nix/sources.nix;
   pkgs = import sources.nixpkgs { };
-  niv = (import sources.niv { }).niv;
   dhallpkgs = import sources.easy-dhall-nix { inherit pkgs; };
   dhall-yaml = dhallpkgs.dhall-yaml-simple;
   dhall = dhallpkgs.dhall-simple;

@@ -1,4 +1,4 @@
-{ pkgs ? import (import ./nix/sources.nix).nixpkgs }:
+{ pkgs ? import (import ./nix/sources.nix).nixpkgs { } }:
 with pkgs;
 
 assert lib.versionAtLeast go.version "1.13";
@@ -17,12 +17,12 @@ buildGoPackage rec {
   '';
 
   postInstall = ''
-    cp -rf $src/blog $bin/blog
-    cp -rf $src/css $bin/css
-    cp -rf $src/gallery $bin/gallery
-    cp -rf $src/signalboost.dhall $bin/signalboost.dhall
-    cp -rf $src/static $bin/static
-    cp -rf $src/talks $bin/talks
-    cp -rf $src/templates $bin/templates
+    cp -rf $src/blog $out/blog
+    cp -rf $src/css $out/css
+    cp -rf $src/gallery $out/gallery
+    cp -rf $src/signalboost.dhall $out/signalboost.dhall
+    cp -rf $src/static $out/static
+    cp -rf $src/talks $out/talks
+    cp -rf $src/templates $out/templates
   '';
 }
