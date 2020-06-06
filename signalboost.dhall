@@ -77,6 +77,21 @@ in  [ Person::{
       , twitter = "https://twitter.com/AstraLuma"
       }
     , Person::{
+      , name = "Natthan Leong"
+      , tags =
+        [ "c"
+        , "embedded"
+        , "firmware"
+        , "golang"
+        , "linux"
+        , "lua"
+        , "python"
+        , "shell"
+        ]
+      , gitLink = "https://github.com/ansimita"
+      , twitter = "https://twitter.com/ansimita"
+      }
+    , Person::{
       , name = "Prajjwal Singh"
       , tags =
         [ "full-stack javascript"
