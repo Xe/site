@@ -306,6 +306,6 @@ perfectly. I am not very familiar with how the dwm codebase works, but I am able
 to dig into its guts and diagnose/fix things because it is intentionally kept as
 simple as possible.
 
-If you use Linux on a desktop/laptop, I hightly suggest taking a look at
+If you use Linux on a desktop/laptop, I highly suggest taking a look at
 suckless software and experimenting with it. It is super optimized for
 understandability and hacking, which is a huge breath of fresh air these days.
