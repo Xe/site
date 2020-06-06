@@ -42,6 +42,8 @@ As dwm is configured in C, there's also a community of people creating
 methods, the ability to automatically start things with dwm, transparency for
 the statusbar and so much more. I use the following patches:
 
+[dwmpatches]: https://dwm.suckless.org/patches/
+
 - [alpha](https://dwm.suckless.org/patches/alpha/)
 - [autostart](https://dwm.suckless.org/patches/autostart/)
 - [bottomstack](https://dwm.suckless.org/patches/bottomstack/)
