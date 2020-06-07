@@ -301,7 +301,7 @@ patch](https://lists.suckless.org/dev/2006/33947.html) to fix the
 behavior forever. I have yet to integrate this meta-patch into my dwm fork, but
 I'll probably get around to it someday.
 
-This really demonstrates one of the core tenants of the suckless philosophy
+This really demonstrates one of the core tenets of the suckless philosophy
 perfectly. I am not very familiar with how the dwm codebase works, but I am able
 to dig into its guts and diagnose/fix things because it is intentionally kept as
 simple as possible.
