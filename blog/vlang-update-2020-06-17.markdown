@@ -198,6 +198,8 @@ A common problem that shows up when writing multi-threaded code are
 to do the same thing at the same time on the same block of memory. This leads to
 undefined behavior, which is bad because it can corrupt or crash programs. 
 
+[races]: https://en.wikipedia.org/wiki/Race_condition
+
 As an example, consider this program `raceanint.v`:
 
 ```
