@@ -1,8 +1,8 @@
 ---
 title: V is for Vaporware
 date: 2019-06-23
+series: v
 tags:
- - v
  - rant
 ---
 
