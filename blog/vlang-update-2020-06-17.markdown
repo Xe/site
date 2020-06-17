@@ -102,7 +102,7 @@ $ valgrind ./v hello.v
 ```
 
 It seems that the memory managment really is a work in progress. This increase in
-leakage means that the compiler building itself now creates `30,409,141` bytes of
+leakage means that the compiler building itself now creates `7,232,779` bytes of
 leaked ram (which if i recall is actually a remarkable improvement).
 
 However, `hello world` seems to leak again:
