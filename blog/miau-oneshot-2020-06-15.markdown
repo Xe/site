@@ -50,18 +50,18 @@ entrance of the cave. There is a torch by the entrance. What do you do?
 
 Choose someone to be the Dungeon Master. Give them the sheets for the Dungeon
 Master and then have the others start filling out their stats. Rolling for stats
-is done like on the Dungeon Master character creation sheet:
+is done like on the Dungeon Master character creation sheet. Follow those
+directions until you have a full party set up.
 
-For each stat (strength, dexterity, constitution, intelligence, wisdom and
-charisma), roll two six-sided dice. Add them up and convert them into stats
-using these rules:
+Here's some items that will come in handy in this adventure:
 
-| Roll         | Stat   |
-| :----------- | :----- |
-| 11 and above |     +2 |
-| 9-10         |     +1 |
-| 6-8          |     +0 |
-| 4-5          |     -1 |
-| 3 and below  |     -2 |
+- Torch to help you see in the dark
+- Rope to climb with
+- Hydroflask to drink from to restore HP
+- Bandages to patch up wounds from boomerang rats or bandits
+- Lockpicks to help get into chests
 
+If situations demand it, come up with other things! I'm just here as a guide,
+not a dictator. 
 
+## Items 
