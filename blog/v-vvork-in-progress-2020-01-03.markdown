@@ -1,8 +1,8 @@
 ---
 title: "V is for Vvork in Progress"
 date: 2020-01-03
+series: v
 tags:
- - v
  - constructive-criticism
 ---
 
