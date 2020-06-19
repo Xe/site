@@ -69,6 +69,7 @@ func LoadPosts(path string, prepend string) (Posts, error) {
 		SlidesLink string `yaml:"slides_link"`
 		Image      string
 		Thumb      string
+		Show       string
 	}
 	var result Posts
 

@@ -260,6 +260,7 @@ func Build() (*Site, error) {
 		s.renderTemplatePage("index.html", nil).ServeHTTP(w, r)
 	})
 	s.mux.Handle("/metrics", promhttp.Handler())
+	s.mux.Handle("/feeds", middleware.Metrics("feeds", s.renderTemplatePage("feeds.html", nil)))
 	s.mux.Handle("/patrons", middleware.Metrics("patrons", s.renderTemplatePage("patrons.html", s.patrons)))
 	s.mux.Handle("/signalboost", middleware.Metrics("signalboost", s.renderTemplatePage("signalboost.html", s.SignalBoost)))
 	s.mux.Handle("/resume", middleware.Metrics("resume", s.renderTemplatePage("resume.html", s.Resume)))
