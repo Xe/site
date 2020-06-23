@@ -16,7 +16,7 @@ months.
 Last time I checked, V 0.2 was slated for release in December 2019. It is currently
 June 2020, and the latest release (at time of writing) is [0.1.27][vrelease0127].
 
-## Feature Update
+## Feature Updates
 
 Interestingly, the V author seems to have walked back one of their original
 listed features of V and now has an [abstract syntax tree][ast] for representing the
@@ -54,7 +54,10 @@ cross-platform is to use the following header:
 ```
 
 This makes the `env` program search for the V binary in your `$PATH`, and will
-function correctly on all platforms.
+function correctly on all platforms (this may not work on environments like [Termux](https://termux.com/)
+due to limitations of how Android works, but it will solve 99% of cases. I am unsure
+how to make a shell script that will function properly across Android and non-Android
+environments).
 
 The Makefile in the V source tree seems to do
 network calls, specifically a `git clone`. Remember that this is on the front page
