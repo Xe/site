@@ -23,15 +23,22 @@ listed features of V and now has an [abstract syntax tree][ast] for representing
 grammar of the language. They still claim that functions are "pure" by default, but
 allow functions to perform print statements while still being "pure". Printing data
 to standard out is an impure side effect, but if you constrain the definition of
-"side effects" to only include mutability of memory, this could be fine.
+"side effects" to only include mutability of memory, this could be fine. There
+seems to be an issue about this on [the github tracker][vpure], but it was
+closed.
 
 [vrelease0127]: https://github.com/vlang/v/releases/tag/0.1.27
 [ast]: https://github.com/vlang/v/commit/093a025ebfe4f0957d5d69ad4ddcdc905a6d7b81#diff-5adb689a65970037f7f0ced3d4b9e800
+[vpure]: https://github.com/vlang/v/issues/4930
 
 The next stable release 0.2 seems to be planned for June 2020 (according to the readme);
 and according to the todo list in the repo, memory management seems to be one of the
 things that will be finished. V is also apparently in alpha, but will also apparently
-jump from alpha directly to stable?
+jump from alpha directly to stable? Given the track record of constantly missed
+release windows, I am not very confident that V 0.2 will be released on time.
+
+Tools like this need to be ready when they are ready. Trying to rush things is a
+very unproductive thing to do and can result in more net harm than good.
 
 ## Build
 
@@ -65,17 +72,49 @@ things (including posix threads) are also dependencies. Pedantically, you could 
 go as far as saying that you could count the Linux kernel, the processor being used
 and the like as dependencies, but that's a bit out of scope for this.
 
+I claim that the V compiler has dependencies because it requires other libraries
+or programs in order to function. For an example, see the output of `ldd` (a
+program that lists the dynamically linked dependencies of other programs) on the
+V compiler and a hello world program:
+
+```
+$ ldd ./v
+        linux-vdso.so.1 (0x00007fff2d044000)
+        libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007f2fb3e4c000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f2fb3a5b000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f2fb4345000)
+```
+
+```
+$ ldd ./hello
+        linux-vdso.so.1 (0x00007ffdfdff2000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fed25771000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007fed25d88000)
+```
+
+If these binaries were really as dependency-free as the V website claims, the
+output of `ldd` would look something like this:
+
+```
+$ ldd $HOME/bin/dhall
+        not a dynamic executable
+```
+
+The V compiler claims to have support for generating machine code directly, but
+in my testing I was unable to figure out how to set the compiler into this mode.
+
 ## Memory Management
 
 > V doesn't use garbage collection or reference counting. The compiler cleans 
 > everything up during compilation. If your V program compiles, it's guaranteed 
 > that it's going to be leak free.
 
-Amusingly, the documentation still claims that memory management is both a work in
-progress and has perfect accuracy for cleaning up things at compile time. Let's run
-my favorite test, the "how much ram do you leak compiling hello world" test. Last
-it leaked `4,600,383` bytes (or about 4.6 megabytes) and before that it leaked
-`3,861,785` bytes (or about 3.9 megabytes). This time:
+Accordingly, the documentation still claims that memory management is both a work in
+progress and has (or will have, it's not clear which is accurate from the
+documentation alone) perfect accuracy for cleaning up things at compile time.
+Let's run my favorite test, the "how much ram do you leak compiling hello world"
+test. Last it leaked `4,600,383` bytes (or about 4.6 megabytes) and before that
+it leaked `3,861,785` bytes (or about 3.9 megabytes). This time:
 
 ```
 $ valgrind ./v hello.v
@@ -103,42 +142,15 @@ $ valgrind ./v hello.v
 
 It seems that the memory managment really is a work in progress. This increase in
 leakage means that the compiler building itself now creates `7,232,779` bytes of
-leaked ram (which if i recall is actually a remarkable improvement).
-
-However, `hello world` seems to leak again:
-
-```
-$ valgrind ./hello                                                                               
-==13258== Memcheck, a memory error detector                                                      
-==13258== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.                        
-==13258== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info                     
-==13258== Command: ./hello                                                                       
-==13258==                                                                                        
-hello world                                                                                      
-==13258==                                                                                        
-==13258== HEAP SUMMARY:                                                                          
-==13258==     in use at exit: 12,144 bytes in 14 blocks                                          
-==13258==   total heap usage: 15 allocs, 1 frees, 13,168 bytes allocated                         
-==13258==                                                                                        
-==13258== LEAK SUMMARY:                                                                          
-==13258==    definitely lost: 0 bytes in 0 blocks                                                
-==13258==    indirectly lost: 0 bytes in 0 blocks                                                
-==13258==      possibly lost: 0 bytes in 0 blocks                                                
-==13258==    still reachable: 12,144 bytes in 14 blocks                                          
-==13258==         suppressed: 0 bytes in 0 blocks                                                
-==13258== Rerun with --leak-check=full to see details of leaked memory                           
-==13258==                                                                                        
-==13258== For counts of detected and suppressed errors, rerun with: -v                           
-==13258== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-```
-
-I'm not entirely sure how this happened, but here is the output of 
-`v -keepc hello.v`: https://git.io/Jfdsu.
+leaked ram (which still is amusingly its install size in memory, when including
+git deltas, temporary files and a worktree copy of V).
 
 ## Doom
 
 The [Doom](https://github.com/vlang/doom) translation project still has one file
-translated (and apparently it breaks sound effects but not music).
+translated (and apparently it breaks sound effects but not music). I have been
+looking forward to the full release of this as it will show a lot about how
+readable the output of V's C to V translation functions.
 
 ## 1.2 Million Lines of Code
 
@@ -153,43 +165,10 @@ user    7m32.860s
 sys     0m14.212s
 ```
 
-This is a major improvement! It's cut at least 2 minutes off of the build time for
-this incredibly contrived benchmark! Let's see how big the generated binary is:
-
-```
-$ du -hs ./main
-179M    ./main
-```
-
-This is identical to how big it was last time. Let's see how much ram it leaks:
-
-```
-$ valgrind ./main
-==11773== Memcheck, a memory error detector
-==11773== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==11773== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
-==11773== Command: ./main
-==11773==
-hello, 1 1!
-<snipped>
-==11773==
-==11773== HEAP SUMMARY:
-==11773==     in use at exit: 12,144 bytes in 14 blocks
-==11773==   total heap usage: 15 allocs, 1 frees, 13,168 bytes allocated
-==11773==
-==11773== LEAK SUMMARY:
-==11773==    definitely lost: 0 bytes in 0 blocks
-==11773==    indirectly lost: 0 bytes in 0 blocks
-==11773==      possibly lost: 0 bytes in 0 blocks
-==11773==    still reachable: 12,144 bytes in 14 blocks
-==11773==         suppressed: 0 bytes in 0 blocks
-==11773== Rerun with --leak-check=full to see details of leaked memory
-==11773==
-==11773== For counts of detected and suppressed errors, rerun with: -v
-==11773== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-```
-
-About what I expected.
+Compared to the last time this benchmark was run, this took 2 minutes less (last
+time it took about 10 minutes). This is actually a major improvement, and means
+that V's claims of speed are that much closer to reality at least on my test
+hardware.
 
 ## Concurrency
 
@@ -220,7 +199,8 @@ fn add(mut foo []int) {
 
 In theory, this should have two threads infinitely trying to increment `foo[0]`, 
 which will eventually result in `foo[0]` getting corrupted by two threads trying to
-do the same thing at the same time (given the tight loops invovled).
+do the same thing at the same time (given the tight loops invovled). This leads
+to undefined behavior, which can be catastrophic in production facing applications.
 
 However, I can't get this to build:
 
@@ -256,5 +236,25 @@ to help me out, please open an issue about this.
 
 ---
 
-Overall, V looks like it is making about as much progress as I had figured it would.
-I wish the team luck in their work!
+EDIT(Xe): 2020 M06 23
+
+I do not plan to make any future update posts about the V programming language
+in the future. The V community is something I would really rather not be
+associated with. This is an edited-down version of the post that was released
+last week (2020 M06 17).
+
+As of the time of writing this note to the end of this post and as far as I am
+aware, I am banned from being able to contribute to the V language in any form.
+I am therefore forced to consider that the V project will respond to criticism
+of their language with bans. This subjective view of reality may not be accurate
+to what others see. 
+
+I would like to see this situation result in a net improvement for everyone
+involved. V is an interesting take on a stagnant field of computer science, but
+I cannot continue to comment on this language or give it any of the signal boost
+I have given it with this series of posts.
+
+Thank you for reading. I will continue with my normal posts in the next few
+days.
+
+Be well.
