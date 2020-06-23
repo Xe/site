@@ -112,9 +112,10 @@ in my testing I was unable to figure out how to set the compiler into this mode.
 Accordingly, the documentation still claims that memory management is both a work in
 progress and has (or will have, it's not clear which is accurate from the
 documentation alone) perfect accuracy for cleaning up things at compile time.
-Let's run my favorite test, the "how much ram do you leak compiling hello world"
-test. Last it leaked `4,600,383` bytes (or about 4.6 megabytes) and before that
-it leaked `3,861,785` bytes (or about 3.9 megabytes). This time:
+Every one of these posts I have run a benchmark against the V compiler, I like to
+call it the "how much ram do you leak compiling hello world" test. Last it leaked 
+`4,600,383` bytes (or about 4.6 megabytes) and before that it leaked `3,861,785`
+bytes (or about 3.9 megabytes). This time:
 
 ```
 $ valgrind ./v hello.v
@@ -150,7 +151,7 @@ git deltas, temporary files and a worktree copy of V).
 The [Doom](https://github.com/vlang/doom) translation project still has one file
 translated (and apparently it breaks sound effects but not music). I have been
 looking forward to the full release of this as it will show a lot about how
-readable the output of V's C to V translation functions.
+readable the output of V's C to V translation feature is.
 
 ## 1.2 Million Lines of Code
 
