@@ -86,6 +86,7 @@ in  [ Person::{
         , "linux"
         , "lua"
         , "python"
+        , "rust"
         , "shell"
         ]
       , gitLink = "https://github.com/ansimita"
