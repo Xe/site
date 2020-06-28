@@ -791,8 +791,8 @@ select.form-control {
 }
 
 .signalboost > .cell {
-  margin-right: 1rem;
-  margin-bottom: 2rem;
+  padding-right: 1rem;
+  padding-bottom: 2rem;
 }
 .signalboost > .cell > p {
   margin-top: 0.5rem;
