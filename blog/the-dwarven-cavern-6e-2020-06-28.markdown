@@ -27,9 +27,10 @@ adventure: The Dwarven Cavern. This was derived from One Page Dungeons by
 [Geoffrey Cullop](https://twitter.com/cullopgeoffrey), specifically this is a
 variant of Kobold Caverns on page 5. Please note that the experience, gold and
 hitpoints of enemies are balanced for the group I play with, and will probably
-need to be adjusted for other parties of adventurers. My group is also very
-stun-heavy, so that makes my job of attempting to balance things really
-interesting.
+need to be adjusted for other parties of adventurers. This should work for
+players at level 1-3. By the end they should gain enough experience to level up
+once. My group is also very stun-heavy, so that makes my job of attempting to
+balance things really interesting.
 
 Like most great adventures, this starts at a humble tavern, The Flying
 Ombudsman.
