@@ -283,7 +283,7 @@ get poisoned from the poison streaking out of the dagger.
 
 The poison has 5 charges.
 
-Merchants do not want to take the risk buying it and will you pay them for its
+Merchants do not want to take the risk buying it and will have you pay them for its
 disposal. This cannot be purchased.
 
 ### Bubba's Clubba
