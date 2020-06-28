@@ -95,7 +95,7 @@ Business has been booming ever since.
 
 The first part has 1 mechanical trap around the second corner, players will need
 to work their way through it with low light or to grab a working torch off the
-wall. The traps do 1d4 damage.
+wall. The trap does 1d4 damage.
 
 The tunnel opens into a guard station, the dwarf archers wait behind cover for
 players to get in range of their shortbows. If they get within 10 feet of the
@@ -107,7 +107,7 @@ weird liquid in flasks, scientific equipment, etc. There is a Dwarf Grenadier
 there and will attack you on sight. He throws alchemical grenades at range (1d6
 damage, =6 -> random elemental effect), If the players get within melee range of
 the Grenadier then he will use a poisoned dagger. If the guards retreated then
-he will use them as meat shields. He has 15 hp. He drops 1d4 alchemical grenades
+he will use them as meat shields. He has 25 hp. He drops 1d4 alchemical grenades
 and also drops his poisoned dagger. He grants 300xp on defeat.
 
 The bigger chamber is the dwarven living area. Plenty of beds to hide behind,
@@ -331,3 +331,8 @@ I still wonder how they are going to use that Cursed Amulet of Chest though.
 Thank you [@infinite_mao](https://twitter.com/infinite_mao) for making 6E. I can
 only hope that my buying your stuff separately and making this content for 6E
 can help give back to the community.
+
+Feedback on the balance of this is very welcome. I openly welcome any and all
+feedback about how this quest could be rebalanced to be a bit less lopsided in
+favor of the players. I also wanted to err on the side of balancing towards the
+players to avoid an unwanted party death.
