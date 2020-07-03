@@ -179,6 +179,7 @@ in  [ Person::{
         , "azure"
         ]
       , gitLink = "https://github.com/dudymas"
+      , twitter = "https://twitter.com/dudymas"
       }
     , Person::{
       , name = "Zachary McKee"
