@@ -162,6 +162,25 @@ in  [ Person::{
       , twitter = "_berwyn_"
       }
     , Person::{
+      , name = "Jeremy White"
+      , tags =
+        [ "kubernetes"
+        , "golang"
+        , "devops"
+        , "python"
+        , "rust"
+        , "csharp"
+        , "angular"
+        , "react"
+        , "javascript"
+        , "saltstack"
+        , "aws"
+        , "google-cloud"
+        , "azure"
+        ]
+      , gitLink = "https://github.com/dudymas"
+      }
+    , Person::{
       , name = "Zachary McKee"
       , tags = 
         [ "javascipt"
