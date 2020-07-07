@@ -141,27 +141,6 @@ in  [ Person::{
       , twitter = "N/A"
       }
     , Person::{
-      , name = "Berwyn Jamesson"
-      , tags =
-        [ "angular"
-        , "typescript"
-        , "javascript"
-        , "azure"
-        , "linux"
-        , "docker"
-        , "kubernetes"
-        , "rust"
-        , "dotnet"
-        , "csharp"
-        , "ruby"
-        , "rails"
-        , "react"
-        , "vue"
-        ]
-      , gitLink = "https://github.com/berwyn"
-      , twitter = "_berwyn_"
-      }
-    , Person::{
       , name = "Jeremy White"
       , tags =
         [ "kubernetes"
