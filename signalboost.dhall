@@ -159,4 +159,17 @@ in  [ Person::{
       , gitLink = "https://github.com/ZacharyRMcKee"
       , twitter = "N/A"
       }
+      , Person::{
+      , name = "Muazzam Kazmi"
+      , tags = 
+        [ "Rust"
+        , "C++"
+        , "x86assembly"
+        , "WinAPI"
+        , "Node.js"
+        , "React.js"
+        ]
+      , gitLink = "https://github.com/muazzamalikazmi"
+      , twitter = "N/A"
+      }
     ]
