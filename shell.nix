@@ -15,6 +15,13 @@ mkShell {
     gopls
     vgo2nix
 
+    # Rust
+    cargo
+    cargo-watch
+    rls
+    rustc
+    rustfmt
+
     # kubernetes deployment
     dhall
     dhall-yaml
