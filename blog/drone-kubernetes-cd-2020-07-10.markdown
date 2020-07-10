@@ -307,8 +307,6 @@ kubermemes), applies the generated manifest (which looks something like
 [this](http://sprunge.us/zsO4os)) and makes sure the deployment rolls out
 successfully.
 
-My kubernetes manifest in dhall looks like this:
-
 This will have the kubernetes cluster automatically roll out new versions of the
 service and maintain at least two active replicas of the service. This will make
 sure that you users can always have access to high-quality printer facts, even
