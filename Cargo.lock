@@ -2187,6 +2187,7 @@ dependencies = [
  "comrak",
  "envy",
  "log 0.4.8",
+ "mime 0.3.16",
  "pretty_env_logger",
  "rand 0.7.3",
  "ructe",

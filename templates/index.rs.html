@@ -1,12 +1,16 @@
+@use super::{header_html, footer_html};
+
 @()
+
+@:header_html(None, None)
 
 <link rel="authorization_endpoint" href="https://idp.christine.website/auth">
 <link rel="canonical" href="https://christine.website/">
 <meta name="google-site-verification" content="rzs9eBEquMYr9Phrg0Xm0mIwFjDBcbdgJ3jF6Disy-k" />
 <script type="application/ld+json">
  @{
-     "@context": "http://schema.org/",
-     "@type": "Person",
+     "@@context": "http://schema.org/",
+     "@@type": "Person",
      "name": "Christine Dodrill",
      "alternateName": "Cadey, Xe, Xena",
      "url": "https://christine.website",
@@ -15,7 +19,7 @@
          "https://github.com/Xe",
          "https://git.xeserv.us/xena",
          "https://twitter.com/theprincessxena",
-         "https://mst3k.interlinked.me/@cadey",
+         "https://mst3k.interlinked.me/@@cadey",
          "https://www.linkedin.com/in/christine-dodrill-1827a010b/",
          "https://www.youtube.com/user/shadowh511"
      ]
@@ -24,7 +28,7 @@
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:site" content="@theprincessxena" />
+<meta name="twitter:site" content="@@theprincessxena" />
 <meta name="twitter:title" content="Christine Dodrill" />
 <meta name="twitter:description" content="Full-stack Engineer" />
 
@@ -76,10 +80,12 @@
         <ul>
             <li><a href="https://github.com/Xe" rel="me">GitHub</a></li>
             <li><a href="https://twitter.com/theprincessxena" rel="me">Twitter</a></li>
-            <li><a href="https://mst3k.interlinked.me/@cadey" rel="me">Mastodon</a></li>
+            <li><a href="https://mst3k.interlinked.me/@@cadey" rel="me">Mastodon</a></li>
             <li><a href="https://www.patreon.com/cadey" rel="me">Patreon</a></li>
         </ul>
 
         <p>Looking for someone for your team? Check <a href="/signalboost">here</a>.
     </div>
 </div>
+
+@:footer_html()
