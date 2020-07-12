@@ -38,4 +38,5 @@ mkShell {
   ];
 
   CLACK_SET = "Ashlynn,Terry Davis,Dennis Ritchie";
+  RUST_LOG = "info";
 }

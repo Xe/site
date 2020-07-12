@@ -13,19 +13,16 @@ async fn main() -> Result<()> {
 
     let state = app::init()?;
 
-    // GET /hello/warp => 200 OK with body "Hello, warp!"
-    let hello = warp::path!("hello" / String).map(|name| format!("Hello, {}!", name));
+    let routes = warp::get()
+        .and(path::end().and_then(handlers::index))
+        .or(warp::path!("contact").and_then(handlers::contact))
+        .or(warp::path!("feeds").and_then(handlers::feeds));
 
     let files = warp::path("static")
         .and(warp::fs::dir("./static"))
         .or(warp::path("css").and(warp::fs::dir("./css")));
 
-    let site = warp::get()
-        .and(path::end())
-        .and_then(handlers::index)
-        .or(hello)
-        .or(files)
-        .with(warp::log(APPLICATION_NAME));
+    let site = routes.or(files).with(warp::log(APPLICATION_NAME));
 
     warp::serve(site).run(([127, 0, 0, 1], 3030)).await;
 
