@@ -21,3 +21,8 @@ pub async fn resume(state: Arc<State>) -> Result<impl Reply, Rejection> {
     let state = state.clone();
     Response::builder().html(|o| templates::resume_html(o, Html(state.resume.clone())))
 }
+
+pub async fn signalboost(state: Arc<State>) -> Result<impl Reply, Rejection> {
+    let state = state.clone();
+    Response::builder().html(|o| templates::signalboost_html(o, state.signalboost.clone()))
+}

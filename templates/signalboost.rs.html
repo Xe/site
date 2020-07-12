@@ -1,0 +1,29 @@
+@use super::{header_html, footer_html};
+@use crate::signalboost::Person;
+
+@(people: Vec<Person>)
+
+@:header_html(Some("Signal Boosts"), None)
+
+<h1>Signal Boosts</h1>
+
+<p>These awesome people are currently looking for a job. If you are looking for anyone with these skills, please feel free to reach out to them.</p>
+
+<p>To add yourself to this list, fork <a href="https://github.com/Xe/site">this website's source code</a> and send a pull request with edits to <code>signalboost.dhall</code>.</p>
+
+<!-- TODO(Xe): Remove this after COVID-19 is less of a thing -->
+<p>With COVID-19 raging across the world, these people are in need of a job now more than ever.</p>
+
+<h2>People</h2>
+
+<div class="grid signalboost">
+    @for person in people {
+        <div class="cell -4of12 content">
+            <big>@person.name</big>
+            <p>@for tag in person.tags { @tag }</p>
+            <a href="@person.git_link">GitHub</a> - <a href="@person.twitter">Twitter</a>
+        </div>
+    }
+</div>
+
+@:footer_html()
