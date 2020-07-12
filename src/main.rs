@@ -1,22 +1,34 @@
 use anyhow::Result;
+use std::sync::Arc;
 use warp::{path, Filter};
 
 pub mod app;
 pub mod handlers;
 pub mod signalboost;
 
+use app::State;
+
 const APPLICATION_NAME: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
+
+fn with_state(
+    state: Arc<State>,
+) -> impl Filter<Extract = (Arc<State>,), Error = std::convert::Infallible> + Clone {
+    warp::any().map(move || state.clone())
+}
 
 #[tokio::main]
 async fn main() -> Result<()> {
     pretty_env_logger::init();
 
-    let state = app::init()?;
+    let state = Arc::new(app::init()?);
 
     let routes = warp::get()
         .and(path::end().and_then(handlers::index))
         .or(warp::path!("contact").and_then(handlers::contact))
-        .or(warp::path!("feeds").and_then(handlers::feeds));
+        .or(warp::path!("feeds").and_then(handlers::feeds))
+        .or(warp::path!("resume")
+            .and(with_state(state.clone()))
+            .and_then(handlers::resume));
 
     let files = warp::path("static")
         .and(warp::fs::dir("./static"))

@@ -9,11 +9,11 @@ build = "src/build.rs"
 
 [dependencies]
 anyhow = "1"
-comrak = "0.7"
+comrak = "0.8"
 envy = "0.4"
 log = "0"
-pretty_env_logger = "0"
 mime = "0.3.0"
+pretty_env_logger = "0"
 rand = "0"
 ructe = "0.11"
 serde_dhall = "0.5.3"

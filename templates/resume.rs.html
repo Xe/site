@@ -1,0 +1,9 @@
+@use super::{header_html, footer_html};
+
+@(resume: impl ToHtml)
+
+@:header_html(Some("Resume"), None)
+
+@resume
+
+@:footer_html()
