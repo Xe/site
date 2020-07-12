@@ -3,6 +3,7 @@ name = "xesite"
 version = "2.0.0"
 authors = ["Christine Dodrill <me@christine.website>"]
 edition = "2018"
+build = "src/build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -10,11 +11,15 @@ edition = "2018"
 anyhow = "1"
 comrak = "0.7"
 envy = "0.4"
-handlebars = "3.2.1"
 log = "0"
 pretty_env_logger = "0"
 rand = "0"
+ructe = "0.11"
 serde_dhall = "0.5.3"
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "0.2", features = ["macros"] }
 warp = "0.2"
+
+[build-dependencies]
+ructe = { version = "0.11", features = ["warp02"] }
+

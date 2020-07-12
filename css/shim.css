@@ -1,0 +1,20 @@
+.main {
+	padding: 20px 10px;
+}
+
+.hack h1 {
+	padding-top: 0;
+}
+
+footer.footer {
+	border-top: 1px solid #ccc;
+	margin-top: 80px;
+	margin-top: 5rem;
+	padding: 48px 0;
+	padding: 3rem 0;
+}
+
+img {
+	max-width: 100%;
+	padding: 1em;
+}
