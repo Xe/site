@@ -22,6 +22,10 @@ mkShell {
     rustc
     rustfmt
 
+    # system dependencies
+    openssl
+    pkg-config
+
     # kubernetes deployment
     dhall
     dhall-yaml

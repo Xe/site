@@ -5,9 +5,4 @@ cw.tar
 /result-*
 /result
 .#*
-
-
-
-#Added by cargo
-
 /target
