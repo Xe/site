@@ -1,6 +1,6 @@
 [package]
 name = "xesite"
-version = "0.1.0"
+version = "2.0.0"
 authors = ["Christine Dodrill <me@christine.website>"]
 edition = "2018"
 
@@ -9,6 +9,7 @@ edition = "2018"
 [dependencies]
 anyhow = "1"
 comrak = "0.7"
+envy = "0.4"
 handlebars = "3.2.1"
 log = "0"
 pretty_env_logger = "0"

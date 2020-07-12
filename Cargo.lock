@@ -333,6 +333,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "envy"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f938a4abd5b75fe3737902dbc2e79ca142cc1526827a9e40b829a086758531a9"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "fake-simd"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2160,14 +2169,15 @@ dependencies = [
 
 [[package]]
 name = "xesite"
-version = "0.1.0"
+version = "2.0.0"
 dependencies = [
  "anyhow",
  "comrak",
+ "envy",
  "handlebars",
- "log 0.4.8",
+ "log 0.3.9",
  "pretty_env_logger",
- "rand 0.7.3",
+ "rand 0.6.5",
  "serde",
  "serde_dhall",
  "tokio",
