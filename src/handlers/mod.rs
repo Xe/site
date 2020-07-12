@@ -1,12 +1,9 @@
 use crate::{
     app::State,
-    templates::{self, RenderRucte, Html},
+    templates::{self, Html, RenderRucte},
 };
 use std::sync::Arc;
-use warp::{
-    http::{Response, StatusCode},
-    path, Filter, Rejection, Reply,
-};
+use warp::{http::Response, Rejection, Reply};
 
 pub async fn index() -> Result<impl Reply, Rejection> {
     Response::builder().html(|o| templates::index_html(o))

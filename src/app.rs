@@ -36,6 +36,21 @@ pub struct Config {
     resume_fname: PathBuf,
 }
 
+pub fn markdown(inp: &str) -> String {
+    let mut options = ComrakOptions::default();
+
+    options.extension.autolink = true;
+    options.extension.table = true;
+    options.extension.description_lists = true;
+    options.extension.superscript = true;
+    options.extension.strikethrough = true;
+    options.extension.footnotes = true;
+
+    options.render.unsafe_ = true;
+
+    markdown_to_html(inp, &options)
+}
+
 pub struct State {
     pub cfg: Config,
     pub signalboost: Vec<Person>,
@@ -46,20 +61,7 @@ pub fn init<'a>() -> Result<State> {
     let cfg: Config = envy::from_env()?;
     let sb = serde_dhall::from_file(cfg.signalboost_fname.clone()).parse()?;
     let resume = fs::read_to_string(cfg.resume_fname.clone())?;
-    let resume: String = {
-        let mut options = ComrakOptions::default();
-
-        options.extension.autolink = true;
-        options.extension.table = true;
-        options.extension.description_lists = true;
-        options.extension.superscript = true;
-        options.extension.strikethrough = true;
-        options.extension.footnotes = true;
-
-        options.render.unsafe_ = true;
-
-        markdown_to_html(&resume, &options)
-    };
+    let resume: String = markdown(&resume);
 
     Ok(State {
         cfg: cfg,
