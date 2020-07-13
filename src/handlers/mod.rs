@@ -81,7 +81,6 @@ pub async fn blog_post_view(name: String, state: Arc<State>) -> Result<impl Repl
     let mut want: Option<Post> = None;
 
     for post in &state.blog {
-        log::debug!("{}", post.link);
         if post.link == format!("blog/{}", name) {
             want = Some(post.clone());
         }

@@ -20,6 +20,7 @@ fn with_state(
 #[tokio::main]
 async fn main() -> Result<()> {
     pretty_env_logger::init();
+    log::info!("starting up");
 
     let state = Arc::new(app::init(
         std::env::var("CONFIG_FNAME")
@@ -92,6 +93,7 @@ async fn main() -> Result<()> {
             )
         })
         .or(healthcheck)
+        .map(|reply| warp::reply::with_header(reply, "X-Clacks-Overhead", "GNU Ashlynn"))
         .with(warp::log(APPLICATION_NAME))
         .recover(handlers::rejection);
 
