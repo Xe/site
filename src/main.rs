@@ -30,6 +30,24 @@ async fn main() -> Result<()> {
 
     let healthcheck = warp::get().and(warp::path(".within").and(warp::path("health")).map(|| "OK"));
 
+    let blog = {
+        let base = warp::path!("blog" / ..);
+        let index = base
+            .and(warp::path::end())
+            .and(with_state(state.clone()))
+            .and_then(handlers::blog_index);
+        let series = base.and(
+            warp::path!("series").and(with_state(state.clone()).and_then(handlers::blog_series)),
+        );
+
+        index.or(series)
+    };
+
+    // let blog_series_view = warp::path!("blog" / "series" / String)
+    // .and(warp::get())
+    // .and(with_state(state.clone())
+    //      .and_then( move | series: String, state: Arc<State> | handlers::blog_series_view(series, state)));
+
     let routes = warp::get()
         .and(path::end().and_then(handlers::index))
         .or(warp::path!("contact").and_then(handlers::contact))
@@ -40,12 +58,8 @@ async fn main() -> Result<()> {
         .or(warp::path!("signalboost")
             .and(with_state(state.clone()))
             .and_then(handlers::signalboost))
-        .or(warp::path!("blog").and(
-            warp::path::end()
-                .and(with_state(state.clone()))
-                .and_then(handlers::blog_index),
-        ));
-
+        .or(blog)
+        .or(warp::any().and_then(handlers::not_found));
     let files = warp::path("static")
         .and(warp::fs::dir("./static"))
         .or(warp::path("css").and(warp::fs::dir("./css")))
