@@ -36,21 +36,21 @@ async fn main() -> Result<()> {
         let index = base
             .and(warp::path::end())
             .and(with_state(state.clone()))
-            .and_then(handlers::blog_index);
+            .and_then(handlers::blog::index);
         let series = base.and(
-            warp::path!("series").and(with_state(state.clone()).and_then(handlers::blog_series)),
+            warp::path!("series").and(with_state(state.clone()).and_then(handlers::blog::series)),
         );
         let series_view = base.and(
             warp::path!("series" / String)
                 .and(with_state(state.clone()))
                 .and(warp::get())
-                .and_then(handlers::blog_series_view),
+                .and_then(handlers::blog::series_view),
         );
         let post_view = base.and(
             warp::path!(String)
                 .and(with_state(state.clone()))
                 .and(warp::get())
-                .and_then(handlers::blog_post_view),
+                .and_then(handlers::blog::post_view),
         );
 
         index.or(series.or(series_view)).or(post_view)
