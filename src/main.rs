@@ -39,7 +39,12 @@ async fn main() -> Result<()> {
             .and_then(handlers::resume))
         .or(warp::path!("signalboost")
             .and(with_state(state.clone()))
-            .and_then(handlers::signalboost));
+            .and_then(handlers::signalboost))
+        .or(warp::path!("blog").and(
+            warp::path::end()
+                .and(with_state(state.clone()))
+                .and_then(handlers::blog_index),
+        ));
 
     let files = warp::path("static")
         .and(warp::fs::dir("./static"))

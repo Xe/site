@@ -30,3 +30,8 @@ pub async fn signalboost(state: Arc<State>) -> Result<impl Reply, Rejection> {
 pub async fn not_found(path: String) -> Result<impl Reply, Rejection> {
     Response::builder().html(|o| templates::notfound_html(o, path))
 }
+
+pub async fn blog_index(state: Arc<State>) -> Result<impl Reply, Rejection> {
+    let state = state.clone();
+    Response::builder().html(|o| templates::blogindex_html(o, state.blog.clone()))
+}
