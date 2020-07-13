@@ -10,3 +10,14 @@ pub struct Person {
 
     pub twitter: String,
 }
+
+#[cfg(test)]
+mod tests {
+    use anyhow::Result;
+    #[test]
+    fn load() -> Result<()> {
+        let people: Vec<super::Person> = serde_dhall::from_file("./signalboost.dhall").parse()?;
+
+        Ok(())
+    }
+}

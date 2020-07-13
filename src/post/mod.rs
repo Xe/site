@@ -5,7 +5,7 @@ use std::{cmp::Ordering, fs};
 
 pub mod frontmatter;
 
-#[derive(Eq, PartialEq, Debug)]
+#[derive(Eq, PartialEq, Debug, Clone)]
 pub struct Post {
     pub front_matter: frontmatter::Data,
     pub link: String,
@@ -60,7 +60,19 @@ mod tests {
 
     #[test]
     fn blog() -> Result<()> {
-        load("./blog")?;
+        load("blog")?;
+        Ok(())
+    }
+
+    #[test]
+    fn gallery() -> Result<()> {
+        load("gallery")?;
+        Ok(())
+    }
+
+    #[test]
+    fn talks() -> Result<()> {
+        load("talks")?;
         Ok(())
     }
 }
