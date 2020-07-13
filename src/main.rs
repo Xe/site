@@ -27,6 +27,8 @@ async fn main() -> Result<()> {
             .into(),
     )?);
 
+    let healthcheck = warp::get().and(warp::path(".within").and(warp::path("health")).map(|| "OK"));
+
     let routes = warp::get()
         .and(path::end().and_then(handlers::index))
         .or(warp::path!("contact").and_then(handlers::contact))
@@ -40,9 +42,21 @@ async fn main() -> Result<()> {
 
     let files = warp::path("static")
         .and(warp::fs::dir("./static"))
-        .or(warp::path("css").and(warp::fs::dir("./css")));
+        .or(warp::path("css").and(warp::fs::dir("./css")))
+        .or(warp::path("sw.js").and(warp::fs::file("./static/js/sw.js")))
+        .or(warp::path("robots.txt").and(warp::fs::file("./static/robots.txt")));
 
-    let site = routes.or(files).with(warp::log(APPLICATION_NAME));
+    let site = routes
+        .or(files)
+        .map(|reply| {
+            warp::reply::with_header(
+                reply,
+                "X-Hacker",
+                "If you are reading this, check out /signalboost to find people for your team",
+            )
+        })
+        .or(healthcheck)
+        .with(warp::log(APPLICATION_NAME));
 
     warp::serve(site).run(([127, 0, 0, 1], 3030)).await;
 

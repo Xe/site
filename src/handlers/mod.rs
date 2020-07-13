@@ -26,3 +26,7 @@ pub async fn signalboost(state: Arc<State>) -> Result<impl Reply, Rejection> {
     let state = state.clone();
     Response::builder().html(|o| templates::signalboost_html(o, state.signalboost.clone()))
 }
+
+pub async fn not_found(path: String) -> Result<impl Reply, Rejection> {
+    Response::builder().html(|o| templates::notfound_html(o, path))
+}
