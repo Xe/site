@@ -16,7 +16,7 @@ mod tests {
     use anyhow::Result;
     #[test]
     fn load() -> Result<()> {
-        let people: Vec<super::Person> = serde_dhall::from_file("./signalboost.dhall").parse()?;
+        let _people: Vec<super::Person> = serde_dhall::from_file("./signalboost.dhall").parse()?;
 
         Ok(())
     }

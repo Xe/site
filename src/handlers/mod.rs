@@ -35,6 +35,7 @@ pub async fn not_found() -> Result<impl Reply, Rejection> {
 }
 
 pub mod blog;
+pub mod gallery;
 
 #[derive(Debug, thiserror::Error)]
 struct PostNotFound(String, String);

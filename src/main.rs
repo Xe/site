@@ -56,6 +56,16 @@ async fn main() -> Result<()> {
         index.or(series.or(series_view)).or(post_view)
     };
 
+    let gallery = {
+        let base = warp::path!("gallery" / ..);
+        let index = base
+            .and(warp::path::end())
+            .and(with_state(state.clone()))
+            .and_then(handlers::gallery::index);
+
+        index
+    };
+
     let static_pages = {
         let contact = warp::path!("contact").and_then(handlers::contact);
         let feeds = warp::path!("feeds").and_then(handlers::feeds);
@@ -72,7 +82,8 @@ async fn main() -> Result<()> {
     let routes = warp::get()
         .and(path::end().and_then(handlers::index))
         .or(static_pages)
-        .or(blog);
+        .or(blog)
+        .or(gallery);
 
     let files = {
         let files = warp::path("static").and(warp::fs::dir("./static"));
