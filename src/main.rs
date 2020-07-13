@@ -20,7 +20,12 @@ fn with_state(
 async fn main() -> Result<()> {
     pretty_env_logger::init();
 
-    let state = Arc::new(app::init()?);
+    let state = Arc::new(app::init(
+        std::env::var("CONFIG_FNAME")
+            .unwrap_or("./config.dhall".into())
+            .as_str()
+            .into(),
+    )?);
 
     let routes = warp::get()
         .and(path::end().and_then(handlers::index))

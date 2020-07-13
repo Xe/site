@@ -1,38 +1,16 @@
 use crate::signalboost::Person;
 use anyhow::Result;
+use comrak::{markdown_to_html, ComrakOptions};
 use serde::Deserialize;
 use std::{fs, path::PathBuf};
-use comrak::{markdown_to_html, ComrakOptions};
-
-mod defaults {
-    use std::path::PathBuf;
-
-    pub fn clacks() -> Vec<String> {
-        vec!["Ashlynn".to_string()]
-    }
-
-    pub fn signalboost_fname() -> PathBuf {
-        "./signalboost.dhall".into()
-    }
-
-    pub fn port() -> u16 {
-        34252
-    }
-
-    pub fn resume_fname() -> PathBuf {
-        "./static/resume/resume.md".into()
-    }
-}
 
 #[derive(Clone, Deserialize)]
 pub struct Config {
-    #[serde(default = "defaults::clacks")]
+    #[serde(rename = "clackSet")]
     clack_set: Vec<String>,
-    #[serde(default = "defaults::signalboost_fname")]
-    signalboost_fname: PathBuf,
-    #[serde(default = "defaults::port")]
+    signalboost: Vec<Person>,
     port: u16,
-    #[serde(default = "defaults::resume_fname")]
+    #[serde(rename = "resumeFname")]
     resume_fname: PathBuf,
 }
 
@@ -57,9 +35,9 @@ pub struct State {
     pub resume: String,
 }
 
-pub fn init<'a>() -> Result<State> {
-    let cfg: Config = envy::from_env()?;
-    let sb = serde_dhall::from_file(cfg.signalboost_fname.clone()).parse()?;
+pub fn init(cfg: PathBuf) -> Result<State> {
+    let cfg: Config = serde_dhall::from_file(cfg).parse()?;
+    let sb = cfg.signalboost.clone();
     let resume = fs::read_to_string(cfg.resume_fname.clone())?;
     let resume: String = markdown(&resume);
 
