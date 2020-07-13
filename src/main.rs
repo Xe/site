@@ -39,35 +39,51 @@ async fn main() -> Result<()> {
         let series = base.and(
             warp::path!("series").and(with_state(state.clone()).and_then(handlers::blog_series)),
         );
+        let series_view = base.and(
+            warp::path!("series" / String)
+                .and(with_state(state.clone()))
+                .and(warp::get())
+                .and_then(handlers::blog_series_view),
+        );
+        let post_view = base.and(
+            warp::path!(String)
+                .and(with_state(state.clone()))
+                .and(warp::get())
+                .and_then(handlers::blog_post_view),
+        );
 
-        index.or(series)
+        index.or(series.or(series_view)).or(post_view)
     };
 
-    // let blog_series_view = warp::path!("blog" / "series" / String)
-    // .and(warp::get())
-    // .and(with_state(state.clone())
-    //      .and_then( move | series: String, state: Arc<State> | handlers::blog_series_view(series, state)));
+    let static_pages = {
+        let contact = warp::path!("contact").and_then(handlers::contact);
+        let feeds = warp::path!("feeds").and_then(handlers::feeds);
+        let resume = warp::path!("resume")
+            .and(with_state(state.clone()))
+            .and_then(handlers::resume);
+        let signalboost = warp::path!("signalboost")
+            .and(with_state(state.clone()))
+            .and_then(handlers::signalboost);
+
+        contact.or(feeds.or(resume.or(signalboost)))
+    };
 
     let routes = warp::get()
         .and(path::end().and_then(handlers::index))
-        .or(warp::path!("contact").and_then(handlers::contact))
-        .or(warp::path!("feeds").and_then(handlers::feeds))
-        .or(warp::path!("resume")
-            .and(with_state(state.clone()))
-            .and_then(handlers::resume))
-        .or(warp::path!("signalboost")
-            .and(with_state(state.clone()))
-            .and_then(handlers::signalboost))
-        .or(blog)
-        .or(warp::any().and_then(handlers::not_found));
-    let files = warp::path("static")
-        .and(warp::fs::dir("./static"))
-        .or(warp::path("css").and(warp::fs::dir("./css")))
-        .or(warp::path("sw.js").and(warp::fs::file("./static/js/sw.js")))
-        .or(warp::path("robots.txt").and(warp::fs::file("./static/robots.txt")));
+        .or(static_pages)
+        .or(blog);
 
-    let site = routes
-        .or(files)
+    let files = {
+        let files = warp::path("static").and(warp::fs::dir("./static"));
+        let css = warp::path("css").and(warp::fs::dir("./css"));
+        let sw = warp::path("sw.js").and(warp::fs::file("./static/js/sw.js"));
+        let robots = warp::path("robots.txt").and(warp::fs::file("./static/robots.txt"));
+
+        files.or(css).or(sw).or(robots)
+    };
+
+    let site = files
+        .or(routes)
         .map(|reply| {
             warp::reply::with_header(
                 reply,
@@ -76,7 +92,8 @@ async fn main() -> Result<()> {
             )
         })
         .or(healthcheck)
-        .with(warp::log(APPLICATION_NAME));
+        .with(warp::log(APPLICATION_NAME))
+        .recover(handlers::rejection);
 
     warp::serve(site).run(([127, 0, 0, 1], 3030)).await;
 

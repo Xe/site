@@ -3,8 +3,11 @@ use crate::{
     post::Post,
     templates::{self, Html, RenderRucte},
 };
-use std::sync::Arc;
-use warp::{http::Response, Rejection, Reply};
+use std::{convert::Infallible, fmt, sync::Arc};
+use warp::{
+    http::{Response, StatusCode},
+    Rejection, Reply,
+};
 
 pub async fn index() -> Result<impl Reply, Rejection> {
     Response::builder().html(|o| templates::index_html(o))
@@ -67,5 +70,91 @@ pub async fn blog_series_view(series: String, state: Arc<State>) -> Result<impl 
         posts.push(post.clone());
     }
 
-    Response::builder().html(|o| templates::series_posts_html(o, series, &posts))
+    if posts.len() == 0 {
+        Err(SeriesNotFound(series).into())
+    } else {
+        Response::builder().html(|o| templates::series_posts_html(o, series, &posts))
+    }
+}
+
+pub async fn blog_post_view(name: String, state: Arc<State>) -> Result<impl Reply, Rejection> {
+    let mut want: Option<Post> = None;
+
+    for post in &state.blog {
+        log::debug!("{}", post.link);
+        if post.link == format!("blog/{}", name) {
+            want = Some(post.clone());
+        }
+    }
+
+    match want {
+        None => Err(PostNotFound("blog".into(), name).into()),
+        Some(post) => {
+            let body = Html(post.body_html.clone());
+            Response::builder().html(|o| templates::blogpost_html(o, post, body))
+        }
+    }
+}
+
+#[derive(Debug, thiserror::Error)]
+struct PostNotFound(String, String);
+
+impl fmt::Display for PostNotFound {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "not found: {}/{}", self.0, self.1)
+    }
+}
+
+impl warp::reject::Reject for PostNotFound {}
+
+impl From<PostNotFound> for warp::reject::Rejection {
+    fn from(error: PostNotFound) -> Self {
+        warp::reject::custom(error)
+    }
+}
+
+#[derive(Debug, thiserror::Error)]
+struct SeriesNotFound(String);
+
+impl fmt::Display for SeriesNotFound {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl warp::reject::Reject for SeriesNotFound {}
+
+impl From<SeriesNotFound> for warp::reject::Rejection {
+    fn from(error: SeriesNotFound) -> Self {
+        warp::reject::custom(error)
+    }
+}
+
+pub async fn rejection(err: Rejection) -> Result<impl Reply, Infallible> {
+    let path: String;
+    let code;
+
+    if err.is_not_found() {
+        path = "".into();
+        code = StatusCode::NOT_FOUND;
+    } else if let Some(SeriesNotFound(series)) = err.find() {
+        log::error!("invalid series {}", series);
+        path = format!("/blog/series/{}", series);
+        code = StatusCode::NOT_FOUND;
+    } else if let Some(PostNotFound(kind, name)) = err.find() {
+        log::error!("unknown post {}/{}", kind, name);
+        path = format!("/{}/{}", kind, name);
+        code = StatusCode::NOT_FOUND;
+    } else {
+        log::error!("unhandled rejection: {:?}", err);
+        path = "wut".into();
+        code = StatusCode::INTERNAL_SERVER_ERROR;
+    }
+
+    Ok(warp::reply::with_status(
+        Response::builder()
+            .html(|o| templates::notfound_html(o, path))
+            .unwrap(),
+        code,
+    ))
 }
