@@ -100,14 +100,10 @@ function share_on_mastodon() @{
                 localStorage['mastodon_instance'] = instance; 
 
                 // Hashtags 
-                var hashtags = "#blogpost";
-
-                @if post.front_matter.series.is_some() {
-                    hashtags += "#@post.front_matter.series.as_ref().unwrap()";
-                }
+                var hashtags = "#art";
 
                 @if post.front_matter.tags.is_some() {
-                    hashtags += "@for tag in post.front_matter.tags.as_ref().unwrap() { #@tag  }";
+                    hashtags += "@for tag in post.front_matter.tags.as_ref().unwrap() { #@tag}";
                 }
 
                 // Tagging users, such as offical accounts or the author of the post 
