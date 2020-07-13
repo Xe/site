@@ -62,8 +62,14 @@ async fn main() -> Result<()> {
             .and(warp::path::end())
             .and(with_state(state.clone()))
             .and_then(handlers::gallery::index);
+        let post_view = base.and(
+            warp::path!(String)
+                .and(with_state(state.clone()))
+                .and(warp::get())
+                .and_then(handlers::gallery::post_view),
+        );
 
-        index
+        index.or(post_view)
     };
 
     let static_pages = {
