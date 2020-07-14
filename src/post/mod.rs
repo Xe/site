@@ -62,13 +62,14 @@ impl Into<atom::Entry> for Post {
         link.href = format!("https://christine.website/{}", self.link);
         result.links(vec![link]);
         result.content(content);
-        // result.published(Some(
-        //     DateTime::<Utc>::from_utc(
-        //         NaiveDateTime::new(self.date, NaiveTime::from_hms(0, 0, 0)),
-        //         Utc,
-        //     )
-        //     .with_timezone(&Utc),
-        // ));
+        result.published(Some(
+            DateTime::<Utc>::from_utc(
+                NaiveDateTime::new(self.date, NaiveTime::from_hms(0, 0, 0)),
+                Utc,
+            )
+            .with_timezone(&Utc)
+            .into(),
+        ));
 
         result.build().unwrap()
     }
