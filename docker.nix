@@ -1,7 +1,8 @@
 { system ? builtins.currentSystem }:
 
 let
-  pkgs = import (import ./nix/sources.nix).nixpkgs { inherit system; };
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { inherit system; };
   callPackage = pkgs.lib.callPackageWith pkgs;
   site = callPackage ./site.nix { };
 
@@ -10,11 +11,12 @@ let
       name = "xena/christinewebsite";
       tag = "latest";
 
-      contents = [ pkgs.cacert ];
+      contents = [ pkg ];
 
       config = {
         Cmd = [ "${pkg}/bin/xesite" ];
-        WorkingDir = "${pkg}/";
+        Env = [ "CONFIG_FNAME=${pkg}/config.dhall" "RUST_LOG=info" ];
+        WorkingDir = "/";
       };
     };
 

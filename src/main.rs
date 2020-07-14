@@ -135,7 +135,7 @@ async fn main() -> Result<()> {
         .with(warp::log(APPLICATION_NAME))
         .recover(handlers::rejection);
 
-    warp::serve(site).run(([127, 0, 0, 1], 3030)).await;
+    warp::serve(site).run(([0, 0, 0, 0], 3030)).await;
 
     Ok(())
 }

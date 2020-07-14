@@ -6,13 +6,28 @@ let
     builtins.filterSource
     (path: type: type != "directory" || builtins.baseNameOf path != "target")
     dir;
+
   naersk = pkgs.callPackage sources.naersk { };
-  gruvbox-css = pkgs.callPackage sources.gruvbox-css { };
+  dhallpkgs = import sources.easy-dhall-nix { inherit pkgs; };
   src = srcNoTarget ./.;
+
   xesite = naersk.buildPackage {
     inherit src;
     buildInputs = [ pkg-config openssl ];
     remapPathPrefix = true;
+  };
+
+  config = stdenv.mkDerivation {
+    pname = "xesite-config";
+    version = "HEAD";
+    buildInputs = [ dhallpkgs.dhall-simple ];
+
+    phases = "installPhase";
+
+    installPhase = ''
+      cd ${src}
+      dhall resolve < ${src}/config.dhall >> $out
+    '';
   };
 
 in pkgs.stdenv.mkDerivation {
@@ -21,9 +36,9 @@ in pkgs.stdenv.mkDerivation {
   phases = "installPhase";
 
   installPhase = ''
-    mkdir -p $out $out/blog $out/css $out/gallery $out/static $out/talks $out/bin
+    mkdir -p $out $out/bin
 
-    cp -rf $src/config.dhall $out/config.dhall
+    cp -rf ${config} $out/config.dhall
     cp -rf $src/blog $out/blog
     cp -rf $src/css $out/css
     cp -rf $src/gallery $out/gallery
