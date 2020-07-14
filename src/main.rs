@@ -1,4 +1,6 @@
 use anyhow::Result;
+use hyper::{header::CONTENT_TYPE, Body, Response};
+use prometheus::{Encoder, TextEncoder};
 use std::sync::Arc;
 use warp::{path, Filter};
 
@@ -72,6 +74,22 @@ async fn main() -> Result<()> {
         index.or(post_view)
     };
 
+    let talks = {
+        let base = warp::path!("talks" / ..);
+        let index = base
+            .and(warp::path::end())
+            .and(with_state(state.clone()))
+            .and_then(handlers::talks::index);
+        let post_view = base.and(
+            warp::path!(String)
+                .and(with_state(state.clone()))
+                .and(warp::get())
+                .and_then(handlers::talks::post_view),
+        );
+
+        index.or(post_view)
+    };
+
     let static_pages = {
         let contact = warp::path!("contact").and_then(handlers::contact);
         let feeds = warp::path!("feeds").and_then(handlers::feeds);
@@ -82,14 +100,8 @@ async fn main() -> Result<()> {
             .and(with_state(state.clone()))
             .and_then(handlers::signalboost);
 
-        contact.or(feeds.or(resume.or(signalboost)))
+        contact.or(feeds).or(resume).or(signalboost)
     };
-
-    let routes = warp::get()
-        .and(path::end().and_then(handlers::index))
-        .or(static_pages)
-        .or(blog)
-        .or(gallery);
 
     let files = {
         let files = warp::path("static").and(warp::fs::dir("./static"));
@@ -100,8 +112,26 @@ async fn main() -> Result<()> {
         files.or(css).or(sw).or(robots)
     };
 
+    let metrics_endpoint = warp::path("metrics").and(warp::path::end()).map(move || {
+        let encoder = TextEncoder::new();
+        let metric_families = prometheus::gather();
+        let mut buffer = vec![];
+        encoder.encode(&metric_families, &mut buffer).unwrap();
+        Response::builder()
+            .status(200)
+            .header(CONTENT_TYPE, encoder.format_type())
+            .body(Body::from(buffer))
+            .unwrap()
+    });
+
     let site = files
-        .or(routes)
+        .or(warp::get().and(path::end().and_then(handlers::index)))
+        .or(static_pages)
+        .or(blog)
+        .or(gallery)
+        .or(talks)
+        .or(healthcheck)
+        .or(metrics_endpoint)
         .map(|reply| {
             warp::reply::with_header(
                 reply,
@@ -109,7 +139,6 @@ async fn main() -> Result<()> {
                 "If you are reading this, check out /signalboost to find people for your team",
             )
         })
-        .or(healthcheck)
         .map(|reply| warp::reply::with_header(reply, "X-Clacks-Overhead", "GNU Ashlynn"))
         .with(warp::log(APPLICATION_NAME))
         .recover(handlers::rejection);
