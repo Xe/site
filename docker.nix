@@ -8,13 +8,13 @@ let
   dockerImage = pkg:
     pkgs.dockerTools.buildLayeredImage {
       name = "xena/christinewebsite";
-      tag = pkg.version;
+      tag = "latest";
 
-      contents = [ pkg pkgs.cacert ];
+      contents = [ pkgs.cacert ];
 
       config = {
-        Cmd = [ "/bin/site" ];
-        WorkingDir = "/";
+        Cmd = [ "${pkg}/bin/xesite" ];
+        WorkingDir = "${pkg}/";
       };
     };
 

@@ -1,28 +1,36 @@
-{ pkgs ? import (import ./nix/sources.nix).nixpkgs { } }:
+{ sources ? import ./nix/sources.nix, pkgs ? import sources.nixpkgs { } }:
 with pkgs;
 
-assert lib.versionAtLeast go.version "1.13";
+let
+  srcNoTarget = dir:
+    builtins.filterSource
+    (path: type: type != "directory" || builtins.baseNameOf path != "target")
+    dir;
+  naersk = pkgs.callPackage sources.naersk { };
+  gruvbox-css = pkgs.callPackage sources.gruvbox-css { };
+  src = srcNoTarget ./.;
+  xesite = naersk.buildPackage {
+    inherit src;
+    buildInputs = [ pkg-config openssl ];
+    remapPathPrefix = true;
+  };
 
-buildGoPackage rec {
-  name = "christinewebsite-HEAD";
-  version = "latest";
-  goPackagePath = "christine.website";
-  src = ./.;
-  goDeps = ./nix/deps.nix;
-  allowGoReference = false;
+in pkgs.stdenv.mkDerivation {
+  inherit (xesite) name;
+  inherit src;
+  phases = "installPhase";
 
-  preBuild = ''
-    export CGO_ENABLED=0
-    buildFlagsArray+=(-pkgdir "$TMPDIR")
-  '';
+  installPhase = ''
+    mkdir -p $out $out/blog $out/css $out/gallery $out/static $out/talks $out/bin
 
-  postInstall = ''
+    cp -rf $src/config.dhall $out/config.dhall
     cp -rf $src/blog $out/blog
     cp -rf $src/css $out/css
     cp -rf $src/gallery $out/gallery
     cp -rf $src/signalboost.dhall $out/signalboost.dhall
     cp -rf $src/static $out/static
     cp -rf $src/talks $out/talks
-    cp -rf $src/templates $out/templates
+
+    cp -rf ${xesite}/bin/xesite $out/bin/xesite
   '';
 }
