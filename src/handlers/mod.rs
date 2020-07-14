@@ -49,6 +49,7 @@ pub async fn not_found() -> Result<impl Reply, Rejection> {
 }
 
 pub mod blog;
+pub mod feeds;
 pub mod gallery;
 pub mod talks;
 

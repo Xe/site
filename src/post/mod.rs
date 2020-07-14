@@ -14,6 +14,37 @@ pub struct Post {
     pub date: NaiveDate,
 }
 
+impl Into<jsonfeed::Item> for Post {
+    fn into(self) -> jsonfeed::Item {
+        let mut result = jsonfeed::Item::builder()
+            .title(self.front_matter.title)
+            .content_html(self.body_html)
+            .id(format!("https://christine.website/{}", self.link))
+            .url(format!("https://christine.website/{}", self.link))
+            .date_published(self.front_matter.date);
+
+        let mut tags: Vec<String> = vec![];
+
+        if let Some(series) = self.front_matter.series {
+            tags.push(series);
+        }
+
+        if let Some(mut meta_tags) = self.front_matter.tags {
+            tags.append(&mut meta_tags);
+        }
+
+        if tags.len() != 0 {
+            result = result.tags(tags);
+        }
+
+        if let Some(image_url) = self.front_matter.image {
+            result = result.image(image_url);
+        }
+
+        result.build().unwrap()
+    }
+}
+
 impl Ord for Post {
     fn cmp(&self, other: &Self) -> Ordering {
         self.partial_cmp(&other).unwrap()

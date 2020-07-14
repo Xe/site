@@ -33,84 +33,69 @@ async fn main() -> Result<()> {
 
     let healthcheck = warp::get().and(warp::path(".within").and(warp::path("health")).map(|| "OK"));
 
-    let blog = {
-        let base = warp::path!("blog" / ..);
-        let index = base
-            .and(warp::path::end())
+    let base = warp::path!("blog" / ..);
+    let blog_index = base
+        .and(warp::path::end())
+        .and(with_state(state.clone()))
+        .and_then(handlers::blog::index);
+    let series = base
+        .and(warp::path!("series").and(with_state(state.clone()).and_then(handlers::blog::series)));
+    let series_view = base.and(
+        warp::path!("series" / String)
             .and(with_state(state.clone()))
-            .and_then(handlers::blog::index);
-        let series = base.and(
-            warp::path!("series").and(with_state(state.clone()).and_then(handlers::blog::series)),
-        );
-        let series_view = base.and(
-            warp::path!("series" / String)
-                .and(with_state(state.clone()))
-                .and(warp::get())
-                .and_then(handlers::blog::series_view),
-        );
-        let post_view = base.and(
-            warp::path!(String)
-                .and(with_state(state.clone()))
-                .and(warp::get())
-                .and_then(handlers::blog::post_view),
-        );
-
-        index.or(series.or(series_view)).or(post_view)
-    };
-
-    let gallery = {
-        let base = warp::path!("gallery" / ..);
-        let index = base
-            .and(warp::path::end())
+            .and(warp::get())
+            .and_then(handlers::blog::series_view),
+    );
+    let post_view = base.and(
+        warp::path!(String)
             .and(with_state(state.clone()))
-            .and_then(handlers::gallery::index);
-        let post_view = base.and(
-            warp::path!(String)
-                .and(with_state(state.clone()))
-                .and(warp::get())
-                .and_then(handlers::gallery::post_view),
-        );
+            .and(warp::get())
+            .and_then(handlers::blog::post_view),
+    );
 
-        index.or(post_view)
-    };
-
-    let talks = {
-        let base = warp::path!("talks" / ..);
-        let index = base
-            .and(warp::path::end())
+    let gallery_base = warp::path!("gallery" / ..);
+    let gallery_index = gallery_base
+        .and(warp::path::end())
+        .and(with_state(state.clone()))
+        .and_then(handlers::gallery::index);
+    let gallery_post_view = gallery_base.and(
+        warp::path!(String)
             .and(with_state(state.clone()))
-            .and_then(handlers::talks::index);
-        let post_view = base.and(
-            warp::path!(String)
-                .and(with_state(state.clone()))
-                .and(warp::get())
-                .and_then(handlers::talks::post_view),
-        );
+            .and(warp::get())
+            .and_then(handlers::gallery::post_view),
+    );
 
-        index.or(post_view)
-    };
-
-    let static_pages = {
-        let contact = warp::path!("contact").and_then(handlers::contact);
-        let feeds = warp::path!("feeds").and_then(handlers::feeds);
-        let resume = warp::path!("resume")
+    let talk_base = warp::path!("talks" / ..);
+    let talk_index = talk_base
+        .and(warp::path::end())
+        .and(with_state(state.clone()))
+        .and_then(handlers::talks::index);
+    let talk_post_view = talk_base.and(
+        warp::path!(String)
             .and(with_state(state.clone()))
-            .and_then(handlers::resume);
-        let signalboost = warp::path!("signalboost")
-            .and(with_state(state.clone()))
-            .and_then(handlers::signalboost);
+            .and(warp::get())
+            .and_then(handlers::talks::post_view),
+    );
 
-        contact.or(feeds).or(resume).or(signalboost)
-    };
+    let index = warp::get().and(path::end().and_then(handlers::index));
 
-    let files = {
-        let files = warp::path("static").and(warp::fs::dir("./static"));
-        let css = warp::path("css").and(warp::fs::dir("./css"));
-        let sw = warp::path("sw.js").and(warp::fs::file("./static/js/sw.js"));
-        let robots = warp::path("robots.txt").and(warp::fs::file("./static/robots.txt"));
+    let contact = warp::path!("contact").and_then(handlers::contact);
+    let feeds = warp::path!("feeds").and_then(handlers::feeds);
+    let resume = warp::path!("resume")
+        .and(with_state(state.clone()))
+        .and_then(handlers::resume);
+    let signalboost = warp::path!("signalboost")
+        .and(with_state(state.clone()))
+        .and_then(handlers::signalboost);
 
-        files.or(css).or(sw).or(robots)
-    };
+    let files = warp::path("static").and(warp::fs::dir("./static"));
+    let css = warp::path("css").and(warp::fs::dir("./css"));
+    let sw = warp::path("sw.js").and(warp::fs::file("./static/js/sw.js"));
+    let robots = warp::path("robots.txt").and(warp::fs::file("./static/robots.txt"));
+
+    let jsonfeed = warp::path("blog.json")
+        .and(with_state(state.clone()))
+        .map(handlers::feeds::jsonfeed);
 
     let metrics_endpoint = warp::path("metrics").and(warp::path::end()).map(move || {
         let encoder = TextEncoder::new();
@@ -124,14 +109,16 @@ async fn main() -> Result<()> {
             .unwrap()
     });
 
-    let site = files
-        .or(warp::get().and(path::end().and_then(handlers::index)))
-        .or(static_pages)
-        .or(blog)
-        .or(gallery)
-        .or(talks)
-        .or(healthcheck)
-        .or(metrics_endpoint)
+    let site = index
+        .or(contact.or(feeds))
+        .or(resume.or(signalboost))
+        .or(blog_index.or(series.or(series_view).or(post_view)))
+        .or(gallery_index.or(gallery_post_view))
+        .or(talk_index.or(talk_post_view))
+        .or(jsonfeed)
+        .or(files.or(css))
+        .or(sw.or(robots))
+        .or(healthcheck.or(metrics_endpoint))
         .map(|reply| {
             warp::reply::with_header(
                 reply,

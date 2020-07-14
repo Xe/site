@@ -20,6 +20,51 @@ impl Builder {
         self
     }
 
+    pub fn home_page_url<I: Into<String>>(mut self, url: I) -> Builder {
+        self.0.home_page_url = Some(url.into());
+        self
+    }
+
+    pub fn feed_url<I: Into<String>>(mut self, url: I) -> Builder {
+        self.0.feed_url = Some(url.into());
+        self
+    }
+
+    pub fn description<I: Into<String>>(mut self, desc: I) -> Builder {
+        self.0.description = Some(desc.into());
+        self
+    }
+
+    pub fn user_comment<I: Into<String>>(mut self, cmt: I) -> Builder {
+        self.0.user_comment = Some(cmt.into());
+        self
+    }
+
+    pub fn next_url<I: Into<String>>(mut self, url: I) -> Builder {
+        self.0.next_url = Some(url.into());
+        self
+    }
+
+    pub fn icon<I: Into<String>>(mut self, url: I) -> Builder {
+        self.0.icon = Some(url.into());
+        self
+    }
+
+    pub fn favicon<I: Into<String>>(mut self, url: I) -> Builder {
+        self.0.favicon = Some(url.into());
+        self
+    }
+
+    pub fn author(mut self, author: Author) -> Builder {
+        self.0.author = Some(author);
+        self
+    }
+
+    pub fn expired(mut self) -> Builder {
+        self.0.expired = Some(true);
+        self
+    }
+
     pub fn item(mut self, item: Item) -> Builder {
         self.0.items.push(item);
         self
@@ -29,7 +74,6 @@ impl Builder {
         self.0
     }
 }
-
 
 /// Builder object for an item in a feed
 pub struct ItemBuilder {
@@ -69,6 +113,41 @@ impl ItemBuilder {
 
     pub fn title<I: Into<String>>(mut self, i: I) -> ItemBuilder {
         self.title = Some(i.into());
+        self
+    }
+
+    pub fn image<I: Into<String>>(mut self, i: I) -> ItemBuilder {
+        self.image = Some(i.into());
+        self
+    }
+
+    pub fn id<I: Into<String>>(mut self, i: I) -> ItemBuilder {
+        self.id = Some(i.into());
+        self
+    }
+
+    pub fn url<I: Into<String>>(mut self, i: I) -> ItemBuilder {
+        self.url = Some(i.into());
+        self
+    }
+
+    pub fn external_url<I: Into<String>>(mut self, i: I) -> ItemBuilder {
+        self.external_url = Some(i.into());
+        self
+    }
+
+    pub fn date_modified<I: Into<String>>(mut self, i: I) -> ItemBuilder {
+        self.date_modified = Some(i.into());
+        self
+    }
+
+    pub fn date_published<I: Into<String>>(mut self, i: I) -> ItemBuilder {
+        self.date_published = Some(i.into());
+        self
+    }
+
+    pub fn tags(mut self, tags: Vec<String>) -> ItemBuilder {
+        self.tags = Some(tags);
         self
     }
 

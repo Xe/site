@@ -29,6 +29,8 @@ pub fn markdown(inp: &str) -> String {
     markdown_to_html(inp, &options)
 }
 
+pub const ICON: &'static str = "https://christine.website/static/img/avatar.png";
+
 pub struct State {
     pub cfg: Config,
     pub signalboost: Vec<Person>,
@@ -37,6 +39,7 @@ pub struct State {
     pub gallery: Vec<Post>,
     pub talks: Vec<Post>,
     pub everything: Vec<Post>,
+    pub jf: jsonfeed::Feed,
 }
 
 pub fn init(cfg: PathBuf) -> Result<State> {
@@ -61,6 +64,25 @@ pub fn init(cfg: PathBuf) -> Result<State> {
     everything.sort();
     everything.reverse();
 
+    let mut jfb = jsonfeed::Feed::builder()
+        .title("Christine Dodrill's Blog")
+        .description("My blog posts and rants about various technology things.")
+        .author(
+            jsonfeed::Author::new()
+                .name("Christine Dodrill")
+                .url("https://christine.website")
+                .avatar(ICON),
+        )
+        .feed_url("https://christine.website/blog.json")
+        .user_comment("This is a JSON feed of my blogposts. For more information read: https://jsonfeed.org/version/1")
+        .icon(ICON)
+        .favicon(ICON);
+
+    for post in &everything {
+        let post = post.clone();
+        jfb = jfb.item(post.into());
+    }
+
     Ok(State {
         cfg: cfg,
         signalboost: sb,
@@ -69,6 +91,7 @@ pub fn init(cfg: PathBuf) -> Result<State> {
         gallery: gallery,
         talks: talks,
         everything: everything,
+        jf: jfb.build(),
     })
 }
 

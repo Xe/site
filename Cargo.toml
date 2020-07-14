@@ -28,6 +28,9 @@ thiserror = "1"
 tokio = { version = "0.2", features = ["macros"] }
 warp = "0.2"
 
+# workspace dependencies
+jsonfeed = { path = "./lib/jsonfeed" }
+
 [build-dependencies]
 ructe = { version = "0.11", features = ["warp02"] }
 
