@@ -8,6 +8,8 @@ let tag = env:GITHUB_SHA as Text ? "latest"
 
 let image = "xena/christinewebsite:${tag}"
 
+let prefix = env:SITE_PREFIX as Text ? ""
+
 let vars
     : List kubernetes.EnvVar.Type
     = [ kubernetes.EnvVar::{ name = "PORT", value = Some "3030" } ]
@@ -17,7 +19,7 @@ in  kms.app.make
       , name = "christinewebsite"
       , appPort = 3030
       , image = image
-      , domain = "christine.website"
+      , domain = "${prefix}christine.website"
       , leIssuer = "prod"
       , envVars = vars
       }
