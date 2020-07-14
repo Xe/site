@@ -18,7 +18,6 @@ jobs:
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - run: |
-          nix-build docker.nix
           docker load -i result
           docker tag xena/christinewebsite:latest xena/christinewebsite:$GITHUB_SHA
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin

@@ -19,6 +19,7 @@ in  kms.app.make
       , name = "christinewebsite"
       , appPort = 3030
       , image = image
+      , replicas = 2
       , domain = "${prefix}christine.website"
       , leIssuer = "prod"
       , envVars = vars
