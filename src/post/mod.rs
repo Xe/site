@@ -85,6 +85,7 @@ impl Into<rss::Item> for Post {
         result.guid(guid);
         result.author(Some("me@christine.website".to_string()));
         result.content(self.body_html);
+        result.pub_date(self.front_matter.date);
 
         result.build().unwrap()
     }
