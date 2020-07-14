@@ -1,4 +1,5 @@
 use anyhow::{anyhow, Result};
+use atom_syndication as atom;
 use chrono::prelude::*;
 use glob::glob;
 use std::{cmp::Ordering, fs};
@@ -40,6 +41,49 @@ impl Into<jsonfeed::Item> for Post {
         if let Some(image_url) = self.front_matter.image {
             result = result.image(image_url);
         }
+
+        result.build().unwrap()
+    }
+}
+
+impl Into<atom::Entry> for Post {
+    fn into(self) -> atom::Entry {
+        let mut content = atom::ContentBuilder::default();
+
+        content.src(format!("https://christine.website/{}", self.link));
+        content.content_type(Some("html".into()));
+        content.value(Some(xml::escape::escape_str_pcdata(&self.body_html).into()));
+
+        let content = content.build().unwrap();
+
+        let mut result = atom::EntryBuilder::default();
+        result.title(self.front_matter.title);
+        let mut link = atom::Link::default();
+        link.href = format!("https://christine.website/{}", self.link);
+        result.links(vec![link]);
+        result.content(content);
+        // result.published(Some(
+        //     DateTime::<Utc>::from_utc(
+        //         NaiveDateTime::new(self.date, NaiveTime::from_hms(0, 0, 0)),
+        //         Utc,
+        //     )
+        //     .with_timezone(&Utc),
+        // ));
+
+        result.build().unwrap()
+    }
+}
+
+impl Into<rss::Item> for Post {
+    fn into(self) -> rss::Item {
+        let mut guid = rss::Guid::default();
+        guid.set_value(format!("https://christine.website/{}", self.link));
+        let mut result = rss::ItemBuilder::default();
+        result.title(Some(self.front_matter.title));
+        result.link(format!("https://christine.website/{}", self.link));
+        result.guid(guid);
+        result.author(Some("me@christine.website".to_string()));
+        result.content(self.body_html);
 
         result.build().unwrap()
     }

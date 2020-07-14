@@ -9,6 +9,7 @@ build = "src/build.rs"
 
 [dependencies]
 anyhow = "1"
+atom_syndication = { version = "0.9", features = ["with-serde"] }
 chrono = "0.4"
 comrak = "0.8"
 envy = "0.4"
@@ -20,6 +21,7 @@ mime = "0.3.0"
 pretty_env_logger = "0"
 prometheus = { version = "0.9", default-features = false, features = ["process"] }
 rand = "0"
+rss = "1"
 ructe = "0.11"
 serde_dhall = "0.5.3"
 serde = { version = "1", features = ["derive"] }
@@ -27,6 +29,7 @@ serde_yaml = "0.8"
 thiserror = "1"
 tokio = { version = "0.2", features = ["macros"] }
 warp = "0.2"
+xml-rs = "0.8"
 
 # workspace dependencies
 jsonfeed = { path = "./lib/jsonfeed" }

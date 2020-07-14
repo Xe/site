@@ -92,10 +92,17 @@ async fn main() -> Result<()> {
     let css = warp::path("css").and(warp::fs::dir("./css"));
     let sw = warp::path("sw.js").and(warp::fs::file("./static/js/sw.js"));
     let robots = warp::path("robots.txt").and(warp::fs::file("./static/robots.txt"));
+    let favicon = warp::path("favicon.ico").and(warp::fs::file("./static/favicon/favicon.ico"));
 
     let jsonfeed = warp::path("blog.json")
         .and(with_state(state.clone()))
-        .map(handlers::feeds::jsonfeed);
+        .and_then(handlers::feeds::jsonfeed);
+    let atom = warp::path("blog.atom")
+        .and(with_state(state.clone()))
+        .and_then(handlers::feeds::atom);
+    let rss = warp::path("blog.rss")
+        .and(with_state(state.clone()))
+        .and_then(handlers::feeds::rss);
 
     let metrics_endpoint = warp::path("metrics").and(warp::path::end()).map(move || {
         let encoder = TextEncoder::new();
@@ -110,14 +117,12 @@ async fn main() -> Result<()> {
     });
 
     let site = index
-        .or(contact.or(feeds))
-        .or(resume.or(signalboost))
+        .or(contact.or(feeds).or(resume.or(signalboost)))
         .or(blog_index.or(series.or(series_view).or(post_view)))
         .or(gallery_index.or(gallery_post_view))
         .or(talk_index.or(talk_post_view))
-        .or(jsonfeed)
-        .or(files.or(css))
-        .or(sw.or(robots))
+        .or(jsonfeed.or(atom).or(rss))
+        .or(files.or(css).or(favicon).or(sw.or(robots)))
         .or(healthcheck.or(metrics_endpoint))
         .map(|reply| {
             warp::reply::with_header(
