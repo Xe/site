@@ -10,12 +10,12 @@ let image = "xena/christinewebsite:${tag}"
 
 let vars
     : List kubernetes.EnvVar.Type
-    = [ kubernetes.EnvVar::{ name = "PORT", value = Some "5000" } ]
+    = [ kubernetes.EnvVar::{ name = "PORT", value = Some "3030" } ]
 
 in  kms.app.make
       kms.app.Config::{
       , name = "christinewebsite"
-      , appPort = 5000
+      , appPort = 3030
       , image = image
       , domain = "christine.website"
       , leIssuer = "prod"
