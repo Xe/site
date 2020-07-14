@@ -8,34 +8,34 @@ self.addEventListener('install', function(event) {
 const cacheName = "cache-2019-11-01";
 
 var preLoad = function(){
-  console.log('[PWA Builder] Install Event processing');
-  return caches.open(cacheName).then(function(cache) {
-    console.log('[PWA Builder] Cached index and offline page during Install');
-    return cache.addAll(['/blog/', '/blog', '/', '/contact', '/resume', '/talks', '/gallery']);
-  });
+    console.log('[PWA Builder] Install Event processing');
+    return caches.open(cacheName).then(function(cache) {
+        console.log('[PWA Builder] Cached index and offline page during Install');
+        return cache.addAll(['/blog/', '/blog', '/', '/contact', '/resume', '/talks', '/gallery', '/signalboost']);
+    });
 };
 
 self.addEventListener('fetch', function(event) {
-  if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
-    return;
-  }
-  console.log('[PWA Builder] The service worker is serving the asset.');
-  event.respondWith(checkResponse(event.request).catch(function() {
-    return returnFromCache(event.request);
-  }));
-  event.waitUntil(addToCache(event.request));
+    if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
+        return;
+    }
+    console.log('[PWA Builder] The service worker is serving the asset.');
+    event.respondWith(checkResponse(event.request).catch(function() {
+        return returnFromCache(event.request);
+    }));
+    event.waitUntil(addToCache(event.request));
 });
 
 var checkResponse = function(request){
-  return new Promise(function(fulfill, reject) {
-    fetch(request).then(function(response){
-      if(response.status !== 404) {
-        fulfill(response);
-      } else {
-        reject();
-      }
-    }, reject);
-  });
+    return new Promise(function(fulfill, reject) {
+        fetch(request).then(function(response){
+            if(response.status !== 404) {
+                fulfill(response);
+            } else {
+                reject();
+            }
+        }, reject);
+    });
 };
 
 var addToCache = function(request){
