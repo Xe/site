@@ -1,3 +1,5 @@
+@use chrono::{Datelike, Utc};
+
 @(title: Option<&str>, styles: Option<&str>)
 
 <!DOCTYPE html>
@@ -12,7 +14,7 @@
         <link rel="stylesheet" href="/css/hack.css" />
         <link rel="stylesheet" href="/css/gruvbox-dark.css" />
         <link rel="stylesheet" href="/css/shim.css" />
-        <!-- <link rel="stylesheet" href="/css/snow.css" /> -->
+        @if Utc::now().month() == 12 { <link rel="stylesheet" href="/css/snow.css" /> }
         <link rel="manifest" href="/static/manifest.json" />
 
         <link rel="alternate" title="Christine Dodrill's Blog" type="application/rss+xml" href="https://christine.website/blog.rss" />
