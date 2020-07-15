@@ -151,6 +151,11 @@ impl ItemBuilder {
         self
     }
 
+    pub fn author(mut self, who: Author) -> ItemBuilder {
+        self.author = Some(who);
+        self
+    }
+
     pub fn content_html<I: Into<String>>(mut self, i: I) -> ItemBuilder {
         match self.content {
             Some(Content::Text(t)) => {

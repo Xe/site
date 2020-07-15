@@ -20,9 +20,16 @@ impl Into<jsonfeed::Item> for Post {
         let mut result = jsonfeed::Item::builder()
             .title(self.front_matter.title)
             .content_html(self.body_html)
+            .content_text(self.body)
             .id(format!("https://christine.website/{}", self.link))
             .url(format!("https://christine.website/{}", self.link))
-            .date_published(self.date.to_rfc3339());
+            .date_published(self.date.to_rfc3339())
+            .author(
+                jsonfeed::Author::new()
+                    .name("Christine Dodrill")
+                    .url("https://christine.website")
+                    .avatar("https://christine.website/static/img/avatar.png"),
+            );
 
         let mut tags: Vec<String> = vec![];
 
@@ -57,6 +64,16 @@ impl Into<atom::Entry> for Post {
         let content = content.build().unwrap();
 
         let mut result = atom::EntryBuilder::default();
+        result.id(format!("https://christine.website/{}", self.link));
+        result.contributors({
+            let mut me = atom::Person::default();
+
+            me.set_name("Christine Dodrill");
+            me.set_email("me@christine.website".to_string());
+            me.set_uri("https://christine.website".to_string());
+
+            vec![me]
+        });
         result.title(self.front_matter.title);
         let mut link = atom::Link::default();
         link.href = format!("https://christine.website/{}", self.link);
@@ -76,7 +93,7 @@ impl Into<rss::Item> for Post {
         result.title(Some(self.front_matter.title));
         result.link(format!("https://christine.website/{}", self.link));
         result.guid(guid);
-        result.author(Some("Christine Dodrill <me@christine.website>".to_string()));
+        result.author(Some("me@christine.website (Christine Dodrill)".to_string()));
         result.content(self.body_html);
         result.pub_date(self.date.to_rfc2822());
 
