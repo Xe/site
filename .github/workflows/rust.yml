@@ -14,4 +14,7 @@ jobs:
     - name: Build
       run: cargo build --all
     - name: Run tests
-      run: cargo test --all
+      run: |
+        cargo test
+        (cd lib/go_vanity && cargo test)
+        (cd lib/jsonfeed && cargo test)
