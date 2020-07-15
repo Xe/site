@@ -104,6 +104,11 @@ async fn main() -> Result<()> {
         .and(with_state(state.clone()))
         .and_then(handlers::feeds::rss);
 
+    let go_vanity_jsonfeed = warp::path("jsonfeed")
+        .and(warp::any().map(move || "christine.website/jsonfeed"))
+        .and(warp::any().map(move || "https://tulpa.dev/Xe/jsonfeed"))
+        .and_then(go_vanity::gitea);
+
     let metrics_endpoint = warp::path("metrics").and(warp::path::end()).map(move || {
         let encoder = TextEncoder::new();
         let metric_families = prometheus::gather();
@@ -123,7 +128,7 @@ async fn main() -> Result<()> {
         .or(talk_index.or(talk_post_view))
         .or(jsonfeed.or(atom).or(rss))
         .or(files.or(css).or(favicon).or(sw.or(robots)))
-        .or(healthcheck.or(metrics_endpoint))
+        .or(healthcheck.or(metrics_endpoint).or(go_vanity_jsonfeed))
         .map(|reply| {
             warp::reply::with_header(
                 reply,

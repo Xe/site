@@ -32,6 +32,7 @@ warp = "0.2"
 xml-rs = "0.8"
 
 # workspace dependencies
+go_vanity = { path = "./lib/go_vanity" }
 jsonfeed = { path = "./lib/jsonfeed" }
 
 [build-dependencies]
@@ -39,5 +40,6 @@ ructe = { version = "0.11", features = ["warp02"] }
 
 [workspace]
 members = [
+  "./lib/go_vanity",
   "./lib/jsonfeed"
 ]
