@@ -58,7 +58,7 @@ impl Into<atom::Entry> for Post {
         let mut content = atom::ContentBuilder::default();
 
         content.src(format!("https://christine.website/{}", self.link));
-        content.content_type(Some("html".into()));
+        content.content_type(Some("text/html;charset=utf-8".into()));
         content.value(Some(xml::escape::escape_str_pcdata(&self.body_html).into()));
 
         let content = content.build().unwrap();

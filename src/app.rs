@@ -81,6 +81,7 @@ pub fn init(cfg: PathBuf) -> Result<State> {
         )
         .feed_url("https://christine.website/blog.json")
         .user_comment("This is a JSON feed of my blogposts. For more information read: https://jsonfeed.org/version/1")
+        .home_page_url("https://christine.website")
         .icon(ICON)
         .favicon(ICON);
 
