@@ -13,7 +13,7 @@ let
 
   xesite = naersk.buildPackage {
     inherit src;
-    buildInputs = [ pkg-config openssl ];
+    buildInputs = [ pkg-config openssl git ];
     remapPathPrefix = true;
   };
 
