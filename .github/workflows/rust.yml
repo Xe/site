@@ -16,5 +16,4 @@ jobs:
     - name: Run tests
       run: |
         cargo test
-        (cd lib/go_vanity && cargo test)
         (cd lib/jsonfeed && cargo test)
