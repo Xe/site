@@ -12,7 +12,7 @@ pub struct Post {
     pub link: String,
     pub body: String,
     pub body_html: String,
-    pub date: NaiveDate,
+    pub date: DateTime<FixedOffset>,
 }
 
 impl Into<jsonfeed::Item> for Post {
@@ -22,7 +22,7 @@ impl Into<jsonfeed::Item> for Post {
             .content_html(self.body_html)
             .id(format!("https://christine.website/{}", self.link))
             .url(format!("https://christine.website/{}", self.link))
-            .date_published(self.front_matter.date);
+            .date_published(self.date.to_rfc3339());
 
         let mut tags: Vec<String> = vec![];
 
@@ -62,14 +62,7 @@ impl Into<atom::Entry> for Post {
         link.href = format!("https://christine.website/{}", self.link);
         result.links(vec![link]);
         result.content(content);
-        result.published(Some(
-            DateTime::<Utc>::from_utc(
-                NaiveDateTime::new(self.date, NaiveTime::from_hms(0, 0, 0)),
-                Utc,
-            )
-            .with_timezone(&Utc)
-            .into(),
-        ));
+        result.published(self.date);
 
         result.build().unwrap()
     }
@@ -83,9 +76,9 @@ impl Into<rss::Item> for Post {
         result.title(Some(self.front_matter.title));
         result.link(format!("https://christine.website/{}", self.link));
         result.guid(guid);
-        result.author(Some("me@christine.website".to_string()));
+        result.author(Some("Christine Dodrill <me@christine.website>".to_string()));
         result.content(self.body_html);
-        result.pub_date(self.front_matter.date);
+        result.pub_date(self.date.to_rfc2822());
 
         result.build().unwrap()
     }
@@ -117,7 +110,14 @@ pub fn load(dir: &str) -> Result<Vec<Post>> {
             link: format!("{}/{}", dir, path.file_stem().unwrap().to_str().unwrap()),
             body: markup.to_string(),
             body_html: crate::app::markdown(&markup),
-            date: date,
+            date: {
+                DateTime::<Utc>::from_utc(
+                    NaiveDateTime::new(date, NaiveTime::from_hms(0, 0, 0)),
+                    Utc,
+                )
+                .with_timezone(&Utc)
+                .into()
+            },
         })
     }
 
