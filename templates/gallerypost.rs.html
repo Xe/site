@@ -58,6 +58,8 @@
 <!-- The button that should be clicked. -->
 <button onclick="share_on_mastodon()">Share on Mastodon</button>
 
+<p>This artwork was posted on @post.detri().</p>
+
 @if post.front_matter.series.is_some() {
     <p>Series: <a href="/blog/series/@post.front_matter.series.as_ref().unwrap()">@post.front_matter.series.as_ref().unwrap()</a></p>
 }

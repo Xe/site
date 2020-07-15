@@ -113,6 +113,12 @@ impl PartialOrd for Post {
     }
 }
 
+impl Post {
+    pub fn detri(&self) -> String {
+        self.date.format("M%m %d %Y").to_string()
+    }
+}
+
 pub fn load(dir: &str) -> Result<Vec<Post>> {
     let mut result: Vec<Post> = vec![];
 
