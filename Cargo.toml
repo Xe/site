@@ -23,7 +23,6 @@ pretty_env_logger = "0"
 prometheus = { version = "0.9", default-features = false, features = ["process"] }
 rand = "0"
 rss = "1"
-ructe = "0.11"
 serde_dhall = "0.5.3"
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.8"

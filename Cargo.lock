@@ -1269,11 +1269,15 @@ name = "patreon"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "envy",
  "jsonapi",
+ "log 0.3.9",
+ "pretty_env_logger",
  "reqwest",
  "serde",
  "serde_json",
  "thiserror",
+ "tokio",
 ]
 
 [[package]]
