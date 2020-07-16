@@ -21,6 +21,7 @@ fn with_state(
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    let _ = kankyo::init();
     pretty_env_logger::init();
     log::info!("starting up commit {}", env!("GITHUB_SHA"));
 
