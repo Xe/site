@@ -39,3 +39,4 @@ jobs:
           PATREON_REFRESH_TOKEN: ${{ secrets.PATREON_REFRESH_TOKEN }}
           PATREON_CLIENT_ID: ${{ secrets.PATREON_CLIENT_ID }}
           PATREON_CLIENT_SECRET: ${{ secrets.PATREON_CLIENT_SECRET }}
+          MI_TOKEN: ${{ secrets.MI_TOKEN }}
