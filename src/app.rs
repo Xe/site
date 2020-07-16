@@ -43,6 +43,7 @@ pub struct State {
     pub jf: jsonfeed::Feed,
     pub rf: rss::Channel,
     pub af: atom::Feed,
+    pub sitemap: Vec<u8>,
 }
 
 pub fn init(cfg: PathBuf) -> Result<State> {
@@ -119,6 +120,25 @@ pub fn init(cfg: PathBuf) -> Result<State> {
         rf.build().unwrap()
     };
 
+    let mut sm: Vec<u8> = vec![];
+    let smw = sitemap::writer::SiteMapWriter::new(&mut sm);
+    let mut urlwriter = smw.start_urlset()?;
+    for url in &[
+        "https://christine.website/resume",
+        "https://christine.website/contact",
+        "https://christine.website/",
+        "https://christine.website/blog",
+        "https://christine.website/signalboost",
+    ] {
+        urlwriter.url(*url)?;
+    }
+
+    for post in &everything {
+        urlwriter.url(format!("https://christine.website/{}", post.link))?;
+    }
+
+    urlwriter.end()?;
+
     Ok(State {
         cfg: cfg,
         signalboost: sb,
@@ -130,6 +150,7 @@ pub fn init(cfg: PathBuf) -> Result<State> {
         jf: jfb.build(),
         af: af,
         rf: rf,
+        sitemap: sm,
     })
 }
 

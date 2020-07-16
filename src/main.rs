@@ -22,7 +22,7 @@ fn with_state(
 #[tokio::main]
 async fn main() -> Result<()> {
     pretty_env_logger::init();
-    log::info!("starting up");
+    log::info!("starting up commit {}", env!("GITHUB_SHA"));
 
     let state = Arc::new(app::init(
         std::env::var("CONFIG_FNAME")
@@ -103,6 +103,9 @@ async fn main() -> Result<()> {
     let rss = warp::path("blog.rss")
         .and(with_state(state.clone()))
         .and_then(handlers::feeds::rss);
+    let sitemap = warp::path("sitemap.xml")
+        .and(with_state(state.clone()))
+        .and_then(handlers::feeds::sitemap);
 
     let go_vanity_jsonfeed = warp::path("jsonfeed")
         .and(warp::any().map(move || "christine.website/jsonfeed"))
@@ -126,7 +129,7 @@ async fn main() -> Result<()> {
         .or(blog_index.or(series.or(series_view).or(post_view)))
         .or(gallery_index.or(gallery_post_view))
         .or(talk_index.or(talk_post_view))
-        .or(jsonfeed.or(atom).or(rss))
+        .or(jsonfeed.or(atom).or(rss.or(sitemap)))
         .or(files.or(css).or(favicon).or(sw.or(robots)))
         .or(healthcheck.or(metrics_endpoint).or(go_vanity_jsonfeed))
         .map(|reply| {

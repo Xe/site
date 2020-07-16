@@ -26,6 +26,7 @@ ructe = "0.11"
 serde_dhall = "0.5.3"
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.8"
+sitemap = "0.4"
 thiserror = "1"
 tokio = { version = "0.2", features = ["macros"] }
 warp = "0.2"

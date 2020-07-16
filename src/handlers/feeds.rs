@@ -44,7 +44,6 @@ pub async fn atom(state: Arc<State>) -> Result<impl Reply, Rejection> {
         .map_err(warp::reject::custom)
 }
 
-
 pub async fn rss(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["rss"]).inc();
     let state = state.clone();
@@ -58,6 +57,17 @@ pub async fn rss(state: Arc<State>) -> Result<impl Reply, Rejection> {
         .status(200)
         .header("Content-Type", "application/rss+xml")
         .body(buf)
+        .map_err(RenderError::Build)
+        .map_err(warp::reject::custom)
+}
+
+pub async fn sitemap(state: Arc<State>) -> Result<impl Reply, Rejection> {
+    HIT_COUNTER.with_label_values(&["sitemap"]).inc();
+    let state = state.clone();
+    Response::builder()
+        .status(200)
+        .header("Content-Type", "application/xml")
+        .body(state.sitemap.clone())
         .map_err(RenderError::Build)
         .map_err(warp::reject::custom)
 }
