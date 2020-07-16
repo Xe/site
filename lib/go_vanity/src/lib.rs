@@ -1,5 +1,5 @@
 use warp::{http::Response, Rejection, Reply};
-use crate::templates::{Html, RenderRucte};
+use crate::templates::{RenderRucte};
 
 include!(concat!(env!("OUT_DIR"), "/templates.rs"));
 
