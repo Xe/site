@@ -1,0 +1,27 @@
+= JSON Feed Parser
+
+[link=https://github.com/pwoolcoc/jsonfeed]
+image::https://img.shields.io/crates/v/jsonfeed.svg[JSON Feed crate version]
+
+This is a http://jsonfeed.org[JSON Feed] parser in Rust. Just a thin layer on top of `serde`, but it
+provides serialization & deserialization, along with a Builder API for constructing feeds.
+
+Note that this is alpha, I still need to add a lot of tests and a couple more features.
+
+== Example
+
+----
+extern crate jsonfeed;
+extern crate reqwest;
+
+fn main() {
+	let resp = reqwest::get("https://example.com/feed.json").unwrap();
+	let feed = jsonfeed::from_reader(resp).unwrap();
+	println!("Feed title is: {}", feed.title);
+}
+----
+
+TODO:
+
+* Tests. Lots and lots of tests
+* Implement ability to add, serialize, and deserialize custom attributes from the json feed spec

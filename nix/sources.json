@@ -11,6 +11,18 @@
         "url": "https://github.com/justinwoo/easy-dhall-nix/archive/735ad924fd829c9bbee0a167e0b2bbbf91e2cad5.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "naersk": {
+        "branch": "master",
+        "description": "Build rust crates in Nix. No configuration, no code generation, no IFD. Sandbox friendly.",
+        "homepage": "",
+        "owner": "nmattia",
+        "repo": "naersk",
+        "rev": "d5a23213d561893cebdf0d251502430334673036",
+        "sha256": "0ifvqv3vjg80hhgxr7b22i22gh2gxw0gm5iijd9r7y4qd7n2yrcp",
+        "type": "tarball",
+        "url": "https://github.com/nmattia/naersk/archive/d5a23213d561893cebdf0d251502430334673036.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "niv": {
         "branch": "master",
         "description": "Easy dependency management for Nix projects",

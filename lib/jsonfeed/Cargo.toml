@@ -1,0 +1,15 @@
+[package]
+authors = ["Paul Woolcock <paul@woolcock.us>", "Christine Dodrill <me@christine.website>"]
+description = "Parser for the JSONFeed (http://jsonfeed.org) specification\n"
+documentation = "https://docs.rs/jsonfeed"
+homepage = "https://github.com/pwoolcoc/jsonfeed"
+license = "MIT/Apache-2.0"
+name = "jsonfeed"
+readme = "README.adoc"
+version = "0.3.0"
+
+[dependencies]
+error-chain = "0.12"
+serde = "1"
+serde_derive = "1"
+serde_json = "1"

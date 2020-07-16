@@ -9,11 +9,16 @@ in with pkgs;
 with xepkgs;
 mkShell {
   buildInputs = [
-    # Go tools
-    go
-    goimports
-    gopls
-    vgo2nix
+    # Rust
+    cargo
+    cargo-watch
+    rls
+    rustc
+    rustfmt
+
+    # system dependencies
+    openssl
+    pkg-config
 
     # kubernetes deployment
     dhall
@@ -26,5 +31,8 @@ mkShell {
     ispell
   ];
 
+  SITE_PREFIX = "devel.";
   CLACK_SET = "Ashlynn,Terry Davis,Dennis Ritchie";
+  RUST_LOG = "info";
+  GITHUB_SHA = "devel";
 }

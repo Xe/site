@@ -1,0 +1,14 @@
+@(pkg_name: &str, git_repo: &str)
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="go-import" content="@pkg_name git @git_repo">
+        <meta name="go-source" content="@pkg_name @git_repo @git_repo/tree/master@{/dir@} @git_repo/blob/master@{/dir@}/@{file@}#L@{line@}">
+        <meta http-equiv="refresh" content="0; url=https://godoc.org/@pkg_name">
+    </head>
+    <body>
+        Please see <a href="https://godoc.org/@pkg_name">here</a> for documentation on this package.
+    </body>
+</html>
