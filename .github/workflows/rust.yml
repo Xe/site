@@ -17,3 +17,4 @@ jobs:
       run: |
         cargo test
         (cd lib/jsonfeed && cargo test)
+        (cd lib/patreon && cargo test)

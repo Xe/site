@@ -11,7 +11,7 @@ let
       name = "xena/christinewebsite";
       tag = "latest";
 
-      contents = [ pkg ];
+      contents = [ pkgs.cacert pkg ];
 
       config = {
         Cmd = [ "${pkg}/bin/xesite" ];
