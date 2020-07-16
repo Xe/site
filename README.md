@@ -1,5 +1,8 @@
 # site
 
-My personal/portfolio website.
+[![built with
+nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+![Nix](https://github.com/Xe/site/workflows/Nix/badge.svg)
+![Rust](https://github.com/Xe/site/workflows/Rust/badge.svg)
 
-![https://puu.sh/vWnJx/57cda175d8.png](https://puu.sh/vWnJx/57cda175d8.png)
+My personal/portfolio website.
