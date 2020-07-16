@@ -37,6 +37,15 @@ pub async fn resume(state: Arc<State>) -> Result<impl Reply, Rejection> {
     Response::builder().html(|o| templates::resume_html(o, Html(state.resume.clone())))
 }
 
+pub async fn patrons(state: Arc<State>) -> Result<impl Reply, Rejection> {
+    HIT_COUNTER.with_label_values(&["patrons"]).inc();
+    let state = state.clone();
+    match &state.patrons {
+        None => Response::builder().html(|o| templates::error_html(o, "Could not load patrons, let me know the API token expired again".to_string())),
+        Some(patrons) => Response::builder().html(|o| templates::patrons_html(o, patrons.clone()))
+    }
+}
+
 pub async fn signalboost(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["signalboost"]).inc();
     let state = state.clone();

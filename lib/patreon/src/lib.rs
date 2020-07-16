@@ -1,6 +1,4 @@
 #[macro_use]
-extern crate jsonapi;
-#[macro_use]
 extern crate log;
 
 use serde::{Deserialize, Serialize};
@@ -9,6 +7,7 @@ use chrono::prelude::*;
 
 pub type Campaigns = Vec<Object<Campaign>>;
 pub type Pledges = Vec<Object<Pledge>>;
+pub type Users = Vec<Object<User>>;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Campaign {

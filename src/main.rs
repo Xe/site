@@ -30,7 +30,7 @@ async fn main() -> Result<()> {
             .unwrap_or("./config.dhall".into())
             .as_str()
             .into(),
-    )?);
+    ).await?);
 
     let healthcheck = warp::get().and(warp::path(".within").and(warp::path("health")).map(|| "OK"));
 
@@ -79,7 +79,6 @@ async fn main() -> Result<()> {
     );
 
     let index = warp::get().and(path::end().and_then(handlers::index));
-
     let contact = warp::path!("contact").and_then(handlers::contact);
     let feeds = warp::path!("feeds").and_then(handlers::feeds);
     let resume = warp::path!("resume")
@@ -88,6 +87,9 @@ async fn main() -> Result<()> {
     let signalboost = warp::path!("signalboost")
         .and(with_state(state.clone()))
         .and_then(handlers::signalboost);
+    let patrons = warp::path!("patrons")
+        .and(with_state(state.clone()))
+        .and_then(handlers::patrons);
 
     let files = warp::path("static").and(warp::fs::dir("./static"));
     let css = warp::path("css").and(warp::fs::dir("./css"));
@@ -126,7 +128,7 @@ async fn main() -> Result<()> {
     });
 
     let site = index
-        .or(contact.or(feeds).or(resume.or(signalboost)))
+        .or(contact.or(feeds).or(resume.or(signalboost)).or(patrons))
         .or(blog_index.or(series.or(series_view).or(post_view)))
         .or(gallery_index.or(gallery_post_view))
         .or(talk_index.or(talk_post_view))

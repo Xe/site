@@ -30,6 +30,23 @@ pub fn markdown(inp: &str) -> String {
     markdown_to_html(inp, &options)
 }
 
+async fn patrons() -> Result<Option<patreon::Users>> {
+    use patreon::*;
+    let creds: Credentials = envy::prefixed("PATREON_").from_env().unwrap();
+    let cli = Client::new(creds);
+
+    if let Ok(camp) = cli.campaign().await {
+        let id = camp.data[0].id.clone();
+        if let Ok(users) = cli.pledges(id).await {
+            Ok(Some(users))
+        } else {
+            Ok(None)
+        }
+    } else {
+        Ok(None)
+    }
+}
+
 pub const ICON: &'static str = "https://christine.website/static/img/avatar.png";
 
 pub struct State {
@@ -44,9 +61,10 @@ pub struct State {
     pub rf: rss::Channel,
     pub af: atom::Feed,
     pub sitemap: Vec<u8>,
+    pub patrons: Option<patreon::Users>,
 }
 
-pub fn init(cfg: PathBuf) -> Result<State> {
+pub async fn init(cfg: PathBuf) -> Result<State> {
     let cfg: Config = serde_dhall::from_file(cfg).parse()?;
     let sb = cfg.signalboost.clone();
     let resume = fs::read_to_string(cfg.resume_fname.clone())?;
@@ -151,15 +169,16 @@ pub fn init(cfg: PathBuf) -> Result<State> {
         af: af,
         rf: rf,
         sitemap: sm,
+        patrons: patrons().await?,
     })
 }
 
 #[cfg(test)]
 mod tests {
     use anyhow::Result;
-    #[test]
-    fn init() -> Result<()> {
-        super::init("./config.dhall".into())?;
+    #[tokio::test]
+    async fn init() -> Result<()> {
+        super::init("./config.dhall".into()).await?;
         Ok(())
     }
 }

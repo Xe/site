@@ -8,11 +8,27 @@ let tag = env:GITHUB_SHA as Text ? "latest"
 
 let image = "xena/christinewebsite:${tag}"
 
-let prefix = env:SITE_PREFIX as Text ? ""
-
 let vars
     : List kubernetes.EnvVar.Type
-    = [ kubernetes.EnvVar::{ name = "PORT", value = Some "3030" } ]
+    = [ kubernetes.EnvVar::{ name = "PORT", value = Some "3030" }
+      , kubernetes.EnvVar::{ name = "RUST_LOG", value = Some "info" }
+      , kubernetes.EnvVar::{
+        , name = "PATREON_CLIENT_ID"
+        , value = Some env:PATREON_CLIENT_ID as Text
+        }
+      , kubernetes.EnvVar::{
+        , name = "PATREON_CLIENT_SECRET"
+        , value = Some env:PATREON_CLIENT_SECRET as Text
+        }
+      , kubernetes.EnvVar::{
+        , name = "PATREON_ACCESS_TOKEN"
+        , value = Some env:PATREON_ACCESS_TOKEN as Text
+        }
+      , kubernetes.EnvVar::{
+        , name = "PATREON_REFRESH_TOKEN"
+        , value = Some env:PATREON_REFRESH_TOKEN as Text
+        }
+      ]
 
 in  kms.app.make
       kms.app.Config::{
