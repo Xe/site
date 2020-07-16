@@ -35,15 +35,22 @@ async fn patrons() -> Result<Option<patreon::Users>> {
     let creds: Credentials = envy::prefixed("PATREON_").from_env().unwrap();
     let cli = Client::new(creds);
 
-    if let Ok(camp) = cli.campaign().await {
-        let id = camp.data[0].id.clone();
-        if let Ok(users) = cli.pledges(id).await {
-            Ok(Some(users))
-        } else {
+    match cli.campaign().await {
+        Ok(camp) => {
+            let id = camp.data[0].id.clone();
+
+            match cli.pledges(id).await {
+                Ok(users) => Ok(Some(users)),
+                Err(why) => {
+                    log::error!("error getting pledges: {:?}", why);
+                    Ok(None)
+                }
+            }
+        }
+        Err(why) => {
+            log::error!("error getting patreon campaign: {:?}", why);
             Ok(None)
         }
-    } else {
-        Ok(None)
     }
 }
 

@@ -3,7 +3,7 @@ use crate::{
     templates::{self, Html, RenderRucte},
 };
 use lazy_static::lazy_static;
-use prometheus::{IntCounterVec, register_int_counter_vec, opts};
+use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::{convert::Infallible, fmt, sync::Arc};
 use warp::{
     http::{Response, StatusCode},
@@ -41,8 +41,13 @@ pub async fn patrons(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["patrons"]).inc();
     let state = state.clone();
     match &state.patrons {
-        None => Response::builder().html(|o| templates::error_html(o, "Could not load patrons, let me know the API token expired again".to_string())),
-        Some(patrons) => Response::builder().html(|o| templates::patrons_html(o, patrons.clone()))
+        None => Response::builder().status(500).html(|o| {
+            templates::error_html(
+                o,
+                "Could not load patrons, let me know the API token expired again".to_string(),
+            )
+        }),
+        Some(patrons) => Response::builder().html(|o| templates::patrons_html(o, patrons.clone())),
     }
 }
 
@@ -97,9 +102,11 @@ impl From<SeriesNotFound> for warp::reject::Rejection {
 }
 
 lazy_static! {
-    static ref REJECTION_COUNTER: IntCounterVec =
-        register_int_counter_vec!(opts!("rejections", "Number of rejections by kind"), &["kind"])
-        .unwrap();
+    static ref REJECTION_COUNTER: IntCounterVec = register_int_counter_vec!(
+        opts!("rejections", "Number of rejections by kind"),
+        &["kind"]
+    )
+    .unwrap();
 }
 
 pub async fn rejection(err: Rejection) -> Result<impl Reply, Infallible> {
@@ -111,7 +118,9 @@ pub async fn rejection(err: Rejection) -> Result<impl Reply, Infallible> {
         path = "".into();
         code = StatusCode::NOT_FOUND;
     } else if let Some(SeriesNotFound(series)) = err.find() {
-        REJECTION_COUNTER.with_label_values(&["SeriesNotFound"]).inc();
+        REJECTION_COUNTER
+            .with_label_values(&["SeriesNotFound"])
+            .inc();
         log::error!("invalid series {}", series);
         path = format!("/blog/series/{}", series);
         code = StatusCode::NOT_FOUND;
