@@ -9,12 +9,6 @@ in with pkgs;
 with xepkgs;
 mkShell {
   buildInputs = [
-    # Go tools
-    go
-    goimports
-    gopls
-    vgo2nix
-
     # Rust
     cargo
     cargo-watch
