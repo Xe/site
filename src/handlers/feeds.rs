@@ -20,7 +20,6 @@ pub async fn jsonfeed(state: Arc<State>) -> Result<impl Reply, Rejection> {
 
 #[derive(Debug)]
 pub enum RenderError {
-    WriteRss(rss::Error),
     Build(warp::http::Error),
     IO(io::Error),
 }
@@ -46,10 +45,8 @@ pub async fn rss(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["rss"]).inc();
     let state = state.clone();
     let mut buf = Vec::new();
-    state
-        .rf
-        .write_to(&mut buf)
-        .map_err(RenderError::WriteRss)
+    templates::blog_rss_xml(&mut buf, state.everything.clone())
+        .map_err(RenderError::IO)
         .map_err(warp::reject::custom)?;
     Response::builder()
         .status(200)

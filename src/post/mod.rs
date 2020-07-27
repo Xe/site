@@ -52,22 +52,6 @@ impl Into<jsonfeed::Item> for Post {
     }
 }
 
-impl Into<rss::Item> for Post {
-    fn into(self) -> rss::Item {
-        let mut guid = rss::Guid::default();
-        guid.set_value(format!("https://christine.website/{}", self.link));
-        let mut result = rss::ItemBuilder::default();
-        result.title(Some(self.front_matter.title));
-        result.link(format!("https://christine.website/{}", self.link));
-        result.guid(guid);
-        result.author(Some("me@christine.website (Christine Dodrill)".to_string()));
-        result.content(self.body_html);
-        result.pub_date(self.date.to_rfc2822());
-
-        result.build().unwrap()
-    }
-}
-
 impl Ord for Post {
     fn cmp(&self, other: &Self) -> Ordering {
         self.partial_cmp(&other).unwrap()

@@ -64,7 +64,6 @@ pub struct State {
     pub talks: Vec<Post>,
     pub everything: Vec<Post>,
     pub jf: jsonfeed::Feed,
-    pub rf: rss::Channel,
     pub sitemap: Vec<u8>,
     pub patrons: Option<patreon::Users>,
 }
@@ -91,8 +90,6 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     everything.sort();
     everything.reverse();
 
-    let mut ri: Vec<rss::Item> = vec![];
-
     let mut jfb = jsonfeed::Feed::builder()
         .title("Christine Dodrill's Blog")
         .description("My blog posts and rants about various technology things.")
@@ -111,18 +108,7 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     for post in &everything {
         let post = post.clone();
         jfb = jfb.item(post.clone().into());
-        ri.push(post.clone().into());
     }
-
-    let rf = {
-        let mut rf = rss::ChannelBuilder::default();
-        rf.title("Christine Dodrill's Blog");
-        rf.link("https://christine.website/blog");
-        rf.generator(crate::APPLICATION_NAME.to_string());
-        rf.items(ri);
-
-        rf.build().unwrap()
-    };
 
     let mut sm: Vec<u8> = vec![];
     let smw = sitemap::writer::SiteMapWriter::new(&mut sm);
@@ -152,7 +138,6 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
         talks: talks,
         everything: everything,
         jf: jfb.build(),
-        rf: rf,
         sitemap: sm,
         patrons: patrons().await?,
     })
