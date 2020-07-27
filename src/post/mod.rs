@@ -111,18 +111,21 @@ mod tests {
 
     #[test]
     fn blog() -> Result<()> {
+        let _ = pretty_env_logger::try_init();
         load("blog")?;
         Ok(())
     }
 
     #[test]
     fn gallery() -> Result<()> {
+        let _ = pretty_env_logger::try_init();
         load("gallery")?;
         Ok(())
     }
 
     #[test]
     fn talks() -> Result<()> {
+        let _ = pretty_env_logger::try_init();
         load("talks")?;
         Ok(())
     }

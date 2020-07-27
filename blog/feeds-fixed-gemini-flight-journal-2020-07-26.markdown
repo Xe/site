@@ -1,6 +1,6 @@
 ---
 title: RSS/Atom Feeds Fixed and Announcing my Flight Journal
-date: 07-26-2020
+date: 2020-07-26
 tags:
  - gemini
 ---
@@ -13,10 +13,8 @@ in the feed, but I will bring it back as soon as possible.
 
 Victory badges:
 
-[![Valid Atom
-Feed](https://validator.w3.org/feed/images/valid-atom.png)](/blog.atom)
-[![Valid RSS
-Feed](https://validator.w3.org/feed/images/valid-rss-rogers.png)](/blog.rss)
+[![Valid Atom Feed](https://validator.w3.org/feed/images/valid-atom.png)](/blog.atom)
+[![Valid RSS Feed](https://validator.w3.org/feed/images/valid-rss-rogers.png)](/blog.rss)
 
 Thanks to [W3Schools](https://www.w3schools.com/XML/xml_rss.asp) for having a
 minimal example of an RSS feed and [this Flickr

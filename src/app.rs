@@ -148,6 +148,7 @@ mod tests {
     use anyhow::Result;
     #[tokio::test]
     async fn init() -> Result<()> {
+        let _ = pretty_env_logger::try_init();
         super::init("./config.dhall".into()).await?;
         Ok(())
     }
