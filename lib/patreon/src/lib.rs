@@ -1,6 +1,3 @@
-#[macro_use]
-extern crate log;
-
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use chrono::prelude::*;

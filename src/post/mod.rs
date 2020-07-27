@@ -1,5 +1,4 @@
 use anyhow::{anyhow, Result};
-use atom_syndication as atom;
 use chrono::prelude::*;
 use glob::glob;
 use std::{cmp::Ordering, fs};
@@ -48,54 +47,6 @@ impl Into<jsonfeed::Item> for Post {
         if let Some(image_url) = self.front_matter.image {
             result = result.image(image_url);
         }
-
-        result.build().unwrap()
-    }
-}
-
-impl Into<atom::Entry> for Post {
-    fn into(self) -> atom::Entry {
-        let mut content = atom::ContentBuilder::default();
-
-        content.src(format!("https://christine.website/{}", self.link));
-        content.content_type(Some("text/html;charset=utf-8".into()));
-        content.value(Some(xml::escape::escape_str_pcdata(&self.body_html).into()));
-
-        let content = content.build().unwrap();
-
-        let mut result = atom::EntryBuilder::default();
-        result.id(format!("https://christine.website/{}", self.link));
-        result.contributors({
-            let mut me = atom::Person::default();
-
-            me.set_name("Christine Dodrill");
-            me.set_email("me@christine.website".to_string());
-            me.set_uri("https://christine.website".to_string());
-
-            vec![me]
-        });
-        result.title(self.front_matter.title);
-        let mut link = atom::Link::default();
-        link.href = format!("https://christine.website/{}", self.link);
-        result.links(vec![link]);
-        result.content(content);
-        result.published(self.date);
-
-        result.build().unwrap()
-    }
-}
-
-impl Into<rss::Item> for Post {
-    fn into(self) -> rss::Item {
-        let mut guid = rss::Guid::default();
-        guid.set_value(format!("https://christine.website/{}", self.link));
-        let mut result = rss::ItemBuilder::default();
-        result.title(Some(self.front_matter.title));
-        result.link(format!("https://christine.website/{}", self.link));
-        result.guid(guid);
-        result.author(Some("me@christine.website (Christine Dodrill)".to_string()));
-        result.content(self.body_html);
-        result.pub_date(self.date.to_rfc2822());
 
         result.build().unwrap()
     }
@@ -160,18 +111,21 @@ mod tests {
 
     #[test]
     fn blog() -> Result<()> {
+        let _ = pretty_env_logger::try_init();
         load("blog")?;
         Ok(())
     }
 
     #[test]
     fn gallery() -> Result<()> {
+        let _ = pretty_env_logger::try_init();
         load("gallery")?;
         Ok(())
     }
 
     #[test]
     fn talks() -> Result<()> {
+        let _ = pretty_env_logger::try_init();
         load("talks")?;
         Ok(())
     }

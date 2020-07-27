@@ -1,6 +1,5 @@
 use crate::{post::Post, signalboost::Person};
 use anyhow::Result;
-use atom_syndication as atom;
 use comrak::{markdown_to_html, ComrakOptions};
 use serde::Deserialize;
 use std::{fs, path::PathBuf};
@@ -65,8 +64,6 @@ pub struct State {
     pub talks: Vec<Post>,
     pub everything: Vec<Post>,
     pub jf: jsonfeed::Feed,
-    pub rf: rss::Channel,
-    pub af: atom::Feed,
     pub sitemap: Vec<u8>,
     pub patrons: Option<patreon::Users>,
 }
@@ -93,9 +90,6 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     everything.sort();
     everything.reverse();
 
-    let mut ri: Vec<rss::Item> = vec![];
-    let mut ai: Vec<atom::Entry> = vec![];
-
     let mut jfb = jsonfeed::Feed::builder()
         .title("Christine Dodrill's Blog")
         .description("My blog posts and rants about various technology things.")
@@ -114,36 +108,7 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     for post in &everything {
         let post = post.clone();
         jfb = jfb.item(post.clone().into());
-        ri.push(post.clone().into());
-        ai.push(post.clone().into());
     }
-
-    let af = {
-        let mut af = atom::FeedBuilder::default();
-        af.title("Christine Dodrill's Blog");
-        af.id("https://christine.website/blog");
-        af.generator({
-            let mut generator = atom::Generator::default();
-            generator.set_value(env!("CARGO_PKG_NAME"));
-            generator.set_version(env!("CARGO_PKG_VERSION").to_string());
-            generator.set_uri("https://github.com/Xe/site".to_string());
-
-            generator
-        });
-        af.entries(ai);
-
-        af.build().unwrap()
-    };
-
-    let rf = {
-        let mut rf = rss::ChannelBuilder::default();
-        rf.title("Christine Dodrill's Blog");
-        rf.link("https://christine.website/blog");
-        rf.generator(crate::APPLICATION_NAME.to_string());
-        rf.items(ri);
-
-        rf.build().unwrap()
-    };
 
     let mut sm: Vec<u8> = vec![];
     let smw = sitemap::writer::SiteMapWriter::new(&mut sm);
@@ -173,8 +138,6 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
         talks: talks,
         everything: everything,
         jf: jfb.build(),
-        af: af,
-        rf: rf,
         sitemap: sm,
         patrons: patrons().await?,
     })
@@ -185,6 +148,7 @@ mod tests {
     use anyhow::Result;
     #[tokio::test]
     async fn init() -> Result<()> {
+        let _ = pretty_env_logger::try_init();
         super::init("./config.dhall".into()).await?;
         Ok(())
     }

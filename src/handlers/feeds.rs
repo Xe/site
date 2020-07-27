@@ -1,7 +1,7 @@
-use crate::app::State;
+use crate::{app::State, templates};
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
-use std::sync::Arc;
+use std::{sync::Arc, io};
 use warp::{http::Response, Rejection, Reply};
 
 lazy_static! {
@@ -20,9 +20,8 @@ pub async fn jsonfeed(state: Arc<State>) -> Result<impl Reply, Rejection> {
 
 #[derive(Debug)]
 pub enum RenderError {
-    WriteAtom(atom_syndication::Error),
-    WriteRss(rss::Error),
     Build(warp::http::Error),
+    IO(io::Error),
 }
 
 impl warp::reject::Reject for RenderError {}
@@ -31,10 +30,8 @@ pub async fn atom(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["atom"]).inc();
     let state = state.clone();
     let mut buf = Vec::new();
-    state
-        .af
-        .write_to(&mut buf)
-        .map_err(RenderError::WriteAtom)
+    templates::blog_atom_xml(&mut buf, state.everything.clone())
+        .map_err(RenderError::IO)
         .map_err(warp::reject::custom)?;
     Response::builder()
         .status(200)
@@ -48,10 +45,8 @@ pub async fn rss(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["rss"]).inc();
     let state = state.clone();
     let mut buf = Vec::new();
-    state
-        .rf
-        .write_to(&mut buf)
-        .map_err(RenderError::WriteRss)
+    templates::blog_rss_xml(&mut buf, state.everything.clone())
+        .map_err(RenderError::IO)
         .map_err(warp::reject::custom)?;
     Response::builder()
         .status(200)

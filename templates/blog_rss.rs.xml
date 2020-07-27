@@ -1,0 +1,20 @@
+@use crate::post::Post;
+
+@(posts: Vec<Post>)
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+        <title>Christine Dodrill's Blog</title>
+        <link>https://christine.website/blog</link>
+        <description>Tech, philosophy and more</description>
+        @for post in posts {
+            <item>
+                <title>@post.front_matter.title</title>
+                <link>https://christine.website/@post.link</link>
+                <description></description>
+                <pubDate>@post.date.to_rfc2822()</pubDate>
+            </item>
+
+        }
+    </channel>
+</rss>
