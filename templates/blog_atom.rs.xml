@@ -1,0 +1,24 @@
+@use crate::post::Post;
+
+@(posts: Vec<Post>)
+
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://christine.website/blog.atom</id>
+  <title>Christine Dodrill's Blog</title>
+  <author>
+    <name>Christine Dodrill</name>
+    <email>me@@christine.website</email>
+  </author>
+  <link href="https://christine.website/blog.atom" rel="self"/>
+  <link href="https://christine.website/blog" rel="alternate"/>
+  <generator uri="@env!("CARGO_PKG_REPOSITORY")" version="@env!("CARGO_PKG_VERSION")">@env!("CARGO_PKG_NAME")</generator>
+  @for post in posts {
+    <entry>
+      <id>https://christine.website/@post.link</id>
+      <title>@post.front_matter.title</title>
+      <updated>@post.front_matter.date+00:00</updated>
+      <link href="https://christine.website/@post.link" rel="alternate"/>
+    </entry>
+  }
+</feed>
