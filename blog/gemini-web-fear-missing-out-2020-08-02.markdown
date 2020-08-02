@@ -80,7 +80,7 @@ may be a good idea to attempt to make something that updates weekly or even
 monthly.
 
 [[4]: My Gemini capsule](gemini://cetacean.club)  
-[[5]: My Gemini capsule over HTTP](http://cetacean.club)
+[[5]: [experimental] My Gemini capsule over HTTP](http://cetacean.club)
 
 I'm still going to attempt a few ideas that I have regarding long term archival
 of the Gemini constellation, but I'm definitely going to make sure that I take
