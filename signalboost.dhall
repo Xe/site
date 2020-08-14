@@ -172,4 +172,19 @@ in  [ Person::{
       , gitLink = "https://github.com/muazzamalikazmi"
       , twitter = "N/A"
       }
+      , Person::{
+      , name = "Jeffin Mathew"
+      , tags = 
+        [ "Python"
+        , "routing&switching"
+        , "django"
+        , "vue"
+        , "ansible"
+        , "aws"
+        , "javascript"
+        , "iot"
+        ]
+       , gitLink = "https://github.com/mjeffin"
+       , twitter = "https://twitter.com/mpjeffin"
+      }
     ]
