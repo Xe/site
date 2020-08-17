@@ -37,7 +37,7 @@ jsonfeed = { path = "./lib/jsonfeed" }
 patreon = { path = "./lib/patreon" }
 
 [build-dependencies]
-ructe = { version = "0.11", features = ["warp02"] }
+ructe = { version = "0.12", features = ["warp02"] }
 
 [workspace]
 members = [
