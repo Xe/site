@@ -1667,9 +1667,9 @@ checksum = "cabe4fa914dec5870285fa7f71f602645da47c486e68486d2b4ceb4a343e90ac"
 
 [[package]]
 name = "ructe"
-version = "0.11.4"
+version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f615d1e172dcc01a7cd78c7f77f21a5669c6de4341548ad2e7764e9045d06657"
+checksum = "1b8ffc645837eab09b6cbb6772d18897c6309753254592e149b40ff7fb113c01"
 dependencies = [
  "base64 0.12.3",
  "bytecount",
