@@ -6,7 +6,7 @@ let kubernetes =
 
 let tag = env:GITHUB_SHA as Text ? "latest"
 
-let image = "xena/christinewebsite:${tag}"
+let image = "ghcr.io/xena/site:${tag}"
 
 let vars
     : List kubernetes.EnvVar.Type
