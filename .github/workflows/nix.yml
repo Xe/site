@@ -40,3 +40,4 @@ jobs:
           PATREON_CLIENT_ID: ${{ secrets.PATREON_CLIENT_ID }}
           PATREON_CLIENT_SECRET: ${{ secrets.PATREON_CLIENT_SECRET }}
           PATREON_REFRESH_TOKEN: ${{ secrets.PATREON_REFRESH_TOKEN }}
+          DHALL_PRELUDE: https://raw.githubusercontent.com/dhall-lang/dhall-lang/v17.0.0/Prelude/package.dhall 
