@@ -1,8 +1,8 @@
 let kms =
-      https://xena.greedo.xeserv.us/pkg/dhall/kubermemes/k8s/package.dhall
+      https://tulpa.dev/cadey/kubermemes/raw/branch/master/k8s/package.dhall
 
 let kubernetes =
-      https://xena.greedo.xeserv.us/pkg/dhall/dhall-kubernetes/1.15/package.dhall
+      https://raw.githubusercontent.com/dhall-lang/dhall-kubernetes/master/1.15/package.dhall
 
 let tag = env:GITHUB_SHA as Text ? "latest"
 
