@@ -17,14 +17,13 @@ jobs:
           name: xe
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - run: |
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Docker push
+        run: |
           docker load -i result
-          docker tag xena/christinewebsite:latest xena/christinewebsite:$GITHUB_SHA
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker push xena/christinewebsite
-        env:
-          DOCKER_USERNAME: "xena"
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          docker tag xena/christinewebsite:latest ghcr.io/xe/site:$GITHUB_SHA
+          docker push ghcr.io/xe/site
   release:
     runs-on: ubuntu-latest
     needs: docker-build
