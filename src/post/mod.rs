@@ -74,8 +74,9 @@ pub fn load(dir: &str) -> Result<Vec<Post>> {
     let mut result: Vec<Post> = vec![];
 
     for path in glob(&format!("{}/*.markdown", dir))?.filter_map(Result::ok) {
-        let body = fs::read_to_string(path.clone())?;
-        let (fm, content_offset) = frontmatter::Data::parse(body.clone().as_str())?;
+        log::debug!("loading {:?}", path);
+        let body = fs::read_to_string(path.clone()).expect("things to work");
+        let (fm, content_offset) = frontmatter::Data::parse(body.clone().as_str()).expect("stuff to work");
         let markup = &body[content_offset..];
         let date = NaiveDate::parse_from_str(&fm.clone().date, "%Y-%m-%d")?;
 
@@ -110,10 +111,9 @@ mod tests {
     use anyhow::Result;
 
     #[test]
-    fn blog() -> Result<()> {
+    fn blog() {
         let _ = pretty_env_logger::try_init();
-        load("blog")?;
-        Ok(())
+        load("blog").expect("posts to load");
     }
 
     #[test]
