@@ -1,6 +1,6 @@
 ---
 title: The Within Go Repo Layout
-date: 09-07-2020
+date: 2020-09-07
 series: howto
 tags:
  - go
