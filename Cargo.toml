@@ -22,7 +22,7 @@ mime = "0.3.0"
 pretty_env_logger = "0"
 prometheus = { version = "0.10", default-features = false, features = ["process"] }
 rand = "0"
-serde_dhall = "0.6.0"
+serde_dhall = "0.7.0"
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.8"
 sitemap = "0.4"
