@@ -1,4 +1,4 @@
-@(mood: &str, character: &str, message: &str)
+@(mood: &str, character: &str, message: Html<String>)
 <div class="grid conversation">
     <div class="cell -2of12">
         <div class="content">
@@ -9,6 +9,6 @@
         </div>
     </div>
     <div class="cell -10of12">
-        <div class="content"><p><b>@character</b><br></p><blockquote>@message</blockquote></div>
+        <div class="content"><p><b>@character</b><br></p>@message</div>
     </div>
 </div>

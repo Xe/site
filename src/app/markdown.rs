@@ -1,7 +1,8 @@
 use color_eyre::eyre::{Result, WrapErr};
 use comrak::nodes::{Ast, AstNode, NodeValue};
-use comrak::{format_html, parse_document, Arena, ComrakOptions};
+use comrak::{format_html, parse_document, markdown_to_html, Arena, ComrakOptions};
 use std::cell::RefCell;
+use crate::templates::Html;
 use url::Url;
 
 pub fn render(inp: &str) -> Result<String> {
@@ -31,13 +32,16 @@ pub fn render(inp: &str) -> Result<String> {
                 let parent = node.parent().unwrap();
                 node.detach();
                 let mut message = vec![];
-                format_html(node.first_child().unwrap(), &options, &mut message)?;
+                for child in node.children() {
+                    format_html(child, &options, &mut message)?;
+                }
                 let message = std::str::from_utf8(&message)?;
+                let message = markdown_to_html(message, &options);
                 let mood = without_first(u.path());
                 let name = u.host_str().unwrap_or("Mara");
 
                 let mut html = vec![];
-                crate::templates::mara(&mut html, mood, name, message)?;
+                crate::templates::mara(&mut html, mood, name, Html(message))?;
 
                 let new_node =
                     arena.alloc(AstNode::new(RefCell::new(Ast::new(NodeValue::HtmlInline(html)))));
