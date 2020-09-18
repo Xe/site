@@ -33,6 +33,6 @@ mkShell {
 
   SITE_PREFIX = "devel.";
   CLACK_SET = "Ashlynn,Terry Davis,Dennis Ritchie";
-  RUST_LOG = "info";
+  RUST_LOG = "debug";
   GITHUB_SHA = "devel";
 }

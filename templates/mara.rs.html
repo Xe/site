@@ -1,0 +1,14 @@
+@(mood: &str, character: &str, message: &str)
+<div class="grid conversation">
+    <div class="cell -2of12">
+        <div class="content">
+            <picture>
+                <source srcset="https://cdn.christine.website/file/christine-static/stickers/@character.to_lowercase()/@(mood).webp" height="75%" width="75%" type="image/webp">
+                <img src="https://cdn.christine.website/file/christine-static/stickers/@character.to_lowercase()/@(mood).png" height="75%" width="75%" alt="@message">
+            </picture>
+        </div>
+    </div>
+    <div class="cell -10of12">
+        <div class="content"><p><b>@character</b><br></p><blockquote>@message</blockquote></div>
+    </div>
+</div>
