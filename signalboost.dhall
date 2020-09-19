@@ -52,6 +52,30 @@ in  [ Person::{
       , twitter = "https://twitter.com/DDR_4"
       }
     , Person::{
+      , name = "Faizan Jamil"
+      , tags =
+        [ "java"
+        , "c#"
+        , "python"
+        , "javascript"
+        , "typescript"
+        , "html"
+        , "css"
+        , "vue.js"
+        , "express.js"
+        , "flask"
+        , "asp.net core"
+        , "razor pages"
+        , "ef core"
+        , "front-end"
+        , "back-end"
+        , "full-stack"
+        , "linux"
+        ]
+      , gitLink = "https://github.com/faizjamil"
+      , twitter = "N/A"
+      }
+    , Person::{
       , name = "Jamie Bliss"
       , tags = [ "python", "devops", "full-stack", "saltstack", "web", "linux" ]
       , gitLink = "https://github.com/astronouth7303"
