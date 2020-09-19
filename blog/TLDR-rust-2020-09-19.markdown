@@ -88,6 +88,60 @@ fn foo() -> i32 {
 }
 ```
 
+[Hmm, what if I try to do something like this. Will this
+work?](conversation://Mara/hmm)
+
+```rust
+// rust
+
+fn foo() -> i32 {
+    if some_cond {
+        2
+    }
+    
+    4
+}
+```
+
+Let's find out! The compiler spits back an error:
+
+```
+error[E0308]: mismatched types
+ --> src/lib.rs:3:9
+  |
+2 | /     if some_cond {
+3 | |         2
+  | |         ^ expected `()`, found integer
+4 | |     }
+  | |     -- help: consider using a semicolon here
+  | |_____|
+  |       expected this to be `()`
+```
+
+This happens because most basic statement in Rust can return values. The best
+way to fix this would be to move the `4` return into an `else` block:
+
+```rust
+// rust
+
+fn foo() -> i32 {
+    if some_cond {
+        2
+    } else {
+        4
+    }
+}
+```
+
+Otherwise, the compiler will think you are trying to use that `if` as a
+statement, such as like this:
+
+```rust
+// rust
+
+let val = if some_cond { 2 } else { 4 };
+```
+
 ### Functions that can fail
 
 The [Result](https://doc.rust-lang.org/std/result/) type represents things that
@@ -203,7 +257,7 @@ if there was no error. This only works in functions that return either an Option
 or a Result.
 
 [The <a href="https://doc.rust-lang.org/std/option/index.html">Option</a> type
-isn't shown here, but it acts like a "this thing might not exist and it's your
+isn't shown in very much detail here, but it acts like a "this thing might not exist and it's your
 responsibility to check" container for any value. The closest analogue in Go is
 making a pointer to a value or possibly putting a value in an `interface{}`
 (which can be annoying to deal with in practice).](conversation://Mara/hacker)
@@ -285,6 +339,8 @@ fn main() {
 }
 ```
 
+This makes the compiler return this error:
+
 ```
 error[E0384]: cannot assign twice to immutable variable `foo`
  --> src/main.rs:4:5
@@ -348,7 +404,10 @@ let yet_another_quo = divide(quo, 4)?;
 [You can also get more fancy with <a
 href="https://doc.rust-lang.org/rust-by-example/scope/lifetime/explicit.html">explicit
 lifetime annotations</a>, however as of Rust's 2018 edition they aren't usually
-required unless you are doing something weird.](conversation://Mara/hacker)
+required unless you are doing something weird. This is something that is also
+covered in more detail in <a
+href="https://doc.rust-lang.org/stable/book/ch04-00-understanding-ownership.html">The
+Rust Book</a>.](conversation://Mara/hacker)
 
 ### Passing Mutability
 
@@ -404,6 +463,11 @@ use foo::Bar; // -> Bar is now exposed as a type in this file
 
 use eyre::{eyre, Result}; // exposes the eyre! and Result members of eyre
 ```
+
+[This doesn't cover how the <a
+href="http://www.sheshbabu.com/posts/rust-module-system/">module system</a>
+works, however the post I linked there covers this better than I
+can.](conversation://Mara/hacker)
 
 ## Async/Await
 
@@ -587,7 +651,7 @@ mod tests { // not required but it is good practice
     assert_eq!(2 + 2, 4);
   }
   
-  #[test]
+  #[tokio::test] // needs tokio as a dependency
   async fn http_works() {
     let _ = get_html("https://within.website").await.unwrap();
   }
@@ -598,7 +662,7 @@ Avoid the use of `unwrap()` outside of tests. In the wrong cases, using
 `unwrap()` in production code can cause the server to crash and can incur data
 loss.
 
-[Alternatively, you can also use the <a href="">`.expect()`</a> method instead
+[Alternatively, you can also use the <a href="https://learning-rust.github.io/docs/e4.unwrap_and_expect.html#expect">`.expect()`</a> method instead
 of `.unwrap()`. This lets you attach a message that will be shown when the
 result isn't Ok.](conversation://Mara/hacker)
 
