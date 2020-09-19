@@ -520,7 +520,7 @@ Rust has three privacy levels for functions:
 
 [You can't get a perfect analog to `pub(crate)` in Go, but <a
 href="https://docs.google.com/document/d/1e8kOo3r51b2BWtTs_1uADIA5djfXhPT36s6eHVRIvaU/edit">internal
-packages can get close to this behavior.](conversation://Mara/hacker)
+packages</a> can get close to this behavior.](conversation://Mara/hacker)
 
 ## Structures
 
