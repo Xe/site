@@ -118,7 +118,7 @@ error[E0308]: mismatched types
   |       expected this to be `()`
 ```
 
-This happens because most basic statement in Rust can return values. The best
+This happens because most basic statements in Rust can return values. The best
 way to fix this would be to move the `4` return into an `else` block:
 
 ```rust
