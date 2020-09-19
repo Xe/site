@@ -199,7 +199,14 @@ automatically generating your error implementation.](conversation://Mara/hacker)
 
 In Rust, the `?` operator checks for an error in a function call and if there is
 one, it automatically returns the error and gives you the result of the function
-if there was no error. This only works in functions that return a Result.
+if there was no error. This only works in functions that return either an Option
+or a Result.
+
+[The <a href="https://doc.rust-lang.org/std/option/index.html">Option</a> type
+isn't shown here, but it acts like a "this thing might not exist and it's your
+responsibility to check" container for any value. The closest analogue in Go is
+making a pointer to a value or possibly putting a value in an `interface{}`
+(which can be annoying to deal with in practice).](conversation://Mara/hacker)
 
 ```go
 // go
@@ -250,6 +257,7 @@ Variables are created using `let`:
 
 ```go
 // go
+
 var foo int
 var foo = 3
 foo := 3
@@ -257,19 +265,47 @@ foo := 3
 
 ```rust
 // rust
+
 let foo: i32;
 let foo = 3;
 ```
 
 ### Mutability
 
-In Rust, every variable is immutable (unchangeable) by default. To create a
-mutable variable, add the `mut` keyword after the `let` keyword. There is no
-analog to this in Go.
+In Rust, every variable is immutable (unchangeable) by default. If we try to
+change those variables above we get a compiler error:
 
 ```rust
-let mut i: i32 = 0;
-i = i + 5;
+// rust
+
+fn main() {
+    let foo: i32;
+    let foo = 3;
+    foo = 4;
+}
+```
+
+```
+error[E0384]: cannot assign twice to immutable variable `foo`
+ --> src/main.rs:4:5
+  |
+3 |     let foo = 3;
+  |         ---
+  |         |
+  |         first assignment to `foo`
+  |         help: make this binding mutable: `mut foo`
+4 |     foo = 4;
+  |     ^^^^^^^ cannot assign twice to immutable variable
+```
+
+As the compiler suggests, you can create a mutable variable by adding the `mut`
+keyword after the `let` keyword. There is no analog to this in Go.
+
+```rust
+// rust
+
+let mut foo: i32 = 0;
+foo = 4;
 ```
 
 [This is slightly a lie. There's more advanced cases involving interior
@@ -282,25 +318,37 @@ Rust does garbage collection at compile time. It also passes ownership of memory
 to functions as soon as possible. For example:
 
 ```rust
+// rust
+
 let quo = divide(4, 8)?;
 let other_quo = divide(quo, 5)?;
 
-// Fails compile because quo was given to divide to create other_quo
+// Fails compile because ownership of quo was given to divide to create other_quo
 let yet_another_quo = divide(quo, 4)?;
 ```
 
-To work around this you need to either clone the value or pass a reference:
+To work around this you can pass a reference to the divide function:
 
 ```rust
+// rust
+
+let other_quo = divide(&quo, 5);
+let yet_another_quo = divide(&quo, 4)?;
+```
+
+Or even create a clone of it:
+
+```rust
+// rust
+
 let other_quo = divide(quo.clone(), 5);
 let yet_another_quo = divide(quo, 4)?;
 ```
 
-To pass a reference to a function, use the `&` character:
-
-```
-let something = do_something(&quo)?;
-```
+[You can also get more fancy with <a
+href="https://doc.rust-lang.org/rust-by-example/scope/lifetime/explicit.html">explicit
+lifetime annotations</a>, however as of Rust's 2018 edition they aren't usually
+required unless you are doing something weird.](conversation://Mara/hacker)
 
 ### Passing Mutability
 
@@ -319,8 +367,10 @@ External dependencies are declared using the [Cargo.toml
 file](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html):
 
 ```toml
+# Cargo.toml
+
 [dependencies]
-anyhow = "1.0"
+eyre = "0.6"
 ```
 
 This depends on the crate [anyhow](https://crates.io/anyhow) at version 1.0.x.
@@ -328,6 +378,8 @@ This depends on the crate [anyhow](https://crates.io/anyhow) at version 1.0.x.
 Dependencies can also have optional features:
 
 ```toml
+# Cargo.toml
+
 [dependencies]
 reqwest = { version = "0.10", features = ["json"] }
 ```
@@ -339,14 +391,18 @@ automagically convert things to/from json using Serde).
 External dependencies can be used with the `use` statement:
 
 ```go
+// go
+
 import "github.com/foo/bar"
 ```
 
 ```rust
+// rust
+
 use foo; //      -> foo now has the members of crate foo behind the :: operator
 use foo::Bar; // -> Bar is now exposed as a type in this file
 
-use anyhow::{anyhow, Result}; // exposes the anyhow! and Result members of anyhow
+use eyre::{eyre, Result}; // exposes the eyre! and Result members of eyre
 ```
 
 ## Async/Await
@@ -356,18 +412,24 @@ program uses [tokio](https://tokio.rs/) to handle async tasks. To run an async
 task and wait for its result, do this:
 
 ```
-let response = reqwest::get("https://printerfacts.cetacean.club/fact")
+// rust
+
+let printer_fact = reqwest::get("https://printerfacts.cetacean.club/fact")
   .await?
   .text()
   .await?;
+println!("your printer fact is: {}", printer_fact);
 ```
 
-This will populate `response` with the HTML source of https://within.website.
+This will populate `response` with an amusing fact about everyone's favorite
+household pet, the [printer](https://printerfacts.cetacean.club).
 
 To make an async function, add the `async` keyword before the `fn` keyword:
 
 ```rust
-async fn get_html(url: String) -> Result<String> {
+// rust
+
+async fn get_text(url: String) -> Result<String> {
   reqwest::get(&url)
     .await?
     .text()
@@ -378,7 +440,9 @@ async fn get_html(url: String) -> Result<String> {
 This can then be called like this:
 
 ```rust
-let within_website_html = get_html("https://within.website").await?;
+// rust
+
+let printer_fact = get_text("https://printerfacts.cetacean.club/fact").await?;
 ```
 
 ## Public/Private Types and Functions
@@ -390,21 +454,26 @@ Rust has three privacy levels for functions:
   go)
 - Visible to everyone (`pub`, upper case in Go)
 
-This project will mostly use `pub(crate)` as none of this code is intended to be
-consumed by other programs (though this may change in the future).
+[You can't get a perfect analog to `pub(crate)` in Go, but <a
+href="https://docs.google.com/document/d/1e8kOo3r51b2BWtTs_1uADIA5djfXhPT36s6eHVRIvaU/edit">internal
+packages can get close to this behavior.](conversation://Mara/hacker)
 
 ## Structures
 
 Rust structures are created using the `struct` keyword:
 
 ```go
+// go
+
 type Client struct {
   Token string
 }
 ```
 
 ```rust
-pub(crate) struct Client {
+// rust
+
+pub struct Client {
   pub token: String,
 }
 ```
@@ -444,7 +513,7 @@ use serde::{Serialize, Deserialize};
 #[derive(Serialize, Deserialize, Debug)]
 pub(crate) struct Response {
   pub name: String,
-  pub description: Option<String>, // Option means that there can either be something or nothing there
+  pub description: Option<String>,
 }
 ```
 
@@ -452,8 +521,9 @@ pub(crate) struct Response {
 
 Rust has a few string types that do different things. You can read more about
 this [here](https://fasterthanli.me/blog/2020/working-with-strings-in-rust/),
-but at a high level this project only uses two of them:
+but at a high level most projects only uses a few of them:
 
+- `&str`, a slice reference to a String owned by someone else
 - String, an owned UTF-8 string
 - PathBuf, a filepath string (encoded in whatever encoding the OS running this
   code uses for filesystems)
@@ -528,9 +598,13 @@ Avoid the use of `unwrap()` outside of tests. In the wrong cases, using
 `unwrap()` in production code can cause the server to crash and can incur data
 loss.
 
+[Alternatively, you can also use the <a href="">`.expect()`</a> method instead
+of `.unwrap()`. This lets you attach a message that will be shown when the
+result isn't Ok.](conversation://Mara/hacker)
+
 ---
 
 This is by no means comprehensive, see the rust book or [Learn X in Y Minutes
-Where y = Rust](https://learnxinyminutes.com/docs/rust/) for more information.
+Where X = Rust](https://learnxinyminutes.com/docs/rust/) for more information.
 This code is written to be as boring and obvious as possible. If things don't
 make sense, please reach out and don't be afraid to ask questions.
