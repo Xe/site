@@ -13,7 +13,7 @@ pub struct Person {
 
 #[cfg(test)]
 mod tests {
-    use anyhow::Result;
+    use color_eyre::eyre::Result;
     #[test]
     fn load() -> Result<()> {
         let _people: Vec<super::Person> = serde_dhall::from_file("./signalboost.dhall").parse()?;

@@ -131,7 +131,7 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
 
 #[cfg(test)]
 mod tests {
-    use anyhow::Result;
+    use color_eyre::eyre::Result;
     #[tokio::test]
     async fn init() -> Result<()> {
         let _ = pretty_env_logger::try_init();
