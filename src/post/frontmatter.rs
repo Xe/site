@@ -1,6 +1,6 @@
 /// This code was borrowed from @fasterthanlime.
 
-use anyhow::{Result};
+use color_eyre::eyre::{Result};
 use serde::{Serialize, Deserialize};
 
 #[derive(Eq, PartialEq, Deserialize, Default, Debug, Serialize, Clone)]

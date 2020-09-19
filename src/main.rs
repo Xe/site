@@ -1,4 +1,4 @@
-use anyhow::Result;
+use color_eyre::eyre::Result;
 use hyper::{header::CONTENT_TYPE, Body, Response};
 use prometheus::{Encoder, TextEncoder};
 use std::sync::Arc;
@@ -21,6 +21,7 @@ fn with_state(
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    color_eyre::install()?;
     let _ = kankyo::init();
     pretty_env_logger::init();
     log::info!("starting up commit {}", env!("GITHUB_SHA"));

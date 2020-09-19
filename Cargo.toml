@@ -9,7 +9,7 @@ repository = "https://github.com/Xe/site"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1"
+color-eyre = "0.5"
 chrono = "0.4"
 comrak = "0.8"
 envy = "0.4"
@@ -30,6 +30,7 @@ thiserror = "1"
 tokio = { version = "0.2", features = ["macros"] }
 warp = "0.2"
 xml-rs = "0.8"
+url = "2"
 
 # workspace dependencies
 go_vanity = { path = "./lib/go_vanity" }

@@ -1,5 +1,5 @@
-use anyhow::{anyhow, Result};
 use chrono::prelude::*;
+use color_eyre::eyre::{eyre, Result, WrapErr};
 use glob::glob;
 use std::{cmp::Ordering, fs};
 
@@ -75,8 +75,10 @@ pub fn load(dir: &str) -> Result<Vec<Post>> {
 
     for path in glob(&format!("{}/*.markdown", dir))?.filter_map(Result::ok) {
         log::debug!("loading {:?}", path);
-        let body = fs::read_to_string(path.clone()).expect("things to work");
-        let (fm, content_offset) = frontmatter::Data::parse(body.clone().as_str()).expect("stuff to work");
+        let body =
+            fs::read_to_string(path.clone()).wrap_err_with(|| format!("can't read {:?}", path))?;
+        let (fm, content_offset) = frontmatter::Data::parse(body.clone().as_str())
+            .wrap_err_with(|| format!("can't parse frontmatter of {:?}", path))?;
         let markup = &body[content_offset..];
         let date = NaiveDate::parse_from_str(&fm.clone().date, "%Y-%m-%d")?;
 
@@ -84,7 +86,8 @@ pub fn load(dir: &str) -> Result<Vec<Post>> {
             front_matter: fm,
             link: format!("{}/{}", dir, path.file_stem().unwrap().to_str().unwrap()),
             body: markup.to_string(),
-            body_html: crate::app::markdown(&markup),
+            body_html: crate::app::markdown::render(&markup)
+                .wrap_err_with(|| format!("can't parse markdown for {:?}", path))?,
             date: {
                 DateTime::<Utc>::from_utc(
                     NaiveDateTime::new(date, NaiveTime::from_hms(0, 0, 0)),
@@ -97,7 +100,7 @@ pub fn load(dir: &str) -> Result<Vec<Post>> {
     }
 
     if result.len() == 0 {
-        Err(anyhow!("no posts loaded"))
+        Err(eyre!("no posts loaded"))
     } else {
         result.sort();
         result.reverse();
@@ -108,7 +111,7 @@ pub fn load(dir: &str) -> Result<Vec<Post>> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use anyhow::Result;
+    use color_eyre::eyre::Result;
 
     #[test]
     fn blog() {
