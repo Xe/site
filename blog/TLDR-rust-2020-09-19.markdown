@@ -19,9 +19,9 @@ various patterns used in Rust code.
 
 Also I'm happy to introduce Mara to the blog!
 
-[Hey, happy to be here! I'm Mara, I'll interject with side information,
-challenge assertions and more! Thanks for inviting
-me!](conversation://Mara/hacker)
+[Hey, happy to be here! I'm Mara, a shark hacker from Christine's imagination. 
+I'll interject with side information, challenge assertions and more! Thanks for
+inviting me!](conversation://Mara/hacker)
 
 Let's start somewhere simple: functions.
 
@@ -371,7 +371,17 @@ that isn't covered here.](conversation://Mara/hacker)
 ### Lifetimes
 
 Rust does garbage collection at compile time. It also passes ownership of memory
-to functions as soon as possible. For example:
+to functions as soon as possible. Lifetimes are how Rust calculates how "long" a
+given bit of data should exist in the program. Rust will then tell the compiled
+code to destroy the data from memory as soon as possible.
+
+[This is slightly inaccurate in order to make this simpler to explain and
+understand. It's probably more accurate to say that Rust calculates _when_ to
+collect garbage at compile time, but the difference doesn't really matter for
+most cases](conversation://Mara/hacker)
+
+For example, this code will fail to compile because `quo` was moved into the
+second divide call:
 
 ```rust
 // rust
@@ -432,7 +442,11 @@ file](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html):
 eyre = "0.6"
 ```
 
-This depends on the crate [anyhow](https://crates.io/anyhow) at version 1.0.x.
+This depends on the crate [eyre](https://crates.io/crates/eyre) at version
+0.6.x.
+
+[You can do much more with version requirements with cargo, see more <a
+href="https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html">here</a>.](conversation://Mara/hacker)
 
 Dependencies can also have optional features:
 
@@ -520,7 +534,10 @@ Rust has three privacy levels for functions:
 
 [You can't get a perfect analog to `pub(crate)` in Go, but <a
 href="https://docs.google.com/document/d/1e8kOo3r51b2BWtTs_1uADIA5djfXhPT36s6eHVRIvaU/edit">internal
-packages</a> can get close to this behavior.](conversation://Mara/hacker)
+packages</a> can get close to this behavior. Additionally you can have a lot
+more control over access levels than this, see <a
+href="https://doc.rust-lang.org/nightly/reference/visibility-and-privacy.html">here</a>
+for more information.](conversation://Mara/hacker)
 
 ## Structures
 
@@ -598,10 +615,16 @@ more detail about this.
 ## Enumerations / Tagged Unions
 
 Enumerations, also known as tagged unions, are a way to specify a superposition
-of one of a few different kinds of values in one type. The main place they are
-used in this project is for command line parsing with
-[structopt](https://docs.rs/structopt/0.3.14/structopt/). There is no easy
+of one of a few different kinds of values in one type. A neat way to show them
+off (along with some other fancy features like the derivation system) is with the
+[structopt](https://docs.rs/structopt/0.3.14/structopt/) crate. There is no easy
 analog for this in Go.
+
+[We've actually been dealing with enumerations ever since we touched the Result
+type earlier. <a
+href="https://doc.rust-lang.org/std/result/enum.Result.html">Result</a> and <a
+href="https://doc.rust-lang.org/std/option/enum.Option.html">Option</a> are
+implemented with enumerations.](conversation://Mara/hacker)
 
 ```rust
 #[derive(StructOpt, Debug)]
@@ -638,6 +661,11 @@ match cmd {
 ```
 
 All variants of an enum must be matched in order for the code to compile.
+
+[This code was borrowed from <a
+href="https://github.com/lightspeed/palisade">palisade</a> in order to
+demonstrate this better. If you want to see these patterns in action, check this
+repository out!](conversation://Mara/hacker)
 
 ## Testing
 
