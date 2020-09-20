@@ -30,14 +30,10 @@ Let's start somewhere simple: functions.
 Functions are defined using `fn` instead of `func`:
 
 ```go
-// go
-
 func foo() {}
 ```
 
 ```rust
-// rust
-
 fn foo() {}
 ```
 
@@ -46,14 +42,10 @@ fn foo() {}
 Arguments can be passed by separating the name from the type with a colon:
 
 ```go
-// go
-
 func foo(bar int) {}
 ```
 
 ```rust
-// rust
-
 fn foo(bar: i32) {}
 ```
 
@@ -62,16 +54,12 @@ fn foo(bar: i32) {}
 Values can be returned by adding `-> Type` to the function declaration:
 
 ```go
-// go
-
 func foo() int {
   return 2
 }
 ```
 
 ```rust
-// rust
-
 fn foo() -> i32 {
   return 2;
 }
@@ -81,8 +69,6 @@ In Rust values can also be returned on the last statement without the `return`
 keyword or a terminating semicolon:
 
 ```rust
-// rust
-
 fn foo() -> i32 {
   2
 }
@@ -92,8 +78,6 @@ fn foo() -> i32 {
 work?](conversation://Mara/hmm)
 
 ```rust
-// rust
-
 fn foo() -> i32 {
     if some_cond {
         2
@@ -122,8 +106,6 @@ This happens because most basic statements in Rust can return values. The best
 way to fix this would be to move the `4` return into an `else` block:
 
 ```rust
-// rust
-
 fn foo() -> i32 {
     if some_cond {
         2
@@ -137,8 +119,6 @@ Otherwise, the compiler will think you are trying to use that `if` as a
 statement, such as like this:
 
 ```rust
-// rust
-
 let val = if some_cond { 2 } else { 4 };
 ```
 
@@ -153,8 +133,6 @@ with any error. For readability, this post will use the eyre Result type.
 the Result type to work across any type you could imagine.](conversation://Mara/hacker)
 
 ```go
-// go
-
 import "errors"
 
 func divide(x, y int) (int, err) {
@@ -167,8 +145,6 @@ func divide(x, y int) (int, err) {
 ```
 
 ```rust
-// rust
-
 use eyre::{eyre, Result};
 
 fn divide(x: i32, y: i32) -> Result<i32> {
@@ -191,8 +167,6 @@ transient error type on the fly.
 First we need to make our own simple error type for a DivideByZero error:
 
 ```rust
-// rust
-
 use std::error::Error;
 use std::fmt;
 
@@ -211,8 +185,6 @@ impl Error for DivideByZero {}
 So now let's use it:
 
 ```rust
-// rust
-
 fn divide(x: i32, y: i32) -> Result<i32, DivideByZero> {
   match y {
     0 => Err(DivideByZero{}),
@@ -227,8 +199,6 @@ Go](https://godoc.org/builtin#error). In order to represent that we need to
 return something that implements the Error trait:
 
 ```rust
-// rust
-
 fn divide(x: i32, y: i32) -> Result<i32, impl Error> {
     // ...
 }
@@ -263,8 +233,6 @@ making a pointer to a value or possibly putting a value in an `interface{}`
 (which can be annoying to deal with in practice).](conversation://Mara/hacker)
 
 ```go
-// go
-
 func doThing() (int, error) {
   result, err := divide(3, 4)
   if err != nil {
@@ -276,8 +244,6 @@ func doThing() (int, error) {
 ```
 
 ```rust
-// rust
-
 use eyre::Result;
 
 fn do_thing() -> Result<i32> {
@@ -300,8 +266,6 @@ represent anything that implements the Error trait.
 Rust macros are function calls with `!` after their name:
 
 ```rust
-// rust
-
 println!("hello, world");
 ```
 
@@ -310,16 +274,12 @@ println!("hello, world");
 Variables are created using `let`:
 
 ```go
-// go
-
 var foo int
 var foo = 3
 foo := 3
 ```
 
 ```rust
-// rust
-
 let foo: i32;
 let foo = 3;
 ```
@@ -330,8 +290,6 @@ In Rust, every variable is immutable (unchangeable) by default. If we try to
 change those variables above we get a compiler error:
 
 ```rust
-// rust
-
 fn main() {
     let foo: i32;
     let foo = 3;
@@ -358,8 +316,6 @@ As the compiler suggests, you can create a mutable variable by adding the `mut`
 keyword after the `let` keyword. There is no analog to this in Go.
 
 ```rust
-// rust
-
 let mut foo: i32 = 0;
 foo = 4;
 ```
@@ -384,8 +340,6 @@ For example, this code will fail to compile because `quo` was moved into the
 second divide call:
 
 ```rust
-// rust
-
 let quo = divide(4, 8)?;
 let other_quo = divide(quo, 5)?;
 
@@ -396,8 +350,6 @@ let yet_another_quo = divide(quo, 4)?;
 To work around this you can pass a reference to the divide function:
 
 ```rust
-// rust
-
 let other_quo = divide(&quo, 5);
 let yet_another_quo = divide(&quo, 4)?;
 ```
@@ -405,8 +357,6 @@ let yet_another_quo = divide(&quo, 4)?;
 Or even create a clone of it:
 
 ```rust
-// rust
-
 let other_quo = divide(quo.clone(), 5);
 let yet_another_quo = divide(quo, 4)?;
 ```
@@ -470,8 +420,6 @@ import "github.com/foo/bar"
 ```
 
 ```rust
-// rust
-
 use foo; //      -> foo now has the members of crate foo behind the :: operator
 use foo::Bar; // -> Bar is now exposed as a type in this file
 
@@ -490,8 +438,6 @@ program uses [tokio](https://tokio.rs/) to handle async tasks. To run an async
 task and wait for its result, do this:
 
 ```
-// rust
-
 let printer_fact = reqwest::get("https://printerfacts.cetacean.club/fact")
   .await?
   .text()
@@ -505,8 +451,6 @@ household pet, the [printer](https://printerfacts.cetacean.club).
 To make an async function, add the `async` keyword before the `fn` keyword:
 
 ```rust
-// rust
-
 async fn get_text(url: String) -> Result<String> {
   reqwest::get(&url)
     .await?
@@ -518,8 +462,6 @@ async fn get_text(url: String) -> Result<String> {
 This can then be called like this:
 
 ```rust
-// rust
-
 let printer_fact = get_text("https://printerfacts.cetacean.club/fact").await?;
 ```
 
@@ -544,16 +486,12 @@ for more information.](conversation://Mara/hacker)
 Rust structures are created using the `struct` keyword:
 
 ```go
-// go
-
 type Client struct {
   Token string
 }
 ```
 
 ```rust
-// rust
-
 pub struct Client {
   pub token: String,
 }
