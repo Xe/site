@@ -1302,6 +1302,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "pfacts"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "83abebdb324c30f176d449513f0134bafbf976d5279c6554742599e3996d1629"
+dependencies = [
+ "rand 0.7.3",
+ "serde",
+ "serde_derive",
+ "serde_json",
+]
+
+[[package]]
 name = "pin-project"
 version = "0.4.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2507,6 +2519,7 @@ dependencies = [
  "color-eyre",
  "comrak",
  "envy",
+ "eyre",
  "glob",
  "go_vanity",
  "hyper",
@@ -2516,12 +2529,15 @@ dependencies = [
  "log",
  "mime",
  "patreon",
+ "pfacts",
  "pretty_env_logger",
  "prometheus",
  "rand 0.7.3",
+ "reqwest",
  "ructe",
  "serde",
  "serde_dhall",
+ "serde_json",
  "serde_yaml",
  "sitemap",
  "thiserror",
