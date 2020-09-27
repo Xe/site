@@ -26,7 +26,7 @@ levels and context-aware values.
 
 In Rust, we have the [`log`](https://docs.rs/log/) crate which is a very simple
 interface. It uses the `error!`, `warn!`, `info!`, `debug!` and `trace!` macros
-which correlate to the highest and lowest levers. If you want to use `log` in a
+which correlate to the highest and lowest levels. If you want to use `log` in a
 Rust crate, you can add it to your `Cargo.toml` file like this:
 
 ```toml
@@ -49,7 +49,7 @@ fn main() {
 ```
 
 [Wait, where does that log to? I ran that example locally but I didn't see any
-of the messages anywhere](conversation://Mara/wat)
+of the messages anywhere.](conversation://Mara/wat)
 
 This is because the `log` crate doesn't directly log anything anywhere, it is a
 facade that other packages build off of.
