@@ -25,5 +25,6 @@ img {
 
 .conversation-picture {
   flex: 1;
-  max-width: calc((70rem - 2rem)/6);
+  min-width: 9rem;
+  max-width: calc(((70rem - 2rem)/6));
 }
