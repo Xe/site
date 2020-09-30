@@ -137,7 +137,7 @@ but in short here are how each of the formats looks next to its filesize
 information:
 
 ![](https://cdn.christine.website/file/christine-static/blog/mara_png.png)
-![](https://cdn.christine.website/file/christine-static/blog/mara_webm.png)
+![](https://cdn.christine.website/file/christine-static/blog/mara_webp.png)
 ![](https://cdn.christine.website/file/christine-static/blog/mara_avif.png)
 
 The
