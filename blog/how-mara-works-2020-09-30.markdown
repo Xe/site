@@ -11,7 +11,7 @@ tags:
 
 Recently I introduced Mara to this blog and I didn't explain much of the theory
 and implementation behind them in order to proceed with the rest of the post.
-There was actually a significand amount of engineering that went into
+There was actually a significant amount of engineering that went into
 implementing Mara and I'd like to go into detail about this as well as explain
 how I implemented them into this blog.
 
@@ -32,7 +32,7 @@ the haters at 200 words per minute!](conversation://Mara/hacker)
 ## The Theory
 
 My blogposts have a habit of getting long, wordy and sometimes pretty damn dry.
-I notice that there are usually a few common thereads in how this becomes the
+I notice that there are usually a few common threads in how this becomes the
 case, so I want to do these three things to help keep things engaging.
 
 1. I go into detail. A lot of detail. This can make paragraphs long and wordy
@@ -50,9 +50,9 @@ case, so I want to do these three things to help keep things engaging.
    feel like a slog, and inserts some stickers between paragraphs to help keep
    things upbeat and lively.
    
-I wanted to make a unique this with the concepts of Cool Bear's Hot Tip and the
-Socratic Method with some furry art sprinkled in and I eventually arrived at
-Mara.
+I wanted to make a unique way to help break up walls of text using the concepts
+of Cool Bear's Hot Tip and the Socratic method with some furry art sprinkled in
+and I eventually arrived at Mara.
 
 [Fun fact! My name was originally derived from a <a
 href="https://en.wikipedia.org/wiki/Mara_(demon)">Buddhist conceptual demon of
