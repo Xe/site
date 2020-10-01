@@ -78,7 +78,7 @@ in  [ Person::{
     , Person::{
       , name = "Jamie Bliss"
       , tags = [ "python", "devops", "full-stack", "saltstack", "web", "linux" ]
-      , gitLink = "https://github.com/astronouth7303"
+      , gitLink = "https://github.com/AstraLuma"
       , twitter = "https://twitter.com/AstraLuma"
       }
     , Person::{
