@@ -1,7 +1,7 @@
+use chrono::prelude::*;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
-use chrono::prelude::*;
-use tracing::{instrument, debug, error};
+use tracing::{debug, error, instrument};
 
 pub type Campaigns = Vec<Object<Campaign>>;
 pub type Pledges = Vec<Object<Pledge>>;
@@ -128,7 +128,9 @@ impl Client {
             )
             .send()
             .await?
-            .error_for_status()?.text().await?;
+            .error_for_status()?
+            .text()
+            .await?;
         debug!("campaign response: {}", data);
         Ok(serde_json::from_str(&data)?)
     }
@@ -152,7 +154,7 @@ impl Client {
             .text()
             .await?;
         debug!("pledges for {}: {}", camp_id, data);
-        let data : Data<Vec<Object<Pledge>>, Object<User>> = serde_json::from_str(&data)?;
+        let data: Data<Vec<Object<Pledge>>, Object<User>> = serde_json::from_str(&data)?;
         Ok(data.included.unwrap())
     }
 }
