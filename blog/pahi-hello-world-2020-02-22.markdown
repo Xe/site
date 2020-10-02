@@ -148,7 +148,7 @@ We'll see though.
 
 I have also designed a placeholder logo for pa'i. Here it is:
 
-<center>![the logo for pa'i](/static/blog/pahi-logo.png)</center>
+![the logo for pa'i](/static/blog/pahi-logo.png)
 
 It might be changed in the future, but this is what I am going with for now. The
 circuit traces all spell out messages of love (inspired from the Senzar runes of

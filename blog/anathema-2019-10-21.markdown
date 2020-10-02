@@ -23,13 +23,13 @@ This is a surprisingly hard question to answer. Most of the time though, I know 
 
 Art doesn't have to follow conventional ideas of what most people think "art" is. Art can be just about anything that you can classify as art. As a conventional example, consider something like the Mona Lisa:
 
-<center> ![The Mona Lisa, the most famous painting in the world](https://xena.greedo.xeserv.us/files/monalisa_small.jpg) </center>
+![The Mona Lisa, the most famous painting in the world](https://xena.greedo.xeserv.us/files/monalisa_small.jpg)
 
 People will accept this as art without much argument. It's a painting, it obviously took a lot of skill and time to create. It is said that Leonardo Da Vinci (the artist of the painting) created it partially [as a contribution to the state of the art of oil painting][monalisawhy].
 
 So that painting is art, and a lot of people would consider it art; so what *would* a lot of people *not* consider art? Here's an example:
 
-<center> ![Untitled (Perfect Lovers) by Felix Gonzalez-Torres](https://xena.greedo.xeserv.us/files/perfect-lovers.jpg) </center>
+![Untitled (Perfect Lovers) by Felix Gonzalez-Torres](https://xena.greedo.xeserv.us/files/perfect-lovers.jpg)
 
 This is *Untitled (Perfect Lovers)* by Felix Gonzalez. If you just take a look at it without context, it's just two battery-operated clocks on a wall. Where is the expertise and the like that goes into this? This is just the result of someone buying two clocks from the store and putting them somewhere, right?
 

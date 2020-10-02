@@ -37,9 +37,9 @@ identical source code that could be used to create a byte-for-byte identical
 copy of your program's binary. But surely nobody would do that, that would be
 crazy, wouldn't it?
 
-<center>![Noooo! You can't just port a Nintendo 64 game to LibGL! They're
+![Noooo! You can't just port a Nintendo 64 game to LibGL! They're
 completely different hardware! It wouldn't respect the wishes of the creators!
-Hahaha porting machine go brrrrrrrr](/static/blog/portingmachinegobrrr.png)</center>
+Hahaha porting machine go brrrrrrrr](/static/blog/portingmachinegobrrr.png)
 
 Someone did. The fruits of this effort are available [here][sm64dc]. This was
 mostly a proof of concept and is a masterpiece in its own right. However,

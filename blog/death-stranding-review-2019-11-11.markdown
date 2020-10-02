@@ -92,7 +92,7 @@ the real thing that advances is the skill of the player. You make the
 deliveries. You go the distance. You do your job as the post-apocalyptic UPS man
 that America needs.
 
-<center>![UPS Simulator 2019](/static/img/ups-simulator-2019.jpg)</center>
+![UPS Simulator 2019](/static/img/ups-simulator-2019.jpg)
 
 By [mmmintdesign](https://twitter.com/mmmintdesign) [source](https://twitter.com/mmmintdesign/status/1192856164331114497)
 

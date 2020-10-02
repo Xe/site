@@ -19,7 +19,7 @@ make this data anonymous, simplistic and (reasonably) public.
 
 Here is how it works:
 
-<center>![A diagram on how this works](/static/img/pageview_flowchart.png)</center>
+![A diagram on how this works](/static/img/pageview_flowchart.png)
 
 When the page is loaded, a [javascript file records the start time](/static/js/pageview_timer.js).
 This then sets a [pagehide handler](https://developer.mozilla.org/en-US/docs/Web/API/Window/pagehide_event)
