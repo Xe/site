@@ -168,7 +168,7 @@ in  [ Person::{
     , Person::{
       , name = "Zachary McKee"
       , tags = 
-        [ "javascipt"
+        [ "javascript"
         , "django"
         , "react"
         , "postgresql"
