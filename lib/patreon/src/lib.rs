@@ -71,7 +71,7 @@ pub enum Error {
     Request(#[from] reqwest::Error),
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct Credentials {
     pub client_id: String,
     pub client_secret: String,

@@ -19,7 +19,7 @@ pub struct Config {
 #[instrument]
 async fn patrons() -> Result<Option<patreon::Users>> {
     use patreon::*;
-    let creds: Credentials = envy::prefixed("PATREON_").from_env().unwrap();
+    let creds: Credentials = envy::prefixed("PATREON_").from_env().unwrap_or(Credentials::default());
     let cli = Client::new(creds);
 
     match cli.campaign().await {
