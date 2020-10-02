@@ -48,9 +48,9 @@ NixOS and how they fit into how I use NixOS on my desktop.
 Earlier, I mentioned that Nix is a _functional_ package manager. This means that
 Nix views packages as a combination of inputs to get an output:
 
-<center>![A nix package is the metadata, the source code, the build instructions and
+![A nix package is the metadata, the source code, the build instructions and
 some patches as input to a derivation to create a
-package](/static/blog/nix-package.png)</center>
+package](/static/blog/nix-package.png)
 
 This is how most package managers work (even things like Windows installer
 files), but Nix goes a step further by disallowing package builds to access the

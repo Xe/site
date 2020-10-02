@@ -13,7 +13,7 @@ I recently posted (a variant of) this image of some Go source code to Twitter
 and it spawned some interesting conversations about what it does, how it works
 and why it needs to exist in the first place:
 
-<center>![the source code of package maybedoer](/static/blog/maybedoer.png)</center>
+![the source code of package maybedoer](/static/blog/maybedoer.png)
 
 This file is used to sequence functions that could fail together, allowing you
 to avoid doing an `if err != nil` check on every single fallible function call.
