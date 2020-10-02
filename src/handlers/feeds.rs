@@ -1,7 +1,8 @@
 use crate::{app::State, templates};
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
-use std::{sync::Arc, io};
+use std::{io, sync::Arc};
+use tracing::instrument;
 use warp::{http::Response, Rejection, Reply};
 
 lazy_static! {
@@ -12,6 +13,7 @@ lazy_static! {
     .unwrap();
 }
 
+#[instrument(skip(state))]
 pub async fn jsonfeed(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["json"]).inc();
     let state = state.clone();
@@ -26,6 +28,7 @@ pub enum RenderError {
 
 impl warp::reject::Reject for RenderError {}
 
+#[instrument(skip(state))]
 pub async fn atom(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["atom"]).inc();
     let state = state.clone();
@@ -41,6 +44,7 @@ pub async fn atom(state: Arc<State>) -> Result<impl Reply, Rejection> {
         .map_err(warp::reject::custom)
 }
 
+#[instrument(skip(state))]
 pub async fn rss(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["rss"]).inc();
     let state = state.clone();
@@ -56,6 +60,7 @@ pub async fn rss(state: Arc<State>) -> Result<impl Reply, Rejection> {
         .map_err(warp::reject::custom)
 }
 
+#[instrument(skip(state))]
 pub async fn sitemap(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["sitemap"]).inc();
     let state = state.clone();

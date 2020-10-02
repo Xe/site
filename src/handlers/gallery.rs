@@ -8,6 +8,7 @@ use lazy_static::lazy_static;
 use prometheus::{IntCounterVec, register_int_counter_vec, opts};
 use std::sync::Arc;
 use warp::{http::Response, Rejection, Reply};
+use tracing::instrument;
 
 lazy_static! {
     static ref HIT_COUNTER: IntCounterVec =
@@ -15,11 +16,13 @@ lazy_static! {
         .unwrap();
 }
 
+#[instrument(skip(state))]
 pub async fn index(state: Arc<State>) -> Result<impl Reply, Rejection> {
     let state = state.clone();
     Response::builder().html(|o| templates::galleryindex_html(o, state.gallery.clone()))
 }
 
+#[instrument(skip(state))]
 pub async fn post_view(name: String, state: Arc<State>) -> Result<impl Reply, Rejection> {
     let mut want: Option<Post> = None;
 

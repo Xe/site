@@ -9,6 +9,7 @@ use warp::{
     http::{Response, StatusCode},
     Rejection, Reply,
 };
+use tracing::instrument;
 
 lazy_static! {
     static ref HIT_COUNTER: IntCounterVec =
@@ -16,27 +17,32 @@ lazy_static! {
             .unwrap();
 }
 
+#[instrument]
 pub async fn index() -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["index"]).inc();
     Response::builder().html(|o| templates::index_html(o))
 }
 
+#[instrument]
 pub async fn contact() -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["contact"]).inc();
     Response::builder().html(|o| templates::contact_html(o))
 }
 
+#[instrument]
 pub async fn feeds() -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["feeds"]).inc();
     Response::builder().html(|o| templates::feeds_html(o))
 }
 
+#[instrument(skip(state))]
 pub async fn resume(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["resume"]).inc();
     let state = state.clone();
     Response::builder().html(|o| templates::resume_html(o, Html(state.resume.clone())))
 }
 
+#[instrument(skip(state))]
 pub async fn patrons(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["patrons"]).inc();
     let state = state.clone();
@@ -51,12 +57,14 @@ pub async fn patrons(state: Arc<State>) -> Result<impl Reply, Rejection> {
     }
 }
 
+#[instrument(skip(state))]
 pub async fn signalboost(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["signalboost"]).inc();
     let state = state.clone();
     Response::builder().html(|o| templates::signalboost_html(o, state.signalboost.clone()))
 }
 
+#[instrument]
 pub async fn not_found() -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["not_found"]).inc();
     Response::builder().html(|o| templates::notfound_html(o, "some path".into()))
@@ -109,6 +117,7 @@ lazy_static! {
     .unwrap();
 }
 
+#[instrument]
 pub async fn rejection(err: Rejection) -> Result<impl Reply, Infallible> {
     let path: String;
     let code;
