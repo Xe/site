@@ -1,6 +1,7 @@
+use chrono::prelude::*;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
-use chrono::prelude::*;
+use tracing::{debug, error, instrument};
 
 pub type Campaigns = Vec<Object<Campaign>>;
 pub type Pledges = Vec<Object<Pledge>>;
@@ -70,7 +71,7 @@ pub enum Error {
     Request(#[from] reqwest::Error),
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct Credentials {
     pub client_id: String,
     pub client_secret: String,
@@ -112,6 +113,7 @@ impl Client {
         }
     }
 
+    #[instrument(skip(self))]
     pub async fn campaign(&self) -> Result<Data<Vec<Object<Campaign>>, ()>> {
         let data = self
             .cli
@@ -126,11 +128,14 @@ impl Client {
             )
             .send()
             .await?
-            .error_for_status()?.text().await?;
-        log::debug!("campaign response: {}", data);
+            .error_for_status()?
+            .text()
+            .await?;
+        debug!("campaign response: {}", data);
         Ok(serde_json::from_str(&data)?)
     }
 
+    #[instrument(skip(self))]
     pub async fn pledges(&self, camp_id: String) -> Result<Vec<Object<User>>> {
         let data = self
             .cli
@@ -148,8 +153,8 @@ impl Client {
             .error_for_status()?
             .text()
             .await?;
-        log::debug!("pledges for {}: {}", camp_id, data);
-        let data : Data<Vec<Object<Pledge>>, Object<User>> = serde_json::from_str(&data)?;
+        debug!("pledges for {}: {}", camp_id, data);
+        let data: Data<Vec<Object<Pledge>>, Object<User>> = serde_json::from_str(&data)?;
         Ok(data.included.unwrap())
     }
 }

@@ -2,6 +2,7 @@ use crate::{post::Post, signalboost::Person};
 use color_eyre::eyre::Result;
 use serde::Deserialize;
 use std::{fs, path::PathBuf};
+use tracing::{instrument, error};
 
 pub mod markdown;
 
@@ -15,9 +16,10 @@ pub struct Config {
     resume_fname: PathBuf,
 }
 
+#[instrument]
 async fn patrons() -> Result<Option<patreon::Users>> {
     use patreon::*;
-    let creds: Credentials = envy::prefixed("PATREON_").from_env().unwrap();
+    let creds: Credentials = envy::prefixed("PATREON_").from_env().unwrap_or(Credentials::default());
     let cli = Client::new(creds);
 
     match cli.campaign().await {
@@ -27,13 +29,13 @@ async fn patrons() -> Result<Option<patreon::Users>> {
             match cli.pledges(id).await {
                 Ok(users) => Ok(Some(users)),
                 Err(why) => {
-                    log::error!("error getting pledges: {:?}", why);
+                    error!("error getting pledges: {}", why);
                     Ok(None)
                 }
             }
         }
         Err(why) => {
-            log::error!("error getting patreon campaign: {:?}", why);
+            error!("error getting patreon campaign: {}", why);
             Ok(None)
         }
     }
@@ -134,7 +136,6 @@ mod tests {
     use color_eyre::eyre::Result;
     #[tokio::test]
     async fn init() -> Result<()> {
-        let _ = pretty_env_logger::try_init();
         super::init("./config.dhall".into()).await?;
         Ok(())
     }

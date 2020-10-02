@@ -23,7 +23,7 @@ fn with_state(
 async fn main() -> Result<()> {
     color_eyre::install()?;
     let _ = kankyo::init();
-    pretty_env_logger::init();
+    tracing_subscriber::fmt::init();
     log::info!("starting up commit {}", env!("GITHUB_SHA"));
 
     let state = Arc::new(app::init(
