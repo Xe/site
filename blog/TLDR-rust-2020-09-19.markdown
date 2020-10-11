@@ -1,6 +1,7 @@
 ---
 title: "TL;DR Rust"
 date: 2020-09-19
+series: rust-for-gophers
 tags:
   - rust
   - go

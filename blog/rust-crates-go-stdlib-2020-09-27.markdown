@@ -1,6 +1,7 @@
 ---
 title: Rust Crates that do What the Go Standard library Does
 date: 2020-09-27
+series: rust-for-gophers
 tags:
  - rust
 ---
