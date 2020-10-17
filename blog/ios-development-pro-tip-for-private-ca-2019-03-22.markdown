@@ -20,9 +20,7 @@ img {
 }
 </style>
 
-<center>
 ![](/static/img/ios_profiles.png)
-</center>
 
 - Go up a level to General
 - Select About
@@ -30,9 +28,7 @@ img {
 - Each root that has been installed via a profile will be listed below the heading Enable Full Trust For Root Certificates
 - Users can toggle on/off trust for each root:
 
-<center>
 ![](/static/img/ios_cert_trust.png)
-</center>
 
 Please understand that by doing this, users will potentially be vulnerable to a
 [HTTPS man in the middle attack a-la Superfish](https://slate.com/technology/2015/02/lenovo-superfish-scandal-why-its-one-of-the-worst-consumer-computing-screw-ups-ever.html). Please ensure that you have appropriate measures in place to keep the signing key for the CA safe.
