@@ -139,7 +139,7 @@ h
 I think this is the smallest (if not one of the smallest) quine generator in the
 world. I even got this program running on bare metal:
 
-<center>![](/static/blog/xeos_h.png)</center>
+![](/static/blog/xeos_h.png)
 
 [hlang]: https://h.christine.website
 [vlang]: https://vlang.io
