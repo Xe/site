@@ -297,7 +297,7 @@ a:hover {
 }
 .hack pre code:after,
 .hack pre code:before {
-  content: "";
+  display: none;
 }
 .hack code {
   font-weight: 700;
