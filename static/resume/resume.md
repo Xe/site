@@ -12,7 +12,7 @@ Linux`, `Ubuntu`, `Linux`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`,
 
 ## Experience
 
-### Lightspeed - Expert principal en fiabilité du site &emsp; <small>*2019 - current*</small>
+### Lightspeed - Expert principal en fiabilité du site &emsp; <small>*2019 - 2020*</small>
 
 (Senior Site Reliability Expert)
 
