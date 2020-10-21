@@ -81,6 +81,13 @@ in  [ Person::{
       , gitLink = "https://github.com/AstraLuma"
       , twitter = "https://twitter.com/AstraLuma"
       }
+      , Person::{
+      , name = "Joseph Crawley"
+      , tags =
+        [ "javascript", "react", "csharp", "python", "full-stack", "web", "bash", "linux" ]
+      , gitLink = "https://github.com/espe-on"
+      , twitter = "https://twitter.com/espe_on_"
+      }
     , Person::{
       , name = "Natthan Leong"
       , tags =
