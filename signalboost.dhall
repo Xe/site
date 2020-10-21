@@ -84,7 +84,7 @@ in  [ Person::{
       , Person::{
       , name = "Joseph Crawley"
       , tags =
-        [ "javascript", "react", "csharp", "python", "full-stack", "web", "bash", "linux ]
+        [ "javascript", "react", "csharp", "python", "full-stack", "web", "bash", "linux" ]
       , gitLink = "https://github.com/espe-on"
       , twitter = "https://twitter.com/espe_on_"
       }
