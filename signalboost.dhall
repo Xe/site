@@ -89,6 +89,11 @@ in  [ Person::{
       , twitter = "https://twitter.com/espe_on_"
       }
     , Person::{
+      , name = "nicoo"
+      , tags = [ "cryptography", "Debian", "distributed systems", "embedded", "nix", "rust", "privacy", "security", "SDR" ]
+      , gitLink = "https://github.com/nbraud"
+      }
+    , Person::{
       , name = "Natthan Leong"
       , tags =
         [ "c"
