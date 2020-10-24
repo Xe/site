@@ -1,6 +1,6 @@
 ---
 title: "Life Update: New Adventures"
-date: 2020-10-23
+date: 2020-10-24
 tags:
  - personal
 ---
