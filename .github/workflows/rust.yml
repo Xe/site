@@ -23,13 +23,3 @@ jobs:
           PATREON_CLIENT_ID: ${{ secrets.PATREON_CLIENT_ID }}
           PATREON_CLIENT_SECRET: ${{ secrets.PATREON_CLIENT_SECRET }}
           PATREON_REFRESH_TOKEN: ${{ secrets.PATREON_REFRESH_TOKEN }}
-  release:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v2
-      - name: Releases via Palisade
-        run: |
-          docker run --rm --name palisade -v $(pwd):/workspace -e GITHUB_TOKEN -e GITHUB_REF -e GITHUB_REPOSITORY --workdir /workspace ghcr.io/xe/palisade palisade github-action
-        env:
-          GITHUB_TOKEN: ${{ secrets.CR_PAT }}
