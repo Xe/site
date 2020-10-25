@@ -1,3 +1,4 @@
+@use crate::APPLICATION_NAME as APP;
 @use crate::post::Post;
 
 @(posts: Vec<Post>)
@@ -7,12 +8,14 @@
         <title>Christine Dodrill's Blog</title>
         <link>https://christine.website/blog</link>
         <description>Tech, philosophy and more</description>
+        <generator>@APP https://github.com/Xe/site</generator>
         @for post in posts {
             <item>
                 <title>@post.front_matter.title</title>
                 <link>https://christine.website/@post.link</link>
                 <description></description>
                 <pubDate>@post.date.to_rfc2822()</pubDate>
+                <content:encoded><![CDATA[ @Html(post.body_html) ]]></content:encoded>
             </item>
 
         }
