@@ -11,11 +11,11 @@
         <generator>@APP https://github.com/Xe/site</generator>
         @for post in posts {
             <item>
+                <guid>https://christine.website/@post.link</guid>
                 <title>@post.front_matter.title</title>
                 <link>https://christine.website/@post.link</link>
-                <description></description>
+                <description><![CDATA[@Html(post.body_html)]]></description>
                 <pubDate>@post.date.to_rfc2822()</pubDate>
-                <content:encoded><![CDATA[ @Html(post.body_html) ]]></content:encoded>
             </item>
 
         }
