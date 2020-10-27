@@ -38,7 +38,7 @@ Before I was getting around 70 words per minute at best (according to
 [monkeytype.com](https://monkeytype.com/)), but now I am lucky to hit about 35
 words per minute. My fingers kinda reach for where keys are on a staggered
 keyboard and I have the most trouble with `x`, `v`, `.` and `b` at the moment. I
-really like having a dedicated : key on my left hand. It makes command mode (and
+really like having a dedicated : key on my right hand. It makes command mode (and
 yaml) so much easier. The larger red buttons are a bit odd to hit at the moment,
 but I imagine that will get much easier with time.
 
