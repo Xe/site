@@ -253,6 +253,10 @@ match character {
 
 Which looks a _lot_ better.
 
+[You can use the `use` statement just about anywhere in your program. However to
+keep things flowing nicer, the `use` statement is right next to where it is
+needed in these examples.](conversation://Mara/hacker)
+
 Now we can get into the fun that is parsing numbers. When he wrote MiniCompiler,
 Terry Davis used an approach that is something like this (spacing added for readability):
 
