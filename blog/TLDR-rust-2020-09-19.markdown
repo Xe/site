@@ -1,8 +1,8 @@
 ---
 title: "TL;DR Rust"
 date: 2020-09-19
+series: rust
 tags:
-  - rust
   - go
   - golang
 ---

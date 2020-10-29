@@ -1,7 +1,7 @@
 ---
 title: "Minicompiler: Lexing"
 date: 2020-10-29
-series: minicompiler
+series: rust
 tags:
  - rust
  - templeos
@@ -36,7 +36,7 @@ This compiler will be written in Rust and will use only the standard library for
 everything but the final bytecode compilation and execution phase. There is a
 lot going on here, so I expect this to be at least a three part series. The
 source code will be in [Xe/minicompiler][Xemincompiler] in case you want to read
-it in detail.
+it in detail. Follow along and let's learn some Rust on the way!
 
 [wasm]: https://webassembly.org/
 [Xemincompiler]: https://github.com/Xe/minicompiler

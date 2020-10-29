@@ -1,8 +1,7 @@
 ---
 title: Rust Crates that do What the Go Standard library Does
 date: 2020-09-27
-tags:
- - rust
+series: rust
 ---
 
 # Rust Crates that do What the Go Standard library Does
