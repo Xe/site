@@ -382,3 +382,12 @@ This is it for part 1. We covered a lot today. Next time we are going to run a
 validation pass on the program, convert the infix expressions to reverse polish
 notation and then also get started on compiling that to WebAssembly. This has
 been fun so far and I hope you were able to learn from it.
+
+Special thanks to the following people for reviewing this post:
+ - Steven Weeks
+ - sirpros
+ - Leonora Tindall
+ - Chetan Conikee
+ - Pablo
+ - boopstrap
+ - ash2x3
