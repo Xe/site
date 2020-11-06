@@ -137,7 +137,9 @@ version](https://christine.website/static/img/avatar_large.png).
 
 I also have a qwerty layer for gaming. Most games expect qwerty keyboards and
 this is an excellent stopgap to avoid having to rebind every game that I want to
-play. 
+play. The left side of the keyboard is the active one with the controller board
+in it too, so I can unplug the other half of the keyboard and give my mouse a
+lot of room to roam.
 
 Thanks to a friend of mine, I am also playing with Dvorak. I have not gotten far
 in Dvorak yet, but it is interesting to play with.
