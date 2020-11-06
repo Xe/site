@@ -88,7 +88,7 @@ with clicky switches.
 
 The Moonlander uses an ortholinear layout as opposed to the staggered layout
 that you find on most keyboards. This took some getting used to, but I have
-found that it is incredibly comfortable and 
+found that it is incredibly comfortable and natural to write on.
 
 ## My Keymap
 
