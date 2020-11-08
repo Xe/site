@@ -382,7 +382,7 @@ and string interpolation:
 # ...
 ```
 
-Adding this to the default load path and enabling it with `cadey.Colemak.enable
+Adding this to the default load path and enabling it with `cadey.colemak.enable
 = true;` in my tower's `configuration.nix` 
 
 This section was made possible thanks to help from [Graham
