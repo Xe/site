@@ -11,7 +11,7 @@ repository = "https://github.com/Xe/site"
 [dependencies]
 color-eyre = "0.5"
 chrono = "0.4"
-comrak = "0.8"
+comrak = "0.9"
 envy = "0.4"
 glob = "0.3"
 hyper = "0.13"
@@ -21,7 +21,7 @@ log = "0.4"
 mime = "0.3.0"
 prometheus = { version = "0.10", default-features = false, features = ["process"] }
 rand = "0"
-serde_dhall = "0.7.1"
+serde_dhall = "0.8.0"
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.8"
 sitemap = "0.4"
