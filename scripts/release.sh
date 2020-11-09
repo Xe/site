@@ -7,4 +7,4 @@ kubectl rollout status -n apps deployment/christinewebsite
 kubectl apply -f ./k8s/job.yml
 sleep 10
 kubectl delete -f ./k8s/job.yml
-curl -H "Authorization: $MI_TOKEN" --data "https://christine.website/blog.json" https://mi.within.website/blog/refresh
+curl --http1.1 -H "Authorization: $MI_TOKEN" --data "https://christine.website/blog.json" https://mi.within.website/blog/refresh
