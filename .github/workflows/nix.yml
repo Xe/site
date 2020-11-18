@@ -29,7 +29,8 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v1
-      - uses: cachix/install-nix-action@v6
+      - uses: cachix/install-nix-action@v12
+      - run: nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
       - name: deploy
         run: ./scripts/release.sh
         env:
