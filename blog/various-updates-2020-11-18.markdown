@@ -141,18 +141,19 @@ don't expect this to come out any time soon.
 
 My [Gergoplex kit](https://www.gboards.ca/product/gergoplex) finally came in
 yesterday, and I got to work soldering it up with some switches and applying the
-keycaps. Here is a picture of me soldering it:
+keycaps.
 
-![Me soldering the Gergoplex
-keyboard](https://cdn.christine.website/file/christine-static/img/keeb/gergoplex/Elm3dN8XUAAYHws.jpg)
+![Me soldering the Gergoplex](https://cdn.christine.website/file/christine-static/img/keeb/gergoplex/EnEYNxvW4AEfWcH.jpg)
+
+![A glory shot of the Gergoplex](https://cdn.christine.website/file/christine-static/img/keeb/gergoplex/Elm3dN8XUAAYHws.jpg)
 
 I picked the Pro Red linear switches with a 35 gram spring in them (read: they
 need 35 grams of force to actuate, which is lighter than most switches) and
 typing on it is buttery smooth. The keycaps are a boring black, but they look
 nice on it.
 
-Overall this kit (with the partial board, switches and keycaps) cost me $124
-with the costs looking something like this:
+Overall this kit (with the partial board, switches and keycaps) cost me about
+US$124 (not including shipping) with the costs looking something like this:
 
 | Name                       | Count  | Cost  |
 | :------------------------- | :----- | :---- |
