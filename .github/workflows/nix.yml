@@ -27,7 +27,9 @@ jobs:
           docker push ghcr.io/xe/site
       - name: deploy
         if: github.ref == 'refs/heads/main'
-        run: ./scripts/release.sh
+        run: |
+          nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+          ./scripts/release.sh
         env:
           NIX_PATH: /nix/var/nix/profiles/per-user/runner/channels
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
