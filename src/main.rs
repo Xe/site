@@ -26,12 +26,15 @@ async fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
     log::info!("starting up commit {}", env!("GITHUB_SHA"));
 
-    let state = Arc::new(app::init(
-        std::env::var("CONFIG_FNAME")
-            .unwrap_or("./config.dhall".into())
-            .as_str()
-            .into(),
-    ).await?);
+    let state = Arc::new(
+        app::init(
+            std::env::var("CONFIG_FNAME")
+                .unwrap_or("./config.dhall".into())
+                .as_str()
+                .into(),
+        )
+        .await?,
+    );
 
     let healthcheck = warp::get().and(warp::path(".within").and(warp::path("health")).map(|| "OK"));
 
@@ -144,6 +147,17 @@ async fn main() -> Result<()> {
             )
         })
         .map(|reply| warp::reply::with_header(reply, "X-Clacks-Overhead", "GNU Ashlynn"))
+        .map(|reply| {
+            warp::reply::with_header(
+                reply,
+                "Link",
+                format!(
+                    r#"<{}>; rel="webmention""#,
+                    std::env::var("WEBMENTION_URL")
+                        .unwrap_or("https://mi.within.website/api/webmention/accept".to_string())
+                ),
+            )
+        })
         .with(warp::log(APPLICATION_NAME))
         .recover(handlers::rejection);
 
