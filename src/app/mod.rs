@@ -2,24 +2,28 @@ use crate::{post::Post, signalboost::Person};
 use color_eyre::eyre::Result;
 use serde::Deserialize;
 use std::{fs, path::PathBuf};
-use tracing::{instrument, error};
+use tracing::{error, instrument};
 
 pub mod markdown;
 
 #[derive(Clone, Deserialize)]
 pub struct Config {
     #[serde(rename = "clackSet")]
-    clack_set: Vec<String>,
-    signalboost: Vec<Person>,
-    port: u16,
+    pub(crate) clack_set: Vec<String>,
+    pub(crate) signalboost: Vec<Person>,
+    pub(crate) port: u16,
     #[serde(rename = "resumeFname")]
-    resume_fname: PathBuf,
+    pub(crate) resume_fname: PathBuf,
+    #[serde(rename = "webMentionEndpoint")]
+    pub(crate) webmention_url: String,
 }
 
 #[instrument]
 async fn patrons() -> Result<Option<patreon::Users>> {
     use patreon::*;
-    let creds: Credentials = envy::prefixed("PATREON_").from_env().unwrap_or(Credentials::default());
+    let creds: Credentials = envy::prefixed("PATREON_")
+        .from_env()
+        .unwrap_or(Credentials::default());
     let cli = Client::new(creds);
 
     match cli.campaign().await {
