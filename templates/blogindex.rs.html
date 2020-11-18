@@ -14,7 +14,7 @@
 <p>
     <ul>
         @for post in posts {
-            <li>@post.date.format("%Y-%m-%d") - <a href="@post.link">@post.front_matter.title</a></li>
+            <li>@post.date.format("%Y-%m-%d") - <a href="/@post.link">@post.front_matter.title</a></li>
         }
     </ul>
 </p>
