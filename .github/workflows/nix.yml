@@ -17,24 +17,19 @@ jobs:
           name: xe
       - run: nix-build
       - name: Log into GitHub Container Registry
+        if: github.ref == 'refs/heads/main'
         run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Docker push
+        if: github.ref == 'refs/heads/main'
         run: |
           docker load -i result
           docker tag xena/christinewebsite:latest ghcr.io/xe/site:$GITHUB_SHA
           docker push ghcr.io/xe/site
-  release:
-    runs-on: ubuntu-latest
-    needs: docker-build
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v1
-      - uses: cachix/install-nix-action@v12
-      - run: nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
       - name: deploy
+        if: github.ref == 'refs/heads/main'
         run: ./scripts/release.sh
         env:
-          NIX_PATH: nixpkgs=https://nixos.org/channels/nixpkgs-unstable
+          NIX_PATH: /nix/var/nix/profiles/per-user/root/channels
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
           MI_TOKEN: ${{ secrets.MI_TOKEN }}
           PATREON_ACCESS_TOKEN: ${{ secrets.PATREON_ACCESS_TOKEN }}
