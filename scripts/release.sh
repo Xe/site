@@ -1,6 +1,6 @@
 #!/usr/bin/env nix-shell
 #! nix-shell -p doctl -p kubectl -p curl -i bash
-#! nix-shell -I nixpkgs=https://nixos.org/channels/nixpkgs-unstable
+#! nix-shell -I nixpkgs=https://releases.nixos.org/nixpkgs/nixpkgs-21.03pre252431.4f3475b113c/nixexprs.tar.xz
 
 nix-env -if ./nix/dhall-yaml.nix
 doctl kubernetes cluster kubeconfig save kubermemes
