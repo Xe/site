@@ -11,10 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: cachix/install-nix-action@v6
-      - uses: cachix/cachix-action@v3
+      - uses: cachix/install-nix-action@v12
+      - uses: cachix/cachix-action@v7
         with:
           name: xe
+      - run: nix-build
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Docker push
