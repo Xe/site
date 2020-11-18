@@ -29,7 +29,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: ./scripts/release.sh
         env:
-          NIX_PATH: /nix/var/nix/profiles/per-user/root/channels
+          NIX_PATH: /nix/var/nix/profiles/per-user/runner/channels
           DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
           MI_TOKEN: ${{ secrets.MI_TOKEN }}
           PATREON_ACCESS_TOKEN: ${{ secrets.PATREON_ACCESS_TOKEN }}
