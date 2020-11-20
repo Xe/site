@@ -105,7 +105,7 @@ file:
 # hosts/chrysalis/configuration.nix
   services.prometheus = {
     enable = true;
-    port = 9090;
+    port = 9001;
   };
 ```
 
@@ -118,7 +118,7 @@ $ nixops deploy -d home
 And let's configure Grafana to read from Prometheus. Open Grafana and click on
 the gear to the left side of the page. The `Data Sources` tab should be active.
 If it is not active, click on `Data Sources`. Then click "add data source" and
-choose Prometheus. Set the URL to `http://127.0.0.1:9090` (or with whatever port
+choose Prometheus. Set the URL to `http://127.0.0.1:9001` (or with whatever port
 you configured above) and leave everything set to the default values. Click
 "Save & Test". If there is an error, be sure to check the port number.
 
