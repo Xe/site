@@ -336,7 +336,7 @@ by DMing them the answer. Always make sure your puzzles can be solved.
 
 - Saphire Lattice
 - Open Skies
-- Tramoline
+- Tralomine
 - AstroSnail
 - Dominika
 - pbardera
