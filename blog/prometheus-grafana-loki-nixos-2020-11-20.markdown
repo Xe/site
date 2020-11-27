@@ -146,7 +146,7 @@ exporter under `services.prometheus`:
       node = {
         enable = true;
         enabledCollectors = [ "systemd" ];
-        port = 9001;
+        port = 9002;
       };
     };
   }
