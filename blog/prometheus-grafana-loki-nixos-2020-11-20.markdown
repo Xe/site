@@ -61,7 +61,7 @@ an editor and add the following to it:
   };
   
   # nginx reverse proxy
-  services.nginx.virtualHosts.${services.grafana.domain} = {
+  services.nginx.virtualHosts.${config.services.grafana.domain} = {
     locations."/" = {
         proxyPass = "http://127.0.0.1:${toString config.services.grafana.port}";
         proxyWebsockets = true;
@@ -146,7 +146,7 @@ exporter under `services.prometheus`:
       node = {
         enable = true;
         enabledCollectors = [ "systemd" ];
-        port = 9001;
+        port = 9002;
       };
     };
   }
@@ -164,9 +164,9 @@ that points to the node exporter we configured just now:
     scrapeConfigs = [
       {
         job_name = "chrysalis";
-        static_configs = [
+        static_configs = [{
           targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" ];
-        ];
+        }];
       }
     ];
     
