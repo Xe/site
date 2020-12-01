@@ -1,6 +1,6 @@
 ---
 title: Discord Webhooks via NixOS and Systemd Timers
-date: 11-30-2020
+date: 2020-11-30
 series: howto
 tags:
   - nixos
