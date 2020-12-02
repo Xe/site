@@ -37,6 +37,7 @@ url = "2"
 # workspace dependencies
 go_vanity = { path = "./lib/go_vanity" }
 jsonfeed = { path = "./lib/jsonfeed" }
+mi = { path = "./lib/mi" }
 patreon = { path = "./lib/patreon" }
 
 [build-dependencies]
@@ -51,7 +52,5 @@ pretty_env_logger = "0"
 
 [workspace]
 members = [
-  "./lib/go_vanity",
-  "./lib/jsonfeed",
-  "./lib/patreon"
+  "./lib/*",
 ]

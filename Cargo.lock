@@ -1061,6 +1061,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0ee1c47aaa256ecabcaea351eae4a9b01ef39ed810004e298d2511ed284b1525"
 
 [[package]]
+name = "mi"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "color-eyre",
+ "envy",
+ "pretty_env_logger",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+ "tracing",
+ "tracing-futures",
+]
+
+[[package]]
 name = "mime"
 version = "0.3.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2757,6 +2774,7 @@ dependencies = [
  "kankyo",
  "lazy_static",
  "log",
+ "mi",
  "mime",
  "patreon",
  "pfacts",

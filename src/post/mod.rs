@@ -12,6 +12,7 @@ pub struct Post {
     pub body: String,
     pub body_html: String,
     pub date: DateTime<FixedOffset>,
+    pub mentions: Vec<mi::WebMention>,
 }
 
 impl Into<jsonfeed::Item> for Post {
@@ -70,7 +71,7 @@ impl Post {
     }
 }
 
-pub fn load(dir: &str) -> Result<Vec<Post>> {
+pub async fn load(dir: &str, mi: Option<&mi::Client>) -> Result<Vec<Post>> {
     let mut result: Vec<Post> = vec![];
 
     for path in glob(&format!("{}/*.markdown", dir))?.filter_map(Result::ok) {
@@ -81,10 +82,19 @@ pub fn load(dir: &str) -> Result<Vec<Post>> {
             .wrap_err_with(|| format!("can't parse frontmatter of {:?}", path))?;
         let markup = &body[content_offset..];
         let date = NaiveDate::parse_from_str(&fm.clone().date, "%Y-%m-%d")?;
+        let link = format!("{}/{}", dir, path.file_stem().unwrap().to_str().unwrap());
+        let mentions: Vec<mi::WebMention> = match mi {
+            None => vec![],
+            Some(mi) => mi
+                .mentioners(format!("https://christine.website/{}", link))
+                .await
+                .map_err(|why| tracing::error!("error: can't load mentions for {}: {}", link, why))
+                .unwrap_or(vec![]),
+        };
 
         result.push(Post {
             front_matter: fm,
-            link: format!("{}/{}", dir, path.file_stem().unwrap().to_str().unwrap()),
+            link: link,
             body: markup.to_string(),
             body_html: crate::app::markdown::render(&markup)
                 .wrap_err_with(|| format!("can't parse markdown for {:?}", path))?,
@@ -96,6 +106,7 @@ pub fn load(dir: &str) -> Result<Vec<Post>> {
                 .with_timezone(&Utc)
                 .into()
             },
+            mentions: mentions,
         })
     }
 
@@ -113,23 +124,23 @@ mod tests {
     use super::*;
     use color_eyre::eyre::Result;
 
-    #[test]
-    fn blog() {
+    #[tokio::test]
+    async fn blog() {
         let _ = pretty_env_logger::try_init();
-        load("blog").expect("posts to load");
+        load("blog", None).await.expect("posts to load");
     }
 
-    #[test]
-    fn gallery() -> Result<()> {
+    #[tokio::test]
+    async fn gallery() -> Result<()> {
         let _ = pretty_env_logger::try_init();
-        load("gallery")?;
+        load("gallery", None).await?;
         Ok(())
     }
 
-    #[test]
-    fn talks() -> Result<()> {
+    #[tokio::test]
+    async fn talks() -> Result<()> {
         let _ = pretty_env_logger::try_init();
-        load("talks")?;
+        load("talks", None).await?;
         Ok(())
     }
 }

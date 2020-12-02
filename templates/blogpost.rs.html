@@ -62,6 +62,16 @@
     <p>Tags: @for tag in post.front_matter.tags.as_ref().unwrap() { <code>@tag</code> }</p>
 }
 
+@if post.mentions.len() != 0 {
+    <p>This post was <a href="https://www.w3.org/TR/webmention/">WebMention</a>ed at the following URLs:
+        <ul>
+            @for mention in post.mentions {
+            <li><a href="@mention.source">@mention.title.unwrap_or(mention.source)</a></li>
+            }
+        </ul>
+    </p>
+}
+
 <p>The art for Mara was drawn by <a href="https://selic.re/">Selicre</a>.</p>
 
 <script>
