@@ -1,5 +1,4 @@
-let kms =
-      https://tulpa.dev/cadey/kubermemes/raw/branch/master/k8s/package.dhall
+let kms = https://tulpa.dev/cadey/kubermemes/raw/branch/master/k8s/package.dhall
 
 let kubernetes =
       https://raw.githubusercontent.com/dhall-lang/dhall-kubernetes/master/1.15/package.dhall
@@ -28,13 +27,17 @@ let vars
         , name = "PATREON_REFRESH_TOKEN"
         , value = Some env:PATREON_REFRESH_TOKEN as Text
         }
+      , kubernetes.EnvVar::{
+        , name = "MI_TOKEN"
+        , value = Some env:MI_TOKEN as Text
+        }
       ]
 
 in  kms.app.make
       kms.app.Config::{
       , name = "christinewebsite"
       , appPort = 3030
-      , image = image
+      , image
       , replicas = 2
       , domain = "christine.website"
       , leIssuer = "prod"

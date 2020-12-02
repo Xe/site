@@ -17,6 +17,7 @@ let Config =
           , clackSet : List Text
           , resumeFname : Text
           , webMentionEndpoint : Text
+          , miToken : Text
           }
       , default =
         { signalboost = [] : List Person.Type
@@ -24,6 +25,7 @@ let Config =
         , clackSet = [ "Ashlynn" ]
         , resumeFname = "./static/resume/resume.md"
         , webMentionEndpoint = defaultWebMentionEndpoint
+        , miToken = "${env:MI_TOKEN as Text ? ""}"
         }
       }
 

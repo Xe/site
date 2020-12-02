@@ -16,6 +16,8 @@ pub struct Config {
     pub(crate) resume_fname: PathBuf,
     #[serde(rename = "webMentionEndpoint")]
     pub(crate) webmention_url: String,
+    #[serde(rename = "miToken")]
+    pub(crate) mi_token: String,
 }
 
 #[instrument]
@@ -58,6 +60,7 @@ pub struct State {
     pub jf: jsonfeed::Feed,
     pub sitemap: Vec<u8>,
     pub patrons: Option<patreon::Users>,
+    pub mi: mi::Client,
 }
 
 pub async fn init(cfg: PathBuf) -> Result<State> {
@@ -65,9 +68,10 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     let sb = cfg.signalboost.clone();
     let resume = fs::read_to_string(cfg.resume_fname.clone())?;
     let resume: String = markdown::render(&resume)?;
-    let blog = crate::post::load("blog")?;
-    let gallery = crate::post::load("gallery")?;
-    let talks = crate::post::load("talks")?;
+    let mi = mi::Client::new(cfg.mi_token.clone(), crate::APPLICATION_NAME.to_string())?;
+    let blog = crate::post::load("blog", Some(&mi)).await?;
+    let gallery = crate::post::load("gallery", None).await?;
+    let talks = crate::post::load("talks", None).await?;
     let mut everything: Vec<Post> = vec![];
 
     {
@@ -122,6 +126,7 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     urlwriter.end()?;
 
     Ok(State {
+        mi: mi,
         cfg: cfg,
         signalboost: sb,
         resume: resume,

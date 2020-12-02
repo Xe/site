@@ -5,16 +5,14 @@ let
   dhall-yaml = dhallpkgs.dhall-yaml-simple;
   dhall = dhallpkgs.dhall-simple;
   xepkgs = import sources.xepkgs { inherit pkgs; };
+  rust = import ./nix/rust.nix { };
 in with pkgs;
 with xepkgs;
 mkShell {
   buildInputs = [
     # Rust
-    cargo
+    rust
     cargo-watch
-    rls
-    rustc
-    rustfmt
 
     # system dependencies
     openssl
