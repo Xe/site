@@ -1,7 +1,7 @@
 let Person =
       { Type = { name : Text, tags : List Text, gitLink : Text, twitter : Text }
       , default =
-          { name = "", tags = [] : List Text, gitLink = "", twitter = "" }
+        { name = "", tags = [] : List Text, gitLink = "", twitter = "" }
       }
 
 in  [ Person::{
@@ -76,21 +76,33 @@ in  [ Person::{
       , twitter = "N/A"
       }
     , Person::{
-      , name = "Jamie Bliss"
-      , tags = [ "python", "devops", "full-stack", "saltstack", "web", "linux" ]
-      , gitLink = "https://github.com/AstraLuma"
-      , twitter = "https://twitter.com/AstraLuma"
-      }
-      , Person::{
       , name = "Joseph Crawley"
       , tags =
-        [ "javascript", "react", "csharp", "python", "full-stack", "web", "bash", "linux" ]
+        [ "javascript"
+        , "react"
+        , "csharp"
+        , "python"
+        , "full-stack"
+        , "web"
+        , "bash"
+        , "linux"
+        ]
       , gitLink = "https://github.com/espe-on"
       , twitter = "https://twitter.com/espe_on_"
       }
     , Person::{
       , name = "nicoo"
-      , tags = [ "cryptography", "Debian", "distributed systems", "embedded", "nix", "rust", "privacy", "security", "SDR" ]
+      , tags =
+        [ "cryptography"
+        , "Debian"
+        , "distributed systems"
+        , "embedded"
+        , "nix"
+        , "rust"
+        , "privacy"
+        , "security"
+        , "SDR"
+        ]
       , gitLink = "https://github.com/nbraud"
       }
     , Person::{
@@ -139,7 +151,7 @@ in  [ Person::{
       , gitLink = "https://github.com/Piyushhbhutoria"
       , twitter = "https://twitter.com/PiyushhB"
       }
-     , Person::{
+    , Person::{
       , name = "Ryan Casalino"
       , tags =
         [ "golang"
@@ -179,7 +191,7 @@ in  [ Person::{
       }
     , Person::{
       , name = "Zachary McKee"
-      , tags = 
+      , tags =
         [ "javascript"
         , "django"
         , "react"
@@ -195,22 +207,15 @@ in  [ Person::{
       , gitLink = "https://github.com/ZacharyRMcKee"
       , twitter = "N/A"
       }
-      , Person::{
+    , Person::{
       , name = "Muazzam Kazmi"
-      , tags = 
-        [ "Rust"
-        , "C++"
-        , "x86assembly"
-        , "WinAPI"
-        , "Node.js"
-        , "React.js"
-        ]
+      , tags = [ "Rust", "C++", "x86assembly", "WinAPI", "Node.js", "React.js" ]
       , gitLink = "https://github.com/muazzamalikazmi"
       , twitter = "N/A"
       }
-      , Person::{
+    , Person::{
       , name = "Jeffin Mathew"
-      , tags = 
+      , tags =
         [ "Python"
         , "routing&switching"
         , "django"
@@ -220,7 +225,7 @@ in  [ Person::{
         , "javascript"
         , "iot"
         ]
-       , gitLink = "https://github.com/mjeffin"
-       , twitter = "https://twitter.com/mpjeffin"
+      , gitLink = "https://github.com/mjeffin"
+      , twitter = "https://twitter.com/mpjeffin"
       }
     ]
