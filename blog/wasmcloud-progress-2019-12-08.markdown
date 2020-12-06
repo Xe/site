@@ -1,5 +1,5 @@
 ---
-title: "Wasmcloud Progress: Hello, World!"
+title: "Trisiel Progress: Hello, World!"
 date: 2019-12-08
 series: olin
 tags:
@@ -11,7 +11,7 @@ tags:
 
 I have been working off and on over the years and have finally created the base
 of a functions as a service backend for [WebAssembly][wasm] code. I'm code-naming this
-wasmcloud. [Wasmcloud][wasmcloud] is a pre-alpha prototype and is currently very much work in
+wasmcloud. [Trisiel][wasmcloud] is a pre-alpha prototype and is currently very much work in
 progress. However, it's far enough along that I would like to explain what I
 have been doing for the last few years and what it's all built up to.
 
@@ -100,7 +100,7 @@ I've even written a few blogposts about Olin:
 
 But, this was great for running stuff interactively and via the command line. It
 left me wanting more. I wanted to have that mythical functions as a service
-backend that I've been dreaming of. So, I created [wasmcloud][wasmcloud].
+backend that I've been dreaming of. So, I created [Trisiel][wasmcloud].
 
 ## h
 
@@ -144,9 +144,9 @@ world. I even got this program running on bare metal:
 [hlang]: https://h.christine.website
 [vlang]: https://vlang.io
 
-## Wasmcloud
+## Trisiel
 
-[Wasmcloud][wasmcloud] is the culmination of all of this work. The goal of
+[Trisiel][wasmcloud] is the culmination of all of this work. The goal of
 wasmcloud is to create a functions as a service backend for running people's
 code in an isolated server-side environment.
 
@@ -181,11 +181,11 @@ Top-level flags (use "wasmcloud flags" for a full list):
 
 This tool lets you do a few basic things:
 
-- Authenticate with the wasmcloud server
+- Authenticate with the Trisiel server
 - Create handlers from WebAssembly files that meet the CommonWA API as realized
   by Olin
 - Get logs for individual handler invocations
-- Run WebAssembly modules locally like they would get run on wasmcloud
+- Run WebAssembly modules locally like they would get run on Trisiel
 
 Nearly all of the complexity is abstracted away from users as much as possible.
 

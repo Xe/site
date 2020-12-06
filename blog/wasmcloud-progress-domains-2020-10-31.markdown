@@ -1,29 +1,29 @@
 ---
-title: "Wasmcloud Progress: Rewritten in Rust"
+title: "Trisiel Progress: Rewritten in Rust"
 date: 2020-10-31
 series: olin
 tags:
  - wasm
- - wasmcloud
+ - trisiel
  - wasmer
 ---
 
-# Wasmcloud Progress: Rewritten in Rust
+# Trisiel Progress: Rewritten in Rust
 
 It's been a while since I had the [last update for
-Wasmcloud](/blog/wasmcloud-progress-2019-12-08). In that time I have gotten a
-lot done. As the title mentions I have completely rewritten Wasmcloud's entire
+Trisiel](/blog/wasmcloud-progress-2019-12-08). In that time I have gotten a
+lot done. As the title mentions I have completely rewritten Trisiel's entire
 stack in Rust. Part of the reason was for [increased
 speed](/blog/pahi-benchmarks-2020-03-26) and the other part was to get better at
 Rust. I also wanted to experiment with running Rust in production and this has
 been an excellent way to do that.
 
-Wasmcloud is going to have a few major parts:
- - The API (likely to be hosted at `api.wasmcloud.app`)
- - The Executor (likely to be hosted at `run.wasmcloud.lgbt`)
- - The Panel (likely to be hosted at `panel.wasmcloud.app`)
- - The command line tool `wasmcloud`
- - The Documentation site (likely to be hosted at `docs.wasmcloud.app`)
+Trisiel is going to have a few major parts:
+ - The API (likely to be hosted at `api.trisiel.com`)
+ - The Executor (likely to be hosted at `run.trisiel.dev`)
+ - The Panel (likely to be hosted at `panel.trisiel.com`)
+ - The command line tool `trisiel`
+ - The Documentation site (likely to be hosted at `docs.trisiel`)
  
 These parts will work together to implement a functions as a service platform.
 
@@ -32,15 +32,15 @@ href="https://github.blog/2013-04-05-new-github-pages-domain-github-io/">this
 GitHub Pages vulnerability</a> from 2013. It is on a `.lgbt` domain because LGBT
 rights are human rights.](conversation://Mara/hacker)
 
-I have also set up a (slightly sarcastic) landing page at
-[wasmcloud.app](https://wasmcloud.app) and a twitter account at
-[@usewasmcloud](https://twitter.com/usewasmcloud). Right now these are
+I have also set up a landing page at
+[trisiel.com](https://trisiel.com) and a twitter account at
+[@trisielcloud](https://twitter.com/trisielcloud). Right now these are
 placeholders. I wanted to register the domains before they were taken by anyone
 else.
 
 ## Architecture
 
-My previous attempt at Wasmcloud had more of a four tier webapp setup. The
+My previous attempt at Trisiel had more of a four tier webapp setup. The
 overall stack looked something like this:
 
 - Nginx in front of everything
@@ -60,10 +60,10 @@ difficulties scaling globally due to ingress and egress data costs. This model
 is solid and _probably would have worked_ with some compression or other
 improvements like that, but overall I was not happy with it and decided to scrap
 it while I was porting the executor component to Rust. If you want to read the
-source code of this iteration of Wasmcloud, take a look
+source code of this iteration of Trisiel, take a look
 [here](https://tulpa.dev/within/wasmcloud).
 
-The new architecture of Wasmcloud looks something like this:
+The new architecture of Trisiel looks something like this:
 
 - Nginx in front of everything
 - An API server that handles login with my gitea instance
@@ -74,9 +74,9 @@ The new architecture of Wasmcloud looks something like this:
 The main change here is the fact that the executor listens over HTTPS, avoiding
 _a lot_ of the overhead involved in running this on a message queue. It's also
 much simpler to implement and allows me to reuse a vast majority of the
-boilerplate that I developed for the Wasmcloud API server.
+boilerplate that I developed for the Trisiel API server.
 
-This new version of Wasmcloud is also built on top of
+This new version of Trisiel is also built on top of
 [Wasmer](https://wasmer.io/). Wasmer is a seriously fantastic library for this
 and getting up and running was absolutely trivial, even though I knew very
 little Rust when I was writing [pa'i](/blog/pahi-hello-world-2020-02-22). I
@@ -91,7 +91,7 @@ very little accounting for what resources and system calls are used, however it
 does keep track of execution time. The executor also needs to have the request
 body of the client be wired to the standard in of the underlying module, which
 will enable me to parse CGI replies from WebAssembly functions. This will allow
-you to host HTTP endpoints on Wasmcloud using the same code that powers
+you to host HTTP endpoints on Trisiel using the same code that powers
 [this](https://olin.within.website) and
 [this](http://cetacean.club/cgi-bin/olinfetch.wasm).
 
@@ -103,15 +103,15 @@ again.
 Then comes the documentation. Oh god there will be so much documentation. I will
 be _drowning_ in documentation by the end of this.
 
-I need to write the panel and command line tool for Wasmcloud. I want to write
+I need to write the panel and command line tool for Trisiel. I want to write
 the panel in [Elm](https://elm-lang.org/) and the command line tool in Rust.
 
-There is basically zero validation for anything submitted to the Wasmcloud API.
+There is basically zero validation for anything submitted to the Trisiel API.
 I will need to write validation in order to make it safer.
 
 I may also explore enabling support for [WASI](https://wasi.dev/) in the future,
 but as I have stated before I do not believe that WASI works very well for the
-futuristic plan-9 inspired model I want to use on Wasmcloud.
+futuristic plan-9 inspired model I want to use on Trisiel.
 
 Right now the executor shells out to pa'i, but I want to embed pa'i into the
 executor binary so there are fewer moving parts involved.
@@ -126,7 +126,7 @@ limitations also don't help here.
 [Rocket](https://rocket.rs) is an absolutely fantastic web framework and I
 cannot recommend it enough. I am able to save _so much time_ with Rocket and its
 slightly magic use of proc-macros. For an example, here is the entire source
-code of the `/whoami` route in the Wasmcloud API:
+code of the `/whoami` route in the Trisiel API:
 
 ```rust
 #[get("/whoami")]
@@ -165,7 +165,7 @@ CREATE TRIGGER set_timestamp_users
     EXECUTE PROCEDURE trigger_set_timestamp();
 ```
 
-Every table in Wasmcloud uses this in order to make programming against the
+Every table in Trisiel uses this in order to make programming against the
 database easier.
 
 The symbol/number layer on my Moonlander has been _so good_. It looks something
@@ -196,7 +196,7 @@ As far as signups go, I am not accepting any signups at the moment. This is
 pre-alpha software. The abuse story will need to be figured out, but I am fairly
 sure it will end up being some kind of "pay or you can only run the precompiled
 example code in the documentation" with some kind of application process for the
-"free tier" of Wasmcloud. Of course, this is all theoretical and hinges on
-Wasmcloud actually being productizable; so who knows?
+"free tier" of Trisiel. Of course, this is all theoretical and hinges on
+Trisiel actually being productizable; so who knows?
 
 Be well.
