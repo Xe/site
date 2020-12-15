@@ -6,8 +6,14 @@ date: 2020-12-14
 **NOTE**: This is a very different kind of post compared to what I usually
 write. If you or anyone you know works at Twitter, please link this to them. I
 am in a unique situation and the normal account recovery means do not work. If
-you work at Twitter and are reading this, my case number is `0184332145
-[ref:00DA0000000K0A8.5004w000023isx7:ref]`.
+you work at Twitter and are reading this, my case number is [redacted].
+
+**EDIT**(19:51 M12 14 2020): My account is back. Thank you anonymous Twitter
+support people. For everyone else, please take this as an example of how
+**NOT** to handle account issues. The fact that I had to complain loudly on
+Twitter to get this weird edge case taken care of is ludicrous. I'd gladly pay
+Twitter just to have a support mechanism that gets me an actual human without
+having to complain on Twitter.
 
 # Plea to Twitter
 
