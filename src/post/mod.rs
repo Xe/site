@@ -81,7 +81,8 @@ pub async fn load(dir: &str, mi: Option<&mi::Client>) -> Result<Vec<Post>> {
         let (fm, content_offset) = frontmatter::Data::parse(body.clone().as_str())
             .wrap_err_with(|| format!("can't parse frontmatter of {:?}", path))?;
         let markup = &body[content_offset..];
-        let date = NaiveDate::parse_from_str(&fm.clone().date, "%Y-%m-%d")?;
+        let date = NaiveDate::parse_from_str(&fm.clone().date, "%Y-%m-%d")
+            .map_err(|why| eyre!("error parsing date in {:?}: {}", path, why))?;
         let link = format!("{}/{}", dir, path.file_stem().unwrap().to_str().unwrap());
         let mentions: Vec<mi::WebMention> = match mi {
             None => vec![],

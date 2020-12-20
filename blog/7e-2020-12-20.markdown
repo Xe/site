@@ -1,6 +1,6 @@
 ---
 title: The 7th Edition
-date: 12/20/2020
+date: 2020-12-19
 tags: 
  - ttrpg
 ---
@@ -132,10 +132,10 @@ Don't worry about accuracy or the like. You are setting out to have fun.
 
 ## Special Thanks
 
-Special thanks goes to Jared, who sent out this tweet[1] that inspired this
+Special thanks goes to Jared, who sent out this [tweet][1] that inspired this
 document. In case the tweet gets deleted, here's what it said:
 
-[[1]: heres a d&d for you](https://twitter.com/infinite_mao/status/1340402360259137541)
+[1]: https://twitter.com/infinite_mao/status/1340402360259137541
 
 > heres a d&d for you
 
