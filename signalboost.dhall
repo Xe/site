@@ -108,15 +108,15 @@ in  [ Person::{
     , Person::{
       , name = "Natthan Leong"
       , tags =
-        [ "c"
-        , "embedded"
-        , "firmware"
+        [ "entry-level"
+        , "canada"
+        , "c"
+        , "java"
         , "golang"
         , "linux"
-        , "lua"
         , "python"
-        , "rust"
         , "shell"
+        , "sql"
         ]
       , gitLink = "https://github.com/ansimita"
       , twitter = "https://twitter.com/ansimita"
