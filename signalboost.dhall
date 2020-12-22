@@ -237,6 +237,7 @@ in  [ Person::{
         , "ansible"
         , "nix"
         , "docker&podman"
+        , "django"
         , "golang"
         , "rpm packaging"
         ]
