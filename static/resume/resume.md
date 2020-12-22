@@ -12,12 +12,23 @@ Linux`, `Ubuntu`, `Linux`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`,
 
 ## Experience
 
+### Tailscale - Software Designer &emsp; <small>*2020 - present*</small>
+
+> [Tailscale][tailscale] is a zero config VPN for building secure networks.
+> Install on any device in minutes. Remote access from any network or physical
+> location.
+
+#### Highlights
+
+- Go programming
+- Nix and NixOS
+
 ### Lightspeed - Expert principal en fiabilité du site &emsp; <small>*2019 - 2020*</small>
 
 (Senior Site Reliability Expert)
 
-> [Lightspeed][lightspeedhq] is a provider of retail, ecommerce and point-of-sale
-> solutions for small and medium scale businesses. 
+> [Lightspeed][lightspeedhq] is a provider of retail, ecommerce and
+> point-of-sale solutions for small and medium scale businesses. 
 
 #### Highlights
 
@@ -39,9 +50,13 @@ Linux`, `Ubuntu`, `Linux`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`,
 #### Highlights
 
 - [JVM Application Metrics](https://devcenter.heroku.com/changelog-items/1133)
-- [Go Runtime Metrics Agent](https://github.com/heroku/x/tree/master/runtime-metrics)
-- Other backend fixes and improvements on [Threshold Autoscaling](https://blog.heroku.com/heroku-autoscaling) and [Threshold Alerting](https://devcenter.heroku.com/articles/metrics#threshold-alerting)
-- [How to Make a Progressive Web App From Your Existing Website](https://blog.heroku.com/how-to-make-progressive-web-app)
+- [Go Runtime Metrics
+  Agent](https://github.com/heroku/x/tree/master/runtime-metrics)
+- Other backend fixes and improvements on [Threshold
+  Autoscaling](https://blog.heroku.com/heroku-autoscaling) and [Threshold
+  Alerting](https://devcenter.heroku.com/articles/metrics#threshold-alerting)
+- [How to Make a Progressive Web App From Your Existing
+  Website](https://blog.heroku.com/how-to-make-progressive-web-app)
 
 ### Backplane.io - Software Engineer &emsp; <small>*2016 - 2016*</small>
 
@@ -211,3 +226,4 @@ I am an ordained minister with the [Church of the Latter-day Dude](https://dudei
 [twit]: http://cdn-careers.sstatic.net/careers/Img/icon-twitter.png?v=b1bd58ad2034
 [heroku]: https://www.heroku.com
 [lightspeedhq]: https://www.lightspeedhq.com
+[tailscale]: https://tailscale.com/
