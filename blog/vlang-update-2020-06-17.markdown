@@ -4,6 +4,36 @@ date: 2020-06-17
 series: v
 ---
 
+EDIT(Xe): 2020 M12 22
+
+Hi Hacker News. Please read the below notes. I am now also blocked by the V
+team on Twitter.
+
+<blockquote class="twitter-tweet"><p lang="und" dir="ltr"><a href="https://t.co/WIqX73GB5Z">pic.twitter.com/WIqX73GB5Z</a></p>&mdash; Cadey A. Ratio (@theprincessxena) <a href="https://twitter.com/theprincessxena/status/1341525594715140098?ref_src=twsrc%5Etfw">December 22, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+EDIT(Xe): 2020 M06 23
+
+I do not plan to make any future update posts about the V programming language
+in the future. The V community is something I would really rather not be
+associated with. This is an edited-down version of the post that was released
+last week (2020 M06 17).
+
+As of the time of writing this note to the end of this post and as far as I am
+aware, I am banned from being able to contribute to the V language in any form.
+I am therefore forced to consider that the V project will respond to criticism
+of their language with bans. This subjective view of reality may not be accurate
+to what others see. 
+
+I would like to see this situation result in a net improvement for everyone
+involved. V is an interesting take on a stagnant field of computer science, but
+I cannot continue to comment on this language or give it any of the signal boost
+I have given it with this series of posts.
+
+Thank you for reading. I will continue with my normal posts in the next few
+days.
+
+Be well.
+
 # V Update - June 2020
 
 Every so often I like to check in on the [V Programming Language][vlang]. It's been
@@ -237,28 +267,3 @@ https://github.com/vlang/v/issues/new/choose
 
 Like I said before, I also cannot file new issues about this. So if you are willing
 to help me out, please open an issue about this.
-
----
-
-EDIT(Xe): 2020 M06 23
-
-I do not plan to make any future update posts about the V programming language
-in the future. The V community is something I would really rather not be
-associated with. This is an edited-down version of the post that was released
-last week (2020 M06 17).
-
-As of the time of writing this note to the end of this post and as far as I am
-aware, I am banned from being able to contribute to the V language in any form.
-I am therefore forced to consider that the V project will respond to criticism
-of their language with bans. This subjective view of reality may not be accurate
-to what others see. 
-
-I would like to see this situation result in a net improvement for everyone
-involved. V is an interesting take on a stagnant field of computer science, but
-I cannot continue to comment on this language or give it any of the signal boost
-I have given it with this series of posts.
-
-Thank you for reading. I will continue with my normal posts in the next few
-days.
-
-Be well.
