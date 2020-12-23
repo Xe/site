@@ -228,4 +228,20 @@ in  [ Person::{
       , gitLink = "https://github.com/mjeffin"
       , twitter = "https://twitter.com/mpjeffin"
       }
+    , Person::{
+      , name = "Nasir Hussain"
+      , tags =
+        [ "python"
+        , "linux"
+        , "javascript"
+        , "ansible"
+        , "nix"
+        , "docker&podman"
+        , "django"
+        , "golang"
+        , "rpm packaging"
+        ]
+      , gitLink = "https://github.com/nasirhm"
+      , twitter = "https://twitter.com/_nasirhm_"
+      }
     ]
