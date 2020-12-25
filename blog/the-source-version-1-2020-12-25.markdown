@@ -1,6 +1,6 @@
 ---
 title: The Source Version 1.0.0 Release
-date: 12-25-2020
+date: 2020-12-25
 tags:
  - ttrpg
 ---
