@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="/css/gruvbox-dark.css" />
         <link rel="stylesheet" href="/css/shim.css" />
         <link rel="stylesheet" href="https://cdn.christine.website/file/christine-static/prism/prism.css" />
-        @if Utc::now().month() == 12 { <link rel="stylesheet" href="/css/snow.css" /> }
+        @if Utc::now().month() == 12 || Utc::now().month() == 1 || Utc::now().month() == 2 { <link rel="stylesheet" href="/css/snow.css" /> }
         <link rel="manifest" href="/static/manifest.json" />
 
         <link rel="alternate" title="Christine Dodrill's Blog" type="application/rss+xml" href="https://christine.website/blog.rss" />
