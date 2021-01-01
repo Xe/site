@@ -4,7 +4,7 @@ let
   sources = import ./nix/sources.nix;
   pkgs = import sources.nixpkgs { inherit system; };
   callPackage = pkgs.lib.callPackageWith pkgs;
-  site = callPackage ./site.nix { };
+  site = callPackage ./default.nix { };
 
   dockerImage = pkg:
     pkgs.dockerTools.buildLayeredImage {
