@@ -1,23 +1,51 @@
-{ system ? builtins.currentSystem }:
+{ sources ? import ./nix/sources.nix, pkgs ? import sources.nixpkgs { } }:
+with pkgs;
 
 let
-  sources = import ./nix/sources.nix;
-  pkgs = import sources.nixpkgs { inherit system; };
-  callPackage = pkgs.lib.callPackageWith pkgs;
-  site = callPackage ./site.nix { };
+  srcNoTarget = dir:
+    builtins.filterSource
+    (path: type: type != "directory" || builtins.baseNameOf path != "target")
+    dir;
 
-  dockerImage = pkg:
-    pkgs.dockerTools.buildLayeredImage {
-      name = "xena/christinewebsite";
-      tag = "latest";
+  naersk = pkgs.callPackage sources.naersk { };
+  dhallpkgs = import sources.easy-dhall-nix { inherit pkgs; };
+  src = srcNoTarget ./.;
 
-      contents = [ pkgs.cacert pkg ];
+  xesite = naersk.buildPackage {
+    inherit src;
+    buildInputs = [ pkg-config openssl git ];
+    remapPathPrefix = true;
+  };
 
-      config = {
-        Cmd = [ "${pkg}/bin/xesite" ];
-        Env = [ "CONFIG_FNAME=${pkg}/config.dhall" "RUST_LOG=info" ];
-        WorkingDir = "/";
-      };
-    };
+  config = stdenv.mkDerivation {
+    pname = "xesite-config";
+    version = "HEAD";
+    buildInputs = [ dhallpkgs.dhall-simple ];
 
-in dockerImage site
+    phases = "installPhase";
+
+    installPhase = ''
+      cd ${src}
+      dhall resolve < ${src}/config.dhall >> $out
+    '';
+  };
+
+in pkgs.stdenv.mkDerivation {
+  inherit (xesite) name;
+  inherit src;
+  phases = "installPhase";
+
+  installPhase = ''
+    mkdir -p $out $out/bin
+
+    cp -rf ${config} $out/config.dhall
+    cp -rf $src/blog $out/blog
+    cp -rf $src/css $out/css
+    cp -rf $src/gallery $out/gallery
+    cp -rf $src/signalboost.dhall $out/signalboost.dhall
+    cp -rf $src/static $out/static
+    cp -rf $src/talks $out/talks
+
+    cp -rf ${xesite}/bin/xesite $out/bin/xesite
+  '';
+}

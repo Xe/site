@@ -15,13 +15,14 @@ jobs:
       - uses: cachix/cachix-action@v7
         with:
           name: xe
-      - run: nix-build
+      - run: nix-build --no-out-link
       - name: Log into GitHub Container Registry
         if: github.ref == 'refs/heads/main'
-        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u Xe --password-stdin
       - name: Docker push
         if: github.ref == 'refs/heads/main'
         run: |
+          nix-build ./docker.nix
           docker load -i result
           docker tag xena/christinewebsite:latest ghcr.io/xe/site:$GITHUB_SHA
           docker push ghcr.io/xe/site
