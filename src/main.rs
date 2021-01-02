@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate tracing;
+
 use color_eyre::eyre::Result;
 use hyper::{header::CONTENT_TYPE, Body, Response};
 use prometheus::{Encoder, TextEncoder};
@@ -24,7 +27,7 @@ async fn main() -> Result<()> {
     color_eyre::install()?;
     let _ = kankyo::init();
     tracing_subscriber::fmt::init();
-    log::info!("starting up commit {}", env!("GITHUB_SHA"));
+    info!("starting up commit {}", env!("GITHUB_SHA"));
 
     let state = Arc::new(
         app::init(
@@ -161,7 +164,21 @@ async fn main() -> Result<()> {
         .with(warp::log(APPLICATION_NAME))
         .recover(handlers::rejection);
 
-    warp::serve(site).run(([0, 0, 0, 0], 3030)).await;
+    if let Ok(ref mut n) = sdnotify::SdNotify::from_env() {
+        let _ = n
+            .notify_ready()
+            .map_err(|why| error!("can't signal readiness to systemd: {}", why));
+    }
+
+    warp::serve(site)
+        .run((
+            [0, 0, 0, 0],
+            std::env::var("PORT")
+                .unwrap_or("3030".into())
+                .parse::<u16>()
+                .unwrap(),
+        ))
+        .await;
 
     Ok(())
 }

@@ -16,24 +16,3 @@ jobs:
         with:
           name: xe
       - run: nix-build --no-out-link
-      - name: Log into GitHub Container Registry
-        if: github.ref == 'refs/heads/main'
-        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u Xe --password-stdin
-      - name: Docker push
-        if: github.ref == 'refs/heads/main'
-        run: |
-          nix-build ./docker.nix
-          docker load -i result
-          docker tag xena/christinewebsite:latest ghcr.io/xe/site:$GITHUB_SHA
-          docker push ghcr.io/xe/site
-      - name: deploy
-        if: github.ref == 'refs/heads/main'
-        run: ./scripts/release.sh
-        env:
-          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
-          MI_TOKEN: ${{ secrets.MI_TOKEN }}
-          PATREON_ACCESS_TOKEN: ${{ secrets.PATREON_ACCESS_TOKEN }}
-          PATREON_CLIENT_ID: ${{ secrets.PATREON_CLIENT_ID }}
-          PATREON_CLIENT_SECRET: ${{ secrets.PATREON_CLIENT_SECRET }}
-          PATREON_REFRESH_TOKEN: ${{ secrets.PATREON_REFRESH_TOKEN }}
-          DHALL_PRELUDE: https://raw.githubusercontent.com/dhall-lang/dhall-lang/v17.0.0/Prelude/package.dhall 
