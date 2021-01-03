@@ -9,6 +9,13 @@ fn main() -> Result<()> {
         .output()
         .unwrap();
     let git_hash = String::from_utf8(output.stdout).unwrap();
-    println!("cargo:rustc-env=GITHUB_SHA={}", git_hash);
+    println!(
+        "cargo:rustc-env=GITHUB_SHA={}",
+        if git_hash.as_str() == "" {
+            env!("out").into()
+        } else {
+            git_hash
+        }
+    );
     Ok(())
 }
