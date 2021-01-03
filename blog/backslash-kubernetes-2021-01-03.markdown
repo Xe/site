@@ -8,9 +8,9 @@ date: 2021-01-03
 Well, since I posted [that last post](/blog/k8s-pondering-2020-12-31) I have had
 an adventure. A good friend pointed out a server host that I had missed when I
 was looking for other places to use, and now I have migrated my blog to this new
-server. As of yesterday, I now run my website on a dedicated server in the
-Netherlands. Here is the story of my journey to migrate 6 years of cruft and
-technical debt to this new server.
+server. As of yesterday, I now run my website on a dedicated server in Finland.
+Here is the story of my journey to migrate 6 years of cruft and technical debt
+to this new server.
 
 Let's talk about this goliath of a server. This server is an AX41 from Hetzner.
 It has 64 GB of ram, a 512 GB nvme drive, 3 2 TB drives, and a Ryzen 3600. For
