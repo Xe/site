@@ -1,6 +1,6 @@
 ---
 title: hlang in 30 Seconds
-date: 2020-01-04
+date: 2021-01-04
 series: h
 tags:
  - satire
