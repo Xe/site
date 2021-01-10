@@ -15,4 +15,4 @@ jobs:
       - uses: cachix/cachix-action@v7
         with:
           name: xe
-      - run: nix-build --no-out-link
+      - run: nix build --no-link
