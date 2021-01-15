@@ -177,7 +177,7 @@ async fn main() -> Result<()> {
             warp::reply::with_header(
                 reply,
                 "Cache-Control",
-                "public, max-age=3600, stale-if-error=60",
+                "public, max-age=600, stale-if-error=60",
             )
         });
 
