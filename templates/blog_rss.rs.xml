@@ -9,6 +9,7 @@
         <link>https://christine.website/blog</link>
         <description>Tech, philosophy and more</description>
         <generator>@APP https://github.com/Xe/site</generator>
+        <ttl>1440</ttl>
         @for post in posts {
             <item>
                 <guid>https://christine.website/@post.link</guid>

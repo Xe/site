@@ -1,11 +1,11 @@
-use std::fmt;
 use std::default::Default;
+use std::fmt;
 
-use feed::{Author, Attachment};
 use builder::ItemBuilder;
+use feed::{Attachment, Author};
 
-use serde::ser::{Serialize, Serializer, SerializeStruct};
-use serde::de::{self, Deserialize, Deserializer, Visitor, MapAccess};
+use serde::de::{self, Deserialize, Deserializer, MapAccess, Visitor};
+use serde::ser::{Serialize, SerializeStruct, Serializer};
 
 /// Represents the `content_html` and `content_text` attributes of an item
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -61,7 +61,8 @@ impl Default for Item {
 
 impl Serialize for Item {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("Item", 14)?;
         state.serialize_field("id", &self.id)?;
@@ -78,15 +79,15 @@ impl Serialize for Item {
             Content::Html(ref s) => {
                 state.serialize_field("content_html", s)?;
                 state.serialize_field("content_text", &None::<Option<&str>>)?;
-            },
+            }
             Content::Text(ref s) => {
                 state.serialize_field("content_html", &None::<Option<&str>>)?;
                 state.serialize_field("content_text", s)?;
-            },
+            }
             Content::Both(ref s, ref t) => {
                 state.serialize_field("content_html", s)?;
                 state.serialize_field("content_text", t)?;
-            },
+            }
         };
         if self.summary.is_some() {
             state.serialize_field("summary", &self.summary)?;
@@ -117,8 +118,9 @@ impl Serialize for Item {
 }
 
 impl<'de> Deserialize<'de> for Item {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error> 
-        where D: Deserializer<'de>
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
     {
         enum Field {
             Id,
@@ -135,11 +137,12 @@ impl<'de> Deserialize<'de> for Item {
             Author,
             Tags,
             Attachments,
-        };
+        }
 
         impl<'de> Deserialize<'de> for Field {
             fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-                where D: Deserializer<'de>
+            where
+                D: Deserializer<'de>,
             {
                 struct FieldVisitor;
 
@@ -151,7 +154,8 @@ impl<'de> Deserialize<'de> for Item {
                     }
 
                     fn visit_str<E>(self, value: &str) -> Result<Field, E>
-                        where E: de::Error
+                    where
+                        E: de::Error,
                     {
                         match value {
                             "id" => Ok(Field::Id),
@@ -186,7 +190,8 @@ impl<'de> Deserialize<'de> for Item {
             }
 
             fn visit_map<V>(self, mut map: V) -> Result<Item, V::Error>
-                where V: MapAccess<'de>
+            where
+                V: MapAccess<'de>,
             {
                 let mut id = None;
                 let mut url = None;
@@ -210,99 +215,93 @@ impl<'de> Deserialize<'de> for Item {
                                 return Err(de::Error::duplicate_field("id"));
                             }
                             id = Some(map.next_value()?);
-                        },
+                        }
                         Field::Url => {
                             if url.is_some() {
                                 return Err(de::Error::duplicate_field("url"));
                             }
                             url = map.next_value()?;
-                        },
+                        }
                         Field::ExternalUrl => {
                             if external_url.is_some() {
                                 return Err(de::Error::duplicate_field("external_url"));
                             }
                             external_url = map.next_value()?;
-                        },
+                        }
                         Field::Title => {
                             if title.is_some() {
                                 return Err(de::Error::duplicate_field("title"));
                             }
                             title = map.next_value()?;
-                        },
+                        }
                         Field::ContentHtml => {
                             if content_html.is_some() {
                                 return Err(de::Error::duplicate_field("content_html"));
                             }
                             content_html = map.next_value()?;
-                        },
+                        }
                         Field::ContentText => {
                             if content_text.is_some() {
                                 return Err(de::Error::duplicate_field("content_text"));
                             }
                             content_text = map.next_value()?;
-                        },
+                        }
                         Field::Summary => {
                             if summary.is_some() {
                                 return Err(de::Error::duplicate_field("summary"));
                             }
                             summary = map.next_value()?;
-                        },
+                        }
                         Field::Image => {
                             if image.is_some() {
                                 return Err(de::Error::duplicate_field("image"));
                             }
                             image = map.next_value()?;
-                        },
+                        }
                         Field::BannerImage => {
                             if banner_image.is_some() {
                                 return Err(de::Error::duplicate_field("banner_image"));
                             }
                             banner_image = map.next_value()?;
-                        },
+                        }
                         Field::DatePublished => {
                             if date_published.is_some() {
                                 return Err(de::Error::duplicate_field("date_published"));
                             }
                             date_published = map.next_value()?;
-                        },
+                        }
                         Field::DateModified => {
                             if date_modified.is_some() {
                                 return Err(de::Error::duplicate_field("date_modified"));
                             }
                             date_modified = map.next_value()?;
-                        },
+                        }
                         Field::Author => {
                             if author.is_some() {
                                 return Err(de::Error::duplicate_field("author"));
                             }
                             author = map.next_value()?;
-                        },
+                        }
                         Field::Tags => {
                             if tags.is_some() {
                                 return Err(de::Error::duplicate_field("tags"));
                             }
                             tags = map.next_value()?;
-                        },
+                        }
                         Field::Attachments => {
                             if attachments.is_some() {
                                 return Err(de::Error::duplicate_field("attachments"));
                             }
                             attachments = map.next_value()?;
-                        },
+                        }
                     }
                 }
 
                 let id = id.ok_or_else(|| de::Error::missing_field("id"))?;
                 let content = match (content_html, content_text) {
-                    (Some(s), Some(t)) => {
-                        Content::Both(s.to_string(), t.to_string())
-                    },
-                    (Some(s), _) => {
-                        Content::Html(s.to_string())
-                    },
-                    (_, Some(t)) => {
-                        Content::Text(t.to_string())
-                    },
+                    (Some(s), Some(t)) => Content::Both(s.to_string(), t.to_string()),
+                    (Some(s), _) => Content::Html(s.to_string()),
+                    (_, Some(t)) => Content::Text(t.to_string()),
                     _ => return Err(de::Error::missing_field("content_html or content_text")),
                 };
 
@@ -363,7 +362,12 @@ mod tests {
             banner_image: Some("http://img.com/blah".into()),
             date_published: Some("2017-01-01 10:00:00".into()),
             date_modified: Some("2017-01-01 10:00:00".into()),
-            author: Some(Author::new().name("bob jones").url("http://example.com").avatar("http://img.com/blah")),
+            author: Some(
+                Author::new()
+                    .name("bob jones")
+                    .url("http://example.com")
+                    .avatar("http://img.com/blah"),
+            ),
             tags: Some(vec!["json".into(), "feed".into()]),
             attachments: Some(vec![]),
         };
@@ -387,7 +391,12 @@ mod tests {
             banner_image: Some("http://img.com/blah".into()),
             date_published: Some("2017-01-01 10:00:00".into()),
             date_modified: Some("2017-01-01 10:00:00".into()),
-            author: Some(Author::new().name("bob jones").url("http://example.com").avatar("http://img.com/blah")),
+            author: Some(
+                Author::new()
+                    .name("bob jones")
+                    .url("http://example.com")
+                    .avatar("http://img.com/blah"),
+            ),
             tags: Some(vec!["json".into(), "feed".into()]),
             attachments: Some(vec![]),
         };
@@ -411,7 +420,12 @@ mod tests {
             banner_image: Some("http://img.com/blah".into()),
             date_published: Some("2017-01-01 10:00:00".into()),
             date_modified: Some("2017-01-01 10:00:00".into()),
-            author: Some(Author::new().name("bob jones").url("http://example.com").avatar("http://img.com/blah")),
+            author: Some(
+                Author::new()
+                    .name("bob jones")
+                    .url("http://example.com")
+                    .avatar("http://img.com/blah"),
+            ),
             tags: Some(vec!["json".into(), "feed".into()]),
             attachments: Some(vec![]),
         };
@@ -437,7 +451,12 @@ mod tests {
             banner_image: Some("http://img.com/blah".into()),
             date_published: Some("2017-01-01 10:00:00".into()),
             date_modified: Some("2017-01-01 10:00:00".into()),
-            author: Some(Author::new().name("bob jones").url("http://example.com").avatar("http://img.com/blah")),
+            author: Some(
+                Author::new()
+                    .name("bob jones")
+                    .url("http://example.com")
+                    .avatar("http://img.com/blah"),
+            ),
             tags: Some(vec!["json".into(), "feed".into()]),
             attachments: Some(vec![]),
         };
@@ -460,7 +479,12 @@ mod tests {
             banner_image: Some("http://img.com/blah".into()),
             date_published: Some("2017-01-01 10:00:00".into()),
             date_modified: Some("2017-01-01 10:00:00".into()),
-            author: Some(Author::new().name("bob jones").url("http://example.com").avatar("http://img.com/blah")),
+            author: Some(
+                Author::new()
+                    .name("bob jones")
+                    .url("http://example.com")
+                    .avatar("http://img.com/blah"),
+            ),
             tags: Some(vec!["json".into(), "feed".into()]),
             attachments: Some(vec![]),
         };
@@ -483,11 +507,15 @@ mod tests {
             banner_image: Some("http://img.com/blah".into()),
             date_published: Some("2017-01-01 10:00:00".into()),
             date_modified: Some("2017-01-01 10:00:00".into()),
-            author: Some(Author::new().name("bob jones").url("http://example.com").avatar("http://img.com/blah")),
+            author: Some(
+                Author::new()
+                    .name("bob jones")
+                    .url("http://example.com")
+                    .avatar("http://img.com/blah"),
+            ),
             tags: Some(vec!["json".into(), "feed".into()]),
             attachments: Some(vec![]),
         };
         assert_eq!(item, expected);
     }
 }
-

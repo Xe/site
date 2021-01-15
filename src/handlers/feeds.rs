@@ -11,10 +11,11 @@ lazy_static! {
         &["kind"]
     )
     .unwrap();
+    pub static ref ETAG: String = format!(r#"W/"{}""#, uuid::Uuid::new_v4().to_simple());
 }
 
 #[instrument(skip(state))]
-pub async fn jsonfeed(state: Arc<State>) -> Result<impl Reply, Rejection> {
+pub async fn jsonfeed(state: Arc<State>, since: Option<String>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["json"]).inc();
     let state = state.clone();
     Ok(warp::reply::json(&state.jf))
@@ -29,7 +30,22 @@ pub enum RenderError {
 impl warp::reject::Reject for RenderError {}
 
 #[instrument(skip(state))]
-pub async fn atom(state: Arc<State>) -> Result<impl Reply, Rejection> {
+pub async fn atom(state: Arc<State>, since: Option<String>) -> Result<impl Reply, Rejection> {
+    if let Some(etag) = since {
+        if etag == ETAG.clone() {
+            return Response::builder()
+                .status(304)
+                .header("Content-Type", "text/plain")
+                .body(
+                    "You already have the newest version of this feed."
+                        .to_string()
+                        .into_bytes(),
+                )
+                .map_err(RenderError::Build)
+                .map_err(warp::reject::custom);
+        }
+    }
+
     HIT_COUNTER.with_label_values(&["atom"]).inc();
     let state = state.clone();
     let mut buf = Vec::new();
@@ -39,13 +55,29 @@ pub async fn atom(state: Arc<State>) -> Result<impl Reply, Rejection> {
     Response::builder()
         .status(200)
         .header("Content-Type", "application/atom+xml")
+        .header("ETag", ETAG.clone())
         .body(buf)
         .map_err(RenderError::Build)
         .map_err(warp::reject::custom)
 }
 
 #[instrument(skip(state))]
-pub async fn rss(state: Arc<State>) -> Result<impl Reply, Rejection> {
+pub async fn rss(state: Arc<State>, since: Option<String>) -> Result<impl Reply, Rejection> {
+    if let Some(etag) = since {
+        if etag == ETAG.clone() {
+            return Response::builder()
+                .status(304)
+                .header("Content-Type", "text/plain")
+                .body(
+                    "You already have the newest version of this feed."
+                        .to_string()
+                        .into_bytes(),
+                )
+                .map_err(RenderError::Build)
+                .map_err(warp::reject::custom);
+        }
+    }
+
     HIT_COUNTER.with_label_values(&["rss"]).inc();
     let state = state.clone();
     let mut buf = Vec::new();
@@ -55,6 +87,7 @@ pub async fn rss(state: Arc<State>) -> Result<impl Reply, Rejection> {
     Response::builder()
         .status(200)
         .header("Content-Type", "application/rss+xml")
+        .header("ETag", ETAG.clone())
         .body(buf)
         .map_err(RenderError::Build)
         .map_err(warp::reject::custom)

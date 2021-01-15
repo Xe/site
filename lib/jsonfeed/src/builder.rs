@@ -1,7 +1,7 @@
 use std::default::Default;
 
 use errors::*;
-use feed::{Feed, Author, Attachment};
+use feed::{Attachment, Author, Feed};
 use item::{Content, Item};
 
 /// Feed Builder
@@ -160,7 +160,7 @@ impl ItemBuilder {
         match self.content {
             Some(Content::Text(t)) => {
                 self.content = Some(Content::Both(i.into(), t));
-            },
+            }
             _ => {
                 self.content = Some(Content::Html(i.into()));
             }
@@ -172,10 +172,10 @@ impl ItemBuilder {
         match self.content {
             Some(Content::Html(s)) => {
                 self.content = Some(Content::Both(s, i.into()));
-            },
+            }
             _ => {
                 self.content = Some(Content::Text(i.into()));
-            },
+            }
         }
         self
     }
@@ -197,8 +197,7 @@ impl ItemBuilder {
             date_modified: self.date_modified,
             author: self.author,
             tags: self.tags,
-            attachments: self.attachments
+            attachments: self.attachments,
         })
     }
 }
-

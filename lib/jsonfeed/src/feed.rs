@@ -1,7 +1,7 @@
 use std::default::Default;
 
-use item::Item;
 use builder::Builder;
+use item::Item;
 
 const VERSION_1: &'static str = "https://jsonfeed.org/version/1";
 
@@ -145,9 +145,9 @@ pub struct Hub {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use serde_json;
     use std::default::Default;
-    use super::*;
 
     #[test]
     fn serialize_feed() {
@@ -168,18 +168,16 @@ mod tests {
 
     #[test]
     fn deserialize_feed() {
-        let json = r#"{"version":"https://jsonfeed.org/version/1","title":"some title","items":[]}"#;
+        let json =
+            r#"{"version":"https://jsonfeed.org/version/1","title":"some title","items":[]}"#;
         let feed: Feed = serde_json::from_str(&json).unwrap();
         let expected = Feed {
             version: "https://jsonfeed.org/version/1".to_string(),
-             title: "some title".to_string(),
-             items: vec![],
-             ..Default::default()
+            title: "some title".to_string(),
+            items: vec![],
+            ..Default::default()
         };
-        assert_eq!(
-            feed,
-            expected
-        );
+        assert_eq!(feed, expected);
     }
 
     #[test]
@@ -208,10 +206,7 @@ mod tests {
             size_in_bytes: Some(1),
             duration_in_seconds: Some(1),
         };
-        assert_eq!(
-            attachment,
-            expected
-        );
+        assert_eq!(attachment, expected);
     }
 
     #[test]
@@ -229,17 +224,15 @@ mod tests {
 
     #[test]
     fn deserialize_author() {
-        let json = r#"{"name":"bob jones","url":"http://example.com","avatar":"http://img.com/blah"}"#;
+        let json =
+            r#"{"name":"bob jones","url":"http://example.com","avatar":"http://img.com/blah"}"#;
         let author: Author = serde_json::from_str(&json).unwrap();
         let expected = Author {
             name: Some("bob jones".to_string()),
             url: Some("http://example.com".to_string()),
             avatar: Some("http://img.com/blah".to_string()),
         };
-        assert_eq!(
-            author,
-            expected
-        );
+        assert_eq!(author, expected);
     }
 
     #[test]
@@ -262,10 +255,7 @@ mod tests {
             type_: "some-type".to_string(),
             url: "http://example.com".to_string(),
         };
-        assert_eq!(
-            hub,
-            expected
-        );
+        assert_eq!(hub, expected);
     }
 
     #[test]

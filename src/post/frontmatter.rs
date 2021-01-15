@@ -1,7 +1,6 @@
 /// This code was borrowed from @fasterthanlime.
-
-use color_eyre::eyre::{Result};
-use serde::{Serialize, Deserialize};
+use color_eyre::eyre::Result;
+use serde::{Deserialize, Serialize};
 
 #[derive(Eq, PartialEq, Deserialize, Default, Debug, Serialize, Clone)]
 pub struct Data {
@@ -81,7 +80,7 @@ impl Data {
                             };
                         }
                     }
-                    _ => panic!("Expected newline, got {:?}",),
+                    _ => panic!("Expected newline, got {:?}", ch),
                 },
                 State::ReadingFrontMatter { buf, line_start } => match ch {
                     '-' if *line_start => {

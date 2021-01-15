@@ -1,6 +1,6 @@
 [package]
 name = "xesite"
-version = "2.1.0"
+version = "2.2.0"
 authors = ["Christine Dodrill <me@christine.website>"]
 edition = "2018"
 build = "src/build.rs"
@@ -34,6 +34,7 @@ tracing-subscriber = { version = "0.2", features = ["fmt"] }
 warp = "0.2"
 xml-rs = "0.8"
 url = "2"
+uuid = { version = "0.8", features = ["serde", "v4"] }
 
 # workspace dependencies
 go_vanity = { path = "./lib/go_vanity" }
