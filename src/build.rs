@@ -8,6 +8,11 @@ fn main() -> Result<()> {
         .args(&["rev-parse", "HEAD"])
         .output()
         .unwrap();
+
+    if std::env::var("out").is_err() {
+        println!("cargo:rustc-env=out=/yolo");
+    }
+
     let git_hash = String::from_utf8(output.stdout).unwrap();
     println!(
         "cargo:rustc-env=GITHUB_SHA={}",
