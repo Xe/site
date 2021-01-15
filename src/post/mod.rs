@@ -20,7 +20,6 @@ impl Into<jsonfeed::Item> for Post {
         let mut result = jsonfeed::Item::builder()
             .title(self.front_matter.title)
             .content_html(self.body_html)
-            .content_text(self.body)
             .id(format!("https://christine.website/{}", self.link))
             .url(format!("https://christine.website/{}", self.link))
             .date_published(self.date.to_rfc3339())

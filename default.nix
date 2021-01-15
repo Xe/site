@@ -2,12 +2,17 @@
 with pkgs;
 
 let
+  rust = pkgs.callPackage ./nix/rust.nix { };
+
   srcNoTarget = dir:
     builtins.filterSource
     (path: type: type != "directory" || builtins.baseNameOf path != "target")
     dir;
 
-  naersk = pkgs.callPackage sources.naersk { };
+  naersk = pkgs.callPackage sources.naersk {
+    rustc = rust;
+    cargo = rust;
+  };
   dhallpkgs = import sources.easy-dhall-nix { inherit pkgs; };
   src = srcNoTarget ./.;
 

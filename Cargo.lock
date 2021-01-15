@@ -666,6 +666,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "getrandom"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4060f4657be78b8e766215b02b18a2e862d83745545de804638e2b545e81aee6"
+dependencies = [
+ "cfg-if 1.0.0",
+ "libc",
+ "wasi 0.10.0+wasi-snapshot-preview1",
+]
+
+[[package]]
 name = "gimli"
 version = "0.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -679,7 +690,7 @@ checksum = "9b919933a397b79c37e33b77bb2aa3dc8eb6e165ad809e58ff75bc7db2e34574"
 
 [[package]]
 name = "go_vanity"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "mime",
  "ructe",
@@ -1585,7 +1596,7 @@ version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6a6b1679d49b24bbfe0c803429aa1874472f50d9b363131f0e89fc356b544d03"
 dependencies = [
- "getrandom",
+ "getrandom 0.1.15",
  "libc",
  "rand_chacha 0.2.2",
  "rand_core 0.5.1",
@@ -1633,7 +1644,7 @@ version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "90bde5296fc891b0cef12a6d03ddccc162ce7b2aff54160af9338f8d40df6d19"
 dependencies = [
- "getrandom",
+ "getrandom 0.1.15",
 ]
 
 [[package]]
@@ -2516,6 +2527,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "05e42f7c18b8f902290b009cde6d651262f956c98bc51bca4cd1d511c9cd85c7"
 
 [[package]]
+name = "uuid"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bc5cf98d8186244414c848017f0e2676b3fcb46807f6668a97dfe67359a3c4b7"
+dependencies = [
+ "getrandom 0.2.1",
+ "serde",
+]
+
+[[package]]
 name = "vcpkg"
 version = "0.2.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2801,6 +2822,7 @@ dependencies = [
  "tracing-futures",
  "tracing-subscriber",
  "url",
+ "uuid",
  "warp",
  "xml-rs",
 ]

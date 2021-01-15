@@ -2,7 +2,7 @@
 //! instead of XML
 //!
 //! This crate can serialize and deserialize between JSON Feed strings
-//! and Rust data structures. It also allows for programmatically building 
+//! and Rust data structures. It also allows for programmatically building
 //! a JSON Feed
 //!
 //! Example:
@@ -40,18 +40,20 @@
 //! ```
 
 extern crate serde;
-#[macro_use] extern crate error_chain;
-#[macro_use] extern crate serde_derive;
+#[macro_use]
+extern crate error_chain;
+#[macro_use]
+extern crate serde_derive;
 extern crate serde_json;
 
-mod errors;
-mod item;
-mod feed;
 mod builder;
+mod errors;
+mod feed;
+mod item;
 
 pub use errors::*;
+pub use feed::{Attachment, Author, Feed};
 pub use item::*;
-pub use feed::{Feed, Author, Attachment};
 
 use std::io::Write;
 
@@ -116,14 +118,16 @@ pub fn to_vec_pretty(value: &Feed) -> Result<Vec<u8>> {
 
 /// Serialize a Feed to JSON and output to an IO stream
 pub fn to_writer<W>(writer: W, value: &Feed) -> Result<()>
-        where W: Write
+where
+    W: Write,
 {
     Ok(serde_json::to_writer(writer, value)?)
 }
 
 /// Serialize a Feed to pretty-printed JSON and output to an IO stream
 pub fn to_writer_pretty<W>(writer: W, value: &Feed) -> Result<()>
-        where W: Write
+where
+    W: Write,
 {
     Ok(serde_json::to_writer_pretty(writer, value)?)
 }
@@ -137,10 +141,7 @@ mod tests {
     fn from_str() {
         let feed = r#"{"version": "https://jsonfeed.org/version/1","title":"","items":[]}"#;
         let expected = Feed::default();
-        assert_eq!(
-                super::from_str(&feed).unwrap(),
-                expected
-        );
+        assert_eq!(super::from_str(&feed).unwrap(), expected);
     }
     #[test]
     fn from_reader() {
@@ -148,39 +149,27 @@ mod tests {
         let feed = feed.as_bytes();
         let feed = Cursor::new(feed);
         let expected = Feed::default();
-        assert_eq!(
-                super::from_reader(feed).unwrap(),
-                expected
-        );
+        assert_eq!(super::from_reader(feed).unwrap(), expected);
     }
     #[test]
     fn from_slice() {
         let feed = r#"{"version": "https://jsonfeed.org/version/1","title":"","items":[]}"#;
         let feed = feed.as_bytes();
         let expected = Feed::default();
-        assert_eq!(
-                super::from_slice(&feed).unwrap(),
-                expected
-        );
+        assert_eq!(super::from_slice(&feed).unwrap(), expected);
     }
     #[test]
     fn from_value() {
         let feed = r#"{"version": "https://jsonfeed.org/version/1","title":"","items":[]}"#;
         let feed: serde_json::Value = serde_json::from_str(&feed).unwrap();
         let expected = Feed::default();
-        assert_eq!(
-                super::from_value(feed).unwrap(),
-                expected
-        );
+        assert_eq!(super::from_value(feed).unwrap(), expected);
     }
     #[test]
     fn to_string() {
         let feed = Feed::default();
         let expected = r#"{"version":"https://jsonfeed.org/version/1","title":"","items":[]}"#;
-        assert_eq!(
-                super::to_string(&feed).unwrap(),
-                expected
-        );
+        assert_eq!(super::to_string(&feed).unwrap(), expected);
     }
     #[test]
     fn to_string_pretty() {
@@ -190,28 +179,19 @@ mod tests {
   "title": "",
   "items": []
 }"#;
-        assert_eq!(
-                super::to_string_pretty(&feed).unwrap(),
-                expected
-        );
+        assert_eq!(super::to_string_pretty(&feed).unwrap(), expected);
     }
     #[test]
     fn to_value() {
         let feed = r#"{"version":"https://jsonfeed.org/version/1","title":"","items":[]}"#;
         let expected: serde_json::Value = serde_json::from_str(&feed).unwrap();
-        assert_eq!(
-                super::to_value(Feed::default()).unwrap(),
-                expected
-        );
+        assert_eq!(super::to_value(Feed::default()).unwrap(), expected);
     }
     #[test]
     fn to_vec() {
         let feed = r#"{"version":"https://jsonfeed.org/version/1","title":"","items":[]}"#;
         let expected = feed.as_bytes();
-        assert_eq!(
-                super::to_vec(&Feed::default()).unwrap(),
-                expected
-        );
+        assert_eq!(super::to_vec(&Feed::default()).unwrap(), expected);
     }
     #[test]
     fn to_vec_pretty() {
@@ -221,10 +201,7 @@ mod tests {
   "items": []
 }"#;
         let expected = feed.as_bytes();
-        assert_eq!(
-                super::to_vec_pretty(&Feed::default()).unwrap(),
-                expected
-        );
+        assert_eq!(super::to_vec_pretty(&Feed::default()).unwrap(), expected);
     }
     #[test]
     fn to_writer() {
@@ -249,4 +226,3 @@ mod tests {
         assert_eq!(result, feed);
     }
 }
-

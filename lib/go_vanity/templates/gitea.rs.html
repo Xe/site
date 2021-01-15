@@ -1,11 +1,11 @@
-@(pkg_name: &str, git_repo: &str)
+@(pkg_name: &str, git_repo: &str, branch: &str)
 
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta name="go-import" content="@pkg_name git @git_repo">
-        <meta name="go-source" content="@pkg_name @git_repo @git_repo/src/master@{/dir@} @git_repo/src/master@{/dir@}/@{file@}#L@{line@}">
+        <meta name="go-source" content="@pkg_name @git_repo @git_repo/src/@branch@{/dir@} @git_repo/src/@branch@{/dir@}/@{file@}#L@{line@}">
         <meta http-equiv="refresh" content="0; url=https://godoc.org/@pkg_name">
     </head>
     <body>
