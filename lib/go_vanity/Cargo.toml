@@ -12,4 +12,4 @@ mime = "0.3.0"
 warp = "0.2"
 
 [build-dependencies]
-ructe = { version = "0.12", features = ["warp02"] }
+ructe = { version = "0.13", features = ["warp02"] }

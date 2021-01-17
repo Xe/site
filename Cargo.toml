@@ -45,7 +45,7 @@ mi = { path = "./lib/mi" }
 patreon = { path = "./lib/patreon" }
 
 [build-dependencies]
-ructe = { version = "0.12", features = ["warp02"] }
+ructe = { version = "0.13", features = ["warp02"] }
 
 [dev-dependencies]
 pfacts = "0"
