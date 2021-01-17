@@ -23,7 +23,7 @@ prometheus = { version = "0.10", default-features = false, features = ["process"
 rand = "0"
 reqwest = { version = "0.10", features = ["json"] }
 sdnotify = { version = "0.1", default-features = false }
-serde_dhall = "0.8.0"
+serde_dhall = "0.9.0"
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.8"
 sitemap = "0.4"
