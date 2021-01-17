@@ -21,6 +21,7 @@ log = "0.4"
 mime = "0.3.0"
 prometheus = { version = "0.10", default-features = false, features = ["process"] }
 rand = "0"
+reqwest = { version = "0.10", features = ["json"] }
 sdnotify = { version = "0.1", default-features = false }
 serde_dhall = "0.8.0"
 serde = { version = "1", features = ["derive"] }
@@ -37,6 +38,7 @@ url = "2"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 
 # workspace dependencies
+cfcache = { path = "./lib/cfcache" }
 go_vanity = { path = "./lib/go_vanity" }
 jsonfeed = { path = "./lib/jsonfeed" }
 mi = { path = "./lib/mi" }

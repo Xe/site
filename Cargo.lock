@@ -213,6 +213,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c0496836a84f8d0495758516b8621a622beb77c0fed418570e50764093ced48"
 
 [[package]]
+name = "cfcache"
+version = "0.1.0"
+dependencies = [
+ "eyre",
+ "kankyo",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+ "tracing",
+ "tracing-futures",
+]
+
+[[package]]
 name = "cfg-if"
 version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1068,10 +1083,33 @@ dependencies = [
  "kernel32-sys",
  "libc",
  "log",
- "miow",
+ "miow 0.2.2",
  "net2",
  "slab",
  "winapi 0.2.8",
+]
+
+[[package]]
+name = "mio-named-pipes"
+version = "0.1.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0840c1c50fd55e521b247f949c241c9997709f23bd7f023b9762cd561e935656"
+dependencies = [
+ "log",
+ "mio",
+ "miow 0.3.6",
+ "winapi 0.3.9",
+]
+
+[[package]]
+name = "mio-uds"
+version = "0.6.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "afcb699eb26d4332647cc848492bbc15eafb26f08d0304550d5aa1f612e066f0"
+dependencies = [
+ "iovec",
+ "libc",
+ "mio",
 ]
 
 [[package]]
@@ -1084,6 +1122,16 @@ dependencies = [
  "net2",
  "winapi 0.2.8",
  "ws2_32-sys",
+]
+
+[[package]]
+name = "miow"
+version = "0.3.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5a33c1b55807fbed163481b5ba66db4b2fa6cde694a5027be10fb724206c5897"
+dependencies = [
+ "socket2",
+ "winapi 0.3.9",
 ]
 
 [[package]]
@@ -1914,6 +1962,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b6fa3938c99da4914afedd13bf3d79bcb6c277d1b2c398d23257a304d9e1b074"
 
 [[package]]
+name = "signal-hook-registry"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "16f1d0fef1604ba8f7a073c7e701f213e056707210e9020af4528e0101ce11a6"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "sitemap"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2069,12 +2126,17 @@ dependencies = [
  "futures-core",
  "iovec",
  "lazy_static",
+ "libc",
  "memchr",
  "mio",
+ "mio-named-pipes",
+ "mio-uds",
  "num_cpus",
  "pin-project-lite 0.1.11",
+ "signal-hook-registry",
  "slab",
  "tokio-macros",
+ "winapi 0.3.9",
 ]
 
 [[package]]
@@ -2603,6 +2665,7 @@ checksum = "d089681aa106a86fade1b0128fb5daf07d5867a509ab036d99988dec80429a57"
 name = "xesite"
 version = "2.2.0"
 dependencies = [
+ "cfcache",
  "chrono",
  "color-eyre",
  "comrak",
@@ -2621,7 +2684,7 @@ dependencies = [
  "pfacts",
  "pretty_env_logger",
  "prometheus",
- "rand 0.7.3",
+ "rand 0.8.1",
  "reqwest",
  "ructe",
  "sdnotify",

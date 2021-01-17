@@ -39,21 +39,6 @@ async fn main() -> Result<()> {
         .await?,
     );
 
-    match sdnotify::SdNotify::from_env() {
-        Ok(ref mut n) => {
-            n.notify_ready().map_err(|why| {
-                error!("can't signal readiness to systemd: {}", why);
-                why
-            })?;
-            n.set_status(format!("hosting {} posts", state.clone().everything.len()))
-                .map_err(|why| {
-                    error!("can't signal status to systemd: {}", why);
-                    why
-                })?;
-        }
-        Err(why) => error!("not running under systemd with Type=notify: {}", why),
-    }
-
     let healthcheck = warp::get().and(warp::path(".within").and(warp::path("health")).map(|| "OK"));
 
     let base = warp::path!("blog" / ..);
@@ -221,6 +206,28 @@ async fn main() -> Result<()> {
         })
         .with(warp::log(APPLICATION_NAME))
         .recover(handlers::rejection);
+
+    match sdnotify::SdNotify::from_env() {
+        Ok(ref mut n) => {
+            // shitty heuristic for detecting if we're running in prod
+            tokio::spawn(async {
+                if let Err(why) = app::poke::the_cloud().await {
+                    error!("Unable to poke the cloud: {}", why);
+                }
+            });
+
+            n.notify_ready().map_err(|why| {
+                error!("can't signal readiness to systemd: {}", why);
+                why
+            })?;
+            n.set_status(format!("hosting {} posts", state.clone().everything.len()))
+                .map_err(|why| {
+                    error!("can't signal status to systemd: {}", why);
+                    why
+                })?;
+        }
+        Err(why) => error!("not running under systemd with Type=notify: {}", why),
+    }
 
     warp::serve(site)
         .run((

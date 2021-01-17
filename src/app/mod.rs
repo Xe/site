@@ -5,6 +5,7 @@ use std::{fs, path::PathBuf};
 use tracing::{error, instrument};
 
 pub mod markdown;
+pub mod poke;
 
 #[derive(Clone, Deserialize)]
 pub struct Config {

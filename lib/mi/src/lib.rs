@@ -34,7 +34,7 @@ impl Client {
         })
     }
 
-    #[instrument(skip(self))]
+    #[instrument(skip(self), err)]
     pub async fn mentioners(&self, url: String) -> Result<Vec<WebMention>> {
         Ok(self
             .cli
@@ -45,6 +45,16 @@ impl Client {
             .error_for_status()?
             .json()
             .await?)
+    }
+
+    #[instrument(skip(self), err)]
+    pub async fn refresh(&self) -> Result<()> {
+        self.cli
+            .post("https://mi.within.website/api/blog/refresh")
+            .send()
+            .await?
+            .error_for_status()?;
+        Ok(())
     }
 }
 
