@@ -244,4 +244,18 @@ in  [ Person::{
       , gitLink = "https://github.com/nasirhm"
       , twitter = "https://twitter.com/_nasirhm_"
       }
+    , Person::{
+      , name = "Eliot Partridge"
+      , tags =
+        [ "python"
+        , "linux"
+        , "typescript"
+        , "javascript"
+        , "docker"
+        , "c#"
+        , "dotnet"
+        , "php"
+        ]
+      , gitLink = "https://github.com/BytewaveMLP"
+    }
     ]
