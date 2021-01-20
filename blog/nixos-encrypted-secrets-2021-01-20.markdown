@@ -80,7 +80,6 @@ systemd.services.example = {
 
 This creates a user called `example` and gives it permission to read deployment
 keys. It also creates a systemd service called `example.service` and runs
-[`id(1)`](https://linux.die.net/man/1/id)
 [`stat(1)`](https://linux.die.net/man/1/stat) to show the permissions of the
 service and the key file. It also runs as our `example` user. To avoid systemd
 thinking our service failed, we're also going to mark it as a
