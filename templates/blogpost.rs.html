@@ -45,6 +45,12 @@
      @}
 </script>
 
+@if let Some(to) = post.front_matter.redirect_to.clone() {
+  <script>
+    window.location.replace("@to");
+  </script>
+}
+
 @body
 
 <hr />
