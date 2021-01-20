@@ -9,7 +9,7 @@ build = "src/build.rs"
 
 [dependencies]
 mime = "0.3.0"
-warp = "0.2"
+warp = "0.3"
 
 [build-dependencies]
 ructe = { version = "0.13", features = ["warp02"] }
