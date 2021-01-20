@@ -20,7 +20,9 @@
 <meta name="description" content="@post.front_matter.title - Christine Dodrill's Blog" />
 <meta name="author" content="Christine Dodrill">
 
-<link rel="canonical" href="https://christine.website/@post.link">
+@if post.front_matter.redirect_to.is_none() {
+  <link rel="canonical" href="https://christine.website/@post.link">
+}
 
 <script type="application/ld+json">
  @{
