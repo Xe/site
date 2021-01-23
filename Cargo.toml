@@ -14,25 +14,25 @@ chrono = "0.4"
 comrak = "0.9"
 envy = "0.4"
 glob = "0.3"
-hyper = "0.13"
+hyper = "0.14"
 kankyo = "0.3"
 lazy_static = "1.4"
 log = "0.4"
 mime = "0.3.0"
-prometheus = { version = "0.10", default-features = false, features = ["process"] }
+prometheus = { version = "0.11", default-features = false, features = ["process"] }
 rand = "0"
-reqwest = { version = "0.10", features = ["json"] }
+reqwest = { version = "0.11", features = ["json"] }
 sdnotify = { version = "0.1", default-features = false }
 serde_dhall = "0.9.0"
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.8"
 sitemap = "0.4"
 thiserror = "1"
-tokio = { version = "0.2", features = ["macros"] }
+tokio = { version = "1", features = ["full"] }
 tracing = "0.1"
 tracing-futures = "0.2"
 tracing-subscriber = { version = "0.2", features = ["fmt"] }
-warp = "0.2"
+warp = "0.3"
 xml-rs = "0.8"
 url = "2"
 uuid = { version = "0.8", features = ["serde", "v4"] }
@@ -51,7 +51,6 @@ ructe = { version = "0.13", features = ["warp02"] }
 pfacts = "0"
 serde_json = "1"
 eyre = "0.6"
-reqwest = { version = "0.10", features = ["json"] }
 pretty_env_logger = "0"
 
 [workspace]
