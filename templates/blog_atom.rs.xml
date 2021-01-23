@@ -19,7 +19,7 @@
     <entry>
       <id>https://christine.website/@post.link</id>
       <title>@post.front_matter.title</title>
-      <updated>@post.date.to_rfc3339()</updated>
+      <published>@post.date.to_rfc3339()</published>
       <link href="https://christine.website/@post.link" rel="alternate"/>
     </entry>
   }
