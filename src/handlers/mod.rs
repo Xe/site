@@ -5,11 +5,11 @@ use crate::{
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::{convert::Infallible, fmt, sync::Arc};
+use tracing::instrument;
 use warp::{
     http::{Response, StatusCode},
     Rejection, Reply,
 };
-use tracing::instrument;
 
 lazy_static! {
     static ref HIT_COUNTER: IntCounterVec =
@@ -86,12 +86,6 @@ impl fmt::Display for PostNotFound {
 
 impl warp::reject::Reject for PostNotFound {}
 
-impl From<PostNotFound> for warp::reject::Rejection {
-    fn from(error: PostNotFound) -> Self {
-        warp::reject::custom(error)
-    }
-}
-
 #[derive(Debug, thiserror::Error)]
 struct SeriesNotFound(String);
 
@@ -102,12 +96,6 @@ impl fmt::Display for SeriesNotFound {
 }
 
 impl warp::reject::Reject for SeriesNotFound {}
-
-impl From<SeriesNotFound> for warp::reject::Rejection {
-    fn from(error: SeriesNotFound) -> Self {
-        warp::reject::custom(error)
-    }
-}
 
 lazy_static! {
     static ref REJECTION_COUNTER: IntCounterVec = register_int_counter_vec!(

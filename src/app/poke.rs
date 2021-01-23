@@ -1,6 +1,6 @@
 use color_eyre::eyre::Result;
 use std::{env, time::Duration};
-use tokio::time::delay_for;
+use tokio::time::sleep as delay_for;
 
 #[instrument(err)]
 pub async fn the_cloud() -> Result<()> {

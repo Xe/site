@@ -8,8 +8,8 @@ build = "src/build.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-mime = "0.3.0"
-warp = "0.2"
+mime = "0.3"
+warp = "0.3"
 
 [build-dependencies]
 ructe = { version = "0.13", features = ["warp02"] }
