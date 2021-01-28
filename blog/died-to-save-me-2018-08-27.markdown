@@ -33,36 +33,6 @@ They were the person who got bullied.
 They survived years of torment but  
 they died to save me.
 
-I understand now why the Gods  
-prefer to use shaman-sickness to  
-help people realize their calling.  
-It is such an elegant teacher of  
-the Divine. So patient. So forgiving.
-
-It's impossible to ignore everything  
-around you feeling incomprehensibly crazy,  
-because it is.  
-Our system is crazy.  
-Our system is incomprehensible.  
-We only "like" it because we have no  
-way to fathom anything else.
-
-"Awakening" is probably one of the  
-least bad metaphors to describe the  
-feeling of just suddenly understanding  
-the barriers. Of seeing the formerly  
-invisible glass prison walls we apparently  
-live inside unknowingly.
-
-It's not just an awakening though,  
-Not all of me made it through the process.  
-Not all of what constitutes yourself  
-(in your opinion) is actually a True  
-part of you. Not all your thoughts,  
-memories, ideas, dreams, wishes  
-and even fears or anxieties are  
-truly yours.
-
 Sometimes there's that part that  
 really does have to die to save you.  
 The part that was once a shining beacon  
@@ -73,7 +43,7 @@ Memories or experiences of pain,
 trauma. It can die to save you too. 
 
 You don't have to carry  
-the mountains you come across,  
+the mountains you come across,
 you can just climb them.
 
 When it dies, it is gone, but:  
