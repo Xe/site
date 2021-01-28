@@ -43,7 +43,7 @@ Memories or experiences of pain,
 trauma. It can die to save you too. 
 
 You don't have to carry  
-the mountains you come across,
+the mountains you come across,  
 you can just climb them.
 
 When it dies, it is gone, but:  
