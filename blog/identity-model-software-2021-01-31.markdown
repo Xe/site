@@ -214,7 +214,9 @@ and the space inbetween as Xe. The girls and I should be able to talk about our
 own things individually without our coworkers, our professional contacts, Mai's
 DnD group buddies, our own personal friends, acquaintances and people that are
 in groups I moderate without anyone being able to connect them all together at
-the platform level without my explicit permission.
+the platform level without my explicit permission (if only to avoid some
+uncomfortable philosophical discussions about personhood in professional
+contexts where they aren't very relevant to begin with).
 
 Yes, this would be a hard thing to implement. It throws a lot of assumptions
 about identity on these platforms out of the window. However I believe that it
