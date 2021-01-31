@@ -123,9 +123,13 @@ financial reasons to one case that I can think of that completely annihilates
 most assumptions programmers make about identity:
 [Plural systems](https://www.pluralpride.com/playbook#introduction).
 
+<center>
+
 ![A "terminator chases hiding terrified anime girl" meme with the terminator
 labeled "Plural Systems" and the terrified anime girl labeled "Identity
 Systems"](https://cdn.christine.website/file/christine-static/blog/plural-terminator-meme.jpg)
+
+</center>
 
 Usually I write these articles assuming that people reference links if they are
 confused or for later reference. However, for this case to make sense I feel
@@ -136,6 +140,11 @@ point more clear:
 > person/consciousness sharing a body. Together, the people who share a body
 > make up a plural system or multiple system, often referred to simply as a
 > system.
+
+[As an aside, this post may be one of if not the first time you have ever
+encountered plurality in any form. Please do your own research before jumping to
+drastic conclusions or labeling people with disorder names that "feel right" in
+the moment. Some other places to look at include:<ul><li><a href="https://morethanone.info">More Than One</a></li><li><a href="/blog/plurality-driven-development-2019-08-04">Plurality-Driven Development</a></li><li><a href="https://meltingasphalt.com/neurons-gone-wild/">Neurons Gone Wild</a></li></ul>](conversation://Mara/hacker)
 
 As far as existing identity systems go, this is the _worst case scenario_. This
 throws the "Users have no reason to create multiple logically separate
@@ -219,6 +228,9 @@ the platform level without my explicit permission (if only to avoid some
 uncomfortable philosophical discussions about personhood in professional
 contexts where they aren't very relevant to begin with). I should be able to
 select from other identities like I can select email accounts on my macbook.
+
+[What if it was easy to assume a different identity to say a message as it is
+for me to write sentences like this?](conversation://Mara/hmm)
 
 Yes, this would be a hard thing to implement given existing technical debt. It
 throws a lot of assumptions about identity on these platforms out of the window.
