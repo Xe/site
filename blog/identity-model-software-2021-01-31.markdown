@@ -144,7 +144,7 @@ point more clear:
 [As an aside, this post may be one of if not the first time you have ever
 encountered plurality in any form. Please do your own research before jumping to
 drastic conclusions or labeling people with disorder names that "feel right" in
-the moment. Some other places to look at include:<ul><li><a href="https://morethanone.info">More Than One</a></li><li><a href="/blog/plurality-driven-development-2019-08-04">Plurality-Driven Development</a></li><li><a href="https://meltingasphalt.com/neurons-gone-wild/">Neurons Gone Wild</a></li></ul>](conversation://Mara/hacker)
+the moment. Some other places to look at include:<ul><li><a href="https://morethanone.info">More Than One</a></li><li><a href="/blog/plurality-driven-development-2019-08-04">Plurality-Driven Development</a></li><li><a href="https://meltingasphalt.com/neurons-gone-wild/">Neurons Gone Wild</a></li><li><a href="https://aeon.co/ideas/what-we-can-learn-about-respect-and-identity-from-plurals">What we can learn about respect and identity from ‘plurals’</a></ul>](conversation://Mara/hacker)
 
 As far as existing identity systems go, this is the _worst case scenario_. This
 throws the "Users have no reason to create multiple logically separate
