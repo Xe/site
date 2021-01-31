@@ -206,7 +206,7 @@ something sufficiently bizarre for this sentence. An advantage of this being
 baked into the substrate of platforms means that moderators aren't shafted by
 this either. If you ban one of someone's identities from a place, you should ban
 them all from that place to prevent fractal
-[sockpuppeting](https://en.wikipedia.org/wiki/Sock_puppet_account).
+[sockpuppeting](https://en.wikipedia.org/wiki/Sock_puppet_account). 
 
 I should be able to connect with someone at work, and then that same person
 online without either of us having any idea that we are the same people. I
@@ -217,12 +217,13 @@ DnD group buddies, our own personal friends, acquaintances and people that are
 in groups I moderate without anyone being able to connect them all together at
 the platform level without my explicit permission (if only to avoid some
 uncomfortable philosophical discussions about personhood in professional
-contexts where they aren't very relevant to begin with).
+contexts where they aren't very relevant to begin with). I should be able to
+select from other identities like I can select email accounts on my macbook.
 
-Yes, this would be a hard thing to implement. It throws a lot of assumptions
-about identity on these platforms out of the window. However I believe that it
-is really worth doing, because the benefits in terms of privacy will _far_
-outweigh the implementation costs. You have more than one "you" in practice.
-Software should let us make these kinds of logical separations easier, not
-harder. Having to use tools such as Rambox means that the identity model of a
-service is fundamentally flawed.
+Yes, this would be a hard thing to implement given existing technical debt. It
+throws a lot of assumptions about identity on these platforms out of the window.
+However I believe that it is really worth doing, because the benefits in terms
+of privacy will _far_ outweigh the implementation costs. You have more than one
+"you" in practice. Software should let us make these kinds of logical
+separations easier, not harder. Having to use tools such as Rambox means that
+the identity model of a service is fundamentally flawed.
