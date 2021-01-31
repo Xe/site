@@ -58,6 +58,11 @@ separate logical parts of someone's social identities. If you are called "Mom"
 in a context by someone, it can have a very different connotation than if you
 were called by a username, nickname or legal name.
 
+[As a contrast, think about cartoons like The Fairly Oddparents where Timmy's
+Mom only ever has the name "Timmy's Mom". You'd normally expect her to have
+another name, but Timmy's Mom is only ever referred to as "Timmy's Mom" or
+"Mom".](conversation://Mara/hacker)
+
 As an example, let's consider the various ways that I, the author of this
 document experience identity that defy most of the identity systems that I have
 to deal with. I am publishing this post under the name Christine Dodrill. That
@@ -81,7 +86,8 @@ ratio. K/D/A Ratio, Cadey A. Ratio.](conversation://Mara/hacker)
 Also, as an aside I am going to be talking about some things in the rest of this
 article that really do mix the name-based compartmentalization that I do
 together, if you really want to ask clarifying questions or whatever I suggest
-doing it over somewhere my name is listed as Cadey.
+doing it over somewhere my name is listed as Cadey. There are some questions
+that I am hesitant to answer in professional contexts. Please resepct this.
 
 I have not seen any system on the internet that allows me to properly map the
 differences between these logical facets of my identity. Not without having to
