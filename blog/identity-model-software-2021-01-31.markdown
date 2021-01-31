@@ -119,7 +119,8 @@ actions of Big Toothpaste.
 
 However, what about _entirely separate people_ that need to share computers or
 accounts? This could range from a married couple sharing a computer for
-financial reasons to one of the worst possible cases for this kind of thing:
+financial reasons to one case that I can think of that completely annihilates
+most assumptions programmers make about identity:
 [Plural systems](https://www.pluralpride.com/playbook#introduction).
 
 ![A "terminator chases hiding terrified anime girl" meme with the terminator
