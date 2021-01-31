@@ -87,7 +87,7 @@ Also, as an aside I am going to be talking about some things in the rest of this
 article that really do mix the name-based compartmentalization that I do
 together, if you really want to ask clarifying questions or whatever I suggest
 doing it over somewhere my name is listed as Cadey. There are some questions
-that I am hesitant to answer in professional contexts. Please resepct this.
+that I am hesitant to answer in professional contexts. Please respect this.
 
 I have not seen any system on the internet that allows me to properly map the
 differences between these logical facets of my identity. Not without having to
