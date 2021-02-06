@@ -189,6 +189,17 @@ with this so well that I don't have to care about this anymore. Seriously this
 has removed so much manual process from my Wireguard networks it's not even
 funny. I was a Tailscale user before I was a Tailscale employee.</small>
 
+[Is it really a good idea to include those Wireguard public keys in a public git
+repo like that?](conversation://Mara/hmm)
+
+They are _public_ keys, however I have no idea if it really is a good idea or
+not. It hasn't gotten me hacked yet (as far as I'm aware), so there's probably
+not much of a practical issue.
+
+My logic behind making my NixOS config repo a public one is to act as an example
+for others to take inspiration from. I also wanted to make it harder for me to
+let the config drift. It also gives me a bunch of fodder for this blog.
+
 ---
 
 This is basically what my setup has turned into. It's super easy to manage now.
