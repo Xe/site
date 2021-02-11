@@ -5,6 +5,11 @@ date: 2021-01-15
 
 # New PGP Key Fingerprint
 
+EDIT(Xe): M02 11 2020 I fucked it up, this key is broken. Don't bother trying to
+use it, it won't work. Use [age](https://github.com/FiloSottile/age) to send
+messages with the key `ssh-ed25519
+AAAAC3NzaC1lZDI1NTE5AAAAIPg9gYKVglnO2HQodSJt4z4mNrUSUiyJQ7b+J798bwD9` instead.
+
 This morning I got an encrypted email, and in the process of trying to decrypt
 it I discovered that I had _lost_ my PGP key. I have no idea how I lost it. As
 such, I have created a new PGP key and replaced the one on my website with it.
