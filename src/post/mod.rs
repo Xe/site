@@ -133,20 +133,20 @@ mod tests {
     #[tokio::test]
     async fn blog() {
         let _ = pretty_env_logger::try_init();
-        load("blog", None).await.expect("posts to load");
+        load("blog").await.expect("posts to load");
     }
 
     #[tokio::test]
     async fn gallery() -> Result<()> {
         let _ = pretty_env_logger::try_init();
-        load("gallery", None).await?;
+        load("gallery").await?;
         Ok(())
     }
 
     #[tokio::test]
     async fn talks() -> Result<()> {
         let _ = pretty_env_logger::try_init();
-        load("talks", None).await?;
+        load("talks").await?;
         Ok(())
     }
 }
