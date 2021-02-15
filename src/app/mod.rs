@@ -70,9 +70,9 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     let resume = fs::read_to_string(cfg.resume_fname.clone())?;
     let resume: String = markdown::render(&resume)?;
     let mi = mi::Client::new(cfg.mi_token.clone(), crate::APPLICATION_NAME.to_string())?;
-    let blog = crate::post::load("blog", Some(&mi)).await?;
-    let gallery = crate::post::load("gallery", None).await?;
-    let talks = crate::post::load("talks", None).await?;
+    let blog = crate::post::load("blog").await?;
+    let gallery = crate::post::load("gallery").await?;
+    let talks = crate::post::load("talks").await?;
     let mut everything: Vec<Post> = vec![];
 
     {

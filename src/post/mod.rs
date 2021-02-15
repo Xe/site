@@ -1,7 +1,8 @@
 use chrono::prelude::*;
 use color_eyre::eyre::{eyre, Result, WrapErr};
 use glob::glob;
-use std::{cmp::Ordering, fs};
+use std::{cmp::Ordering, path::PathBuf};
+use tokio::fs;
 
 pub mod frontmatter;
 
@@ -70,45 +71,53 @@ impl Post {
     }
 }
 
-pub async fn load(dir: &str, mi: Option<&mi::Client>) -> Result<Vec<Post>> {
-    let mut result: Vec<Post> = vec![];
+async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
+    let body = fs::read_to_string(fname.clone())
+        .await
+        .wrap_err_with(|| format!("can't read {:?}", fname))?;
+    let (front_matter, content_offset) = frontmatter::Data::parse(body.clone().as_str())
+        .wrap_err_with(|| format!("can't parse frontmatter of {:?}", fname))?;
+    let body = &body[content_offset..];
+    let date = NaiveDate::parse_from_str(&front_matter.clone().date, "%Y-%m-%d")
+        .map_err(|why| eyre!("error parsing date in {:?}: {}", fname, why))?;
+    let link = format!("{}/{}", dir, fname.file_stem().unwrap().to_str().unwrap());
+    let body_html = crate::app::markdown::render(&body)
+        .wrap_err_with(|| format!("can't parse markdown for {:?}", fname))?;
+    let body = body.to_string();
+    let date: DateTime<FixedOffset> =
+        DateTime::<Utc>::from_utc(NaiveDateTime::new(date, NaiveTime::from_hms(0, 0, 0)), Utc)
+            .with_timezone(&Utc)
+            .into();
 
-    for path in glob(&format!("{}/*.markdown", dir))?.filter_map(Result::ok) {
-        log::debug!("loading {:?}", path);
-        let body =
-            fs::read_to_string(path.clone()).wrap_err_with(|| format!("can't read {:?}", path))?;
-        let (fm, content_offset) = frontmatter::Data::parse(body.clone().as_str())
-            .wrap_err_with(|| format!("can't parse frontmatter of {:?}", path))?;
-        let markup = &body[content_offset..];
-        let date = NaiveDate::parse_from_str(&fm.clone().date, "%Y-%m-%d")
-            .map_err(|why| eyre!("error parsing date in {:?}: {}", path, why))?;
-        let link = format!("{}/{}", dir, path.file_stem().unwrap().to_str().unwrap());
-        let mentions: Vec<mi::WebMention> = match mi {
-            None => vec![],
-            Some(mi) => mi
-                .mentioners(format!("https://christine.website/{}", link))
-                .await
-                .map_err(|why| tracing::error!("error: can't load mentions for {}: {}", link, why))
-                .unwrap_or(vec![]),
-        };
+    let mentions: Vec<mi::WebMention> = match std::env::var("MI_TOKEN") {
+        Ok(token) => mi::Client::new(token.to_string(), crate::APPLICATION_NAME.to_string())?
+            .mentioners(format!("https://christine.website/{}", link))
+            .await
+            .map_err(|why| tracing::error!("error: can't load mentions for {}: {}", link, why))
+            .unwrap_or(vec![]),
+        Err(_) => vec![],
+    };
 
-        result.push(Post {
-            front_matter: fm,
-            link: link,
-            body: markup.to_string(),
-            body_html: crate::app::markdown::render(&markup)
-                .wrap_err_with(|| format!("can't parse markdown for {:?}", path))?,
-            date: {
-                DateTime::<Utc>::from_utc(
-                    NaiveDateTime::new(date, NaiveTime::from_hms(0, 0, 0)),
-                    Utc,
-                )
-                .with_timezone(&Utc)
-                .into()
-            },
-            mentions: mentions,
-        })
-    }
+    Ok(Post {
+        front_matter,
+        link,
+        body,
+        body_html,
+        date,
+        mentions,
+    })
+}
+
+pub async fn load(dir: &str) -> Result<Vec<Post>> {
+    let futs = glob(&format!("{}/*.markdown", dir))?
+        .filter_map(Result::ok)
+        .map(|fname| read_post(dir, fname));
+
+    let mut result: Vec<Post> = futures::future::join_all(futs)
+        .await
+        .into_iter()
+        .map(Result::unwrap)
+        .collect();
 
     if result.len() == 0 {
         Err(eyre!("no posts loaded"))
