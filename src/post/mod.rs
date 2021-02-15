@@ -10,7 +10,6 @@ pub mod frontmatter;
 pub struct Post {
     pub front_matter: frontmatter::Data,
     pub link: String,
-    pub body: String,
     pub body_html: String,
     pub date: DateTime<FixedOffset>,
     pub mentions: Vec<mi::WebMention>,
@@ -83,7 +82,6 @@ async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
     let link = format!("{}/{}", dir, fname.file_stem().unwrap().to_str().unwrap());
     let body_html = crate::app::markdown::render(&body)
         .wrap_err_with(|| format!("can't parse markdown for {:?}", fname))?;
-    let body = body.to_string();
     let date: DateTime<FixedOffset> =
         DateTime::<Utc>::from_utc(NaiveDateTime::new(date, NaiveTime::from_hms(0, 0, 0)), Utc)
             .with_timezone(&Utc)
@@ -101,7 +99,6 @@ async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
     Ok(Post {
         front_matter,
         link,
-        body,
         body_html,
         date,
         mentions,
