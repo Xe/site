@@ -1,0 +1,10 @@
+{
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 80,
+    "editor.wordBasedSuggestions": false,
+    "[markdown]":{
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 80,
+        "vim.textwidth": 80,
+    },
+}
