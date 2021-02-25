@@ -20,7 +20,11 @@ need to use a browser with SVG support in order to get the best experience with
 this article. All the diagrams will be explained after the fact so that people
 using screen readers are not left out.](conversation://Mara/hacker)
 
+<center>
+
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Working at <a href="https://twitter.com/Tailscale?ref_src=twsrc%5Etfw">@Tailscale</a> is great. They sent us all an Oculus Quest 2! <a href="https://t.co/dDhbwO9cFd">pic.twitter.com/dDhbwO9cFd</a></p>&mdash; Cadey A. Ratio (@theprincessxena) <a href="https://twitter.com/theprincessxena/status/1362871906597224456?ref_src=twsrc%5Etfw">February 19, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+</center>
 
 So, let's cover the basics from a high level. At a high level a webcam is just
 a video source that may or may not have a microphone attached to it. So in 
@@ -29,7 +33,11 @@ window on my computer act as a webcam. This will make the overall dependency
 list look like this (for those of you using screen readers I will describe
 this diagram below):
 
+<center>
+
 ![](/static/blog/vrchat/simple_graph.svg)
+
+</center>
 
 VRChat renders to the Desktop which is picked up by OBS which has the ability
 to pretend to be a webcam, which is finally picked up by Google Meet.
@@ -62,7 +70,11 @@ I did some digging and found a bit of software called
 from my computer wirelessly. So I set it up on the Quest and on my tower, 
 which brought up the dependency graph to this:
 
+<center>
+
 ![](/static/blog/vrchat/alvr_graph.svg)
+
+</center>
 
 ALVR talks with its counterpart on the Quest. This allows you to stream the VR
 video and audio bidirectionally. You also need to bring Virtual Audio Cable
@@ -102,13 +114,21 @@ I've ever used.
 
 This brings the dependency graph up to this:
 
+<center>
+
 ![](/static/blog/vrchat/total_graph.svg)
+
+</center>
 
 Now all that was left was to make the camera view look somewhat like it does
 when I'm using my work laptop's webcam to make video calls. I started out by taking a picture of my office from about the angle that my laptop sits at.
 I ended up with this image:
 
+<center>
+
 ![](https://cdn.christine.website/file/christine-static/blog/2021-02-24-20-20-58.jpg)
+
+</center>
 
 Then with some clever use of the
 [Chroma key filter in VRChat](https://docs.vrchat.com/docs/vrchat-201812)
@@ -171,5 +191,24 @@ actually watch the meeting and be able to see screen sharing. They can hear me
 because Virtual Desktop pipes the headset microphone audio back to my tower,
 and the meeting audio comes over my headphones.
 
+Also at some point I needed to bring AutoHotKey into the mix, so I borrowed
+this AutoHotKey script from [SuperUser](https://superuser.com/a/429845) to 
+resize the VRChat window so that it would fit perfectly into the OBS view:
+
+```ahk
+#=:: ; [Win]+[=]
+    WinGet, window, ID, A
+    InputBox, width, Resize, Width:, , 140, 130
+    InputBox, height, Resize, Height:, , 140, 130
+    WinMove, ahk_id %window%, , , , width, height
+    return
+```
+
+Making the VRChat window smaller also helped with the frame times, because it 
+needed to render less detail per frame. This helped push the framerate 
+comfortably above 72 FPS in my VR view.
+
 That is how I get a 3d avatar to show up instead of pictures of the meat golem
-I am cursed inside for work meetings.
+I am cursed inside of for work meetings. I will also use this for streaming 
+coding in the future, so you can all witness the power of a VTube coding stream
+where I write Rust or something.
