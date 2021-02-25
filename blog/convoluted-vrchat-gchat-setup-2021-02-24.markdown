@@ -59,4 +59,117 @@ was needed.
 
 I did some digging and found a bit of software called 
 [ALVR](https://github.com/alvr-org/alvr#readme) that claimed to let me do VR
-from my computer wirelessly.
+from my computer wirelessly. So I set it up on the Quest and on my tower, 
+which brought up the dependency graph to this:
+
+![](/static/blog/vrchat/alvr_graph.svg)
+
+ALVR talks with its counterpart on the Quest. This allows you to stream the VR
+video and audio bidirectionally. You also need to bring Virtual Audio Cable
+into the setup so that you can hear stuff in the game and so that other people
+can hear you using the headset mic. However, ALVR is not available on the Quest
+store. You need to install [SideQuest](https://sidequestvr.com/setup-howto) for
+that. 
+
+[SideQuest lets you sideload Android APK files to your Quest 2 because the
+Quest 2 is basically an Android tablet that you strap to your face!](conversation://Mara/happy)
+
+So I used SideQuest to install the ALVR client on my Quest 2, and then I opened
+up VRChat and was able to do everything I was able to do with the wired cable.
+It worked beautifully until it didn't. I started running into issues with the
+video stream just dying. The foveated encoding (tl;dr: attempting to hack the
+image quality based on how eyes work so you don't notice the artifacting as 
+much) could only do so much and it just ended up not working. Even when I was
+only doing it for short amounts of time. There is a lot of WiFi noise in my 
+apartment or something and it was really interfering with ALVR's stream 
+encoding. The latency was also noticeable after a bit.
+
+However, when it worked it worked beautifully. I had to upgrade to the nightly
+build of ALVR in order to get game audio and the headset mic working, but once
+it all worked it was really convenient. I could walk around my apartment and 
+I'd also walk around in-game.
+
+A friend told me that the best experience I could have with wireless VR using a
+Quest 2 would be to use [Virtual Desktop](https://www.vrdesktop.net). Apparently
+Virtual Desktop has a
+[patch that enables SteamVR support](https://sidequestvr.com/app/16), so I 
+purchased Virtual Desktop on a whim and decided to give it a go.
+
+Virtual Desktop made ALVR look like a tech demo. All of the latency issues were
+solved instantly. Virtual Desktop also made it convenient for me to access my 
+tower's monitors while in VR, and it has the best typing experience in VR that
+I've ever used.
+
+This brings the dependency graph up to this:
+
+![](/static/blog/vrchat/total_graph.svg)
+
+Now all that was left was to make the camera view look somewhat like it does
+when I'm using my work laptop's webcam to make video calls. I started out by taking a picture of my office from about the angle that my laptop sits at.
+I ended up with this image:
+
+![](https://cdn.christine.website/file/christine-static/blog/2021-02-24-20-20-58.jpg)
+
+Then with some clever use of the
+[Chroma key filter in VRChat](https://docs.vrchat.com/docs/vrchat-201812)
+I was able to get some basic compositing of my avatar onto the picture. I
+fiddled with the placement of things and then I was able to declare success
+with this image I posted to Twitter:
+
+<center>
+
+![](https://cdn.christine.website/file/christine-static/blog/Eu6iR6jXUAQH0iq.jpeg)
+
+</center>
+
+And it worked! I was able to make a call in Google Meet to myself and my 
+avatar's lip movements synchronized somewhat with the words I was saying. I
+had waifu mode enabled!
+
+[The avatar being used there is based on a character from Xenoblade Chronicles 
+2 named Pneuma.](conversation://Mara/hacker)
+
+However, this setup was really janky. I didn't actually get the proper angle
+for what my work laptop's camera would actually see. Everything was offset to 
+the side and it was at way the wrong angle in general. I'm also not sure if I
+messed up the sizing of the background image in the OBS view, it looks kinda 
+stretched on my end as I'm writing this post.
+
+So I decided that the best way to get the most accurate angle was to record a 
+video loop using my work laptop's webcam. After some googling I found 
+[webcamera.io](https://webcamera.io) which let me record some footage of my 
+office from my work laptop's camera angle. I got down under the desk (so I was 
+out of view of the camera) and then recorded a 45 second loop of my office 
+doing nothing (however the flag was slightly moving in the breeze from the desk 
+fan).
+
+I also found a VRChat world that claimed to be as optimized as you could 
+possibly make a VRChat world. It was a blue cube about 30m by 30m. Checking 
+with SteamVR it brought my frame times down to 3 milliseconds with the stream
+camera set up for OBS. It looks like this:
+
+<center>
+
+![Screenshot of the optimized world](https://cdn.christine.website/file/christine-static/blog/154306141_1368071216896631_2989259612329820447_o.jpg)
+
+</center>
+
+It's very minimal. You can make the walls go away if you want, which somehow makes it render faster on my RX5700. I'm not sure what's going on there.
+
+[I'd heckin' love to get a new GPU but until the Bitcoin prices go down we may
+be stuck with this setup for a while. An RTX 3070 would really be useful about 
+now.](conversation://Mara/hacker)
+
+Anyways, with this minimal world incurring very little to no GPU load, I was 
+free to do video calls all I wanted. I even did a call with the CEO of the 
+company I work for with a setup like this. It was fun.
+
+Now I had everything set up. I can pop on the headset, load up the world, open 
+OBS, VRChat, Virtual Desktop and get everything set up in about 5 minutes at 
+worst. Then I can use the seeing your desktop side of Virtual Desktop to 
+actually watch the meeting and be able to see screen sharing. They can hear me
+because Virtual Desktop pipes the headset microphone audio back to my tower,
+and the meeting audio comes over my headphones.
+
+That is how I get a 3d avatar to show up instead of pictures of the meat golem
+I am cursed inside for work meetings.
