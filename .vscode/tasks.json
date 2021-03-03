@@ -1,0 +1,36 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "options": {
+        "env": {
+            "out": "/fake"
+        }
+    },
+    "tasks": [
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "cargo run",
+            "problemMatcher": [
+                "$rustc"
+            ]
+        },
+        {
+            "label": "auto rerun",
+            "type": "shell",
+            "command": "cargo watch -x run",
+            "problemMatcher": [
+                "$rustc"
+            ]
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "cargo test",
+            "problemMatcher": [
+                "$rustc"
+            ]
+        }
+    ]
+}
