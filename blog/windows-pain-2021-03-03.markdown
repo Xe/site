@@ -1,0 +1,231 @@
+---
+title: "Development on Windows is Painful"
+date: 2021-03-03
+tags:
+ - windows
+ - vscode
+ - nix
+ - emacs
+ - rant
+---
+
+# Development on Windows is Painful
+
+<big>SUBJECTIVITY WARNING</big>
+
+This post contains opinions. They may differ from the opinions you hold, and
+that's great. This post is not targeted at any individual person or
+organization. This is a record of my frustration at trying to get Windows to do
+what I consider "basic development tasks". Your experiences can and probably
+will differ. As a reminder, I am speaking for myself, not any employer (past,
+present and future). I am not trying to shit on anyone here or disregard the
+contributions that people have made. This is coming from a place of passion for
+the craft of computering.
+
+With me using VR more and more [with my Quest 2 set up with
+SteamVR](/blog/convoluted-vrchat-gchat-setup-2021-02-24), I've had to use
+windows more on a regular basis. It seems that in order to use [Virtual
+Desktop](https://www.vrdesktop.net), I **MUST** have Windows as the main OS on
+my machine for this to work. Here is a record of my pain and suffering trying to
+do what I consider "basic" development tasks.
+
+## Text Editor
+
+I am a tortured soul that literally thinks in terms of Vim motions. This allows
+me to be mostly keyboard-only when I am deep into hacking at things, which
+really helps maintain flow state because I do not need to move my hands or look
+at anything but the input line right in front of me. Additionally, I have gotten
+_very_ used to my emacs setup, and specifically the subtle minutae of how it
+handles its Vim emulation mode and all of the quirks involved.
+
+I have tried to use my emacs config on Windows (and barring the things that are
+obviously impossible such as getting Nix to work with Windows) and have
+concluded that it is a fantastic waste of my time to do this. There are just too
+many things that have to be changed from my Linux/macOS config. That's okay, I
+can just use [VSCode](https://code.visualstudio.com) like a bunch of apologists
+have been egging me into right? It's worked pretty great for doing work stuff on
+NixOS, so it should probably be fine on Windows, right?
+
+### Vim Emulation
+
+So let's try opening VSCode and activating the Vim plugin
+[vscodevim](https://marketplace.visualstudio.com/items?itemName=vscodevim.vim).
+I get that installed (and the gruvbox theme because I absolutely love the
+Gruvbox aesthetics) and then open VSCode in a new folder. I can `:open` a new
+file and then type something in it:
+
+TODO(Xe): get screenshot of this
+
+Then I want to open another file split to the left with `:vsplit`, so I press
+escape and type in `:vsplit bar.txt`:
+
+TODO(Xe): get screenshot of this
+
+And I get a vsplit of the current buffer, not the new file that I actually
+wanted:
+
+TODO(Xe): get screenshot of this
+
+Now, this is probably a very niche thing that I am used to (even though it works
+fine on vanilla vim and with evil-mode), and other people I have asked about
+this apparently do not open new files like that (and one was surprised to find
+out that worked at all); but this is a pretty heavily ingrained into my muscle
+memory thing and it is frustrating. I have to retrain my decade old buffer
+management muscle memory.
+
+### Whichwrap
+
+Vim has a feature called whichwrap that lets you use the arrow keys at the
+end/beginning of lines to go to the beginning/end of the next/previous line. I
+had set this in my vim config [in November
+2013](https://github.com/Xe/dotfiles/commit/d8301453c2b61846eea8305b9ed4b80f498f3838)
+and promptly forgotten about it. This lead me to believe that this was Vim's
+default behavior.
+
+It apparently is not.
+
+In order to fix this, I had to open the VSCode settings.json file and add the
+following to it:
+
+```json
+{
+  "vim.whichwrap": "h,l,<,>,[,]"
+}
+```
+
+Annoying, but setting this made it work like I expected.
+
+### Kill Register != Clipboard
+
+Vim has the concept of registers, which are basically named/unnamed places that
+can be used like the clipboard in most desktop environments. In my Emacs config,
+the clipboard and the kill register* are identical. If I yank a region of text
+into the kill register, it's put into the clipboard. If I copy something into
+the clipboard, it's automagically put into the kill register. It's really
+convenient this way.
+
+[*It's called the "kill register" here because the vim motions for manipulating
+it are `y` to yank something into the kill register and `p` to put it into a
+different part of the document. `d` and other motions like it also put the
+things they remove into the kill register.](conversation://Mara/hacker)
+
+vscodevim doesn't do this by default, however there is another setting that you
+can use to do this:
+
+```json
+{
+    "vim.useSystemClipboard": true
+}
+```
+
+And then you can get the kill register to work like you'd expect.
+
+### Load Order of Extensions
+
+Emacs lets you control the load order of extensions. This can be useful to have
+the project-local config extension load before the language support extension,
+meaning that the right environment variables can be set before the language
+server runs.
+
+As far as I can tell you just can't configure this. For a work thing I've had to
+resort to disabling the Go extension, reloading VSCode, waiting for the direnv
+settings to kick in and re-enabling the Go extension. This would be _so much
+easier_ if I could just say "hey you go after this is done", but apparently this
+is not something VSCode lets you control. Please correct me if I am wrong.
+
+## Development Tools
+
+This is probably where I'm going to get a lot more pedantic than I was
+previously. I'm used to [st](https://st.suckless.org) as my terminal emulator
+and [fish](https://fishshell.com) as my shell. This is actually a _really nice_
+combo in practice because st loads instantly and fish has some great features
+like autocomplete based on shell history. Not to mention st allowing you to
+directly select-to-copy and right-click to paste, which makes it even more
+convenient to move text around quickly.
+
+### Git
+
+Git is not a part of the default development tooling setup. This was surprising.
+When I installed Git manually from its website, I let it run and do its thing,
+but then I realized it installed its own copy of bash, perl and coreutils. This
+shouldn't have surprised me (a lot of Git's command line interface is written in
+perl and shell scripts), but it was the 3rd copy of bash that I had installed on
+the system.
+
+As a NixOS user, this probably shouldn't have bothered me. On NixOS I currently
+have at least 8 copies of bash correlating to various versions of my tower's
+configuration. However, those copies are mostly there so that I can revert
+changes and then be able to go back to an older system setup. This is 3 copies
+of bash that are all in active use, but they don't really know about eachother
+(and the programs that are using them are arguably correct in doing this really
+defensively with their own versions of things so that there's less of a
+compatibility tesseract).
+
+Once I got it set up though, I was able to do git operations as normal. I was
+also pleasantly surprised to find that ssh and more importantly ssh-keygen were
+installed by default on Windows. That was really convenient and probably avoided
+me having to install another copy of bash.
+
+### Windows Terminal
+
+Windows Terminal gets a lot of things very right and also gets a lot of things
+very wrong. I was so happy to see that it had claimed mostly compatible with
+xterm. My usual test for these things is to open a curses app that uses the
+mouse (such as Weechat or terminal Emacs) and click on things. This usually
+separates the wheat from the chaff when it comes to compatible terminal
+emulators. I used the SSH key from before to log into my server, connected to my
+long-standing tmux session and then clicked on a channel name in Weechat.
+
+Nothing happened.
+
+I clicked again to be sure, nothing happened.
+
+I was really confused, then I started doing some digging and found [this GitHub
+comment on the Windows Terminal
+repo](https://github.com/microsoft/terminal/issues/376#issuecomment-759285574).
+
+Okay, so the version of ssh that came with Windows is apparently too old. I can
+understand that. When you bring something into the core system for things like
+Windows you generally need to lock it at an older version so that you can be
+sure that it says feature-compatible for years. This is not always the best life
+decision, but it's one of the tradeoffs you have to make when you have long-term
+support for things. It suggested I download a newer version of OpenSSH and tried
+using that.
+
+I downloaded the zipfile and I was greeted with a bunch of binaries in a folder
+with no obvious instructions on how to install them. Okay, makes sense, it's a
+core part of the system and this is probably how they get the binaries around to
+slipstream them into other parts of the Windows image build. An earlier comment
+in the thread suggested this was fixed with Windows Subsystem for Linux, so
+let's give that a try.
+
+### Windows Subsystem for Linux
+
+Windows Subsystem for Linux is a technical marvel. It makes dealing with Windows
+a lot easier. If only it didn't railroad you into Ubuntu in the process. Now
+don't get me wrong, Ubuntu works. It's boring. If you need to do something on a
+Linux system, nobody would get fired for suggesting Ubuntu. It just happens to
+not be the distro I want.
+
+However, I can ssh into my server with the Ubuntu VM and then I can click around
+in Weechat to my heart's content. I can also do weird builds with Nix and it
+just works. Neat.
+
+I should probably figure out how hard it would be to get a NixOS-like
+environment in WSL, but WSL can't run systemd so I've been kinda avoiding it.
+
+### Powershell
+
+They say you can learn a lot about the design of a command line interface by
+what commands are used to do things like change directory, list files in a
+directory and download files from the internet. In Powershell these are
+`Get-ChildItem`, `Set-Location` and `Invoke-WebRequest`. However there are
+aliases for `ls`, `dir`, `cd` and `wget`. 
+
+However they are not flag-compatible, so if you try to do `wget -O example.json
+https://xn--u7hz981o.ws/test.json` you don't actually get the file written to
+`example.json`.
+
+## Go
+
+## Rust
