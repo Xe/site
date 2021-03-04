@@ -169,9 +169,9 @@ me having to install another copy of bash.
 ### Windows Terminal
 
 Windows Terminal gets a lot of things very right and also gets a lot of things
-very wrong. I was so happy to see that it had claimed mostly compatible with
-xterm. My usual test for these things is to open a curses app that uses the
-mouse (such as Weechat or terminal Emacs) and click on things. This usually
+very wrong. I was so happy to see that it had claimed it was mostly compatible 
+with xterm. My usual test for these things is to open a curses app that uses
+the mouse (such as Weechat or terminal Emacs) and click on things. This usually
 separates the wheat from the chaff when it comes to compatible terminal
 emulators. I used the SSH key from before to log into my server, connected to my
 long-standing tmux session and then clicked on a channel name in Weechat.
@@ -216,28 +216,87 @@ environment in WSL, but WSL can't run systemd so I've been kinda avoiding it.
 Excising systemd from NixOS really defeats most of the point in my book. I may
 end up installing Nix on Alpine or something. IDK.
 
-### Powershell
+### PowerShell
 
 They say you can learn a lot about the design of a command line interface by
 what commands are used to do things like change directory, list files in a
-directory and download files from the internet. In Powershell these are
+directory and download files from the internet. In PowerShell these are
 `Get-ChildItem`, `Set-Location` and `Invoke-WebRequest`. However there are
-aliases for `ls`, `dir`, `cd` and `wget`. 
+aliases for `ls`, `dir`, `cd` and `wget` (these aliases aren't always 
+flag-compatible, so you may want to actually get used to doing things in the
+PowerShell way if you end up doing anything overly fancy). 
 
-But they are not flag-compatible, so if you try to do `wget -O example.json
-https://xn--u7hz981o.ws/test.json` you don't actually get the file written to
-`example.json`. You get this:
+Another annoying thing was that pressing Control-D on an empty prompt didn't end up closing the session. In order to do this you need to edit your shell profile file:
 
-TODO(Xe): example here
+```
+PS C:\Users\xena> code $profile
+```
 
-I get that adding flag compatibility would be a huge pain and really be out of
-scope, but it would really be nice if some minimal effort was made to shim it
-out.
+Then you add this to the .ps1 file:
+
+```
+Set-PSReadlineOption -EditMode Emacs
+```
+
+Save this file then close and re-open PowerShell. 
+
+If this was your first time editing your PowerShell config (like it was for me)
+you are going to have to mess with your 
+[execution policy](https://www.mssqltips.com/sqlservertip/2702/setting-the-powershell-execution-policy/)
+to allow you to execute scrips on your local machine. I get the reason why they
+did this, PowerShell has a lot of...well...power over the system. Doing this 
+must outright eliminate a lot of attack vectors without doing much on the 
+admin's side. But this applies to your shell profile too. So you are going to 
+need to make a choice as to what security level you want to have with PowerShell
+scripts. I personally went with `RemoteSigned`.
 
 ### Themes
 
+I use stuff cribbed from [oh my fish](https://github.com/oh-my-fish/oh-my-fish)
+for my fish prompt. I googled "oh my powershell" and hoped I would get lucky 
+with finding some nice batteries-included tools. 
+[I got lucky](https://ohmyposh.dev/docs/installation/).
 
+After looking through the options I saw a theme named `sorin` that looks like
+this:
 
-## Go
+![the sorin theme in action](https://cdn.christine.website/file/christine-static/blog/Screenshot+2021-03-03+231114.png)
 
-## Rust
+### Project-local Dependencies
+
+To get this I'd need to do everything in WSL and use Nix. VSCode even has some
+nice integration that makes this easy. I wish there was a more native option 
+though.
+
+## Things Windows Gets Really Right
+
+The big thing that Windows gets really right as a developer is backwards 
+compatibility. For better or worse I can install just about any program from 
+the last 30 years of released software targeting windows and it will Just Work.
+
+All of the games that I play natively target windows, and I don't have to hack 
+at Steam's linux setup to get things like Sonic Adventure 2 working. All of the
+VR stuff I want to do will Just Work. All of the games I download will Just 
+Work. I don't have to do the Proton rain dance. I don't have to play with GPU
+driver paths. I don't have to disable my compositor to get Factorio to launch.
+And most of all when I report a problem it's likely to actually be taken 
+seriously instead of moaned at because I run a distribution without `/usr/lib`.
+
+---
+
+Overall, I think I can at least tolerate this development experience. It's not 
+really the most ideal setup, but it does work and I can get things done with it.
+It makes me miss NixOS though. NixOS really does ruin your expectations of what 
+a desktop operating system should be. It leaves you with kind of impossible
+standards, and it can be a bit hard to unlearn them.
+
+A lot of the software I use is closed source proprietary software. I've tried to
+fight that battle before. I've given up. When it works, Linux on the desktop is 
+a fantastic experience. Everything works together there. The system is a lot 
+more cohesive compared to the "download random programs and hope for the best"
+strategy that you end up taking with Windows systems. It's hard to do the 
+"download random programs and hope for the best" strategy with Linux on the 
+desktop because there really isn't one Linux platform to target. There's 20 or
+something. This is an advantage sometimes, but is a huge pain other times.
+
+The conclusion here is that there is no conclusion.
