@@ -35,10 +35,10 @@ I am a tortured soul that literally thinks in terms of Vim motions. This allows
 me to be mostly keyboard-only when I am deep into hacking at things, which
 really helps maintain flow state because I do not need to move my hands or look
 at anything but the input line right in front of me. Additionally, I have gotten
-_very_ used to my emacs setup, and specifically the subtle minutae of how it
+_very_ used to my Emacs setup, and specifically the subtle minutae of how it
 handles its Vim emulation mode and all of the quirks involved.
 
-I have tried to use my emacs config on Windows (and barring the things that are
+I have tried to use my Emacs config on Windows (and barring the things that are
 obviously impossible such as getting Nix to work with Windows) and have
 concluded that it is a fantastic waste of my time to do this. There are just too
 many things that have to be changed from my Linux/macOS config. That's okay, I
@@ -52,28 +52,17 @@ So let's try opening VSCode and activating the Vim plugin
 [vscodevim](https://marketplace.visualstudio.com/items?itemName=vscodevim.vim).
 I get that installed (and the gruvbox theme because I absolutely love the
 Gruvbox aesthetics) and then open VSCode in a new folder. I can `:open` a new
-file and then type something in it:
+file and then type something in it. Then I want to open another file split to 
+the left with `:vsplit`, so I press escape and type in `:vsplit bar.txt`.
+Then I get a vsplit of the current buffer, not the new file that I actually
+wanted. Now, this is probably a very niche thing that I am used to (even though 
+it works fine on vanilla vim and with evil-mode), and other people I have asked 
+about this apparently do not open new files like that (and one was surprised to 
+find out that worked at all); but this is a pretty heavily ingrained into my 
+muscle memory thing and it is frustrating. I have to retrain my decade old 
+buffer management muscle memory.
 
-TODO(Xe): get screenshot of this
-
-Then I want to open another file split to the left with `:vsplit`, so I press
-escape and type in `:vsplit bar.txt`:
-
-TODO(Xe): get screenshot of this
-
-And I get a vsplit of the current buffer, not the new file that I actually
-wanted:
-
-TODO(Xe): get screenshot of this
-
-Now, this is probably a very niche thing that I am used to (even though it works
-fine on vanilla vim and with evil-mode), and other people I have asked about
-this apparently do not open new files like that (and one was surprised to find
-out that worked at all); but this is a pretty heavily ingrained into my muscle
-memory thing and it is frustrating. I have to retrain my decade old buffer
-management muscle memory.
-
-### Whichwrap
+#### Whichwrap
 
 Vim has a feature called whichwrap that lets you use the arrow keys at the
 end/beginning of lines to go to the beginning/end of the next/previous line. I
@@ -95,7 +84,7 @@ following to it:
 
 Annoying, but setting this made it work like I expected.
 
-### Kill Register != Clipboard
+#### Kill Register != Clipboard
 
 Vim has the concept of registers, which are basically named/unnamed places that
 can be used like the clipboard in most desktop environments. In my Emacs config,
