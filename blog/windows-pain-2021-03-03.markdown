@@ -213,6 +213,8 @@ just works. Neat.
 
 I should probably figure out how hard it would be to get a NixOS-like
 environment in WSL, but WSL can't run systemd so I've been kinda avoiding it.
+Excising systemd from NixOS really defeats most of the point in my book. I may
+end up installing Nix on Alpine or something. IDK.
 
 ### Powershell
 
@@ -222,9 +224,19 @@ directory and download files from the internet. In Powershell these are
 `Get-ChildItem`, `Set-Location` and `Invoke-WebRequest`. However there are
 aliases for `ls`, `dir`, `cd` and `wget`. 
 
-However they are not flag-compatible, so if you try to do `wget -O example.json
+But they are not flag-compatible, so if you try to do `wget -O example.json
 https://xn--u7hz981o.ws/test.json` you don't actually get the file written to
-`example.json`.
+`example.json`. You get this:
+
+TODO(Xe): example here
+
+I get that adding flag compatibility would be a huge pain and really be out of
+scope, but it would really be nice if some minimal effort was made to shim it
+out.
+
+### Themes
+
+
 
 ## Go
 
