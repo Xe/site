@@ -207,6 +207,8 @@ async fn main() -> Result<()> {
         .with(warp::log(APPLICATION_NAME))
         .recover(handlers::rejection);
 
+        #[cfg(linux)]
+        {
     match sdnotify::SdNotify::from_env() {
         Ok(ref mut n) => {
             // shitty heuristic for detecting if we're running in prod
@@ -227,7 +229,7 @@ async fn main() -> Result<()> {
                 })?;
         }
         Err(why) => error!("not running under systemd with Type=notify: {}", why),
-    }
+    }}
 
     warp::serve(site)
         .run((
