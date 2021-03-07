@@ -45,7 +45,7 @@ mi = { path = "./lib/mi" }
 patreon = { path = "./lib/patreon" }
 
 # os-specific dependencies
-[target.'cfg(linux)'.dependencies]
+[target.'cfg(target_os = "linux")'.dependencies]
 sdnotify = { version = "0.1", default-features = false }
 
 [build-dependencies]
