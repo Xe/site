@@ -72,11 +72,9 @@ It is going to be tempting to just sweep this under the rug and ignore it becaus
 
 Here is a good announcement template to use for this:
 
-```
-Hello everyone,
-
-Recently it has come to our attention that a user was accused of engaging with a minor in a sexual manner. We have done an investigation and taken action in order to protect our community. If you are a minor and recieve any contact from anyone in a sexual manner, please contact a moderator so we can help resolve the situation.
-```
+> Hello everyone,
+> 
+> Recently it has come to our attention that a user was accused of engaging with a minor in a sexual manner. We have done an investigation and taken action in order to protect our community. If you are a minor and recieve any contact from anyone in a sexual manner, please contact a moderator so we can help resolve the situation.
 
 Depending on the individual community in question, you may want to include the name of the person who was accused. Personally I lean towards the "let the scrollback claim this one" approach. Having this announcement is good enough as is.
 
