@@ -1,3 +1,4 @@
+use super::LAST_MODIFIED;
 use crate::{app::State, templates};
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
@@ -6,7 +7,7 @@ use tracing::instrument;
 use warp::{http::Response, Rejection, Reply};
 
 lazy_static! {
-    static ref HIT_COUNTER: IntCounterVec = register_int_counter_vec!(
+    pub static ref HIT_COUNTER: IntCounterVec = register_int_counter_vec!(
         opts!("feed_hits", "Number of hits to various feeds"),
         &["kind"]
     )
@@ -56,6 +57,7 @@ pub async fn atom(state: Arc<State>, since: Option<String>) -> Result<impl Reply
         .status(200)
         .header("Content-Type", "application/atom+xml")
         .header("ETag", ETAG.clone())
+        .header("Last-Modified", &*LAST_MODIFIED)
         .body(buf)
         .map_err(RenderError::Build)
         .map_err(warp::reject::custom)
@@ -88,6 +90,7 @@ pub async fn rss(state: Arc<State>, since: Option<String>) -> Result<impl Reply,
         .status(200)
         .header("Content-Type", "application/rss+xml")
         .header("ETag", ETAG.clone())
+        .header("Last-Modified", &*LAST_MODIFIED)
         .body(buf)
         .map_err(RenderError::Build)
         .map_err(warp::reject::custom)
@@ -100,6 +103,7 @@ pub async fn sitemap(state: Arc<State>) -> Result<impl Reply, Rejection> {
     Response::builder()
         .status(200)
         .header("Content-Type", "application/xml")
+        .header("Last-Modified", &*LAST_MODIFIED)
         .body(state.sitemap.clone())
         .map_err(RenderError::Build)
         .map_err(warp::reject::custom)
