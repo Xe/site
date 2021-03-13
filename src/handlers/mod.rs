@@ -2,6 +2,7 @@ use crate::{
     app::State,
     templates::{self, Html, RenderRucte},
 };
+use chrono::{Datelike, Timelike, Utc};
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::{convert::Infallible, fmt, sync::Arc};
@@ -15,31 +16,52 @@ lazy_static! {
     static ref HIT_COUNTER: IntCounterVec =
         register_int_counter_vec!(opts!("hits", "Number of hits to various pages"), &["page"])
             .unwrap();
+    pub static ref LAST_MODIFIED: String = {
+        let now = Utc::now();
+        format!(
+            "{dayname}, {day} {month} {year} {hour}:{minute}:{second} GMT",
+            dayname = now.weekday(),
+            day = now.day(),
+            month = now.month(),
+            year = now.year(),
+            hour = now.hour(),
+            minute = now.minute(),
+            second = now.second()
+        )
+    };
 }
 
 #[instrument]
 pub async fn index() -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["index"]).inc();
-    Response::builder().html(|o| templates::index_html(o))
+    Response::builder()
+        .header("Last-Modified", &*LAST_MODIFIED)
+        .html(|o| templates::index_html(o))
 }
 
 #[instrument]
 pub async fn contact() -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["contact"]).inc();
-    Response::builder().html(|o| templates::contact_html(o))
+    Response::builder()
+        .header("Last-Modified", &*LAST_MODIFIED)
+        .html(|o| templates::contact_html(o))
 }
 
 #[instrument]
 pub async fn feeds() -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["feeds"]).inc();
-    Response::builder().html(|o| templates::feeds_html(o))
+    Response::builder()
+        .header("Last-Modified", &*LAST_MODIFIED)
+        .html(|o| templates::feeds_html(o))
 }
 
 #[instrument(skip(state))]
 pub async fn resume(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["resume"]).inc();
     let state = state.clone();
-    Response::builder().html(|o| templates::resume_html(o, Html(state.resume.clone())))
+    Response::builder()
+        .header("Last-Modified", &*LAST_MODIFIED)
+        .html(|o| templates::resume_html(o, Html(state.resume.clone())))
 }
 
 #[instrument(skip(state))]
@@ -53,7 +75,9 @@ pub async fn patrons(state: Arc<State>) -> Result<impl Reply, Rejection> {
                 "Could not load patrons, let me know the API token expired again".to_string(),
             )
         }),
-        Some(patrons) => Response::builder().html(|o| templates::patrons_html(o, patrons.clone())),
+        Some(patrons) => Response::builder()
+            .header("Last-Modified", &*LAST_MODIFIED)
+            .html(|o| templates::patrons_html(o, patrons.clone())),
     }
 }
 
@@ -61,13 +85,17 @@ pub async fn patrons(state: Arc<State>) -> Result<impl Reply, Rejection> {
 pub async fn signalboost(state: Arc<State>) -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["signalboost"]).inc();
     let state = state.clone();
-    Response::builder().html(|o| templates::signalboost_html(o, state.signalboost.clone()))
+    Response::builder()
+        .header("Last-Modified", &*LAST_MODIFIED)
+        .html(|o| templates::signalboost_html(o, state.signalboost.clone()))
 }
 
 #[instrument]
 pub async fn not_found() -> Result<impl Reply, Rejection> {
     HIT_COUNTER.with_label_values(&["not_found"]).inc();
-    Response::builder().html(|o| templates::notfound_html(o, "some path".into()))
+    Response::builder()
+        .header("Last-Modified", &*LAST_MODIFIED)
+        .html(|o| templates::notfound_html(o, "some path".into()))
 }
 
 pub mod blog;
