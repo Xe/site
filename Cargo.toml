@@ -1,6 +1,6 @@
 [package]
 name = "xesite"
-version = "2.2.0"
+version = "2.2.1"
 authors = ["Christine Dodrill <me@christine.website>"]
 edition = "2018"
 build = "src/build.rs"
