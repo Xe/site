@@ -106,22 +106,6 @@ in  [ Person::{
       , gitLink = "https://github.com/nbraud"
       }
     , Person::{
-      , name = "Natthan Leong"
-      , tags =
-        [ "entry-level"
-        , "canada"
-        , "c"
-        , "java"
-        , "golang"
-        , "linux"
-        , "python"
-        , "shell"
-        , "sql"
-        ]
-      , gitLink = "https://github.com/ansimita"
-      , twitter = "https://twitter.com/ansimita"
-      }
-    , Person::{
       , name = "Prajjwal Singh"
       , tags =
         [ "full-stack javascript"
