@@ -4,6 +4,8 @@ extern crate tracing;
 use color_eyre::eyre::Result;
 use hyper::{header::CONTENT_TYPE, Body, Response};
 use prometheus::{Encoder, TextEncoder};
+use std::net::IpAddr;
+use std::str::FromStr;
 use std::sync::Arc;
 use warp::{path, Filter};
 
@@ -234,7 +236,8 @@ async fn main() -> Result<()> {
 
     warp::serve(site)
         .run((
-            [0, 0, 0, 0],
+            IpAddr::from_str(&std::env::var("HOST").unwrap_or("::".into()))
+                .expect("can't parse bindhost"),
             std::env::var("PORT")
                 .unwrap_or("3030".into())
                 .parse::<u16>()
