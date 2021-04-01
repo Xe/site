@@ -1,6 +1,6 @@
 [package]
 name = "xesite"
-version = "2.2.1"
+version = "2.3.0"
 authors = ["Christine Dodrill <me@christine.website>"]
 edition = "2018"
 build = "src/build.rs"
@@ -29,6 +29,7 @@ serde_yaml = "0.8"
 sitemap = "0.4"
 thiserror = "1"
 tokio = { version = "1", features = ["full"] }
+tokio-stream = { version = "0.1", features = ["net"] }
 tracing = "0.1"
 tracing-futures = "0.2"
 tracing-subscriber = { version = "0.2", features = ["fmt"] }
