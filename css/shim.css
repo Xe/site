@@ -28,3 +28,12 @@ img {
   min-width: 9rem;
   max-width: calc(((70rem - 2rem)/6));
 }
+
+.conversation-smol {
+    min-width: 6rem;
+    max-width: 6rem;
+}
+
+.conversation-chat {
+    align-self: center;
+}

@@ -1,12 +1,15 @@
-@(mood: &str, character: &str, message: Html<String>)
+@(mood: &str, character: &str, message: Html<String>, smol: bool)
 <div class="conversation">
-    <div class="conversation-picture">
+    <div class="conversation-picture @if smol { conversation-smol }">
         <picture>
             <source srcset="https://cdn.christine.website/file/christine-static/stickers/@character.to_lowercase()/@(mood).avif" type="image/avif">
             <source srcset="https://cdn.christine.website/file/christine-static/stickers/@character.to_lowercase()/@(mood).webp" type="image/webp">
             <img src="https://cdn.christine.website/file/christine-static/stickers/@character.to_lowercase()/@(mood).png" alt="@character is @mood">
         </picture>
     </div>
+    @if smol {
+    <div class="conversation-chat"><b>&lt;@character&gt;</b> @message</div>
+    } else {
     <div>
         <p>
             <b>@character</b>
@@ -15,4 +18,5 @@
             @message
         </blockquote>
     </div>
+    }
 </div>

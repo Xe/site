@@ -1,8 +1,8 @@
+use crate::templates::Html;
 use color_eyre::eyre::{Result, WrapErr};
 use comrak::nodes::{Ast, AstNode, NodeValue};
-use comrak::{format_html, parse_document, markdown_to_html, Arena, ComrakOptions};
+use comrak::{format_html, markdown_to_html, parse_document, Arena, ComrakOptions};
 use std::cell::RefCell;
-use crate::templates::Html;
 use url::Url;
 
 pub fn render(inp: &str) -> Result<String> {
@@ -29,6 +29,7 @@ pub fn render(inp: &str) -> Result<String> {
                 if u.scheme() != "conversation" {
                     return Ok(());
                 }
+                let smol = u.query().unwrap_or("").contains("smol");
                 let parent = node.parent().unwrap();
                 node.detach();
                 let mut message = vec![];
@@ -41,10 +42,11 @@ pub fn render(inp: &str) -> Result<String> {
                 let name = u.host_str().unwrap_or("Mara");
 
                 let mut html = vec![];
-                crate::templates::mara(&mut html, mood, name, Html(message))?;
+                crate::templates::mara(&mut html, mood, name, Html(message.trim().into()), smol)?;
 
-                let new_node =
-                    arena.alloc(AstNode::new(RefCell::new(Ast::new(NodeValue::HtmlInline(html)))));
+                let new_node = arena.alloc(AstNode::new(RefCell::new(Ast::new(
+                    NodeValue::HtmlInline(html),
+                ))));
                 parent.append(new_node);
 
                 Ok(())
