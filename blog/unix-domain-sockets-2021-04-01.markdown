@@ -359,7 +359,7 @@ systemd.services.nginx.serviceConfig = {
 
 [In NixOS, most of the time if the same option is declared in multiple
 places it will result in a build error. `lib.mkForce` disables this behaviour
-and instead "forcibly" sets this value.](convesation://Mara/hacker?smol)
+and instead "forcibly" sets this value.](conversation://Mara/hacker?smol)
 
 Now nginx has the same `/tmp` as the printerfacts service, everything will work
 as we expect. Users are none the wiser that I'm using a domain socket here. I
