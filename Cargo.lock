@@ -2526,7 +2526,7 @@ checksum = "d089681aa106a86fade1b0128fb5daf07d5867a509ab036d99988dec80429a57"
 
 [[package]]
 name = "xesite"
-version = "2.2.1"
+version = "2.3.0"
 dependencies = [
  "cfcache",
  "chrono",
@@ -2548,7 +2548,7 @@ dependencies = [
  "pfacts",
  "pretty_env_logger",
  "prometheus",
- "rand 0.8.3",
+ "rand 0.7.3",
  "reqwest",
  "ructe",
  "sdnotify",
@@ -2559,6 +2559,7 @@ dependencies = [
  "sitemap",
  "thiserror",
  "tokio",
+ "tokio-stream",
  "tracing",
  "tracing-futures",
  "tracing-subscriber",
