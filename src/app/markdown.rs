@@ -37,7 +37,9 @@ pub fn render(inp: &str) -> Result<String> {
                     format_html(child, &options, &mut message)?;
                 }
                 let message = std::str::from_utf8(&message)?;
-                let message = markdown_to_html(message, &options);
+                let mut message = markdown_to_html(message, &options);
+                crop_letters(&mut message, 3);
+                message.drain((message.len() - 5)..);
                 let mood = without_first(u.path());
                 let name = u.host_str().unwrap_or("Mara");
 
@@ -78,4 +80,15 @@ fn without_first(string: &str) -> &str {
         .nth(1)
         .and_then(|(i, _)| string.get(i..))
         .unwrap_or("")
+}
+
+fn crop_letters(s: &mut String, pos: usize) {
+    match s.char_indices().nth(pos) {
+        Some((pos, _)) => {
+            s.drain(..pos);
+        }
+        None => {
+            s.clear();
+        }
+    }
 }
