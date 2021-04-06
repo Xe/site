@@ -8,7 +8,7 @@ tags:
 
 # Prometheus and Aegis
 
-[*Last time on the christine dot website cinematic
+[*Last time in the christine dot website cinematic
 universe:*](https://christine.website/blog/unix-domain-sockets-2021-04-01) 
 
 *Unix sockets started to be used to grace the cluster. Things were at peace.
