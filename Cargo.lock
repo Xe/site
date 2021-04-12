@@ -347,9 +347,9 @@ dependencies = [
 
 [[package]]
 name = "dhall"
-version = "0.10.0"
+version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f0dc4d9d9848124c8c10f24e3696f86d5249d7d2dca8ca0556cff10f001d51e8"
+checksum = "5a7d7b648a24d2edd4ba9f31fe42c831080522d1cf35bca3522887ba0d802745"
 dependencies = [
  "abnf_to_pest",
  "annotate-snippets",
@@ -372,11 +372,10 @@ dependencies = [
 
 [[package]]
 name = "dhall_proc_macros"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bf6cff1e2ddd03851652e0cde982b01dc877c9fc9da9ba25ad4241a151945f09"
+checksum = "f64ba6f41d9b223e2e1d7c97a1145a1aa03e57d65e1c9c2baa29f194caf322c9"
 dependencies = [
- "itertools 0.9.0",
  "proc-macro2",
  "quote",
  "syn",
@@ -1790,9 +1789,9 @@ dependencies = [
 
 [[package]]
 name = "serde_dhall"
-version = "0.10.0"
+version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e01dfb806cc18b2cc347254781948862dba85e6fc2cf300b6cb321fa8fed9137"
+checksum = "1393976875f3080d8cd1ff54083129e2e6a30d7a62582b67c3eb5924789e8e75"
 dependencies = [
  "dhall",
  "dhall_proc_macros",
