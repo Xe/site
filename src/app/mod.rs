@@ -129,14 +129,14 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     urlwriter.end()?;
 
     Ok(State {
-        mi: mi,
-        cfg: cfg,
+        mi,
+        cfg,
         signalboost: sb,
-        resume: resume,
-        blog: blog,
-        gallery: gallery,
-        talks: talks,
-        everything: everything,
+        resume,
+        blog,
+        gallery,
+        talks,
+        everything,
         jf: jfb.build(),
         sitemap: sm,
         patrons: patrons().await?,
