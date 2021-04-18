@@ -12,9 +12,9 @@
         <ttl>1440</ttl>
         @for post in posts {
             <item>
-                <guid>https://christine.website/@post.link</guid>
+                <guid>@post.link</guid>
                 <title>@post.front_matter.title</title>
-                <link>https://christine.website/@post.link</link>
+                <link>@post.link</link>
                 <description><![CDATA[@Html(post.body_html)]]></description>
                 <pubDate>@post.date.to_rfc2822()</pubDate>
             </item>

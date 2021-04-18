@@ -20,8 +20,8 @@ impl Into<jsonfeed::Item> for Post {
         let mut result = jsonfeed::Item::builder()
             .title(self.front_matter.title)
             .content_html(self.body_html)
-            .id(format!("https://christine.website/{}", self.link))
-            .url(format!("https://christine.website/{}", self.link))
+            .id(self.link.clone())
+            .url(self.link)
             .date_published(self.date.to_rfc3339())
             .author(
                 jsonfeed::Author::new()
@@ -29,6 +29,10 @@ impl Into<jsonfeed::Item> for Post {
                     .url("https://christine.website")
                     .avatar("https://christine.website/static/img/avatar.png"),
             );
+
+        if let Some(url) = self.front_matter.redirect_to {
+            result = result.url(url);
+        }
 
         let mut tags: Vec<String> = vec![];
 
@@ -79,7 +83,16 @@ async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
     let body = &body[content_offset..];
     let date = NaiveDate::parse_from_str(&front_matter.clone().date, "%Y-%m-%d")
         .map_err(|why| eyre!("error parsing date in {:?}: {}", fname, why))?;
-    let link = format!("{}/{}", dir, fname.file_stem().unwrap().to_str().unwrap());
+
+    let link = match front_matter.redirect_to {
+        Some(ref url) => url.clone(),
+        None => format!(
+            "https://christine.website/{}/{}",
+            dir,
+            fname.file_stem().unwrap().to_str().unwrap()
+        ),
+    };
+
     let body_html = crate::app::markdown::render(&body)
         .wrap_err_with(|| format!("can't parse markdown for {:?}", fname))?;
     let date: DateTime<FixedOffset> =
