@@ -17,10 +17,10 @@
   <generator uri="@env!("CARGO_PKG_REPOSITORY")" version="@env!("CARGO_PKG_VERSION")">@env!("CARGO_PKG_NAME")</generator>
   @for post in posts {
     <entry>
-      <id>@post.link</id>
+      <id>https://christine.website/@post.link</id>
       <title>@post.front_matter.title</title>
       <published>@post.date.to_rfc3339()</published>
-      <link href="@post.link" rel="alternate"/>
+      <link href="https://christine.website/@post.link" rel="alternate"/>
     </entry>
   }
 </feed>
