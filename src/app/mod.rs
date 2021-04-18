@@ -123,7 +123,7 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     }
 
     for post in &everything {
-        urlwriter.url(format!("https://christine.website/{}", post.link))?;
+        urlwriter.url(post.link.clone())?;
     }
 
     urlwriter.end()?;
