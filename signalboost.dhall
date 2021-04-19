@@ -242,20 +242,4 @@ in  [ Person::{
         ]
       , gitLink = "https://github.com/BytewaveMLP"
       }
-    , Person::{
-      , name = "İlteriş Eroğlu"
-      , tags =
-        [ "linux"
-        , "javascript"
-        , "node.js"
-        , "bash"
-        , "nfc"
-        , "python"
-        , "devops"
-        , "networking"
-        , "bgp"
-        ]
-      , gitLink = "https://github.com/linuxgemini"
-      , twitter = "https://twitter.com/linuxgemini"
-      }
     ]
