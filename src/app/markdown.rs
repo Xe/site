@@ -29,7 +29,6 @@ pub fn render(inp: &str) -> Result<String> {
                 if u.scheme() != "conversation" {
                     return Ok(());
                 }
-                let smol = u.query().unwrap_or("").contains("smol");
                 let parent = node.parent().unwrap();
                 node.detach();
                 let mut message = vec![];
@@ -44,7 +43,7 @@ pub fn render(inp: &str) -> Result<String> {
                 let name = u.host_str().unwrap_or("Mara");
 
                 let mut html = vec![];
-                crate::templates::mara(&mut html, mood, name, Html(message.trim().into()), smol)?;
+                crate::templates::mara(&mut html, mood, name, Html(message.trim().into()))?;
 
                 let new_node = arena.alloc(AstNode::new(RefCell::new(Ast::new(
                     NodeValue::HtmlInline(html),
