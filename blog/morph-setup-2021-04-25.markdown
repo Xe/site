@@ -18,7 +18,7 @@ from scratch and explain each step in the way.
 
 ## `nixos-configs` Repo
 
-NixOS configs usually need a home. Let's make a home for this in a Git
+NixOS configs usually need a home. We can make a home for this in a Git
 repository named `nixos-configs`. You can make a nixos configs repo like this:
 
 ```console
@@ -36,7 +36,7 @@ professional.](conversation://Mara/hacker)
 From here you could associate it with a Git forge if you want, but that is an
 exercise left to the reader.
 
-Now that we have the nixos-configs repository, let's create a few folders that
+Now that we have the nixos-configs repository, create a few folders that
 will be used to help organize things:
 
 - `common` -> base system configuration and options
@@ -51,7 +51,7 @@ You can make them with a command like this:
 $ mkdir -p common/users hosts ops/home
 ```
 
-Now that we have the base layout, let's start with adding a few files into the
+Now that we have the base layout, start with adding a few files into the
 `common` folder:
 
 - `common/default.nix` -> the "parent" file that will import all of the other
@@ -226,8 +226,8 @@ network with a single host called `ryuko`. Put the following in
 }
 ```
 
-Now that we finally have all of this set up, let's write a little script that we
-can use to push this config to the server that will do the following:
+Now that we finally have all of this set up, we can write a little script that
+will push this config to the server by doing the following:
 
 - Build the NixOS configuration for `ryuko`
 - Push the NixOS configuration for `ryuko` to the virtual machine
@@ -269,13 +269,13 @@ $ cd ./ops/home
 $ chmod +x ./push
 ```
 
-And then let's try it out:
+And then try it out:
 
 ```console
 $ ./push
 ```
 
-And finally let's SSH into the machine to be sure that everything works:
+And finally SSH into the machine to be sure that everything works:
 
 ```console
 $ ssh mara@192.168.122.251 -- id
@@ -286,7 +286,7 @@ From here you can do just about anything you want with `ryuko`.
 
 If you want to add a non-VM NixOS host to this, make a folder in `hosts` for
 that machine's hostname and then copy the contents of `/etc/nixos` to that
-folder. For example let's say you have a server named `mako` with the IP address
+folder. For example if you have a server named `mako` with the IP address
 `192.168.122.147`. You would do something like this:
 
 ```console
