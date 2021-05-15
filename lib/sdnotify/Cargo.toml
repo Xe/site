@@ -1,0 +1,11 @@
+[package]
+name = "sdnotify"
+version = "0.1.3"
+authors = ["Alexander Polakov <plhk@sdf.org>", "Xe <me@christine.website>"]
+description = "Notify service manager about start-up completion and other daemon status changes"
+license = "MIT"
+homepage = "https://github.com/polachok/sdnotify"
+repository = "https://github.com/polachok/sdnotify"
+documentation = "https://docs.rs/sdnotify"
+edition = "2018"
+keywords = ["systemd"]

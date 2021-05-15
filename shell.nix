@@ -28,6 +28,7 @@ mkShell {
 
     # tools
     ispell
+    systemfd
   ];
 
   SITE_PREFIX = "devel.";

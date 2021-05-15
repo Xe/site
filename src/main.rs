@@ -4,8 +4,6 @@ extern crate tracing;
 use color_eyre::eyre::Result;
 use hyper::{header::CONTENT_TYPE, Body, Response};
 use prometheus::{Encoder, TextEncoder};
-use std::net::IpAddr;
-use std::str::FromStr;
 use std::sync::Arc;
 use tokio::net::UnixListener;
 use tokio_stream::wrappers::UnixListenerStream;
@@ -32,6 +30,16 @@ async fn main() -> Result<()> {
     let _ = kankyo::init();
     tracing_subscriber::fmt::init();
     info!("starting up commit {}", env!("GITHUB_SHA"));
+
+    #[cfg(all(feature = "systemd", target_os = "linux"))]
+    {
+        use std::process::Command;
+        let pid = Command::new("./src/bin/decoy.py").output()?.stdout;
+        let pid = String::from_utf8(pid)?.trim().parse::<u32>()?;
+        if let Ok(ref mut n) = sdnotify::SdNotify::from_env() {
+            n.set_main_pid(pid)?;
+        }
+    }
 
     let state = Arc::new(
         app::init(
@@ -211,8 +219,11 @@ async fn main() -> Result<()> {
         .with(warp::log(APPLICATION_NAME))
         .recover(handlers::rejection);
 
-    #[cfg(target_os = "linux")]
+    let server = warp::serve(site);
+
+    #[cfg(feature = "systemd")]
     {
+        #[cfg(target_os = "linux")]
         match sdnotify::SdNotify::from_env() {
             Ok(ref mut n) => {
                 // shitty heuristic for detecting if we're running in prod
@@ -234,30 +245,42 @@ async fn main() -> Result<()> {
             }
             Err(why) => error!("not running under systemd with Type=notify: {}", why),
         }
+
+        let mut lfd = listenfd::ListenFd::from_env();
+
+        if let Some(lis) = lfd.take_unix_listener(0)? {
+            let incoming = UnixListenerStream::new(UnixListener::from_std(lis)?);
+            server.run_incoming(incoming).await;
+        }
+        Ok(())
     }
 
-    let server = warp::serve(site);
+    #[cfg(not(feature = "systemd"))]
+    {
+        use std::net::IpAddr;
+        use std::str::FromStr;
 
-    match std::env::var("SOCKPATH") {
-        Ok(sockpath) => {
-            let _ = std::fs::remove_file(&sockpath);
-            let listener = UnixListener::bind(sockpath)?;
-            let incoming = UnixListenerStream::new(listener);
-            server.run_incoming(incoming).await;
+        match std::env::var("SOCKPATH") {
+            Ok(sockpath) => {
+                let _ = std::fs::remove_file(&sockpath);
+                let listener = UnixListener::bind(sockpath)?;
+                let incoming = UnixListenerStream::new(listener);
+                server.run_incoming(incoming).await;
 
-            Ok(())
-        }
-        Err(_) => {
-            server
-                .run((
-                    IpAddr::from_str(&std::env::var("HOST").unwrap_or("::".into()))?,
-                    std::env::var("PORT")
-                        .unwrap_or("3030".into())
-                        .parse::<u16>()?,
-                ))
-                .await;
+                Ok(())
+            }
+            Err(_) => {
+                server
+                    .run((
+                        IpAddr::from_str(&std::env::var("HOST").unwrap_or("::".into()))?,
+                        std::env::var("PORT")
+                            .unwrap_or("3030".into())
+                            .parse::<u16>()?,
+                    ))
+                    .await;
 
-            Ok(())
+                Ok(())
+            }
         }
     }
 }

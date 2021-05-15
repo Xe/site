@@ -45,9 +45,13 @@ jsonfeed = { path = "./lib/jsonfeed" }
 mi = { path = "./lib/mi" }
 patreon = { path = "./lib/patreon" }
 
+[dependencies.listenfd]
+version = "0.3"
+optional = true
+
 # os-specific dependencies
 [target.'cfg(target_os = "linux")'.dependencies]
-sdnotify = { version = "0.1", default-features = false }
+sdnotify = { path = "./lib/sdnotify", optional = true }
 
 [build-dependencies]
 ructe = { version = "0.13", features = ["warp02"] }
@@ -62,3 +66,6 @@ pretty_env_logger = "0"
 members = [
   "./lib/*",
 ]
+
+[features]
+systemd = ["sdnotify", "listenfd"]
