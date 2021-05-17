@@ -185,12 +185,12 @@ system administrators of systemd systems also get the following benefits:
 
 - systemctl status and a lot of other parts of systemctl let you see what the
   system or an individual service is doing without having to wonder if it's
-  actually working or not. In general the lazy the lazy thing is the thing that
+  actually working or not. In general the lazy thing is the thing that
   you want to optimize for because people are distracted. There is a lot going
   on sometimes and if you optimize it so that the easiest thing to do is the
   correct thing then it is a lot easier to deal with when you have a distracted
   operator. systemd is set up so that it's hard to do the wrong thing. It is
-  hard to have logs go anywhere about the system journal. It is hard to write a
+  hard to have logs go anywhere but the system journal. It is hard to write a
   unit that doesn't tell you if the service is actually running or not. And it
   makes it so that the path of least resistance will do most of what you want. 
 - Sometimes system administrators have opinions that are different than the
@@ -210,7 +210,7 @@ system administrators of systemd systems also get the following benefits:
   job actually ran and if it errored or if it did exactly what you wanted. If I
   recall there was actually an entire small startup that was formed around just
   alerting for cron jobs that were not doing what they should be doing. systemd
-  changes this systemd because all of the logs are in the journal. If you set up
+  changes this because all of the logs are in the journal. If you set up
   a systemd timer (which is the systemd land equivalent to a cron job) all of
   the output for the service associated with that timer gets put into the
   journal and you can see exactly what went wrong so you can go off and fix it.
