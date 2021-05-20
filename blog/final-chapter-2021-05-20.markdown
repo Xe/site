@@ -68,18 +68,18 @@ NickServ: Account Xe has 5 other nick(s) grouped to it, remove those first.
 
 I joined Freenode initially in order to get help with Ubuntu in high school.
 
-> [22:41] <shadowh511> hello, i need some help configuring wine 0.9.50 to run
+> (shadowh511) hello, i need some help configuring wine 0.9.50 to run
 > microsoft digital image suite 10, i try to run the setup app, an i get two
 > looping messages about MDAC, and on how the system needs to reboot before it
 > can install, but the messages loop, how can i fix this?
 
-> [22:42] <FluxD> !wine | shadowh511
+> (Fluxd) !wine | shadowh511
 
-> [22:42] <ubotu> shadowh511: WINE is a compatibility layer for running Windows
+> (ubotu) shadowh511: WINE is a compatibility layer for running Windows
 > programs on GNU/Linux. See https://help.ubuntu.com/community/Wine for more
 > information, and see !AppDB for application compatibility.
 
-> [22:43] <shadowh511> they won't help me there
+> (shadowh511) they won't help me there
 
 I eventually figured it out. I think I just did it on Windows.
 
