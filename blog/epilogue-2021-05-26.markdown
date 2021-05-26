@@ -1,5 +1,5 @@
 ---
-name: Epilogue
+title: Epilogue
 date: 2021-05-26
 tags:
  - freenode
