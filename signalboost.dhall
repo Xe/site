@@ -12,24 +12,6 @@ in  [ Person::{
       , twitter = "https://twitter.com/aisstern"
       }
     , Person::{
-      , name = "Chase Pierce"
-      , tags =
-        [ "go"
-        , "full-stack"
-        , "node"
-        , "bash"
-        , "saas"
-        , "databases"
-        , "terraform"
-        , "docker"
-        , "hashistack"
-        , "kubernetes"
-        , "devops"
-        ]
-      , gitLink = "https://github.com/syntaqx"
-      , twitter = "https://twitter.com/syntaqx"
-      }
-    , Person::{
       , name = "Christian Sullivan"
       , tags =
         [ "go"
