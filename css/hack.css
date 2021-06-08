@@ -43,6 +43,9 @@ pre code {
   text-shadow: none;
   margin: 1.75rem 0;
 }
+iframe {
+  max-width: 100%;
+}
 a {
   cursor: pointer;
   color: #ff2e88;
