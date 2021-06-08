@@ -60,8 +60,8 @@ however I wasn't sure if the noise reduction would really be enough to make up
 for the cost.
 
 Then there's the power cost. Electricity in Ontario is expensive. Our home
-office also only has a 15 watt breaker. With our work laptops and gaming towers
-set up, the home printer was enough to push us over the line and flip the
+office also only has a 15 amp breaker, which gives us roughly 1800W to play with within that room. With our work laptops and gaming towers
+set up, the laser printer was enough to push us over the line and flip the
 breaker. A full rackmount server setup would never have worked. Electricity is
 covered by our rent payments, however I don't really want to use more power than
 I really have to.
