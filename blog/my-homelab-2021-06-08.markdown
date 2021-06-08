@@ -66,7 +66,7 @@ breaker. A full rackmount server setup would never have worked. Electricity is
 covered by our rent payments, however I don't really want to use more power than
 I really have to.
 
-After more research and bisecting a bnuch of options through
+After more research and bisecting a bunch of options through
 [PCPartpicker](https://ca.pcpartpicker.com), I ended up with a set of hardware
 that I am calling the Alrest. [Here](https://ca.pcpartpicker.com/list/8jC7bh)
 are its specs on PCPartpicker. It is designed to balance these factors as much
@@ -119,7 +119,7 @@ protagonists in Xenosaga and Logos (speech, reason), Ontos (one who is, being)
 and Pneuma (breath, spirit) were the three cores of the Trinity Processor in
 Xenoblade Chronicles 2. The avatar you see in YouTube videos and VRChat
 resembles the in-game model for Pneuma. Alrest is another Xenoblade reference,
-but that is an excersize for the reader.](conversation://Mara/hacker)
+but that is an exercise for the reader.](conversation://Mara/hacker)
 
 Building them was fairly straightforward. The process of building a PC has
 gotten really streamlined over the years and it really helped that I basically
