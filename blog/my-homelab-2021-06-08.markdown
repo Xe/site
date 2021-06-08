@@ -113,12 +113,13 @@ href="https://twitter.com/theprincessxena/status/1400592778309115905?ref_src=tws
 src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></center>
 
 [The nodes in the cluster are named after gods/supercomputers from Xenosaga and
-Xenoblade Chronicles. KOS-MOS was one of the protagonists in Xenosaga and Logos
-(speech, reason), Ontos (one who is, being) and Pneuma (breath, spirit) were the
-three cores of the Trinity Processor in Xenoblade Chronicles 2. The avatar you
-see in YouTube videos and VRChat resembles the in-game model for
-Pneuma. Alrest is another Xenoblade reference, but that is an excersize for the
-reader.](conversation://Mara/hacker)
+Xenoblade Chronicles. KOS-MOS (a badass robot waifu with a laser sword and also
+the reincarnation of a biblical figure, Xenosaga is wild) was one of the
+protagonists in Xenosaga and Logos (speech, reason), Ontos (one who is, being)
+and Pneuma (breath, spirit) were the three cores of the Trinity Processor in
+Xenoblade Chronicles 2. The avatar you see in YouTube videos and VRChat
+resembles the in-game model for Pneuma. Alrest is another Xenoblade reference,
+but that is an excersize for the reader.](conversation://Mara/hacker)
 
 Building them was fairly straightforward. The process of building a PC has
 gotten really streamlined over the years and it really helped that I basically
