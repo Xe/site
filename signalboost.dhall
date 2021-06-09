@@ -242,4 +242,17 @@ in  [ Person::{
         ]
       , gitLink = "https://github.com/BytewaveMLP"
       }
+    , Person:: {
+      , name = "Tommy Nguyen"
+      , tags =
+        [ "c++"
+        , "linux"
+        , "cybersecurity"
+        , "privacy"
+        , "technical-writing"
+        , "web"
+        , "google-cloud-platform"
+        ]
+      , gitLink = "https://github.com/remyabel"
+      }
     ]
