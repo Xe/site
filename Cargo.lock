@@ -1730,9 +1730,9 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 
 [[package]]
 name = "sdnotify"
-version = "0.1.3"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71ce7eac2075a4562fbcbad544cd55d72ebc760e0a5594a7c8829cf2b4b42a7a"
+checksum = "1ad78c5d206dedabda370ab0b669c40623a446699ed4604829d0c600420c8d7c"
 
 [[package]]
 name = "security-framework"
