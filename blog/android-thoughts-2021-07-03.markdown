@@ -1,5 +1,5 @@
 ---
-date: 2021-07-04
+date: 2021-07-03
 title: My Thoughts About Using Android Again as an iPhone User
 tags:
  - android
