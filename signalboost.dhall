@@ -241,7 +241,7 @@ in  [ Person::{
         , "php"
         ]
       , gitLink = "https://github.com/BytewaveMLP"
-      },
+      }
       , Person::{
       , name = "Avi Parshan"
       , tags =
