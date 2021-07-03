@@ -242,7 +242,7 @@ in  [ Person::{
         ]
       , gitLink = "https://github.com/BytewaveMLP"
       }
-      , Person::{
+    , Person::{
       , name = "Avi Parshan"
       , tags =
         [ "python"
@@ -255,5 +255,18 @@ in  [ Person::{
         ]
       , gitLink = "https://github.com/avipars"
       , twitter = "https://twitter.com/aviinfinity"
+
+    , Person:: {
+      , name = "Tommy Nguyen"
+      , tags =
+        [ "c++"
+        , "linux"
+        , "cybersecurity"
+        , "privacy"
+        , "technical-writing"
+        , "web"
+        , "google-cloud-platform"
+        ]
+      , gitLink = "https://github.com/remyabel"
       }
     ]

@@ -2,8 +2,8 @@
 title: Final Chapter
 date: 2021-05-20
 tags:
- - freenode
  - irc
+series: freenode
 ---
 
 # Final Chapter
