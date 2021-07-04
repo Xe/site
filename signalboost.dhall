@@ -255,6 +255,7 @@ in  [ Person::{
         ]
       , gitLink = "https://github.com/avipars"
       , twitter = "https://twitter.com/aviinfinity"
+      }
     , Person:: {
       , name = "Tommy Nguyen"
       , tags =
