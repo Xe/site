@@ -44,6 +44,9 @@ async fn main() -> Result<()> {
     );
 
     let healthcheck = warp::get().and(warp::path(".within").and(warp::path("health")).map(|| "OK"));
+    let new_post = warp::path!(".within" / "website.within.xesite" / "new_post")
+        .and(with_state(state.clone()))
+        .and_then(handlers::feeds::new_post);
 
     let base = warp::path!("blog" / ..);
     let blog_index = base
@@ -164,7 +167,7 @@ async fn main() -> Result<()> {
         .or(patrons)
         .or(jsonfeed.or(atom.or(sitemap)).or(rss))
         .or(favicon.or(robots).or(sw))
-        .or(contact)
+        .or(contact.or(new_post))
         .map(|reply| {
             warp::reply::with_header(
                 reply,

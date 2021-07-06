@@ -1,5 +1,5 @@
 use super::LAST_MODIFIED;
-use crate::{app::State, templates};
+use crate::{app::State, post::Post, templates};
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::{io, sync::Arc};
@@ -20,6 +20,14 @@ pub async fn jsonfeed(state: Arc<State>, since: Option<String>) -> Result<impl R
     HIT_COUNTER.with_label_values(&["json"]).inc();
     let state = state.clone();
     Ok(warp::reply::json(&state.jf))
+}
+
+#[instrument(skip(state))]
+pub async fn new_post(state: Arc<State>) -> Result<impl Reply, Rejection> {
+    let state = state.clone();
+    let everything = state.everything.clone();
+    let p: &Post = everything.iter().next().unwrap();
+    Ok(warp::reply::json(&p.new_post))
 }
 
 #[derive(Debug)]

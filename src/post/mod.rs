@@ -1,6 +1,7 @@
 use chrono::prelude::*;
 use color_eyre::eyre::{eyre, Result, WrapErr};
 use glob::glob;
+use serde::Serialize;
 use std::{cmp::Ordering, path::PathBuf};
 use tokio::fs;
 
@@ -13,6 +14,15 @@ pub struct Post {
     pub body_html: String,
     pub date: DateTime<FixedOffset>,
     pub mentions: Vec<mi::WebMention>,
+    pub new_post: NewPost,
+}
+
+/// Used with the Android app to show information in a widget.
+#[derive(Eq, PartialEq, Debug, Clone, Serialize)]
+pub struct NewPost {
+    pub title: String,
+    pub summary: String,
+    pub link: String,
 }
 
 impl Into<jsonfeed::Item> for Post {
@@ -70,6 +80,33 @@ impl Post {
     }
 }
 
+fn trim(string: &str) -> String {
+    let mut buf = String::new();
+    let mut capturing = false;
+
+    for line in string.lines() {
+        if line.starts_with("#") {
+            continue;
+        }
+
+        if line == "" {
+            if capturing && buf.len() > 260 {
+                break;
+            } else {
+                capturing = true;
+                continue;
+            }
+        }
+
+        if capturing {
+            buf.push_str(" ");
+            buf.push_str(line);
+        }
+    }
+
+    buf
+}
+
 async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
     let body = fs::read_to_string(fname.clone())
         .await
@@ -96,12 +133,19 @@ async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
         Err(_) => vec![],
     };
 
+    let new_post = NewPost {
+        title: front_matter.title.clone(),
+        summary: trim(body).to_string(),
+        link: format!("https://christine.website/{}", link),
+    };
+
     Ok(Post {
         front_matter,
         link,
         body_html,
         date,
         mentions,
+        new_post,
     })
 }
 
