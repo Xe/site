@@ -15,6 +15,7 @@ pub struct Post {
     pub date: DateTime<FixedOffset>,
     pub mentions: Vec<mi::WebMention>,
     pub new_post: NewPost,
+    pub read_time_estimate_minutes: u64,
 }
 
 /// Used with the Android app to show information in a widget.
@@ -80,33 +81,6 @@ impl Post {
     }
 }
 
-fn trim(string: &str) -> String {
-    let mut buf = String::new();
-    let mut capturing = false;
-
-    for line in string.lines() {
-        if line.starts_with("#") {
-            continue;
-        }
-
-        if line == "" {
-            if capturing && buf.len() > 260 {
-                break;
-            } else {
-                capturing = true;
-                continue;
-            }
-        }
-
-        if capturing {
-            buf.push_str(" ");
-            buf.push_str(line);
-        }
-    }
-
-    buf
-}
-
 async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
     let body = fs::read_to_string(fname.clone())
         .await
@@ -133,9 +107,17 @@ async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
         Err(_) => vec![],
     };
 
+    let time_taken = estimated_read_time::text(
+        &body,
+        &estimated_read_time::Options::new()
+            .build()
+            .unwrap_or_default(),
+    );
+    let read_time_estimate_minutes = time_taken.seconds() / 60;
+
     let new_post = NewPost {
         title: front_matter.title.clone(),
-        summary: trim(body).to_string(),
+        summary: format!("{} minute read", read_time_estimate_minutes),
         link: format!("https://christine.website/{}", link),
     };
 
@@ -146,6 +128,7 @@ async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
         date,
         mentions,
         new_post,
+        read_time_estimate_minutes,
     })
 }
 

@@ -142,6 +142,8 @@ async fn main() -> Result<()> {
     let sitemap = warp::path("sitemap.xml")
         .and(with_state(state.clone()))
         .and_then(handlers::feeds::sitemap);
+    let asset_links = warp::path!(".well-known" / "assetlinks.json")
+        .and(warp::fs::file("./static/assetlinks.json"));
 
     let go_vanity_jsonfeed = warp::path("jsonfeed")
         .and(warp::any().map(move || "christine.website/jsonfeed"))
@@ -162,7 +164,7 @@ async fn main() -> Result<()> {
     });
 
     let static_pages = index
-        .or(feeds)
+        .or(feeds.or(asset_links))
         .or(resume.or(signalboost))
         .or(patrons)
         .or(jsonfeed.or(atom.or(sitemap)).or(rss))
