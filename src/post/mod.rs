@@ -103,13 +103,20 @@ async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
             .mentioners(format!("https://christine.website/{}", link))
             .await
             .map_err(|why| tracing::error!("error: can't load mentions for {}: {}", link, why))
-            .unwrap_or(vec![]),
+            .unwrap_or(vec![])
+            .into_iter()
+            .filter(|wm| {
+                wm.title.as_ref().unwrap_or(&"".to_string()) != &"Bridgy Response".to_string()
+            })
+            .collect(),
         Err(_) => vec![],
     };
 
     let time_taken = estimated_read_time::text(
         &body,
         &estimated_read_time::Options::new()
+            .technical_document(true)
+            .technical_difficulty(1)
             .build()
             .unwrap_or_default(),
     );
