@@ -7,8 +7,6 @@ tags:
  - philosophy
 ---
 
-# How HTTP Requests Work
-
 Reading this webpage is possible because of millions of hours of effort with
 tens of thousands of actors across thousands of companies. At some level it's a
 minor miracle that this all works at all. Here's a preview into the madness that

@@ -4,8 +4,6 @@ date: 2019-07-24
 series: magick
 ---
 
-# Tarot for Hackers
-
 "Oh no, she's finally lost it" were the words a very close friend of mine said 
 when I first told her I was experimenting with reading tarot cards. Tarot cards
 are a stereotypical staple of the occult/The Spoop™. Every card represents an 

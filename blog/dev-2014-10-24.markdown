@@ -5,9 +5,6 @@ tags:
  - release
 ---
 
-Instant Development Environments in Docker
-==========================================
-
 I have been using a few shell scripts for turbocharging development
 using Docker and today I have released the first version of a simple
 tool I call "[dev](https://github.com/Xe/dev)". Usage is very very simple.

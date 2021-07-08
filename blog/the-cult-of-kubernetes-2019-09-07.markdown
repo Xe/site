@@ -8,8 +8,6 @@ tags:
  - githubactions
 ---
 
-# The Cult of Kubernetes
-
 or: How I got my blog onto it with autodeployment via GitHub Actions.
 
 The world was once a simple place. Things used to make sense, or at least there

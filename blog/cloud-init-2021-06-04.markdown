@@ -3,8 +3,6 @@ title: My Magical Adventure With cloud-init
 date: 2021-06-04
 ---
 
-# My Magical Adventure With cloud-init
-
 > "If I had a world of my own, everything would be nonsense. Nothing would be
 > what it is, because everything would be what it isn't. And contrary wise, what
 > is, it wouldn't be. And what it wouldn't be, it would. You see?"

@@ -3,8 +3,6 @@ title: "IRCv3.2 `webirc` Extension"
 date: 2017-04-12
 ---
 
-# IRCv3.1 `webirc` Extension
-
 This document does not describe a new IRCv3 standard. It is designed to 
 document how the existing `WEBIRC` mechanism works so there is a specification 
 to test things against. This is known to be implemented by all major IRC 

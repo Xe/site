@@ -4,8 +4,6 @@ date: 2018-03-29
 series: howto
 ---
 
-# How to Automate Discord Message Posting With Webhooks and Cron
-
 Most Linux systems have [`cron`](https://en.wikipedia.org/wiki/Cron) installed to run programs at given intervals. An example usecase would be to install package updates every Monday at 9 am (keep the sysadmins awake!).
 
 Discord lets us post things using [webhooks](https://discordapp.com/developers/docs/resources/webhook). Combining this with cron lets us create automated message posting bots at arbitrary intervals.

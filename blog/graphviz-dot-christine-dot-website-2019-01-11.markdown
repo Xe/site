@@ -4,10 +4,9 @@ date: 2019-01-11
 thanks: https://github.com/dreampuf/GraphvizOnline
 ---
 
-# [graphviz.christine.website](https://graphviz.christine.website)
-
 I have been using an [online copy of GraphViz](https://github.com/dreampuf/GraphvizOnline)
 for a while to make my own diagrams online. I have forked this to [here](https://github.com/Xe/GraphvizOnline) and added basic [Progressive Web App](https://developers.google.com/web/progressive-web-apps/) support.
+Here is the [link](https://graphviz.christine.website).
 
 Here's an [example usage video](https://youtu.be/IUvbtK_nmtY).
 

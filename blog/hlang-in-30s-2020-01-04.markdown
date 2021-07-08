@@ -6,8 +6,6 @@ tags:
  - satire
 ---
 
-# hlang in 30 Seconds
-
 hlang (the h language) is a revolutionary new use of WebAssembly that enables
 single-paridigm programming without any pesky state or memory accessing. The
 simplest program you can use in hlang is the h world program:

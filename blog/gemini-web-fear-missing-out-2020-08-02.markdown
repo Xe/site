@@ -6,8 +6,6 @@ tags:
  - web
 ---
 
-# The Fear Of Missing Out
-
 Humans have evolved over thousands of years with communities that are small,
 tight-knit and where it is easy to feel like you know everyone in them. The
 Internet changes this completely. With the Internet, it's easy to send messages,

@@ -3,9 +3,6 @@ title: The Origin of h
 date: 2015-12-14
 ---
 
-The Origin of h
-===============
-
 NOTE: There is a [second part](https://christine.website/blog/formal-grammar-of-h-2019-05-19) to this article now with a formal grammar.
 
 For a while I have been pepetuating a small joke between my friends, co-workers and community members of various communities (whether or not this has been beneficial or harmful is out of the scope of this post). The whole "joke" is that someone says "h", another person says "h" back.

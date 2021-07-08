@@ -8,8 +8,6 @@ tags:
  - compiler
 ---
 
-# Minicompiler: Lexing
-
 I've always wanted to make my own compiler. Compilers are an integral part of
 my day to day job and I use the fruits of them constantly. A while ago while I
 was browsing through the TempleOS source code I found

@@ -5,8 +5,6 @@ tags:
  - rust
 ---
 
-# Site Update: Rewrite in Rust
-
 Hello there! You are reading this post thanks to a lot of effort, research and
 consultation that has resulted in a complete from-scratch rewrite of this
 website in [Rust](https://rust-lang.org). The original implementation in Go is

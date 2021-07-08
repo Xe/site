@@ -4,8 +4,6 @@ date: 2018-11-29
 series: conlangs
 ---
 
-# Blind Men and an Elephant
-
 or
 
 # le'i ka na viska kakne ku e le xanto

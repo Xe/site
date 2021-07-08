@@ -8,8 +8,6 @@ tags:
  - nixos
 ---
 
-# Super Bootable 64
-
 [Super Mario 64][sm64] was the launch title of the [Nintendo 64][n64] in 1996.
 This game revolutionized an entire generation and everything following it by
 delivering fast, smooth and fun 3d platforming gameplay to gamers all over the

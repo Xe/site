@@ -3,8 +3,6 @@ title: "IRCv3.2 CHGHOST Extension"
 date: "2013-10-04"
 ---
 
-# IRCv3.2 CHGHOST Extension
-
 The chghost client capability allows a server to directly inform clients about a
 host or user change without having to send a fake quit and join. This capability
 MUST be referred to as `chghost` at capability negotiation time.

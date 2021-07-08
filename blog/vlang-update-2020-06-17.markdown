@@ -34,7 +34,7 @@ days.
 
 Be well.
 
-# V Update - June 2020
+---
 
 Every so often I like to check in on the [V Programming Language][vlang]. It's been
 about six months since [my last post](https://christine.website/blog/v-vvork-in-progress-2020-01-03),

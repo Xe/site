@@ -7,8 +7,6 @@ tags:
  - lewa
 ---
 
-# ReConLangMo 4: Noun and Verb Morphology
-
 Last time on [ReConLangMo][reconlangmoseries] I covered word order and some of
 the finer points about how sentences work. This time we are covering how nouns
 and verbs get modified (some languages call this conjugation or declension).

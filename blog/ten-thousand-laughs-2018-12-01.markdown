@@ -4,8 +4,6 @@ date: "2018-12-01"
 series: conlangs
 ---
 
-# Ten Thousand Laughs
-
 ```
 pemci zo'e la xades  
 ni'o pano ki'o nu cmila  

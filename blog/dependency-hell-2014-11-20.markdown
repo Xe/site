@@ -3,9 +3,6 @@ title: Dependency Hell
 date: 2014-11-20
 ---
 
-Dependency Hell
-===============
-
 A lot of the problem that I have run into when doing development with
 nearly any stack I have used is dependency management. This relatively
 simple-looking problem just becomes such an evil, evil thing to tackle.

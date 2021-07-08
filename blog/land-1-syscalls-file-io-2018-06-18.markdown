@@ -6,8 +6,6 @@ tags:
  - wasm
 ---
 
-# Land 1: Syscalls & File I/O
-
 [Webassembly][wasm] is a new technology aimed at being a vendor-independent virtual machine format. It has implementations by all major browser vendors. It looks like there's staying power in webassembly that could outlast staying power in other new technologies.
 
 So, time's perfect to snipe it with something useful that you can target compilers to today. Hence: [Land][land].

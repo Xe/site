@@ -3,9 +3,6 @@ title: The Universal Design
 date: 2015-10-17
 ---
 
-The Universal Design
-====================
-
 As I have been digging through existing code, systems and the like I have been wondering what the next big direction I should go in is. How to design things such that the mistakes of the past are avoided, but you can benefit from them and learn better how to avoid them. I have come to a very simple conclusion, monoliths are too fragile.
 
 ## Deconstructing Monoliths

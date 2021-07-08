@@ -6,7 +6,5 @@ tags:
 redirect_to: https://tailscale.com/blog/social-proximity-networks/
 ---
 
-# Philosophy of Tailscale: Social proximity networks
-
 Check out this post [on the Tailscale
 blog](https://tailscale.com/blog/social-proximity-networks/)!

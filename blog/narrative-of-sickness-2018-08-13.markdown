@@ -5,8 +5,6 @@ for: awakening
 series: magick
 ---
 
-# Narrative of Sickness
-
 With addiction, as with many other things, there's a tendency for the mind to label the situation and create a big story. A common phrase I see is "I want to get better", as if you're sick. You're not sick. You may identify yourself as an "addict", or you might feel fear because you are afraid you'll fail, or that you'll experience cravings, etc. but reminding yourself that you need to get better is perpetuating the narrative of sickness.
 
 These are all stories, they have no bearing on reality. You can just embrace the cravings. Embrace the withdrawal. They are feelings, and they can be not acted upon, through mindfulness of them. Be mindful of your thoughts, but don't pay heed to them. Don't get caught up. And if you feel like your are getting caught up, realize that that's another feeling as well.

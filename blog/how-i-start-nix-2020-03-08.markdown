@@ -7,8 +7,6 @@ tags:
  - rust
 ---
 
-# How I Start: Nix
-
 [Nix][nix] is a tool that helps people create reproducible builds. This means that
 given a known input, you can get the same output on other machines. Let's build 
 and deploy a small Rust service with Nix. This will not require the Rust compiler 

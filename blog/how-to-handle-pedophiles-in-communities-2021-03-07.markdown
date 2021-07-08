@@ -12,8 +12,6 @@ This post is going to talk about people that try to target children for sexual f
 
 It is my hope that this post is NOT useful to readers. If it ever becomes useful I suggest crying a bit. Yes, seriously.
 
-# How to Handle Pedophiles in Communities
-
 For better or worse since Covid started pushing everyone indoors and online, a lot of online spaces that were usually populated by adults have become populated with a lot more people that are under the age of consent/majority. This is obviously not the most ideal, as it ends up making that community a target for pedophiles. I want to be clear though, this kind of thing is a black swan kind of event, not something that happens commonly. However when it does happen, oh god it **HAPPENS**.
 
 For the rest of this article I'm going to assume a few things in how I direct my advice:

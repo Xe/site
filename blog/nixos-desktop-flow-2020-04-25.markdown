@@ -4,8 +4,6 @@ date: 2020-04-25
 series: howto
 ---
 
-# My NixOS Desktop Flow
-
 Before I built my current desktop, I had been using a [2013 Mac Pro][macpro2013]
 for at least 7 years. This machine has seen me through living in a few cities
 (Bellevue, Mountain View and Montreal), but it was starting to show its age. Its

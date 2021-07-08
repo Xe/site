@@ -8,8 +8,6 @@ tags:
  - wasmer
 ---
 
-# Trisiel Progress: Rewritten in Rust
-
 It's been a while since I had the [last update for
 Trisiel](/blog/wasmcloud-progress-2019-12-08). In that time I have gotten a
 lot done. As the title mentions I have completely rewritten Trisiel's entire

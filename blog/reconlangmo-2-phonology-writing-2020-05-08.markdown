@@ -7,8 +7,6 @@ tags:
   - lewa
 ---
 
-# ReConLangMo 2: Phonology & Writing
-
 Continuing from [the last post][rclm1], one of the next steps in this process is
 to outline the phonology and basic phonotactics of L'ewa. A language's phonology
 is the set of sounds that are allowed to be in words. The phonotactics of a

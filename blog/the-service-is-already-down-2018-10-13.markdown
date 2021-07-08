@@ -4,8 +4,6 @@ date: 2018-10-13
 series: stories
 ---
 
-# The Service is Already Down
-
 The master said to their apprentice: "come, look and let's load production". The apprentice came over confusedly, as the dashboards above showed everything is fine.
 
 "What about it?"

@@ -6,7 +6,5 @@ tags:
 redirect_to: https://www.getrevue.co/profile/theprincessxena/issues/mara-s-ransack-of-castle-charon-313935
 ---
 
-# Mara's Ransack of Castle Charon
-
 Check out this post [on my
 newsletter](https://www.getrevue.co/profile/theprincessxena/issues/mara-s-ransack-of-castle-charon-313935)!

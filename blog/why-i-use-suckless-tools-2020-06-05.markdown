@@ -3,8 +3,6 @@ title: "Why I Use Suckless Tools"
 date: 2020-06-05
 ---
 
-# Why I Use Suckless Tools
-
 Software is complicated. Foundational building blocks of desktop environments
 tend to grow year over year until it's difficult to understand or maintain them.
 [Suckless][suckless] offers an alternative to this continuous cycle of bloat and

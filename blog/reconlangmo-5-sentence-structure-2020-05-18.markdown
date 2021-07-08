@@ -7,8 +7,6 @@ tags:
  - lewa
 ---
 
-# ReConLangMo 5: Sentence Structure
-
 The last post in [this series][reconlangmo] was more of a grammar dump with few
 concrete examples or much details about things (mostly because of a lack of
 vocabulary to make examples with). I'll fix this in the future, but for now

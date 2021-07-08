@@ -7,8 +7,6 @@ tags:
  - lewa
 ---
 
-# ReConLangMo 7: Discourse
-
 Previously on [ReConLangMo][reconlangmo], we covered a lot of new words for the
 lexicon of L'ewa. This helps to flesh out a lot of what can be said, but
 conversations themselves can be entirely different from formal sentences.

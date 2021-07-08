@@ -7,8 +7,6 @@ tags:
  - musingsfromwithin
 ---
 
-# Book Release: Musings from Within
-
 I am happy to announce that I have successfully created an eBook compilation of
 the best of the posts on this blog plus a bunch of writing I have never before
 made public, and the result is now available for purchase on

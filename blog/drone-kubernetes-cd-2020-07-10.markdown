@@ -9,8 +9,6 @@ tags:
  - gitea
 ---
 
-# Continuous Deployment to Kubernetes with Gitea and Drone
-
 Recently I put a complete rewrite of [the printerfacts
 server](https://printerfacts.cetacean.club) into service based on
 [warp](https://github.com/seanmonstar/warp). I have it set up to automatically

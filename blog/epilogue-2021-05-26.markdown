@@ -6,8 +6,6 @@ tags:
 series: freenode
 ---
 
-# Epilogue
-
 The last caretaker's absence rippled throughout the halls. The darkness was all
 that remained.
 

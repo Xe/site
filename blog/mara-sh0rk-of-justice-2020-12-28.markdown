@@ -7,8 +7,6 @@ tags:
  - indiedev
 ---
 
-# Mara: Sh0rk of Justice: Version 1.0.0 Released
-
 Over the long weekend I found out about a program called [GB Studio](https://www.gbstudio.dev).
 It's a simple drag-and-drop interface that you can use to make homebrew games for the
 [Nintendo Game Boy](https://en.wikipedia.org/wiki/Game_Boy). I was intrigued and I had

@@ -8,8 +8,6 @@ tags:
  - nix
 ---
 
-# How I Start: Rust
-
 [Rust][rustlang] is an exciting new programming language that makes it easy to
 make understandable and reliable software. It is made by Mozilla and is used by
 Amazon, Google, Microsoft and many other large companies.

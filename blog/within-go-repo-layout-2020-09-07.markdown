@@ -7,8 +7,6 @@ tags:
  - standards
 ---
 
-# The Within Go Repo Layout
-
 Go repository layout is a very different thing compared to other languages.
 There's a lot of conflicting opinions and little firm guidance to help steer
 people along a path to more maintainable code. This is a collection of

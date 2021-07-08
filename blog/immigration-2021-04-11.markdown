@@ -6,7 +6,5 @@ tags:
 redirect_to: https://www.getrevue.co/profile/theprincessxena/issues/immigration-313938
 ---
 
-# Immigration
-
 Check out this post [on my
 newsletter](https://www.getrevue.co/profile/theprincessxena/issues/immigration-313938)!

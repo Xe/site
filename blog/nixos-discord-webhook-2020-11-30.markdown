@@ -8,8 +8,6 @@ tags:
   - systemd
 ---
 
-# Discord Webhooks via NixOS and Systemd Timers
-
 Recently I needed to set up a Discord message on a cronjob as a part of
 moderating a guild I've been in for years. I've done this before using
 [cronjobs](/blog/howto-automate-discord-webhook-cron-2018-03-29), however this

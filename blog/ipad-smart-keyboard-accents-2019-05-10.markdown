@@ -4,8 +4,6 @@ date: 2019-05-10
 series: howto
 ---
 
-# iPad Smart Keyboard: French Accents/Ligatures
-
 The following is the results of both blind googling and brute forcing the keyboard space. If this is incomplete, please let me know so that can be fixed.
 
 | Accent/Ligature | How to type | Example  |

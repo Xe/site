@@ -8,8 +8,6 @@ tags:
  - kernel
 ---
 
-# How I Implemented /dev/printerfact in Rust
-
 Kernel mode programming is a frightful endeavor. One of the big problems with it
 is that C is really your only option on Linux. C has many historical problems
 with it that can't really be fixed at this point without radically changing the

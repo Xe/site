@@ -6,9 +6,6 @@ tags:
  - atom
 ---
 
-RSS Feed Generation
-===================
-
 As of [a recent commit](https://github.com/Xe/site/commit/b89387f6bbb010907dfa85ee0c0bab0cf8b34dfb)
 to this site's code, it now generates RSS and Atom feeds for future posts on my
 blog.

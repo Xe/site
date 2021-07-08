@@ -7,8 +7,6 @@ tags:
  - devops
 ---
 
-# How to Set Up WeeChat on NixOS
-
 [Internet Relay Chat (IRC)](https://en.wikipedia.org/wiki/Internet_Relay_Chat)
 is the king of chats. It is the grandfather of nearly every chat protocol and
 program you use today. It has been a foundation of the internet for over 30

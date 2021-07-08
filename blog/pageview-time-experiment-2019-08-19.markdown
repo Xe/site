@@ -3,8 +3,6 @@ title: Pageview Time Experiment
 date: 2019-08-19
 ---
 
-# Pageview Time Experiment
-
 My blog has a lot of content in a lot of diverse categories. In order to help me
 decide which kind of content I should publish next, I have created a very
 simple method to track pageview time and enabled it for all of my blogposts. I'll

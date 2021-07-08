@@ -8,8 +8,6 @@ tags:
  - rust
 ---
 
-# waifud Plans
-
 So I have this [homelab](/blog/my-homelab-2021-06-08) now, and I want to run
 some virtual machines on it. But I don't want to have to SSH into each machine
 to do this and I have a lot of time to kill this summer. So I'm going to make a

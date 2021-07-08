@@ -9,8 +9,6 @@ tags:
  - rant
 ---
 
-# Development on Windows is Painful
-
 <big>SUBJECTIVITY WARNING</big>
 
 This post contains opinions. They may differ from the opinions you hold, and

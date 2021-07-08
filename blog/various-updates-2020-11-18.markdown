@@ -8,8 +8,6 @@ tags:
  - nixos
 ---
 
-# Various Updates
-
 Immigration purgatory is an experience. It's got a lot of waiting and there is a
 lot of uncertainty that can make it feel stressful. Like I said
 [before](/blog/new-adventures-2020-10-24), I'm not concerned; however I have a

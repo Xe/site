@@ -9,8 +9,6 @@ tags:
   - promtail
 ---
 
-# How to Setup Prometheus, Grafana and Loki on NixOS
-
 When setting up services on your home network, sometimes you have questions
 along the lines of "how do I know that things are working?". In this blogpost we
 will go over a few tools that you can use to monitor and visualize your machine

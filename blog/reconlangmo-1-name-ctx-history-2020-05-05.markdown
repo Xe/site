@@ -7,8 +7,6 @@ tags:
  - lewa
 ---
 
-# ReConLangMo 1: Name, Context, History
-
 I've been curious about how language works for a very long time. This curiosity
 has lead me down many fascinating rabbit holes, but for a long time I have
 either been cribbing off of other people's work or studying natural languages

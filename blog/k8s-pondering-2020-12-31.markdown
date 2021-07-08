@@ -10,8 +10,6 @@ tags:
  - vultr
 ---
 
-# Kubernetes Pondering
-
 Right now I am using a freight train to mail a letter when it comes to hosting
 my web applications. If you are reading this post on the day it comes out, then
 you are connected to one of a few replicas of my site code running across at

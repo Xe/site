@@ -9,8 +9,6 @@ tags:
 
 Author's note: I've been going through a lot lately. This Monday I was in the emergency room after having a panic attack. I have a folder of writing in my notes that I use to help work off steam. I don't know why, but writing this article really helped me feel better. I can only hope it helps make your day feel better too. 
 
-# MrBeast is Postmodern Gold
-
 The year is 2019. Politicians have fallen asleep at the wheel. Capitalism controls large segments of the hearts and minds of the populace. Social class is increasingly only a construct. Popularity is becoming irrelevant. Money has no value. The ultimate expendability of entire groups of people is as obvious as the sunrise and sunset. Nothing feels real. There's no real reason for people to get up and continue, yet life goes on. Somehow, even after a decade of aid and memes, children in Africa are _still_ starving.
 
 The next generation has grown up with technology and advertising. Entire swaths of the market know to ignore the very advertising that keeps the de-facto utilities (though the creators of those services will insist that it's a free choice to use them) they use to communicate with friends alive. You have to unplug your cigarette (that your friend got you hooked to) to charge your book. Marketing has driven postmodernism to a whole new level that leads McDonalds to ask Wendys if they are okay after Wendys posts cryptic/confusing messages. Companies that just want to do business get blocked away by racist policies set by people who all but have died since. What can be done about this? Who should we turn to for quality entertainment to help quench this generational angst against a nameless, faceless machine that controls nearly all of functional civilization?
@@ -93,7 +91,7 @@ Well the people are screaming for entertainment. That's not unexpected, but that
 
 > Let's have a dance party and then Chandler can poop. Rate who dances better in the comments section.
 
-  - MrBeast, 10:22-ish
+- MrBeast, 10:22-ish
 
 What.
 

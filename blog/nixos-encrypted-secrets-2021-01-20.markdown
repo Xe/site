@@ -7,8 +7,6 @@ tags:
  - ed25519
 ---
 
-# Encrypted Secrets with NixOS
-
 One of the best things about NixOS is the fact that it's so easy to do
 configuration management using it. The Nix store (where all your packages live)
 has a huge flaw for secret management though: everything in the Nix store is

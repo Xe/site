@@ -6,9 +6,6 @@ tags:
  - frontend
 ---
 
-Crazy Experiment: Ship the Frontend as an asar document
-=======================================================
-
 Today's crazy experiment is using an [asar archive](https://github.com/electron/asar) for shipping around
 and mounting frontend Javascript applications. This is something I feel is worth doing because it allows
 the web frontend developer (or team) give the backend team a single "binary" that can be dropped into the

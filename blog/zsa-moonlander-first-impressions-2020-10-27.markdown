@@ -7,8 +7,6 @@ tags:
  - keyboard
 ---
 
-# ZSA Moonlander First Impressions
-
 As I mentioned
 [before](https://christine.website/blog/colemak-layout-2020-08-15), I ordered a
 [ZSA Moonlander](https://zsa.io/moonlander) and it has finally arrived. I am

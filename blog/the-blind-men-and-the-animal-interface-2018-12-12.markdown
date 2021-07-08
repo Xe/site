@@ -3,8 +3,6 @@ title: The Blind Men and The Animal Interface
 date: 2018-12-12
 ---
 
-# The Blind Men and The Animal Interface
-
 A group of blind men heard that a strange animal had been brought to the town function, but none of them were aware of its type.
 
 ```

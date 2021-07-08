@@ -11,8 +11,6 @@ tags:
   - meals-for-families
 ---
 
-# Toast Sandwich Recipe
-
 Toast sandwiches. The concept may seem bizarre but the result is actually quite a delicious traditional meal. My great grandmother (twice removed) made these every day for us whenever we came over to visit. On her deathbed she made us swear that we would spread the joy and craft of toast sandwiches to the world.
 
 Toast sandwiches date back to rural parts of England. A recipe book from 1861 is seen as the authoritative view of this practice. The book is a collection of recipes for various types of sandwiches. The first recipe is for a roast beef sandwich with a white bread and a slice of fresh tomato. This classic book truly stood the test of time and made it possible for future culinary artists to create a desired experience.

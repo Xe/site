@@ -3,9 +3,6 @@ title: "gopreload: LD_PRELOAD for the Gopher crowd"
 date: "2017-03-25"
 ---
 
-gopreload: LD_PRELOAD for the Gopher crowd
-==========================================
-
 A common pattern in Go libraries is to take advantage of [init functions][initf]
 to do things like settings up defaults in loggers, automatic metrics instrumentation,
 flag values, [debugging tools][manhole] or database drivers. With monorepo culture

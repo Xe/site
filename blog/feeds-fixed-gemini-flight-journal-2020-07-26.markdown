@@ -5,8 +5,6 @@ tags:
  - gemini
 ---
 
-# RSS/Atom Feeds Fixed and Announcing my Flight Journal
-
 I have released version 2.0.1 of this site's code. With it I have fixed the RSS
 and Atom feed generation. For now I have had to sacrifice the post content being
 in the feed, but I will bring it back as soon as possible.

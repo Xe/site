@@ -7,8 +7,6 @@ tags:
 author: ectamorphic
 ---
 
-# My Thoughts About Using Android Again as an iPhone User
-
 I used to be a hardcore Android user. It was my second major kind of smartphone
 (the first was Windows Mobile 6.1 on a T-Mobile Dash) and it left me hooked to
 the concept of smartphones and connected tech in general. I've used many Android

@@ -5,8 +5,6 @@ tags:
  - 100DaysToOffload
 ---
 
-# The Itch
-
 I write a lot. I code a lot. This leads to people asking me questions like "how
 do you have the energy to do that?" or "why do you keep doing that day in and
 day out?". I was reading [this

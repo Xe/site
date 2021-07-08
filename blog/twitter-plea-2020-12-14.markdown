@@ -15,8 +15,6 @@ Twitter to get this weird edge case taken care of is ludicrous. I'd gladly pay
 Twitter just to have a support mechanism that gets me an actual human without
 having to complain on Twitter.
 
-# Plea to Twitter
-
 On Sunday, December 13, 2020, I noticed that I was locked out of my Twitter
 account. If you go to [@theprincessxena](https://twitter.com/theprincessxena)
 today, you will see that the account is locked out for "unusual activity". I

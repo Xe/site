@@ -4,8 +4,6 @@ date: 2020-08-22
 series: colemak
 ---
 
-# Colemak Layout - First Week
-
 A week ago I posted the last post in this series where I announced I was going
 all colemak all the time. I have not been measuring words per minute (to avoid
 psyching myself out), but so far my typing speed has gone from intolerably slow

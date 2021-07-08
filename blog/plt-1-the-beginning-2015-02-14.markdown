@@ -4,9 +4,6 @@ date: 2015-02-14
 series: plt
 ---
 
-The Saga of plt, Part 1
-=======================
-
 The following is adapted from a real story. Parts of it are changed to keep it
 entertaining to read but the core of the story is maintained. I apologize that
 this issue in the epic will be shorter than the others, but it gets better.

@@ -8,8 +8,6 @@ tags:
  - heroku
 ---
 
-# Farewell Email - Heroku
-
 ## May our paths cross again
 
 Hey all,
@@ -20,7 +18,7 @@ The people I've worked with at Heroku have been catalytic to our success as a le
 
 There is no doubt in my mind that you all will build fantastically useful and stable tools for Salesforce customers. Keep your eyes on what matters, let your heart guide your actions, and you all will continue to construct and refine the finest possible infrastructure that is possible. We may be limited as humans, but together in groups like this we can surpass these arbitrary differences and create things that really shine. 
 
- > As one being we repeat the words:   
+> As one being we repeat the words:  
 >  
 > Flow in compassion  
 > Release what is divine  

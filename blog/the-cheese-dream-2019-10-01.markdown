@@ -7,8 +7,6 @@ tags:
  - what
 ---
 
-# The Cheese Dream
-
 I wake up on a bed I've never seen before. I look up at the white sky. Wait, the _white_ sky? I look down at my blanket and it has a very weird, but distinct smell. Is it cheese? I break a part of it off and taste it. My blanket is made out of cheese. I feel around the bed and it feels slightly pliable, almost like the bed is made out of cheese too. I take off the blanket, tearing huge holes in it in the process.
 
 I try to lean up but there's something pulling between my shoulders when I do. With some force I hear a slight sucking and popping noise. My dorsal fin (I have a dorsal fin?) was stuck in the cheese bed. This is odd, what the heck is going on.

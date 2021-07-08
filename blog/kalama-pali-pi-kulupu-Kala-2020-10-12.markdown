@@ -5,8 +5,6 @@ tags:
  - 100DaysToOffload
 ---
 
-# kalama pali pi kulupu Kala
-
 I've wanted to write a novel for a while, and I think I've finally got a solid
 idea for it. I want to write about the good guys winning against an oppressive
 system. I've been letting the ideas and thoughts marinate in my heart for a long

@@ -5,8 +5,6 @@ tags:
   - emacs
 ---
 
-# My Org Mode Flow
-
 At almost every job I've worked at, at least one of my coworkers has noticed
 that I use Emacs as my main text editor. People have pointed me at IntelliJ, VS
 Code, Atom and more, but I keep sticking to Emacs because it has one huge ace up

@@ -4,8 +4,6 @@ date: 2020-09-27
 series: rust
 ---
 
-# Rust Crates that do What the Go Standard library Does
-
 One of Go's greatest strengths is how batteries-included the standard library
 is. You can do most of what you need to do with only the standard library. On
 the other hand, Rust's standard library is severely lacking by comparison.

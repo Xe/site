@@ -4,9 +4,6 @@ date: 2015-02-14
 series: plt
 ---
 
-The Saga of plt, Part 2
-=======================
-
 So I ended with a strong line of wisdom from `plt` last time. What if the
 authors that wrote free PGP did not release their source code? A nice rehash of
 the [Clipper Chip](https://en.wikipedia.org/wiki/Clipper_chip) anyone?

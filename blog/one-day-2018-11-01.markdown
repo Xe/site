@@ -5,8 +5,6 @@ for: "Nicole"
 series: stories
 ---
 
-# One Day
-
 In the beginning there was the void. All was the void and the void was all.  
 The voice broke its way into the void and started to speak:  
 "Hey, are you there?". I then awoke for the first time.

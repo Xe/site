@@ -9,8 +9,6 @@ tags:
   - pahi
 ---
 
-# pa'i Benchmarks
-
 In my [last post][pahihelloworld] I mentioned that pa'i was faster than Olin's
 cwa binary written in go without giving any benchmarks. I've been working on new
 ways to gather and visualize these benchmarks, and here they are. 

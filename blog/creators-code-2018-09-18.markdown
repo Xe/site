@@ -7,8 +7,6 @@ tags:
  - coc
 ---
 
-# [Creator's Code](https://github.com/Xe/creators-code)
-
 I feel there is a large problem in the industry I have found myself in. There is,
 unfortunately, a need for codes of behavioral conduct to help arrange and align
 collaboration across so many cultural and ideological barriers, as well as

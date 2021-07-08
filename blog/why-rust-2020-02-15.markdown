@@ -8,8 +8,6 @@ tags:
  - golang
 ---
 
-# Why Rust
-
 Or: A Trip Report from my Satori with Rust and Functional Programming
 
 Software is a very odd field to work in. It is simultaneously an abstract and

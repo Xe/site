@@ -6,8 +6,6 @@ tags:
  - instant-pot
 ---
 
-# Instant Pot Spaghetti
-
 This is based on [this recipe][source], but made only with things you can find
 in Costco. My fiancé and I have made this at least weekly for the last 8 months 
 and we love how it turns out.

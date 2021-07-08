@@ -7,8 +7,6 @@ tags:
  - release
 ---
 
-# OVE-20190623-0001
-
 ## Within Security Advisory
 
 Root-level Remote Command Injection in the [V](https://vlang.io) playground (OVE-20190623-0001)

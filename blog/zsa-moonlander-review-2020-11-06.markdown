@@ -8,8 +8,6 @@ tags:
  - nixos
 ---
 
-# ZSA Moonlander Review
-
 I am nowhere near qualified to review things objectively. Therefore this
 blogpost will mostly be about what I like about this keyboard. I plan to go into
 a fair bit of detail, however please do keep in mind that this is subjective as

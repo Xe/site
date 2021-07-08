@@ -6,7 +6,5 @@ tags:
 redirect_to: https://tailscale.com/blog/nixos-minecraft/
 ---
 
-# Tailscale on NixOS: A New Minecraft Server in Ten Minutes
-
 Check out this post [on the Tailscale
 blog](https://tailscale.com/blog/nixos-minecraft/)!

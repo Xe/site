@@ -6,8 +6,6 @@ for: Twilight Sparkle
 series: stories
 ---
 
-# Fear
-
 _I must not fear._  
 _Fear is the mind-killer._  
 _Fear is the little-death that brings total obliteration._  

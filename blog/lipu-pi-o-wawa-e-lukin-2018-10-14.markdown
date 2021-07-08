@@ -4,8 +4,6 @@ date: 2018-10-14
 language: toki pona
 ---
 
-# lipu pi o wawa e lukin
-
 sina wile pali e ilo suli la sina wile jo lukin wawa e tawa ala pi tenpo ni.
 lukin wawa e tawa ala pi tenpo ni li ilo sina kama e pali ijo pi tenpo pini.
 nasin ni li pilin sina ala. sina kama pi toki lawa insa ala e pali ijo pi

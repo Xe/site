@@ -4,8 +4,6 @@ date: 2021-06-13
 author: Heartmender
 ---
 
-# Using Paper for Everyday Tasks
-
 I have a bit of a reputation of being a very techno-savvy person. People have
 had the assumption that I have some kind of superpowerful handcrafted task
 management system that rivals all other systems and fully integrates with

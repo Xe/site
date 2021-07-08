@@ -7,8 +7,6 @@ tags:
   - borgbackup
 ---
 
-# How to Set Up Borg Backup on NixOS
-
 [Borg Backup](https://www.borgbackup.org/) is a encrypted, compressed,
 deduplicated backup program for multiple platforms including Linux. This
 combined with the [NixOS options for configuring

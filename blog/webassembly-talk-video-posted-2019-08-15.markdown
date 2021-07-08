@@ -5,8 +5,6 @@ tags:
  - wasm
 ---
 
-# WebAssembly Talk Video Posted
-
 This May, I spoke at [GoCon Canada][goconcanada] about [WebAssembly on the Server][talklink]
 and some of the inherent challenges and problems with trying to do it as things
 exist currently. It's taken a while, but the [video](https://www.youtube.com/watch?v=G4l8RX0tA3E)

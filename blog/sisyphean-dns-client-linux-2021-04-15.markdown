@@ -6,7 +6,5 @@ tags:
 redirect_to: https://tailscale.com/blog/sisyphean-dns-client-linux/
 ---
 
-# The Sisyphean Task Of DNS Client Config on Linux
-
 Check out this post [on the Tailscale
 blog](https://tailscale.com/blog/sisyphean-dns-client-linux/)!

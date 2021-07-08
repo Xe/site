@@ -7,8 +7,6 @@ tags:
  - lewa
 ---
 
-# ReConLangMo 8: Storytelling
-
 In the [last episode][rclm7] of [ReConLangMo][reconlangmo], we covered
 conversational discourse as well as formality and other grammatical moods. I
 also covered my goals for the gender system of L'ewa. Here I will cover the

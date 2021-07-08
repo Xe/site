@@ -3,9 +3,6 @@ title: Pursuit of a DSL
 date: 2014-08-16
 ---
 
-Pursuit of a DSL
-================
-
 A project we have been working on is [Tetra](http://github.com/Xe/Tetra). It is
 an extended services package in Go with Lua and Moonscript extensions. While
 writing Tetra, I have found out how to create a Domain Specific Language, and

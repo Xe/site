@@ -7,8 +7,6 @@ tags:
  - release
 ---
 
-# gitea-release Tool Announcement
-
 I'm a big fan of automating things that can possibly be automated. One of the
 biggest pains that I've consistently had is creating/tagging releases of
 software. This has been a very manual process for me. I have to write up

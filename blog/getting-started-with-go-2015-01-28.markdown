@@ -4,9 +4,6 @@ date: 2015-01-28
 series: howto
 ---
 
-Getting Started with Go
-=======================
-
 Go is an exciting language made by Google for systems programming. This article
 will help you get up and running with the Go compiler tools.
 

@@ -4,8 +4,6 @@ date: 2019-05-20
 series: templeos
 ---
 
-# TempleOS: 1 - Installation
-
 <style>
 img {
   margin: auto;

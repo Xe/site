@@ -3,9 +3,6 @@ title: This Site's Tech Stack
 date: 2015-02-14
 ---
 
-This Site's Tech Stack
-======================
-
 > Note: this is out of date as this site now uses [PureScript](http://www.purescript.org/) and [Go](https://golang.org).
 
 As some of my close friends can vouch, I am known for sometimes setting up and

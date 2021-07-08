@@ -4,8 +4,6 @@ date: 2019-04-07
 series: site-to-site-wireguard
 ---
 
-# Site to Site WireGuard: Part 2 - DNS
-
 This is the second in my Site to Site WireGuard VPN series. You can read the other articles here:
 
 - [Part 1 - Names and Numbers](https://christine.website/blog/site-to-site-wireguard-part-1-2019-04-02)

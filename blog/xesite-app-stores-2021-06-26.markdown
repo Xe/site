@@ -7,8 +7,6 @@ tags:
  - Windows11
 ---
 
-# christine.website is now on the Microsoft Store
-
 This website has been a progressive web app [for a long
 time](https://christine.website/blog/progressive-webapp-conversion-2019-01-26).
 This means that you can install my blog to your phone as if it was a normal app

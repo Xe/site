@@ -5,9 +5,6 @@ tags:
  - personal
 ---
 
-Coming Out
-==========
-
 I'd like to bring up something that has been hanging over my head for a
 long time. This is something I did try (and fail) to properly express way
 back in middle school, but now I'd like to get it all of my chest and let

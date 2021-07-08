@@ -10,8 +10,6 @@ tags:
  - systemd
 ---
 
-# Unix Domain Sockets for Serving HTTP in Production
-
 Securing production servers can be a chore. It is a seemingly endless game of
 balancing risks with convenience and not breaking what you want to do. Small,
 incremental gains are usually a very good idea however. Today we'll learn how to

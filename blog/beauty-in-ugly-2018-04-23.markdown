@@ -6,8 +6,6 @@ tags:
  - shell
 ---
 
-# The Beautiful in the Ugly
-
 Functional programming is nice and all, but sometimes you just need to have
 things get done regardless of the consequences. Sometimes a dirty little hack
 will suffice in place of a branching construct. This is a story of one of these

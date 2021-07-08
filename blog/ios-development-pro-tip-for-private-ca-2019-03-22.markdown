@@ -4,8 +4,6 @@ date: 2019-03-22
 for: Katie Berry
 ---
 
-# iOS Development Pro Tip for Private CA Usage
-
 In iOS, in order to get HTTPS working with certs from a private CA; there's another step you need to do if your users are on iOS 10.3 or newer (statistically: yes this matters to you). In order to do this:
 
 - Ensure they have installed the profile on their device

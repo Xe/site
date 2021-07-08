@@ -3,8 +3,6 @@ title: Old Articles Recovered
 date: 2019-01-17
 ---
 
-# Old Articles Recovered
-
 I found an old backup that contained a few articles from my old [Medium](https://medium.com/@theprincessxena) blog. I have converted them to markdown and added them to the blog archives:
 
 - 2014-11-28 - [Web Application Development with Beego](https://christine.website/blog/beego-2014-11-28)

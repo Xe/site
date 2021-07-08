@@ -5,8 +5,6 @@ thanks: CelestialBoon
 series: magick
 ---
 
-# Chaos Magick Debugging
-
 Belief is a powerful thing. Beliefs are the foundations of everyone's points of view, and the way they interpret reality. Belief is what allows people to create the greatest marvels of technology, the most wondrous worlds of imagination, and the most oppressive religions. 
 
 But at the core, what *is* a belief, other than the sheer tautology of *what a person believes*? 

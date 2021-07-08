@@ -5,8 +5,6 @@ tags:
  - signalboost
 ---
 
-# New Site Feature: Signal Boosting
-
 In light of the [COVID-19][covid19] pandemic, people have been losing their
 jobs. In normal times, this would be less of an issue, but in the middle of the
 pandemic, HR departments have been reluctant to hire people as entire companies

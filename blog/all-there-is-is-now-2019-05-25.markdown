@@ -4,8 +4,6 @@ date: 2019-05-25
 series: dreams
 ---
 
-# All There is is Now
-
 The dream scenario was going on for a while uneventfully. I saw an old man walking around and ranting about things. I decided to go and talk with him.
 
 "You fools! Time doesn't exist! The past is immutable! Don't worry about your trivial daily needs. All there is is Now!"

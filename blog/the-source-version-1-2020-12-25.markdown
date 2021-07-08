@@ -5,8 +5,6 @@ tags:
  - ttrpg
 ---
 
-# The Source Version 1.0.0 Release
-
 After hours of work and adjustment, I have finally finished version 1 of my
 tabletop roleplaying game The Source. It is available on
 [itch.io](https://withinstudios.itch.io/q7rvfw33fw) with an added 50% discount

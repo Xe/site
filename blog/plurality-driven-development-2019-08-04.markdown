@@ -3,8 +3,6 @@ title: Plurality-Driven Development
 date: 2019-08-04
 ---
 
-# Plurality-Driven Development
-
 "That code has a horrible security bug in it." 
 
 I look down in my lap. A little yellow horse is appearing to sit there. She looks

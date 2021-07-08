@@ -5,8 +5,6 @@ tags:
  - career
 ---
 
-# Advice to People Nurturing a Career in Computering
-
 Computering, or making computers do things in exchange for money, can be a
 surprisingly hard field to break into as an outsider. There's lots of jargon, 
 tool holy wars, flamewars about the "right" way to do things and a whole host

@@ -6,8 +6,6 @@ tags:
  - constructive-criticism
 ---
 
-# V is for Vvork in Progress
-
 So, December has come and passed. I'm excited to see [V][vlang] 1.0 get released
 as a stable production-ready release so I can write production applications in
 it!

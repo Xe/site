@@ -5,8 +5,6 @@ also_for: "Heroku's blog (TODO: put link here)"
 thanks: Nathanial, Andrew Konoff
 ---
 
-# How To Make a Progressive Web App Out Of Your Existing Website
-
 [Progressive web apps](https://developer.mozilla.org/en-US/docs/Web/Apps/Progressive) enable websites to trade some flexibility to function more like native apps, without all the overhead of app store approvals and tons of platform-specific native code. Progressive web apps allow users to install them to their home screen and launch them into their own pseudo-app frame. However, that frame is locked down and restricted, and only allows access to pages that are subpaths of the scope of the progressive web app. They also have to be served over HTTPS. Updates to these can be deployed without needing to wait for app store approval.
 
 The core of progressive web apps are [service workers](https://developers.google.com/web/fundamentals/primers/service-workers/), which are effectively client-side Javascript daemons. Service workers can listen for a few kinds of events and react to them. One of the most commonly supported events is the [fetch event](https://jakearchibald.github.io/isserviceworkerready/#fetch-event); this can be used to cache web content offline as explained below.

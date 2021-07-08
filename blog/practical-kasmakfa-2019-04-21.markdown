@@ -3,8 +3,6 @@ title: Practical Kasmakfa
 date: 2019-04-21
 ---
 
-# Practical Kasmakfa
-
 From Within
 
 ## tl;dr

@@ -7,8 +7,6 @@ tags:
  - vrchat
 ---
 
-# My Convoluted VRChat Google Meet Setup
-
 Recently the place I work for sent us all VR headsets. I decided to see what it
 would take to use that headset to make my camera show a virtual avatar instead
 of my meat body face. This is the story of my journey through chaining things

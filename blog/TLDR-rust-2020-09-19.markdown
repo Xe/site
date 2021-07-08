@@ -7,8 +7,6 @@ tags:
   - golang
 ---
 
-# TL;DR Rust
-
 Recently I've been starting to use Rust more and more for larger and larger
 projects. As things have come up, I realized that I am missing a good reference
 for common things in Rust as compared to Go. This post contains a quick

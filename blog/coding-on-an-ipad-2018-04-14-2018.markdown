@@ -5,8 +5,6 @@ tags:
  - ipad
 ---
 
-# Coding on an iPad
-
 As people notice, I am an avid user of Emacs for most of my professional and
 personal coding. I have things set up such that the center of my development
 environment is a shell (eshell), and most of my interactions are with emacs

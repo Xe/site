@@ -7,8 +7,6 @@ tags:
  - makes-u-thonk
 ---
 
-# Outsider Art and Anathema
-
 This was going to be a post about [Urbit][urbit] at first; but in the process of discussing about my interest in writing something _positive_ about it, I was warned by a few people that this was a Bad Idea. I was focusing purely on the technical side of it and how closely it implemented a concept called [liquid software][liquidsoftware], but from what people were saying, it seemed like a creation that was spoiled by something outside of it, specifically the creator's political views (of which I had little idea at the time).
 
 As much as I will probably return to the original concept in the future with another post, this feels like something I had to address first.

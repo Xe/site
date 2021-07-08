@@ -6,8 +6,6 @@ tags:
  - aarch64
 ---
 
-# The Worst Experience I've Had With an aarch64 MacBook
-
 I've had my hands on this M1 MacBook Air for a few weeks now and I have gotten a
 lot of opinions about it. I wanted to go over them and give my thoughts. This is
 an amazing laptop. Its battery life is iPad tier. I can run iPad and iPhone apps

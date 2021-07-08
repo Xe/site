@@ -7,8 +7,6 @@ tags:
  - email
 ---
 
-# How to Send Email with Nim
-
 Nim offers an [smtp][nimsmtp] module, but it is a bit annoying to use out of the
 box. This blogpost hopes to be a mini-tutorial on the basics of how to use the
 smtp library and give developers best practices for handling outgoing email in

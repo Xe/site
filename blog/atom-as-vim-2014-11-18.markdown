@@ -7,9 +7,6 @@ tags:
  - vim
 ---
 
-My Experience with Atom as A Vim User
-=====================================
-
 Historically, I am a Vim user. People know me as a very very heavy vim
 user. I have spent almost the last two years customizing [my .vimrc
 file](https://github.com/Xe/dotfiles/blob/master/.vimrc) and I have parts 

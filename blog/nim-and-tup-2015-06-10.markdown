@@ -3,9 +3,6 @@ title: Nim and Tup
 date: 2015-06-10
 ---
 
-Nim and Tup
-===========
-
 I have been recently playing with and using a new lanugage for
 my personal development, [Nim](http://nim-lang.org). It looks like
 Python, runs like C and integrates well into other things. Its

@@ -6,8 +6,6 @@ tags:
  - optimization
 ---
 
-# Site Update: RSS Bandwidth Fixes
-
 Well, so I think I found out where my Kubernetes cluster cost came from. For
 context, this blog gets a lot of traffic. Since the last deploy, my blog has
 served its RSS feed over 19,000 times. I have some pretty naiive code powering

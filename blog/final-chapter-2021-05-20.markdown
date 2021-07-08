@@ -6,8 +6,6 @@ tags:
 series: freenode
 ---
 
-# Final Chapter
-
 The last caretaker looked at the last light lit in the empty halls. They looked
 out across their home. It used to be filled with thousands of people. There were
 discussions about every topic imaginable from people of as many backgrounds.

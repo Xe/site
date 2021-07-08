@@ -4,8 +4,6 @@ date: 2018-09-05
 series: olin
 ---
 
-# [Olin](https://github.com/Xe/olin): 2: The Future
-
 This post is a continuation of [this post](https://christine.website/blog/olin-1-why-09-1-2018).
 
 Suppose you are given the chance to throw out the world and start from scratch

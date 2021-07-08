@@ -7,8 +7,6 @@ tags:
  - faas
 ---
 
-# Wasmcloud Progress: Hello, World!
-
 I have been working off and on over the years and have finally created the base
 of a functions as a service backend for [WebAssembly][wasm] code. I'm code-naming this
 wasmcloud. [Trisiel][wasmcloud] is a pre-alpha prototype and is currently very much work in

@@ -8,8 +8,6 @@ tags:
   - twitch
 ---
 
-# Gamebridge: Fitting Square Pegs into Round Holes since 2020
-
 Recently I did a stream called [Twitch Plays Super Mario 64][tpsm64]. During
 that stream I both demonstrated and hacked on a tool I'm calling
 [gamebridge][gamebridge]. Gamebridge is a tool that lets you allow games to

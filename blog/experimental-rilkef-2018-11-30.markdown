@@ -3,8 +3,6 @@ title: I Put Words on this Webpage so You Have to Listen to Me Now
 date: 2018-11-30
 ---
 
-# I Put Words on this Webpage so You Have to Listen to Me Now
-
 Holy cow. I am angry at how people do thing with tool. People do thing with tool so badly. You shouldn't do thing with tool, you should do other thing, compare this:
 
 I am using tool. I want to do thing. I flopnax the ropjar and then I get the result of doing thing (because it's convenient to flopnax the ropjar given the existing program structure). 

@@ -6,8 +6,6 @@ tags:
  - fluff
 ---
 
-# Let it Snow
-
 I have very terribly added snow to this website for the holidays. See [the CSS](/css/snow.css) for how I did this, it's really low-tech. Feel free to steal this trick, it is low-effort for maximum niceness. I have the `background-color` of the `snowframe` class identical to the `background-color` of the main page. This and `opacity: 1.0` seems to be the ticket.
 
 Happy holidays, all.

@@ -7,8 +7,6 @@ tags:
  - monoid
 ---
 
-# maybedoer: the Maybe Monoid for Go
-
 I recently posted (a variant of) this image of some Go source code to Twitter
 and it spawned some interesting conversations about what it does, how it works
 and why it needs to exist in the first place:

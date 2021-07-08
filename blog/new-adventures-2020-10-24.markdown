@@ -5,8 +5,6 @@ tags:
  - personal
 ---
 
-# Life Update: New Adventures
-
 Today was my last day at my job, and as of the time that I have published this
 post, I am now inbetween jobs. I have had an adventure at Lightspeed, but all
 things must come to an end and my adventure has come to an end there. I have a

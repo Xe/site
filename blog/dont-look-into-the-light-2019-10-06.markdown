@@ -6,8 +6,6 @@ tags:
  - big-rewrite
 ---
 
-# Don’t Look Into the Light
-
 So at a previous job I was working at, we maintained a system. This system
 powered a significant part of the core of how the product was actually used (as
 far as usage metrics reported). Over time, we had bolted something onto the side

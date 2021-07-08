@@ -3,8 +3,6 @@ title: New PGP Key Fingerprint
 date: 2021-01-15
 ---
 
-# New PGP Key Fingerprint
-
 EDIT(Xe): M02 11 2020 I fucked it up, this key is broken. Don't bother trying to
 use it, it won't work. Use [age](https://github.com/FiloSottile/age) to send
 messages with the key `ssh-ed25519

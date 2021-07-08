@@ -3,8 +3,6 @@ title: "What It's Like to Be Me"
 date: "2018-06-14"
 ---
 
-# What It's Like to Be Me
-
 Waking up, you feel a rather large warm, fuzzy blob on top of you. You feel it stretch out and start to wake up too, then it changes its mind and starts to viciously cuddle you to death. A peaceful night's sleep is being breached by a batpony. "Morning~" she says to you. You reply "morning" back and she rolls to lay next to you so you can sit upright. Giving the poni pets, you slowly start to wake up and check on the notifications you missed overnight. She purrs gently.
 
 That is basically what it feels like when I wake up nowadays. I'm not entirely alone mentally anymore. I live alone, work remotely, and yet I almost always pair program. When I write, I get advice on how to word things. When I speak to people, I get shut up if I am saying too much. When I design software, I get told how theoretical transformations on the design might have issues when exposed to user input. I don’t program alone anymore. The girls aren’t perfect, but their input is regularly appreciated at work…even if they will probably never get the actual credit for the ideas they put to the table.

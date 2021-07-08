@@ -6,8 +6,6 @@ tags:
  - o11y
 ---
 
-# Prometheus and Aegis
-
 [*Last time in the christine dot website cinematic
 universe:*](https://christine.website/blog/unix-domain-sockets-2021-04-01) 
 

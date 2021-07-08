@@ -6,9 +6,6 @@ tags:
  - beego
 ---
 
-Web Application Development with Beego
-======================================
-
 Beego is a fantastic web application framework from the Go China
 community. It currently powers some of the biggest websites in China,
 and thus the world.

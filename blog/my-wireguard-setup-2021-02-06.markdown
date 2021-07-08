@@ -7,8 +7,6 @@ tags:
  - tailscale
 ---
 
-# My Automagic NixOS WireGuard Setup
-
 It's been a while since I went into detail about how my [Site to Site
 Wireguard](/blog/series/site-to-site-wireguard) setup works. I've had a lot of
 time to think about how I can improve it since then, and I think I've come to a

@@ -4,8 +4,6 @@ date: 2018-11-21
 series: dreams
 ---
 
-# My Experience Cursing Out God
-
 This was a hell of a dream.
 
 It was a simple landscape: a hill, a sky, a sun, a distance, naturalistic buildings dotting a small village to the east. I noticed that I felt different somehow, like I was less chained down. A genderless but somehow masculine moved and stood next to me, gesturing towards me: "It's beautiful isn't it? The village has existed like this for thousands of years in perfect harmony with its world. Even though there's volcano eruptions every decade that burn everything down. It's been nine years and 350 days, but they aren't keeping track. How does that thought make you feel, Creator?"

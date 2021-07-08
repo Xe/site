@@ -7,8 +7,6 @@ tags:
  - lewa
 ---
 
-# ReConLangMo 3: Morphosyntactic Typology
-
 In the last post of [this series][reconlangmoseries], we covered the sounds and
 word patterns of L'ewa. This time we are covering morphosyntactic typology, or
 how words and sentences are formed out of root words, details about sentences,

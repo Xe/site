@@ -6,8 +6,6 @@ tags:
  - 6e
 ---
 
-# The Dwarven Cavern - A Beginner 6E Adventure
-
 Recently itch.io had [one of the largest game bundles in history][itchbundle]
 and one of the things in it was this humble game named [6E][6e]. Some friends
 and I have started up a small group that meets on the weekends to spend a few

@@ -6,8 +6,6 @@ tags:
  - morph
 ---
 
-# Using Morph for Deploying to NixOS
-
 Managing a single NixOS host is easy. Any time you want to edit any settings,
 you can just change options in `/etc/nixos/configuration.nix` and then do
 whatever you want from there. Managing multiple NixOS machines can be

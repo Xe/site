@@ -5,8 +5,6 @@ tags:
   - indieweb
 ---
 
-# Site Update: WebMention Support
-
 Recently in my [Various Updates](/blog/various-updates-2020-11-18) post I
 announced that my website had gotten
 [WebMention](https://www.w3.org/TR/webmention/) support. Today I implemented

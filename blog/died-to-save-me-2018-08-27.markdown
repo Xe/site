@@ -4,8 +4,6 @@ date: 2018-08-27
 for: Sam
 ---
 
-# Died to Save Me
-
 People often get confused  
 when I mention the fact that I  
 consider myself before I  

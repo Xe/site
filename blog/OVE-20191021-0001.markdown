@@ -9,8 +9,6 @@ tags:
  - oh-dear-god
 ---
 
-# OVE-20191021-0001
-
 ## Within Security Advisory
 
 Multiple vulnerabilities in the mysqljs API and code.

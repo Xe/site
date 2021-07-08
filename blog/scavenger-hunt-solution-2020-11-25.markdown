@@ -8,8 +8,6 @@ tags:
  - stenography
 ---
 
-# Scavenger Hunt Solution
-
 On November 22, I sent a
 [tweet](https://twitter.com/theprincessxena/status/1330532765482311687) that
 contained the following text:

@@ -6,8 +6,6 @@ tags:
  - release
 ---
 
-# The h Programming Language
-
 [h](https://h.christine.website) is a project of mine that I have released 
 recently. It is a single-paradigm, multi-tenant friendly, turing-incomplete
 programming language that does nothing but print one of two things:

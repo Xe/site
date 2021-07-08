@@ -6,8 +6,6 @@ tags:
 series: freenode
 ---
 
-# Footnote
-
 - [Final Chapter](/blog/final-chapter-2021-05-20)
 - [Epilogue](/blog/epilogue-2021-05-26)
 

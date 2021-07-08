@@ -8,8 +8,6 @@ tags:
   - dhall
 ---
 
-# pa'i: hello world!
-
 It's been a while since I gave an update on the Olin ecosystem (which now
 exists, apparently). Not much has really gone on with it for the last few
 months. However, recently I've decided to tackle one of the core problems of

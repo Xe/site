@@ -7,8 +7,6 @@ tags:
  - 100th-post
 ---
 
-# Blog Feature: Art Gallery
-
 I have just implemented support for my portfolio site to also function as an art
 gallery. See all of my posted art [here](/gallery).
 

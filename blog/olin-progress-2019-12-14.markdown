@@ -10,8 +10,6 @@ tags:
  - cgi
 ---
 
-# Olin Improvements
-
 Over the last week or so I've been doing a _lot_ of improvements to [Olin][olin] in order to make it ready to be the kernel for the minimum viable product of [wasmcloud][wasmcloud-hello-world]. Here's an overview of the big things that have happened from version [0.1.1][olin-0.1.1] to version [0.4.0][olin-0.4.0].
 
 [olin]: https://github.com/Xe/olin

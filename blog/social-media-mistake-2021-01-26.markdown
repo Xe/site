@@ -5,8 +5,6 @@ tags:
  - philosophy
 ---
 
-# Was Social Media a Mistake?
-
 <big>Subjective Opinions Ahead</big>
 
 This entire post is a big pile of opinions. Please feel free to skip this one if

@@ -3,10 +3,6 @@ title: MPD Via Docker
 date: 2014-10-20
 ---
 
-
-MPD Via Docker
-==============
-
 Today I got mpd set up inside docker to replace running it locally.
 
 

@@ -6,8 +6,6 @@ tags:
  - release
 ---
 
-# When Then Zen: Site Announcement
-
 [When Then Zen](https://when-then-zen.christine.website/) is a project to offer a better way to teach meditation. Meditation has gotten a really bad reputation in Western audiences as overcomplicated, esoteric and baroque; however those could be farther from the truth. It can be as simple as watching breathing happen or even more complicated.
 
 If this interests you, please check out the [introduction](https://when-then-zen.christine.website/intro) and feel free to look at the [meditation](https://when-then-zen.christine.website/meditation/) or [skill](https://when-then-zen.christine.website/skills/) guides.

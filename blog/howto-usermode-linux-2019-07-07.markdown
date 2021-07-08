@@ -4,8 +4,6 @@ date: 2019-07-07
 series: howto
 ---
 
-# How to Use User Mode Linux
-
 [User Mode Linux](http://user-mode-linux.sourceforge.net) is a port of the
 [Linux kernel](https://www.kernel.org) to itself. This allows you to run a
 full blown Linux kernel as a normal userspace process. This is used by kernel

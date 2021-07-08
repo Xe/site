@@ -4,8 +4,6 @@ date: 2019-08-16
 series: recipes
 ---
 
-# Instant Pot Quinoa Taco Bowls
-
 This is based on [this recipe](https://www.simplyhappyfoodie.com/instant-pot-quinoa-taco-bowls/),
 but made only with things you can find in Costco. My fiancé and I have made this
 a few times, and it's a great alternative to giving up on life and ordering

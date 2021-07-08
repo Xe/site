@@ -7,8 +7,6 @@ tags:
   - dependencies
 ---
 
-# Thoughts on Nix
-
 EDIT(M02 20 2020): I've written a bit of a rebuttal to my own post
 [here](https://christine.website/blog/i-was-wrong-about-nix-2020-02-10). I am
 keeping this post up for posterity.

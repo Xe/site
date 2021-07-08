@@ -3,9 +3,6 @@ title: Thoughts on Community Management
 date: 2014-07-31
 ---
 
-Thoughts on Community Management
-================================
-
 Many open source community projects lack proper management. They can put too
 much of their resources in too few places. When that one person falls out of
 contact or goes rogue on everyone, it can have huge effects on everyone

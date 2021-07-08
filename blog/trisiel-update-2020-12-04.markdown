@@ -6,8 +6,6 @@ tags:
  - trisiel
 ---
 
-# Trisiel Update
-
 The project I formerly called
 [wasmcloud](/blog/wasmcloud-progress-domains-2020-10-31) has now been renamed to
 Trisiel after the discovery of a name conflict. The main domain for Trisiel is

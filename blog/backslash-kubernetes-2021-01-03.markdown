@@ -1,9 +1,7 @@
 ---
-title: "</kubernetes>"
+title: "&lt;/kubernetes&gt;"
 date: 2021-01-03
 ---
-
-# &lt;/kubernetes&gt;
 
 Well, since I posted [that last post](/blog/k8s-pondering-2020-12-31) I have had
 an adventure. A good friend pointed out a server host that I had missed when I

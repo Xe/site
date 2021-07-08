@@ -8,8 +8,6 @@ tags:
  - what
 ---
 
-# Death Stranding Review
-
 NOTE: There's gonna be spoilers here. Do not read if you are not okay with this.
 For a summary of the article without spoilers, this game is 10 out of 10 game of the
 year 2019 for me.

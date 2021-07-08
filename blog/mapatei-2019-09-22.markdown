@@ -7,8 +7,6 @@ tags:
   - protolang
 ---
 
-# mapatei
-
 I've been working on a project in the [Conlang Critic][conlangcritic] Discord with some friends for a while now, and I'd like to summarize what we've been doing and why here. We've been working on creating a constructed language (conlang) with the end goal of each of us going off and evolving it in our own separate ways. Our goal in this project is really to create a microcosm of the natural process of language development.
 
 ## Why

@@ -5,9 +5,6 @@ tags:
  - cinemaquestria
 ---
 
-CinemaQuestria Orchestration
-============================
-
 ### Or: Continuous Defenstration in a Container-based Ecosystem
 
 I've been a core member of the staff for [CinemaQuestria](http://cinemaquestria.com)

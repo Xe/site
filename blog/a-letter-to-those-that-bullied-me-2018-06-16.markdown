@@ -6,8 +6,6 @@ tags:
  - offmychest
 ---
 
-# A Letter to Those Who Bullied Me
-
 Hey,
 
 I'm not angry at you. I don't want to propagate hate. In a way, I almost feel like I should be thanking you for the contributions you've made in making me into the person I am today. Without you all, I would have had a completely different outcome in life. I would have stayed in the closet for good like I had planned. I would have probably ended up boring. I would have never met my closest friends and some even more.

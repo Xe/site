@@ -4,8 +4,6 @@ date: 2018-09-01
 series: olin
 ---
 
-# [Olin][olin]: 1: Why
-
 [Olin][olin] is an attempt at defining a radically new operating primitive to make it 
 easier to reason about, deploy and operate event-driven services that are
 independent of the OS or CPU of the computer they are running on. It will have 

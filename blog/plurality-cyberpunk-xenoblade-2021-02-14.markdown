@@ -6,7 +6,5 @@ tags:
 redirect_to: https://www.getrevue.co/profile/theprincessxena/issues/plurality-as-portrayed-in-cyberpunk-2077-and-xenoblade-chronicles-2-313929
 ---
 
-# Plurality as Portrayed in Cyberpunk 2077 and Xenoblade Chronicles 2
-
 Check out this post [on my
 newsletter](https://www.getrevue.co/profile/theprincessxena/issues/plurality-as-portrayed-in-cyberpunk-2077-and-xenoblade-chronicles-2-313929)!

@@ -4,8 +4,6 @@ date: 2020-08-15
 series: colemak
 ---
 
-# Colemak Layout - Beginning
-
 I write a lot. On average I write a few kilobytes of text per day. This has been
 adding up and is taking a huge toll on my hands, especially considering the
 Covid situation. Something needs to change. I've been working on learning a new

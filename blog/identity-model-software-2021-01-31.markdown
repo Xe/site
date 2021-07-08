@@ -6,8 +6,6 @@ tags:
  - pluralgang
 ---
 
-# A Model for Identity in Software
-
 Most software on the market has a very boring relationship with identity. Most
 assume that one user has one "real" name and one "username". Some software
 associates identifiers like phone numbers with people. Some software allows you

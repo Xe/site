@@ -6,8 +6,6 @@ tags:
  - go
 ---
 
-# ln - The Natural Log Function
-
 One of the most essential things in software is a good interface for logging
 data to places. Logging is a surprisingly hard problem and there are many
 approaches to doing it. This time, we're going to talk about my favorite logging

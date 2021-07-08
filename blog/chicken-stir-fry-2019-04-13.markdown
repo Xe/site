@@ -9,8 +9,6 @@ tags:
  - garlic
 ---
 
-# Chicken Stir Fry
-
 This recipe was made up by me and my fiancé. We just sorta winged it every time
 we made it until we found something that was easy to cook and tasty. We make
 this every week or so.

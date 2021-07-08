@@ -5,8 +5,6 @@ tags:
  - ttrpg
 ---
 
-# The 7th Edition
-
 You know what, fuck rules. Fuck systems. Fuck limitations. Let's dial the
 tabletop RPG system down to its roots. Let's throw out every stat but one:
 Awesomeness. When you try to do something that could fail, roll for Awesomeness.

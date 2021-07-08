@@ -4,8 +4,6 @@ date: 2019-05-19
 series: conlangs
 ---
 
-# A Formal Grammar of `h`
-
 ## Introduction
 
 `h` is a conlang project that I have been working off and on for years. It is infinitely simply teachable, trivial to master and can be used to represent the entire scope of all meaning in any facet of the word. All with a single character.

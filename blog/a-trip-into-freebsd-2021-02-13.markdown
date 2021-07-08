@@ -5,8 +5,6 @@ tags:
  - freebsd
 ---
 
-# A Trip into FreeBSD
-
 I normally deal with Linux machines. Linux is what I know and it's what I've
 been using since I was in college. A friend of mine has been coaxing me into
 trying out [FreeBSD](https://www.freebsd.org), and I decided to try it out and

@@ -4,8 +4,6 @@ date: 2021-02-21
 series: short-stories
 ---
 
-# Readaptation
-
 Thena suddenly saw a large red sign labeled "system overload" in front of her.
 She tried to push it away but wasn’t able to do anything. After a bit of
 struggling something added the text “Get out of your pod to initiate repairs”.

@@ -7,8 +7,6 @@ tags:
  - systemd
 ---
 
-# Nixops Services on Your Home Network
-
 My homelab has a few NixOS machines. Right now they mostly run services inside
 Docker, because that has been what I have done for years. This works fine, but
 persistent state gets annoying*. NixOS has a tool called

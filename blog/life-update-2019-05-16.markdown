@@ -6,8 +6,6 @@ tags:
  - personal
 ---
 
-# Life Update - Montréal
-
 I have moved to Canada. The US has been a good place to me, but it is time for me to move on towards my longer term goals in life. One of them has been to move to Canada so I could be closer to my fiancé; and I have now been able to check that off.
 
 This trip has not been without its hardships so far:

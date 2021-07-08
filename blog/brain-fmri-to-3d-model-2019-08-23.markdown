@@ -7,8 +7,6 @@ tags:
  - blender
 ---
 
-# How I Converted my Brain fMRI to a 3D Model
-
 AUTHOR'S NOTE: I just want to start this out by saying I am not an expert, and
 nothing in this blogpost should be construed as medical advice. I just wanted 
 to see what kind of pretty pictures I could get out of an fMRI data file.

@@ -3,8 +3,6 @@ title: "New Site Feature: Patron Thanks Page"
 date: 2020-02-29
 ---
 
-# New Site Feature: Patron Thanks Page
-
 I've added a [patron thanks page](/patrons) to my site. I've been getting a
 significant amount of money per month from my patrons and I feel this is a good
 way to acknowledge them and thank them for their patronage. I wanted to have it

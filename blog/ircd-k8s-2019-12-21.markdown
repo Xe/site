@@ -8,8 +8,6 @@ tags:
 
 ---
 
-# How I set up an IRC daemon on Kubernetes
-
 [IRC][rfc1459]. It's one of the last bastions of the old internet, and still an actively developed and researched protocol. Historically, IRC daemons have been notoriously annoying to set up and maintain. I have created an IRC daemon running on top of Kubernetes, which will hopefully help remove a lot of the pain points for my personal usage. Here's how I did it.
 
 [rfc1459]: https://tools.ietf.org/html/rfc1459

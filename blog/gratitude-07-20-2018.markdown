@@ -6,8 +6,6 @@ for: Mother Aya
 series: magick
 ---
 
-# Gratitude
-
 A lot of ground has been trodden about Mindfulness and its many facets, but there is one topic I have seen not enough people elaborate on, especially in a satisfactory manner, and that topic is gratitude. 
 
 The act of expressing gratitude is a behaviour that grounds you in observation of the present moment; of the present you, and of what matters to that present you. It can help you understand the current, immediate moment, the Now, by pushing you to examine parts of it that you might have taken for granted. Or parts that hide behind the other parts. It is a tool of positive exploration, that empowers the user to iteratively discern the heart of matters, of things, guided by the unerring principle of genuine appreciation of what counts.

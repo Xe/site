@@ -3,9 +3,6 @@ title: "Metaprogramming: Partial Application..."
 date: 2015-08-26
 ---
 
-Metaprogramming: Partial Application and Currying 101
-=====================================================
-
 The title of this post looks intimidating. There's a lot of words there that
 look like they are very complicated and will take a long time to master. In
 reality, they are really very simple things. Let's start with a mundane example

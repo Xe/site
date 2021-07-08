@@ -6,8 +6,6 @@ tags:
  - fe21
 ---
 
-# The Relaxing Surreality of VRChat Furry Conventions
-
 Author's Note: you may want to view this post in a GUI browser for the best experience.
 
 It is no secret that I am a furry. The main way that a lot of my friends and I meet up is at conventions. COVID has lead to a year without cons for my friend groups. It's gotten bad enough that in one server the convention coordination channel had its name changed from `#conventions` to `#cancelled`. These conventions are expensive (flight/hotel/badge/the dealer's den), tiring and weirdly recharging all at once.

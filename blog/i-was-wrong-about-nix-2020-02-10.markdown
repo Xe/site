@@ -6,8 +6,6 @@ tags:
  - witchcraft
 ---
 
-# I was Wrong about Nix
-
 From time to time, I am outright wrong on my blog. This is one of those times.
 In my [last post about Nix][nixpost], I didn't see the light yet. I think I do
 now, and I'm going to attempt to clarify below.

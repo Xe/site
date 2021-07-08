@@ -7,8 +7,6 @@ tags:
   - witchcraft
 ---
 
-# Dhall for Kubernetes
-
 Kubernetes is a surprisingly complicated software package. Arguably, it has to
 be that complicated as a result of the problems it solves being complicated; but
 managing yaml configuration files for Kubernetes is a complicated task. [YAML][yaml]

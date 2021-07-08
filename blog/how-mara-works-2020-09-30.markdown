@@ -7,8 +7,6 @@ tags:
  - markdown
 ---
 
-# How Mara Works
-
 Recently I introduced Mara to this blog and I didn't explain much of the theory
 and implementation behind them in order to proceed with the rest of the post.
 There was actually a significant amount of engineering that went into

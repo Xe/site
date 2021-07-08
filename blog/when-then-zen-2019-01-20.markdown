@@ -6,8 +6,6 @@ tags:
  - meditation
 ---
 
-# When Then Zen
-
 Meditation is something that is very easy to experience but very difficult to
 explain in any way that is understandable. Historically, things that man could
 not explain on his own get attributed to gods. As such, religious texts that

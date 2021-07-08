@@ -6,8 +6,6 @@ tags:
  - no-kill-like-overkill
 ---
 
-# My Homelab Build
-
 There are many things you can be cursed into enjoying. One of my curses is
 enjoying philosophy/linguistics. This leads you into many fun conversations
 about how horrible English is that can get boring after a while. One of my other,

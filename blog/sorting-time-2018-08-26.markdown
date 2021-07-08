@@ -7,8 +7,6 @@ tags:
  - tale-of-woe
 ---
 
-# Sorting Time
-
 Computers have a very interesting relationship with time. Time is how we keep track of many things, but mainly we use time to keep track of how far along in a day cycle we are. These daily sunrise/sunset cycles take about 24 hours on average, and the periodicity of them runs just about everything. Computers use time to keep track of just about everything on the board, usually measured in tiny fractions of seconds. (The common rating of gigahertz for computer processors actually measures how much time it takes for the processor to execute one instruction. A processor with a clock of 3.4 gigahertz means that the processor executes, best case, 3.4 billion instructions per second.)  Computer programmers have several popular methods of storing time with computers, the number of time intervals since a fixed date (usually the number of seconds since January 1st 1970) or as a human-readable string. These intervals are normally ever only added to and read from, almost never updated by human hands after being initially set by the network time service.
 
 Pulling things back into the real world, let's consider storing time in Javascript. Let's say we're using Javascript in the browser and have a date object like so:

@@ -7,8 +7,6 @@ tags:
  - gods
 ---
 
-# The Gears and The Gods
-
 If there are any gods in computing, they are the authors of compilers. The
 output of compilers is treated as a Heavenly Decree, sometimes used for many
 sprints or even years after the output has been last emitted.

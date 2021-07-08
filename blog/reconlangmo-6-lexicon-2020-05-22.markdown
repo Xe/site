@@ -7,8 +7,6 @@ tags:
  - lewa
 ---
 
-# ReConLangMo 6: Lexicon
-
 Previously in [this series][reconlangmo], we've covered a lot of details about
 how sentences work, tenses get marked and how words work in general; however
 this doesn't really make L'ewa a _language_. Most of the difficulty in making a

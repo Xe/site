@@ -4,8 +4,6 @@ date: 2019-01-08
 thanks: Faith
 ---
 
-# vanbi
-
 --
 
 ```

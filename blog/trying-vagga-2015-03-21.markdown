@@ -3,9 +3,6 @@ title: Trying Vagga on For Size
 date: 2015-03-21
 ---
 
-Trying Vagga on For Size
-========================
-
 [Vagga](https://github.com/tailhook/vagga) is a containerization tool like
 Docker, Rocket, etc but with one major goal that is highly ambitious and really
 worth mentioning. Its goal is to be a single userspace binary without a suid

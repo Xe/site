@@ -7,9 +7,6 @@ tags:
  - nim
 ---
 
-FFI-ing Golang from Nim for Fun and Profit
-==========================================
-
 As a side effect of Go 1.5, the compiler and runtime recently gained the
 ability to compile code and run it as FFI code running in a C namespace. This
 means that you can take any Go function that expresses its types and the like

@@ -3,8 +3,6 @@ title: My Career So Far in Dates/Titles/Salaries
 date: 2019-03-14
 ---
 
-# My Career So Far in Dates/Titles/Salaries
-
 Let this be inspiration to whoever is afraid of trying, failing and being fired.
 Every single one of these jobs has taught me lessons I've used daily in my
 career.

@@ -8,8 +8,6 @@ tags:
  - meditation
 ---
 
-# When Then Zen: Anapana
-
 ## Introduction
 
 Anapanasati (Pali: Sanskirt: anapanasmrti, English: mindfulness of breathing) is a form of meditation originally taught by Gautama Buddha in several places, mainly the Anapanasati Sutta (English: passages). Anapana is practiced globally by meditators of all skill levels.
