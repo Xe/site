@@ -135,3 +135,13 @@ easier to type emoji than it is to type things like Esperanto's "ĉ", but it's
 going to inherently encode assumptions in the creator's first language.
 
 Emoji is not a language, it's used to augment existing languages.
+
+> If you want to claim that emoji is a language, you should be able to make that
+> same claim using emoji. Not an ad hoc cypher of the english sentence; just use
+> emoji the way people commonly use them, which you're saying counts as a
+> language, to say "Emoji is a language".
+
+- allthingslinguistic
+
+I'd be willing to be proven wrong if you can write "Emoji is a language"
+unambiguously using emoji without it being a baroque cipher of English.
