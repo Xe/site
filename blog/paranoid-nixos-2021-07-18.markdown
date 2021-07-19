@@ -28,8 +28,8 @@ At a high-level I'm assuming the following things about this setup:
 - It should be annoying for attackers to get a user-level shell
 - But ensure they'll be able to anyways if they're dedicated enough
 - It should be difficult for attackers to run their own code on the system
-- But ensure that it could happen and make evidence of that very loud
-- It should be aggrivating for attackers to access the package manager on the
+- But assume that it could happen and make evidence of that very loud
+- It should be aggravating for attackers to access the package manager on the
   system
 - But ensure that they can't do anything very easily even if they can access the
   package manager itself
@@ -187,7 +187,7 @@ service itself. This is for defense in _depth_, which means that you want to
 make sure that things are reasonably secure even if an attacker manages to get
 code execution on one of your services. These settings prevent the service's
 view of the system from having too much detail, which can make the attacking
-process more annoying. Remember that the he goal here isn't to make the system
+process more annoying. Remember that the goal here isn't to make the system
 attack-proof, nothing is. The goal is to annoy the attacker enough that they
 give up. This is not perfect and probably will fall apart <a
 href="https://www.usenix.org/system/files/1401_08-12_mickens.pdf">if your enemy
