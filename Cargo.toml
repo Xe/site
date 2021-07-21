@@ -11,7 +11,7 @@ repository = "https://github.com/Xe/site"
 [dependencies]
 color-eyre = "0.5"
 chrono = "0.4"
-comrak = "0.10"
+comrak = "0.11"
 envy = "0.4"
 estimated_read_time = "1"
 futures = "0.3"
