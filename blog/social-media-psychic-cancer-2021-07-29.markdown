@@ -24,6 +24,10 @@ up?
 This is becoming a cancer on humanity. It is leeching our focus and
 reprogramming our minds through operant conditioning.
 
+For me it has been a huge factor in why my larger projects just fade into
+obscurity and never really go anywhere. I have limited focus as it is. Social
+media operant conditioning has made it worse.
+
 Yet at the same time it is a pillar of modern civic participation, and with the
 pandemic it has become a vital communication flow for people that were once able
 to communicate in person easily.
