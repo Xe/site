@@ -5,7 +5,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
     <channel>
-        <title>Christine Dodrill's Blog</title>
+        <title>Xe's Blog</title>
         <link>https://christine.website/blog</link>
         <description>Tech, philosophy and more</description>
         <generator>@APP https://github.com/Xe/site</generator>

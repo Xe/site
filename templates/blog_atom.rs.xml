@@ -6,7 +6,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>https://christine.website/blog.atom</id>
-  <title>Christine Dodrill's Blog</title>
+  <title>Xe's Blog</title>
   <updated>@Utc::now().to_rfc3339()</updated>
   <author>
     <name>Christine Dodrill</name>
