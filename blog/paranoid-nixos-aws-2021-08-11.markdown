@@ -124,7 +124,7 @@ You should then set up your `shell.nix` to look like this:
 ```nix
 let
   sources = import ./nix/sources.nix;
-  pkgs = import ./sources.nixpkgs { };
+  pkgs = import sources.nixpkgs { };
 in pkgs.mkShell {
   buildInputs = with pkgs; [
     niv
