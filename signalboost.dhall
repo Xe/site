@@ -5,13 +5,6 @@ let Person =
       }
 
 in  [ Person::{
-      , name = "Aisling Fae"
-      , tags =
-        [ "python", "bash", "kubernetes", "google-cloud", "aws", "devops" ]
-      , gitLink = "https://github.com/aislingfae"
-      , twitter = "https://twitter.com/aisstern"
-      }
-    , Person::{
       , name = "Christian Sullivan"
       , tags =
         [ "go"
