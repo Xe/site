@@ -63,7 +63,7 @@ Let's consider a simple example, my [gruvbox-inspired CSS file][gruvboxcss]'s
 [`default.nix`][gcssdefaultnix] file':
 
 [gruvboxcss]: https://github.com/Xe/gruvbox-css
-[gcssdefaultnix]: https://github.com/Xe/gruvbox-css/blob/master/default.nix
+[gcssdefaultnix]: https://github.com/Xe/gruvbox-css/blob/6e1841c94190a1e06e63a2596767e66c35671320/default.nix
 
 ```nix
 { pkgs ? import <nixpkgs> { } }:
@@ -169,7 +169,7 @@ gruvbox.css
 For a more complicated package, let's look at the [build directions of the
 website you are reading right now][sitedefaultnix]:
 
-[sitedefaultnix]: https://github.com/Xe/site/blob/master/site.nix
+[sitedefaultnix]: https://github.com/Xe/site/blob/2559274d95d67ca66cc252276d7a6a0a6bbe47b9/site.nix
 
 ```nix
 { pkgs ? import (import ./nix/sources.nix).nixpkgs }:
@@ -521,7 +521,7 @@ This is a little bit more work in the short term, but as a result I get a setup
 that is easier to recreate on more machines in the future. It took me a half
 hour or so to get the configuration for [zathura][zathura] right, but now I have
 [a zathura
-module](https://github.com/Xe/nixos-configs/tree/master/common/users/cadey/zathura)
+module](https://github.com/Xe/nixos-configs/tree/9ff27215c82733a95c1e95e300e0d2362c7e3eff/common/users/cadey/zathura)
 that lets me get exactly the setup I want every time.
 
 [zathura]: https://pwmt.org/projects/zathura/
