@@ -8,17 +8,50 @@ tags:
 
 [If you had subscribed to my <a href="https://www.patreon.com/cadey">Patreon</a>, you could have read this <a href="https://www.patreon.com/posts/spellblade-plans-54727617">a week ago></a>!](conversation://Cadey/enby)
 
-Hey, I don't normally do this kind of thing because it impacts my productivity for me to do it, but I'd like to detail out my plans for the novel I've been working on off and on for almost a year.
+Hey, I don't normally do this kind of thing because it impacts my productivity
+for me to do it, but I'd like to detail out my plans for the novel I've been
+working on off and on for almost a year.
 
-I've wanted to write a novel for a very long time, if only to do it and have done it and point to it on a shelf as something that I created. I have been stuck in story hell for a while, but then inspiration struck about the time that I realized I was nonbinary. Being nonbinary can be an odd thing for people that aren't used to thinking about gender that way, and I wanted to play with that idea as something the main character would live through.
+I've wanted to write a novel for a very long time, if only to do it and have
+done it and point to it on a shelf as something that I created. I have been
+stuck in story hell for a while, but then inspiration struck about the time that
+I realized I was nonbinary. Being nonbinary can be an odd thing for people that
+aren't used to thinking about gender that way, and I wanted to play with that
+idea as something the main character would live through.
 
-In essence, Spellblade is a story about the main character Alicia coming out as nonbinary in a world that is very polarized by gender, in this case with the schools of spellcraft and bladecraft. Alicia is the Spellblade, or the person that stands directly in the middle of the two diametrically opposed halves (they're more of a bladecrafter than a spellcrafter, but either way very much in the middle).
+In essence, Spellblade is a story about the main character Alicia coming out as
+nonbinary in a world that is very polarized by gender, in this case with the
+schools of spellcraft and bladecraft. Alicia is a spellblade, or a person
+that stands directly in the middle of the two diametrically opposed halves
+(they're more of a bladecrafter than a spellcrafter, but either way very much in
+the middle).
 
-This book is entirely a riff on gender and is a stepping stone for me to both get better at writing and to try to convey very complicated feelings and moods about being nonbinary in a very binary world. I forget who said this, but someone that was once close to me said that simple phrases can only explain simple ideas, but more complicated things require a whole novel. This is a novel in which I try to explain the feelings and moods of being nonbinary.
+[Correction(2021-08-16 16:54): A previous version of this article said that
+Alicia was _the_ Spellblade, not _a spellblade_. Spellblades are actually not
+uncommon in the world of the book, most are really just never aware of it being
+a thing or are very quiet about it due to social taboo. Many people in the book
+may either be a spellblade or know one without being aware of it (many
+spellcrafters certainly are, but could chalk it up to luck or cross-functional
+training without thinking too much about it). My aim is to have a mostly
+cerebral story about gender (without overtly mentioning gender in the book
+text), not tell an epic tale like Avatar: The Last Airbender. I messed
+up.](conversation://Cadey/coffee)
 
-That being said, this book is my first novel and as such I do not expect it to be perfect, far from it in fact. I'm pretty horrible at longer form writing like this. I've been learning a lot as I go along though, and I'm certain that if I write another novel like this in the future that it will both take a lot less time to make and likely be a lot better to boot.
+This book is entirely a riff on gender and is a stepping stone for me to both
+get better at writing and to try to convey very complicated feelings and moods
+about being nonbinary in a very binary world. I forget who said this, but
+someone that was once close to me said that simple phrases can only explain
+simple ideas, but more complicated things require a whole novel. This is a novel
+in which I try to explain the feelings and moods of being nonbinary.
 
-As a teaser, here's something from my local drafting folder, the first scene of the book. Enjoy!
+That being said, this book is my first novel and as such I do not expect it to
+be perfect, far from it in fact. I'm pretty horrible at longer form writing like
+this. I've been learning a lot as I go along though, and I'm certain that if I
+write another novel like this in the future that it will both take a lot less
+time to make and likely be a lot better to boot.
+
+As a teaser, here's something from my local drafting folder, the first scene of
+the book. Enjoy!
 
 ---
 
