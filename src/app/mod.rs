@@ -87,7 +87,7 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     everything.sort();
     everything.reverse();
 
-    let everything: Vec<Post> = everything.into_iter().take(20).collect();
+    let everything: Vec<Post> = everything.into_iter().take(5).collect();
 
     let mut jfb = jsonfeed::Feed::builder()
         .title("Christine Dodrill's Blog")
