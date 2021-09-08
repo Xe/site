@@ -11,7 +11,7 @@ use std::cell::RefCell;
 use url::Url;
 
 lazy_static! {
-    static ref SYNTECT_ADAPTER: SyntectAdapter<'static> = SyntectAdapter::new("base16-ocean.dark");
+    static ref SYNTECT_ADAPTER: SyntectAdapter<'static> = SyntectAdapter::new("base16-mocha.dark");
 }
 
 pub fn render(inp: &str) -> Result<String> {

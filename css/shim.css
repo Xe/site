@@ -37,3 +37,8 @@ img {
 .conversation-chat {
     align-self: center;
 }
+
+pre {
+    padding-left: 1em;
+    padding-right: 1em;
+}
