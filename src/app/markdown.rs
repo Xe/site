@@ -1,9 +1,18 @@
 use crate::templates::Html;
 use color_eyre::eyre::{Result, WrapErr};
 use comrak::nodes::{Ast, AstNode, NodeValue};
-use comrak::{format_html, markdown_to_html, parse_document, Arena, ComrakOptions};
+use comrak::plugins::syntect::SyntectAdapter;
+use comrak::{
+    format_html_with_plugins, markdown_to_html_with_plugins, parse_document, Arena, ComrakOptions,
+    ComrakPlugins,
+};
+use lazy_static::lazy_static;
 use std::cell::RefCell;
 use url::Url;
+
+lazy_static! {
+    static ref SYNTECT_ADAPTER: SyntectAdapter<'static> = SyntectAdapter::new("base16-ocean.dark");
+}
 
 pub fn render(inp: &str) -> Result<String> {
     let mut options = ComrakOptions::default();
@@ -20,6 +29,9 @@ pub fn render(inp: &str) -> Result<String> {
     let arena = Arena::new();
     let root = parse_document(&arena, inp, &options);
 
+    let mut plugins = ComrakPlugins::default();
+    plugins.render.codefence_syntax_highlighter = Some(&*SYNTECT_ADAPTER);
+
     iter_nodes(root, &|node| {
         let mut data = node.data.borrow_mut();
         match &mut data.value {
@@ -33,10 +45,10 @@ pub fn render(inp: &str) -> Result<String> {
                 node.detach();
                 let mut message = vec![];
                 for child in node.children() {
-                    format_html(child, &options, &mut message)?;
+                    format_html_with_plugins(child, &options, &mut message, &plugins)?;
                 }
                 let message = std::str::from_utf8(&message)?;
-                let mut message = markdown_to_html(message, &options);
+                let mut message = markdown_to_html_with_plugins(message, &options, &plugins);
                 crop_letters(&mut message, 3);
                 message.drain((message.len() - 5)..);
                 let mood = without_first(u.path());
@@ -57,7 +69,7 @@ pub fn render(inp: &str) -> Result<String> {
     })?;
 
     let mut html = vec![];
-    format_html(root, &options, &mut html).unwrap();
+    format_html_with_plugins(root, &options, &mut html, &plugins).unwrap();
 
     String::from_utf8(html).wrap_err("post is somehow invalid UTF-8")
 }
