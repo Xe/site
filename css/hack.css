@@ -30,8 +30,6 @@ fieldset {
   margin: 0;
 }
 pre {
-  padding: 2rem;
-  margin: 1.75rem 0;
   background-color: #fff;
   border: 1px solid #ccc;
   overflow: auto;
