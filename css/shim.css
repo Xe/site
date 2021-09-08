@@ -38,7 +38,7 @@ img {
     align-self: center;
 }
 
-pre {
+.gruvbox-dark pre, pre {
     padding-left: 1em;
     padding-right: 1em;
 }
