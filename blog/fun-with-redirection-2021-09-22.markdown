@@ -105,7 +105,7 @@ cat uname.txt | cut -d' ' -f2
 
 [The mnemonic we use for remembering the `cut` command is that fields are
 separated by the `d`elimiter and you cut out the nth
-`f`ield/s. You can use ](conversation://Mara/hacker)
+`f`ield/s.](conversation://Mara/hacker)
 
 This will get you the exact same output:
 
