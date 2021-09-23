@@ -70,6 +70,14 @@ let Config =
             , twitter = Some "BeJustFine"
             , inSystem = True
             }
+          , Author::{
+            , name = "Nicole"
+            , handle = "Twi"
+            , picUrl = None Text
+            , link = None Text
+            , twitter = None Text
+            , inSystem = True
+            }
           ]
         , port = defaultPort
         , clackSet = [ "Ashlynn" ]
