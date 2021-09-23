@@ -224,11 +224,12 @@ another. Let's say you have a need for both standard out and standard error to
 go to the same file. You can do this with a command like this:
 
 ```
-$ rustc foo.rs 2>&1 > foo.log
+$ rustc foo.rs > foo.log 2>&1
 ```
 
-This tells the shell to point standard error to standard out and then the
-combined output to `foo.log`. There's a short form of this too:
+This tells the shell to point standard output to `foo.log` and then point
+standard error to wherever the standard output is going, giving you a
+combined output in `foo.log`. There's a short form of this too:
 
 ```
 $ rustc foo.rs &> foo.log
@@ -240,8 +241,8 @@ $ rustc foo.rs &> foo.log
 also do `&|` to pipe both standard out and standard error at the same time in
 the same way you'd do `2>&1 | whatever`.](conversation://Cadey/enby)
 
-That will put standard out and standard error to `foo.log` the same way that
-`2>&1 > foo.log` will. You can also use this with `>>`:
+That will combine standard out and standard error in the pipeline the same way that
+`> foo.log 2>&1` will. You can also use this with `>>`:
 
 ```
 $ rustc foo.rs &>> foo.log
