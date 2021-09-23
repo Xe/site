@@ -60,7 +60,7 @@ use the `cut` command to select that small subset from each line, and you can
 feed the `cut` command's standard input using the `<` operator:
 
 ```console
-$ cut -d' ' -f2 < uname.txt
+$ cut -d ' ' -f 2 < uname.txt
 shachi
 chrysalis
 kos-mos
@@ -100,7 +100,7 @@ Let's say we want to rewrite that `cut` command above to use pipes. You could
 write it like this:
 
 ```sh
-cat uname.txt | cut -d' ' -f2
+cat uname.txt | cut -d ' ' -f 2
 ```
 
 [The mnemonic we use for remembering the `cut` command is that fields are
@@ -110,7 +110,7 @@ separated by the `d`elimiter and you cut out the nth
 This will get you the exact same output:
 
 ```console
-$ cat uname.txt | cut -d' ' -f2
+$ cat uname.txt | cut -d ' ' -f 2
 shachi
 chrysalis
 kos-mos
@@ -123,7 +123,7 @@ easier to tack on more specific selectors or operations as you go along. For
 example, if you wanted to sort them you could pipe the result to `sort`:
 
 ```console
-$ cat uname.txt | cut -d' ' -f2 | sort
+$ cat uname.txt | cut -d ' ' -f 2 | sort
 chrysalis
 kos-mos
 ontos
@@ -265,9 +265,11 @@ error: aborting due to previous error
 
 [How do I redirect standard in to a file?](conversation://Mara/hmm)
 
-The answer there is not directly! There is a workaround in the form of a tool
-called `tee` which outputs its standard in to both standard out and a file. For
-example:
+Well, you don't. Standard in is an input, so you can change where it comes
+_from_, not where it goes. But, maybe you want to make a copy of a program's
+input and send it somewhere else. There is a way to do _that_ using a command
+called `tee`. `tee` copies its standard input to standard output, but it also
+writes a second copy to a file. For example:
 
 ```console
 $ dmesg | tee dmesg.txt | grep 'msedge'
