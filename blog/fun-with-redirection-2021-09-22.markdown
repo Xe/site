@@ -224,24 +224,52 @@ another. Let's say you have a need for both standard out and standard error to
 go to the same file. You can do this with a command like this:
 
 ```
-$ rustc foo.rs 2>&1 > foo.log
+$ rustc foo.rs > foo.log 2>&1
 ```
 
-This tells the shell to point standard error to standard out and then the
-combined output to `foo.log`. There's a short form of this too:
+This tells the shell to point standard out to `foo.log`, and then standard
+error to standard out (which is now `foo.log`). There's a footgun here though;
+the order of the redirects matters. Consider the following:
+
+```
+$ rustc foo.rs 2>&1 > foo.log
+error: expected one of `!` or `::`, found `main`
+ --> foo.rs:1:5
+  |
+1 | fun main() {}
+  |     ^^^^ expected one of `!` or `::`
+
+error: aborting due to previous error
+$ cat foo.log
+$ # foo.log is empty, why???
+```
+
+We wanted to redirect stderr to `foo.log`, but that didn't happen. Why? Well,
+the shell considers our redirects one at a time from left to right. When the
+shell sees `2>&1`, it hasn't considered `> foo.log` yet, so standard out (`1`)
+is still our terminal. It dutifully redirects stderr to the terminal, which is
+where it was already going anyway.  Then it sees `1 > foo.log`, so it redirects
+standard out to `foo.log`. That's the end of it though. It doesn't
+retroactively redirect standard error to match the new standard out, so our
+errors get dumped to our terminal instead of the file.
+
+Confusing right? Lucky for us, there's a short form that redirects both at the
+same time, making this mistake impossible:
 
 ```
 $ rustc foo.rs &> foo.log
 ```
 
-[Where can I expect to use that?](conversation://Mara/hmm)
+This will put standard out and standard error to `foo.log` the same way that
+`> foo.log 2>&1` will.
 
-[It's a bourne shell extension, but I've tested it in `zsh` and `fish`. You can
-also do `&|` to pipe both standard out and standard error at the same time in
-the same way you'd do `2>&1 | whatever`.](conversation://Cadey/enby)
+[Will that work in every shell?](conversation://Mara/hmm)
 
-That will put standard out and standard error to `foo.log` the same way that
-`2>&1 > foo.log` will. You can also use this with `>>`:
+[It's a bourne shell (`bash`) extension, but I've tested it in `zsh` and `fish`.
+You can also do `&|` to pipe both standard out and standard error at the same
+time in the same way you'd do `2>&1 | whatever`.](conversation://Cadey/enby)
+
+You can also use this with `>>`:
 
 ```
 $ rustc foo.rs &>> foo.log
@@ -266,10 +294,12 @@ error: aborting due to previous error
 [How do I redirect standard in to a file?](conversation://Mara/hmm)
 
 Well, you don't. Standard in is an input, so you can change where it comes
-_from_, not where it goes. But, maybe you want to make a copy of a program's
-input and send it somewhere else. There is a way to do _that_ using a command
-called `tee`. `tee` copies its standard input to standard output, but it also
-writes a second copy to a file. For example:
+_from_, not where it goes.
+
+But, maybe you want to make a copy of a program's input and send it somewhere
+else. There is a way to do _that_ using a command called `tee`. `tee` copies
+its standard input to standard output, but it also writes a second copy to a
+file. For example:
 
 ```console
 $ dmesg | tee dmesg.txt | grep 'msedge'
