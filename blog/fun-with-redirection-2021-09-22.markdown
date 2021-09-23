@@ -377,6 +377,6 @@ What else could you do with pipes and redirection? The cloud's the limit!
 
 ---
 
-Thanks to violet spark for looking over this post and fact-checking as well as
-helping mend some of the brain dump and awkward wording into more polished 
-sentences.
+Thanks to violet spark, cadence, and AstroSnail for looking over this post and
+fact-checking as well as helping mend some of the brain dump and awkward
+wording into more polished sentences.
