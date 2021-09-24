@@ -54,14 +54,6 @@ let Config =
             , inSystem = True
             }
           , Author::{
-            , name = "Ashe"
-            , handle = "ectamorphic"
-            , picUrl = None Text
-            , link = None Text
-            , twitter = None Text
-            , inSystem = True
-            }
-          , Author::{
             , name = "Jessie"
             , handle = "Heartmender"
             , picUrl = Some
@@ -70,14 +62,9 @@ let Config =
             , twitter = Some "BeJustFine"
             , inSystem = True
             }
-          , Author::{
-            , name = "Nicole"
-            , handle = "Twi"
-            , picUrl = None Text
-            , link = None Text
-            , twitter = None Text
-            , inSystem = True
-            }
+          , Author::{ name = "Ashe", handle = "ectamorphic", inSystem = True }
+          , Author::{ name = "Nicole", handle = "Twi", inSystem = True }
+          , Author::{ name = "Mai", handle = "Mai", inSystem = True }
           ]
         , port = defaultPort
         , clackSet = [ "Ashlynn" ]
