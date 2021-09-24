@@ -13,5 +13,8 @@ async fn main() -> Result<()> {
 
     let pledges = cli.pledges(id).await?;
     println!("{:#?}", pledges);
+
+    println!("{} patrons", pledges.len());
+
     Ok(())
 }

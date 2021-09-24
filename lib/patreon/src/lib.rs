@@ -143,7 +143,7 @@ impl Client {
                 "{}/oauth2/api/campaigns/{}/pledges",
                 self.base_url, camp_id
             ))
-            .query(&[("include", "patron.null")])
+            .query(&[("include", "patron.null"), ("page[count]", "100")])
             .header(
                 "Authorization",
                 format!("Bearer {}", self.creds.access_token),
