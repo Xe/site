@@ -21,7 +21,7 @@ kankyo = "0.3"
 lazy_static = "1.4"
 log = "0.4"
 mime = "0.3.0"
-prometheus = { version = "0.12", default-features = false, features = ["process"] }
+prometheus = { version = "0.13", default-features = false, features = ["process"] }
 rand = "0"
 reqwest = { version = "0.11", features = ["json"] }
 serde_dhall = "0.10.1"
