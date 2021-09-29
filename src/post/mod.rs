@@ -2,7 +2,7 @@ use chrono::prelude::*;
 use color_eyre::eyre::{eyre, Result, WrapErr};
 use glob::glob;
 use serde::Serialize;
-use std::{cmp::Ordering, path::PathBuf};
+use std::{borrow::Borrow, cmp::Ordering, path::PathBuf};
 use tokio::fs;
 
 pub mod frontmatter;
@@ -81,7 +81,7 @@ impl Post {
     }
 }
 
-async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
+async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Result<Post> {
     let body = fs::read_to_string(fname.clone())
         .await
         .wrap_err_with(|| format!("can't read {:?}", fname))?;
@@ -98,8 +98,8 @@ async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
             .with_timezone(&Utc)
             .into();
 
-    let mentions: Vec<mi::WebMention> = match std::env::var("MI_TOKEN") {
-        Ok(token) => mi::Client::new(token.to_string(), crate::APPLICATION_NAME.to_string())?
+    let mentions: Vec<mi::WebMention> = match cli {
+        Some(cli) => cli
             .mentioners(format!("https://christine.website/{}", link))
             .await
             .map_err(|why| tracing::error!("error: can't load mentions for {}: {}", link, why))
@@ -109,7 +109,7 @@ async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
                 wm.title.as_ref().unwrap_or(&"".to_string()) != &"Bridgy Response".to_string()
             })
             .collect(),
-        Err(_) => vec![],
+        None => vec![],
     };
 
     let time_taken = estimated_read_time::text(
@@ -140,9 +140,14 @@ async fn read_post(dir: &str, fname: PathBuf) -> Result<Post> {
 }
 
 pub async fn load(dir: &str) -> Result<Vec<Post>> {
+    let cli = match std::env::var("MI_TOKEN") {
+        Ok(token) => mi::Client::new(token.to_string(), crate::APPLICATION_NAME.to_string()).ok(),
+        Err(_) => None,
+    };
+
     let futs = glob(&format!("{}/*.markdown", dir))?
         .filter_map(Result::ok)
-        .map(|fname| read_post(dir, fname));
+        .map(|fname| read_post(dir, fname, cli.borrow()));
 
     let mut result: Vec<Post> = futures::future::join_all(futs)
         .await
