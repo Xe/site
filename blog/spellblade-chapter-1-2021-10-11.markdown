@@ -7,6 +7,39 @@ tags:
  - fiction
 ---
 
+<p><i>This book is dedicated to all of those that need a ray of hope in these
+trying times.</i></p>
+
+Copyright 2021 Christine Dodrill. All rights reserved.
+
+This book is a Within Studios publication. Find out more at
+https://withinstudios.itch.io
+
+This book is a work of fiction, Names, characters, business, events and
+incidents are the products of the author’s imagination. Any resemblance to
+actual persons, living or dead, or actual events is purely coincidental.
+
+However, the topics that the author alludes to are entirely real and serious
+problems that require deep thought and consideration.
+
+## Foreword
+
+I was originally gonna release this by the end of the year as a cohesive novel,
+however it looks like the cards aren't falling that way. I want to instead shift
+[Spellblade](https://christine.website/blog/spellblade-plans-2021-08-16) into a
+web novel, which I am defining as something that I'll release in big chunks like
+this every month or so. I don't want to compromise any of the artistic vision or
+whatever, I just want each "chunk" to be a lot more finely scoped than "the
+entire damn novel" so that it feels like it's much less daunting of a task.
+As always, any feedback about this is appreciated. This is my first time doing
+this kind of writing, I expect it to be kinda rough.
+
+From our world to yours,
+
+Xe
+
+---
+
 Alicia scanned across the clearing. Her cat eyes darted across the field, her
 ears focused forward and ready for victory. The battlefield was a wide open
 grassy field without any good spots to take cover. Her team was losing. Badly.
@@ -206,19 +239,3 @@ staring at the ceiling. _I miss you mom and dad_ she thought to herself before
 the tiredness caught up with her.
 
 Alicia was asleep.
-
----
-
-I was originally gonna release this by the end of the year as a cohesive novel,
-however it looks like the cards aren't falling that way. I want to instead shift
-[Spellblade](https://christine.website/blog/spellblade-plans-2021-08-16) into a
-web novel, which I am defining as something that I'll release in big chunks like
-this every month or so. I don't want to compromise any of the artistic vision or
-whatever, I just want each "chunk" to be a lot more finely scoped than "the
-entire damn novel" so that it feels like it's much less daunting of a task.
-As always, any feedback about this is appreciated. This is my first time doing
-this kind of writing, I expect it to be kinda rough.
-
-From our world to yours,
-
-Xe
