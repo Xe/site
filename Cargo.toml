@@ -33,7 +33,7 @@ tokio = { version = "1", features = ["full"] }
 tokio-stream = { version = "0.1", features = ["net"] }
 tracing = "0.1"
 tracing-futures = "0.2"
-tracing-subscriber = { version = "0.2", features = ["fmt"] }
+tracing-subscriber = { version = "0.3", features = ["fmt"] }
 warp = "0.3"
 xml-rs = "0.8"
 url = "2"
