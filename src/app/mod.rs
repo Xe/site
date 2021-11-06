@@ -90,11 +90,11 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     let everything: Vec<Post> = everything.into_iter().take(5).collect();
 
     let mut jfb = jsonfeed::Feed::builder()
-        .title("Christine Dodrill's Blog")
+        .title("Xe's Blog")
         .description("My blog posts and rants about various technology things.")
         .author(
             jsonfeed::Author::new()
-                .name("Christine Dodrill")
+                .name("Xe")
                 .url("https://christine.website")
                 .avatar(ICON),
         )
