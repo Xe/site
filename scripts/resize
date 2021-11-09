@@ -1,0 +1,4 @@
+#!/usr/bin/env nix-shell
+#! nix-shell -p imagemagick -i bash
+
+mogrify -resize 800x450 $1
