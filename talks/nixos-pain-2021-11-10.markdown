@@ -152,7 +152,7 @@ should.
 Nix the language can look a bit like a combination of haskell and bash in ways
 that are kind of deceiving to people that don't have solid experience with
 haskell or other functional programming languages. This is a little bit of code
-that breaks a host colon porn thing into just the port number so that you can
+that breaks a host:port thing into just the port number so that you can
 add it to a firewall rule. Additionally it also checks if you have tls enabled
 with the http certification for Let's Encrypt and adds port 80 for that. If you
 aren't really familiar with Haskell or other functional languages (and without
