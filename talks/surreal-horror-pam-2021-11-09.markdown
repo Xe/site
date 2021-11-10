@@ -190,6 +190,8 @@ random boilerplate code to deal with PAM’s complexities, making sure that the 
 ABI functions are exposed correctly and other helpers to grab things from
 tailscaled with unix sockets.
 
+[https://github.com/tailscale/pam](https://github.com/tailscale/pam)
+
 This is written in Rust because I personally believe that writing security
 critical components that we would ship with the operating system in C is a
 massive disservice to our users. Go also doesn’t really have a good story to do
@@ -219,7 +221,7 @@ that command will not work. However you should see something like this:
 
 It would be really cool to flesh this out as a full product. I feel this could
 really make people’s lives a lot easier. The hard part is going to be making
-sure that this absolutely has security experts pour over this to make sure that
+sure that this absolutely has security experts pore over this to make sure that
 this is _actually_ safe. I’m fairly sure that it is safe as it is, but right now
 this is an uberhammer that lets you log in as root if you get SSH access to a
 system. I would love to have this send a TSMP message to have a GUI prompt
