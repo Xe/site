@@ -10,9 +10,8 @@ tags:
 
 [Writing JavaScript is so lame. All the tools require me to do so much bullshit
 to get them to even compile. I shouldn't need to compile JavaScript to
-JavaScript in order to deploy stuff to a webpage. I don't want to give Facebook
-a grant to any patents I end up creating. How did it get this bad? I wish there
-was something easier!](conversation://Cadey/coffee)
+JavaScript in order to deploy stuff to a webpage. How did it get this bad? I
+wish there was something easier!](conversation://Cadey/coffee)
 
 Is this you? Have you wished for something like this? Your prayers have been
 answered! Keep reading this post to learn more about this revolutionary set of
@@ -460,3 +459,9 @@ console.log("hi, open your dev console to see me");
 
 What kind of awesome things can you create with Xeact? Use the hashtag `#xeact`
 on Twitter and I'll maybe give you a shoutout!
+
+---
+
+EDIT(00:37 M11 19 2021): A prior version of this post made an incorrect
+assertion about Facebook's patent grant situation and React. I was apparently
+operating under old information. I fucked up.
