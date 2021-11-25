@@ -8,7 +8,7 @@ tags:
 
 <span style="color: #cc241d"><big><big><big>CONTENT WARNING</big></big></big></span>
 
-This post is going to talk about people that try to target children for sexual favors. You are not required to read this. If you are prone to anxiety I absolutely cannot reccomend reading this post. Dealing with the situations that lead me to write this post (and doing the research that has lead to learning how to do this) has caused me to lose a lot of sleep over the last month.
+This post is going to talk about people that try to target children for sexual favors. You are not required to read this. If you are prone to anxiety I absolutely cannot recommend reading this post. Dealing with the situations that lead me to write this post (and doing the research that has lead to learning how to do this) has caused me to lose a lot of sleep over the last month.
 
 It is my hope that this post is NOT useful to readers. If it ever becomes useful I suggest crying a bit. Yes, seriously.
 
@@ -22,7 +22,7 @@ For the rest of this article I'm going to assume a few things in how I direct my
 
 ## Don't Panic
 
-First, don't panic. This is going to be a stressful and scary thing. This is normal. You are feeling that feeling that you are feeling and it is happening. It is going to suck. You are going to lose sleep. This is something that is happening because you care about that community, and if you didn't care about it you would not be having these feelings. If you feel the need, cry about it. Let the emotions out instead of bottling them up. This sounds like a dumb meme or whatever but I am being dead serious in this reccomendation.
+First, don't panic. This is going to be a stressful and scary thing. This is normal. You are feeling that feeling that you are feeling and it is happening. It is going to suck. You are going to lose sleep. This is something that is happening because you care about that community, and if you didn't care about it you would not be having these feelings. If you feel the need, cry about it. Let the emotions out instead of bottling them up. This sounds like a dumb meme or whatever but I am being dead serious in this recommendation.
 
 So, now, one of the first things you need to do is review the terms and conditions of the platform you are moderating the community on. 
 
@@ -42,13 +42,13 @@ When you are getting evidence from the minor, make sure that the evidence is in 
 
 Once you have the information and have reviewed it, open [Gimp](https://www.gimp.org) and run the screenshots through the edge detection filter. This filter will allow you to look for any obvious signs of the text in the screenshot being doctored. Certain kinds of people have been known to fake reports and screenshots of someone doing something untoward to a child as a way to get them removed from a community. This will help you weed them out. It sounds heartless to say it like this, but this is something that you _actually do_ end up seeing happen sometimes so it is worth mentioning.
 
-If anyone on the moderation team ends up leaking the information about thise research, contents of the research, people involved in the event or anything of the sort to the person being investigated: flat-out ban them without any chance of appeal. That gives the person being investigated a chance to delete information that would hinder any hope of investigating the situation.
+If anyone on the moderation team ends up leaking the information about this research, contents of the research, people involved in the event or anything of the sort to the person being investigated: flat-out ban them without any chance of appeal. That gives the person being investigated a chance to delete information that would hinder any hope of investigating the situation.
 
 ## Reporting to the Platform
 
-Once you have the bumdle of information, identifiers and more, then you need to open a ticket with the trust and safety team of the platform you are on (however if this is a self-hosted platform either contact the service administrator or if you are the service administrator then you can skip to the next step involving the FBI). Give them all the information you have. Explain the situation as best as you can.
+Once you have the bundle of information, identifiers and more, then you need to open a ticket with the trust and safety team of the platform you are on (however if this is a self-hosted platform either contact the service administrator or if you are the service administrator then you can skip to the next step involving the FBI). Give them all the information you have. Explain the situation as best as you can.
 
-When you send the report to the platform itself, it is _very unlikely_ you will get any more information from the platform. You are likely going to get an email that says they've confirmed recipt of the information and that email will usually contain something about the situation being confidential inside the moderation team of the plaform. This is normal, and is part of a legal "covering my ass" kind of situation. 
+When you send the report to the platform itself, it is _very unlikely_ you will get any more information from the platform. You are likely going to get an email that says they've confirmed recipt of the information and that email will usually contain something about the situation being confidential inside the moderation team of the platform. This is normal, and is part of a legal "covering my ass" kind of situation. 
 
 ## Reporting to the FBI or Similar
 
