@@ -47,8 +47,7 @@ Party. The more reliable way is going to be to email me though.
 
 Be well to eachother, and please do what you can to avoid letting hate propagate.
 
-I have one extra aside for the author of that comment I quoted: If the author of
-that comment is watching this video or reading this article: making those
+I have one extra aside for the author of that comment I quoted: making those
 comments at the expense of other people is not funny. It is not edgy. It is not
-cute, and it is not a good way to get yourself known and it is a fantastic way
+cute, and it is not a good way to get yourself known, and it is a fantastic way
 to end up alone in life.
