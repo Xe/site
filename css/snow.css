@@ -15,6 +15,12 @@
     background-color: #282828;
 }
 
+@media (prefers-color-scheme: light) {
+    .snowframe {
+		    background-color: #fbf1c7;
+    }
+}
+
 .container{
     padding: 1em;
 }
