@@ -290,7 +290,13 @@ it!
 I was asked to try a "normal" distribution out. Seeing as that Valve has been
 like:
 
-TODO(Ashe): make friendship ended with Debian now Arch is my best friend meme
+<center>
+
+![The steam logo saying "friendship ended with Debian, now Arch is my best
+friend" while shaking hands with the Arch linux
+logo.](/static/blog/vr-hellscape/steam_debian_arch_friendship.jpg)
+
+</center>
 
 I thought that I should choose [Arch Linux](https://archlinux.org/) to verify
 this against. Arch is the basis for the new version of SteamOS, so surely this
@@ -524,6 +530,10 @@ You can still see through your controllers, which I assume is a SteamVR on Linux
 problem at this point. It's the most bizarre thing, it's like the rendering
 priority for the controller models is backwards.
 
+I was able to play a few rounds of Beat Saber for testing, and the only downside
+I noticed was that sometimes a few frames had a shower of green blotches. There
+was no pattern.
+
 ## Treachery
 
 [There were a couple things earlier in this post that were kinda sus. For one
@@ -540,3 +550,25 @@ DisplayPort-1 disconnected
 ```
 
 [Why are things 0-based in Xorg but 1-based in Wayland?](conversation://Cadey/wat)
+
+So I made [this
+commit](https://github.com/Xe/nixos-configs/commit/4683dc68173eb79348de150713f3a1b1910d9d4d)
+to my NixOS configs, rebuilt my config to re-enable Wayland, booted back into
+sway and then found that it was still broken.
+
+What am I doing wrong here? I'm willing to try any ideas you all have. This is a
+cry for help. I literally have no idea what I am doing wrong and this is
+_really_ starting to bother me. Did I taint a state file used by display
+handling? I thought this stuff was mostly if not entirely stateless to avoid
+these kinds of problems. Do I need to reinstall NixOS from scratch? Should today
+be the day that I set up ZFS on my tower? Is this just some kind of weird cruft
+that has accumulated over a few years even though that should be _categorically
+impossible_?
+
+Hopefully I can follow this up with a part 2 containing the really really dumb
+solution. I've tried everything I can think of and have managed to really
+confuse a GPU driver developer friend of mine in the process. I just want this
+to work. I can get my VR fix on Windows in the meantime, but I would really love
+to be able to do all this from my NixOS install.
+
+Please [contact me](/contact) if you have any ideas.
