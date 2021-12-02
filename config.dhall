@@ -21,7 +21,7 @@ let Author =
         , link = None Text
         , twitter = None Text
         , default = False
-        , inSystem = True
+        , inSystem = False
         }
       }
 
@@ -62,7 +62,13 @@ let Config =
             , twitter = Some "BeJustFine"
             , inSystem = True
             }
-          , Author::{ name = "Ashe", handle = "ectamorphic", inSystem = True }
+          , Author::{
+            , name = "Ashe"
+            , handle = "ectamorphic"
+            , picUrl = Some
+                "https://cdn.christine.website/file/christine-static/img/FFVV1InX0AkDX3f_cropped_smol.jpg"
+            , inSystem = True
+            }
           , Author::{ name = "Nicole", handle = "Twi", inSystem = True }
           , Author::{ name = "Mai", handle = "Mai", inSystem = True }
           ]
