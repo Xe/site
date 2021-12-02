@@ -108,7 +108,12 @@ totally screwed"), and I was ready to get off to the races.
 Then I tried to open the SteamVR overlay. Nothing happened. I looked at my
 controllers in VR and it seemed like the occlusion model was backwards:
 
-TODO(Ashe): get a picture of this from Manjaro
+<center>
+
+![The insides of the controller rendering on the
+outside](/static/blog/vr-hellscape/backwards_controller.png)
+
+</center>
 
 I can deal with this, but it certainly _feels_ weird this way. 
 
@@ -563,7 +568,8 @@ handling? I thought this stuff was mostly if not entirely stateless to avoid
 these kinds of problems. Do I need to reinstall NixOS from scratch? Should today
 be the day that I set up ZFS on my tower? Is this just some kind of weird cruft
 that has accumulated over a few years even though that should be _categorically
-impossible_?
+impossible_? Is the flatpak broken with SteamVR? Is the NixOS Steam package
+broken? What is even going on?
 
 Hopefully I can follow this up with a part 2 containing the really really dumb
 solution. I've tried everything I can think of and have managed to really
