@@ -87,7 +87,7 @@ set up again, making sure to choose "No" on the "SteamVR needs root access for
 additional setup" prompt.
 
 [As an aside, it seems that most of the people that do VR on NixOS that I know
-use Nvidia cards. Nvidia drivers on Linux seem to be significantly less cursed
+use Nvidia cards. Nvidia drivers on NixOS seem to be significantly less cursed
 when compared to other distros, however when I built this tower I was building
 it assuming that I would primarily run NixOS on it. This made me pick an AMD
 card even though they have slightly less waifus per second compared to their
@@ -178,7 +178,7 @@ SteamVR and VRChat and then set up my playspace again. I put on the headset and
 things didn't totally work. The overlay was still broken. At this point I was
 starting to have thoughts like:
 
-[Okay, is NixOS broken, Steam broken, SteamVR broken, or am I
+[Okay, is NixOS broken, is Steam broken, is SteamVR broken, or am I
 broken?](conversation://Mara/hmm)
 
 At least I was able to log into VRChat and go to a public world. I went to [The
