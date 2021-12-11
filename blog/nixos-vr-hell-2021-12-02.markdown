@@ -29,7 +29,9 @@ Some huge advantages of this setup include:
   the video encoding fighting for GPU time).
 * Full-body tracking support with the Index lighthouses. This will mostly be for
   me in VRChat and maybe when [working out in Beat Saber
-  streams](https://youtu.be/AvPjHweTFxc). 
+  streams](https://youtu.be/AvPjHweTFxc). I would like to extend this to
+  replicate a conference stage in Unity, but this would be months if not half a
+  year in the future.
 * Not having Facebook in the loop. [We will not be respecting Facebook's name
   change until they file the appropriate court order and get their identity
   documents updated everywhere, if only as revenge for their transphobic
