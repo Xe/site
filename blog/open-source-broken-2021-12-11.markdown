@@ -30,6 +30,8 @@ created a massive hole on accident in the process.
 held up by some random project made by a thankless anonymous person in
 Nebraska.](https://imgs.xkcd.com/comics/dependency.png)
 
+[XKCD #2347: Dependency](https://xkcd.com/2347/)
+
 </center>
 
 All software is made on top of the shoulders of giants. Consider something as
