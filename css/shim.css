@@ -42,3 +42,11 @@ img {
     padding-left: 1em;
     padding-right: 1em;
 }
+
+xeblog-conv:not(:defined) {
+	  display: none;
+}
+
+xeblog-conv:defined {
+	  display: block;
+}
