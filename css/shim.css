@@ -43,13 +43,13 @@ img {
     padding-right: 1em;
 }
 
-xeblog-conv:not(:defined) {
-    display: block;
-    border-left: 0.25ch solid green;
-    padding-left: 1.75ch;
-}
+/* xeblog-conv:not(:defined) { */
+/*     display: block; */
+/*     border-left: 0.25ch solid green; */
+/*     padding-left: 1.75ch; */
+/* } */
 
-xeblog-conv:before:not(:defined) {
-    content: "<"attr(name)">";
-    font-weight: bold;
-}
+/* xeblog-conv:before:not(:defined) { */
+/*     content: "<"attr(name)">"; */
+/*     font-weight: bold; */
+/* } */
