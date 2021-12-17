@@ -44,9 +44,12 @@ img {
 }
 
 xeblog-conv:not(:defined) {
-	  display: none;
+    display: block;
+    border-left: 0.25ch solid green;
+    padding-left: 1.75ch;
 }
 
-xeblog-conv:defined {
-	  display: block;
+xeblog-conv:before:not(:defined) {
+    content: "<"attr(name)">";
+    font-weight: bold;
 }
