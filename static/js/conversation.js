@@ -1,8 +1,8 @@
 import { g, h, x } from "./xeact.min.js";
 import { div, span } from "./xeact-html.min.js";
 
-const mkConversation = (who, mood, message) =>
-      h("div", {className: "conversation gruvbox-dark"}, [
+export const mkConversation = (who, mood, message, extraClasses = "") =>
+      h("div", {className: "conversation gruvbox-dark " + extraClasses}, [
           h("div", {className: "conversation-picture conversation-smol"}, [
               h("picture", {}, [
                   h("source", {type: "image/avif", srcset: `https://cdn.christine.website/file/christine-static/stickers/${who.toLowerCase()}/${mood}.avif`}),

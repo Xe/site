@@ -24,6 +24,8 @@
   <link rel="canonical" href="https://christine.website/@post.link">
 }
 
+<script type="module" src="/static/js/conversation.js"></script>
+
 <script type="application/ld+json">
  @{
      "@@context": "http://schema.org",
@@ -54,6 +56,9 @@
     window.location.replace("@to");
   </script>
 }
+
+<div id="refererNotice"></div>
+<script type="module" src="/static/js/hnwarn.js"></script>
 
 <h1>@post.front_matter.title</h1>
 
@@ -147,4 +152,5 @@
             @}
         @}
 </script>
+
 @:footer_html()

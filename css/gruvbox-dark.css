@@ -1,8 +1,8 @@
 
 
 .gruvbox-dark {
-	background-color: #282828;
-	color: #ebdbb2
+  background-color: #1d2021;
+	color: #f9f5d7
 }
 
 .gruvbox-dark h1,
@@ -171,8 +171,8 @@
 
 @media (prefers-color-scheme: light) {
 	.gruvbox-dark {
-		background-color: #fbf1c7;
-		color: #282828;
+		background-color: #f9f5d7;
+		color: #1d2021;
 	}
 	.gruvbox-dark h1 a:hover,
 	.gruvbox-dark h2 a:hover,
