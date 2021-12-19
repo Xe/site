@@ -29,7 +29,6 @@ export class Conversation extends HTMLElement {
         root.appendChild(h("link", {rel: "stylesheet", href: "/css/hack.css"}));
         root.appendChild(h("link", {rel: "stylesheet", href: "/css/gruvbox-dark.css"}));
         root.appendChild(h("link", {rel: "stylesheet", href: "/css/shim.css"}));
-        root.appendChild(h("style", {textContent: `img { width: 67%; }`}));
         root.appendChild(mkConversation(who, mood, this.childNodes));
     }
 }
