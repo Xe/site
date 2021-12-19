@@ -2,6 +2,12 @@ import { g, x, r, t } from "./xeact.min.js";
 import { div, ahref, br } from "./xeact-html.min.js";
 import { mkConversation } from "./conversation.js";
 
+// list of regexps for potentially problematic referrers to display the nag to
+const FLAGGED_REFERRERS = [
+    /^https?:\/\/((.+)\.)?reddit\.com/i,
+    /^https?:\/\/news\.ycombinator\.com/i,
+];
+
 const addNag = () => {
     let root = g("refererNotice");
     x(root);
@@ -20,19 +26,10 @@ const addNag = () => {
 };
 
 r(() => {
-    switch (document.referrer) {
-    case "https://news.ycombinator.com/":
+    const ref = document.referrer;
+    if (!ref) return;
+
+    if (FLAGGED_REFERRERS.some(r => r.test(ref))) {
         addNag();
-        break;
-    case "https://www.reddit.com/":
-        addNag();
-        break;
-    case "https://old.reddit.com/":
-        addNag();
-        break;
-    case "https://reddit.com/":
-        addNag();
-        break;
     }
 });
-
