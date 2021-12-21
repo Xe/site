@@ -1,12 +1,12 @@
 {
-  "name": "Christine Dodrill",
-  "short_name": "Christine",
+  "name": "Xeblog",
+  "short_name": "Xeblog",
   "theme_color": "#ffcbe4",
   "background_color": "#fa99ca",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "description": "Blog and Resume for Christine Dodrill",
+  "description": "Blog and Resume for Christine Xe",
   "orientation": "any",
   "icons": [
     {
