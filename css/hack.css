@@ -46,13 +46,14 @@ iframe {
 }
 a {
   cursor: pointer;
-  color: #ff2e88;
+  color: #FFA8CE;
   text-decoration: none;
-  border-bottom: 1px solid #ff2e88;
+  border-bottom: 1px solid;
+  border-color: #FFA8CE;
 }
 a:hover {
-  background-color: #ff2e88;
-  color: #fff;
+    background-color: #B3004D;
+    color: #fff;
 }
 .grid {
   display: -ms-flexbox;
