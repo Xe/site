@@ -198,6 +198,19 @@
       color: #B80050;
       border-color: #B80050;
   }
+  .gruvbox-dark a:hover {
+      color: #f9f5d7;
+      background-color: #9E0045;
+      border-color: #9E0045;
+  }
+  .gruvbox-dark a:visited {
+	    color: #53493C;
+	    border-color: #53493C;
+  }
+  .gruvbox-dark a:visited:hover {
+	    color: #fdf4c1;
+	    background-color: #282828;
+  }
 	.gruvbox-dark table {
 		color: #1d2021;
 	}
