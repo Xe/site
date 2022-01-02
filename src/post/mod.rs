@@ -82,6 +82,12 @@ impl Post {
 }
 
 async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Result<Post> {
+    debug!(
+        "loading {}/{}",
+        dir,
+        fname.clone().into_os_string().into_string().unwrap()
+    );
+
     let body = fs::read_to_string(fname.clone())
         .await
         .wrap_err_with(|| format!("can't read {:?}", fname))?;
