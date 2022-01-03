@@ -363,14 +363,15 @@ dependencies = [
 
 [[package]]
 name = "dhall"
-version = "0.10.1"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5a7d7b648a24d2edd4ba9f31fe42c831080522d1cf35bca3522887ba0d802745"
+checksum = "49483fe619f146762fa89c7c840fa1fbf8b534cab0b59622106e8f434bbd4bca"
 dependencies = [
  "abnf_to_pest",
  "annotate-snippets",
  "elsa",
  "hex",
+ "home",
  "itertools 0.9.0",
  "lazy_static",
  "once_cell",
@@ -388,9 +389,9 @@ dependencies = [
 
 [[package]]
 name = "dhall_proc_macros"
-version = "0.5.1"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f64ba6f41d9b223e2e1d7c97a1145a1aa03e57d65e1c9c2baa29f194caf322c9"
+checksum = "df7c81d16870879ef530b07cef32bc6088f98937ab4168106cc8e382a05146bf"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -775,6 +776,15 @@ name = "hex"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
+
+[[package]]
+name = "home"
+version = "0.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2456aef2e6b6a9784192ae780c0f15bc57df0e918585282325e8c8ac27737654"
+dependencies = [
+ "winapi",
+]
 
 [[package]]
 name = "http"
@@ -1790,9 +1800,9 @@ dependencies = [
 
 [[package]]
 name = "serde_dhall"
-version = "0.10.1"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1393976875f3080d8cd1ff54083129e2e6a30d7a62582b67c3eb5924789e8e75"
+checksum = "5212ade489a28b0763867bb60a15169e41d855f3c04c0b26aa3bea50f9770e12"
 dependencies = [
  "dhall",
  "dhall_proc_macros",
