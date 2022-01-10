@@ -45,7 +45,7 @@ let Config =
         { signalboost = [] : List Person.Type
         , authors =
           [ Author::{
-            , name = "Xe"
+            , name = "Xe Iaso"
             , handle = "xe"
             , picUrl = Some "/static/img/avatar.png"
             , link = Some "https://christine.website"

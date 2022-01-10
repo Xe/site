@@ -1,7 +1,7 @@
 [package]
 name = "xesite"
 version = "2.3.0"
-authors = ["Christine Dodrill <me@christine.website>"]
+authors = ["Xe Iaso <me@christine.website>"]
 edition = "2018"
 build = "src/build.rs"
 repository = "https://github.com/Xe/site"

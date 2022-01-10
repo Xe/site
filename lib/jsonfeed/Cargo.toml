@@ -1,5 +1,5 @@
 [package]
-authors = ["Paul Woolcock <paul@woolcock.us>", "Christine Dodrill <me@christine.website>"]
+authors = ["Paul Woolcock <paul@woolcock.us>", "Xe Iaso <me@christine.website>"]
 description = "Parser for the JSONFeed (http://jsonfeed.org) specification\n"
 documentation = "https://docs.rs/jsonfeed"
 homepage = "https://github.com/pwoolcoc/jsonfeed"

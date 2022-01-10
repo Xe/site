@@ -9,7 +9,7 @@
   <title>Xe's Blog</title>
   <updated>@Utc::now().to_rfc3339()</updated>
   <author>
-    <name>Xe</name>
+    <name>Xe Iaso</name>
     <email>me@@christine.website</email>
   </author>
   <link href="https://christine.website/blog.atom" rel="self"/>

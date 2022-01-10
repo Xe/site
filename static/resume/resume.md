@@ -1,8 +1,8 @@
-# Christine Dodrill
+# Xe Iaso
 
 #### Full-stack Engineer
 
-##### Montreal, QC &emsp; [christine.website][homepage]
+##### Ottawa, ON &emsp; [christine.website][homepage]
 
 `Docker`, `Git`, `Go`, `Rust`, `C`, `Stenography`, `DevOps`, `Heroku`, `Continuous
 Integration/Delivery`, `WebAssembly`, `Lua`, `Mindfulness`, `HTTP/2`, `Alpine
@@ -22,6 +22,8 @@ Linux`, `Ubuntu`, `Linux`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`,
 
 - Go programming
 - Nix and NixOS
+- SQL integrations
+- End-user facing blog content and customer support
 
 ### Lightspeed - Expert principal en fiabilité du site &emsp; <small>*2019 - 2020*</small>
 
@@ -132,86 +134,26 @@ Linux`, `Ubuntu`, `Linux`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`,
 - Built new base image for Deis components
 - Research and development on a new builder component
 
-## Portfolio Highlights
-
-### [Olin](https://github.com/Xe/olin)
-
-An embeddable userspace kernel for executing WebAssembly programs.
-The main goal of this is to allow for an easier migration to another CPU
-architecture (such as RISC-V, aarch64 or ppc64be) without having to recompile
-existing code.
-
-I have written multiple blogposts on this project:
-
-- https://christine.website/blog/olin-1-why-09-1-2018
-- https://christine.website/blog/olin-2-the-future-09-5-2018
-- https://christine.website/blog/olin-progress-2019-12-14
-
-As of March 21, 2019, Olin is able to run binaries compiled with [Go 1.12.x
-WebAssembly support](https://github.com/golang/go/wiki/WebAssembly). Olin also
-is known to work on big-endian systems with no changes needed to source code or
-binaries.
-
-It also supports security policies similar to a combination of the OSX sandbox
-profiles and OpenBSD's pledge() system call. This allows users to limit the
-scope of what resources an Olin program can access, including file URLs, the
-amount of ram that can be used or the number of WebAssembly instructions that
-can be executed.
-
-### [Wasmcloud](https://tulpa.dev/within/wasmcloud)
-
-Wasmcloud is a Heroku or AWS Lambda-like functions as a service backend and
-platform for event-driven architecture built on top of WebAssembly. It wraps
-[Olin](https://github.com/Xe/olin) and provides a lot of higher-level
-conveniences for users. I have written [a
-blogpost](https://christine.website/blog/wasmcloud-progress-2019-12-08) on my
-progress and where I'm wanting to go with this project.
-
-### [ilo Kesi](https://github.com/Xe/x/tree/master/discord/ilo-kesi)
-
-A chatbot that parses its commands through the grammar of the constructed
-language [Toki Pona](http://tokipona.org), then figures out what the user is
-asking for using a lookup table and executes that request.
-
-### When Then Zen
-
-[When Then Zen](https://when-then-zen.christine.website) is meditation instructions translated into Gherkin, a-la:
-
-```
-Feature: Anapana (mindfulness via breathing) meditation
-  Background:
-    Given no assumption about meditation background
-    And a willingness to learn
-    And no significant problems with breathing through the body's nose
-    And I am seated or laying down comfortably
-    And no music is playing
-
-  Scenario Outline: mindfulness of breathing
-    As a meditator
-    In order to be mindful of the body's breath
-    When I <verb> through the body's nose
-    Then I focus on the sensations of breath
-    Then I focus on the feelings of breath through the nasal cavity
-    Then I focus on the feelings of breath interacting with the nostrils
-    Then I repeat until done
-
-    Examples:
-      | verb   |
-      | inhale |
-      | exhale |
-```
-
-This has been well-recieved by coworkers, friends and others. I have written more on the subject [here](https://christine.website/blog/when-then-zen-anapana-2018-08-15).
-
 ## Writing
 
-> Articles listed below will be either personal or professional and do not reflect the views of any company or group I am affiliated with. The writing is my own, with the help of others to make things legible.
+> Articles listed below will be either personal or professional and do not
+> reflect the views of any company or group I am affiliated with. The writing is
+> my own, with the help of others to make things legible.
 
 - [My Blog](https://christine.website/blog)
-- [I Put Words on This Webpage so You Have to Listen to Me Now](https://christine.website/blog/experimental-rilkef-2018-11-30)
+- [NAS 101: An intro chat about Network Attached
+  Storage](https://tailscale.com/blog/nas-101/)
+- [The Sisyphean Task Of DNS Client Config on
+  Linux](https://tailscale.com/blog/sisyphean-dns-client-linux/)
 
 I have gotten to the front page of [Hacker News](https://news.ycombinator.com) several times. Here are a few of the comment threads:
 
+- ["Open Source" is Broken](https://news.ycombinator.com/item?id=29522941)
+- [The Surreal Horror of PAM](https://news.ycombinator.com/item?id=29167560)
+- [Systemd: The Good Parts](https://news.ycombinator.com/item?id=27175960)
+- [I Implemented /dev/printerfact in
+  Rust](https://news.ycombinator.com/item?id=26845355)
+- [A Model for Identity in Software](https://news.ycombinator.com/item?id=25978511)
 - [I Put Words on This Webpage so You Have to Listen to Me now](https://news.ycombinator.com/item?id=18577758)
 - [TempleOS: 1 - Installation](https://news.ycombinator.com/item?id=19961082)
 - [WebAssembly on the Server: How System Calls Work](https://news.ycombinator.com/item?id=20066204)
