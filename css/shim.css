@@ -58,8 +58,26 @@ img {
     background-color: #282828;
 }
 
+.logo {
+    background-color: #fdf5d7;
+    -webkit-mask: url("/static/img/xeiaso.svg");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100%;
+    mask: url("/static/img/xeiaso.svg");
+    height: 32px;
+    width: 19px;
+    float: left;
+    display: inline;
+    margin: 3px;
+    vertical-align: middle;
+}
+
 @media (prefers-color-scheme: light) {
     .warning {
         background-color: #fbf1c7;
+    }
+
+    .logo {
+        background-color: #1d2021;
     }
 }
