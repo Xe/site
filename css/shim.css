@@ -68,8 +68,7 @@ img {
     width: 19px;
     float: left;
     display: inline;
-    margin: 3px;
-    vertical-align: middle;
+    margin: 0.5em;
 }
 
 @media (prefers-color-scheme: light) {
