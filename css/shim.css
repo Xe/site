@@ -64,6 +64,8 @@ img {
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: 100%;
     mask: url("/static/img/xeiaso.svg");
+    mask-repeat: no-repeat;
+    mask-size: 100%;
     height: 32px;
     width: 19px;
     float: left;
