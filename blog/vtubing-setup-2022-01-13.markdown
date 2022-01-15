@@ -1,6 +1,7 @@
 ---
 title: How I VTuber
 date: 2022-01-13
+series: vtuber
 tags:
  - ENVtuber
 ---
