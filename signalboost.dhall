@@ -262,4 +262,18 @@ in  [ Person::{
         ]
       , gitLink = "https://github.com/remyabel"
       }
+    , Person:: {
+        , name = "Violet White"
+        , tags = 
+          [ "c++"
+          , "linux"
+          , "python"
+          , "javascript"
+          , "sql"
+          , "lisps"
+          , "rust"
+          , "backend"
+          ]
+        , gitLink = "https://github.com/epsilon-phase
+        
     ]
