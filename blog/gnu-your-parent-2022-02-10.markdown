@@ -7,6 +7,16 @@ tags:
  - rant
 ---
 
+<div class="warning">
+
+[EDIT(2022-02-10 12:47 EST): I apparently misread part of the GNU #guix channel
+rules and made an unreasonable assumption that violators of the rules could be
+banned. I have amended a conversation fragment accordingly. My intent was not to
+lie, but to point out that some users actually need stuff that nonguix provides
+but they just have to know that it exists in the first place.](conversation://Cadey/coffee)
+
+</div>
+
 Or: Ubuntu gives the user more agency about how they want to use their computer
 than fully libre GNU/Linux distros ever can.
 
@@ -111,13 +121,14 @@ computers, thus limiting users' freedom to use Guix at all.
 [But wait, isn't there that one nonguix project that allows you to install a
 normal kernel and Steam?](conversation://Mara/hmm)
 
-[Yeah, but talk about that in the main #guix channel and you risk getting
-banned. GG. You just have to know that it exists and you can't learn that it
-exists without knowing someone that tells you that it exists under the table.
-This means that knowledge of the nonguix project (which may contain tools that
-make it possible to use Guix at all) is hidden from users that may need it
-because it allows users to install proprietary software. This limits user
-freedom from being able to use their computer how they want by making it a
+[Yeah, but talk about that in the main #guix channel and you get told to not
+talk about it. You just have to know that it exists and you can't learn that it
+exists without knowing someone that tells you that it exists under the table,
+like some kind of underground software drug dealer giving you a hit of wifi card
+firmware. This means that knowledge of the nonguix project (which may contain
+tools that make it possible to use Guix at all) is hidden from users that may
+need it because it allows users to install proprietary software. This limits
+user freedom from being able to use their computer how they want by making it a 
 potentially untrustable underground software den instead of something that can
 be properly handled upstream without having to place trust in too many
 places.](conversation://Cadey/angy)
