@@ -126,7 +126,7 @@ places.](conversation://Cadey/angy)
 it.](conversation://Numa/delet)
 
 [Wow, thanks, I'm cured. My wifi card magically stopped existing and now
-everything is happy unicorns farting put rainbows that spawn free puppies and
+everything is happy unicorns farting out rainbows that spawn free puppies and
 everything is saved forever.<br /><br />Again, that doesn't help me with the
 situation that my wifi card doesn't work and I as a user want it to even though
 making it work will require proprietary firmware. This shit is how you get
