@@ -138,22 +138,5 @@ hardware work with fully free software you have limited the ability to actually
 improve the state of the world even with the proprietary firmware the
 manufacturer gives you.](conversation://Cadey/angy)
 
-
-[That hardware is defective by design and you shouldn't use
-it.](conversation://Numa/delet)
-
-[Wow, thanks, I'm cured. My wifi card magically stopped existing and now
-everything is happy unicorns farting put rainbows that spawn free puppies and
-everything is saved forever.<br /><br />Again, that doesn't help me with the
-situation that my wifi card doesn't work and I as a user want it to even though
-making it work will require proprietary firmware. This shit is how you get
-things like the "GPL condom" in the Purism Librem phone, where all the
-proprietary firmware is rigged to be loaded automagically in hardware instead of
-sofware. This limits your ability to tinker with or modify the firmware _even if
-there are legitimate reasons such as critical updates_. So by making the
-hardware work with fully free software you have limited the ability to actually
-improve the state of the world even with the proprietary firmware the
-manufacturer gives you.](conversation://Cadey/angy)
-
 Ubuntu gives the user more agency about how they want to use their computer than
 fully libre GNU/Linux distros ever can.
