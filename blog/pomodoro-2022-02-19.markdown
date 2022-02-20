@@ -23,8 +23,6 @@ Here is an example of one such pomodoro section:
 
 ![](https://cdn.christine.website/file/christine-static/blog/photo_2022-02-19_08-32-13.jpg)
 
-TODO(Sephie): get screenshot of this from apple notes after pom 1 is over
-
 [What the heck are those scribbles? Those look like sick
 noodles!](conversation://Numa/delet)
 
