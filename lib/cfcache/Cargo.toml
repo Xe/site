@@ -15,6 +15,6 @@ tracing = "0.1"
 tracing-futures = "0.2"
 
 [dev-dependencies]
-eyre = "0.6.5"
+eyre = "0.6.6"
 kankyo = "0.3"
 tokio = { version = "1", features = ["full"] }
