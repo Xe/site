@@ -37,6 +37,12 @@ flakes:
 - Flakes let you define system configuration alongside your application code
 - Flakes let you embed the git hash of your configurations repository into
   machines you deploy
+  
+[Something that may also help you understand why flakes matter is that Nix by
+itself is more akin to Dockerfiles. Dockerfiles help you build the software, but
+they don't really help you run or operate the software. Nix flakes is more akin
+to docker-compose, they help you compose packages written in Nix to run across
+machines.](conversation://Mara/happy)
 
 ## Project Templates
 
@@ -76,9 +82,9 @@ or `/etc/nix/nix.conf` and add the following line to it:
 experimental-features = nix-command flakes
 ```
 
-[You may need to restart the Nix daemon here, but if you are unsure how Nix was
-set up on that non-NixOS machine feel free to totally restart your
-computer.](conversation://Mara/hacker)
+[You may need to restart the Nix daemon here with `sudo systemctl restart
+nix-daemon.service`, but if you are unsure how Nix was set up on that non-NixOS
+machine feel free to totally restart your computer.](conversation://Mara/hacker)
 
 Now go to a temporary folder and run these commands to make a folder and create
 a new flake from a template:
@@ -365,7 +371,8 @@ example of a flake that uses this library, see [this
 bot that lives in [`#xeserv`](https://web.libera.chat/#xeserv).
 
 [Adapting this trivial example to use `flake-utils` is an excellent exercise for
-the reader!](conversation://Mara/happy)
+the reader! This library should really be shipped with flakes by
+default.](conversation://Mara/happy)
 
 ## Backwards Compatibility
 
@@ -376,24 +383,13 @@ graft in a Nix flakes project to one without flakes enabled. There is a library
 called [flake-compat](https://github.com/edolstra/flake-compat) that makes this
 easy.
 
-Add the following to your flake inputs:
-
-```nix
-inputs.flake-compat = {
-  url = "github:edolstra/flake-compat";
-  flake = false;
-};
-```
-
-And then create `default.nix` with the following contents:
+Create `default.nix` with the following contents:
 
 ```nix
 (import (
-  let
-    lock = builtins.fromJSON (builtins.readFile ./flake.lock);
-  in fetchTarball {
-    url = "https://github.com/edolstra/flake-compat/archive/${lock.nodes.flake-compat.locked.rev}.tar.gz";
-    sha256 = lock.nodes.flake-compat.locked.narHash; }
+  fetchTarball {
+    url = "https://github.com/edolstra/flake-compat/archive/99f1c2157fba4bfe6211a321fd0ee43199025dbf.tar.gz";
+    sha256 = "0x2jn3vrawwv9xp15674wjz9pixwjyj3j771izayl962zziivbx2"; }
 ) {
   src =  ./.;
 }).defaultNix
@@ -403,11 +399,9 @@ And `shell.nix` with the following contents:
 
 ```nix
 (import (
-  let
-    lock = builtins.fromJSON (builtins.readFile ./flake.lock);
-  in fetchTarball {
-    url = "https://github.com/edolstra/flake-compat/archive/${lock.nodes.flake-compat.locked.rev}.tar.gz";
-    sha256 = lock.nodes.flake-compat.locked.narHash; }
+  fetchTarball {
+    url = "https://github.com/edolstra/flake-compat/archive/99f1c2157fba4bfe6211a321fd0ee43199025dbf.tar.gz";
+    sha256 = "0x2jn3vrawwv9xp15674wjz9pixwjyj3j771izayl962zziivbx2"; }
 ) {
   src =  ./.;
 }).shellNix
@@ -430,6 +424,9 @@ ssh+git://git@github.com:user/repo
 [I'm pretty sure you could use private git repos outside of flakes, however it
 was never really clear to me _how_ you end up doing
 it.](conversation://Cadey/coffee)
+
+[I'm told you can bash Niv into shape enough to do this, but yeah it's never
+really been clear how you do this.](conversation://Mara/hmm)
 
 ## Embed NixOS Modules in Flakes
 
