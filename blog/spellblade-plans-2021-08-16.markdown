@@ -1,6 +1,7 @@
 ---
 title: Spellblade Plans
 date: 2021-08-16
+series: spellblade
 tags:
  - enby
  - nonbinary
