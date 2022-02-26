@@ -1,5 +1,5 @@
 ---
-title: "Spellblade: Chapter 1"
+title: "Spellblade: Part 1"
 date: 2021-10-11
 series: spellblade
 tags:
@@ -10,7 +10,7 @@ tags:
 <p><i>This book is dedicated to all of those that need a ray of hope in these
 trying times.</i></p>
 
-Copyright 2021 Christine Dodrill. All rights reserved.
+Copyright 2021-2022 Xe Iaso. All rights reserved.
 
 This book is a Within Studios publication. Find out more at
 https://withinstudios.itch.io

@@ -1,6 +1,6 @@
 ---
 title: Postdrome
-date: 2022-02-26
+date: 2022-02-25
 series: freenode
 ---
 
