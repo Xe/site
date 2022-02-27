@@ -269,6 +269,17 @@ image.](conversation://Cadey/enby)
 
 ## systemd Portable Services
 
+<div class="warning">
+
+[EDIT(20220227 17:24): It seems that these are even more experimental than I
+thought. systemd Portable Services don't seem to work properly with the
+`StateDirectory` and `CacheDirectory` directives unless you are running a git
+HEAD version of systemd. Maybe you should wait a few years before trying to use
+them for anything serious. By then most of the kinks should be worked
+out.](conversation://Cadey/coffee)
+
+</div>
+
 [systemd Portable Services](https://systemd.io/PORTABLE_SERVICES/) function like
 Docker, but they work at the systemd level and allow you to integrate into
 systemd instead of running on the side of it. This gives you access to systemd's
