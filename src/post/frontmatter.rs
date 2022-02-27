@@ -13,6 +13,13 @@ pub struct Data {
     pub thumb: Option<String>,
     pub show: Option<bool>,
     pub redirect_to: Option<String>,
+    pub vod: Option<Vod>,
+}
+
+#[derive(Eq, PartialEq, Deserialize, Default, Debug, Serialize, Clone)]
+pub struct Vod {
+    pub twitch: String,
+    pub youtube: String,
 }
 
 enum State {

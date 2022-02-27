@@ -68,6 +68,10 @@
 
 <hr />
 
+@if post.front_matter.vod.is_some() {
+    <p>This post was written live on <a href="https://twitch.tv/princessxen">Twitch</a>. You can check out the stream recording on Twitch <a href="@post.front_matter.vod.as_ref().unwrap().twitch">here</a> and on YouTube <a href="@post.front_matter.vod.as_ref().unwrap().youtube">here</a>.</p>
+}
+
 <!-- The button that should be clicked. -->
 <button onclick="share_on_mastodon()">Share on Mastodon</button>
 
