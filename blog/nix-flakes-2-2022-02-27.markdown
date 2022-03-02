@@ -296,7 +296,7 @@ target more than just Ubuntu. In the next few years with more releases of
 systemd, Portable Services should be easier to use and will be more integrated
 with the system than Docker is.](conversation://Mara/hacker)
 
-There is currently an [open pull request](https://systemd.io/PORTABLE_SERVICES/)
+There is currently an [open pull request](https://github.com/NixOS/nixpkgs/pull/161278)
 for adding Portable Service building support to nixpkgs, however we can mess
 around with it today thanks to [my portable-svc
 overlay](https://tulpa.dev/cadey/portable-svc) that copies in the contents of
@@ -519,7 +519,7 @@ $ nix build .#portable
 Copy it to the arch VM with `scp`:
 
 ```console
-$ scp (readlink ./result) xe@10.77.129.208:web-server_20220227.raw
+$ scp $(readlink ./result) xe@10.77.129.208:web-server_20220227.raw
 ```
 
 And finally run `portablectl reattach` to upgrade it:
