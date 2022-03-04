@@ -248,4 +248,18 @@ in  [ Person::{
         ]
       , gitLink = "https://github.com/remyabel"
       }
+   , Person:: {
+      , name = "Krish Jain"
+      , tags =
+        [ "c++"
+        , "linux"
+        , "c"
+        , "python"
+        , "ios"
+        , "nlp"
+        , "machine learning"
+        ]
+      , gitLink = "https://github.com/Krish-sysadmin"
+      , twitter = "https://twitter.com/krishjain02"
+      }
     ]
