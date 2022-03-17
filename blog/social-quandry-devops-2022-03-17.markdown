@@ -1,6 +1,6 @@
 ---
 title: Technical Solutions Poorly Solve Social Problems
-date: 2022-03-18
+date: 2022-03-17
 tags:
  - devops
 ---
@@ -23,11 +23,11 @@ This does not extend to social problems. Technical fixes for social problems are
 how we end up with an inadequate mess that can make the problem a lot worse than
 it was before. You've almost certainly been able to see this in action with
 social media (under the belief that allowing people to connect is so morally
-correct that it will bring in a new age of humanity), but the example I want to
-focus on is the Devops philosophy. Devops is a technical solution (creating a
-new department) that helps work around social problems in workplaces
-(fundamental differences in priorities and end goals), and in the process it
-doesn't solve either very well.
+correct that it will bring in a new age of humanity that will be objectively
+good for everyone). The example I want to focus on today is the Devops
+philosophy. Devops is a technical solution (creating a new department) that
+helps work around social problems in workplaces (fundamental differences in
+priorities and end goals), and in the process it doesn't solve either very well.
 
 There are a lot of skillset paths that you can end up with in tech, but the two
 biggest ones are development (making the computer do new things) and systems
@@ -39,8 +39,7 @@ result of this there is very little natural cross-pollenation between the two
 silos. I have seen this evolve into cultural resentment.
 
 [Not to say that this phenomenon is exclusive to inter-department ties, I've
-also seen it happen intra-department ties over choice of programming
-language.](conversation://Cadey/coffee)
+also seen it happen intra-department over choice of programming language.](conversation://Cadey/coffee)
 
 As far as the main differences go, development usually sees what could be. What
 new things could exist and what steps you need to take to get people there. This
@@ -56,8 +55,18 @@ Development may want to use a new version of the compiler to support a language
 feature that will eliminate a lot of repetitive boilerplate. The sysadmins may
 not be able to ship that compiler in production build toolstack because of
 conflicting dependencies elsewhere, but they may also not want to ship that
-compiler because of fears over trusting unproven software in production. This
-tension builds over a long period of time and can cause problems when the
+compiler because of fears over trusting unproven software in production.
+
+[This fear sounds really odd at first glance, but this is a paraphrased version
+of a problem I actually encountered in the real world at one of my first big
+tech jobs. This place had some unique tech choices such as making their own fork
+of Ubuntu for "stability reasons", and the process to upgrade tools was a huge
+pain on the sysadmin side because it meant retesting and deploying a lot of
+internal tooling, which took a lot longer than the engineering team had patience
+for. This may not be the best example from a technical standpoint, but things
+don't have to make sense for them to exist.](conversation://Cadey/coffee)
+
+This tension builds over a long period of time and can cause problems when the
 sysadmin team is chronically underfunded (due to the idea that they are
 successful when nothing goes wrong, also incurring the problem of success being
 a negative, which can make the sysadmin team look like a money pit when they are
@@ -66,16 +75,17 @@ can also lead to avoidable burnout, unwarranted anxiety issues and unneeded
 suffering on both ends of the conflict.
 
 So given the unstoppable force of development and the immovable wall of
-sysadmin, a philosophical compromise was made. This started out as many things
+sysadmin, an organizational compromise was made. This started out as many things
 with many names, but as the idea rippled throughout people's heads the name
 "devops" ended up sticking. Devops is a hybrid of traditional software
 development and systems administration. On paper this should be great. The silos
-will shrink. People will understand the limits and needs of the others. 
+will shrink. People will understand the limits and needs of the others. Managers
+will be able to have more flexible employees.
 
 Unfortunately though, a lot of the ideas behind devops and the overall
 philosophy really do require you to radically burn down everything and start
 from scratch. This tends to really not be conducive to engineering timetables
-and overall system stability during the age of turbulence.
+and overall system stability during the age of turbulence. 
 
 [What's the problem with burning everything down? Fire cleanses all things and
 purifies away the unworthy!](conversation://Numa/delet)
@@ -91,9 +101,11 @@ Yeah, in practice this ends up being a "new team" or a reboot of an existing
 team in ways that is suddenly compelling or sexy to executives because a new
 buzzword is on the scene. Realistically, devops did end up getting a proper
 definition at a buzzword conference level (being able to handle development and
-deployment of services), but in practice this ends up being just some random
-developers that you tricked into caring about production now while also telling
-them that they're better than the sysadmins. Two jobs for the price of one!
+deployment of services from editor to production), but in practice this ends up
+being just some random developers that you tricked into caring about production
+now while also telling them that they're better than the sysadmins.
+
+[Two jobs for the price of one!](conversation://Numa/delet)
 
 This ends up shafting the sysadmin team even harder because the new fancy devops
 team has things they can talk about as positives for their quarters, so people
@@ -107,12 +119,12 @@ Which one of those do you think gets headcount for new hires?
 This has human costs too. At one of my past jobs doing more sysadmin-y things
 (it was marketed as a devops hybrid role, but the "hybrid" part was more of
 "frantically patch up the sinking ship with code" and not traditional software
-development) and I was the pager bitch for a week at a time. Sleep is really
-essential to helping you function properly at your job. During the times when I
-was pager bitch, there was at least a 1/8 chance that I would be woken up in the
-middle of the night to handle a problem. I had to change my pager tone 15 times
-and still get goosebumps hearing those old sounds nearly a decade later. This
-ended up catalyzing anxiety that I still feel today. I ended up getting addicted
+development). Sleep is really essential to helping you function properly to do
+your job. During the times when I was pager bitch, there was at least a 1/8
+chance that I would be woken up in the middle of the night to handle a problem.
+I had to change my pager tone 15 times and still get goosebumps hearing those
+old sounds nearly a decade later. This ended up being a huge factor in my
+developing anxiety issues that I still feel today. I ended up getting addicted
 to weed really bad for a few years. I admit that I'm really not the most robust
 person in the world, but these things add up.
 
@@ -123,8 +135,6 @@ really didn't help that I was also starting hormone replacement therapy at the
 time, so I was going through second puberty at the time as well. This is the
 kind of human capital cost when dealing with dysfunction like this. I've always
 been kind of afraid to speak up about this.](conversation://Cadey/coffee)
-
-- [ ] What technical problems does devops solve?
 
 However, there are real technical problems that can only really be solved from a
 devops perspective. Tools like Docker would probably never have happened in the
@@ -184,7 +194,8 @@ dysfunction?](conversation://Mara/hmm)
 
 [Yep! Realistically though you can get around this by using exact sha256 hashes
 of the precise Docker image you want, however this isn't the _default_ behavior
-so nobody will really know about it.](conversation://Cadey/coffee)
+so nobody will really know about it. There are ways to work around this with
+tools like Nix, but that is a topic for another day.](conversation://Cadey/coffee)
 
 This is what the devops experience feels like, chaining together tools that
 require careful handling to avoid accidental security flaws in ways that the
@@ -198,28 +209,27 @@ hand as the cloud is sold to executives as good for
 devops.](conversation://Cadey/coffee)
 
 As for how to get out of this mess though, I'm not sure. Like I said, this is a
-_social_ problem. I am a technical solutions kind of person and as such I'm
-really not the right person to ask about all this. However if you really asked
-me to give an answer, I'd say that you could probably get a long way by merging
-the sysadmin team and the development team. This sounds counter-intuitive at
-first. Something that would make sense would be to have "embedded" sysadmins or
-some kind of liason role such as "SRE", but this can only really serve to create
-resentment between people.
+_social_ problem that is trying to be solved through a _business organizational_
+fix. I am a technical solutions kind of person and as such I'm really not the
+right person to ask about all this. I don't want to propose a solution here.
+I've thought out several ideas, but I got nowhere with them fast.
 
-I remember at one of my jobs where I was on such a role, I ended up also having
-to be the tutor on how fundamental parts of the programming language they are
-using work. This one service that was handling a lot of production load had
-issues where it would just panic and die randomly when a very large customer was
-trying to view a list of things that was two orders of magnitude large than
-other customers that use that service. I eventually ended up figuring out where
-the issue was but then I had an even harder time explaining what concurrency
-does at a fundamental level and how race conditions can create undefined
-behavior. I think it ended up being a 3 line fix too.
+I remember at one of my jobs where I was a devops I ended up also having to be
+the tutor on how fundamental parts of the programming language they are using
+work. This one service that was handling a lot of production load had issues
+where it would just panic and die randomly when a very large customer was trying
+to view a list of things that was two orders of magnitude larger than other
+customers that use that service. I eventually ended up figuring out where the
+issue was but then I had an even harder time explaining what concurrency does at
+a fundamental level and how race conditions can make things crash due to
+undefined behavior. I think it ended up being a 3 line fix too.
 
 I guess the thing that would really help with this is education and helping
-people hone their skills as developers. I understand that there's a bell curve
-and not everyone is going to become a programming god overnight, but every
-little bit sets off butterfly effects that will ripple down in other ways.
+people hone their skills as developers. I understand that there's a learning
+curve and not everyone is going to become a programming god overnight, but every
+little bit sets off butterfly effects that will ripple down in other ways. Any
+solution that requires everyone be a programming god isn't viable for anyone,
+including programming gods.
 
 [This whole mentorship thing only really works when the company you work for
 doesn't de-facto punish you for mentoring people like that. If you aren't
@@ -245,8 +255,6 @@ Like I said though, this is hard. A lot of the problems are actually structural
 problems in how companies do the science part of computer science. Structural
 problems cannot be solved overnight. These things take time, effort and patience
 to truly figure out and in the process you will fail to invent a light bulb many
-times over. I think the middle path may end up being some combination of both
-approaches with a healthy barrier around people to prevent them from being
-crushed by the experiments.
-
+times over. Devops is probably a necessary evil, but I really wish that
+situations weren't toxic enough in the first place to require that evil.
 
