@@ -1,16 +1,24 @@
 use crate::{
     app::State,
-    templates::{self, Html, RenderRucte},
+    templates::{self, RenderRucte},
+};
+use axum::{
+    body,
+    extract::Extension,
+    response::{Html, IntoResponse, Response},
 };
 use chrono::{Datelike, Timelike, Utc};
+use hyper::Body;
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::{convert::Infallible, fmt, sync::Arc};
 use tracing::instrument;
-use warp::{
-    http::{Response, StatusCode},
-    Rejection, Reply,
-};
+use warp::{http::StatusCode, Rejection, Reply};
+
+pub mod blog;
+pub mod feeds;
+pub mod gallery;
+pub mod talks;
 
 lazy_static! {
     static ref HIT_COUNTER: IntCounterVec =
@@ -32,76 +40,72 @@ lazy_static! {
 }
 
 #[instrument]
-pub async fn index() -> Result<impl Reply, Rejection> {
+pub async fn index() -> Html<Vec<u8>> {
     HIT_COUNTER.with_label_values(&["index"]).inc();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::index_html(o))
+    let mut result: Vec<u8> = vec![];
+    templates::index_html(&mut result).unwrap();
+    Html(result)
 }
 
 #[instrument]
-pub async fn contact() -> Result<impl Reply, Rejection> {
+pub async fn contact() -> Html<Vec<u8>> {
     HIT_COUNTER.with_label_values(&["contact"]).inc();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::contact_html(o))
+    let mut result: Vec<u8> = vec![];
+    templates::contact_html(&mut result).unwrap();
+    Html(result)
 }
 
 #[instrument]
-pub async fn feeds() -> Result<impl Reply, Rejection> {
+pub async fn feeds() -> Html<Vec<u8>> {
     HIT_COUNTER.with_label_values(&["feeds"]).inc();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::feeds_html(o))
+    let mut result: Vec<u8> = vec![];
+    templates::feeds_html(&mut result).unwrap();
+    Html(result)
 }
 
+#[axum_macros::debug_handler]
 #[instrument(skip(state))]
-pub async fn resume(state: Arc<State>) -> Result<impl Reply, Rejection> {
+pub async fn resume(Extension(state): Extension<Arc<State>>) -> Html<Vec<u8>> {
     HIT_COUNTER.with_label_values(&["resume"]).inc();
     let state = state.clone();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::resume_html(o, Html(state.resume.clone())))
+    let mut result: Vec<u8> = vec![];
+    templates::resume_html(&mut result, templates::Html(state.resume.clone())).unwrap();
+    Html(result)
 }
 
 #[instrument(skip(state))]
-pub async fn patrons(state: Arc<State>) -> Result<impl Reply, Rejection> {
+pub async fn patrons(Extension(state): Extension<Arc<State>>) -> Html<Vec<u8>> {
     HIT_COUNTER.with_label_values(&["patrons"]).inc();
     let state = state.clone();
+    let mut result: Vec<u8> = vec![];
     match &state.patrons {
-        None => Response::builder().status(500).html(|o| {
-            templates::error_html(
-                o,
-                "Could not load patrons, let me know the API token expired again".to_string(),
-            )
-        }),
-        Some(patrons) => Response::builder()
-            .header("Last-Modified", &*LAST_MODIFIED)
-            .html(|o| templates::patrons_html(o, patrons.clone())),
+        None => templates::error_html(
+            &mut result,
+            "Could not load patrons, let me know the API token expired again".to_string(),
+        ),
+        Some(patrons) => templates::patrons_html(&mut result, patrons.clone()),
     }
+    .unwrap();
+    Html(result)
 }
 
+#[axum_macros::debug_handler]
 #[instrument(skip(state))]
-pub async fn signalboost(state: Arc<State>) -> Result<impl Reply, Rejection> {
+pub async fn signalboost(Extension(state): Extension<Arc<State>>) -> Html<Vec<u8>> {
     HIT_COUNTER.with_label_values(&["signalboost"]).inc();
     let state = state.clone();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::signalboost_html(o, state.signalboost.clone()))
+    let mut result: Vec<u8> = vec![];
+    templates::signalboost_html(&mut result, state.signalboost.clone()).unwrap();
+    Html(result)
 }
 
 #[instrument]
-pub async fn not_found() -> Result<impl Reply, Rejection> {
+pub async fn not_found() -> Html<Vec<u8>> {
     HIT_COUNTER.with_label_values(&["not_found"]).inc();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::notfound_html(o, "some path".into()))
+    let mut result: Vec<u8> = vec![];
+    templates::notfound_html(&mut result, "some path".into()).unwrap();
+    Html(result)
 }
-
-pub mod blog;
-pub mod feeds;
-pub mod gallery;
-pub mod talks;
 
 #[derive(Debug, thiserror::Error)]
 struct PostNotFound(String, String);
@@ -167,4 +171,24 @@ pub async fn rejection(err: Rejection) -> Result<impl Reply, Infallible> {
             .unwrap(),
         code,
     ))
+}
+
+#[derive(Debug, Clone, thiserror::Error, derive_more::Display)]
+pub enum Error {
+    SeriesNotFound(String),
+}
+
+impl IntoResponse for Error {
+    fn into_response(self) -> Response {
+        let result: Vec<u8> = vec![];
+        templates::error_html(&mut result, format!("{}", self)).unwrap();
+        let body = body::boxed(result);
+
+        Response::builder()
+            .status(match self {
+                Error::SeriesNotFound(_) => StatusCode::NOT_FOUND,
+            })
+            .body(body)
+            .unwrap()
+    }
 }

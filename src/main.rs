@@ -1,29 +1,21 @@
 #[macro_use]
 extern crate tracing;
 
+use axum::{extract::Extension, routing::get, Router};
 use color_eyre::eyre::Result;
-use hyper::{header::CONTENT_TYPE, Body, Response};
-use prometheus::{Encoder, TextEncoder};
-use std::net::IpAddr;
-use std::str::FromStr;
+use hyper::StatusCode;
 use std::sync::Arc;
-use tokio::net::UnixListener;
-use tokio_stream::wrappers::UnixListenerStream;
-use warp::{path, Filter};
+use tower_http::{services::ServeDir, trace::TraceLayer};
 
 pub mod app;
 pub mod handlers;
 pub mod post;
 pub mod signalboost;
 
-use app::State;
-
 const APPLICATION_NAME: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
-fn with_state(
-    state: Arc<State>,
-) -> impl Filter<Extract = (Arc<State>,), Error = std::convert::Infallible> + Clone {
-    warp::any().map(move || state.clone())
+async fn healthcheck() -> &'static str {
+    "OK"
 }
 
 #[tokio::main]
@@ -43,6 +35,87 @@ async fn main() -> Result<()> {
         .await?,
     );
 
+    let middleware = tower::ServiceBuilder::new()
+        .layer(TraceLayer::new_for_http())
+        .layer(Extension(state.clone()));
+
+    let app = Router::new()
+        .route("/.within/health", get(healthcheck))
+        .route(
+            "/.within/website.within.xesite/new_post",
+            get(handlers::feeds::new_post),
+        )
+        .route("/", get(handlers::index))
+        .route("/contact", get(handlers::contact))
+        .route("/feeds", get(handlers::feeds))
+        .route("/resume", get(handlers::resume))
+        .route("/patrons", get(handlers::patrons))
+        .route("/signalboost", get(handlers::signalboost))
+        // blog
+        .route("/blog", get(handlers::blog::index))
+        .route("/blog/", get(handlers::blog::index))
+        .route("/blog/series", get(handlers::blog::series))
+        .route("/blog/series/:series", get(handlers::blog::series_view))
+        .nest(
+            "/css",
+            axum::routing::get_service(ServeDir::new("./css")).handle_error(
+                |err: std::io::Error| async move {
+                    (
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        format!("unhandled internal server error: {}", err),
+                    )
+                },
+            ),
+        )
+        .nest(
+            "/static",
+            axum::routing::get_service(ServeDir::new("./static")).handle_error(
+                |err: std::io::Error| async move {
+                    (
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        format!("unhandled internal server error: {}", err),
+                    )
+                },
+            ),
+        )
+        .layer(middleware);
+
+    #[cfg(target_os = "linux")]
+    {
+        match sdnotify::SdNotify::from_env() {
+            Ok(ref mut n) => {
+                // shitty heuristic for detecting if we're running in prod
+                tokio::spawn(async {
+                    if let Err(why) = app::poke::the_cloud().await {
+                        error!("Unable to poke the cloud: {}", why);
+                    }
+                });
+
+                n.notify_ready().map_err(|why| {
+                    error!("can't signal readiness to systemd: {}", why);
+                    why
+                })?;
+                n.set_status(format!("hosting {} posts", state.clone().everything.len()))
+                    .map_err(|why| {
+                        error!("can't signal status to systemd: {}", why);
+                        why
+                    })?;
+            }
+            Err(why) => error!("not running under systemd with Type=notify: {}", why),
+        }
+    }
+
+    let addr = &"[::]:3030".parse()?;
+    info!("listening on {}", addr);
+    axum::Server::bind(addr)
+        .serve(app.into_make_service())
+        .await?;
+
+    Ok(())
+}
+
+/*
+async fn old() {
     let healthcheck = warp::get().and(warp::path(".within").and(warp::path("health")).map(|| "OK"));
     let new_post = warp::path!(".within" / "website.within.xesite" / "new_post")
         .and(with_state(state.clone()))
@@ -216,31 +289,6 @@ async fn main() -> Result<()> {
         .with(warp::log(APPLICATION_NAME))
         .recover(handlers::rejection);
 
-    #[cfg(target_os = "linux")]
-    {
-        match sdnotify::SdNotify::from_env() {
-            Ok(ref mut n) => {
-                // shitty heuristic for detecting if we're running in prod
-                tokio::spawn(async {
-                    if let Err(why) = app::poke::the_cloud().await {
-                        error!("Unable to poke the cloud: {}", why);
-                    }
-                });
-
-                n.notify_ready().map_err(|why| {
-                    error!("can't signal readiness to systemd: {}", why);
-                    why
-                })?;
-                n.set_status(format!("hosting {} posts", state.clone().everything.len()))
-                    .map_err(|why| {
-                        error!("can't signal status to systemd: {}", why);
-                        why
-                    })?;
-            }
-            Err(why) => error!("not running under systemd with Type=notify: {}", why),
-        }
-    }
-
     let server = warp::serve(site);
 
     match std::env::var("SOCKPATH") {
@@ -266,5 +314,6 @@ async fn main() -> Result<()> {
         }
     }
 }
+*/
 
 include!(concat!(env!("OUT_DIR"), "/templates.rs"));

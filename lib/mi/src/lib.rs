@@ -1,6 +1,6 @@
 use color_eyre::eyre::Result;
 use reqwest::header;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use tracing::instrument;
 
 const USER_AGENT_BASE: &str = concat!(
@@ -58,7 +58,7 @@ impl Client {
     }
 }
 
-#[derive(Debug, Deserialize, Eq, PartialEq, Clone)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Clone, Serialize)]
 pub struct WebMention {
     pub source: String,
     pub title: Option<String>,
