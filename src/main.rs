@@ -4,12 +4,13 @@ extern crate tracing;
 use axum::{
     body,
     extract::Extension,
+    http::header,
     response::{Html, Response},
     routing::get,
     Router,
 };
 use color_eyre::eyre::Result;
-use http::header::CONTENT_TYPE;
+use http::header::{CACHE_CONTROL, CONTENT_TYPE};
 use hyper::StatusCode;
 use prometheus::{Encoder, TextEncoder};
 use std::{
@@ -21,6 +22,7 @@ use std::{
 use tokio::net::UnixListener;
 use tower_http::{
     services::{ServeDir, ServeFile},
+    set_header::SetResponseHeaderLayer,
     trace::TraceLayer,
 };
 
@@ -58,6 +60,27 @@ async fn main() -> Result<()> {
     let middleware = tower::ServiceBuilder::new()
         .layer(TraceLayer::new_for_http())
         .layer(Extension(state.clone()));
+    // .layer(SetResponseHeaderLayer::overriding(
+    //     header::CACHE_CONTROL,
+    //     |_| header::HeaderValue::from_static("public, max-age=3600, stale-if-error=60"),
+    // ))
+    // .layer(SetResponseHeaderLayer::appending(header::LINK, |_| {
+    //     header::HeaderValue::from_static(
+    //         r#"<https://mi.within.website/api/webmention/accept>; rel="webmention""#,
+    //     )
+    // }))
+    // .layer(SetResponseHeaderLayer::appending(
+    //     header::HeaderName::from_static("x-clacks-overhead"),
+    //     |_| header::HeaderValue::from_static("Ashlynn"),
+    // ))
+    // .layer(SetResponseHeaderLayer::overriding(
+    //     header::HeaderName::from_static("x-hacker"),
+    //     |_| {
+    //         header::HeaderValue::from_static(
+    //             "If you are reading this, check out /signalboost to find people for your team",
+    //         )
+    //     },
+    // ));
 
     let app = Router::new()
         // meta
