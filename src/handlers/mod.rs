@@ -182,7 +182,8 @@ impl IntoResponse for Error {
     fn into_response(self) -> Response {
         let result: Vec<u8> = vec![];
         templates::error_html(&mut result, format!("{}", self)).unwrap();
-        let body = body::boxed(result);
+
+        let body = axum::body::Bytes::copy_from_slice(&result);
 
         Response::builder()
             .status(match self {
