@@ -40,14 +40,12 @@ tokio-stream = { version = "0.1", features = ["net"] }
 tracing = "0.1"
 tracing-futures = "0.2"
 tracing-subscriber = { version = "0.3", features = ["fmt"] }
-warp = "0.3"
 xml-rs = "0.8"
 url = "2"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 
 # workspace dependencies
 cfcache = { path = "./lib/cfcache" }
-go_vanity = { path = "./lib/go_vanity" }
 jsonfeed = { path = "./lib/jsonfeed" }
 mi = { path = "./lib/mi" }
 patreon = { path = "./lib/patreon" }
@@ -65,7 +63,7 @@ features = [ "full" ]
 sdnotify = { version = "0.2", default-features = false }
 
 [build-dependencies]
-ructe = { version = "0.13", features = ["warp02"] }
+ructe = { version = "0.13", features = [ "mime03" ] }
 
 [dev-dependencies]
 pfacts = "0"

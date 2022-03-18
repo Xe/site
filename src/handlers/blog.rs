@@ -1,9 +1,5 @@
-use super::{PostNotFound, SeriesNotFound, LAST_MODIFIED};
-use crate::{
-    app::State,
-    post::Post,
-    templates::{self, RenderRucte},
-};
+use super::Result;
+use crate::{app::State, post::Post, templates};
 use axum::{
     extract::{Extension, Path},
     response::Html,
@@ -12,7 +8,6 @@ use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::sync::Arc;
 use tracing::{error, instrument};
-use warp::{http::Response, Rejection, Reply};
 
 lazy_static! {
     static ref HIT_COUNTER: IntCounterVec = register_int_counter_vec!(
@@ -23,15 +18,15 @@ lazy_static! {
 }
 
 #[instrument(skip(state))]
-pub async fn index(Extension(state): Extension<Arc<State>>) -> Html<Vec<u8>> {
+pub async fn index(Extension(state): Extension<Arc<State>>) -> Result {
     let state = state.clone();
     let mut result: Vec<u8> = vec![];
-    templates::blogindex_html(&mut result, state.blog.clone()).unwrap();
-    Html(result)
+    templates::blogindex_html(&mut result, state.blog.clone())?;
+    Ok(Html(result))
 }
 
 #[instrument(skip(state))]
-pub async fn series(Extension(state): Extension<Arc<State>>) -> Html<Vec<u8>> {
+pub async fn series(Extension(state): Extension<Arc<State>>) -> Result {
     let state = state.clone();
     let mut series: Vec<String> = vec![];
     let mut result: Vec<u8> = vec![];
@@ -45,15 +40,15 @@ pub async fn series(Extension(state): Extension<Arc<State>>) -> Html<Vec<u8>> {
     series.sort();
     series.dedup();
 
-    templates::series_html(&mut result, series).unwrap();
-    Html(result)
+    templates::series_html(&mut result, series)?;
+    Ok(Html(result))
 }
 
 #[instrument(skip(state))]
 pub async fn series_view(
     Path(series): Path<String>,
     Extension(state): Extension<Arc<State>>,
-) -> Result<Html<Vec<u8>>, super::Error> {
+) -> Result {
     let state = state.clone();
     let mut posts: Vec<Post> = vec![];
     let mut result: Vec<u8> = vec![];
@@ -78,7 +73,10 @@ pub async fn series_view(
 }
 
 #[instrument(skip(state))]
-pub async fn post_view(name: String, state: Arc<State>) -> Result<impl Reply, Rejection> {
+pub async fn post_view(
+    Path(name): Path<String>,
+    Extension(state): Extension<Arc<State>>,
+) -> Result {
     let mut want: Option<Post> = None;
 
     for post in &state.blog {
@@ -88,15 +86,15 @@ pub async fn post_view(name: String, state: Arc<State>) -> Result<impl Reply, Re
     }
 
     match want {
-        None => Err(PostNotFound("blog".into(), name).into()),
+        None => Err(super::Error::PostNotFound(name)),
         Some(post) => {
             HIT_COUNTER
                 .with_label_values(&[name.clone().as_str()])
                 .inc();
             let body = templates::Html(post.body_html.clone());
-            Response::builder()
-                .header("Last-Modified", &*LAST_MODIFIED)
-                .html(|o| templates::blogpost_html(o, post, body))
+            let mut result: Vec<u8> = vec![];
+            templates::blogpost_html(&mut result, post, body)?;
+            Ok(Html(result))
         }
     }
 }

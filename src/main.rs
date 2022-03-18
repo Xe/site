@@ -1,16 +1,36 @@
 #[macro_use]
 extern crate tracing;
 
-use axum::{extract::Extension, routing::get, Router};
+use axum::{
+    body,
+    extract::Extension,
+    response::{Html, Response},
+    routing::get,
+    Router,
+};
 use color_eyre::eyre::Result;
+use http::header::CONTENT_TYPE;
 use hyper::StatusCode;
-use std::sync::Arc;
-use tower_http::{services::ServeDir, trace::TraceLayer};
+use prometheus::{Encoder, TextEncoder};
+use std::{
+    env,
+    net::{IpAddr, SocketAddr},
+    str::FromStr,
+    sync::Arc,
+};
+use tokio::net::UnixListener;
+use tower_http::{
+    services::{ServeDir, ServeFile},
+    trace::TraceLayer,
+};
 
 pub mod app;
 pub mod handlers;
 pub mod post;
 pub mod signalboost;
+
+mod domainsocket;
+use domainsocket::*;
 
 const APPLICATION_NAME: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
@@ -27,7 +47,7 @@ async fn main() -> Result<()> {
 
     let state = Arc::new(
         app::init(
-            std::env::var("CONFIG_FNAME")
+            env::var("CONFIG_FNAME")
                 .unwrap_or("./config.dhall".into())
                 .as_str()
                 .into(),
@@ -40,22 +60,85 @@ async fn main() -> Result<()> {
         .layer(Extension(state.clone()));
 
     let app = Router::new()
+        // meta
         .route("/.within/health", get(healthcheck))
         .route(
             "/.within/website.within.xesite/new_post",
             get(handlers::feeds::new_post),
         )
+        .route("/jsonfeed", get(go_vanity))
+        .route("/metrics", get(metrics))
+        .route(
+            "/sw.js",
+            axum::routing::get_service(ServeFile::new("./static/js/sw.js")).handle_error(
+                |err: std::io::Error| async move {
+                    (
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        format!("unhandled internal server error: {}", err),
+                    )
+                },
+            ),
+        )
+        .route(
+            "/.well-known/assetlinks.json",
+            axum::routing::get_service(ServeFile::new("./static/assetlinks.json")).handle_error(
+                |err: std::io::Error| async move {
+                    (
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        format!("unhandled internal server error: {}", err),
+                    )
+                },
+            ),
+        )
+        .route(
+            "/robots.txt",
+            axum::routing::get_service(ServeFile::new("./static/robots.txt")).handle_error(
+                |err: std::io::Error| async move {
+                    (
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        format!("unhandled internal server error: {}", err),
+                    )
+                },
+            ),
+        )
+        .route(
+            "/favicon.ico",
+            axum::routing::get_service(ServeFile::new("./static/favicon/favicon.ico"))
+                .handle_error(|err: std::io::Error| async move {
+                    (
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        format!("unhandled internal server error: {}", err),
+                    )
+                }),
+        )
+        // static pages
         .route("/", get(handlers::index))
         .route("/contact", get(handlers::contact))
         .route("/feeds", get(handlers::feeds))
         .route("/resume", get(handlers::resume))
         .route("/patrons", get(handlers::patrons))
         .route("/signalboost", get(handlers::signalboost))
+        // feeds
+        .route("/blog.json", get(handlers::feeds::jsonfeed))
+        .route("/blog.atom", get(handlers::feeds::atom))
+        .route("/blog.rss", get(handlers::feeds::rss))
         // blog
         .route("/blog", get(handlers::blog::index))
         .route("/blog/", get(handlers::blog::index))
+        .route("/blog/:name", get(handlers::blog::post_view))
         .route("/blog/series", get(handlers::blog::series))
         .route("/blog/series/:series", get(handlers::blog::series_view))
+        // gallery
+        .route("/gallery", get(handlers::gallery::index))
+        .route("/gallery/", get(handlers::gallery::index))
+        .route("/gallery/:name", get(handlers::gallery::post_view))
+        // talks
+        .route("/talks", get(handlers::talks::index))
+        .route("/talks/", get(handlers::talks::index))
+        .route("/talks/:name", get(handlers::talks::post_view))
+        // junk google wants
+        .route("/sitemap.xml", get(handlers::feeds::sitemap))
+        // static files
         .nest(
             "/css",
             axum::routing::get_service(ServeDir::new("./css")).handle_error(
@@ -105,215 +188,51 @@ async fn main() -> Result<()> {
         }
     }
 
-    let addr = &"[::]:3030".parse()?;
-    info!("listening on {}", addr);
-    axum::Server::bind(addr)
-        .serve(app.into_make_service())
-        .await?;
+    match std::env::var("SOCKPATH") {
+        Ok(sockpath) => {
+            let uds = UnixListener::bind(&sockpath)?;
+            axum::Server::builder(ServerAccept { uds })
+                .serve(app.into_make_service_with_connect_info::<UdsConnectInfo, _>())
+                .await?;
+        }
+        Err(_) => {
+            let addr: SocketAddr = (
+                IpAddr::from_str(&env::var("HOST").unwrap_or("::".into()))?,
+                env::var("PORT").unwrap_or("3030".into()).parse::<u16>()?,
+            )
+                .into();
+            info!("listening on {}", addr);
+            axum::Server::bind(&addr)
+                .serve(app.into_make_service())
+                .await?;
+        }
+    }
 
     Ok(())
 }
 
-/*
-async fn old() {
-    let healthcheck = warp::get().and(warp::path(".within").and(warp::path("health")).map(|| "OK"));
-    let new_post = warp::path!(".within" / "website.within.xesite" / "new_post")
-        .and(with_state(state.clone()))
-        .and_then(handlers::feeds::new_post);
-
-    let base = warp::path!("blog" / ..);
-    let blog_index = base
-        .and(warp::path::end())
-        .and(with_state(state.clone()))
-        .and_then(handlers::blog::index);
-    let series = base
-        .and(warp::path!("series").and(with_state(state.clone()).and_then(handlers::blog::series)));
-    let series_view = base.and(
-        warp::path!("series" / String)
-            .and(with_state(state.clone()))
-            .and(warp::get())
-            .and_then(handlers::blog::series_view),
-    );
-    let post_view = base.and(
-        warp::path!(String)
-            .and(with_state(state.clone()))
-            .and(warp::get())
-            .and_then(handlers::blog::post_view),
-    );
-
-    let gallery_base = warp::path!("gallery" / ..);
-    let gallery_index = gallery_base
-        .and(warp::path::end())
-        .and(with_state(state.clone()))
-        .and_then(handlers::gallery::index);
-    let gallery_post_view = gallery_base.and(
-        warp::path!(String)
-            .and(with_state(state.clone()))
-            .and(warp::get())
-            .and_then(handlers::gallery::post_view),
-    );
-
-    let talk_base = warp::path!("talks" / ..);
-    let talk_index = talk_base
-        .and(warp::path::end())
-        .and(with_state(state.clone()))
-        .and_then(handlers::talks::index);
-    let talk_post_view = talk_base.and(
-        warp::path!(String)
-            .and(with_state(state.clone()))
-            .and(warp::get())
-            .and_then(handlers::talks::post_view),
-    );
-
-    let index = warp::get().and(path::end().and_then(handlers::index));
-    let contact = warp::path!("contact").and_then(handlers::contact);
-    let feeds = warp::path!("feeds").and_then(handlers::feeds);
-    let resume = warp::path!("resume")
-        .and(with_state(state.clone()))
-        .and_then(handlers::resume);
-    let signalboost = warp::path!("signalboost")
-        .and(with_state(state.clone()))
-        .and_then(handlers::signalboost);
-    let patrons = warp::path!("patrons")
-        .and(with_state(state.clone()))
-        .and_then(handlers::patrons);
-
-    let files = warp::path("static")
-        .and(warp::fs::dir("./static"))
-        .map(|reply| {
-            warp::reply::with_header(
-                reply,
-                "Cache-Control",
-                "public, max-age=86400, stale-if-error=60",
-            )
-        });
-
-    let css = warp::path("css").and(warp::fs::dir("./css")).map(|reply| {
-        warp::reply::with_header(
-            reply,
-            "Cache-Control",
-            "public, max-age=86400, stale-if-error=60",
-        )
-    });
-
-    let sw = warp::path("sw.js").and(warp::fs::file("./static/js/sw.js"));
-    let robots = warp::path("robots.txt").and(warp::fs::file("./static/robots.txt"));
-    let favicon = warp::path("favicon.ico").and(warp::fs::file("./static/favicon/favicon.ico"));
-
-    let jsonfeed = warp::path("blog.json")
-        .and(with_state(state.clone()))
-        .and(warp::header::optional("if-none-match"))
-        .and_then(handlers::feeds::jsonfeed);
-    let atom = warp::path("blog.atom")
-        .and(with_state(state.clone()))
-        .and(warp::header::optional("if-none-match"))
-        .and_then(handlers::feeds::atom);
-    let rss = warp::path("blog.rss")
-        .and(with_state(state.clone()))
-        .and(warp::header::optional("if-none-match"))
-        .and_then(handlers::feeds::rss);
-    let sitemap = warp::path("sitemap.xml")
-        .and(with_state(state.clone()))
-        .and_then(handlers::feeds::sitemap);
-    let asset_links = warp::path!(".well-known" / "assetlinks.json")
-        .and(warp::fs::file("./static/assetlinks.json"));
-
-    let go_vanity_jsonfeed = warp::path("jsonfeed")
-        .and(warp::any().map(move || "christine.website/jsonfeed"))
-        .and(warp::any().map(move || "https://tulpa.dev/Xe/jsonfeed"))
-        .and(warp::any().map(move || "master"))
-        .and_then(go_vanity::gitea);
-
-    let metrics_endpoint = warp::path("metrics").and(warp::path::end()).map(move || {
-        let encoder = TextEncoder::new();
-        let metric_families = prometheus::gather();
-        let mut buffer = vec![];
-        encoder.encode(&metric_families, &mut buffer).unwrap();
-        Response::builder()
-            .status(200)
-            .header(CONTENT_TYPE, encoder.format_type())
-            .body(Body::from(buffer))
-            .unwrap()
-    });
-
-    let static_pages = index
-        .or(feeds.or(asset_links))
-        .or(resume.or(signalboost))
-        .or(patrons)
-        .or(jsonfeed.or(atom.or(sitemap)).or(rss))
-        .or(favicon.or(robots).or(sw))
-        .or(contact.or(new_post))
-        .map(|reply| {
-            warp::reply::with_header(
-                reply,
-                "Cache-Control",
-                "public, max-age=86400, stale-if-error=60",
-            )
-        });
-
-    let dynamic_pages = blog_index
-        .or(series.or(series_view).or(post_view))
-        .or(gallery_index.or(gallery_post_view))
-        .or(talk_index.or(talk_post_view))
-        .map(|reply| {
-            warp::reply::with_header(
-                reply,
-                "Cache-Control",
-                "public, max-age=600, stale-if-error=60",
-            )
-        });
-
-    let site = static_pages
-        .or(dynamic_pages)
-        .or(healthcheck.or(metrics_endpoint).or(go_vanity_jsonfeed))
-        .or(files.or(css))
-        .map(|reply| {
-            warp::reply::with_header(
-                reply,
-                "X-Hacker",
-                "If you are reading this, check out /signalboost to find people for your team",
-            )
-        })
-        .map(|reply| warp::reply::with_header(reply, "X-Clacks-Overhead", "GNU Ashlynn"))
-        .map(|reply| {
-            warp::reply::with_header(
-                reply,
-                "Link",
-                format!(
-                    r#"<{}>; rel="webmention""#,
-                    std::env::var("WEBMENTION_URL")
-                        .unwrap_or("https://mi.within.website/api/webmention/accept".to_string())
-                ),
-            )
-        })
-        .with(warp::log(APPLICATION_NAME))
-        .recover(handlers::rejection);
-
-    let server = warp::serve(site);
-
-    match std::env::var("SOCKPATH") {
-        Ok(sockpath) => {
-            let _ = std::fs::remove_file(&sockpath);
-            let listener = UnixListener::bind(sockpath)?;
-            let incoming = UnixListenerStream::new(listener);
-            server.run_incoming(incoming).await;
-
-            Ok(())
-        }
-        Err(_) => {
-            server
-                .run((
-                    IpAddr::from_str(&std::env::var("HOST").unwrap_or("::".into()))?,
-                    std::env::var("PORT")
-                        .unwrap_or("3030".into())
-                        .parse::<u16>()?,
-                ))
-                .await;
-
-            Ok(())
-        }
-    }
+async fn metrics() -> Response {
+    let encoder = TextEncoder::new();
+    let metric_families = prometheus::gather();
+    let mut buffer = vec![];
+    encoder.encode(&metric_families, &mut buffer).unwrap();
+    Response::builder()
+        .status(200)
+        .header(CONTENT_TYPE, encoder.format_type())
+        .body(body::boxed(body::Full::from(buffer)))
+        .unwrap()
 }
-*/
+
+async fn go_vanity() -> Html<Vec<u8>> {
+    let mut buffer: Vec<u8> = vec![];
+    templates::gitea_html(
+        &mut buffer,
+        "christine.website/jsonfeed",
+        "https://christine.website/metrics",
+        "master",
+    )
+    .unwrap();
+    Html(buffer)
+}
 
 include!(concat!(env!("OUT_DIR"), "/templates.rs"));
