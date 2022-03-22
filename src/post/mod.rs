@@ -1,13 +1,13 @@
 use chrono::prelude::*;
 use color_eyre::eyre::{eyre, Result, WrapErr};
 use glob::glob;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::{borrow::Borrow, cmp::Ordering, path::PathBuf};
 use tokio::fs;
 
 pub mod frontmatter;
 
-#[derive(Eq, PartialEq, Debug, Clone)]
+#[derive(Eq, PartialEq, Debug, Clone, Serialize, Deserialize)]
 pub struct Post {
     pub front_matter: frontmatter::Data,
     pub link: String,
@@ -19,7 +19,7 @@ pub struct Post {
 }
 
 /// Used with the Android app to show information in a widget.
-#[derive(Eq, PartialEq, Debug, Clone, Serialize)]
+#[derive(Eq, PartialEq, Debug, Clone, Serialize, Deserialize)]
 pub struct NewPost {
     pub title: String,
     pub summary: String,

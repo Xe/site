@@ -1,16 +1,20 @@
-use crate::{
-    app::State,
-    templates::{self, Html, RenderRucte},
+use crate::{app::State, templates};
+use axum::{
+    body,
+    extract::Extension,
+    http::StatusCode,
+    response::{Html, IntoResponse, Response},
 };
 use chrono::{Datelike, Timelike, Utc};
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
-use std::{convert::Infallible, fmt, sync::Arc};
+use std::sync::Arc;
 use tracing::instrument;
-use warp::{
-    http::{Response, StatusCode},
-    Rejection, Reply,
-};
+
+pub mod blog;
+pub mod feeds;
+pub mod gallery;
+pub mod talks;
 
 lazy_static! {
     static ref HIT_COUNTER: IntCounterVec =
@@ -32,139 +36,104 @@ lazy_static! {
 }
 
 #[instrument]
-pub async fn index() -> Result<impl Reply, Rejection> {
+pub async fn index() -> Result {
     HIT_COUNTER.with_label_values(&["index"]).inc();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::index_html(o))
+    let mut result: Vec<u8> = vec![];
+    templates::index_html(&mut result)?;
+    Ok(Html(result))
 }
 
 #[instrument]
-pub async fn contact() -> Result<impl Reply, Rejection> {
+pub async fn contact() -> Result {
     HIT_COUNTER.with_label_values(&["contact"]).inc();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::contact_html(o))
+    let mut result: Vec<u8> = vec![];
+    templates::contact_html(&mut result)?;
+    Ok(Html(result))
 }
 
 #[instrument]
-pub async fn feeds() -> Result<impl Reply, Rejection> {
+pub async fn feeds() -> Result {
     HIT_COUNTER.with_label_values(&["feeds"]).inc();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::feeds_html(o))
+    let mut result: Vec<u8> = vec![];
+    templates::feeds_html(&mut result)?;
+    Ok(Html(result))
 }
 
+#[axum_macros::debug_handler]
 #[instrument(skip(state))]
-pub async fn resume(state: Arc<State>) -> Result<impl Reply, Rejection> {
+pub async fn resume(Extension(state): Extension<Arc<State>>) -> Result {
     HIT_COUNTER.with_label_values(&["resume"]).inc();
     let state = state.clone();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::resume_html(o, Html(state.resume.clone())))
+    let mut result: Vec<u8> = vec![];
+    templates::resume_html(&mut result, templates::Html(state.resume.clone()))?;
+    Ok(Html(result))
 }
 
 #[instrument(skip(state))]
-pub async fn patrons(state: Arc<State>) -> Result<impl Reply, Rejection> {
+pub async fn patrons(Extension(state): Extension<Arc<State>>) -> Result {
     HIT_COUNTER.with_label_values(&["patrons"]).inc();
     let state = state.clone();
+    let mut result: Vec<u8> = vec![];
     match &state.patrons {
-        None => Response::builder().status(500).html(|o| {
-            templates::error_html(
-                o,
-                "Could not load patrons, let me know the API token expired again".to_string(),
-            )
-        }),
-        Some(patrons) => Response::builder()
-            .header("Last-Modified", &*LAST_MODIFIED)
-            .html(|o| templates::patrons_html(o, patrons.clone())),
+        None => Err(Error::NoPatrons),
+        Some(patrons) => {
+            templates::patrons_html(&mut result, patrons.clone())?;
+            Ok(Html(result))
+        }
     }
 }
 
+#[axum_macros::debug_handler]
 #[instrument(skip(state))]
-pub async fn signalboost(state: Arc<State>) -> Result<impl Reply, Rejection> {
+pub async fn signalboost(Extension(state): Extension<Arc<State>>) -> Result {
     HIT_COUNTER.with_label_values(&["signalboost"]).inc();
     let state = state.clone();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::signalboost_html(o, state.signalboost.clone()))
+    let mut result: Vec<u8> = vec![];
+    templates::signalboost_html(&mut result, state.signalboost.clone())?;
+    Ok(Html(result))
 }
 
 #[instrument]
-pub async fn not_found() -> Result<impl Reply, Rejection> {
+pub async fn not_found() -> Result {
     HIT_COUNTER.with_label_values(&["not_found"]).inc();
-    Response::builder()
-        .header("Last-Modified", &*LAST_MODIFIED)
-        .html(|o| templates::notfound_html(o, "some path".into()))
+    let mut result: Vec<u8> = vec![];
+    templates::notfound_html(&mut result, "some path".into())?;
+    Ok(Html(result))
 }
-
-pub mod blog;
-pub mod feeds;
-pub mod gallery;
-pub mod talks;
 
 #[derive(Debug, thiserror::Error)]
-struct PostNotFound(String, String);
+pub enum Error {
+    #[error("series not found: {0}")]
+    SeriesNotFound(String),
 
-impl fmt::Display for PostNotFound {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "not found: {}/{}", self.0, self.1)
-    }
+    #[error("post not found: {0}")]
+    PostNotFound(String),
+
+    #[error("patreon key not working, poke me to get this fixed")]
+    NoPatrons,
+
+    #[error("io error: {0}")]
+    IO(#[from] std::io::Error),
+
+    #[error("axum http error: {0}")]
+    AxumHTTP(#[from] axum::http::Error),
 }
 
-impl warp::reject::Reject for PostNotFound {}
+pub type Result<T = Html<Vec<u8>>> = std::result::Result<T, Error>;
 
-#[derive(Debug, thiserror::Error)]
-struct SeriesNotFound(String);
+impl IntoResponse for Error {
+    fn into_response(self) -> Response {
+        let mut result: Vec<u8> = vec![];
+        templates::error_html(&mut result, format!("{}", self)).unwrap();
 
-impl fmt::Display for SeriesNotFound {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.0)
-    }
-}
+        let body = body::boxed(body::Full::from(result));
 
-impl warp::reject::Reject for SeriesNotFound {}
-
-lazy_static! {
-    static ref REJECTION_COUNTER: IntCounterVec = register_int_counter_vec!(
-        opts!("rejections", "Number of rejections by kind"),
-        &["kind"]
-    )
-    .unwrap();
-}
-
-#[instrument]
-pub async fn rejection(err: Rejection) -> Result<impl Reply, Infallible> {
-    let path: String;
-    let code;
-
-    if err.is_not_found() {
-        REJECTION_COUNTER.with_label_values(&["404"]).inc();
-        path = "".into();
-        code = StatusCode::NOT_FOUND;
-    } else if let Some(SeriesNotFound(series)) = err.find() {
-        REJECTION_COUNTER
-            .with_label_values(&["SeriesNotFound"])
-            .inc();
-        log::error!("invalid series {}", series);
-        path = format!("/blog/series/{}", series);
-        code = StatusCode::NOT_FOUND;
-    } else if let Some(PostNotFound(kind, name)) = err.find() {
-        REJECTION_COUNTER.with_label_values(&["PostNotFound"]).inc();
-        log::error!("unknown post {}/{}", kind, name);
-        path = format!("/{}/{}", kind, name);
-        code = StatusCode::NOT_FOUND;
-    } else {
-        REJECTION_COUNTER.with_label_values(&["Other"]).inc();
-        log::error!("unhandled rejection: {:?}", err);
-        path = format!("weird rejection: {:?}", err);
-        code = StatusCode::INTERNAL_SERVER_ERROR;
-    }
-
-    Ok(warp::reply::with_status(
         Response::builder()
-            .html(|o| templates::notfound_html(o, path))
-            .unwrap(),
-        code,
-    ))
+            .status(match self {
+                Error::SeriesNotFound(_) | Error::PostNotFound(_) => StatusCode::NOT_FOUND,
+                _ => StatusCode::INTERNAL_SERVER_ERROR,
+            })
+            .body(body)
+            .unwrap()
+    }
 }
