@@ -3,6 +3,6 @@
 
 filename="${1%.*}"
 
-cwebp ${filename}.png -q 75 -o ${filename}.webp
-avifenc ${filename}.png -o ${filename}.avif -s 0 -d 8 --min 48 --max 48 --minalpha 48 --maxalpha 48
-pngcrush ${filename}.png
+cwebp "${filename}".png -q 75 -o "${filename}".webp
+avifenc "${filename}".png -o "${filename}".avif -s 0 -d 8 --min 48 --max 48 --minalpha 48 --maxalpha 48
+pngcrush "${filename}".png
