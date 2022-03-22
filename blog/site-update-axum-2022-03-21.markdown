@@ -36,7 +36,7 @@ on.
 
 When I went out framework shopping, I tried a few things and got reccomendations
 from a trusted friend before I finally settled on axum as the heart of this
-website. Axum has a few major advantages that bbrought me "in the door":
+website. Axum has a few major advantages that brought me "in the door":
 
 - It's maintained by the tokio team
 - It leverages the type system of Rust to make writing handlers easier
