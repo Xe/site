@@ -4,16 +4,17 @@ extern crate tracing;
 use axum::{
     body,
     extract::Extension,
-    http::header::{self, HeaderValue, CACHE_CONTROL, CONTENT_TYPE},
+    http::header::{self, HeaderValue, CONTENT_TYPE},
     response::{Html, Response},
-    routing::get,
+    routing::{get, get_service},
     Router,
 };
 use color_eyre::eyre::Result;
 use hyper::StatusCode;
 use prometheus::{Encoder, TextEncoder};
+use sdnotify::SdNotify;
 use std::{
-    env,
+    env, io,
     net::{IpAddr, SocketAddr},
     str::FromStr,
     sync::Arc,
@@ -32,6 +33,8 @@ pub mod signalboost;
 
 mod domainsocket;
 use domainsocket::*;
+
+use crate::app::poke;
 
 const APPLICATION_NAME: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
@@ -109,8 +112,8 @@ async fn main() -> Result<()> {
         .route("/metrics", get(metrics))
         .route(
             "/sw.js",
-            axum::routing::get_service(ServeFile::new("./static/js/sw.js")).handle_error(
-                |err: std::io::Error| async move {
+            get_service(ServeFile::new("./static/js/sw.js")).handle_error(
+                |err: io::Error| async move {
                     (
                         StatusCode::INTERNAL_SERVER_ERROR,
                         format!("unhandled internal server error: {}", err),
@@ -120,8 +123,8 @@ async fn main() -> Result<()> {
         )
         .route(
             "/.well-known/assetlinks.json",
-            axum::routing::get_service(ServeFile::new("./static/assetlinks.json")).handle_error(
-                |err: std::io::Error| async move {
+            get_service(ServeFile::new("./static/assetlinks.json")).handle_error(
+                |err: io::Error| async move {
                     (
                         StatusCode::INTERNAL_SERVER_ERROR,
                         format!("unhandled internal server error: {}", err),
@@ -131,8 +134,8 @@ async fn main() -> Result<()> {
         )
         .route(
             "/robots.txt",
-            axum::routing::get_service(ServeFile::new("./static/robots.txt")).handle_error(
-                |err: std::io::Error| async move {
+            get_service(ServeFile::new("./static/robots.txt")).handle_error(
+                |err: io::Error| async move {
                     (
                         StatusCode::INTERNAL_SERVER_ERROR,
                         format!("unhandled internal server error: {}", err),
@@ -142,13 +145,14 @@ async fn main() -> Result<()> {
         )
         .route(
             "/favicon.ico",
-            axum::routing::get_service(ServeFile::new("./static/favicon/favicon.ico"))
-                .handle_error(|err: std::io::Error| async move {
+            get_service(ServeFile::new("./static/favicon/favicon.ico")).handle_error(
+                |err: io::Error| async move {
                     (
                         StatusCode::INTERNAL_SERVER_ERROR,
                         format!("unhandled internal server error: {}", err),
                     )
-                }),
+                },
+            ),
         )
         // static pages
         .route("/", get(handlers::index))
@@ -180,35 +184,31 @@ async fn main() -> Result<()> {
         // static files
         .nest(
             "/css",
-            axum::routing::get_service(ServeDir::new("./css")).handle_error(
-                |err: std::io::Error| async move {
-                    (
-                        StatusCode::INTERNAL_SERVER_ERROR,
-                        format!("unhandled internal server error: {}", err),
-                    )
-                },
-            ),
+            get_service(ServeDir::new("./css")).handle_error(|err: io::Error| async move {
+                (
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    format!("unhandled internal server error: {}", err),
+                )
+            }),
         )
         .nest(
             "/static",
-            axum::routing::get_service(ServeDir::new("./static")).handle_error(
-                |err: std::io::Error| async move {
-                    (
-                        StatusCode::INTERNAL_SERVER_ERROR,
-                        format!("unhandled internal server error: {}", err),
-                    )
-                },
-            ),
+            get_service(ServeDir::new("./static")).handle_error(|err: io::Error| async move {
+                (
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    format!("unhandled internal server error: {}", err),
+                )
+            }),
         )
         .layer(middleware);
 
     #[cfg(target_os = "linux")]
     {
-        match sdnotify::SdNotify::from_env() {
+        match SdNotify::from_env() {
             Ok(ref mut n) => {
                 // shitty heuristic for detecting if we're running in prod
                 tokio::spawn(async {
-                    if let Err(why) = app::poke::the_cloud().await {
+                    if let Err(why) = poke::the_cloud().await {
                         error!("Unable to poke the cloud: {}", why);
                     }
                 });
