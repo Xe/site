@@ -229,6 +229,7 @@ async fn main() -> Result<()> {
 
     match std::env::var("SOCKPATH") {
         Ok(sockpath) => {
+            let _ = std::fs::remove_file(&sockpath);
             let uds = UnixListener::bind(&sockpath)?;
             axum::Server::builder(ServerAccept { uds })
                 .serve(app.into_make_service_with_connect_info::<UdsConnectInfo, _>())
