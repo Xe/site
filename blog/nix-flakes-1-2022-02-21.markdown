@@ -418,7 +418,7 @@ world. To use a private repo, your flake input URL should look something like
 this:
 
 ```
-ssh+git://git@github.com:user/repo
+git+ssh://git@github.com:user/repo
 ```
 
 [I'm pretty sure you could use private git repos outside of flakes, however it
