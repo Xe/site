@@ -136,7 +136,10 @@ Then you can look at `flake.nix` to see what's up:
           pkgs = nixpkgsFor.${system};
         in
         {
-          go-hello = pkgs.buildGoModule {
+          # The default package for 'nix build'. This makes sense if the
+          # flake provides only one package or there is a clear "main"
+          # package.
+          default = pkgs.buildGoModule {
             pname = "go-hello";
             inherit version;
             # In 'nix develop', we don't need a copy of the source tree
@@ -156,11 +159,6 @@ Then you can look at `flake.nix` to see what's up:
             vendorSha256 = "sha256-pQpattmS9VmO3ZIQUFn66az8GSmB4IvYhTTCFn6SUmo=";
           };
         });
-
-      # The default package for 'nix build'. This makes sense if the
-      # flake provides only one package or there is a clear "main"
-      # package.
-      defaultPackage = forAllSystems (system: self.packages.${system}.go-hello);
     };
 }
 ```
@@ -197,7 +195,6 @@ Let's take a closer look at the higher level things in the flake:
   
   outputs = { self, nixpkgs }: {
     packages = { ... };
-    defaultPackage = { ... };
   };
 }
 ```
@@ -462,7 +459,7 @@ nixosModules.bot = { config, lib, ... }: {
         Group = "mara-bot";
         Restart = "always";
         WorkingDirectory = "/var/lib/mara-bot";
-        ExecStart = "${self.defaultPackage."${system}"}/bin/mara";
+        ExecStart = "${self.packages."${system}".default}/bin/mara";
       };
     };
   };
