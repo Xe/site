@@ -62,7 +62,7 @@ text to your recruiting emails (before you brag about fundraising is probably
 best, I tune out about then):
 
 > If I got your name incorrect, please let me know what name/pronouns you would
-> like me > to update our system to use. I got this name from $SOURCE.
+> like me to update our system to use. I got this name from $SOURCE.
 
 Adding the source of where you got that name from can help make this less
 stressful for gender-diverse people. People's names are spattered everywhere
