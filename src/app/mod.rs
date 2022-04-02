@@ -9,14 +9,9 @@ pub mod poke;
 
 #[derive(Clone, Deserialize)]
 pub struct Config {
-    #[serde(rename = "clackSet")]
-    pub(crate) clack_set: Vec<String>,
     pub(crate) signalboost: Vec<Person>,
-    pub(crate) port: u16,
     #[serde(rename = "resumeFname")]
     pub(crate) resume_fname: PathBuf,
-    #[serde(rename = "webMentionEndpoint")]
-    pub(crate) webmention_url: String,
     #[serde(rename = "miToken")]
     pub(crate) mi_token: String,
 }
@@ -27,7 +22,9 @@ async fn patrons() -> Result<Option<patreon::Users>> {
     let creds: Credentials = envy::prefixed("PATREON_")
         .from_env()
         .unwrap_or(Credentials::default());
-    let cli = Client::new(creds);
+    let mut cli = Client::new(creds)?;
+
+    cli.refresh_token().await?;
 
     match cli.campaign().await {
         Ok(camp) => {

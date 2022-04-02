@@ -36,7 +36,7 @@ impl Into<jsonfeed::Item> for Post {
             .date_published(self.date.to_rfc3339())
             .author(
                 jsonfeed::Author::new()
-                    .name("Christine Dodrill")
+                    .name("Xe Iaso")
                     .url("https://christine.website")
                     .avatar("https://christine.website/static/img/avatar.png"),
             );
@@ -83,8 +83,7 @@ impl Post {
 
 async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Result<Post> {
     debug!(
-        "loading {}/{}",
-        dir,
+        "loading {}",
         fname.clone().into_os_string().into_string().unwrap()
     );
 

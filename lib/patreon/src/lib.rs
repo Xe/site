@@ -1,7 +1,10 @@
+use std::{fs, io, path::Path};
+
 use chrono::prelude::*;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use tracing::{debug, error, instrument};
+use url::Url;
 
 pub type Campaigns = Vec<Object<Campaign>>;
 pub type Pledges = Vec<Object<Pledge>>;
@@ -61,14 +64,30 @@ pub struct User {
     pub url: String,
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct RefreshGrant {
+    pub access_token: String,
+    pub refresh_token: String,
+    pub expires_in: serde_json::Value,
+    pub scope: serde_json::Value,
+    pub token_type: String,
+}
+
 pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Error, Debug)]
 pub enum Error {
-    #[error("json error: {0:?}")]
+    #[error("json error: {0}")]
     Json(#[from] serde_json::Error),
-    #[error("request error: {0:?}")]
+
+    #[error("request error: {0}")]
     Request(#[from] reqwest::Error),
+
+    #[error("{0}")]
+    IO(#[from] io::Error),
+
+    #[error("url parse error: {0}")]
+    URLParse(#[from] url::ParseError),
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
@@ -105,12 +124,20 @@ pub struct Links {
 }
 
 impl Client {
-    pub fn new(creds: Credentials) -> Self {
-        Self {
+    pub fn new(creds: Credentials) -> Result<Self> {
+        let mut creds = creds.clone();
+
+        let p = Path::new(".patreon.json");
+        if p.exists() {
+            let config = fs::read_to_string(p)?;
+            creds = serde_json::from_str(&config)?;
+        }
+
+        Ok(Self {
             cli: reqwest::Client::new(),
             base_url: "https://api.patreon.com".into(),
             creds: creds,
-        }
+        })
     }
 
     #[instrument(skip(self))]
@@ -156,5 +183,58 @@ impl Client {
         debug!("pledges for {}: {}", camp_id, data);
         let data: Data<Vec<Object<Pledge>>, Object<User>> = serde_json::from_str(&data)?;
         Ok(data.included.unwrap())
+    }
+
+    /*
+    POST www.patreon.com/api/oauth2/token
+    ?grant_type=refresh_token
+    &refresh_token=<the user‘s refresh_token>
+    &client_id=<your client id>
+    &client_secret=<your client secret>
+
+    1. grab new creds
+    2. serialize new creds to disk
+    3. reload current creds in ram
+    4. ???
+    5. profit!
+    */
+    #[instrument(skip(self))]
+    pub async fn refresh_token(&mut self) -> Result<()> {
+        let mut u = Url::parse(&self.base_url)?;
+        u.set_path("/api/oauth2/token");
+        u.query_pairs_mut()
+            .append_pair("grant_type", "refresh_token")
+            .append_pair("refresh_token", &self.creds.refresh_token)
+            .append_pair("client_id", &self.creds.client_id)
+            .append_pair("client_secret", &self.creds.client_secret);
+
+        let rg: RefreshGrant = self
+            .cli
+            .post(&u.to_string())
+            .header(
+                "Authorization",
+                format!("Bearer {}", self.creds.access_token),
+            )
+            .send()
+            .await?
+            .error_for_status()?
+            .json()
+            .await?;
+
+        let mut creds = self.creds.clone();
+
+        creds.access_token = rg.access_token;
+        creds.refresh_token = rg.refresh_token;
+
+        let p = Path::new(".patreon.json");
+        if p.exists() {
+            fs::remove_file(p)?;
+        }
+        let mut fout = fs::File::create(p)?;
+        serde_json::to_writer(&mut fout, &creds)?;
+
+        self.creds = creds;
+
+        Ok(())
     }
 }
