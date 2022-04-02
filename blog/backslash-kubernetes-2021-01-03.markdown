@@ -1,5 +1,5 @@
 ---
-title: "&lt;/kubernetes&gt;"
+title: "Goodbye Kubernetes"
 date: 2021-01-03
 ---
 
