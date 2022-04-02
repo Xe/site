@@ -6,9 +6,9 @@ pub struct Person {
     pub tags: Vec<String>,
 
     #[serde(rename = "gitLink")]
-    pub git_link: String,
+    pub git_link: Option<String>,
 
-    pub twitter: String,
+    pub twitter: Option<String>,
 }
 
 #[cfg(test)]

@@ -1,7 +1,16 @@
 let Person =
-      { Type = { name : Text, tags : List Text, gitLink : Text, twitter : Text }
+      { Type =
+          { name : Text
+          , tags : List Text
+          , gitLink : Optional Text
+          , twitter : Optional Text
+          }
       , default =
-        { name = "", tags = [] : List Text, gitLink = "", twitter = "" }
+        { name = ""
+        , tags = [] : List Text
+        , gitLink = None Text
+        , twitter = None Text
+        }
       }
 
 in  [ Person::{
@@ -20,8 +29,8 @@ in  [ Person::{
         , "istio"
         , "typescript"
         ]
-      , gitLink = "https://github.com/euforic"
-      , twitter = "https://twitter.com/euforic"
+      , gitLink = Some "https://github.com/euforic"
+      , twitter = Some "https://twitter.com/euforic"
       }
     , Person::{
       , name = "David Roberts"
@@ -41,8 +50,8 @@ in  [ Person::{
         , "embedded"
         , "sql"
         ]
-      , gitLink = "https://github.com/ddr0"
-      , twitter = "https://twitter.com/DDR_4"
+      , gitLink = Some "https://github.com/ddr0"
+      , twitter = Some "https://twitter.com/DDR_4"
       }
     , Person::{
       , name = "Faizan Jamil"
@@ -65,8 +74,7 @@ in  [ Person::{
         , "full-stack"
         , "linux"
         ]
-      , gitLink = "https://github.com/faizjamil"
-      , twitter = "N/A"
+      , gitLink = Some "https://github.com/faizjamil"
       }
     , Person::{
       , name = "Joseph Crawley"
@@ -80,8 +88,8 @@ in  [ Person::{
         , "bash"
         , "linux"
         ]
-      , gitLink = "https://github.com/espe-on"
-      , twitter = "https://twitter.com/espe_on_"
+      , gitLink = Some "https://github.com/espe-on"
+      , twitter = Some "https://twitter.com/espe_on_"
       }
     , Person::{
       , name = "nicoo"
@@ -96,7 +104,7 @@ in  [ Person::{
         , "security"
         , "SDR"
         ]
-      , gitLink = "https://github.com/nbraud"
+      , gitLink = Some "https://github.com/nbraud"
       }
     , Person::{
       , name = "Prajjwal Singh"
@@ -112,8 +120,8 @@ in  [ Person::{
         , "google-cloud"
         , "typescript"
         ]
-      , gitLink = "https://github.com/Prajjwal"
-      , twitter = "https://twitter.com/prajjwalsin"
+      , gitLink = Some "https://github.com/Prajjwal"
+      , twitter = Some "https://twitter.com/prajjwalsin"
       }
     , Person::{
       , name = "Piyushh Bhutoria"
@@ -125,8 +133,8 @@ in  [ Person::{
         , "php"
         , "google-cloud"
         ]
-      , gitLink = "https://github.com/Piyushhbhutoria"
-      , twitter = "https://twitter.com/PiyushhB"
+      , gitLink = Some "https://github.com/Piyushhbhutoria"
+      , twitter = Some "https://twitter.com/PiyushhB"
       }
     , Person::{
       , name = "Ryan Casalino"
@@ -143,8 +151,7 @@ in  [ Person::{
         , "flask"
         , "unix"
         ]
-      , gitLink = "https://github.com/rjpcasalino"
-      , twitter = "N/A"
+      , gitLink = Some "https://github.com/rjpcasalino"
       }
     , Person::{
       , name = "Jeremy White"
@@ -163,8 +170,8 @@ in  [ Person::{
         , "google-cloud"
         , "azure"
         ]
-      , gitLink = "https://github.com/dudymas"
-      , twitter = "https://twitter.com/dudymas"
+      , gitLink = Some "https://github.com/dudymas"
+      , twitter = Some "https://twitter.com/dudymas"
       }
     , Person::{
       , name = "Zachary McKee"
@@ -181,14 +188,12 @@ in  [ Person::{
         , "nginx"
         , "gunicorn"
         ]
-      , gitLink = "https://github.com/ZacharyRMcKee"
-      , twitter = "N/A"
+      , gitLink = Some "https://github.com/ZacharyRMcKee"
       }
     , Person::{
       , name = "Muazzam Kazmi"
       , tags = [ "Rust", "C++", "x86assembly", "WinAPI", "Node.js", "React.js" ]
-      , gitLink = "https://github.com/muazzamalikazmi"
-      , twitter = "N/A"
+      , gitLink = Some "https://github.com/muazzamalikazmi"
       }
     , Person::{
       , name = "Jeffin Mathew"
@@ -202,8 +207,8 @@ in  [ Person::{
         , "javascript"
         , "iot"
         ]
-      , gitLink = "https://github.com/mjeffin"
-      , twitter = "https://twitter.com/mpjeffin"
+      , gitLink = Some "https://github.com/mjeffin"
+      , twitter = Some "https://twitter.com/mpjeffin"
       }
     , Person::{
       , name = "Nasir Hussain"
@@ -218,24 +223,17 @@ in  [ Person::{
         , "golang"
         , "rpm packaging"
         ]
-      , gitLink = "https://github.com/nasirhm"
-      , twitter = "https://twitter.com/_nasirhm_"
+      , gitLink = Some "https://github.com/nasirhm"
+      , twitter = Some "https://twitter.com/_nasirhm_"
       }
     , Person::{
       , name = "Avi Parshan"
       , tags =
-        [ "python"
-        , "windows"
-        , "javascript"
-        , "html"
-        , "android"
-        , "java"
-        , "C#"
-        ]
-      , gitLink = "https://github.com/avipars"
-      , twitter = "https://twitter.com/aviinfinity"
+        [ "python", "windows", "javascript", "html", "android", "java", "C#" ]
+      , gitLink = Some "https://github.com/avipars"
+      , twitter = Some "https://twitter.com/aviinfinity"
       }
-    , Person:: {
+    , Person::{
       , name = "Tommy Nguyen"
       , tags =
         [ "c++"
@@ -246,20 +244,13 @@ in  [ Person::{
         , "web"
         , "google-cloud-platform"
         ]
-      , gitLink = "https://github.com/remyabel"
+      , gitLink = Some "https://github.com/remyabel"
       }
-   , Person:: {
+    , Person::{
       , name = "Krish Jain"
       , tags =
-        [ "c++"
-        , "linux"
-        , "c"
-        , "python"
-        , "ios"
-        , "nlp"
-        , "machine learning"
-        ]
-      , gitLink = "https://github.com/Krish-sysadmin"
-      , twitter = "https://twitter.com/krishjain02"
+        [ "c++", "linux", "c", "python", "ios", "nlp", "machine learning" ]
+      , gitLink = Some "https://github.com/Krish-sysadmin"
+      , twitter = Some "https://twitter.com/krishjain02"
       }
     ]

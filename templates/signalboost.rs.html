@@ -21,7 +21,12 @@
         <div class="cell -4of12 content">
             <big>@person.name</big>
             <p>@for tag in person.tags { @tag }</p>
-            <a href="@person.git_link">GitHub</a> - <a href="@person.twitter">Twitter</a>
+            @if person.git_link.is_some() {
+              <a href="@person.git_link.unwrap()">GitHub</a>
+            }
+            @if person.twitter.is_some() {
+              <a href="@person.twitter.unwrap()">Twitter</a>
+            }
         </div>
     }
 </div>
