@@ -9,9 +9,9 @@ repository = "https://github.com/Xe/site"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-axum = "0.4"
-axum-macros = "0.1"
-axum-extra = "0.1"
+axum = "0.5"
+axum-macros = "0.2"
+axum-extra = "0.2"
 color-eyre = "0.6"
 chrono = "0.4"
 comrak = "0.12.1"
