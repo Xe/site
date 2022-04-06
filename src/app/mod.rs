@@ -20,7 +20,9 @@ pub struct Config {
 async fn patrons() -> Result<Option<patreon::Users>> {
     let mut cli = patreon::Client::new()?;
 
-    let _ = cli.refresh_token().await;
+    if let Err(why) = cli.refresh_token().await {
+        error!("error getting refresh token: {}", why);
+    }
 
     match cli.campaign().await {
         Ok(camp) => {
