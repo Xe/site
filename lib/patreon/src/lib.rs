@@ -90,7 +90,7 @@ pub enum Error {
     URLParse(#[from] url::ParseError),
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, Default)]
+#[derive(Debug, Serialize, Deserialize, Clone, Default, Eq, PartialEq)]
 pub struct Credentials {
     pub client_id: String,
     pub client_secret: String,

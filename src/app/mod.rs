@@ -22,6 +22,11 @@ async fn patrons() -> Result<Option<patreon::Users>> {
     let creds: Credentials = envy::prefixed("PATREON_")
         .from_env()
         .unwrap_or(Credentials::default());
+
+    if creds == Credentials::default() {
+        return Ok(None);
+    }
+
     let mut cli = Client::new(creds)?;
 
     cli.refresh_token().await?;
