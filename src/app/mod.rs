@@ -20,7 +20,7 @@ pub struct Config {
 async fn patrons() -> Result<Option<patreon::Users>> {
     let mut cli = patreon::Client::new()?;
 
-    cli.refresh_token().await?;
+    let _ = cli.refresh_token().await;
 
     match cli.campaign().await {
         Ok(camp) => {
