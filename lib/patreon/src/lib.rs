@@ -125,14 +125,16 @@ pub struct Links {
 
 impl Client {
     pub fn new() -> Result<Self> {
+        let mut creds = Credentials::default();
+
         let p = Path::new(".patreon.json");
         let config = fs::read_to_string(p)?;
-        let creds: Credentials = serde_json::from_str(&config)?;
+        creds = serde_json::from_str(&config)?;
 
         Ok(Self {
             cli: reqwest::Client::new(),
             base_url: "https://api.patreon.com".into(),
-            creds,
+            creds: creds,
         })
     }
 

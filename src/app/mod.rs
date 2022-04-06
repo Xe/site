@@ -1,7 +1,10 @@
 use crate::{post::Post, signalboost::Person};
 use color_eyre::eyre::Result;
 use serde::Deserialize;
-use std::{fs, path::PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 use tracing::{error, instrument};
 
 pub mod markdown;
@@ -18,6 +21,12 @@ pub struct Config {
 
 #[instrument]
 async fn patrons() -> Result<Option<patreon::Users>> {
+    let p = Path::new(".patreon.json");
+    if !p.exists() {
+        info!("{:?} does not exist", p);
+        return Ok(None);
+    }
+
     let mut cli = patreon::Client::new()?;
 
     if let Err(why) = cli.refresh_token().await {
