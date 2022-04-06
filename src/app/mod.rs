@@ -18,16 +18,7 @@ pub struct Config {
 
 #[instrument]
 async fn patrons() -> Result<Option<patreon::Users>> {
-    use patreon::*;
-    let creds: Credentials = envy::prefixed("PATREON_")
-        .from_env()
-        .unwrap_or(Credentials::default());
-
-    if creds == Credentials::default() {
-        return Ok(None);
-    }
-
-    let mut cli = Client::new(creds)?;
+    let mut cli = patreon::Client::new()?;
 
     cli.refresh_token().await?;
 

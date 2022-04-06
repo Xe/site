@@ -124,8 +124,8 @@ pub struct Links {
 }
 
 impl Client {
-    pub fn new(creds: Credentials) -> Result<Self> {
-        let mut creds = creds.clone();
+    pub fn new() -> Result<Self> {
+        let mut creds = Credentials::default();
 
         let p = Path::new(".patreon.json");
         if p.exists() {
