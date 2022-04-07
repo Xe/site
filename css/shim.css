@@ -36,6 +36,7 @@ img {
 
 .conversation-chat {
     align-self: center;
+    min-width: 0;
 }
 
 .gruvbox-dark pre, pre {
