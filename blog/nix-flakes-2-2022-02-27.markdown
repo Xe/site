@@ -19,6 +19,10 @@ chance of bitrotting. I will make every attempt to update it if things change,
 however flakes have been fairly consistent for a few years
 now.](conversation://Cadey/coffee)
 
+[EDIT(20220327 14:13): A previous version of this article said to use
+`defaultPackage` for the default package. This is deprecated and you should use
+`packages.default` instead.](conversation://Cadey/coffee)
+
 </div>
 
 [What is a package? I've seen this term thrown around with phrases like "Nix is a
@@ -180,10 +184,10 @@ web server template by defining another package:
 ```nix
 # flake.nix
 
-# after defaultPackage
 packages = {
+  default = ...;
   docker = let
-    web = self.defaultPackage.${system};
+    web = self.packages.${system}.default;
   in pkgs.dockerTools.buildLayeredImage {
     name = web.pname;
     tag = web.version;
@@ -373,7 +377,7 @@ the systemd unit:
 web-service = pkgs.substituteAll {
   name = "web-server.service";
   src = ./systemd/web-server.service.in;
-  web = self.defaultPackage.${system};
+  web = self.packages.${system}.default;
 };
 ```
 
@@ -399,7 +403,7 @@ Then you can add the bit that builds the portable service:
 
 ```nix
 portable = let
-  web = self.defaultPackage.${system};
+  web = self.packages.${system}.default;
 in pkgs.portableService {
   inherit (web) version;
   name = web.pname;
