@@ -71,7 +71,7 @@
           };
         };
 
-        devShells.default = pkgs.mkShell {
+        devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             # Rust
             rustc
