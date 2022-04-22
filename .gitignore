@@ -7,3 +7,4 @@ cw.tar
 .#*
 /target
 .patreon.json
+.direnv
