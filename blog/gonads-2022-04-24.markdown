@@ -535,6 +535,25 @@ providers more money for CPU! Think about the children!</xeblog-conv>
 
 ---
 
+<xeblog-conv name="Cadey" mood="coffee">EDIT(2022 M04 25 05:56): amscanne on
+Hacker News pointed out that my code was in fact wrong. My `fib` function should
+have been a lot simpler.</xeblog-conv>
+
+```go
+fib = func(n int) int {
+  return cache[n-1].Force() + cache[n-2].Force()
+}
+```
+
+<xeblog-conv name="Cadey" mood="facepalm">Applying this also makes the code run
+instantly as I'd expect. I knew _something_ was _very wrong_, but I never
+expected something this stupid. Thanks amscanne!</xeblog-conv>
+
+<xeblog-conv name="Numa" mood="happy">Hey, it makes for good surrealism. If that
+isn't a success, what is?</xeblog-conv>
+
+---
+
 I'm glad that Go has added generics to the language. It's certainly
 going to make a lot of things a lot easier and more expressive. I'm
 worried that the process of learning how to use generics in Go is
