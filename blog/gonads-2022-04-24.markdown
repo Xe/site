@@ -397,10 +397,6 @@ func NewThunk[T any](doer func() T) *Thunk[T] {
 }
 ```
 
-- [ ] Fibonacci example
-  - [ ] Why is this slow? I have no idea
-  - [ ] Numa\ this is the power of gonads!
-  
 Now, for an overcomplicated example you can use this to implement the
 Fibonacci function. We can start out by writing a naiive Fibonacci
 function like this:
