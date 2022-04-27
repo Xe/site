@@ -11,7 +11,7 @@ repository = "https://github.com/Xe/site"
 [dependencies]
 axum = "0.5"
 axum-macros = "0.2"
-axum-extra = "0.2"
+axum-extra = "0.3"
 color-eyre = "0.6"
 chrono = "0.4"
 comrak = "0.12.1"
