@@ -154,7 +154,7 @@ dependencies = [
  "sync_wrapper",
  "tokio",
  "tower",
- "tower-http",
+ "tower-http 0.2.5",
  "tower-layer",
  "tower-service",
 ]
@@ -175,9 +175,9 @@ dependencies = [
 
 [[package]]
 name = "axum-extra"
-version = "0.2.0"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ff3819ded1be91d7ee2cd9f0466aa345cc70ba0b0035ed47e3eac6427f83b81a"
+checksum = "a00a7085c512df12d4e07a862b23a3b3bfe5326ecfc4185b49fb15c8850ba406"
 dependencies = [
  "axum",
  "bytes",
@@ -185,7 +185,7 @@ dependencies = [
  "mime",
  "pin-project-lite",
  "tower",
- "tower-http",
+ "tower-http 0.3.0",
  "tower-layer",
  "tower-service",
 ]
@@ -2391,6 +2391,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "tower-http"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "79dd37121c38240c4b4fe6520332406218bbf876f2f690fe9e406020189366fd"
+dependencies = [
+ "bitflags",
+ "bytes",
+ "futures-core",
+ "futures-util",
+ "http",
+ "http-body",
+ "http-range-header",
+ "pin-project-lite",
+ "tower-layer",
+ "tower-service",
+]
+
+[[package]]
 name = "tower-layer"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2853,7 +2871,7 @@ dependencies = [
  "tokio",
  "tokio-stream",
  "tower",
- "tower-http",
+ "tower-http 0.2.5",
  "tracing",
  "tracing-futures",
  "tracing-subscriber",
