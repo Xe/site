@@ -18,7 +18,10 @@ enough to run NixOS on Windows.
 
 <xeblog-conv name="Mara" mood="hacker">This will give you an environment to run
 Nix and Nix Flakes commands with. You can use this to follow along with this
-series without having to install NixOS on a VM or cloud server.
+series without having to install NixOS on a VM or cloud server. This is going to
+retread a bunch of ground from the first article. If you have been following
+along through this entire series, once you get to the point where you convert
+the install to flakes there isn't much more new material here.
 </xeblog-conv>
 
 ## Installation
@@ -182,6 +185,12 @@ And paste in this HTML:
 It's so cool *twerks*
 ```
 
+<xeblog-conv name="Mara" mood="hacker">This doesn't have to just be artisanal
+handcrafted HTML in bespoke folders either. You can set the <code>root</code> of
+a nginx virtual host to point to a Nix package as well. This will allow you to
+automatically generate your website somehow and deploy it with the rest of the
+system. Including being able to roll back changes.</xeblog-conv>
+
 And then you can see it show up with `curl`:
 
 ```console
@@ -236,6 +245,20 @@ And finally activate the new configuration with flakes:
 ```
 sudo nixos-rebuild switch
 ```
+
+<xeblog-conv name="Mara" mood="hmm">Why don't you have the <code>--flake</code>
+flag here? Based on what I read in the documentation, I thought you had to have
+it there.</xeblog-conv>
+
+<xeblog-conv name="Cadey" mood="enby"><code>nixos-rebuild</code> will
+auomatically detect flakes in <code>/etc/nixos</code>. The only major thing it
+cares about is the hostname matching. If you want to customize the hostname of
+the WSL VM, change the <code>nixos</code> in
+<code>nixosConfigurations.nixos</code> above and set
+<code>networking.hostName</code> to the value you want to use. To use flakes
+explicitly, pass <code>--flake /etc/nixos#hostname</code> to your
+<code>nixos-rebuild</code> call. 
+</xeblog-conv>
 
 After it thinks for a bit, you should notice that nothing happened. This is
 good, we have just converted the system over to using Nix flakes instead of the
