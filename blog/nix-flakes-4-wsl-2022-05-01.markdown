@@ -1,6 +1,6 @@
 ---
 title: "Nix Flakes on WSL"
-date: 2022-05-04
+date: 2022-05-01
 series: nix-flakes
 tags:
  - nixos
@@ -297,6 +297,13 @@ Then we can add `gohello` to our system flake:
   };
 }
 ```
+
+<xeblog-conv name="Mara" mood="hacker">The block of code under
+<code>gohello.nixosModule</code> is an inline NixOS module. If we put
+<code>gohello.nixosModule</code> before the <code>./configuration.nix</code>
+reference, we could put the <code>xeserv.services.gohello.enable = true;</code>
+line inside <code>./configuration.nix</code>. This is an exercise for the
+reader.</xeblog-conv>
 
 And rebuild the system with `gohello` enabled:
 
