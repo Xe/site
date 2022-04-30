@@ -56,7 +56,7 @@ you can't die but when you die it's really bad.
 I want to create this kind of art, and I think I have found a good medium to do
 this with. I write a lot on this little independent site called Twitter. This is
 one of the main things that I write on, and through the process of the last 8
-years or so, I've written a shockingly large amound of things. I post a lot of
+years or so, I've written a shockingly large amount of things. I post a lot of
 weird things there as well as a lot of boring/normal things.
 
 However a lot of my posts boil down to creating a "stream of consciousness", or
