@@ -75,6 +75,9 @@ nix = {
 
 Then rebuild your system and you can continue along with the article.
 
+<xeblog-conv name="Mara" mood="hacker">EDIT: You can use WSL for this. See
+[here](/blog/nix-flakes-4-wsl-2022-05-01) for more information.</xeblog-conv>
+
 If you are not on NixOS, you will need to either edit `~/.config/nix/nix.conf`
 or `/etc/nix/nix.conf` and add the following line to it:
 
