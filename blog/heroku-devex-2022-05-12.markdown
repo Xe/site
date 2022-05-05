@@ -46,7 +46,7 @@ get streamlined.
 The Heroku I joined no longer exists. I joined Heroku but I left Salesforce. I
 can't blame any of my coworkers from Heroku from fleeing the sinking ship. The
 ship has been sinking for years but the culture of Heroku really stuck around
-long enough that it was hard to realize the shop was sinking.
+long enough that it was hard to realize the ship was sinking.
 
 It can really be seen with how long it's taken Heroku to react to [that one
 horrible security event](https://status.heroku.com/incidents/2413) they've been
