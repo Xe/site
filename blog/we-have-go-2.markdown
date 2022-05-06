@@ -89,6 +89,21 @@ nonzero amount of work. The bootstrapping can be made simpler with
 compatible with the semantics and user experience of the Go compiler that
 Google makes.
 
+Another key thing porting the compiler to Go unlocks is the ability to compile
+Go packages in parallel. Back when the compiler was written in C, the main point
+of parallelism was the fact that each Go package was compiled in parallel. This
+lead to people splitting up bigger packages into smaller sub-packages in order
+to speedhack the compiler. Having the compiler be written in Go means that the
+compiler can take advantage of Go features like its dead-simple concurrency
+primitives to spread the load out across all the cores on the machine.
+
+<xeblog-conv name="Mara" mood="hacker">The Go compiler is fast sure, but
+over a certain point having each package be compiled in a single-threaded manner
+adds up and can make build times slow. This was a lot worse when things like the
+AWS, GCP and Kubernetes client libraries had everything in one big package.
+Building those packages could take minutes, which is very long in Go
+time.</xeblog-conv>
+
 ## Go Modules
 
 In Go's dependency model, you have a folder that contains all your Go code
@@ -719,14 +734,12 @@ assert that values have behaviors and then you're off to the races. I end up
 missing the brutal simplicity of Go interfaces in other languages like Rust.
 </xeblog-conv>
 
-### Introducing Go Generics  
+### Introducing Go Generics
 
 In Go 1.18, support for adding types as parameters to other types was added.
 This allows you to define constraints on what types are accepted by a function,
 so that you can reuse the same logic for multiple different kinds of underlying
-types or write collections that deal with values of a given type that meets an
-interface without also having to make sure that everything else in that
-collection is of the same type at runtime.
+types.
 
 That `doSomething` function from above could be rewritten like this with
 generics:
@@ -739,21 +752,89 @@ func doSomething[T Quacker](qs []T) {
 }
 ```
 
-We can totally refactor out the error return and any of that runtime fallible
-code. This allows us to express constraints at _compile time_ so that
-attempting to mix `Duck`s and `Sheep` in the same argument to `doSomething`
-will fail to build. 
+However this doesn't currently let you avoid mixing types of `Quacker`s at
+compile time like I assumed while I was writing the first version of this
+article. This does however let you write code like this:
 
-- [ ] Overview of some of the types of collections it lets you make
-- [ ] This is a huge improvement to the language
+```go
+doSomething([]Duck{{}, {}, {}})
+doSomething([]Sheep{{}, {}, {}})
+```
+
+And then this will reject anything that _is not a `Quacker`_ at compile time:
+
+```go
+doSomething([]string{"hi there this won't work"})
+```
+
+```
+./prog.go:20:13: string does not implement Quacker (missing Quack method)
+```
+
+### Unions
+
+This also lets you create untagged union types, or types that can be a range of
+other types. These are typically useful when writing parsers or other similar
+things.
+
+<xeblog-conv name="Numa" mood="delet">It's frankly kind of fascinating that
+something made by Google would even let you _think_ about the word "union" when
+using it.</xeblog-conv>
+
+Here's an example of a union type of several different kinds of values that you
+could realistically see in a parser for a language like [LOLCODE](http://www.lolcode.org/):
+
+```go
+// Value can hold any LOLCODE value as defined by the LOLCODE 1.2 spec[1].
+//
+// [1]: https://github.com/justinmeza/lolcode-spec/blob/master/v1.2/lolcode-spec-v1.2.md#types
+type Value interface {
+  int64    // NUMBR
+  float64  // NUMBAR
+  string   // YARN
+  bool     // TROOF
+  struct{} // NOOB
+}
+```
+
+This is similar to making something like an
+[`enum`](https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html) in Rust,
+except that there isn't any tag for what the data could be. You still have to do
+a type-assertion over every value it _could_ be, but you can do it with only the
+subset of values listed in the interface vs any possible type ever made. This
+makes it easier to constrain what values can be so you can focus more on your
+parsing code and less on defensively programming around variable types.
+
+This adds up to a huge improvement to the language, making things that were
+previously very tedious and difficult very easy. You can make your own
+generic collections (such as a B-Tree) and take advantages of packages like
+[`golang.org/x/exp/slices`](https://pkg.go.dev/golang.org/x/exp/slices) to avoid
+the repetition of having to define utility functions for every single type you
+use in a program.
+
+<xeblog-conv name="Cadey" mood="enby">I'm barely scratching the surface with
+generics here, please see the [type parameters proposal
+document](https://go.googlesource.com/proposal/+/refs/heads/master/design/43651-type-parameters.md)
+for a lot more information on how generics work. This is a well-written thing
+and I highly suggest reading this at least once before you try to use generics
+in your Go code. I've been watching this all develop from afar and I'm very
+happy with what we have so far (the only things I'd want would be a bit more
+ability to be precise about what you are allowing with slices and maps as
+function arguments).</xeblog-conv>
 
 ---
 
-We already have Go 2. It’s just called Go 1.18 for some reason. It’s got so many
-improvements and fundamental changes that I believe that this is already Go 2 in
-spirit. I, as some random person on the internet that is not associated with the
-Go team, think that if there was sufficient political will that they could
-probably label what we have as Go 2, but I don’t think that is going to happen
-any time soon. Until then, we still have a very great set of building blocks
-that allow you to make easy to maintain production quality services, and I don’t
-see that changing any time soon.
+In conclusion, I believe that we already have Go 2. It’s just called Go 1.18 for
+some reason. It’s got so many improvements and fundamental changes that I
+believe that this is already Go 2 in spirit. There are so many other things that
+I'm not covering here (mostly because this post is so long already) like
+fuzzing, RISC-V support, binary/octal/hexadecimal/imaginary number literals,
+WebAssembly support, so many garbage collector improvements and more. This has
+added up to make Go a fantastic choice for developing server-side applications.
+
+I, as some random person on the
+internet that is not associated with the Go team, think that if there was
+sufficient political will that they could probably label what we have as Go 2,
+but I don’t think that is going to happen any time soon. Until then, we still
+have a very great set of building blocks that allow you to make easy to maintain
+production quality services, and I don’t see that changing any time soon.
