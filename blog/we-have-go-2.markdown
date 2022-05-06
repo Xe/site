@@ -8,12 +8,12 @@ tags:
  - modules
 ---
 
-I have been using Go since Go 1.4. Since I started using Go so long ago, I’ve
+I've been using Go since Go 1.4. Since I started using Go so long ago, I’ve
 seen the language evolve significantly. The Go I write today is roughly the same
 Go as the Go I wrote back when I was still learning the language, but overall
 it’s evolved and changed into something similar yet different feeling in
 practice. Thinking back over the years, here are some of the biggest ticket
-items that stand out for me:
+items that really changed how I use Go on a daily basis:
 
 * The compiler rewrite in Go
 * Go modules
@@ -28,18 +28,28 @@ have gotten as lucky as I have as consistently as I have.
 
 Releasing a “Go 2” has become a philosophical and political challenge due to the
 forces that be. “Go 2” has kind of gotten the feeling of “this is never going to
-happen is it” with how the political forces within and without the Go team are
+happen, is it?” with how the political forces within and without the Go team are
 functioning. They seem to have been incrementally releasing new features and
-using version gating in `go.mod` to make it easier on people. This is pretty
-great and I am well in favour of this approach, but with all of the changes that
-have built up there really should be a Go 2 by this point. If only to make no
-significant changes and tag what we have today as Go 2.
+using version gating in `go.mod` to make it easier on people instead of a big
+semver-breaking release.
+
+This is pretty great and I am well in favour of this approach, but with all of
+the changes that have built up there really should be a Go 2 by this point. If
+only to make no significant changes and tag what we have today as Go 2.
 
 <xeblog-conv name="Cadey" mood="coffee">Take everything I say here with a grain
 of salt the size of east Texas. I am not an expert in programming language
 design and I do not pretend to be one on TV. I am also not a member of the Go
 team nor do I pretend to be one or see myself becoming one in the
-future.</xeblog-conv>
+future.
+
+If you are on the Go team and think that something I said here was observably
+wrong, please [contact me](/contact) so I can correct it. I have tried to
+contain my personal feelings or observations about things to these conversation
+snippets.</xeblog-conv>
+
+This is a look back at the huge progress that has been made since Go 1 released
+and what I'd consider to be the headline features of Go 2.
 
 ## The Compiler Rewrite in Go
 
@@ -58,6 +68,23 @@ gate at version 1. Most people that use Go today don’t know that there was a
 point where Go didn’t have the easy to use cross-compiling superpower it
 currently has, and I think that is a more sure marker of success than anything
 else.</xeblog-conv>
+
+This one feature is probably at the heart of more CI flows, debian package
+releases and other workflows than we can know. It's really hard to understate
+how simple this kind of thing makes distributing software for other
+architectures, especially given that macOS has just switched over to aarch64
+CPUs.
+
+Having the compiler be self-hosting does end up causing a minor amount of
+grief for people wanting to bootstrap a Go compiler from absolute source code
+on a new Linux distribtion (and slightly more after the minimum Go compiler
+version to compile Go will be raised to Go 1.17 with the release of Go 1.19
+in about 6 months from the time of this post being written). This isn't too
+big of a practical issue given how fast the compiler builds, but it is a
+nonzero amount of work. The bootstrapping can be made simpler with
+[gccgo](https://gcc.gnu.org/onlinedocs/gccgo/), a GCC frontend that is mostly
+compatible with the semantics and user experience of the Go compiler that
+Google makes.
 
 ## Go Modules
 
@@ -84,37 +111,40 @@ Just delete the `pkg` folder and poof, it’s all gone. This was great when you
 needed to free up a bunch of disk space really quickly because over months the
 small amount of incremental compiler state can really add up.
 
-The go compiler would fetch any missing packages from the internet at build time
+The Go compiler would fetch any missing packages from the internet at build time
 so things Just Worked™️. This makes it utterly trivial to check out a project and
 then build/run it. That combined with `go get` to automatically just figure
 things out and install them made installing programs written in Go so easy that
-it’s almost magic.
+it’s almost magic. This combined with Go's preference for making static binaries
+as much as possible meant that even if the user didn't have Go installed you could
+easily make a package to hand off to your users.
 
-It was conceptually simple to reason about. Go code goes in the GOPATH. The best
-place for it was in the GOPATH. There's no reason to put it anywhere else.
+The GOPATH was conceptually simple to reason about. Go code goes in the GOPATH. The
+best place for it was in the GOPATH. There's no reason to put it anywhere else.
 Everything was organized into its place and it was lovely.
 
 This wasn’t perfect though. There were notable flaws in this setup that were
-easy to run into in practice.
+easy to run into in practice:
 
-There wasn't a good way to make sure that everyone was using the _same copies_
-of every library. People did add vendoring tools later to check that everyone
-was using the same copies of every package, but this also introduced problems
-when one project used one version of a dependency and another project used
-another in ways that were mutually incompatible.
-
-The process to get the newest version of a dependency was to grab the latest
-commit off of the default branch of that git repo. There was support for SVN,
-mercurial and fossil, but in practice Git was the most used one so it’s almost
-not worth mentioning the other version control systems. This also left you at
-the mercy of other random people having good code security sense and required
-you to audit your dependencies, but this is fairly standard across ecosystems.
-
-Dependency names were case sensitive on Linux but not on Windows or macOS.
-Arguably this is a "Windows and macOS are broken for backwards compatibility
-reasons" thing, but this did bite me at random times without warning.
-
-The default location for the GOPATH created a folder in your home directory.
+* There wasn't a good way to make sure that everyone was using the _same copies_
+  of every library. People did add vendoring tools later to check that everyone
+  was using the same copies of every package, but this also introduced problems
+  when one project used one version of a dependency and another project used
+  another in ways that were mutually incompatible.
+* The process to get the newest version of a dependency was to grab the latest
+  commit off of the default branch of that git repo. There was support for SVN,
+  mercurial and fossil, but in practice Git was the most used one so it’s almost
+  not worth mentioning the other version control systems. This also left you at
+  the mercy of other random people having good code security sense and required
+  you to audit your dependencies, but this is fairly standard across ecosystems.
+* Dependency names were case sensitive on Linux but not on Windows or macOS.
+  Arguably this is a "Windows and macOS are broken for backwards compatibility
+  reasons" thing, but this did bite me at random times without warning.
+* If the wrong random people deleted their GitHub repos, there's a chance your
+  builds could break unless your GOPATH had the packages in it already. Then you
+  could share that with your coworkers or the build machine somehow, maybe even
+  upload those packages to a git repository to soft-fork it.
+* The default location for the GOPATH created a folder in your home directory.
 
 <xeblog-conv name="Cadey" mood="coffee">Yeah, yeah, this default was added later
 but still people complained about having to put the GOPATH somewhere at first.
@@ -125,11 +155,6 @@ the defaults without having to set an environment variable). I don't personally
 understand the arguments people have for wanting to keep their home directory
 "clean", but the arguments are valid regardless.</xeblog-conv>
 
-If the wrong random people deleted their GitHub repos, there's a chance your
-builds could break unless your GOPATH had the packages in it already. Then you
-could share that with your coworkers or the build machine somehow, maybe even
-uploading those packages to a git repository to soft-fork it.
-
 Overall I think GOPATH was a net good thing for Go. It had its downsides, but as
 far as these things go it was a very opinionated place to start from. This is
 something typical to Go (much to people's arguments), but the main thing that it
@@ -139,6 +164,8 @@ other code. It's a very lightweight approach to things that a lot of other
 languages could learn a lot from. It's great for monorepos because it basically
 treats all your Go code as one big monorepo. So many other languages don’t
 really translate well to working in a monorepo context like Go does.
+
+### Vendoring
 
 That making sure everyone had the same versions of everything problem ended up
 becoming a big problem in practice. I'm assuming that the original intent of the
@@ -190,7 +217,10 @@ needs of the outside world very easily.
 <xeblog-conv name="Cadey" mood="enby">I can't speak for how `godep` or `glide`
 works, I never really used them enough to have a solid opinion. I do remember
 using [`vendor`](https://github.com/bmizerany/vendor) in my own projects though.
-That had no real dependency resolution algorithm to speak of.</xeblog-conv>
+That had no real dependency resolution algorithm to speak of because it assumed
+that you had everything working locally when you vendored the code.</xeblog-conv>
+
+### `dep`
 
 After a while the Go team worked with people in the community to come up with an
 "official experiment" in tracking dependencies called `dep`. `dep` was a tool
@@ -223,14 +253,27 @@ repositories. I don't think I practically ran into this, but I'm sure someone
 reading this right now found themselves in `dep` hell and probably has a hell of
 a war story around it.
 
+### vgo and Modules
+
 This lead the Go team to come up with a middle path between the unrestricted
 madness of GOPATH and something more maximal like `dep`. They eventually called
 this Go modules and the core reasons for it are outlined in [this series of
-technical posts](https://research.swtch.com/vgo). Apparently the development of
-Go modules came out as a complete surprise, even to the core developer team of
-`dep`. I'm fairly sure this lead my manager to take up woodworking as his main
-non work side hobby, I can only wonder about the kind of resentment this created
-for other parts of the `dep` team.
+technical posts](https://research.swtch.com/vgo).
+
+<xeblog-conv name="Mara" mood="hacker">These posts are a very good read and I'd
+highly suggest reading them if you've never seem then before. It outlines the
+problem space and the justification for the choices that Go modules ended up
+using. I don't agree with all of what is said there, but overall it's well
+worth reading at least once if you want to get an idea of the inspirations
+that lead to Go modules.</xeblog-conv>
+
+Apparently the development of Go modules came out as a complete surprise, 
+even to the core developer team of `dep`. I'm fairly sure this lead my 
+manager to take up woodworking as his main non work side hobby, I can only
+wonder about the kind of resentment this created for other parts of the 
+`dep` team. They were under the impression that `dep` was going to be the
+future of the ecosystem (likely under the subcommand `go dep`) and then had
+the rug pulled out from under their feet.
 
 <xeblog-conv name="Cadey" mood="coffee">The `dep` team was as close as we've
 gotten for having people in the _actual industry_ using Go _in production_
@@ -258,14 +301,22 @@ disadvantages out of the gate with Go modules. I think that in practice the
 disadvantages are limited, but still the fact that it defaults to phoning home
 to Google every time you run a Go build without all the dependencies present
 locally is kind of questionable. They did make up for this with the checksum
-verification database a little, but it's still kinda sus.</xeblog-conv>
+verification database a little, but it's still kinda sus.
+
+I'm not aware of any companies I've worked at running their own internal Go
+module caching servers, but I ran my own for a very long time.</xeblog-conv>
 
 The earliest version of Go modules basically was a glorified `vendor` folder
-manager. This worked out amazingly well and probably made prototyping this a
-hell of a lot easier. This worked well enough that we used this in production
-for many services at Heroku. We had no real issues with it and most of the
-friction was with the fact that most of the existing ecosystem had already been
-using `dep` or `glide`.
+manager named `vgo`. This worked out amazingly well and probably made
+prototyping this a hell of a lot easier. This worked well enough that we used
+this in production for many services at Heroku. We had no real issues with it
+and most of the friction was with the fact that most of the existing ecosystem
+had already been using `dep` or `glide`.
+
+<xeblog-conv name="Mara" mood="Hacker">There was a bit of interoperability glue
+that allowed `vgo` to parse the dependency definitions in `dep`, `godep` and
+`glide`. This still exists today and helps `go mod init` tell what dependencies
+to import into the Go module to aid migration.</xeblog-conv>
 
 If they had shipped this in prod, it probably would have been a huge success. It
 would also let people continue to use `dep`, `glide` and `godep`, but just doing
@@ -280,6 +331,8 @@ This also solved the case-insensitive filesystem problem with
 encode the capital letters in a path in a way that works on macOS and Windows
 without having to worry about horrifying hacks that are only really in place for
 Photoshop to keep working.
+
+### The Subtle Problem of `v2`
 
 However one of the bigger downsides that came with Go modules is what I've been
 calling the "v2 landmine" that Semantic Import Versioning gives you. One of the
@@ -317,10 +370,20 @@ team claims that the right bit of tooling can help ease the pain, but this
 tooling never really made it out into the public. I bet it works great inside
 google3 though!</xeblog-conv>
 
+When you were upgrading a Go project that already hit major version 2 or
+higher to Go modules, adopting Go modules forced maintainers to make another
+major version bump because it would break all of the import paths for every
+package in the module. This caused some maintainers to meet Go modules with
+resistance to avoid confusing their consumers. The workarounds for people that
+still used GOPATH using upstream code with Semantic Import Versioning in it
+were also kind of annoying at first until the Go team added "minimal module
+awareness" to GOPATH mode. Then it was fine.
+
 Overall though, Go modules has been a net positive for the community and for
 people wanting to create reliable software in Go. It’s just such a big semantic
 break in how the toolchain works that I almost think it would have been easier
-to accept if _that_ was Go 2.
+for the to accept if _that_ was Go 2. Especially since the semantic of how the
+toolchain worked changed so much.
 
 <xeblog-conv name="Mara" mood="hmm">Wait, doesn’t the Go compiler have a
 backwards compatibility promise that any code built with Go 1.x works on go
@@ -337,7 +400,8 @@ users](https://github.com/golang/go/issues/40276#issuecomment-1109797059) that
 aren’t keeping on top of every single change in semantics of toolchains (this
 bites me constantly when I need to quick and dirty grab something outside of a
 Nix package). I understand _why_ this isn’t a breaking change as far as the
-compatibility promise but this feels like a cop-out.</xeblog-conv>
+compatibility promise but this feels like a cop-out in my subjective
+opinion.</xeblog-conv>
 
 ## Contexts
 
@@ -345,41 +409,132 @@ One of Go’s major features is its co-operative threading system that it calls
 goroutines. Goroutines are kinda like coroutines that are scheduled by the
 scheduler. However there is no easy way to "kill" a goroutine. You have to add
 something to the invocation of the goroutine that lets you signal it to stop and
-then opt-in the goroutine to stop. This ended up leading to the
-[context](https://pkg.go.dev/context) package being created in the standard
+then opt-in the goroutine to stop.
+
+Without contexts you would need to do all of this legwork manually. Every
+project from the time before contexts still shows signs of this. The best
+practice was to make a "stop" channel like this:
+
+```go
+stop := make(chan struct{})
+```
+
+And then you'd send a cancellation signal like this:
+
+```go
+stop <- struct{}{}
+```
+
+<xeblog-conv name="Mara" mood="Hacker">The type `struct{}` is an anonymous
+structure value that takes 0 bytes in ram. It was suggested to use this as your
+stopping signal to avoid unneeded memory allocations.</xeblog-conv>
+
+This did work and was the heart of many event loops, but the main problem with
+it is that the signal was only sent _once_. Many other people also followed up
+the stop signal by closing the channel:
+
+```go
+close(stop)
+```
+
+However with naïve stopping logic the closed channel would successfully fire a
+zero value of the event. So code like this would still work the way you wanted:
+
+```go
+select {
+  case <- stop:
+  haltAndCatchFire()
+}
+```
+
+However if your stop channel was a `chan bool` and you relied on the `bool`
+value being `true`, this would fail because the value would be `false`. This
+was a bit too brittle for comfortable widespread production use and we ended
+up with the [context](https://pkg.go.dev/context) package in the standard
 library. A Go context lets you more easily and uniformly handle timeouts and
 giving up when there is no more work to be done.
 
-Mara+hacker\ This started as something that existed inside the Google monorepo
-that escaped out into the world. They also claim to have an internal tool that
-makes [`context.TODO()`](https://pkg.go.dev/context#TODO) useful (probably by
-showing you the callsities above that function?), but they never released that
-tool as open source so it’s difficult to know where to use it without that added
-context.
+<xeblog-conv name="Mara" mood="hacker">This started as something that existed
+inside the Google monorepo that escaped out into the world. They also claim to
+have an internal tool that makes
+[`context.TODO()`](https://pkg.go.dev/context#TODO) useful (probably by showing
+you the callsities above that function?), but they never released that tool as
+open source so it’s difficult to know where to use it without that added
+context.</xeblog-conv>
 
-- [ ] Examples of how to thread them in:
-  - [ ] Basic example using a select statement and a timer to poll the context
-        timeout vs the timer (let’s pretend the timer is some important but
-        cancellable event that takes time to process)
-  - [ ] HTTP request
-  - [ ] Handling a control-C signal and cancelling a bunch of HTTP request
+One of the most basic examples of using contexts comes when you are trying to
+stop something from continuing. If you have something that constantly writes
+data to clients such as a pub-sub queue, you probably want to stop writing data
+to them when the client disconnects. If you have a large number of HTTP requests
+to do and only so many workers can make outstanding requests at once, you
+want to be able to set a timeout so that after a certain amount of time it gives
+up.
+
+Here's an example of using a context in an event processing loop (of course while
+pretending that fetching the current time is anything else that isn't a contrived
+example to show this concept off):
+
+```go
+t := time.NewTicker(30 * time.Second)
+ctx, cancel := context.WithCancel(context.Background())
+defer cancel()
+
+for {
+  select {
+  case <- ctx.Done():
+    log.Printf("not doing anything more: %v", ctx.Err())
+    return
+  case data := <- t.C:
+    log.Printf("got data: %s", data)
+  }
+}
+```
+
+This will have the Go runtime select between two channels, one of them will
+emit the current time every 30 seconds and the other will fire when the
+`cancel` function is called.
+
+<xeblog-conv name="Mara" mood="happy">Don't worry, you can call the `cancel()`
+function multiple times without any issues.</xeblog-conv>
+
+If you want to set a timeout on this (so that the function only tries to run
+for 5 minutes), you'd want to change the second line of that example to this:
+
+```go
+ctx, cancel := context.WithTimeout(context.Background(), 5 * time.Minute)
+```
+
+The context will be automatically cancelled after 5 minutes. You can cancel it
+sooner by calling the `cancel()` function should you need to. Anything else in
+the stack that is context-aware will automatically cancel as well as the
+cancellation signal percolates down the stack and across goroutines.
+
+You can attach this to an HTTP request by using
+[`http.NewRequestWithContext`](https://pkg.go.dev/net/http#NewRequestWithContext):
+
+```go
+req, err := http.NewRequestWithContext(ctx, http.MethodGet, "https://christine.website/.within/health", nil)
+```
+
+And then when you execute the request (such as with `http.DefaultClient.Do(req)`)
+the context will automatically be cancelled if it takes too long to fetch the
+response.
+
+You can also wire this up to the `Control-c` signal using a bit of code
+[like this](https://medium.com/@matryer/make-ctrl-c-cancel-the-context-context-bd006a8ad6ff).
+Context cancellation propagates upwards, so you can use this to ensure that things
+get stopped properly.
+
+<xeblog-conv name="Mara" mood="hacker">Be sure to avoid creating a "god context"
+across your entire app. This is a known anti-pattern and this pattern should only
+be used for small command line tools that have an expected run time in the minutes
+at worst, not hours like production bearing services.</xeblog-conv>
 
 This is a huge benefit to the language because of how disjointed the process of
-doing this before contexts was. Trying to do this before contexts usually made
-you create a "stop channel" where you’d feed it a `bool` or a `struct{}{}` to
-signal that the other side doesn't need to care anymore. Because this wasn’t in
-the core of the language, every single implementation was different and required
-learning what the library did.
-
-However I wish that the documentation was a bit more clear as to what they
-really offer and had some more examples of how to use them. Without context as
-to what contexts do, its documentation can kind of read [like
-this](https://christine.website/blog/vanbi-01-08-2019). This can make explaining
-what a context is to people kind of annoying.
-
-<xeblog-conv name="Mara" mood="hacker">If you know Lojban, some of the satire in
-vanbi may be lost on you. Just pretend you don’t understand any of the words in
-there.</xeblog-conv>
+doing this before contexts was. Because this wasn’t in the core of the language,
+every single implementation was different and required learning what the library
+did. Not to mention adapting between libraries could be brittle at best and
+confusing at worst.
 
 I understand why they put data into the context type, but in practice I really
 wish they didn’t do that. This feature has been abused a lot in my experience.
@@ -390,7 +545,8 @@ that would normally be compile time errors into runtime errors.
 <xeblog-conv name="Cadey" mood="coffee">I say this as someone who maintains a
 library that uses contexts to store [contextually relevant log
 fields](https://pkg.go.dev/within.website/ln) as a way to make logs easier to
-correlate between. Arguably you could make the case that people are misusing the
+correlate between.
+ Arguably you could make the case that people are misusing the
 tool and of course this is what will happen when you do that but I don't know if
 this is really the right thing to tell people.</xeblog-conv>
 
@@ -398,7 +554,19 @@ I wish contexts were in the core of the language from the beginning. I know that
 it is difficult to do this in practice (especially on all the targets that Go
 supports), but having cancellable syscalls would be so cool. It would also be
 really neat if contexts could be goroutine-level globals so you didn’t have to
-“pollute” the callsites of every function with them.
+"pollute" the callsites of every function with them.
+
+<xeblog-conv name="Cadey" mood="coffee">At the time contexts were introduced,
+one of the major arguments I remember hearing against them was that contexts
+"polluted" their function definitions and callsites. I can't disagree with this
+sentiment, at some level it really does look like contexts propagate "virally"
+throughout a codebase.
+
+I think that the net improvements to reliability and understandability of how
+things get stopped do make up for this though. Instead of a bunch of separate
+ways to cancel work in each individual library you have the best practice in
+the standard library. Having contexts around makes it a lot harder to "leak"
+goroutines on accident.</xeblog-conv>
 
 ## Generics
 
