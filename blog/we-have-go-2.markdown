@@ -26,8 +26,8 @@ _catalytic_ to my career goals and it’s made me into the professional I am
 today. Without having met the people I did in the Go slack, I would probably not
 have gotten as lucky as I have as consistently as I have.
 
-Releasing a “Go 2” has become a philosophical and political challenge due to the
-forces that be. “Go 2” has kind of gotten the feeling of “this is never going to
+Releasing a "Go 2" has become a philosophical and political challenge due to the
+forces that be. "Go 2" has kind of gotten the feeling of “this is never going to
 happen, is it?” with how the political forces within and without the Go team are
 functioning. They seem to have been incrementally releasing new features and
 using version gating in `go.mod` to make it easier on people instead of a big
@@ -49,7 +49,10 @@ contain my personal feelings or observations about things to these conversation
 snippets.</xeblog-conv>
 
 This is a look back at the huge progress that has been made since Go 1 released
-and what I'd consider to be the headline features of Go 2.
+and what I'd consider to be the headline features of Go 2. Most of this is a
+whirlwind tour of over a half-decade of improvments to the Go compiler, toolchain
+and standard library. I highly encourage you read this fairly large post in chunks
+because it will feel like _a lot_ if you read it all at once.
 
 ## The Compiler Rewrite in Go
 
@@ -447,6 +450,8 @@ select {
 }
 ```
 
+### Package `context`
+
 However if your stop channel was a `chan bool` and you relied on the `bool`
 value being `true`, this would fail because the value would be `false`. This
 was a bit too brittle for comfortable widespread production use and we ended
@@ -660,15 +665,87 @@ an `io.Writer` that automatically encrypts everything you feed It with TLS, or
 even something like sending data over a Unix socket instead of a TCP one. If it
 fits the shape of the interface, it Just Works.
 
-- [ ] Show where that falls apart
-  - [ ] The container package
-  - [ ] Cloner
-  - [ ] Viewer
-- [ ] Introduce Go generics
-  - [ ] Overview of some of the types of collections it lets you make
-    - [ ] Take a function with a slice `Duck`s or a slice of `Sheep` but not
-          mixed `Duck`s and `Sheep`
-  - [ ] This is a huge improvement to the language
+However, this falls apart when you want to deal with a collection of _only one_
+type that meets an interface at once. When you create a slice of `Quacker`s and
+pass it to a function, you can put both `Duck`s and `Sheep` into that slice:
+
+```go
+quackers := []Quacker{
+  Duck{},
+  Sheep{},
+}
+
+doSomething(quackers)
+```
+
+If you want to assert that every `Quacker` is the same type, you have to do some
+fairly brittle things that step around Go's type safety like this:
+
+```go
+func doSomething(qs []Quacker) error {
+  // Store the name of the type of first Quacker.
+  // We have to use the name `typ` because `type` is
+  // a reserved keyword.
+  typ := fmt.Sprintf("%T", qs[0])
+  
+  for i, q := range qs {
+    if qType := fmt.Sprintf("%T", q); qType != typ {
+      return fmt.Errorf("slice value %d was type %s, wanted: %s", qType, typ)
+    }
+
+    q.Quack()
+  }
+  
+  return nil
+}
+```
+
+This would explode at runtime. This same kind of weakness is basically the main
+reason why the Go standard library package [`container`](https://pkg.go.dev/container)
+is mostly unused. Everything in the `container` package deals with
+`interface{}`/`any` values, which is Go for "literally anything". This means
+that without careful wrapper code you need to either make interfaces around
+everything in your lists (and then pay the cost of boxing everything in an
+interface, which adds up a lot in practice in more ways than you'd think) or
+have to type-assert anything going into or coming out of the list, combined
+with having to pay super close attention to anything touching that code
+during reviews.
+
+<xeblog-conv name="Cadey" mood="enby">Don't get me wrong, interface types
+are an _amazing_ standout feature of Go. They are one of the main reasons that
+Go code is so easy to reason about and work with. You don't have to worry
+about the entire tree of stuff that a value is made out of, you can just
+assert that values have behaviors and then you're off to the races. I end up
+missing the brutal simplicity of Go interfaces in other languages like Rust.
+</xeblog-conv>
+
+### Introducing Go Generics  
+
+In Go 1.18, support for adding types as parameters to other types was added.
+This allows you to define constraints on what types are accepted by a function,
+so that you can reuse the same logic for multiple different kinds of underlying
+types or write collections that deal with values of a given type that meets an
+interface without also having to make sure that everything else in that
+collection is of the same type at runtime.
+
+That `doSomething` function from above could be rewritten like this with
+generics:
+
+```go
+func doSomething[T Quacker](qs []T) {
+  for i, q := range qs {
+    q.Quack()
+  }
+}
+```
+
+We can totally refactor out the error return and any of that runtime fallible
+code. This allows us to express constraints at _compile time_ so that
+attempting to mix `Duck`s and `Sheep` in the same argument to `doSomething`
+will fail to build. 
+
+- [ ] Overview of some of the types of collections it lets you make
+- [ ] This is a huge improvement to the language
 
 ---
 
