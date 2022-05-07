@@ -26,6 +26,7 @@ hyper = "0.14"
 kankyo = "0.3"
 lazy_static = "1.4"
 log = "0.4"
+lol_html = "0.3"
 mime = "0.3.0"
 prometheus = { version = "0.13", default-features = false, features = ["process"] }
 rand = "0"
