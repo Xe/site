@@ -41,12 +41,10 @@ only to make no significant changes and tag what we have today as Go 2.
 of salt the size of east Texas. I am not an expert in programming language
 design and I do not pretend to be one on TV. I am also not a member of the Go
 team nor do I pretend to be one or see myself becoming one in the
-future.
-
-If you are on the Go team and think that something I said here was observably
-wrong, please [contact me](/contact) so I can correct it. I have tried to
-contain my personal feelings or observations about things to these conversation
-snippets.</xeblog-conv>
+future. <br /><br />If you are on the Go team and think that something I said
+here was observably wrong, please [contact me](/contact) so I can correct it. I
+have tried to contain my personal feelings or observations about things to these
+conversation snippets.</xeblog-conv>
 
 This is a look back at the huge progress that has been made since Go 1 released
 and what I'd consider to be the headline features of Go 2. Most of this is a
