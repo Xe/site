@@ -207,12 +207,12 @@ Let's take a closer look at the higher level things in the flake:
 your `flake.nix`. Ditto with "flake input" referring to the `inputs` attribute
 of your `flake.nix`.](conversation://Cadey/enby)
 
-When you ran `nix build` earlier, it defaulted to building the package in
-`defaultPackage`. You can also build the `go-hello` package by running this
+When you ran `nix build` earlier, it defaulted to building the `default` entry
+in `packages`. You can also build the `default` package by running this
 command:
 
 ```console
-$ nix build .#go-hello
+$ nix build .#default
 ```
 
 And if you want to build the copy I made for this post:
@@ -234,11 +234,13 @@ simplify that above `nix build` and `./result/bin/go-hello` cycle into a single
 `go-hello` to be the default app:
 
 ```nix
-# below defaultPackage
+# below packages
 
-defaultApp = forAllSystems (system: {
-  type = "app";
-  program = "${self.packages.${system}.go-hello}/bin/go-hello";
+apps = forAllSystems (system: {
+  default = {
+      type = "app";
+      program = "${self.packages.${system}.default}/bin/go-hello";
+  };
 });
 ```
 
@@ -281,8 +283,10 @@ can add it to your `flake.nix` using this:
 
 devShell = forAllSystems (system:
   let pkgs = nixpkgsFor.${system};
-  in pkgs.mkShell {
-    buildInputs = with pkgs; [ go gopls goimports go-tools ];
+  in {
+    default = pkgs.mkShell {
+      buildInputs = with pkgs; [ go gopls gotools go-tools ];
+    };
   });
 ```
 
