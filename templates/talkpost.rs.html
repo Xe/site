@@ -1,5 +1,6 @@
-@use super::{header_html, footer_html};
+@use super::{header_html, footer_html, mara};
 @use crate::post::Post;
+@use chrono::prelude::*;
 
 @(post: Post, body: impl ToHtml)
 
