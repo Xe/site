@@ -294,7 +294,22 @@ the rug pulled out from under their feet.
 <xeblog-conv name="Cadey" mood="coffee">The `dep` team was as close as we've
 gotten for having people in the _actual industry_ using Go _in production_
 outside of Google having a real voice in how Go is used in the real world. I
-fear that we will never have this kind of thing happen again.</xeblog-conv>
+fear that we will never have this kind of thing happen again.<br /><br />It's
+also worth noting that the fallout of this lead to the core `dep` team leaving
+the Go community.</xeblog-conv>
+
+<xeblog-conv name="Mara" mood="hmm">Well, Google has to be using Go modules in
+their monorepo, right? If that's the official build system for Go it makes sense
+that they'd be dogfooding it hard enough that they'd need to use the tool in the
+same way that everyone else did.</xeblog-conv>
+
+<xeblog-conv name="Numa" mood="delet">lol nope. They use an overcomplicated
+bazel/blaze abomination that has developed in parallel to their NIH'd source
+control server. Google doesn't have to deal with the downsides of Go modules
+unless it's in a project like Kubernetes. It's easy to imagine that they just
+don't have the same problems that everyone else does due to how weird Google
+prod is. Google only has problems that Google has, and statistically your
+company is NOT Google.</xeblog-conv>
 
 Go modules does solve one very critical problem for the Go ecosystem though: it
 allows you to have the equivalent of the GOPATH but with multiple versions of
@@ -329,7 +344,7 @@ this in production for many services at Heroku. We had no real issues with it
 and most of the friction was with the fact that most of the existing ecosystem
 had already been using `dep` or `glide`.
 
-<xeblog-conv name="Mara" mood="Hacker">There was a bit of interoperability glue
+<xeblog-conv name="Mara" mood="hacker">There was a bit of interoperability glue
 that allowed `vgo` to parse the dependency definitions in `dep`, `godep` and
 `glide`. This still exists today and helps `go mod init` tell what dependencies
 to import into the Go module to aid migration.</xeblog-conv>
@@ -364,6 +379,11 @@ using the term “landmine” to talk about this because I feel like it reflects
 rough edges of unexpectedly encountering this in the wild. It kinda feels like
 you stepped on a landmine.</xeblog-conv>
 
+<xeblog-conv name="Numa" mood="delet">It's also worth noting that the protobuf
+team didn't use major version 2 when making an API breaking change. They
+defended this by saying that they are changing the import path away from GitHub,
+but it feels like they wanted to avoid the v2 problem.</xeblog-conv>
+
 The core of this is that when you create major version 2 of a Go project, you
 need to adjust all your import paths everywhere in that project to import the
 `v2` of that package or you will silently import the `v1` version of that
@@ -374,11 +394,11 @@ next major version of a Go module, which will allow for smaller refactors.
 
 This also applies to consumers. Given that this kind of thing is something that
 you only do in Go it can come out of left field. The go router
-[chi](https://github.com/go-chi/chi/issues/462) tried doing modules in the past
-and found that it lead to confusing users. Conveniently they only really found
-this out after the Go modules design was considered final and Semantic Import
-Versioning has always been a part of Go modules and the Go team is now refusing
-to budge on this.
+[github.com/go-chi/chi](https://github.com/go-chi/chi/issues/462) tried doing
+modules in the past and found that it lead to confusing users. Conveniently they
+only really found this out after the Go modules design was considered final and
+Semantic Import Versioning has always been a part of Go modules and the Go team
+is now refusing to budge on this.
 
 <xeblog-conv name="Cadey" mood="coffee">My suggestion to people is to never
 release a version `1.x.x` of a Go project to avoid the “v2 landmine”. The Go
@@ -394,6 +414,26 @@ resistance to avoid confusing their consumers. The workarounds for people that
 still used GOPATH using upstream code with Semantic Import Versioning in it
 were also kind of annoying at first until the Go team added "minimal module
 awareness" to GOPATH mode. Then it was fine.
+
+<xeblog-conv name="Mara" mood="hmm">It feels like you are overly focusing on the
+`v2` problem. It can't really be that bad, can it? `grpc-gateway` updated to v2
+without any major issues. What's a real-world example of this?</xeblog-conv>
+
+<xeblog-conv name="Numa" mood="delet">The situation with
+[github.com/gofrs/uuid](https://github.com/gofrs/uuid/issues/61) was heckin'
+bad. Arguably it's a teething issue as the ecosystem was still moving to the new
+modules situation, but it was especially bad for projects that were already at
+major version 2 or higher because adding Go modules support meant that they
+needed to update the major version just for Go modules. This was a tough sell
+and rightly so.<br /><br />This was claimed to be made a non-issue by the right
+application of tooling on the side, but this tooling was either never developed
+or not released to us mere mortals outside of Google. Even with automated
+tooling this can still lead to massive diffs that are a huge pain to review,
+even if the only thing that is changed is the version number in every import of
+every package in that module. This was even worse for things that have C
+dependencies, as if you didn't update it everywhere in your dependency chain you
+could have two versions of the same C functions try to be linked in and this
+really just does not work.</xeblog-conv>
 
 Overall though, Go modules has been a net positive for the community and for
 people wanting to create reliable software in Go. It’s just such a big semantic
@@ -441,9 +481,13 @@ And then you'd send a cancellation signal like this:
 stop <- struct{}{}
 ```
 
-<xeblog-conv name="Mara" mood="Hacker">The type `struct{}` is an anonymous
+<xeblog-conv name="Mara" mood="hacker">The type `struct{}` is an anonymous
 structure value that takes 0 bytes in ram. It was suggested to use this as your
-stopping signal to avoid unneeded memory allocations.</xeblog-conv>
+stopping signal to avoid unneeded memory allocations. A `bool` needs one whole
+machine word, which can be up to 64 bits of ram. In practice the compiler can
+smoosh multiple bools in a struct together into one place in ram, but when
+sending these values over a channel like this you can't really cheat that
+way.</xeblog-conv>
 
 This did work and was the heart of many event loops, but the main problem with
 it is that the signal was only sent _once_. Many other people also followed up
@@ -513,14 +557,21 @@ emit the current time every 30 seconds and the other will fire when the
 `cancel` function is called.
 
 <xeblog-conv name="Mara" mood="happy">Don't worry, you can call the `cancel()`
-function multiple times without any issues.</xeblog-conv>
+function multiple times without any issues. Any additional calls will not do
+anything special.</xeblog-conv>
 
 If you want to set a timeout on this (so that the function only tries to run
 for 5 minutes), you'd want to change the second line of that example to this:
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 5 * time.Minute)
+defer cancel()
 ```
+
+<xeblog-conv name="Mara" mood="happy">You should always `defer cancel()` unless
+you can prove that it is called elsewhere. If you don't do this you can leak
+goroutines that will dutifully try to do their job potentially forever without
+any ability to stop them.</xeblog-conv>
 
 The context will be automatically cancelled after 5 minutes. You can cancel it
 sooner by calling the `cancel()` function should you need to. Anything else in
