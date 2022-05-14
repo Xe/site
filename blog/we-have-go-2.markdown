@@ -8,12 +8,11 @@ tags:
  - modules
 ---
 
-I've been using Go since Go 1.4. Since I started using Go so long ago, I’ve
-seen the language evolve significantly. The Go I write today is roughly the same
-Go as the Go I wrote back when I was still learning the language, but overall
-it’s evolved and changed into something similar yet different feeling in
-practice. Thinking back over the years, here are some of the biggest ticket
-items that really changed how I use Go on a daily basis:
+I've been using Go since Go 1.4. Since I started using Go then (2014-2015 ish),
+I’ve seen the language evolve significantly. The Go I write today is roughly the
+same Go as the Go I wrote back when I was still learning the language, but the
+toolchain has changed in ways that make it so much nicer in practice. Here are
+the biggest things that changed how I use Go on a regular basis:
 
 * The compiler rewrite in Go
 * Go modules
@@ -27,11 +26,11 @@ today. Without having met the people I did in the Go slack, I would probably not
 have gotten as lucky as I have as consistently as I have.
 
 Releasing a "Go 2" has become a philosophical and political challenge due to the
-forces that be. "Go 2" has kind of gotten the feeling of “this is never going to
-happen, is it?” with how the political forces within and without the Go team are
+forces that be. "Go 2" has kind of gotten the feeling of "this is never going to
+happen, is it?" with how the political forces within and without the Go team are
 functioning. They seem to have been incrementally releasing new features and
 using version gating in `go.mod` to make it easier on people instead of a big
-semver-breaking release.
+release with breaking changes all over the standard library.
 
 This is pretty great and I am well in favour of this approach, but with all of
 the changes that have built up there really should be a Go 2 by this point. If
@@ -41,15 +40,16 @@ only to make no significant changes and tag what we have today as Go 2.
 of salt the size of east Texas. I am not an expert in programming language
 design and I do not pretend to be one on TV. I am also not a member of the Go
 team nor do I pretend to be one or see myself becoming one in the
-future. <br /><br />If you are on the Go team and think that something I said
-here was observably wrong, please [contact me](/contact) so I can correct it. I
+future.<br /><br />If you are on the Go team and think that something I said
+here is demonstrably wrong, please [contact me](/contact) so I can correct it. I
 have tried to contain my personal feelings or observations about things to these
 conversation snippets.</xeblog-conv>
 
 This is a look back at the huge progress that has been made since Go 1 released
-and what I'd consider to be the headline features of Go 2. Most of this is a
-whirlwind tour of over a half-decade of improvments to the Go compiler, toolchain
-and standard library. I highly encourage you read this fairly large post in chunks
+and what I'd consider to be the headline features of Go 2.
+This is a whirlwind tour of the huge progress in improvement to the Go compiler,
+toolchain, and standard library, including what I'd consider to be the headline
+features of Go 2. I highly encourage you read this fairly large post in chunks
 because it will feel like _a lot_ if you read it all at once.
 
 ## The Compiler Rewrite in Go
@@ -59,9 +59,9 @@ team has a background in Plan 9 and C was its lingua franca. However as a result
 of either it being written in C or the design around all the tools it was
 shelling out to, it wasn’t easy to cross compile Go programs. If you were
 building windows programs on a Mac you needed to do a separate install of Go
-from source with other targets enabled. This worked, it wasn’t the default
-though and eventually the Go compiler rewrite in Go changed this so that Go
-could cross compile natively with no effort required.
+from source with other targets enabled. This worked, but it wasn’t the default
+and eventually the Go compiler rewrite in Go changed this so that Go could cross
+compile natively with no extra effort required.
 
 <xeblog-conv name="Cadey" mood="enby">This has been such an amazingly productive
 part of the Go toolchain that I was shocked that Go didn’t have this out of the
@@ -69,6 +69,13 @@ gate at version 1. Most people that use Go today don’t know that there was a
 point where Go didn’t have the easy to use cross-compiling superpower it
 currently has, and I think that is a more sure marker of success than anything
 else.</xeblog-conv>
+
+<xeblog-conv name="Mara" mood="happy">The cross compliation powers are why
+Tailscale uses Go so extensively throughout its core product. Every Tailscale
+client is built on the same Go source tree and everything is in lockstep with
+eachother, provided people actually update their apps. This kind of thing would
+be at the least impossible or at the most very difficult in other languages like
+Rust or C++.</xeblog-conv>
 
 This one feature is probably at the heart of more CI flows, debian package
 releases and other workflows than we can know. It's really hard to understate
@@ -105,19 +112,19 @@ time.</xeblog-conv>
 ## Go Modules
 
 In Go's dependency model, you have a folder that contains all your Go code
-called the GOPATH. The GOPATH has a few top level folders that have a well-known
-meaning in the Go ecosystem:
+called the `GOPATH`. The `GOPATH` has a few top level folders that have a
+well-known meaning in the Go ecosystem:
 
 * bin: binary files made by `go install` or `go get` go here
 * pkg: intermediate compiler state goes here
 * src: Go packages go here
 
-GOPATH has one major advantage: it is ruthlessly easy to understand the
+`GOPATH` has one major advantage: it is ruthlessly easy to understand the
 correlation between the packages you import in your code to their locations on
 disk.
 
 If you need to see what `within.website/ln` is doing, you go to
-GOPATH/src/within.website/ln. The files you are looking for are somewhere in
+`GOPATH/src/within.website/ln`. The files you are looking for are somewhere in
 there. You don’t have to really understand how the package manager works (mostly
 because there isn’t one). If you want to hack something up you just go to the
 folder and add the changes you want to see.
@@ -169,7 +176,7 @@ choice that people really wanted solid guidance and defaults on. After a while
 they changed this to default to `~/go` (with an easy to use command to influence
 the defaults without having to set an environment variable). I don't personally
 understand the arguments people have for wanting to keep their home directory
-"clean", but the arguments are valid regardless.</xeblog-conv>
+"clean", but their preferences are valid regardless.</xeblog-conv>
 
 Overall I think GOPATH was a net good thing for Go. It had its downsides, but as
 far as these things go it was a very opinionated place to start from. This is
@@ -197,11 +204,11 @@ such repository hosting sites.
 The main disconnect between importing from a GOPATH monorepo and a Go library
 off of GitHub is that when you import from a monorepo with a GOPATH in it, you
 need to be sure to import the repository path and not the path used inside the
-repository. This sounds weird but this is the difference between importing
-`github.com/Xe/x/src/github.com/Xe/x/markov` and `github.com/Xe/x/markov`. This
-means that things need to be extracted _out of_ monorepos and reformatted into
-“flat” repos so that you can only grab the one package you need. This became
-tedious in practice.
+repository. This sounds weird but this means you'd import
+`github.com/Xe/x/src/github.com/Xe/x/markov` instead of
+`github.com/Xe/x/markov`. This means that things need to be extracted _out of_
+monorepos and reformatted into "flat" repos so that you can only grab the one
+package you need. This became tedious in practice.
 
 In Go 1.5 (the one where they rewrote the compiler in Go) they added support for
 [vendoring code into your
@@ -317,10 +324,14 @@ dependencies in it. It allows you to have `within.website/ln@v0.7` and
 `within.website/ln@0.9` as dependencies for _two different projects_ without
 having to vendor source code or do advanced GOPATH manipulation between
 projects. It also adds cryptographic checksumming for each Go module that you
-download from the internet. This allows you to avoid having to shell out to
-`git` every time you fetch a module that someone else has fetched before.
-Companies could run their own Go module proxy and then use that to provide
-offline access to Go code fetched from the internet.
+download from the internet, so that you can be sure the code wasn't tampered
+with in-flight. They also created a cryptographic checksum comparison server so
+that you could ask a third party to validate what it thinks the checksum is so
+you can be sure that the code isn't tampered with on the maintainer's side. This
+also allows you to avoid having to shell out to `git` every time you fetch a
+module that someone else has fetched before. Companies could run their own Go
+module proxy and then use that to provide offline access to Go code fetched from
+the internet.
 
 <xeblog-conv name="Mara" mood="hmm">Wait, couldn't this allow Google to see the
 source code of all of your Go dependencies? How would this intersect with
@@ -332,10 +343,9 @@ disadvantages out of the gate with Go modules. I think that in practice the
 disadvantages are limited, but still the fact that it defaults to phoning home
 to Google every time you run a Go build without all the dependencies present
 locally is kind of questionable. They did make up for this with the checksum
-verification database a little, but it's still kinda sus.
-
-I'm not aware of any companies I've worked at running their own internal Go
-module caching servers, but I ran my own for a very long time.</xeblog-conv>
+verification database a little, but it's still kinda sus.<br /><br />I'm not
+aware of any companies I've worked at running their own internal Go module
+caching servers, but I ran my own for a very long time.</xeblog-conv>
 
 The earliest version of Go modules basically was a glorified `vendor` folder
 manager named `vgo`. This worked out amazingly well and probably made
@@ -401,10 +411,10 @@ Semantic Import Versioning has always been a part of Go modules and the Go team
 is now refusing to budge on this.
 
 <xeblog-conv name="Cadey" mood="coffee">My suggestion to people is to never
-release a version `1.x.x` of a Go project to avoid the “v2 landmine”. The Go
+release a version `1.x.x` of a Go project to avoid the "v2 landmine". The Go
 team claims that the right bit of tooling can help ease the pain, but this
 tooling never really made it out into the public. I bet it works great inside
-google3 though!</xeblog-conv>
+Google's internal monorepo though!</xeblog-conv>
 
 When you were upgrading a Go project that already hit major version 2 or
 higher to Go modules, adopting Go modules forced maintainers to make another
@@ -436,7 +446,7 @@ could have two versions of the same C functions try to be linked in and this
 really just does not work.</xeblog-conv>
 
 Overall though, Go modules has been a net positive for the community and for
-people wanting to create reliable software in Go. It’s just such a big semantic
+people wanting to create reliable software in Go. It’s just such a big semantics
 break in how the toolchain works that I almost think it would have been easier
 for the to accept if _that_ was Go 2. Especially since the semantic of how the
 toolchain worked changed so much.
@@ -614,8 +624,7 @@ that would normally be compile time errors into runtime errors.
 <xeblog-conv name="Cadey" mood="coffee">I say this as someone who maintains a
 library that uses contexts to store [contextually relevant log
 fields](https://pkg.go.dev/within.website/ln) as a way to make logs easier to
-correlate between.
- Arguably you could make the case that people are misusing the
+correlate between.<br /><br />Arguably you could make the case that people are misusing the
 tool and of course this is what will happen when you do that but I don't know if
 this is really the right thing to tell people.</xeblog-conv>
 
@@ -629,13 +638,11 @@ really neat if contexts could be goroutine-level globals so you didn’t have to
 one of the major arguments I remember hearing against them was that contexts
 "polluted" their function definitions and callsites. I can't disagree with this
 sentiment, at some level it really does look like contexts propagate "virally"
-throughout a codebase.
-
-I think that the net improvements to reliability and understandability of how
-things get stopped do make up for this though. Instead of a bunch of separate
-ways to cancel work in each individual library you have the best practice in
-the standard library. Having contexts around makes it a lot harder to "leak"
-goroutines on accident.</xeblog-conv>
+throughout a codebase.<br /><br />I think that the net improvements to
+reliability and understandability of how things get stopped do make up for this
+though. Instead of a bunch of separate ways to cancel work in each individual
+library you have the best practice in the standard library. Having contexts
+around makes it a lot harder to "leak" goroutines on accident.</xeblog-conv>
 
 ## Generics
 
