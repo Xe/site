@@ -67,7 +67,7 @@ generational leap in the capabilities of what a Platform as a Service can do.
 Even more critical is that every app gets its own static IP address that you can
 use for IP based firewall rules. This is something that was straight up
 impossible in Heroku due to Heroku being a reseller of AWS, but since fly.io
-owns their own infreastructure and IP space, they can do this with ease. Your
+owns their own infrastructure and IP space, they can do this with ease. Your
 applications can be reached on a predictable IP and they will have outgoing
 connections with the same IP.
 
