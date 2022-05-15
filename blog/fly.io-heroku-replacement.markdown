@@ -64,19 +64,6 @@ into your containers, and import Heroku apps into fly.io without having to
 rebuild them. This is what the Dogwood stack should have been. This represents a
 generational leap in the capabilities of what a Platform as a Service can do.
 
-Even more critical is that every app gets its own static IP address that you can
-use for IP based firewall rules. This is something that was straight up
-impossible in Heroku due to Heroku being a reseller of AWS, but since fly.io
-owns their own infrastructure and IP space, they can do this with ease. Your
-applications can be reached on a predictable IP and they will have outgoing
-connections with the same IP.
-
-<xeblog-conv name="Numa" mood="delet">This is amazingly useful when dealing with
-well-intentioned but outmoded security teams at companies you are integrating
-with that insist that you absolutely must have a static IP for a service. No
-more having to make ad-hoc SSH proxies or use some shady HTTP proxy as a
-service. You just make connections and they just work.</xeblog-conv>
-
 The stream VOD in the footer of this post contains my first impressions using
 fly.io to try and deploy an app written with [Deno](https://deno.land) to the
 cloud. I ended up creating a terrible CRUD app on stream using SQLite that
