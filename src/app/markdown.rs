@@ -7,6 +7,7 @@ use comrak::{
     ComrakPlugins,
 };
 use lazy_static::lazy_static;
+use lol_html::{rewrite_str, element, RewriteStrSettings, html_content::ContentType};
 use std::cell::RefCell;
 use url::Url;
 
@@ -71,7 +72,35 @@ pub fn render(inp: &str) -> Result<String> {
     let mut html = vec![];
     format_html_with_plugins(root, &options, &mut html, &plugins).unwrap();
 
-    String::from_utf8(html).wrap_err("post is somehow invalid UTF-8")
+    let html = String::from_utf8(html).wrap_err("post is somehow invalid UTF-8")?;
+
+    let html = rewrite_str(&html, RewriteStrSettings{
+        element_content_handlers: vec![
+            element!("xeblog-conv", |el| {
+                let name = el.get_attribute("name").expect("wanted xeblog-conv to contain name");
+                let name_lower = name.clone().to_lowercase();
+                let mood = el.get_attribute("mood").expect("wanted xeblog-conv to contain mood");
+                
+                el.before(&format!(r#"
+<div class="conversation">
+    <div class="conversation-picture conversation-smol">
+        <picture>
+            <source srcset="https://cdn.christine.website/file/christine-static/stickers/{name_lower}/{mood}.avif" type="image/avif">
+            <source srcset="https://cdn.christine.website/file/christine-static/stickers/{name_lower}/{mood}.webp" type="image/webp">
+            <img src="https://cdn.christine.website/file/christine-static/stickers/{name_lower}/{mood}.png" alt="{name} is {mood}">
+        </picture>
+    </div>
+    <div class="conversation-chat">&lt;<b>{name}</b>&gt; "#), ContentType::Html);
+                el.after("</div></div>", ContentType::Html);
+
+                el.remove_and_keep_content();
+                Ok(())
+            })
+        ],
+        ..RewriteStrSettings::default()
+    }).unwrap();
+
+    Ok(html)
 }
 
 fn iter_nodes<'a, F>(node: &'a AstNode<'a>, f: &F) -> Result<()>

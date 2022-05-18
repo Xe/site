@@ -1,5 +1,6 @@
 @use crate::post::Post;
 @use super::{header_html, footer_html};
+@use chrono::prelude::*;
 
 @(posts: Vec<Post>)
 
@@ -13,8 +14,8 @@
 
 <p>
     <ul>
-        @for post in posts {
-            <li>@post.date.format("%Y-%m-%d") - <a href="/@post.link">@post.front_matter.title</a></li>
+        @for post in posts.iter().filter(|p| Utc::today().num_days_from_ce() >= p.date.num_days_from_ce()) {
+            <li>@post.detri() - <a href="/@post.link">@post.front_matter.title</a></li>
         }
     </ul>
 </p>

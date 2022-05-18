@@ -1,5 +1,6 @@
 use crate::{post::Post, signalboost::Person};
 use color_eyre::eyre::Result;
+use chrono::prelude::*;
 use serde::Deserialize;
 use std::{
     fs,
@@ -91,8 +92,13 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     everything.sort();
     everything.reverse();
 
-    let everything: Vec<Post> = everything.into_iter().take(5).collect();
-
+    let today = Utc::today();
+    let everything: Vec<Post> = everything
+        .into_iter()
+        .filter(|p| today.num_days_from_ce() >= p.date.num_days_from_ce())
+        .take(5)
+        .collect();
+   
     let mut jfb = jsonfeed::Feed::builder()
         .title("Xe's Blog")
         .description("My blog posts and rants about various technology things.")
