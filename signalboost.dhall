@@ -107,22 +107,6 @@ in  [ Person::{
       , gitLink = Some "https://github.com/nbraud"
       }
     , Person::{
-      , name = "Nat Amundsen"
-      , tags =
-        [ "python 3"
-        , "linux"
-        , "backend"
-        , "utilities"
-        , "embedded c"
-        , "rust"
-        , "golang"
-        , "java"
-        , "kubernetes"
-        , "aws"
-        ]
-      , gitLink = Some "https://github.com/dragos240"
-      }
-    , Person::{
       , name = "Prajjwal Singh"
       , tags =
         [ "full-stack javascript"
