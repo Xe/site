@@ -223,9 +223,10 @@ impl Client {
         creds.access_token = rg.access_token;
         creds.refresh_token = rg.refresh_token;
 
-        let p = Path::new(".patreon.json");
+        let mut p = dirs::home_dir().unwrap_or(".".into());
+        p.push(".patreon.json");
         if p.exists() {
-            fs::remove_file(p)?;
+            fs::remove_file(&p)?;
         }
         let mut fout = fs::File::create(p)?;
         serde_json::to_writer(&mut fout, &creds)?;
