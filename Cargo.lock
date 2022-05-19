@@ -1619,6 +1619,7 @@ name = "patreon"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "dirs",
  "envy",
  "pretty_env_logger",
  "reqwest",
@@ -3110,6 +3111,7 @@ dependencies = [
  "color-eyre",
  "comrak",
  "derive_more",
+ "dirs",
  "envy",
  "estimated_read_time",
  "eyre",

@@ -4,7 +4,7 @@ use chrono::prelude::*;
 use serde::Deserialize;
 use std::{
     fs,
-    path::{Path, PathBuf},
+    path::PathBuf,
 };
 use tracing::{error, instrument};
 
@@ -22,7 +22,8 @@ pub struct Config {
 
 #[instrument]
 async fn patrons() -> Result<Option<patreon::Users>> {
-    let p = Path::new(".patreon.json");
+    let mut p = dirs::home_dir().unwrap_or(".".into());
+    p.push(".patreon.json");
     if !p.exists() {
         info!("{:?} does not exist", p);
         return Ok(None);
