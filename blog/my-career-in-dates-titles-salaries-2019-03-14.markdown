@@ -39,7 +39,8 @@ The following table is a history of my software career by title, date and salary
 | Consultant | Feburary 13, 2017 | November 13, 2017 | 273 days | 83 days | don't remember | Hired |
 | Senior Software Engineer | November 13, 2017 | March 8, 2019 | 480 days | 0 days | $150,000/year | Voulntary quit |
 | Senior Site Reliability Expert | May 6, 2019 | October 27, 2020 | 540 days | 48 days | CAD$115,000/year (about USD$ 80k and change) | Voluntary quit |
-| Software Designer | December 14, 2020 | *current* | n/a | n/a | CAD$135,000/year (about USD$ 105k and change) | n/a |
+| Software Designer | December 14, 2020 | *current* | n/a | n/a | CAD$135,000/year (about USD$ 105k and change) | raise |
+| Archmage of Infrastructure | March 1, 2022 | *current* | n/a | n/a | CAD$147,150/year (about USD$ 115k and change) | n/a |
 
 Even though I've been fired three times, I don't regret my career as it's been
 thus far. I've been able to work on experimental technology integrating into
