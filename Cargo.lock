@@ -544,9 +544,9 @@ dependencies = [
 
 [[package]]
 name = "dhall"
-version = "0.11.0"
+version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "49483fe619f146762fa89c7c840fa1fbf8b534cab0b59622106e8f434bbd4bca"
+checksum = "9093ee48621ca9db16cd4948c7acf24a8ecc9af41cc9e226e39ea719df06d8b5"
 dependencies = [
  "abnf_to_pest",
  "annotate-snippets",
@@ -2202,9 +2202,9 @@ dependencies = [
 
 [[package]]
 name = "serde_dhall"
-version = "0.11.0"
+version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5212ade489a28b0763867bb60a15169e41d855f3c04c0b26aa3bea50f9770e12"
+checksum = "0f7791cbb53e9db687bc88935eee148bacb2c6b2fc56418a2f20d54e7a74ea47"
 dependencies = [
  "dhall",
  "dhall_proc_macros",
