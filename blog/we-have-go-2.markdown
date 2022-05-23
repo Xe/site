@@ -888,9 +888,15 @@ fuzzing, RISC-V support, binary/octal/hexadecimal/imaginary number literals,
 WebAssembly support, so many garbage collector improvements and more. This has
 added up to make Go a fantastic choice for developing server-side applications.
 
-I, as some random person on the
-internet that is not associated with the Go team, think that if there was
-sufficient political will that they could probably label what we have as Go 2,
-but I don’t think that is going to happen any time soon. Until then, we still
-have a very great set of building blocks that allow you to make easy to maintain
-production quality services, and I don’t see that changing any time soon.
+I, as some random person on the internet that is not associated with the Go
+team, think that if there was sufficient political will that they could probably
+label what we have as Go 2, but I don’t think that is going to happen any time
+soon. Until then, we still have a very great set of building blocks that allow
+you to make easy to maintain production quality services, and I don’t see that
+changing any time soon.
+
+---
+
+<xeblog-conv name="Mara" mood="happy">If you had subscribed to the
+[Patreon](https://patreon.com/cadey) you could have read this a week
+ago!</xeblog-conv>
