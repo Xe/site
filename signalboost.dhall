@@ -275,7 +275,7 @@ in  [ Person::{
         , "R&D"
         , "SRE / system adminsitration"
         ]
-      , gitLink = Some "https://github.com/ddr0"
-      , twitter = Some "https://twitter.com/DDR_4"
+      , gitLink = Some "https://github.com/henri"
+      , twitter = Some "https://twitter.com/henri_shustak"
       }
     ]
