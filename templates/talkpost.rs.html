@@ -50,7 +50,7 @@
 
 @if Utc::today().num_days_from_ce() < post.date.num_days_from_ce() {
 <div class="warning">
-    @:mara("hacker", "Mara", Html(format!(r#"Hey, this post is set to go live to the public on {}. Right now you are reading a pre-publication version of this post. Please do not share this on social media. This post will automatically go live for everyone on the intended publication date. If you want access to these posts, please join the <a href="https://patreon.com/cadey">Patreon</a>. It helps me afford the copyeditor that I contract for the technical content I write."#, post.detri())))
+    @:mara("hacker", "Mara", Html(format!(r#"Hey, this post is set to go live to the public on {} UTC. Right now you are reading a pre-publication version of this post. Please do not share this on social media. This post will automatically go live for everyone on the intended publication date. If you want access to these posts, please join the <a href="https://patreon.com/cadey">Patreon</a>. It helps me afford the copyeditor that I contract for the technical content I write."#, post.detri())))
 </div>
 } else {
 <script async src="https://media.ethicalads.io/media/client/ethicalads.min.js"></script>
