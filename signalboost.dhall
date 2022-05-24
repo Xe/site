@@ -253,4 +253,29 @@ in  [ Person::{
       , gitLink = Some "https://github.com/Krish-sysadmin"
       , twitter = Some "https://twitter.com/krishjain02"
       }
+    , Person::{
+      , name = "Henri Shustak"
+      , tags =
+        [ "backend"
+        , "generalist"
+        , "documentation"
+        , "support"
+        , "electronics"
+        , "javascript"
+        , "python"
+        , "ruby"
+        , "bash"
+        , "sh"
+        , "fish"
+        , "zsh"
+        , "tsch"
+        , "software"
+        , "full-stack"
+        , "linux"
+        , "R&D"
+        , "SRE / system adminsitration"
+        ]
+      , gitLink = Some "https://github.com/ddr0"
+      , twitter = Some "https://twitter.com/DDR_4"
+      }
     ]
