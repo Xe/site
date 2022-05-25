@@ -530,7 +530,7 @@ giving up when there is no more work to be done.
 inside the Google monorepo that escaped out into the world. They also claim to
 have an internal tool that makes
 [`context.TODO()`](https://pkg.go.dev/context#TODO) useful (probably by showing
-you the callsities above that function?), but they never released that tool as
+you the callsites above that function?), but they never released that tool as
 open source so it’s difficult to know where to use it without that added
 context.</xeblog-conv>
 
