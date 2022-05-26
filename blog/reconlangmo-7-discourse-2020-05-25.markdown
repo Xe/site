@@ -15,7 +15,7 @@ post will start to cover a lot of the softer skills behind L'ewa as well as
 cover some other changes I'm making under the hood. This is a response to [this
 prompt][rclm7].
 
-[reconlangmo]: https://christine.website/blog/series/reconlangmo
+[reconlangmo]: https://xeiaso.net/blog/series/reconlangmo
 [rclm7]: https://www.reddit.com/r/conlangs/comments/gqo8jn/reconlangmo_7_discourse/
 
 ## Information Structure

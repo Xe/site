@@ -51,10 +51,10 @@ job. TLS configuration is not its job. Its job is to run your code. Everything
 else should just be provided by the system.
 
 I wrote a
-[blogpost](https://christine.website/blog/land-1-syscalls-file-io-2018-06-18)
+[blogpost](https://xeiaso.net/blog/land-1-syscalls-file-io-2018-06-18)
 about this work and even did a 
 [talk at GoCon
-Canada](https://christine.website/talks/webassembly-on-the-server-system-calls-2019-05-31)
+Canada](https://xeiaso.net/talks/webassembly-on-the-server-system-calls-2019-05-31)
 about it.
 
 And this worked for several months as I learned WebAssembly and started to
@@ -93,8 +93,8 @@ people understand low-level operating system development.
 
 I've even written a few blogposts about Olin:
 
-- [Olin: Why](https://christine.website/blog/olin-1-why-09-1-2018)
-- [Olin: The Future](https://christine.website/blog/olin-2-the-future-09-5-2018)
+- [Olin: Why](https://xeiaso.net/blog/olin-1-why-09-1-2018)
+- [Olin: The Future](https://xeiaso.net/blog/olin-2-the-future-09-5-2018)
 
 But, this was great for running stuff interactively and via the command line. It
 left me wanting more. I wanted to have that mythical functions as a service
@@ -230,5 +230,5 @@ keep the dream alive!
 [olincwa]: https://github.com/Xe/olin/tree/master/docs/cwa-spec
 [olincwarust]: https://github.com/Xe/olin/tree/master/cwa/olin
 [olincwatest]: https://github.com/Xe/olin/blob/master/cwa/tests/src/main.rs
-[olintempleos]: https://christine.website/blog/templeos-2-god-the-rng-2019-05-30
+[olintempleos]: https://xeiaso.net/blog/templeos-2-god-the-rng-2019-05-30
 [wasmcloud]: https://tulpa.dev/within/wasmcloud

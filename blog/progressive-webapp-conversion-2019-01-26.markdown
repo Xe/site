@@ -49,12 +49,12 @@ Here is an example web app manifest [from my portfolio site](https://github.com/
     "background_color": "#fa99ca",
     "display": "standalone",
     "scope": "/",
-    "start_url": "https://christine.website/",
+    "start_url": "https://xeiaso.net/",
     "description": "Blog and Resume for Christine Dodrill",
     "orientation": "any",
     "icons": [
         {
-            "src": "https://christine.website/static/img/avatar.png",
+            "src": "https://xeiaso.net/static/img/avatar.png",
             "sizes": "1024x1024"
         }
     ]
@@ -65,7 +65,7 @@ If you just want to create a manifest quickly, check out [this](https://app-mani
 
 ## Add Manifest to Your Base HTML Template
 
-I suggest adding the HTML link for the manifest to the most base HTML template you can, or in the case of a purely client side web app its main `index.html` file, as it needs to be as visible by the client trying to install the app. Adding this is [simple](https://developer.mozilla.org/en-US/docs/Web/Apps/Progressive/Installable_PWAs), assuming you are hosting this manifest on [/static/manifest.json](https://christine.website/static/manifest.json) – simply add it to the <head> section:
+I suggest adding the HTML link for the manifest to the most base HTML template you can, or in the case of a purely client side web app its main `index.html` file, as it needs to be as visible by the client trying to install the app. Adding this is [simple](https://developer.mozilla.org/en-US/docs/Web/Apps/Progressive/Installable_PWAs), assuming you are hosting this manifest on [/static/manifest.json](https://xeiaso.net/static/manifest.json) – simply add it to the <head> section:
 
 ```html
 <link rel="manifest" href="/static/manifest.json">
@@ -96,7 +96,7 @@ At a high level, consider what assets and pages you want users of your website t
 * Contact information for the person, company or service running the progressive web app
 * Any other pages or information you might find useful for users of your website
 
-For example, I have the following precached for [my portfolio site](https://christine.website):
+For example, I have the following precached for [my portfolio site](https://xeiaso.net):
 
 * My homepage (implicitly includes all of the CSS on the site) `/`
 * My blog index `/blog/`

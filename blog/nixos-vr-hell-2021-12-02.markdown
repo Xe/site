@@ -6,7 +6,7 @@ author: ectamorphic
 
 Recently I got a new VR setup that uses my tower directly instead of the [wifi
 streaming
-catastrophe](https://christine.website/blog/convoluted-vrchat-gchat-setup-2021-02-24).
+catastrophe](https://xeiaso.net/blog/convoluted-vrchat-gchat-setup-2021-02-24).
 I have a [Valve Index](https://store.steampowered.com/valveindex) and an [AMD
 RX6700XT](https://www.amd.com/en/products/graphics/amd-radeon-rx-6700-xt) GPU.
 Some huge advantages of this setup include:

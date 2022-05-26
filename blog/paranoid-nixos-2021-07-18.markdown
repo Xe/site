@@ -115,7 +115,7 @@ production-facing servers should probably only be able to be connected to over a
 VPN of some kind.
 
 If you want to see more about how to set up WireGuard on NixOS, see
-[here](https://christine.website/blog/my-wireguard-setup-2021-02-06) for more
+[here](https://xeiaso.net/blog/my-wireguard-setup-2021-02-06) for more
 information.
 
 ## Locking Down the Hatches
@@ -130,7 +130,7 @@ I am going to use the word "service" annoyingly vague here. In this world, a
 "service" is a human-oriented view of "computer does the thing I want it to do".
 This website you're reading this post on could be one service, and it should
 have a separate account from other services. See
-[here](https://christine.website/blog/nixops-services-2020-11-09) for more
+[here](https://xeiaso.net/blog/nixops-services-2020-11-09) for more
 information on how to set this up.
 
 ### Lock Down Services Within Systemd
@@ -433,7 +433,7 @@ where I show you how to automatically create an ISO that does all this for you.
 ### Repeatable Base Image with an ISO
 
 Using the setup I mentioned [in a past
-post](https://christine.website/blog/my-homelab-2021-06-08), you can create an
+post](https://xeiaso.net/blog/my-homelab-2021-06-08), you can create an
 automatic install ISO that will take a blank disk to a state where you can SSH
 into it and configure it further using a tool like
 [morph](https://github.com/DBCDK/morph). Take a look at [this

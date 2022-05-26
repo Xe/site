@@ -4,7 +4,7 @@ date: 2019-05-30
 series: templeos
 ---
 
-The [last post](https://christine.website/blog/templeos-1-installation-and-basic-use-2019-05-20) covered a lot of the basic usage of TempleOS. This post is going to be significantly different, as I'm going to be porting part of the TempleOS kernel to WebAssembly as a live demo. 
+The [last post](https://xeiaso.net/blog/templeos-1-installation-and-basic-use-2019-05-20) covered a lot of the basic usage of TempleOS. This post is going to be significantly different, as I'm going to be porting part of the TempleOS kernel to WebAssembly as a live demo. 
 
 This post may contain words used in ways and places that look blasphemous at first glance. No blasphemy is intended, though it is an unfortunate requirement for covering this part of TempleOS' kernel. It's worth noting that Terry Davis [legitimately believed that TempleOS is a temple of the Lord Yahweh](https://templeos.holyc.xyz/Wb/Doc/Charter.html):
 

@@ -13,7 +13,7 @@ tags:
 Over the last week or so I've been doing a _lot_ of improvements to [Olin][olin] in order to make it ready to be the kernel for the minimum viable product of [wasmcloud][wasmcloud-hello-world]. Here's an overview of the big things that have happened from version [0.1.1][olin-0.1.1] to version [0.4.0][olin-0.4.0].
 
 [olin]: https://github.com/Xe/olin
-[wasmcloud-hello-world]: https://christine.website/blog/wasmcloud-progress-2019-12-08
+[wasmcloud-hello-world]: https://xeiaso.net/blog/wasmcloud-progress-2019-12-08
 [olin-0.1.1]: https://github.com/Xe/olin/releases/tag/v0.1.1
 [olin-0.4.0]: https://github.com/Xe/olin/releases/tag/v0.4.0
 
@@ -31,7 +31,7 @@ As Olin is just a kernel, it needs some work in order to really shine as a true 
 
 Here is what has been done since the [last Olin post][last-olin-post]:
 
-[last-olin-post]: https://christine.website/blog/olin-2-the-future-09-5-2018
+[last-olin-post]: https://xeiaso.net/blog/olin-2-the-future-09-5-2018
 
 * An official, automated build of the example Olin components has been published to the Docker Hub
 * The Go ABI has been deprecated for the moment

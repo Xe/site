@@ -36,7 +36,7 @@ Your website should include at least the following things:
 - Links to or words about projects of yours that you are proud of
 - Some contact information (an email address is a good idea too)
 
-If you feel comfortable doing so, I'd also suggest putting your [resume](https://christine.website/resume)
+If you feel comfortable doing so, I'd also suggest putting your [resume](https://xeiaso.net/resume)
 on this site too. Even if it's just got your foodservice jobs or education 
 history (including your high school diploma if need be).
 
@@ -47,7 +47,7 @@ not.
 ## Make a Tech Blog On That Site
 
 This has been the single biggest thing to help me grow professionally. I regularly
-put [articles](https://christine.website/blog) on my blog, sometimes not even about
+put [articles](https://xeiaso.net/blog) on my blog, sometimes not even about
 technology topics. Even if you are writing about your take on something people have
 already written about, it's still good practice. Your early posts are going to be
 rough. It's normal to not be an expert when starting out in a new skill.

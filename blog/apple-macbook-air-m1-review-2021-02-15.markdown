@@ -21,7 +21,7 @@ up being the _worst_ experience that I have using an aarch64 MacBook.
 [This website](https://github.com/Xe/site) is a fairly complicated webapp
 written in Rust. As such it makes for a fairly decent compile stress test. I'm
 going to do a compile test against my [Ryzen
-3600](https://christine.website/blog/nixos-desktop-flow-2020-04-25) with this M1
+3600](https://xeiaso.net/blog/nixos-desktop-flow-2020-04-25) with this M1
 MacBook Air.
 
 My tower is running this version of Rust:

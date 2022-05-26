@@ -20,16 +20,16 @@ for browsers, but I've been using it for server-side tasks.
 
 I have written more about/with WebAssembly in the past in these posts:
 
-- https://christine.website/talks/webassembly-on-the-server-system-calls-2019-05-31
-- https://christine.website/blog/olin-1-why-09-1-2018
-- https://christine.website/blog/olin-2-the-future-09-5-2018
-- https://christine.website/blog/land-1-syscalls-file-io-2018-06-18
-- https://christine.website/blog/templeos-2-god-the-rng-2019-05-30
+- https://xeiaso.net/talks/webassembly-on-the-server-system-calls-2019-05-31
+- https://xeiaso.net/blog/olin-1-why-09-1-2018
+- https://xeiaso.net/blog/olin-2-the-future-09-5-2018
+- https://xeiaso.net/blog/land-1-syscalls-file-io-2018-06-18
+- https://xeiaso.net/blog/templeos-2-god-the-rng-2019-05-30
 
 This is a continuation of the following two posts:
 
-- https://christine.website/blog/the-origin-of-h-2015-12-14
-- https://christine.website/blog/formal-grammar-of-h-2019-05-19
+- https://xeiaso.net/blog/the-origin-of-h-2015-12-14
+- https://xeiaso.net/blog/formal-grammar-of-h-2019-05-19
 
 All of the relevant code for h is [here](https://github.com/Xe/x/tree/master/cmd/h).
 

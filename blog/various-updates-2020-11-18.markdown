@@ -125,7 +125,7 @@ designing this, but I think the next character in my blog is going to be an
 anthro snow leopard named Alicia. I want Alicia to be a beginner that is very
 new to computer programming and other topics, which would then make Mara into
 more of a teacher type. I may also introduce my own OC Cadey (the orca looking
-thing you can see [here](https://christine.website/static/img/avatar_large.png)
+thing you can see [here](https://xeiaso.net/static/img/avatar_large.png)
 or in the favicon of my site) into the mix to reply to these questions in
 something more close to the Socratic method.
 

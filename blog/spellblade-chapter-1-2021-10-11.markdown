@@ -26,7 +26,7 @@ problems that require deep thought and consideration.
 
 I was originally gonna release this by the end of the year as a cohesive novel,
 however it looks like the cards aren't falling that way. I want to instead shift
-[Spellblade](https://christine.website/blog/spellblade-plans-2021-08-16) into a
+[Spellblade](https://xeiaso.net/blog/spellblade-plans-2021-08-16) into a
 web novel, which I am defining as something that I'll release in big chunks like
 this every month or so. I don't want to compromise any of the artistic vision or
 whatever, I just want each "chunk" to be a lot more finely scoped than "the

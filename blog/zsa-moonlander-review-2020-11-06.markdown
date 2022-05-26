@@ -22,7 +22,7 @@ no influence pushing me either way on this keyboard.
 desk](https://cdn.christine.website/file/christine-static/img/keeb/Elm3dN8XUAAYHws.jpg)
 
 [That 3d printed brain is built from the 3D model that was made as a part of <a
-href="https://christine.website/blog/brain-fmri-to-3d-model-2019-08-23">this
+href="https://xeiaso.net/blog/brain-fmri-to-3d-model-2019-08-23">this
 blogpost</a>.](conversation://Mara/hacker)
 
 ## tl;dr
@@ -131,7 +131,7 @@ standard [Colemak](https://Colemak.com/) layout and it is currently the layer I
 type the fastest on. I have the RGB configured so that it is mostly pink with
 the homerow using a lighter shade of pink. The color codes come from my logo
 that you can see in the favicon [or here for a larger
-version](https://christine.website/static/img/avatar_large.png).
+version](https://xeiaso.net/static/img/avatar_large.png).
 
 I also have a qwerty layer for gaming. Most games expect qwerty keyboards and
 this is an excellent stopgap to avoid having to rebind every game that I want to

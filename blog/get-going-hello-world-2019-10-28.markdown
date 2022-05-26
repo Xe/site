@@ -16,7 +16,7 @@ it. This is a sort of spiritual successor to my old
 ecosystem since then, as well as my understanding of the language.
 
 [go]: https://golang.org
-[gswg]: https://christine.website/blog/getting-started-with-go-2015-01-28
+[gswg]: https://xeiaso.net/blog/getting-started-with-go-2015-01-28
 
 Like always, feedback is very welcome. Any feedback I get will be used to help
 make this book even better.

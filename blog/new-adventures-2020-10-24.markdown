@@ -58,7 +58,7 @@ la budza pu cusku lu
 > May you be at peace. May you be happy.
 - Buddha
 
-I will be reachable on the internet. See https://christine.website/contact to
+I will be reachable on the internet. See https://xeiaso.net/contact to
 see contact information that will help you reach out to me. If you can, please
 direct replies to me@christine.website, that way I can read them after this
 account gets disabled.
@@ -70,7 +70,7 @@ From my world to yours,
 --
 
 Christine Dodrill
-https://christine.website
+https://xeiaso.net
 
 ```
 la budza pu cusku lu

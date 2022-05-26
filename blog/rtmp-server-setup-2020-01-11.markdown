@@ -38,7 +38,7 @@ my RTMP server. This means I could set it up to ingest via my [WireGuard
 VPN][sts-wireguard] with very little work. Here is the docker command I run on
 my VPN host:
 
-[sts-wireguard]: https://christine.website/blog/series/site-to-site-wireguard
+[sts-wireguard]: https://xeiaso.net/blog/series/site-to-site-wireguard
 
 ```console
 $ docker run \

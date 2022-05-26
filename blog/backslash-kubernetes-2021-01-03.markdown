@@ -181,7 +181,7 @@ server, my kubernetes cluster and my dokku server:
 - hlang -> https://h.christine.website
 - mi -> https://mi.within.website
 - printerfacts -> https://printerfacts.cetacean.club
-- xesite -> https://christine.website
+- xesite -> https://xeiaso.net
 - graphviz -> https://graphviz.christine.website
 - idp -> https://idp.christine.website
 - oragono -> ircs://irc.within.website:6697/

@@ -10,7 +10,7 @@ As of [a recent commit](https://github.com/Xe/site/commit/b89387f6bbb010907dfa85
 to this site's code, it now generates RSS and Atom feeds for future posts on my
 blog.
 
-For RSS: `https://christine.website/blog.rss`
+For RSS: `https://xeiaso.net/blog.rss`
 
 For Atom: `https://christine.webiste/blog.atom`
 

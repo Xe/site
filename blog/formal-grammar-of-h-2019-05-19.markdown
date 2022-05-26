@@ -8,7 +8,7 @@ series: conlangs
 
 `h` is a conlang project that I have been working off and on for years. It is infinitely simply teachable, trivial to master and can be used to represent the entire scope of all meaning in any facet of the word. All with a single character.
 
-This is a continuation from [this post](https://christine.website/blog/the-origin-of-h-2015-12-14). If this post makes sense to you, please let me know and/or schedule a psychologist appointment just to be safe.
+This is a continuation from [this post](https://xeiaso.net/blog/the-origin-of-h-2015-12-14). If this post makes sense to you, please let me know and/or schedule a psychologist appointment just to be safe.
 
 ## Phonology
 

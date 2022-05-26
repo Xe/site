@@ -363,14 +363,14 @@ my blog's [JSONFeed](/blog.json):
 #!/usr/bin/env bash
 # xeblog-post.sh
 
-curl -s https://christine.website/blog.json | jq -r '.items[0] | "\(.title) \(.url)"'
+curl -s https://xeiaso.net/blog.json | jq -r '.items[0] | "\(.title) \(.url)"'
 ```
 
 At the time of writing this post, here is the output I get from this command:
 
 ```
 $ ./xeblog-post.sh
-Anbernic RG280M Review https://christine.website/blog/rg280m-review
+Anbernic RG280M Review https://xeiaso.net/blog/rg280m-review
 ```
 
 What else could you do with pipes and redirection? The cloud's the limit!

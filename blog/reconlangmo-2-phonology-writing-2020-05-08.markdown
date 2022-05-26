@@ -14,7 +14,7 @@ language help people understand where the boundaries between syllables are. I
 will then describe my plans for the L'ewa orthography and how L'ewa is
 romanized. This is a response to the prompt made [here][rclm2prompt].
 
-[rclm1]: https://christine.website/blog/reconlangmo-1-name-ctx-history-2020-05-05
+[rclm1]: https://xeiaso.net/blog/reconlangmo-1-name-ctx-history-2020-05-05
 [rclm2prompt]: https://www.reddit.com/r/conlangs/comments/gfp3hw/reconlangmo_2_phonology_writing/
 
 ## Phonology

@@ -80,7 +80,7 @@ in one of a few ways:
 Some concepts are pulled in from various documents and ideas in a slightly
 [kasmakfa](https://write.as/excerpts/practical-kasmakfa) manner, but overall the
 most "confusing" thing to new readers is going to be related to this comment in
-the [anapana](https://christine.website/blog/when-then-zen-anapana-2018-08-15)
+the [anapana](https://xeiaso.net/blog/when-then-zen-anapana-2018-08-15)
 feature:
 
 > Note: "the body" means the sack of meat and bone that you are currently living inside. For the purposes of explanation of this technique, please consider what makes you yourself separate from the body you live in.

@@ -17,7 +17,7 @@ One thing that I do a lot is run virtual machines. Some of these stick around, a
 lot of them are very ephemeral. I also like being able to get into these VMs
 quickly if I want to mess around with a given distribution or OS. Normally I'd
 run these on [my gaming
-tower](https://christine.website/blog/nixos-desktop-flow-2020-04-25), however
+tower](https://xeiaso.net/blog/nixos-desktop-flow-2020-04-25), however
 this makes my tower very load-bearing. I also want to play games sometimes on my
 tower, and even though there have been many strides in getting games to run well
 on Linux it's still not as good as I'd like it to be.

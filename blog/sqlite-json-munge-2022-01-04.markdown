@@ -64,7 +64,7 @@ def get_feed(feed_url):
         con.commit()
         print("got feed %s" % (feed_url))
 
-get_feed("https://christine.website/blog.json")
+get_feed("https://xeiaso.net/blog.json")
 ```
 
 So now let's play with the data! Let's load the database schema in with the
@@ -76,14 +76,14 @@ $ sqlite3 data.db < schema.sql
 
 [The less-than symbol there is a redirect, it loads the data from `schema.sql`
 as standard input to the `sqlite` command. See <a
-href="https://christine.website/blog/fun-with-redirection-2021-09-22">here</a>
+href="https://xeiaso.net/blog/fun-with-redirection-2021-09-22">here</a>
 for more information on redirections.](conversation://Mara/hacker)
 
 Then run that python script to populate the database:
 
 ```console
 $ python ./jsonfeedfetch.py
-got feed https://christine.website/blog.json
+got feed https://xeiaso.net/blog.json
 ```
 
 Then open up the SQLite command line:
@@ -179,7 +179,7 @@ And run that python script again, then the data should automatically show up:
 
 ```
 sqlite3> SELECT * FROM jsonfeed_metadata;
-https://christine.website/blog.json|Xe's Blog|My blog posts and rants about various technology things.|https://christine.website|2022-01-04
+https://xeiaso.net/blog.json|Xe's Blog|My blog posts and rants about various technology things.|https://xeiaso.net|2022-01-04
 ```
 
 It's like magic!

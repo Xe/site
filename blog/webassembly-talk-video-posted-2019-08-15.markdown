@@ -15,4 +15,4 @@ of that talk has been posted.
 I hope you enjoy! I have some more blogposts in the queue but I've been sleeping horribly lately. Here's hoping that clears up.
 
 [goconcanada]: https://gocon.ca/
-[talklink]: https://christine.website/talks/webassembly-on-the-server-system-calls-2019-05-31
+[talklink]: https://xeiaso.net/talks/webassembly-on-the-server-system-calls-2019-05-31

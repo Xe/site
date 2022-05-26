@@ -140,5 +140,5 @@ for more information.
 ---
 
 Also happy December! My site has the [snow
-CSS](https://christine.website/blog/let-it-snow-2018-12-17) loaded for the
+CSS](https://xeiaso.net/blog/let-it-snow-2018-12-17) loaded for the
 month. Enjoy!

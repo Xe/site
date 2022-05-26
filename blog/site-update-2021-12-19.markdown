@@ -58,7 +58,7 @@ me](mailto:me@christine.website) and let me know them.
 
 </noscript>
 
-I want to use [Xeact](https://christine.website/blog/xeact-0.0.69-2021-11-18)
+I want to use [Xeact](https://xeiaso.net/blog/xeact-0.0.69-2021-11-18)
 more in my website. I am trying to hit a balance of avoiding structural
 JavaScript while also allowing me to experiment with new and interesting ways of
 doing things. To this end I have created a custom HTML element that allows me to

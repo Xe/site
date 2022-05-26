@@ -8,7 +8,7 @@ tags:
 ---
 
 This website has been a progressive web app [for a long
-time](https://christine.website/blog/progressive-webapp-conversion-2019-01-26).
+time](https://xeiaso.net/blog/progressive-webapp-conversion-2019-01-26).
 This means that you can install my blog to your phone as if it was a normal app
 via the share menu in Safari on iOS or via other native prompts on other
 browsers. However, this is not enough. In the constant pursuit of advancement I

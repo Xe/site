@@ -6,9 +6,9 @@ series: site-to-site-wireguard
 
 This is the fourth post in my Site to Site WireGuard VPN series. You can read the other articles here:
 
-- [Part 1 - Names and Numbers](https://christine.website/blog/site-to-site-wireguard-part-1-2019-04-02)
-- [Part 2 - DNS](https://christine.website/blog/site-to-site-wireguard-part-2-2019-04-07)
-- [Part 3 - Custom TLS Certificate Authority](https://christine.website/blog/site-to-site-wireguard-part-3-2019-04-11)
+- [Part 1 - Names and Numbers](https://xeiaso.net/blog/site-to-site-wireguard-part-1-2019-04-02)
+- [Part 2 - DNS](https://xeiaso.net/blog/site-to-site-wireguard-part-2-2019-04-07)
+- [Part 3 - Custom TLS Certificate Authority](https://xeiaso.net/blog/site-to-site-wireguard-part-3-2019-04-11)
 - Part 4 - HTTPS (this post)
 - Setting up additional iOS, macOS, Android and Linux clients
 - Other future fun things (seamless tor2web routing, etc)
@@ -85,7 +85,7 @@ This will allow only Caddy and root to manage certificates in that folder.
 
 ### Custom CA Certificate Permissions
 
-In the [last post](https://christine.website/blog/site-to-site-wireguard-part-3-2019-04-11), custom certificates were created at `/srv/within/certs`. Caddy is going to need to have the correct permissions in order to be able to read them.
+In the [last post](https://xeiaso.net/blog/site-to-site-wireguard-part-3-2019-04-11), custom certificates were created at `/srv/within/certs`. Caddy is going to need to have the correct permissions in order to be able to read them.
 
 ```shell
 #!/bin/sh

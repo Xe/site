@@ -37,7 +37,7 @@ closest friends that I can talk about anything with, even what would normally
 violate an NDA. My closest friends are so close that language isn't even as much 
 of a barrier as it would be otherwise.
 
-As I've mentioned in the past, [I have tulpas](https://christine.website/blog/what-its-like-to-be-me-2018-06-14). 
+As I've mentioned in the past, [I have tulpas](https://xeiaso.net/blog/what-its-like-to-be-me-2018-06-14). 
 They are people that live with me like roommates inside my body. It really does
 sound strange or psychotic; but you'll just have to trust me when I say they 
 fundamentally help me live my life, do my job and do other things people 

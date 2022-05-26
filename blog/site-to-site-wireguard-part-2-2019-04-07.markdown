@@ -6,10 +6,10 @@ series: site-to-site-wireguard
 
 This is the second in my Site to Site WireGuard VPN series. You can read the other articles here:
 
-- [Part 1 - Names and Numbers](https://christine.website/blog/site-to-site-wireguard-part-1-2019-04-02)
+- [Part 1 - Names and Numbers](https://xeiaso.net/blog/site-to-site-wireguard-part-1-2019-04-02)
 - Part 2 - DNS (this post)
-- [Part 3 - Custom TLS Certificate Authority](https://christine.website/blog/site-to-site-wireguard-part-3-2019-04-11)
-- [Part 4 - HTTPS](https://christine.website/blog/site-to-site-wireguard-part-4-2019-04-16)
+- [Part 3 - Custom TLS Certificate Authority](https://xeiaso.net/blog/site-to-site-wireguard-part-3-2019-04-11)
+- [Part 4 - HTTPS](https://xeiaso.net/blog/site-to-site-wireguard-part-4-2019-04-16)
 - Setting up additional iOS, macOS, Android and Linux clients
 - Other future fun things (seamless tor2web routing, etc)
 
@@ -230,7 +230,7 @@ $ dig @127.0.0.1 -x 10.55.0.1
 
 ### Using With the iOS WireGuard App
 
-In order to configure [iOS WireGuard clients](https://itunes.apple.com/us/app/wireguard/id1441195209?mt=8) to use this DNS server, open the WireGuard app and tap the name of the configuration we created in the [last post](https://christine.website/blog/site-to-site-wireguard-part-1-2019-04-02). Hit "Edit" in the upper right hand corner and select the "DNS Servers" box. Put `10.55.0.1` in it and hit "Save". Be sure to confirm the VPN is active, then open [LibTerm](https://itunes.apple.com/us/app/libterm/id1380911705?mt=8) and enter in the following:
+In order to configure [iOS WireGuard clients](https://itunes.apple.com/us/app/wireguard/id1441195209?mt=8) to use this DNS server, open the WireGuard app and tap the name of the configuration we created in the [last post](https://xeiaso.net/blog/site-to-site-wireguard-part-1-2019-04-02). Hit "Edit" in the upper right hand corner and select the "DNS Servers" box. Put `10.55.0.1` in it and hit "Save". Be sure to confirm the VPN is active, then open [LibTerm](https://itunes.apple.com/us/app/libterm/id1380911705?mt=8) and enter in the following:
 
 ```
 $ dig oho.pele

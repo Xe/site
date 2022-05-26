@@ -10,7 +10,7 @@ From time to time, I am outright wrong on my blog. This is one of those times.
 In my [last post about Nix][nixpost], I didn't see the light yet. I think I do
 now, and I'm going to attempt to clarify below.
 
-[nixpost]: https://christine.website/blog/thoughts-on-nix-2020-01-28
+[nixpost]: https://xeiaso.net/blog/thoughts-on-nix-2020-01-28
 
 Let's talk about a more simple scenario: writing a service in Go. This service
 will depend on at least the following:

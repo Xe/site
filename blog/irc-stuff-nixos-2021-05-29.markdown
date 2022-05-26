@@ -453,7 +453,7 @@ module. Here's how I do it:
 
 You can add this to your `imports` in your server's `configuration.nix` using
 [the layout I described in this
-post](https://christine.website/blog/morph-setup-2021-04-25). This would go in
+post](https://xeiaso.net/blog/morph-setup-2021-04-25). This would go in
 the host-specific configuration folder.
 
 Once you've deployed this to a server, try to open the page in your browser:

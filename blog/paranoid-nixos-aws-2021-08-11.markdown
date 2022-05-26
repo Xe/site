@@ -9,7 +9,7 @@ tags:
  - r13y
 ---
 
-In [the last post](https://christine.website/blog/paranoid-nixos-2021-07-18) we
+In [the last post](https://xeiaso.net/blog/paranoid-nixos-2021-07-18) we
 covered a lot of the base groundwork involved in making a paranoid NixOS setup.
 Today we're gonna throw this into prod by making a base NixOS image with it.
 

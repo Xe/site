@@ -82,7 +82,7 @@ terrible idea. Microservices architectures are not planned. They are an
 evolutionary result, not a fully anticipated feature.
 
 Finally, don’t “design for the future”. The future [hasn’t happened
-yet](https://christine.website/blog/all-there-is-is-now-2019-05-25). Nobody
+yet](https://xeiaso.net/blog/all-there-is-is-now-2019-05-25). Nobody
 knows how it’s going to turn out. The future is going to happen, and you can
 either adapt to it as it happens in the Now or fail to. Don’t make things overly
 modular, that leads to insane things like dynamically linking parts of an

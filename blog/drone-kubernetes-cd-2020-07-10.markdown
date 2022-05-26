@@ -279,7 +279,7 @@ step.
 The deploy step does two small things. First, it installs
 [dhall-yaml](https://github.com/dhall-lang/dhall-haskell/tree/master/dhall-yaml)
 for generating the Kubernetes manifest (see
-[here](https://christine.website/blog/dhall-kubernetes-2020-01-25)) and then
+[here](https://xeiaso.net/blog/dhall-kubernetes-2020-01-25)) and then
 runs
 [`scripts/release.sh`](https://tulpa.dev/cadey/printerfacts/src/branch/master/scripts/release.sh):
 

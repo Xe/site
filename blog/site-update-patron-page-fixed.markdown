@@ -3,7 +3,7 @@ title: "Site Update: I Fixed the Patron Page"
 date: 2022-05-18
 ---
 
-So I fixed [the patron page](https://christine.website/patrons) and the
+So I fixed [the patron page](https://xeiaso.net/patrons) and the
 underlying issue was stupid enough that I feel like explaining it so you all can
 learn from my mistake.
 

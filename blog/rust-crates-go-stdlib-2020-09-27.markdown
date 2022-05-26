@@ -198,7 +198,7 @@ describes why functions fail to do what they intend. Rust has the [`Error`
 trait](https://doc.rust-lang.org/std/error/trait.Error.html) which lets you also
 create a type that describes why functions fail to do what they intend.
 
-In [my last post](https://christine.website/blog/TLDR-rust-2020-09-19) I
+In [my last post](https://xeiaso.net/blog/TLDR-rust-2020-09-19) I
 described [`eyre`](https://docs.rs/eyre) and the Result type. However, this time
 we're going to dive into [`thiserror`](https://docs.rs/thiserror) for making our
 own error type. Let's add `thiserror` to our crate:

@@ -72,7 +72,7 @@ Everything else we'll cover today will build on top of this.
 Let's look back at the Go [example
 package](https://github.com/Xe/gohello/blob/caf54cdff7d8dd9bd9df4b3b783a72fe75c9a11e/flake.nix#L31-L54)
 I walked us through in [the last
-post](https://christine.website/blog/nix-flakes-1-2022-02-21):
+post](https://xeiaso.net/blog/nix-flakes-1-2022-02-21):
 
 ```nix
 # ...

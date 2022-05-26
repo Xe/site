@@ -103,7 +103,7 @@ this:
 
 > I have no record of a "Christine Dodrill" at this email address. You may want
 > to look elsewhere. If you would like to proceed with me instead, here is
-> information about me: https://christine.website.
+> information about me: https://xeiaso.net.
 
 Throw in your pronouns too to be safe.
 

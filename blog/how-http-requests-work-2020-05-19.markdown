@@ -14,7 +14,7 @@ goes into hitting enter on christine.website and this website being loaded.
 
 ## Beginnings
 
-The user types in `https://christine.website` into the address bar and hits
+The user types in `https://xeiaso.net` into the address bar and hits
 enter on the keyboard. This sends a signal over USB to the computer and the
 kernel polls the USB controller for a new message. It's recognized as from the
 keyboard. The input is then sent to the browser through an input driver talking

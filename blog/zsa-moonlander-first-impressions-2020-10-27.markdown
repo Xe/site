@@ -8,7 +8,7 @@ tags:
 ---
 
 As I mentioned
-[before](https://christine.website/blog/colemak-layout-2020-08-15), I ordered a
+[before](https://xeiaso.net/blog/colemak-layout-2020-08-15), I ordered a
 [ZSA Moonlander](https://zsa.io/moonlander) and it has finally arrived. I am
 writing this post from my Moonlander, and as such I may do a few more typos
 than normal, I'm still getting used to this.

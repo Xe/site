@@ -21,7 +21,7 @@ named [dyson][dyson] in order to help me manage Terraform as well as create
 Kubernetes manifests from [a template][template]. This works for the majority of
 my apps, but it is difficult to extend at this point for a few reasons:
 
-[cultk8s]: https://christine.website/blog/the-cult-of-kubernetes-2019-09-07
+[cultk8s]: https://xeiaso.net/blog/the-cult-of-kubernetes-2019-09-07
 [dyson]: https://github.com/Xe/within-terraform/tree/master/dyson
 [template]: https://github.com/Xe/within-terraform/blob/master/dyson/src/dysonPkg/deployment_with_ingress.yaml
 

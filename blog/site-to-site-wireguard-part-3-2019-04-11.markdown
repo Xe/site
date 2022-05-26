@@ -6,10 +6,10 @@ series: site-to-site-wireguard
 
 This is the third in my Site to Site WireGuard VPN series. You can read the other articles here:
 
-- [Part 1 - Names and Numbers](https://christine.website/blog/site-to-site-wireguard-part-1-2019-04-02)
-- [Part 2 - DNS](https://christine.website/blog/site-to-site-wireguard-part-2-2019-04-07)
+- [Part 1 - Names and Numbers](https://xeiaso.net/blog/site-to-site-wireguard-part-1-2019-04-02)
+- [Part 2 - DNS](https://xeiaso.net/blog/site-to-site-wireguard-part-2-2019-04-07)
 - Part 3 - Custom TLS Certificate Authority (this post)
-- [Part 4 - HTTPS](https://christine.website/blog/site-to-site-wireguard-part-4-2019-04-16)
+- [Part 4 - HTTPS](https://xeiaso.net/blog/site-to-site-wireguard-part-4-2019-04-16)
 - Setting up additional iOS, macOS, Android and Linux clients
 - Other future fun things (seamless tor2web routing, etc)
 
@@ -26,7 +26,7 @@ A TLS Certificate Authority is a certificate that is allowed to issue other cert
 
 ### Why Should I Create One?
 
-Generally, it is useful to create a custom TLS certificate authority when there are custom DNS domains being used. This allows you to create `https://` links for your internal services (which can then act as [Progressive Web Apps](https://christine.website/blog/progressive-webapp-conversion-2019-01-26)). This will also fully prevent the ["Not Secure"](https://versprite.com/blog/http-labeled-not-secure/) blurb from showing up in the URL bar.
+Generally, it is useful to create a custom TLS certificate authority when there are custom DNS domains being used. This allows you to create `https://` links for your internal services (which can then act as [Progressive Web Apps](https://xeiaso.net/blog/progressive-webapp-conversion-2019-01-26)). This will also fully prevent the ["Not Secure"](https://versprite.com/blog/http-labeled-not-secure/) blurb from showing up in the URL bar.
 
 Sometimes your needs may involve needing to see what an application is doing over TLS traffic. Having a custom TLS certificate authority already set up makes this a much faster thing to do.
 

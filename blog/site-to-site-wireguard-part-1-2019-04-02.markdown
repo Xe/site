@@ -9,9 +9,9 @@ In this blogpost series I'm going to go over how I created a [site to site](http
 This series is going to be broken up into multiple posts about as follows:
 
 - Part 1 - Names and Numbers (this post)
-- [Part 2 - DNS](https://christine.website/blog/site-to-site-wireguard-part-2-2019-04-07)
-- [Part 3 - Custom TLS Certificate Authority](https://christine.website/blog/site-to-site-wireguard-part-3-2019-04-11)
-- [Part 4 - HTTPS](https://christine.website/blog/site-to-site-wireguard-part-4-2019-04-16)
+- [Part 2 - DNS](https://xeiaso.net/blog/site-to-site-wireguard-part-2-2019-04-07)
+- [Part 3 - Custom TLS Certificate Authority](https://xeiaso.net/blog/site-to-site-wireguard-part-3-2019-04-11)
+- [Part 4 - HTTPS](https://xeiaso.net/blog/site-to-site-wireguard-part-4-2019-04-16)
 - Setting up additional iOS, macOS, Android and Linux clients
 - Other future fun things (seamless tor2web routing, etc)
 

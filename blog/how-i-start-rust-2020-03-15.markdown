@@ -46,7 +46,7 @@ the Rust compiler.
 
 [nixos]: https://nixos.org/nixos/
 [nix]: https://nixos.org/nix/
-[howistartnix]: https://christine.website/blog/how-i-start-nix-2020-03-08
+[howistartnix]: https://xeiaso.net/blog/how-i-start-nix-2020-03-08
 
 ## A new project
 

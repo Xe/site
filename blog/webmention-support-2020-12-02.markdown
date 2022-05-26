@@ -31,7 +31,7 @@ $ curl https://mi.within.website/api/webmention/01ERGGEG7DCKRH3R7DH4BXZ6R9 | jq
 {
   "id": "01ERGGEG7DCKRH3R7DH4BXZ6R9",
   "source_url": "https://maya.land/responses/2020/12/01/i-think-this-blog-post-might-have-been.html",
-  "target_url": "https://christine.website/blog/toast-sandwich-recipe-2019-12-02",
+  "target_url": "https://xeiaso.net/blog/toast-sandwich-recipe-2019-12-02",
   "title": null
 }
 ```

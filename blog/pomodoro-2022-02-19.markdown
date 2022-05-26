@@ -14,7 +14,7 @@ My work laptop uses KDE, so I tried out
 really liked this. I think one of the major differences between how I've been
 failing at pomodoro in the past and why it's been working now is that I've
 worked it into my [daily note-taking/TODO
-workflow](https://christine.website/blog/gtd-on-paper-2021-06-13). I label each
+workflow](https://xeiaso.net/blog/gtd-on-paper-2021-06-13). I label each
 pomodoro (my notes call them "Pom" because that isn't something I write often in
 them) as a section in my notes and then include a few TODO items under it. I'll
 also add some notes to the pom in case I need them later.

@@ -78,7 +78,7 @@ for this:
 
 ```
 Xe Iaso (zi ai-uh-so)
-https://christine.website
+https://xeiaso.net
 
 .i la budza pu cusku lu
  <<.i ko snura .i ko kanro

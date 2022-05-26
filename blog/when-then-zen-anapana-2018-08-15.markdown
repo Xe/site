@@ -32,7 +32,7 @@ This article is a more verbose version of [the correlating feature from when-the
 
 The When Then Zen project aims to describe the finer points of meditative concepts in plain English. As such, we start assuming just about nothing and build fractally on top of concepts derived from common or plain English usage of the terms. Some of these techniques may be easier for people with a more intensive meditative background, but try things and see what works best for you. Meditation in general works a lot better when you have a curious and playful attitude about figuring things out.
 
-I'm not perfect. I don't know what will work best for you. A lot of this is documenting both my practice and what parts of what books helped me "get it". If this works for you, [please let me know](https://christine.website/contact). If this doesn't work for you, [please let me know](https://christine.website/contact). I will use this information for making direct improvements to these documents. 
+I'm not perfect. I don't know what will work best for you. A lot of this is documenting both my practice and what parts of what books helped me "get it". If this works for you, [please let me know](https://xeiaso.net/contact). If this doesn't work for you, [please let me know](https://xeiaso.net/contact). I will use this information for making direct improvements to these documents. 
 
 As for your practice, twist the rules into circles and scrape out the parts that don't work if it helps you. Find out how to integrate it into your life in the best manner and go with it.
 

@@ -13,7 +13,7 @@ In my [last post][pahihelloworld] I mentioned that pa'i was faster than Olin's
 cwa binary written in go without giving any benchmarks. I've been working on new
 ways to gather and visualize these benchmarks, and here they are. 
 
-[pahihelloworld]: https://christine.website/blog/pahi-hello-world-2020-02-22
+[pahihelloworld]: https://xeiaso.net/blog/pahi-hello-world-2020-02-22
 
 Benchmarking WebAssembly implementations is slightly hard. A lot of existing
 benchmark tools simply do not run in WebAssembly as is, not to mention inside

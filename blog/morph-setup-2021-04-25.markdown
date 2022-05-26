@@ -308,19 +308,19 @@ And then you can register it in your `network.nix` like this:
 This should help you get your servers wrangled into a somewhat consistent state.
 From here the following articles may be useful to give you ideas:
 
-- [Borg Backup Config](https://christine.website/blog/borg-backup-2021-01-09)
+- [Borg Backup Config](https://xeiaso.net/blog/borg-backup-2021-01-09)
 - [Nixops Services On Your Home
-  Network](https://christine.website/blog/nixops-services-2020-11-09) (just be
+  Network](https://xeiaso.net/blog/nixops-services-2020-11-09) (just be
   sure to ignore the part where it mentions `deployment.keys`, you can replace
   it with the semantically identical
   [`deployment.secrets`](https://github.com/DBCDK/morph/blob/master/examples/secrets.nix)
   as described in the morph documentation)
 - [Prometheus and
-  Aegis](https://christine.website/blog/aegis-prometheus-2021-04-05)
+  Aegis](https://xeiaso.net/blog/aegis-prometheus-2021-04-05)
 - [My Automagic NixOS Wireguard
-  Setup](https://christine.website/blog/my-wireguard-setup-2021-02-06)
+  Setup](https://xeiaso.net/blog/my-wireguard-setup-2021-02-06)
 - [Encrypted Secrets with
-  NixOS](https://christine.website/blog/nixos-encrypted-secrets-2021-01-20)
+  NixOS](https://xeiaso.net/blog/nixos-encrypted-secrets-2021-01-20)
 
 Also feel free to dig around [the `common` folder of my `nixos-configs`
 repo](https://github.com/Xe/nixos-configs/tree/master/common). There's a bunch

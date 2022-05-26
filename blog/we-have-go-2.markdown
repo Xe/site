@@ -592,7 +592,7 @@ You can attach this to an HTTP request by using
 [`http.NewRequestWithContext`](https://pkg.go.dev/net/http#NewRequestWithContext):
 
 ```go
-req, err := http.NewRequestWithContext(ctx, http.MethodGet, "https://christine.website/.within/health", nil)
+req, err := http.NewRequestWithContext(ctx, http.MethodGet, "https://xeiaso.net/.within/health", nil)
 ```
 
 And then when you execute the request (such as with `http.DefaultClient.Do(req)`)

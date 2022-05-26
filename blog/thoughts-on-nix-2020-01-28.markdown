@@ -8,7 +8,7 @@ tags:
 ---
 
 EDIT(M02 20 2020): I've written a bit of a rebuttal to my own post
-[here](https://christine.website/blog/i-was-wrong-about-nix-2020-02-10). I am
+[here](https://xeiaso.net/blog/i-was-wrong-about-nix-2020-02-10). I am
 keeping this post up for posterity.
 
 I don't really know how I feel about [Nix][nix]. It's a functional package
