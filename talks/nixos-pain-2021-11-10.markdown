@@ -14,7 +14,7 @@ tags:
 ## Author's Note
 
 Since my [last
-talk](https://christine.website/talks/systemd-the-good-parts-2021-05-16) was so
+talk](https://xeiaso.net/talks/systemd-the-good-parts-2021-05-16) was so
 well-recieved, I thought I'd do this talk on NixOS much in the same way as I did
 in the systemd one. I have published this talk as a slide deck, a transcript
 (thanks to massaged YouTube auto-captions) and finally as a YouTube recording of
