@@ -120,7 +120,7 @@
               domain = mkOption {
                 type = types.str;
                 default = "xesite.akua";
-                example = "christine.website";
+                example = "xeiaso.net";
                 description =
                   "The domain name that nginx should check against for HTTP hostnames";
               };
@@ -204,7 +204,7 @@
                   proxyWebsockets = true;
                 };
                 forceSSL = cfg.useACME;
-                useACMEHost = "christine.website";
+                useACMEHost = "xeiaso.net";
                 extraConfig = ''
                   access_log /var/log/nginx/xesite.access.log;
                 '';
