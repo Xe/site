@@ -133,7 +133,13 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
         urlwriter.url(*url)?;
     }
 
-    for post in &everything {
+    for post in &blog {
+        urlwriter.url(format!("https://xeiaso.net/{}", post.link))?;
+    }
+    for post in &gallery {
+        urlwriter.url(format!("https://xeiaso.net/{}", post.link))?;
+    }
+    for post in &talks {
         urlwriter.url(format!("https://xeiaso.net/{}", post.link))?;
     }
 
