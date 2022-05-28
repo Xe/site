@@ -268,7 +268,7 @@ async fn go_vanity() -> Html<Vec<u8>> {
     templates::gitea_html(
         &mut buffer,
         "christine.website/jsonfeed",
-        "https://christine.website/metrics",
+        "https://tulpa.dev/Xe/jsonfeed",
         "master",
     )
     .unwrap();

@@ -5,7 +5,7 @@ use axum::{
     http::StatusCode,
     response::{Html, IntoResponse, Response},
 };
-use chrono::{Datelike, Timelike, Utc};
+use chrono::{Datelike, Timelike, Utc, Weekday};
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::sync::Arc;
@@ -16,6 +16,19 @@ pub mod feeds;
 pub mod gallery;
 pub mod talks;
 
+fn weekday_to_name(w: Weekday) -> &'static str {
+    use Weekday::*;
+    match w {
+        Sun => "Sun",
+        Mon => "Mon",
+        Tue => "Tue",
+        Wed => "Wed",
+        Thu => "Thu",
+        Fri => "Fri",
+        Sat => "Sat",
+    }
+}
+
 lazy_static! {
     static ref HIT_COUNTER: IntCounterVec =
         register_int_counter_vec!(opts!("hits", "Number of hits to various pages"), &["page"])
@@ -24,7 +37,7 @@ lazy_static! {
         let now = Utc::now();
         format!(
             "{dayname}, {day} {month} {year} {hour}:{minute}:{second} GMT",
-            dayname = now.weekday(),
+            dayname = weekday_to_name(now.weekday()),
             day = now.day(),
             month = now.month(),
             year = now.year(),

@@ -37,7 +37,7 @@ pub fn render(inp: &str) -> Result<String> {
         let mut data = node.data.borrow_mut();
         match &mut data.value {
             &mut NodeValue::Link(ref mut link) => {
-                let base = Url::parse("https://christine.website/")?;
+                let base = Url::parse("https://xeiaso.net/")?;
                 let u = base.join(std::str::from_utf8(&link.url.clone())?)?;
                 if u.scheme() != "conversation" {
                     return Ok(());
@@ -85,9 +85,9 @@ pub fn render(inp: &str) -> Result<String> {
 <div class="conversation">
     <div class="conversation-picture conversation-smol">
         <picture>
-            <source srcset="https://cdn.christine.website/file/christine-static/stickers/{name_lower}/{mood}.avif" type="image/avif">
-            <source srcset="https://cdn.christine.website/file/christine-static/stickers/{name_lower}/{mood}.webp" type="image/webp">
-            <img src="https://cdn.christine.website/file/christine-static/stickers/{name_lower}/{mood}.png" alt="{name} is {mood}">
+            <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/{name_lower}/{mood}.avif" type="image/avif">
+            <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/{name_lower}/{mood}.webp" type="image/webp">
+            <img src="https://cdn.xeiaso.net/file/christine-static/stickers/{name_lower}/{mood}.png" alt="{name} is {mood}">
         </picture>
     </div>
     <div class="conversation-chat">&lt;<b>{name}</b>&gt; "#), ContentType::Html);

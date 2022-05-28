@@ -54,7 +54,7 @@ async fn patrons() -> Result<Option<patreon::Users>> {
     }
 }
 
-pub const ICON: &'static str = "https://christine.website/static/img/avatar.png";
+pub const ICON: &'static str = "https://xeiaso.net/static/img/avatar.png";
 
 pub struct State {
     pub cfg: Config,
@@ -106,12 +106,12 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
         .author(
             jsonfeed::Author::new()
                 .name("Xe")
-                .url("https://christine.website")
+                .url("https://xeiaso.net")
                 .avatar(ICON),
         )
-        .feed_url("https://christine.website/blog.json")
+        .feed_url("https://xeiaso.net/blog.json")
         .user_comment("This is a JSON feed of my blogposts. For more information read: https://jsonfeed.org/version/1")
-        .home_page_url("https://christine.website")
+        .home_page_url("https://xeiaso.net")
         .icon(ICON)
         .favicon(ICON);
 
@@ -124,17 +124,17 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     let smw = sitemap::writer::SiteMapWriter::new(&mut sm);
     let mut urlwriter = smw.start_urlset()?;
     for url in &[
-        "https://christine.website/resume",
-        "https://christine.website/contact",
-        "https://christine.website/",
-        "https://christine.website/blog",
-        "https://christine.website/signalboost",
+        "https://xeiaso.net/resume",
+        "https://xeiaso.net/contact",
+        "https://xeiaso.net/",
+        "https://xeiaso.net/blog",
+        "https://xeiaso.net/signalboost",
     ] {
         urlwriter.url(*url)?;
     }
 
     for post in &everything {
-        urlwriter.url(format!("https://christine.website/{}", post.link))?;
+        urlwriter.url(format!("https://xeiaso.net/{}", post.link))?;
     }
 
     urlwriter.end()?;

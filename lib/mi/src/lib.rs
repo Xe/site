@@ -29,7 +29,7 @@ impl Client {
             .build()?;
 
         Ok(Self {
-            cli: cli,
+            cli,
             base_url: "https://mi.within.website".to_string(),
         })
     }
@@ -62,12 +62,4 @@ impl Client {
 pub struct WebMention {
     pub source: String,
     pub title: Option<String>,
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
 }
