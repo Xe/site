@@ -2,7 +2,7 @@
 
 #### Full-stack Engineer
 
-##### Ottawa, ON &emsp; [christine.website][homepage]
+##### Ottawa, ON &emsp; [xeiaso.net][homepage]
 
 `Docker`, `Git`, `Go`, `Rust`, `C`, `Stenography`, `DevOps`, `Heroku`, `Continuous
 Integration/Delivery`, `WebAssembly`, `Lua`, `Mindfulness`, `HTTP/2`, `Alpine
@@ -140,7 +140,7 @@ Linux`, `Ubuntu`, `Linux`, `GraphViz`, `Progressive Web Apps`, `yaml`, `SQL`,
 > reflect the views of any company or group I am affiliated with. The writing is
 > my own, with the help of others to make things legible.
 
-- [My Blog](https://christine.website/blog)
+- [My Blog](https://xeiaso.net/blog)
 - [NAS 101: An intro chat about Network Attached
   Storage](https://tailscale.com/blog/nas-101/)
 - [The Sisyphean Task Of DNS Client Config on
@@ -163,7 +163,7 @@ I have gotten to the front page of [Hacker News](https://news.ycombinator.com) s
 
 I am an ordained minister with the [Church of the Latter-day Dude](https://dudeism.com). This allows me to officiate religious ceremonies in at least the United States. I would be honored if you were to choose me to officiate anything for any reason. Please [contact](/contact) me if you have any questions.
 
-[homepage]: https://christine.website
+[homepage]: https://xeiaso.net
 [twitter]: https://twitter.com/theprincessxena
 [twit]: http://cdn-careers.sstatic.net/careers/Img/icon-twitter.png?v=b1bd58ad2034
 [heroku]: https://www.heroku.com
