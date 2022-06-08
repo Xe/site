@@ -78,6 +78,7 @@
             cargo
             rust-analyzer
             cargo-watch
+            rustfmt
 
             # system dependencies
             openssl
