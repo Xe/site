@@ -4,6 +4,7 @@ use axum::{
     extract::{Extension, Path},
     response::Html,
 };
+use http::header::HeaderMap;
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::sync::Arc;
@@ -25,10 +26,11 @@ pub async fn index(Extension(state): Extension<Arc<State>>) -> Result {
     Ok(Html(result))
 }
 
-#[instrument(skip(state))]
+#[instrument(skip(state, headers))]
 pub async fn post_view(
     Path(name): Path<String>,
     Extension(state): Extension<Arc<State>>,
+    headers: HeaderMap,
 ) -> Result {
     let mut want: Option<Post> = None;
 
@@ -38,6 +40,13 @@ pub async fn post_view(
         }
     }
 
+    let referer = if let Some(referer) = headers.get(http::header::REFERER) {
+        let referer = referer.to_str()?.to_string();
+        Some(referer)
+    } else {
+        None
+    };
+
     match want {
         None => Err(PostNotFound(name).into()),
         Some(post) => {
@@ -46,7 +55,7 @@ pub async fn post_view(
                 .inc();
             let body = templates::Html(post.body_html.clone());
             let mut result: Vec<u8> = vec![];
-            templates::talkpost_html(&mut result, post, body)?;
+            templates::talkpost_html(&mut result, post, body, referer)?;
             Ok(Html(result))
         }
     }
