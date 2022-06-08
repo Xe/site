@@ -30,6 +30,7 @@ pub mod app;
 pub mod handlers;
 pub mod post;
 pub mod signalboost;
+pub mod tmpl;
 
 mod domainsocket;
 use domainsocket::*;

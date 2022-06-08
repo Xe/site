@@ -9,7 +9,7 @@ repository = "https://github.com/Xe/site"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-axum = "0.5"
+axum = { version = "0.5", features = ["headers"] }
 axum-macros = "0.2"
 axum-extra = "0.3"
 color-eyre = "0.6"
@@ -28,9 +28,11 @@ kankyo = "0.3"
 lazy_static = "1.4"
 log = "0.4"
 lol_html = "0.3"
+maud = { version = "0.23.0", features = ["axum"] }
 mime = "0.3.0"
 prometheus = { version = "0.13", default-features = false, features = ["process"] }
 rand = "0"
+regex = "1"
 reqwest = { version = "0.11", features = ["json"] }
 serde_dhall = "0.11.1"
 serde = { version = "1", features = ["derive"] }

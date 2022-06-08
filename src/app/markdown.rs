@@ -7,7 +7,7 @@ use comrak::{
     ComrakPlugins,
 };
 use lazy_static::lazy_static;
-use lol_html::{rewrite_str, element, RewriteStrSettings, html_content::ContentType};
+use lol_html::{element, html_content::ContentType, rewrite_str, RewriteStrSettings};
 use std::cell::RefCell;
 use url::Url;
 
@@ -80,7 +80,7 @@ pub fn render(inp: &str) -> Result<String> {
                 let name = el.get_attribute("name").expect("wanted xeblog-conv to contain name");
                 let name_lower = name.clone().to_lowercase();
                 let mood = el.get_attribute("mood").expect("wanted xeblog-conv to contain mood");
-                
+
                 el.before(&format!(r#"
 <div class="conversation">
     <div class="conversation-picture conversation-smol">
@@ -94,6 +94,11 @@ pub fn render(inp: &str) -> Result<String> {
                 el.after("</div></div>", ContentType::Html);
 
                 el.remove_and_keep_content();
+                Ok(())
+            }),
+            element!("xeblog-hero", |el| {
+                let file = el.get_attribute("file").expect("wanted xeblog-hero to contain file");
+                el.replace(&crate::tmpl::xeblog_hero(file, el.get_attribute("prompt")).0, ContentType::Html);
                 Ok(())
             })
         ],

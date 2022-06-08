@@ -4,6 +4,7 @@ use axum::{
     extract::{Extension, Path},
     response::Html,
 };
+use http::HeaderMap;
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::sync::Arc;
@@ -72,10 +73,11 @@ pub async fn series_view(
     Ok(Html(result))
 }
 
-#[instrument(skip(state))]
+#[instrument(skip(state, headers))]
 pub async fn post_view(
     Path(name): Path<String>,
     Extension(state): Extension<Arc<State>>,
+    headers: HeaderMap,
 ) -> Result {
     let mut want: Option<Post> = None;
 
@@ -85,6 +87,13 @@ pub async fn post_view(
         }
     }
 
+    let referer = if let Some(referer) = headers.get(http::header::REFERER) {
+        let referer = referer.to_str()?.to_string();
+        Some(referer)
+    } else {
+        None
+    };
+
     match want {
         None => Err(super::Error::PostNotFound(name)),
         Some(post) => {
@@ -93,7 +102,7 @@ pub async fn post_view(
                 .inc();
             let body = templates::Html(post.body_html.clone());
             let mut result: Vec<u8> = vec![];
-            templates::blogpost_html(&mut result, post, body)?;
+            templates::blogpost_html(&mut result, post, body, referer)?;
             Ok(Html(result))
         }
     }

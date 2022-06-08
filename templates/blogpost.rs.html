@@ -1,8 +1,7 @@
-@use super::{header_html, footer_html, mara};
-@use crate::post::Post;
-@use chrono::prelude::*;
+@use super::{header_html, footer_html};
+@use crate::{post::Post, tmpl::nag};
 
-@(post: Post, body: impl ToHtml)
+@(post: Post, body: impl ToHtml, referer: Option<String>)
 
 @:header_html(Some(&post.front_matter.title.clone()), None)
 
@@ -26,8 +25,6 @@
 } else {
   <link rel="canonical" href="@post.front_matter.redirect_to.as_ref().unwrap()" />
 }
-
-<script type="module" src="/static/js/conversation.js"></script>
 
 <script type="application/ld+json">
  @{
@@ -59,24 +56,15 @@
   </script>
 }
 
-<div id="refererNotice"></div>
-<script type="module" src="/static/js/hnwarn.js"></script>
+@Html(nag::referer(referer).0)
 
 <h1>@post.front_matter.title</h1>
 
-@if Utc::today().num_days_from_ce() < post.date.num_days_from_ce() {
-<div class="warning">
-    @:mara("hacker", "Mara", Html(format!(r#"Hey, this post is set to go live to the public on {} UTC. Right now you are reading a pre-publication version of this post. Please do not share this on social media. This post will automatically go live for everyone on the intended publication date. If you want access to these posts, please join the <a href="https://patreon.com/cadey">Patreon</a>. It helps me afford the copyeditor that I contract for the technical content I write."#, post.detri())))
-</div>
-} else {
-<script async src="https://media.ethicalads.io/media/client/ethicalads.min.js"></script>
-}
+@Html(nag::prerelease(&post).0)
 
 <small>A @post.read_time_estimate_minutes minute read.</small>
 
 @body
-
-<div class="adaptive" data-ea-publisher="christinewebsite" data-ea-type="image" data-ea-style="stickybox"></div>
 
 <hr />
 

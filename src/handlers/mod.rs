@@ -130,6 +130,9 @@ pub enum Error {
 
     #[error("axum http error: {0}")]
     AxumHTTP(#[from] axum::http::Error),
+
+    #[error("string conversion error: {0}")]
+    ToStr(#[from] http::header::ToStrError),
 }
 
 pub type Result<T = Html<Vec<u8>>> = std::result::Result<T, Error>;
