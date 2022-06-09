@@ -1,6 +1,6 @@
 ---
 title: How Static Code Analysis Prevents You From Waking Up at 3AM With Production on Fire
-date: 2022-06-10
+date: 2022-06-09
 slides_link: https://cdn.xeiaso.net/file/christine-static/talks/Conf42+SRE+2022.pdf
 ---
 
