@@ -1,3 +1,4 @@
+use crate::app::Config;
 use crate::templates::Html;
 use color_eyre::eyre::{Result, WrapErr};
 use comrak::nodes::{Ast, AstNode, NodeValue};
@@ -9,13 +10,14 @@ use comrak::{
 use lazy_static::lazy_static;
 use lol_html::{element, html_content::ContentType, rewrite_str, RewriteStrSettings};
 use std::cell::RefCell;
+use std::sync::Arc;
 use url::Url;
 
 lazy_static! {
     static ref SYNTECT_ADAPTER: SyntectAdapter<'static> = SyntectAdapter::new("base16-mocha.dark");
 }
 
-pub fn render(inp: &str) -> Result<String> {
+pub fn render(cfg: Arc<Config>, inp: &str) -> Result<String> {
     let mut options = ComrakOptions::default();
 
     options.extension.autolink = true;
@@ -99,6 +101,11 @@ pub fn render(inp: &str) -> Result<String> {
             element!("xeblog-hero", |el| {
                 let file = el.get_attribute("file").expect("wanted xeblog-hero to contain file");
                 el.replace(&crate::tmpl::xeblog_hero(file, el.get_attribute("prompt")).0, ContentType::Html);
+                Ok(())
+            }),
+            element!("xeblog-salary-history", |el| {
+                el.replace(&crate::tmpl::xeblog_salary_history(cfg.clone()).0, ContentType::Html);
+
                 Ok(())
             })
         ],

@@ -155,6 +155,11 @@ async fn main() -> Result<()> {
                 },
             ),
         )
+        // api
+        .route(
+            "/api/salary_transparency.json",
+            get(handlers::salary_transparency_json),
+        )
         // static pages
         .route("/", get(handlers::index))
         .route("/contact", get(handlers::contact))
@@ -162,6 +167,7 @@ async fn main() -> Result<()> {
         .route("/resume", get(handlers::resume))
         .route("/patrons", get(handlers::patrons))
         .route("/signalboost", get(handlers::signalboost))
+        .route("/salary-transparency", get(handlers::salary_transparency))
         // feeds
         .route("/blog.json", get(handlers::feeds::jsonfeed))
         .route("/blog.atom", get(handlers::feeds::atom))

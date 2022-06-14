@@ -16,7 +16,8 @@ mod tests {
     use color_eyre::eyre::Result;
     #[test]
     fn load() -> Result<()> {
-        let _people: Vec<super::Person> = serde_dhall::from_file("./signalboost.dhall").parse()?;
+        let _people: Vec<super::Person> =
+            serde_dhall::from_file("./dhall/signalboost.dhall").parse()?;
 
         Ok(())
     }

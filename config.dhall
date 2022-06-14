@@ -1,38 +1,8 @@
-let Person =
-      { Type =
-          { name : Text
-          , tags : List Text
-          , gitLink : Optional Text
-          , twitter : Optional Text
-          }
-      , default =
-        { name = ""
-        , tags = [] : List Text
-        , gitLink = None Text
-        , twitter = None Text
-        }
-      }
+let Person = ./dhall/types/Person.dhall
 
-let Author =
-      { Type =
-          { name : Text
-          , handle : Text
-          , picUrl : Optional Text
-          , link : Optional Text
-          , twitter : Optional Text
-          , default : Bool
-          , inSystem : Bool
-          }
-      , default =
-        { name = ""
-        , handle = ""
-        , picUrl = None Text
-        , link = None Text
-        , twitter = None Text
-        , default = False
-        , inSystem = False
-        }
-      }
+let Author = ./dhall/types/Author.dhall
+
+let Job = ./dhall/types/Job.dhall
 
 let defaultPort = env:PORT ? 3030
 
@@ -49,48 +19,24 @@ let Config =
           , resumeFname : Text
           , webMentionEndpoint : Text
           , miToken : Text
+          , jobHistory : List Job.Type
           }
       , default =
         { signalboost = [] : List Person.Type
-        , authors =
-          [ Author::{
-            , name = "Xe Iaso"
-            , handle = "xe"
-            , picUrl = Some "/static/img/avatar.png"
-            , link = Some "https://christine.website"
-            , twitter = Some "theprincessxena"
-            , default = True
-            , inSystem = True
-            }
-          , Author::{
-            , name = "Jessie"
-            , handle = "Heartmender"
-            , picUrl = Some
-                "https://cdn.christine.website/file/christine-static/img/UPRcp1pO_400x400.jpg"
-            , link = Some "https://heartmender.writeas.com"
-            , twitter = Some "BeJustFine"
-            , inSystem = True
-            }
-          , Author::{
-            , name = "Ashe"
-            , handle = "ectamorphic"
-            , picUrl = Some
-                "https://cdn.christine.website/file/christine-static/img/FFVV1InX0AkDX3f_cropped_smol.jpg"
-            , inSystem = True
-            }
-          , Author::{ name = "Nicole", handle = "Twi", inSystem = True }
-          , Author::{ name = "Mai", handle = "Mai", inSystem = True }
-          ]
+        , authors = [] : List Author.Type
         , port = defaultPort
         , clackSet = [ "Ashlynn" ]
         , resumeFname = "./static/resume/resume.md"
         , webMentionEndpoint = defaultWebMentionEndpoint
         , miToken = "${env:MI_TOKEN as Text ? ""}"
+        , jobHistory = [] : List Job.Type
         }
       }
 
 in  Config::{
-    , signalboost = ./signalboost.dhall
+    , signalboost = ./dhall/signalboost.dhall
+    , authors = ./dhall/authors.dhall
     , clackSet =
       [ "Ashlynn", "Terry Davis", "Dennis Ritchie", "Steven Hawking" ]
+    , jobHistory = ./dhall/jobHistory.dhall
     }

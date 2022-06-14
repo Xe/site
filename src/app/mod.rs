@@ -1,23 +1,73 @@
 use crate::{post::Post, signalboost::Person};
-use color_eyre::eyre::Result;
 use chrono::prelude::*;
-use serde::Deserialize;
+use color_eyre::eyre::Result;
+use maud::{html, Markup};
+use serde::{Deserialize, Serialize};
 use std::{
+    fmt::{self, Display},
     fs,
     path::PathBuf,
+    sync::Arc,
 };
 use tracing::{error, instrument};
 
 pub mod markdown;
 pub mod poke;
 
-#[derive(Clone, Deserialize)]
+#[derive(Clone, Deserialize, Default)]
 pub struct Config {
     pub(crate) signalboost: Vec<Person>,
     #[serde(rename = "resumeFname")]
     pub(crate) resume_fname: PathBuf,
     #[serde(rename = "miToken")]
     pub(crate) mi_token: String,
+    #[serde(rename = "jobHistory")]
+    pub(crate) job_history: Vec<Job>,
+}
+
+#[derive(Clone, Deserialize, Serialize, Default)]
+pub struct Salary {
+    pub amount: i32,
+    pub per: String,
+    pub currency: String,
+}
+
+impl Display for Salary {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}${}/{}", self.currency, self.amount, self.per)
+    }
+}
+
+#[derive(Clone, Deserialize, Serialize, Default)]
+pub struct Job {
+    pub company: String,
+    pub title: String,
+    #[serde(rename = "startDate")]
+    pub start_date: String,
+    #[serde(rename = "endDate")]
+    pub end_date: Option<String>,
+    #[serde(rename = "daysWorked")]
+    pub days_worked: Option<i32>,
+    #[serde(rename = "daysBetween")]
+    pub days_between: Option<i32>,
+    pub salary: Salary,
+    #[serde(rename = "leaveReason")]
+    pub leave_reason: Option<String>,
+}
+
+impl Job {
+    pub fn pay_history_row(&self) -> Markup {
+        html! {
+            tr {
+                td { (self.title) }
+                td { (self.start_date) }
+                td { (self.end_date.as_ref().unwrap_or(&"current".to_string())) }
+                td { (if self.days_worked.is_some() { self.days_worked.as_ref().unwrap().to_string() } else { "n/a".to_string() }) }
+                td { (self.salary) }
+                td { (self.leave_reason.as_ref().unwrap_or(&"n/a".to_string())) }
+            }
+        }
+    }
 }
 
 #[instrument]
@@ -57,7 +107,7 @@ async fn patrons() -> Result<Option<patreon::Users>> {
 pub const ICON: &'static str = "https://xeiaso.net/static/img/avatar.png";
 
 pub struct State {
-    pub cfg: Config,
+    pub cfg: Arc<Config>,
     pub signalboost: Vec<Person>,
     pub resume: String,
     pub blog: Vec<Post>,
@@ -71,14 +121,17 @@ pub struct State {
 }
 
 pub async fn init(cfg: PathBuf) -> Result<State> {
-    let cfg: Config = serde_dhall::from_file(cfg).parse()?;
+    let cfg: Arc<Config> = Arc::new(serde_dhall::from_file(cfg).parse()?);
     let sb = cfg.signalboost.clone();
-    let resume = fs::read_to_string(cfg.resume_fname.clone())?;
-    let resume: String = markdown::render(&resume)?;
-    let mi = mi::Client::new(cfg.mi_token.clone(), crate::APPLICATION_NAME.to_string())?;
-    let blog = crate::post::load("blog").await?;
-    let gallery = crate::post::load("gallery").await?;
-    let talks = crate::post::load("talks").await?;
+    let resume = fs::read_to_string(cfg.clone().resume_fname.clone())?;
+    let resume: String = markdown::render(cfg.clone(), &resume)?;
+    let mi = mi::Client::new(
+        cfg.clone().mi_token.clone(),
+        crate::APPLICATION_NAME.to_string(),
+    )?;
+    let blog = crate::post::load(cfg.clone(), "blog").await?;
+    let gallery = crate::post::load(cfg.clone(), "gallery").await?;
+    let talks = crate::post::load(cfg.clone(), "talks").await?;
     let mut everything: Vec<Post> = vec![];
 
     {
@@ -99,7 +152,7 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
         .filter(|p| today.num_days_from_ce() >= p.date.num_days_from_ce())
         .take(5)
         .collect();
-   
+
     let mut jfb = jsonfeed::Feed::builder()
         .title("Xe's Blog")
         .description("My blog posts and rants about various technology things.")

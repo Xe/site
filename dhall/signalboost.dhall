@@ -1,17 +1,4 @@
-let Person =
-      { Type =
-          { name : Text
-          , tags : List Text
-          , gitLink : Optional Text
-          , twitter : Optional Text
-          }
-      , default =
-        { name = ""
-        , tags = [] : List Text
-        , gitLink = None Text
-        , twitter = None Text
-        }
-      }
+let Person = ./types/Person.dhall
 
 in  [ Person::{
       , name = "Christian Sullivan"
@@ -278,20 +265,20 @@ in  [ Person::{
       , gitLink = Some "https://github.com/henri"
       , twitter = Some "https://twitter.com/henri_shustak"
       }
-      , Person::{
-        , name = "Gabriel Simmer"
-        , tags =
-          [ "golang"
-          , "backend"
-          , "javascript"
-          , "python"
-          , "software"
-          , "full-stack"
-          , "linux"
-          , "devops"
-          , "developer tooling"
-          ]
-        , gitLink = Some "https://github.com/gmemstr"
-        , twitter = Some "https://twitter.com/gmem_"
+    , Person::{
+      , name = "Gabriel Simmer"
+      , tags =
+        [ "golang"
+        , "backend"
+        , "javascript"
+        , "python"
+        , "software"
+        , "full-stack"
+        , "linux"
+        , "devops"
+        , "developer tooling"
+        ]
+      , gitLink = Some "https://github.com/gmemstr"
+      , twitter = Some "https://twitter.com/gmem_"
       }
     ]
