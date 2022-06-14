@@ -1,8 +1,9 @@
+use crate::app::Config;
 use chrono::prelude::*;
 use color_eyre::eyre::{eyre, Result, WrapErr};
 use glob::glob;
 use serde::{Deserialize, Serialize};
-use std::{borrow::Borrow, cmp::Ordering, path::PathBuf};
+use std::{borrow::Borrow, cmp::Ordering, path::PathBuf, sync::Arc};
 use tokio::fs;
 
 pub mod frontmatter;
@@ -81,7 +82,12 @@ impl Post {
     }
 }
 
-async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Result<Post> {
+async fn read_post(
+    cfg: Arc<Config>,
+    dir: &str,
+    fname: PathBuf,
+    cli: &Option<mi::Client>,
+) -> Result<Post> {
     debug!(
         "loading {}",
         fname.clone().into_os_string().into_string().unwrap()
@@ -96,7 +102,7 @@ async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Resul
     let date = NaiveDate::parse_from_str(&front_matter.clone().date, "%Y-%m-%d")
         .map_err(|why| eyre!("error parsing date in {:?}: {}", fname, why))?;
     let link = format!("{}/{}", dir, fname.file_stem().unwrap().to_str().unwrap());
-    let body_html = crate::app::markdown::render(&body)
+    let body_html = crate::app::markdown::render(cfg.clone(), &body)
         .wrap_err_with(|| format!("can't parse markdown for {:?}", fname))?;
     let date: DateTime<FixedOffset> =
         DateTime::<Utc>::from_utc(NaiveDateTime::new(date, NaiveTime::from_hms(0, 0, 0)), Utc)
@@ -144,7 +150,7 @@ async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Resul
     })
 }
 
-pub async fn load(dir: &str) -> Result<Vec<Post>> {
+pub async fn load(cfg: Arc<Config>, dir: &str) -> Result<Vec<Post>> {
     let cli = match std::env::var("MI_TOKEN") {
         Ok(token) => mi::Client::new(token.to_string(), crate::APPLICATION_NAME.to_string()).ok(),
         Err(_) => None,
@@ -152,7 +158,7 @@ pub async fn load(dir: &str) -> Result<Vec<Post>> {
 
     let futs = glob(&format!("{}/*.markdown", dir))?
         .filter_map(Result::ok)
-        .map(|fname| read_post(dir, fname, cli.borrow()));
+        .map(|fname| read_post(cfg.clone(), dir, fname, cli.borrow()));
 
     let mut result: Vec<Post> = futures::future::join_all(futs)
         .await
@@ -172,25 +178,30 @@ pub async fn load(dir: &str) -> Result<Vec<Post>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::app::Config;
     use color_eyre::eyre::Result;
+    use std::sync::Arc;
 
     #[tokio::test]
     async fn blog() {
         let _ = pretty_env_logger::try_init();
-        load("blog").await.expect("posts to load");
+        let cfg = Arc::new(Config::default());
+        load(cfg, "blog").await.expect("posts to load");
     }
 
     #[tokio::test]
     async fn gallery() -> Result<()> {
         let _ = pretty_env_logger::try_init();
-        load("gallery").await?;
+        let cfg = Arc::new(Config::default());
+        load(cfg, "gallery").await?;
         Ok(())
     }
 
     #[tokio::test]
     async fn talks() -> Result<()> {
         let _ = pretty_env_logger::try_init();
-        load("talks").await?;
+        let cfg = Arc::new(Config::default());
+        load(cfg, "talks").await?;
         Ok(())
     }
 }

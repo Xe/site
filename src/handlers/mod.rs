@@ -1,9 +1,13 @@
-use crate::{app::State, templates};
+use crate::{
+    app::{Job, State},
+    templates,
+};
 use axum::{
     body,
     extract::Extension,
     http::StatusCode,
     response::{Html, IntoResponse, Response},
+    Json,
 };
 use chrono::{Datelike, Timelike, Utc, Weekday};
 use lazy_static::lazy_static;
@@ -70,6 +74,28 @@ pub async fn feeds() -> Result {
     let mut result: Vec<u8> = vec![];
     templates::feeds_html(&mut result)?;
     Ok(Html(result))
+}
+
+#[axum_macros::debug_handler]
+#[instrument(skip(state))]
+pub async fn salary_transparency(Extension(state): Extension<Arc<State>>) -> Result {
+    HIT_COUNTER
+        .with_label_values(&["salary_transparency"])
+        .inc();
+    let state = state.clone();
+    let mut result: Vec<u8> = vec![];
+    templates::salary_transparency(&mut result, state.cfg.clone())?;
+    Ok(Html(result))
+}
+
+#[axum_macros::debug_handler]
+#[instrument(skip(state))]
+pub async fn salary_transparency_json(Extension(state): Extension<Arc<State>>) -> Json<Vec<Job>> {
+    HIT_COUNTER
+        .with_label_values(&["salary_transparency_json"])
+        .inc();
+
+    Json(state.clone().cfg.clone().job_history.clone())
 }
 
 #[axum_macros::debug_handler]
