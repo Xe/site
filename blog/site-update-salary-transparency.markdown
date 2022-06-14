@@ -13,7 +13,7 @@ for years, but I feel this should be more prominently displayed on my website.
 
 As someone who has seen pay discrimination work in action first-hand, data is
 one of the ways that we can end this pointless hiding of information that leads
-to people being uninformed and hirt by their lack of knowledge. By laying my
+to people being uninformed and hurt by their lack of knowledge. By laying my
 hand out in the open like this, I hope to ensure that people are better informed
 about how much money they can make, so that they can be paid equally for equal
 work.
