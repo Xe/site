@@ -31,7 +31,7 @@ without a very good reason. By leaving the old post un-updated, I feel it would
 be doing a disservice to the community.
 
 Please consider publishing your salary data like this as well. By open,
-voulntary transparency we can help to end stigmas around discussing pay and help
+voluntary transparency we can help to end stigmas around discussing pay and help
 ensure that the next generations of people in tech are treated fairly. Stigmas
 thrive in darkness but die in the light of day. You can help end the stigma by
 playing your cards out in the open like this.
