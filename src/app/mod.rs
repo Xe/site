@@ -1,74 +1,14 @@
 use crate::{post::Post, signalboost::Person};
 use chrono::prelude::*;
 use color_eyre::eyre::Result;
-use maud::{html, Markup};
-use serde::{Deserialize, Serialize};
-use std::{
-    fmt::{self, Display},
-    fs,
-    path::PathBuf,
-    sync::Arc,
-};
+use std::{fs, path::PathBuf, sync::Arc};
 use tracing::{error, instrument};
 
+pub mod config;
 pub mod markdown;
 pub mod poke;
 
-#[derive(Clone, Deserialize, Default)]
-pub struct Config {
-    pub(crate) signalboost: Vec<Person>,
-    #[serde(rename = "resumeFname")]
-    pub(crate) resume_fname: PathBuf,
-    #[serde(rename = "miToken")]
-    pub(crate) mi_token: String,
-    #[serde(rename = "jobHistory")]
-    pub(crate) job_history: Vec<Job>,
-}
-
-#[derive(Clone, Deserialize, Serialize, Default)]
-pub struct Salary {
-    pub amount: i32,
-    pub per: String,
-    pub currency: String,
-}
-
-impl Display for Salary {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}${}/{}", self.currency, self.amount, self.per)
-    }
-}
-
-#[derive(Clone, Deserialize, Serialize, Default)]
-pub struct Job {
-    pub company: String,
-    pub title: String,
-    #[serde(rename = "startDate")]
-    pub start_date: String,
-    #[serde(rename = "endDate")]
-    pub end_date: Option<String>,
-    #[serde(rename = "daysWorked")]
-    pub days_worked: Option<i32>,
-    #[serde(rename = "daysBetween")]
-    pub days_between: Option<i32>,
-    pub salary: Salary,
-    #[serde(rename = "leaveReason")]
-    pub leave_reason: Option<String>,
-}
-
-impl Job {
-    pub fn pay_history_row(&self) -> Markup {
-        html! {
-            tr {
-                td { (self.title) }
-                td { (self.start_date) }
-                td { (self.end_date.as_ref().unwrap_or(&"current".to_string())) }
-                td { (if self.days_worked.is_some() { self.days_worked.as_ref().unwrap().to_string() } else { "n/a".to_string() }) }
-                td { (self.salary) }
-                td { (self.leave_reason.as_ref().unwrap_or(&"n/a".to_string())) }
-            }
-        }
-    }
-}
+pub use config::*;
 
 #[instrument]
 async fn patrons() -> Result<Option<patreon::Users>> {

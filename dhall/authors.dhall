@@ -14,7 +14,6 @@ in  [ Author::{
       , handle = "Heartmender"
       , picUrl = Some
           "https://cdn.christine.website/file/christine-static/img/UPRcp1pO_400x400.jpg"
-      , link = Some "https://heartmender.writeas.com"
       , twitter = Some "BeJustFine"
       , inSystem = True
       }
