@@ -3,6 +3,9 @@ title: Writing Coherently At Scale
 date: 2022-06-26
 tags:
  - writing
+vod:
+  youtube: https://youtu.be/pDOoqqu06-8
+  twitch: https://www.twitch.tv/videos/1513874389
 ---
 
 As someone who does a lot of writing, I have been asked how to write about
