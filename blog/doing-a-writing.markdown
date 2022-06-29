@@ -1,6 +1,6 @@
 ---
 title: Writing Coherently At Scale
-date: 2022-06-26
+date: 2022-06-29
 tags:
  - writing
 vod:
