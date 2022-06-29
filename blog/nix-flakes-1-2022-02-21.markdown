@@ -275,13 +275,13 @@ project is using the same tools.
 project folder I do not have any development tools
 available.](conversation://Cadey/enby)
 
-Flakes has the ability to specify this using the `devShell` flake output. You
+Flakes has the ability to specify this using the `devShells` flake output. You
 can add it to your `flake.nix` using this:
 
 ```nix
-# after defaultApp
+# after apps
 
-devShell = forAllSystems (system:
+devShells = forAllSystems (system:
   let pkgs = nixpkgsFor.${system};
   in {
     default = pkgs.mkShell {
