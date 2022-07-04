@@ -160,6 +160,8 @@ async fn main() -> Result<()> {
             "/api/salary_transparency.json",
             get(handlers::salary_transparency_json),
         )
+        .route("/api/blog/:name", get(handlers::blog::post_json))
+        .route("/api/talks/:name", get(handlers::talks::post_json))
         // static pages
         .route("/", get(handlers::index))
         .route("/contact", get(handlers::contact))

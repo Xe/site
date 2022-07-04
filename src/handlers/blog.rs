@@ -3,6 +3,7 @@ use crate::{app::State, post::Post, templates};
 use axum::{
     extract::{Extension, Path},
     response::Html,
+    Json,
 };
 use http::HeaderMap;
 use lazy_static::lazy_static;
@@ -13,6 +14,11 @@ use tracing::{error, instrument};
 lazy_static! {
     static ref HIT_COUNTER: IntCounterVec = register_int_counter_vec!(
         opts!("blogpost_hits", "Number of hits to blogposts"),
+        &["name"]
+    )
+    .unwrap();
+    static ref HIT_COUNTER_JSON: IntCounterVec = register_int_counter_vec!(
+        opts!("blogpost_json_hits", "Number of hits to blogposts"),
         &["name"]
     )
     .unwrap();
@@ -80,9 +86,10 @@ pub async fn post_view(
     headers: HeaderMap,
 ) -> Result {
     let mut want: Option<Post> = None;
+    let want_link = format!("blog/{}", name);
 
     for post in &state.blog {
-        if post.link == format!("blog/{}", name) {
+        if post.link == want_link {
             want = Some(post.clone());
         }
     }
@@ -104,6 +111,31 @@ pub async fn post_view(
             let mut result: Vec<u8> = vec![];
             templates::blogpost_html(&mut result, post, body, referer)?;
             Ok(Html(result))
+        }
+    }
+}
+
+#[instrument(skip(state))]
+pub async fn post_json(
+    Path(name): Path<String>,
+    Extension(state): Extension<Arc<State>>,
+) -> Result<Json<xe_jsonfeed::Item>> {
+    let mut want: Option<Post> = None;
+    let want_link = format!("blog/{}", name);
+
+    for post in &state.blog {
+        if post.link == want_link {
+            want = Some(post.clone());
+        }
+    }
+
+    match want {
+        None => Err(super::Error::PostNotFound(name)),
+        Some(post) => {
+            HIT_COUNTER_JSON
+                .with_label_values(&[name.clone().as_str()])
+                .inc();
+            Ok(Json(post.into()))
         }
     }
 }
