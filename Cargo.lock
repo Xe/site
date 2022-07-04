@@ -168,9 +168,9 @@ dependencies = [
 
 [[package]]
 name = "axum"
-version = "0.5.10"
+version = "0.5.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "db018aeacdb84550c2c6c5a1c1f553f2a330294222f45c1dbe24f0b3d2320c01"
+checksum = "c2cc6e8e8c993cb61a005fab8c1e5093a29199b7253b05a6883999312935c1ff"
 dependencies = [
  "async-trait",
  "axum-core",
@@ -218,7 +218,7 @@ version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67512287c1ae2a58c3b8f86f99f53ae79e33e2015c1560f506c1d2951868dd7a"
 dependencies = [
- "axum 0.5.10",
+ "axum 0.5.11",
  "bytes",
  "futures-util",
  "http",
@@ -3211,7 +3211,7 @@ dependencies = [
 name = "xesite"
 version = "2.4.0"
 dependencies = [
- "axum 0.5.10",
+ "axum 0.5.11",
  "axum-extra",
  "axum-macros",
  "cfcache",
