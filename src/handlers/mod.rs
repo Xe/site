@@ -33,6 +33,24 @@ fn weekday_to_name(w: Weekday) -> &'static str {
     }
 }
 
+fn month_to_name(m: u32) -> &'static str {
+    match m {
+        1 => "Jan",
+        2 => "Feb",
+        3 => "Mar",
+        4 => "Apr",
+        5 => "May",
+        6 => "Jun",
+        7 => "Jul",
+        8 => "Aug",
+        9 => "Sep",
+        10 => "Oct",
+        11 => "Nov",
+        12 => "Dec",
+        _ => "Unk",
+    }
+}
+
 lazy_static! {
     static ref HIT_COUNTER: IntCounterVec =
         register_int_counter_vec!(opts!("hits", "Number of hits to various pages"), &["page"])
@@ -43,7 +61,7 @@ lazy_static! {
             "{dayname}, {day} {month} {year} {hour}:{minute}:{second} GMT",
             dayname = weekday_to_name(now.weekday()),
             day = now.day(),
-            month = now.month(),
+            month = month_to_name(now.month()),
             year = now.year(),
             hour = now.hour(),
             minute = now.minute(),
