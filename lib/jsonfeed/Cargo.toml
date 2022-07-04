@@ -1,10 +1,10 @@
 [package]
-authors = ["Paul Woolcock <paul@woolcock.us>", "Xe Iaso <me@christine.website>"]
-description = "Parser for the JSONFeed (http://jsonfeed.org) specification\n"
-documentation = "https://docs.rs/jsonfeed"
-homepage = "https://github.com/pwoolcoc/jsonfeed"
+authors = ["Paul Woolcock <paul@woolcock.us>", "Xe Iaso <me@xeiaso.net>"]
+description = "Parser for the JSONFeed (http://jsonfeed.org) specification"
+documentation = "https://docs.rs/xe_jsonfeed"
+homepage = "https://github.com/Xe/site"
 license = "MIT/Apache-2.0"
-name = "jsonfeed"
+name = "xe_jsonfeed"
 readme = "README.adoc"
 version = "0.3.0"
 

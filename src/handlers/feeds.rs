@@ -20,7 +20,7 @@ lazy_static! {
 }
 
 #[instrument(skip(state))]
-pub async fn jsonfeed(Extension(state): Extension<Arc<State>>) -> Json<jsonfeed::Feed> {
+pub async fn jsonfeed(Extension(state): Extension<Arc<State>>) -> Json<xe_jsonfeed::Feed> {
     HIT_COUNTER.with_label_values(&["json"]).inc();
     let state = state.clone();
     Json(state.jf.clone())

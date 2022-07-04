@@ -54,7 +54,7 @@ pub struct State {
     pub gallery: Vec<Post>,
     pub talks: Vec<Post>,
     pub everything: Vec<Post>,
-    pub jf: jsonfeed::Feed,
+    pub jf: xe_jsonfeed::Feed,
     pub sitemap: Vec<u8>,
     pub patrons: Option<patreon::Users>,
     pub mi: mi::Client,
@@ -93,11 +93,11 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
         .take(5)
         .collect();
 
-    let mut jfb = jsonfeed::Feed::builder()
+    let mut jfb = xe_jsonfeed::Feed::builder()
         .title("Xe's Blog")
         .description("My blog posts and rants about various technology things.")
         .author(
-            jsonfeed::Author::new()
+            xe_jsonfeed::Author::new()
                 .name("Xe")
                 .url("https://xeiaso.net")
                 .avatar(ICON),

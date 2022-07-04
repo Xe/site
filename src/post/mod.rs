@@ -27,16 +27,16 @@ pub struct NewPost {
     pub link: String,
 }
 
-impl Into<jsonfeed::Item> for Post {
-    fn into(self) -> jsonfeed::Item {
-        let mut result = jsonfeed::Item::builder()
+impl Into<xe_jsonfeed::Item> for Post {
+    fn into(self) -> xe_jsonfeed::Item {
+        let mut result = xe_jsonfeed::Item::builder()
             .title(self.front_matter.title)
             .content_html(self.body_html)
             .id(format!("https://xeiaso.net/{}", self.link))
             .url(format!("https://xeiaso.net/{}", self.link))
             .date_published(self.date.to_rfc3339())
             .author(
-                jsonfeed::Author::new()
+                xe_jsonfeed::Author::new()
                     .name("Xe Iaso")
                     .url("https://xeiaso.net")
                     .avatar("https://xeiaso.net/static/img/avatar.png"),

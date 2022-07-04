@@ -1269,16 +1269,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "jsonfeed"
-version = "0.3.0"
-dependencies = [
- "error-chain",
- "serde",
- "serde_derive",
- "serde_json",
-]
-
-[[package]]
 name = "kankyo"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3208,6 +3198,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "xe_jsonfeed"
+version = "0.3.0"
+dependencies = [
+ "error-chain",
+ "serde",
+ "serde_derive",
+ "serde_json",
+]
+
+[[package]]
 name = "xesite"
 version = "2.4.0"
 dependencies = [
@@ -3228,7 +3228,6 @@ dependencies = [
  "http",
  "http-body",
  "hyper",
- "jsonfeed",
  "kankyo",
  "lazy_static",
  "log",
@@ -3260,6 +3259,7 @@ dependencies = [
  "tracing-subscriber",
  "url",
  "uuid 0.8.2",
+ "xe_jsonfeed",
  "xml-rs",
 ]
 
