@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::default::Default;
 use std::fmt;
 
@@ -31,6 +32,9 @@ pub struct Item {
     pub author: Option<Author>,
     pub tags: Option<Vec<String>>,
     pub attachments: Option<Vec<Attachment>>,
+
+    // xesite extensions
+    pub xesite_frontmatter: Option<xesite_types::Frontmatter>,
 }
 
 impl Item {
@@ -55,6 +59,7 @@ impl Default for Item {
             author: None,
             tags: None,
             attachments: None,
+            xesite_frontmatter: None,
         }
     }
 }
@@ -112,6 +117,9 @@ impl Serialize for Item {
         }
         if self.attachments.is_some() {
             state.serialize_field("attachments", &self.attachments)?;
+        }
+        if self.xesite_frontmatter.is_some() {
+            state.serialize_field("_xesite_frontmatter", &self.xesite_frontmatter)?;
         }
         state.end()
     }
@@ -319,6 +327,7 @@ impl<'de> Deserialize<'de> for Item {
                     author,
                     tags,
                     attachments,
+                    xesite_frontmatter: None,
                 })
             }
         }

@@ -3205,6 +3205,7 @@ dependencies = [
  "serde",
  "serde_derive",
  "serde_json",
+ "xesite_types",
 ]
 
 [[package]]
@@ -3260,7 +3261,16 @@ dependencies = [
  "url",
  "uuid 0.8.2",
  "xe_jsonfeed",
+ "xesite_types",
  "xml-rs",
+]
+
+[[package]]
+name = "xesite_types"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "serde",
 ]
 
 [[package]]

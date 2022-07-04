@@ -48,6 +48,8 @@ xml-rs = "0.8"
 url = "2"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 
+xesite_types = { path = "./lib/xesite_types" }
+
 # workspace dependencies
 cfcache = { path = "./lib/cfcache" }
 xe_jsonfeed = { path = "./lib/jsonfeed" }

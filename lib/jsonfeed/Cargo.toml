@@ -13,3 +13,5 @@ error-chain = "0.12"
 serde = "1"
 serde_derive = "1"
 serde_json = "1"
+
+xesite_types = { path = "../xesite_types" }

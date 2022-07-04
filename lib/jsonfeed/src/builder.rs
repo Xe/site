@@ -90,6 +90,7 @@ pub struct ItemBuilder {
     pub author: Option<Author>,
     pub tags: Option<Vec<String>>,
     pub attachments: Option<Vec<Attachment>>,
+    pub xesite_frontmater: Option<xesite_types::Frontmatter>,
 }
 
 impl ItemBuilder {
@@ -108,6 +109,7 @@ impl ItemBuilder {
             author: None,
             tags: None,
             attachments: None,
+            xesite_frontmater: None,
         }
     }
 
@@ -180,6 +182,11 @@ impl ItemBuilder {
         self
     }
 
+    pub fn xesite_frontmatter(mut self, fm: xesite_types::Frontmatter) -> ItemBuilder {
+        self.xesite_frontmater = Some(fm);
+        self
+    }
+
     pub fn build(self) -> Result<Item> {
         if self.id.is_none() || self.content.is_none() {
             return Err("missing field 'id' or 'content_*'".into());
@@ -198,6 +205,7 @@ impl ItemBuilder {
             author: self.author,
             tags: self.tags,
             attachments: self.attachments,
+            xesite_frontmatter: self.xesite_frontmater,
         })
     }
 }

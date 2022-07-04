@@ -30,7 +30,7 @@ pub struct NewPost {
 impl Into<xe_jsonfeed::Item> for Post {
     fn into(self) -> xe_jsonfeed::Item {
         let mut result = xe_jsonfeed::Item::builder()
-            .title(self.front_matter.title)
+            .title(self.front_matter.title.clone())
             .content_html(self.body_html)
             .id(format!("https://xeiaso.net/{}", self.link))
             .url(format!("https://xeiaso.net/{}", self.link))
@@ -40,7 +40,8 @@ impl Into<xe_jsonfeed::Item> for Post {
                     .name("Xe Iaso")
                     .url("https://xeiaso.net")
                     .avatar("https://xeiaso.net/static/img/avatar.png"),
-            );
+            )
+            .xesite_frontmatter(self.front_matter.clone());
 
         let mut tags: Vec<String> = vec![];
 
@@ -96,7 +97,7 @@ async fn read_post(
     let body = fs::read_to_string(fname.clone())
         .await
         .wrap_err_with(|| format!("can't read {:?}", fname))?;
-    let (front_matter, content_offset) = frontmatter::Data::parse(body.clone().as_str())
+    let (front_matter, content_offset) = frontmatter::parse(body.clone().as_str())
         .wrap_err_with(|| format!("can't parse frontmatter of {:?}", fname))?;
     let body = &body[content_offset..];
     let date = NaiveDate::parse_from_str(&front_matter.clone().date, "%Y-%m-%d")
