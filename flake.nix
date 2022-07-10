@@ -83,6 +83,7 @@
             # system dependencies
             openssl
             pkg-config
+            sqlite-interactive
 
             # kubernetes deployment
             dhall

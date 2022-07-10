@@ -8,3 +8,6 @@ cw.tar
 /target
 .patreon.json
 .direnv
+*.db
+*.db-shm
+*.db-wal

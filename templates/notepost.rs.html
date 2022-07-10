@@ -1,0 +1,28 @@
+@use super::{header_html, footer_html};
+@use crate::handlers::notes::Note;
+
+@(note: Note)
+
+@:header_html(Some(&format!("Note written at {}", note.detrytemci())), None)
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@@theprincessxena" />
+<meta name="twitter:title" content="@note.detrytemci()" />
+
+<!-- Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="@note.detrytemci()" />
+<meta property="og:site_name" content="Xe's Notes" />
+
+<!-- Description -->
+<meta name="description" content="@note.detrytemci() - Xe's Notes" />
+<meta name="author" content="Xe Iaso">
+
+<link rel="canonical" href="https://xeiaso.net/notes/@note.id" />
+
+<h1>Note written at @note.detrytemci()</h1>
+
+@Html(note.to_html().0)
+
+@:footer_html()

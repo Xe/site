@@ -12,6 +12,7 @@ use axum::{
 use color_eyre::eyre::Result;
 use hyper::StatusCode;
 use prometheus::{Encoder, TextEncoder};
+use rusqlite::Connection;
 use sdnotify::SdNotify;
 use std::{
     env, io,
@@ -28,6 +29,7 @@ use tower_http::{
 
 pub mod app;
 pub mod handlers;
+pub mod migrate;
 pub mod post;
 pub mod signalboost;
 pub mod tmpl;
@@ -38,6 +40,11 @@ use domainsocket::*;
 use crate::app::poke;
 
 const APPLICATION_NAME: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
+
+pub fn establish_connection() -> handlers::Result<Connection> {
+    let database_url = env::var("DATABASE_URL").unwrap_or("./xesite.db".to_string());
+    Ok(Connection::open(&database_url)?)
+}
 
 async fn healthcheck() -> &'static str {
     "OK"
@@ -71,6 +78,8 @@ async fn main() -> Result<()> {
     let _ = kankyo::init();
     tracing_subscriber::fmt::init();
     info!("starting up commit {}", env!("GITHUB_SHA"));
+
+    migrate::run()?;
 
     let state = Arc::new(
         app::init(
@@ -189,6 +198,10 @@ async fn main() -> Result<()> {
         .route("/talks", get(handlers::talks::index))
         .route("/talks/", get(handlers::talks::index))
         .route("/talks/:name", get(handlers::talks::post_view))
+        // notes
+        .route("/notes", get(handlers::notes::index))
+        .route("/notes.json", get(handlers::notes::feed))
+        .route("/notes/:id", get(handlers::notes::view))
         // junk google wants
         .route("/sitemap.xml", get(handlers::feeds::sitemap))
         // static files

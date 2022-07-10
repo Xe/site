@@ -1,0 +1,14 @@
+@use crate::handlers::notes::Note;
+@use super::{header_html, footer_html};
+
+@(notes: Vec<Note>)
+
+@:header_html(Some("Notes"), None)
+
+<h1>Notes</h1>
+
+@for note in notes {
+    @Html(note.to_html().0)
+}
+
+@:footer_html()

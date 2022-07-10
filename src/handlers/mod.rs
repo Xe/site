@@ -15,6 +15,7 @@ pub mod api;
 pub mod blog;
 pub mod feeds;
 pub mod gallery;
+pub mod notes;
 pub mod talks;
 
 fn weekday_to_name(w: Weekday) -> &'static str {
@@ -164,6 +165,24 @@ pub enum Error {
 
     #[error("string conversion error: {0}")]
     ToStr(#[from] http::header::ToStrError),
+
+    #[error("database error: {0}")]
+    SQLite(#[from] rusqlite::Error),
+
+    #[error("database pool error: {0}")]
+    SQLitePool(#[from] bb8_rusqlite::Error),
+
+    #[error("other error: {0}")]
+    Catchall(String),
+}
+
+impl<E> From<bb8::RunError<E>> for Error
+where
+    E: std::error::Error + Send + 'static,
+{
+    fn from(err: bb8::RunError<E>) -> Self {
+        Self::Catchall(format!("{}", err))
+    }
 }
 
 pub type Result<T = Html<Vec<u8>>> = std::result::Result<T, Error>;
