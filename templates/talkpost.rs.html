@@ -1,6 +1,5 @@
 @use super::{header_html, footer_html};
 @use crate::{post::Post, tmpl::nag};
-@use chrono::prelude::*;
 
 @(post: Post, body: impl ToHtml, referer: Option<String>)
 

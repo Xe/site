@@ -1,13 +1,9 @@
-use crate::{
-    app::{Job, State},
-    templates,
-};
+use crate::{app::State, templates};
 use axum::{
     body,
     extract::Extension,
     http::StatusCode,
     response::{Html, IntoResponse, Response},
-    Json,
 };
 use chrono::{Datelike, Timelike, Utc, Weekday};
 use lazy_static::lazy_static;
@@ -15,6 +11,7 @@ use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::sync::Arc;
 use tracing::instrument;
 
+pub mod api;
 pub mod blog;
 pub mod feeds;
 pub mod gallery;
@@ -52,7 +49,7 @@ fn month_to_name(m: u32) -> &'static str {
 }
 
 lazy_static! {
-    static ref HIT_COUNTER: IntCounterVec =
+    pub static ref HIT_COUNTER: IntCounterVec =
         register_int_counter_vec!(opts!("hits", "Number of hits to various pages"), &["page"])
             .unwrap();
     pub static ref LAST_MODIFIED: String = {
@@ -104,16 +101,6 @@ pub async fn salary_transparency(Extension(state): Extension<Arc<State>>) -> Res
     let mut result: Vec<u8> = vec![];
     templates::salary_transparency(&mut result, state.cfg.clone())?;
     Ok(Html(result))
-}
-
-#[axum_macros::debug_handler]
-#[instrument(skip(state))]
-pub async fn salary_transparency_json(Extension(state): Extension<Arc<State>>) -> Json<Vec<Job>> {
-    HIT_COUNTER
-        .with_label_values(&["salary_transparency_json"])
-        .inc();
-
-    Json(state.clone().cfg.clone().job_history.clone())
 }
 
 #[axum_macros::debug_handler]

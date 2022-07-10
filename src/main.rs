@@ -156,12 +156,13 @@ async fn main() -> Result<()> {
             ),
         )
         // api
+        .route("/api/new_post", get(handlers::feeds::new_post))
         .route(
             "/api/salary_transparency.json",
-            get(handlers::salary_transparency_json),
+            get(handlers::api::salary_transparency),
         )
-        .route("/api/blog/:name", get(handlers::blog::post_json))
-        .route("/api/talks/:name", get(handlers::talks::post_json))
+        .route("/api/blog/:name", get(handlers::api::blog))
+        .route("/api/talks/:name", get(handlers::api::talk))
         // static pages
         .route("/", get(handlers::index))
         .route("/contact", get(handlers::contact))
