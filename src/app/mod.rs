@@ -1,6 +1,4 @@
 use crate::{post::Post, signalboost::Person};
-use bb8::Pool;
-use bb8_rusqlite::RusqliteConnectionManager;
 use chrono::prelude::*;
 use color_eyre::eyre::Result;
 use std::{env, fs, path::PathBuf, sync::Arc};
@@ -60,7 +58,6 @@ pub struct State {
     pub sitemap: Vec<u8>,
     pub patrons: Option<patreon::Users>,
     pub mi: mi::Client,
-    pub pool: Pool<RusqliteConnectionManager>,
 }
 
 pub async fn init(cfg: PathBuf) -> Result<State> {
@@ -76,10 +73,6 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     let gallery = crate::post::load(cfg.clone(), "gallery").await?;
     let talks = crate::post::load(cfg.clone(), "talks").await?;
     let mut everything: Vec<Post> = vec![];
-    let mgr = RusqliteConnectionManager::new(
-        env::var("DATABASE_URL").unwrap_or("./var/waifud.db".to_string()),
-    );
-    let pool = bb8::Pool::builder().build(mgr).await?;
 
     {
         let blog = blog.clone();
@@ -157,7 +150,6 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
         jf: jfb.build(),
         sitemap: sm,
         patrons: patrons().await?,
-        pool,
     })
 }
 

@@ -12,7 +12,6 @@ repository = "https://github.com/Xe/site"
 axum = { version = "0.5", features = ["headers"] }
 axum-macros = "0.2"
 axum-extra = "0.3"
-bb8 = "0.7"
 color-eyre = "0.6"
 chrono = "0.4"
 comrak = "0.13.2"
@@ -52,12 +51,11 @@ uuid = { version = "0.8", features = ["serde", "v4"] }
 
 # workspace dependencies
 cfcache = { path = "./lib/cfcache" }
-xe_jsonfeed = { path = "./lib/jsonfeed" }
 mi = { path = "./lib/mi" }
 patreon = { path = "./lib/patreon" }
+ts_localapi = { path = "./lib/ts_localapi" }
 xesite_types = { path = "./lib/xesite_types" }
-
-bb8-rusqlite = { git = "https://github.com/pleshevskiy/bb8-rusqlite", branch = "bump-rusqlite" }
+xe_jsonfeed = { path = "./lib/jsonfeed" }
 
 [dependencies.rusqlite]
 version = "0.26"
