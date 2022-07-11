@@ -168,6 +168,21 @@ pub enum Error {
 
     #[error("database error: {0}")]
     SQLite(#[from] rusqlite::Error),
+
+    #[error("database pool error: {0}")]
+    SQLitePool(#[from] bb8_rusqlite::Error),
+
+    #[error("other error: {0}")]
+    Catchall(String),
+}
+
+impl<E> From<bb8::RunError<E>> for Error
+where
+    E: std::error::Error + Send + 'static,
+{
+    fn from(err: bb8::RunError<E>) -> Self {
+        Self::Catchall(format!("{}", err))
+    }
 }
 
 pub type Result<T = Html<Vec<u8>>> = std::result::Result<T, Error>;

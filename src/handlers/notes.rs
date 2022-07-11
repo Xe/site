@@ -20,12 +20,11 @@ impl Note {
     pub fn to_html(&self) -> Markup {
         html! {
             article."h-entry" {
-                a href={"/notes/" (self.id)} {
-                    "🔗"
-                }
-                " "
                 time."dt-published" datetime=(self.created_at) {
                     {(self.detrytemci())}
+                }
+                a href={"/notes/" (self.id)} {
+                    "🔗"
                 }
 
                 @if let Some(reply_to) = &self.reply_to {
