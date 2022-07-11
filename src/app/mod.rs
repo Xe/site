@@ -77,7 +77,7 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     let talks = crate::post::load(cfg.clone(), "talks").await?;
     let mut everything: Vec<Post> = vec![];
     let mgr = RusqliteConnectionManager::new(
-        env::var("DATABASE_URL").unwrap_or("./var/waifud.db".to_string()),
+        env::var("DATABASE_URL").unwrap_or("./xesite.db".to_string()),
     );
     let pool = bb8::Pool::builder().build(mgr).await?;
 

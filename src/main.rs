@@ -6,7 +6,7 @@ use axum::{
     extract::Extension,
     http::header::{self, HeaderValue, CONTENT_TYPE},
     response::{Html, Response},
-    routing::{get, get_service},
+    routing::{delete, get, get_service, post},
     Router,
 };
 use color_eyre::eyre::Result;
@@ -199,6 +199,9 @@ async fn main() -> Result<()> {
         .route("/talks/", get(handlers::talks::index))
         .route("/talks/:name", get(handlers::talks::post_view))
         // notes
+        .route("/api/notes/create", post(handlers::notes::create))
+        .route("/api/notes/:id", delete(handlers::notes::delete))
+        .route("/api/notes/:id/update", post(handlers::notes::update))
         .route("/notes", get(handlers::notes::index))
         .route("/notes.json", get(handlers::notes::feed))
         .route("/notes/:id", get(handlers::notes::view))

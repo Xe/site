@@ -52,9 +52,10 @@ uuid = { version = "0.8", features = ["serde", "v4"] }
 
 # workspace dependencies
 cfcache = { path = "./lib/cfcache" }
-xe_jsonfeed = { path = "./lib/jsonfeed" }
 mi = { path = "./lib/mi" }
 patreon = { path = "./lib/patreon" }
+ts_localapi = { path = "./lib/ts_localapi" }
+xe_jsonfeed = { path = "./lib/jsonfeed" }
 xesite_types = { path = "./lib/xesite_types" }
 
 bb8-rusqlite = { git = "https://github.com/pleshevskiy/bb8-rusqlite", branch = "bump-rusqlite" }

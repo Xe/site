@@ -3399,6 +3399,7 @@ dependencies = [
  "tracing",
  "tracing-futures",
  "tracing-subscriber",
+ "ts_localapi",
  "url",
  "uuid 0.8.2",
  "xe_jsonfeed",

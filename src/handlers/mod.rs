@@ -8,7 +8,7 @@ use axum::{
 use chrono::{Datelike, Timelike, Utc, Weekday};
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
-use std::sync::Arc;
+use std::{net::AddrParseError, sync::Arc};
 use tracing::instrument;
 
 pub mod api;
@@ -171,6 +171,15 @@ pub enum Error {
 
     #[error("database pool error: {0}")]
     SQLitePool(#[from] bb8_rusqlite::Error),
+
+    #[error("address parse error: {0}")]
+    AddrParse(#[from] AddrParseError),
+
+    #[error("Tailscale localapi error: {0}")]
+    TSLocalAPI(#[from] ts_localapi::Error),
+
+    #[error("{0}")]
+    Eyre(#[from] color_eyre::eyre::ErrReport),
 
     #[error("other error: {0}")]
     Catchall(String),
