@@ -304,14 +304,15 @@ pub async fn update(
     };
 
     conn.execute(
-        "UPDATE notes SET (content, content_html, created_at, updated_at, deleted_at, reply_to) VALUES(?, ?, ?, ?, ?, ?)",
+        "UPDATE notes SET content=?, content_html=?, created_at=?, updated_at=?, deleted_at=?, reply_to=? where id=?",
         params![
             note.content,
             note.content_html,
             note.created_at,
             note.updated_at,
             note.deleted_at,
-            note.reply_to
+            note.reply_to,
+            old_note.id,
         ],
     )?;
 
