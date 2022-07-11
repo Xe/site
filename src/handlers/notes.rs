@@ -75,7 +75,7 @@ impl Into<xe_jsonfeed::Item> for Note {
 pub async fn index() -> super::Result {
     let conn = crate::establish_connection()?;
 
-    let mut stmt = conn.prepare("SELECT id, content, content_html, created_at, updated_at, deleted_at, reply_to FROM notes ORDER BY id DESC LIMIT 25")?;
+    let mut stmt = conn.prepare("SELECT id, content, content_html, created_at, updated_at, deleted_at, reply_to FROM notes WHERE deleted_at IS NULL ORDER BY id DESC LIMIT 25")?;
     let notes = stmt
         .query_map(params![], |row| {
             Ok(Note {
@@ -101,7 +101,7 @@ pub async fn index() -> super::Result {
 pub async fn feed() -> super::Result<Json<xe_jsonfeed::Feed>> {
     let conn = crate::establish_connection()?;
 
-    let mut stmt = conn.prepare("SELECT id, content, content_html, created_at, updated_at, deleted_at, reply_to FROM notes ORDER BY id DESC LIMIT 25")?;
+    let mut stmt = conn.prepare("SELECT id, content, content_html, created_at, updated_at, deleted_at, reply_to FROM notes WHERE deleted_at IS NULL ORDER BY id DESC LIMIT 25")?;
     let notes = stmt
         .query_map(params![], |row| {
             Ok(Note {
