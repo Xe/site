@@ -54,7 +54,7 @@ choices to get across the vision I have for my website.
 Sorry, but you may want to scroll past this section. At the time of writing I
 don't currently have a good fallback set up for people that don't have
 JavaScript enabled on their browser. If you have ideas, please [email
-me](mailto:me@christine.website) and let me know them.
+me](mailto:me@xeiaso.net) and let me know them.
 
 </noscript>
 

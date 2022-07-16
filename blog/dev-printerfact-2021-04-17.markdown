@@ -340,7 +340,7 @@ use kernel::{chrdev, cstr, file_operations::{FileOperations, File}, user_ptr::Us
 module! {
     type: PrinterFacts,
     name: b"printerfacts",
-    author: b"Christine Dodrill <me@christine.website>",
+    author: b"Christine Dodrill <me@xeiaso.net>",
     description: b"/dev/printerfact support because I can",
     license: b"GPL v2",
     params: {
