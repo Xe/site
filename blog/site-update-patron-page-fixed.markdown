@@ -7,8 +7,8 @@ So I fixed [the patron page](https://xeiaso.net/patrons) and the
 underlying issue was stupid enough that I feel like explaining it so you all can
 learn from my mistake.
 
-<xeblog-conv name="Numa" mood="delet">For those of you playing the christine dot
-website home game, look
+<xeblog-conv name="Numa" mood="delet">For those of you playing the xeiaso dot
+net home game, look
 [here](https://github.com/Xe/site/commit/e2b9f384bf4033eddf321b5b5020ac4847609b37)
 to see the fix and play along!</xeblog-conv>
 

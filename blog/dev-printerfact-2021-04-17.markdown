@@ -220,7 +220,7 @@ in import "${pkgs}/nixos/tests/make-test-python.nix" ({ pkgs, ... }: {
 })
 ```
 
-[For those of you playing the christine dot website home game, you may want to
+[For those of you playing the xeiaso dot net home game, you may want to
 edit the top of that file for your own projects to get its `pkgs` with something
 like `pkgs = <nixpkgs>;`. The `sources.pkgs` thing is being used here to jive
 with niv.](conversation://Mara/hacker?smol)

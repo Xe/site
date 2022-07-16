@@ -378,7 +378,7 @@ scrape metrics?](conversation://Mara/hmm?smol)
 ---
 
 I'm experimenting with a new "smol" mode for the Mara interludes as well as
-introducing a few more characters to the christine dot website cinematic
+introducing a few more characters to the xeiaso dot net cinematic
 universe. Please do let me know how this works out for you. I think I have the
 sizes optimized for mobile usage better, but [contributions to fix my horrible
 CSS](https://github.com/Xe/site/blob/main/css/shim.css) would really, really,
