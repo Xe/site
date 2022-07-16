@@ -62,7 +62,7 @@ And then import them into Unity by going to the "Assets" menu, clicking on the
 "Import Package" menu and then click on "Custom Package" and select each of the
 UnityPackage files you downloaded.
 
-![](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-01-02+153934.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-01-02+153934.png)
 
 ### `manifest.json` Install Method
 
@@ -109,11 +109,11 @@ overall it should look something like that.
 When you install the Unity VRM plugins, you should have a new "VRM0" menu in
 your Unity menu bar. Click on it and select "Export UniVRM-0.80.0".
 
-![](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-01-02+112733.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-01-02+112733.png)
 
 A new window will open titled "VRM Exporter".
 
-![](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-01-02+113005.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-01-02+113005.png)
 
 Change the language to "En" (English) so that you can read the error and warning
 messages. Then fill out the title, version and author information and export
@@ -122,7 +122,7 @@ your avatar to a VRM file on your desktop folder.
 [Strictly speaking, you don't NEED to use your desktop, however that's where I
 put intermediate files for things like this.](conversation://Mara/hacker)
 
-![](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-01-02+113040.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-01-02+113040.png)
 
 ## Actually Making Your VRM Shine
 
@@ -137,15 +137,15 @@ VRM from before and then save it as a prefab in your folder. Unity will lock up
 for a moment while everything gets crunched and you will have a shiny new prefab
 in your project.
 
-![](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-01-02+113833.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-01-02+113833.png)
 
 Drag that prefab into the scene and then click on it to open its inspector.
 
-![](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-01-02+114246.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-01-02+114246.png)
 
 Reset its position to 0,0,0 so that it's in the center of the world.
 
-![](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-01-02+114319.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-01-02+114319.png)
 
 ### Shaders
 
@@ -155,7 +155,7 @@ choice as it gives you the anime cartoony feeling that you see in a lot of
 Japanese VTubers on YouTube. This is going to require some trial and error in
 that annoying "draw the rest of the owl" kind of way.
 
-![](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-01-02+114723.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-01-02+114723.png)
 
 ### Blendshapes
 
@@ -179,7 +179,7 @@ Open that folder and you will see a bunch of files that are named after the
 different VRM animations that you can customize. The big ones are the speech
 parts `A`, `I`, `U`, `E` and `O`. These will form the basis of your VTuber vibe.
 
-![](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-01-02+120248.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-01-02+120248.png)
 
 Start with `A`. This correlates to the
 [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) vowel /a/,
@@ -187,7 +187,7 @@ which is made by having a fairly open mouth and with your tongue resting on the
 bottom of your mouth. Open the `A` blendshape and expand the "Body" dropdown.
 The slider `vrc.v_aa` correlates to this sound, so set it to 100.
 
-![](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-01-02+120745.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-01-02+120745.png)
 
 The rest of the vowels should be customized in the same way, here is a small
 table of what they are called in the blendshapes folder, the IPA for them and

@@ -155,7 +155,7 @@ on boot. I missed it the first time around, but on the second time I was able to
 capture this screenshot:
 
 ![The error I was looking
-for](https://cdn.christine.website/file/christine-static/blog/Screen+Shot+2021-01-03+at+1.13.05+AM.png)
+for](https://cdn.xeiaso.net/file/christine-static/blog/Screen+Shot+2021-01-03+at+1.13.05+AM.png)
 
 Then it hit me. I did the install on NixOS unstable. My other servers use NixOS
 20.09. I had downgraded zfs and the older version of zfs couldn't mount the

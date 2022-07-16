@@ -43,7 +43,7 @@ Here are some comparisons to before and after the change:
 
 Hopefully this should improve the contrast ratio a lot more. I've always wanted
 this website to look a lot like [my emacs
-config](https://cdn.christine.website/file/christine-static/blog/Screenshot+from+2021-12-19+12-06-39.png),
+config](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+from+2021-12-19+12-06-39.png),
 but these changes should hopefully reach a balance of readability and stylistic
 choices to get across the vision I have for my website.
 

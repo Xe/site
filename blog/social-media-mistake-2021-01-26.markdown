@@ -84,7 +84,7 @@ the ability to communicate so quickly so far really a net benefit for us all?
 
 <center>
 
-![](https://cdn.christine.website/file/christine-static/blog/rmdA6xJ.jpg)
+![](https://cdn.xeiaso.net/file/christine-static/blog/rmdA6xJ.jpg)
 
 </center>
 
@@ -197,7 +197,7 @@ is the change making things chaotic?
 
 ![The old world is dying, and the new world struggles to be born: now is the
 time of
-monsters.](https://cdn.christine.website/file/christine-static/blog/tumblr_e2c8ae84bcc1e8489d9c429f64c26aab_a6117f36_500.jpg)
+monsters.](https://cdn.xeiaso.net/file/christine-static/blog/tumblr_e2c8ae84bcc1e8489d9c429f64c26aab_a6117f36_500.jpg)
 
 </center>
 

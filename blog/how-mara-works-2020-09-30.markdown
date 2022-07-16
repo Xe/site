@@ -119,9 +119,9 @@ element like this:
 
 ```html
 <picture>
-    <source srcset="https://cdn.christine.website/file/christine-static/stickers/@character.to_lowercase()/@(mood).avif" type="image/avif">
-    <source srcset="https://cdn.christine.website/file/christine-static/stickers/@character.to_lowercase()/@(mood).webp" type="image/webp">
-    <img src="https://cdn.christine.website/file/christine-static/stickers/@character.to_lowercase()/@(mood).png" alt="@character is @mood">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/@character.to_lowercase()/@(mood).avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/@character.to_lowercase()/@(mood).webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/stickers/@character.to_lowercase()/@(mood).png" alt="@character is @mood">
 </picture>
 ```
 
@@ -134,9 +134,9 @@ thread](https://twitter.com/theprincessxena/status/1310358201842401281?s=21),
 but in short here are how each of the formats looks next to its filesize
 information:
 
-![](https://cdn.christine.website/file/christine-static/blog/mara_png.png)
-![](https://cdn.christine.website/file/christine-static/blog/mara_webp.png)
-![](https://cdn.christine.website/file/christine-static/blog/mara_avif.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/mara_png.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/mara_webp.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/mara_avif.png)
 
 The
 [avif](https://reachlightspeed.com/blog/using-the-new-high-performance-avif-image-format-on-the-web-today/)

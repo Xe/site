@@ -125,7 +125,7 @@ most assumptions programmers make about identity:
 
 ![A "terminator chases hiding terrified anime girl" meme with the terminator
 labeled "Plural Systems" and the terrified anime girl labeled "Identity
-Systems"](https://cdn.christine.website/file/christine-static/blog/plural-terminator-meme.jpg)
+Systems"](https://cdn.xeiaso.net/file/christine-static/blog/plural-terminator-meme.jpg)
 
 </center>
 

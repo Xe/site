@@ -25,7 +25,7 @@ medium and use that conflict to help them change what they think about that
 medium. Let's take "Comedian" by Maurizio Cattelan for example:
 
 ![A banana duct-taped to an artist's
-canvas](https://cdn.christine.website/file/christine-static/blog/merlin_165616527_d76f38fc-e45d-4913-9780-1cc939750197-superJumbo.jpg)
+canvas](https://cdn.xeiaso.net/file/christine-static/blog/merlin_165616527_d76f38fc-e45d-4913-9780-1cc939750197-superJumbo.jpg)
 
 By my arbitrary definition above, this is art. This takes assumptions that you
 have about paintings (you know, that they use paint on the canvas) and discards
@@ -45,7 +45,7 @@ centre of the uncanny valley:
 ![A picture of Death Stranding gameplay, showing the protagonist Sam Porter
 Bridges attempting to climb a sheer cliff face using a rope that another player
 left
-behind](https://cdn.christine.website/file/christine-static/blog/20220202215156_3.jpg)
+behind](https://cdn.xeiaso.net/file/christine-static/blog/20220202215156_3.jpg)
 
 This game mixes very realistic scenery with a story about dead bodies turning
 into antimatter and you being a UPS delivery person that saves America. This is

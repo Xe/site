@@ -141,9 +141,9 @@ My [Gergoplex kit](https://www.gboards.ca/product/gergoplex) finally came in
 yesterday, and I got to work soldering it up with some switches and applying the
 keycaps.
 
-![Me soldering the Gergoplex](https://cdn.christine.website/file/christine-static/img/keeb/gergoplex/EnEYNxvW4AEfWcH.jpg)
+![Me soldering the Gergoplex](https://cdn.xeiaso.net/file/christine-static/img/keeb/gergoplex/EnEYNxvW4AEfWcH.jpg)
 
-![A glory shot of the Gergoplex](https://cdn.christine.website/file/christine-static/img/keeb/gergoplex/Elm3dN8XUAAYHws.jpg)
+![A glory shot of the Gergoplex](https://cdn.xeiaso.net/file/christine-static/img/keeb/gergoplex/Elm3dN8XUAAYHws.jpg)
 
 I picked the Pro Red linear switches with a 35 gram spring in them (read: they
 need 35 grams of force to actuate, which is lighter than most switches) and

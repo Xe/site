@@ -155,7 +155,7 @@ reporting that everything was successful. Then the final typo was spotted:
 
 <center>
 
-![](https://cdn.christine.website/file/christine-static/stickers/cadey/percussive-maintenance.png)
+![](https://cdn.xeiaso.net/file/christine-static/stickers/cadey/percussive-maintenance.png)
 
 </center>
 

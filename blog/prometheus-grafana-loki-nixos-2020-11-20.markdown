@@ -121,7 +121,7 @@ you configured above) and leave everything set to the default values. Click
 "Save & Test". If there is an error, be sure to check the port number.
 
 ![The Grafana UI for adding a data
-source](https://cdn.christine.website/file/christine-static/blog/Screenshot_20201120_145819.png)
+source](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20201120_145819.png)
 
 Now let's start getting some data into Prometheus with the node exporter.
 
@@ -195,7 +195,7 @@ the screen). You should see a graph showing you the amount of ram that is free
 on the host, something like this:
 
 ![A graph of the amount of system memory that is available on the host
-chrysalis](https://cdn.christine.website/file/christine-static/blog/Screenshot_20201120_150328.png)
+chrysalis](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20201120_150328.png)
 
 If you want to query other fields, you can type in `node_` into the searchbox
 and autocomplete will show what is available. For a full list of what is
@@ -211,14 +211,14 @@ Click on the plus icon on the left side of the Grafana UI to create a new
 dashboard. It will look something like this:
 
 ![An empty dashboard in
-Grafana](https://cdn.christine.website/file/christine-static/blog/Screenshot_20201120_151205.png)
+Grafana](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20201120_151205.png)
 
 In Grafana terminology, everything you see in a dashboard is inside a panel.
 Let's create a new panel to keep track of memory usage for our server. Click
 "Add New Panel" and you will get a screen that looks like this:
 
 ![A Grafana panel configuration
-screen](https://cdn.christine.website/file/christine-static/blog/Screenshot_20201120_151609.png)
+screen](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20201120_151609.png)
 
 Let's make this keep track of free memory. Write "Memory Free" in the panel
 title field on the right. Write the following query in the textbox next to the
@@ -232,7 +232,7 @@ and set the legend to `{{job}}`. You should get a graph that looks something
 like this:
 
 ![A populated
-graph](https://cdn.christine.website/file/christine-static/blog/Screenshot_20201120_152126.png)
+graph](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20201120_152126.png)
 
 This will show you how much memory is free on each machine you are monitoring
 with Prometheus' node exporter. Now let's configure an alert for the amount of
@@ -249,7 +249,7 @@ click the "Create Alert" button. Let's configure it to do the following:
 You can do that with a configuration like this:
 
 ![The above configuration input to the Grafana
-UI](https://cdn.christine.website/file/christine-static/blog/Screenshot_20201120_153419.png)
+UI](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20201120_153419.png)
 
 Save the changes to apply this config.
 
@@ -258,14 +258,14 @@ Save the changes to apply this config.
 It will only show up on the alerts page:
 
 ![The alerts page with memory free alerts
-configured](https://cdn.christine.website/file/christine-static/blog/Screenshot_20201120_154027.png)
+configured](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20201120_154027.png)
 
 But we can add a notification channel to customize this. Click on the
 Notification Channels tab and then click "New Channel". It should look something
 like this:
 
 ![Notification Channel
-configuration](https://cdn.christine.website/file/christine-static/blog/Screenshot_20201120_154317.png)
+configuration](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20201120_154317.png)
 
 You can send notifications to many services, but let's send one to Discord this
 time. Acquire a Discord webhook link from somewhere and paste it in the Webhook
@@ -359,13 +359,13 @@ Once that finishes, open up Grafana and configure a new Loki data source with
 the URL `http://127.0.0.1:3100`:
 
 ![Loki Data Source
-configuration](https://cdn.christine.website/file/christine-static/blog/Screenshot_20201120_161610.png)
+configuration](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20201120_161610.png)
 
 Now that you have Loki set up, let's query it! Open the Explore view in Grafana
 again, choose Loki as the source, and enter in the query `{job="systemd-journal"}`:
 
 ![Loki
-search](https://cdn.christine.website/file/christine-static/blog/Screenshot_20201120_162043.png)
+search](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20201120_162043.png)
 
 [You can also add Loki queries like this to dashboards! Loki also lets you query by
 systemd unit with the `unit` field. If you wanted to search for logs from

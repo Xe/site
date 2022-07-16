@@ -323,7 +323,7 @@ that socket to send back printer facts. Let's deploy it and see what happens:
 <center>
 
 ![A picture of the nginx "502 Bad Gateway" error message with a man scolding a
-router](https://cdn.christine.website/file/christine-static/blog/57f66e907bb62.jpeg)
+router](https://cdn.xeiaso.net/file/christine-static/blog/57f66e907bb62.jpeg)
 
 </center>
 
@@ -371,7 +371,7 @@ scrape metrics?](conversation://Mara/hmm?smol)
 
 <center>
 
-![](https://cdn.christine.website/file/christine-static/stickers/cadey/percussive-maintenance.png)
+![](https://cdn.xeiaso.net/file/christine-static/stickers/cadey/percussive-maintenance.png)
 
 </center>
 

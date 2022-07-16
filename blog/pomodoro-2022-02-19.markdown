@@ -21,7 +21,7 @@ also add some notes to the pom in case I need them later.
 
 Here is an example of one such pomodoro section:
 
-![](https://cdn.christine.website/file/christine-static/blog/photo_2022-02-19_08-32-13.jpg)
+![](https://cdn.xeiaso.net/file/christine-static/blog/photo_2022-02-19_08-32-13.jpg)
 
 [What the heck are those scribbles? Those look like sick
 noodles!](conversation://Numa/delet)

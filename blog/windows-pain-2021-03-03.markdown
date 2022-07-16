@@ -247,7 +247,7 @@ with finding some nice batteries-included tools.
 After looking through the options I saw a theme named `sorin` that looks like
 this:
 
-![the sorin theme in action](https://cdn.christine.website/file/christine-static/blog/Screenshot+2021-03-03+231114.png)
+![the sorin theme in action](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2021-03-03+231114.png)
 
 ### Project-local Dependencies
 

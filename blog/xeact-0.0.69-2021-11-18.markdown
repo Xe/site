@@ -204,9 +204,9 @@ This actually gets expanded out to HTML that looks like this:
 <div class="conversation">
     <div class="conversation-picture conversation-smol">
         <picture>
-            <source srcset="https://cdn.christine.website/file/christine-static/stickers/mara/hacker.avif" type="image/avif">
-            <source srcset="https://cdn.christine.website/file/christine-static/stickers/mara/hacker.webp" type="image/webp">
-            <img src="https://cdn.christine.website/file/christine-static/stickers/mara/hacker.png" alt="Mara is hacker">
+            <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/mara/hacker.avif" type="image/avif">
+            <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/mara/hacker.webp" type="image/webp">
+            <img src="https://cdn.xeiaso.net/file/christine-static/stickers/mara/hacker.png" alt="Mara is hacker">
         </picture>
     </div>
     <div class="conversation-chat">&lt;<b>Mara</b>&gt; These are some words and I am writing them.</div>
@@ -227,9 +227,9 @@ const mkConversation = (who, mood, message) =>
     h("div", {className: "conversation"}, [
         h("div", {className: "conversation-picture conversation-smol"}, [
             h("picture", {}, [
-                h("source", {type: "image/avif", srcset: `https://cdn.christine.website/file/christine-static/stickers/${who.toLowerCase()}/${mood}.avif`}),
-                h("source", {type: "image/webp", srcset: `https://cdn.christine.website/file/christine-static/stickers/${who.toLowerCase()}/${mood}.webp`}),
-                h("img", {alt: `${who} is ${mood}`, src: `https://cdn.christine.website/file/christine-static/stickers/${who.toLowerCase()}/${mood}.png`})
+                h("source", {type: "image/avif", srcset: `https://cdn.xeiaso.net/file/christine-static/stickers/${who.toLowerCase()}/${mood}.avif`}),
+                h("source", {type: "image/webp", srcset: `https://cdn.xeiaso.net/file/christine-static/stickers/${who.toLowerCase()}/${mood}.webp`}),
+                h("img", {alt: `${who} is ${mood}`, src: `https://cdn.xeiaso.net/file/christine-static/stickers/${who.toLowerCase()}/${mood}.png`})
             ])
         ]),
         h("div", {className: "conversation-chat"}, [
@@ -253,9 +253,9 @@ const mkConversation = (who, mood, message) =>
     h("div", {className: "conversation"}, [
         h("div", {className: "conversation-picture conversation-smol"}, [
             h("picture", {}, [
-                h("source", {type: "image/avif", srcset: `https://cdn.christine.website/file/christine-static/stickers/${who.toLowerCase()}/${mood}.avif`}),
-                h("source", {type: "image/webp", srcset: `https://cdn.christine.website/file/christine-static/stickers/${who.toLowerCase()}/${mood}.webp`}),
-                h("img", {alt: `${who} is ${mood}`, src: `https://cdn.christine.website/file/christine-static/stickers/${who.toLowerCase()}/${mood}.png`})
+                h("source", {type: "image/avif", srcset: `https://cdn.xeiaso.net/file/christine-static/stickers/${who.toLowerCase()}/${mood}.avif`}),
+                h("source", {type: "image/webp", srcset: `https://cdn.xeiaso.net/file/christine-static/stickers/${who.toLowerCase()}/${mood}.webp`}),
+                h("img", {alt: `${who} is ${mood}`, src: `https://cdn.xeiaso.net/file/christine-static/stickers/${who.toLowerCase()}/${mood}.png`})
             ])
         ]),
         h("div", {className: "conversation-chat"}, [

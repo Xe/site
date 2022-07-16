@@ -24,7 +24,7 @@ we've heard next to no updates about in a long time. I had given up on the idea
 of seeing it happen. I thought that the Metroid series was dead.
 
 ![The title
-screen](https://cdn.christine.website/file/christine-static/blog/010093801237c000_2021-10-10_13-36-33-107.png)
+screen](https://cdn.xeiaso.net/file/christine-static/blog/010093801237c000_2021-10-10_13-36-33-107.png)
 
 Metroid games have always been commercial flops as far as the numbers go. The
 games have never really been advertised that well and usually show up on
@@ -36,7 +36,7 @@ it carefully guides the player through the game. Metroid Dread is a masters
 level class in how to show the player how to do things without explicitly
 telling them how to do them.
 
-![](https://cdn.christine.website/file/christine-static/blog/010093801237c000_2021-10-09_23-55-10-764.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/010093801237c000_2021-10-09_23-55-10-764.png)
 
 This game is dripping with color, detail and brilliance in every room. Samus is
 fluid and deadlier than ever. Movement flows from one jump into the next. The
@@ -57,10 +57,10 @@ won't get stuck there for 2 hours.](conversation://Cadey/coffee)
   should have made at least one of those blocks obviously breakable.
 
 ![Before breaking
-blocks](https://cdn.christine.website/file/christine-static/blog/010093801237c000_2021-10-10_13-51-46-261.png)
+blocks](https://cdn.xeiaso.net/file/christine-static/blog/010093801237c000_2021-10-10_13-51-46-261.png)
 
 ![After breaking
-blocks](https://cdn.christine.website/file/christine-static/blog/010093801237c000_2021-10-10_13-51-56-949.png)
+blocks](https://cdn.xeiaso.net/file/christine-static/blog/010093801237c000_2021-10-10_13-51-56-949.png)
 
   There is a subtle camera movement to telegraph it, but I feel that it's not
   obvious enough. That may have been the point though.
@@ -75,7 +75,7 @@ you _do_ have a 10 frame window or whatever to escape from the EMMI's grasp. It
 feels awesome when you land that hit.](conversation://Cadey/enby)
 
 ![You are faced with overwhelming power, accept your
-helplessness.](https://cdn.christine.website/file/christine-static/blog/FBKBzqvVcAQBdn1.jpeg)
+helplessness.](https://cdn.xeiaso.net/file/christine-static/blog/FBKBzqvVcAQBdn1.jpeg)
 
 <details>
   <summary>EMMI related spoilers</summary>
@@ -106,7 +106,7 @@ helplessness.](https://cdn.christine.website/file/christine-static/blog/FBKBzqvV
 </details>
 
 ![The lava tube in
-Artaria](https://cdn.christine.website/file/christine-static/blog/010093801237c000_2021-10-10_13-49-58-541.png)
+Artaria](https://cdn.xeiaso.net/file/christine-static/blog/010093801237c000_2021-10-10_13-49-58-541.png)
 
 <details>
   <summary>Boss spoilers</summary>
@@ -132,7 +132,7 @@ happen. Once I saw the words "Metroid 5" on the screen in E3 though, I instantly
 preordered it. I didn't need to be convinced. Dread was real.
 
 ![My Switch home
-screen](https://cdn.christine.website/file/christine-static/blog/FAoMNsEVcAQFjoC.jpeg)
+screen](https://cdn.xeiaso.net/file/christine-static/blog/FAoMNsEVcAQFjoC.jpeg)
 
 It is now in my hands. I have played it. I loved almost every moment of it (save
 the mishap in Cataris). I can't wait to see how speedruns develop for it. I bet

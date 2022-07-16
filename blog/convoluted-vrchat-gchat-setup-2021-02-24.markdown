@@ -124,7 +124,7 @@ I ended up with this image:
 
 <center>
 
-![](https://cdn.christine.website/file/christine-static/blog/2021-02-24-20-20-58.jpg)
+![](https://cdn.xeiaso.net/file/christine-static/blog/2021-02-24-20-20-58.jpg)
 
 </center>
 
@@ -136,7 +136,7 @@ with this image I posted to Twitter:
 
 <center>
 
-![](https://cdn.christine.website/file/christine-static/blog/Eu6iR6jXUAQH0iq.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Eu6iR6jXUAQH0iq.jpeg)
 
 </center>
 
@@ -168,7 +168,7 @@ camera set up for OBS. It looks like this:
 
 <center>
 
-![Screenshot of the optimized world](https://cdn.christine.website/file/christine-static/blog/154306141_1368071216896631_2989259612329820447_o.jpg)
+![Screenshot of the optimized world](https://cdn.xeiaso.net/file/christine-static/blog/154306141_1368071216896631_2989259612329820447_o.jpg)
 
 </center>
 

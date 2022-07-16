@@ -169,7 +169,7 @@ database easier.
 The symbol/number layer on my Moonlander has been _so good_. It looks something
 like this:
 
-![](https://cdn.christine.website/file/christine-static/blog/m5Id6Qs.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/m5Id6Qs.png)
 
 And it makes using programming sigils _so much easier_. I don't have to stray
 far from the homerow to hit the most common ones. The only one that I still have

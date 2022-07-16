@@ -61,7 +61,7 @@ $ weechat
 
 And you should see the default UI:
 
-![The default WeeChat UI](https://cdn.christine.website/file/christine-static/blog/20210529_11h43m43s_grim.png)
+![The default WeeChat UI](https://cdn.xeiaso.net/file/christine-static/blog/20210529_11h43m43s_grim.png)
 
 ### Customization
 
@@ -131,7 +131,7 @@ And then paste it all into your input line and then run `/save`:
 
 The result should look like this:
 
-![My WeeChat theme in action](https://cdn.christine.website/file/christine-static/blog/20210529_12h05m05s_grim.png)
+![My WeeChat theme in action](https://cdn.xeiaso.net/file/christine-static/blog/20210529_12h05m05s_grim.png)
 
 ### Plugins
 
@@ -292,7 +292,7 @@ Add the Libera Chat connection with the `/server` command:
 
 Then you can check the settings with `/set irc.server.liberachat.*`:
 
-![](https://cdn.christine.website/file/christine-static/blog/20210529_13h16m23s_grim.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/20210529_13h16m23s_grim.png)
 
 More than likely the defaults are fine, however you can customize them with
 `/set` if you want.
@@ -458,7 +458,7 @@ the host-specific configuration folder.
 
 Once you've deployed this to a server, try to open the page in your browser:
 
-![](https://cdn.christine.website/file/christine-static/blog/20210529_14h26m57s_grim.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/20210529_14h26m57s_grim.png)
 
 Then enter in the following details:
 

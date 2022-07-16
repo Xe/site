@@ -205,7 +205,7 @@ You can also check this out in a browser by clicking
 
 ![a browser window titled "amazing website xD" with the header "look at my
 AMAZING WEBSITE" and content of "It's so cool
-\*twerks\*"](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-04-23+141937.png)
+\*twerks\*"](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-04-23+141937.png)
 
 ## Installing `gohello`
 
