@@ -12,7 +12,7 @@ blog.
 
 For RSS: `https://xeiaso.net/blog.rss`
 
-For Atom: `https://christine.webiste/blog.atom`
+For Atom: `https://xeiaso.net/blog.atom`
 
 If there are any issues with this or the generated XML please [contact me](/contact)
 and let me know so they can be resolved.

@@ -22,7 +22,7 @@ TLS, or [Transport Layer Security](https://en.wikipedia.org/wiki/Transport_Layer
 
 ## What's a Certificate Authority?
 
-A TLS Certificate Authority is a certificate that is allowed to issue other certificates. These certificates are intended to strongly associate domain names (such as christine.website) to real people or organizations. In theory, the people or tools running the certificate authority do rigorous checking and validation of identities before a certificate is issued. Creating our own certificate authority allows us to create certificates that only select devices will trust as valid. By creating our own certificate authority and manually configuring devices to trust it, we sidestep the need to pay for certificates (mainly for the verification process to ensure you are who you say you are) or expose services to the public internet.
+A TLS Certificate Authority is a certificate that is allowed to issue other certificates. These certificates are intended to strongly associate domain names (such as xeiaso.net) to real people or organizations. In theory, the people or tools running the certificate authority do rigorous checking and validation of identities before a certificate is issued. Creating our own certificate authority allows us to create certificates that only select devices will trust as valid. By creating our own certificate authority and manually configuring devices to trust it, we sidestep the need to pay for certificates (mainly for the verification process to ensure you are who you say you are) or expose services to the public internet.
 
 ### Why Should I Create One?
 

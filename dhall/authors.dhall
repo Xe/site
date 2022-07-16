@@ -4,7 +4,7 @@ in  [ Author::{
       , name = "Xe Iaso"
       , handle = "xe"
       , picUrl = Some "/static/img/avatar.png"
-      , link = Some "https://christine.website"
+      , link = Some "https://xeiaso.net"
       , twitter = Some "theprincessxena"
       , default = True
       , inSystem = True

@@ -135,7 +135,7 @@ assert lib.versionAtLeast go.version "1.13";
 buildGoPackage rec {
   name = "christinewebsite-HEAD";
   version = "latest";
-  goPackagePath = "christine.website";
+  goPackagePath = "xeiaso.net";
   src = ./.;
 
   goDeps = ./deps.nix;
