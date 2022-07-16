@@ -1,6 +1,5 @@
 ---
 title: "Creator's Code"
-author: Christine Dodrill
 date: 2018-09-17
 tags:
  - release

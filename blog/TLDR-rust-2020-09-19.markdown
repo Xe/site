@@ -17,7 +17,7 @@ various patterns used in Rust code.
 
 Also I'm happy to introduce Mara to the blog!
 
-[Hey, happy to be here! I'm Mara, a shark hacker from Christine's imagination. 
+[Hey, happy to be here! I'm Mara, a shark hacker from Xe's imagination.
 I'll interject with side information, challenge assertions and more! Thanks for
 inviting me!](conversation://Mara/hacker)
 
