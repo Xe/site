@@ -29,11 +29,14 @@ The story is about an office drone named Stanley that pushes buttons based on
 instructions from his computer. The big thing that this game does though is make
 you realize the inherent paradoxes in its own design.
 
-<xeblog-conv name="Mara" mood="happy">Being limited like this is not actually a
-bad thing like the phrasing would imply. It just means that the main focus of
-the game is not on the micro actions the player can take. In this case the main
-focus is on what the player can do with the story and not what the player can do
-with their controller.</xeblog-conv>
+<xeblog-conv name="Mara" mood="happy">Being mechanically limited like this is
+not actually a bad thing like the phrasing might imply. This means that the main
+focus of the gameplay is not on the micro actions the player can take. In this
+case the main focus is on how the player interacts with the story and not how
+the player interacts with their controller or puzzles or tactics. Additionally,
+the mechanical limitations of the gameplay are thematically aligned with the
+story's premise of being an office drone in ways it can play with. Think
+dramatic irony taken to its logical conclusion.</xeblog-conv>
 
 Endings that make you look like you had exercised your free will actually boil
 down to your actions being controlled by following the narrator's voices. This
@@ -59,13 +62,11 @@ just followed the line. Walk outside of the intended playable area? 10 second
 timer until the game kills you. Shoot a person with the wrong skin color? The
 game kills you.
 
-<xeblog-conv name="Numa" mood="delet">I used to be an adventurer like you until
-I took an arrow to the knee! Get it? It's because "taking an arrow to the knee"
-meant "getting married" because being married in Norse times (because Skyrim's
-Nord are basically LARP vikings) really handicapped your ability to move around
-freely, and in those times an arrow injury was basically guaranteed to be fatal
-so it can't be literal (if only because there's so many guards with knee
-injuries walking around effortlessly which is...unlikely at best).</xeblog-conv>
+<xeblog-conv name="Numa" mood="delet">If you manage to clip out of bounds in the
+escape ending, the screen will fade to black and you will be transported to a
+temperate climate. Then a t-posing model in terrible armor will tell you that it
+used to be an adventurer until they took an arrow to the knee. Hope that's not a
+marriage proposal!</xeblog-conv>
 
 However in The Stanley Parable you can defy the narrator and that's where the
 game really opens up. It's great to get in the area where the game is unfinished
