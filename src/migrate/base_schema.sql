@@ -2,9 +2,9 @@ CREATE TABLE IF NOT EXISTS notes
   ( id           INTEGER PRIMARY KEY
   , content      TEXT    NOT NULL
   , content_html TEXT    NOT NULL
-  , created_at   TEXT    NOT NULL     -- Unix epoch timestamp
-  , updated_at   TEXT                 -- Unix epoch timestamp
-  , deleted_at   TEXT                 -- Unix epoch timestamp
+  , created_at   TEXT    NOT NULL     -- RFC 3339 timestamp
+  , updated_at   TEXT                 -- RFC 3339 timestamp
+  , deleted_at   TEXT                 -- RFC 3339 timestamp
   , reply_to     TEXT
   );
 

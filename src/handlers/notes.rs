@@ -1,7 +1,12 @@
 use std::{net::SocketAddr, sync::Arc};
 
 use crate::{app::State, templates};
-use axum::{extract::Path, http::HeaderMap, response::Html, Extension, Json};
+use axum::{
+    extract::{Path, Query},
+    http::HeaderMap,
+    response::Html,
+    Extension, Json,
+};
 use chrono::prelude::*;
 use maud::{html, Markup, PreEscaped};
 use rusqlite::params;
@@ -122,13 +127,22 @@ impl Into<xe_jsonfeed::Item> for Note {
     }
 }
 
-#[instrument(err, skip(state))]
-pub async fn index(Extension(state): Extension<Arc<State>>) -> super::Result {
-    let conn = state.pool.get().await?;
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct Pagination {
+    pub page: Option<u64>,
+}
 
-    let mut stmt = conn.prepare("SELECT id, content, content_html, created_at, updated_at, deleted_at, reply_to FROM notes WHERE deleted_at IS NULL ORDER BY id DESC LIMIT 25")?;
+#[instrument(err, skip(state))]
+pub async fn index(
+    Extension(state): Extension<Arc<State>>,
+    Query(pagi): Query<Pagination>,
+) -> super::Result {
+    let conn = state.pool.get().await?;
+    let page = pagi.page.unwrap_or(0);
+
+    let mut stmt = conn.prepare("SELECT id, content, content_html, created_at, updated_at, deleted_at, reply_to FROM notes WHERE deleted_at IS NULL ORDER BY id DESC LIMIT 25 OFFSET ?")?;
     let notes = stmt
-        .query_map(params![], |row| {
+        .query_map(params![page * 25], |row| {
             Ok(Note {
                 id: row.get(0)?,
                 content: row.get(1)?,
@@ -144,19 +158,21 @@ pub async fn index(Extension(state): Extension<Arc<State>>) -> super::Result {
         .collect::<Vec<Note>>();
 
     let mut result: Vec<u8> = vec![];
-    templates::notesindex_html(&mut result, notes)?;
+    templates::notesindex_html(&mut result, notes, page)?;
     Ok(Html(result))
 }
 
 #[instrument(err, skip(state))]
 pub async fn feed(
     Extension(state): Extension<Arc<State>>,
+    Query(pagi): Query<Pagination>,
 ) -> super::Result<Json<xe_jsonfeed::Feed>> {
     let conn = state.pool.get().await?;
+    let page = pagi.page.unwrap_or(0);
 
-    let mut stmt = conn.prepare("SELECT id, content, content_html, created_at, updated_at, deleted_at, reply_to FROM notes WHERE deleted_at IS NULL ORDER BY id DESC LIMIT 25")?;
+    let mut stmt = conn.prepare("SELECT id, content, content_html, created_at, updated_at, deleted_at, reply_to FROM notes WHERE deleted_at IS NULL ORDER BY id DESC LIMIT 25 OFFSET ?")?;
     let notes = stmt
-        .query_map(params![], |row| {
+        .query_map(params![page * 25], |row| {
             Ok(Note {
                 id: row.get(0)?,
                 content: row.get(1)?,
@@ -179,7 +195,8 @@ pub async fn feed(
                 .avatar("https://xeiaso.net/static/img/avatar.png"),
         )
         .description("Short posts that aren't to the same quality level as mainline blogposts")
-        .feed_url("https://xeiaso.net/notes.json")
+        .feed_url(format!("https://xeiaso.net/notes.json?page={page}"))
+        .next_url(format!("https://xeiaso.net/notes.json?page={}", page + 1))
         .title("Xe's Notes");
 
     for note in notes {

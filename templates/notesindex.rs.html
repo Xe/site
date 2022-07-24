@@ -1,7 +1,7 @@
 @use crate::handlers::notes::Note;
 @use super::{header_html, footer_html};
 
-@(notes: Vec<Note>)
+@(notes: Vec<Note>, page: u64)
 
 @:header_html(Some("Notes"), None)
 
@@ -16,5 +16,10 @@
 @for note in notes {
     @Html(note.to_html().0)
 }
+
+@if page!=0 {
+  <a href="/notes?page=@(page-1)">Prev</a>
+}
+<a href="/notes?page=@(page+1)">Next</a>
 
 @:footer_html()
