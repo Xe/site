@@ -125,7 +125,7 @@ the information from the latest blogpost into this repo, I will put a rendered
 version of it [here](http://lewa-book-devel.kahless.cetacean.club:43001/). This
 will allow you to browse through the chapters of the eBook while it is being
 written. Eventually this will be automatically deployed to my Kubernetes cluster
-and the book will be a subpath/subdomain of `lewa.xeiaso.net`.
+and the book will be a subpath/subdomain of `lewa.within.website`.
 
 I have created a system of defining words that allows you to focus on each word
 at once, but then fit it back into the greater whole of the language. For
