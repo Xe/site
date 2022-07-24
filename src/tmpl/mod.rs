@@ -56,3 +56,15 @@ pub fn xeblog_conv(name: String, mood: String, body: Markup) -> Markup {
         }
     }
 }
+
+pub fn xeblog_sticker(name: String, mood: String) -> Markup {
+    html! {
+        center {
+            picture {
+                source type="image/avif" srcset={"https://cdn.xeiaso.net/file/christine-static/stickers/" (name_lower) "/" (mood) ".avif"};
+                source type="image/webp" srcset={"https://cdn.xeiaso.net/file/christine-static/stickers/" (name_lower) "/" (mood) ".webp"};
+                img alt={(name) " is " (mood)} src={"https://cdn.xeiaso.net/file/christine-static/stickers/" (name_lower) "/" (mood) ".png"};
+            }
+        }
+    }
+}

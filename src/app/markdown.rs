@@ -107,7 +107,15 @@ pub fn render(cfg: Arc<Config>, inp: &str) -> Result<String> {
                 el.replace(&crate::tmpl::xeblog_salary_history(cfg.clone()).0, ContentType::Html);
 
                 Ok(())
-            })
+            }),
+            element!("xeblog-sticker", |el| {
+                let name = el.get_attribute("name").expect("wanted xeblog-sticker to contain name");
+                let name_lower = name.clone().to_lowercase();
+                let mood = el.get_attribute("mood").expect("wanted xeblog-sticker to contain mood");
+                el.replace(&crate::tmpl::xeblog_sticker(name, mood).0, ContentType::Html);
+
+                Ok(())
+            }),
         ],
         ..RewriteStrSettings::default()
     }).unwrap();
