@@ -342,7 +342,7 @@ $ tar cz ./blog | ssh pneuma tar xz -C ~/code/xeiaso.net/blog
 
 This will run `tar` to create a compressed copy of the `./blog` folder and then
 pipe that to tar on another computer to extract that into
-`~/code/xeiaso.net/blog`. It's just pipes and redirection all the way
+`~/code/christine.website/blog`. It's just pipes and redirection all the way
 down! Deep inside `ssh` it's really just piping output of commands back and
 forth over an encrypted network socket. Connecting to an IRC server is just
 piping in and out data to the chat server, even more so if you use TLS to
