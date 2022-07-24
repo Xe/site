@@ -25,7 +25,7 @@ So, with this in mind, let's start with a simple IRC daemon in a docker containe
 Name = seaworld.yolo-swag.com
 AdminInfo1 = ShadowNET Main Server
 AdminInfo2 = New York, New York, USA
-AdminInfo3 = Cadey Ratio <me@xeiaso.net>
+AdminInfo3 = Xe Iaso <me@xeiaso.net>
 Info = Hosted on Kubernetes!
 Listen = 0.0.0.0
 MotdFile = /shadownet/motd
