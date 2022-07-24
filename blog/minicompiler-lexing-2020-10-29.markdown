@@ -20,9 +20,9 @@ don't have a TempleOS VM handy, here is a video of MiniCompiler.HC in action:
 [minicompiler]: https://github.com/Xe/TempleOS/blob/master/Demo/Lectures/MiniCompiler.HC
 
 <video controls width="100%">
-    <source src="https://cdn.christine.website/file/christine-static/img/minicompiler/tmp.YDcgaHSb3z.webm"
+    <source src="https://cdn.xeiaso.net/file/christine-static/img/minicompiler/tmp.YDcgaHSb3z.webm"
             type="video/webm">
-    <source src="https://cdn.christine.website/file/christine-static/img/minicompiler/tmp.YDcgaHSb3z.mp4"
+    <source src="https://cdn.xeiaso.net/file/christine-static/img/minicompiler/tmp.YDcgaHSb3z.mp4"
             type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
 </video>

@@ -8,8 +8,8 @@ Hello,
 
 I have disabled the ability for people to comment on my YouTube videos directly
 on YouTube and the rest of this will explain why. If you want to contact me,
-please email me at me@christine.website or any of the other contact methods
-listed at christine.website/contact.
+please email me at me@xeiaso.net or any of the other contact methods
+listed at xeiaso.net/contact.
 
 I use YouTube as a glorified file host for my videos. I use YouTube for this
 because YouTube seems to have the longest staying power and seems to be stable

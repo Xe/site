@@ -143,7 +143,7 @@ way they did if the devops philosophy didn't exist.
 ![A three panel meme with an old man talking to a child. The child says "it
 works on my machine". The old man replies with "then we'll ship your machine".
 The last panel says "and that is how docker was
-born".](https://cdn.christine.website/file/christine-static/blog/1BDBBB94-7052-4E4C-AE32-CFEE4226CBA8.jpeg)
+born".](https://cdn.xeiaso.net/file/christine-static/blog/1BDBBB94-7052-4E4C-AE32-CFEE4226CBA8.jpeg)
 
 In a way, Docker is one of the perfect examples of the devops philosophy. It
 allows developers to have their own custom versions of everything. They can use

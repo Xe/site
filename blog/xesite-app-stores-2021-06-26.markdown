@@ -41,7 +41,7 @@ similar way.
 I have also been prototyping an Android app that is currently in review on the
 Google Play store, but if you want to test drive it now, you can download the
 APK
-[here](https://cdn.christine.website/file/christine-static/apk/christine.website-1.0.3.1-1.apk).
+[here](https://cdn.xeiaso.net/file/christine-static/apk/christine.website-1.0.3.1-1.apk).
 It is currently just a webview pointing to my website and that's all it really
 needs to be. The rest of the magic will happen in the background after you
 explicitly opt-in to push notifications or whatever once I figure out how to do

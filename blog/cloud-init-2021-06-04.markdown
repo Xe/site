@@ -176,7 +176,7 @@ Open up virt-manager and then create a new virtual machine. Make sure you select
 
 ![The first step of the "create a new virtual machine" wizard in virt-manager
 with "manual install"
-selected](https://cdn.christine.website/file/christine-static/blog/20210604_06h43m27s_grim.png)
+selected](https://cdn.xeiaso.net/file/christine-static/blog/20210604_06h43m27s_grim.png)
 
 </center>
 
@@ -188,7 +188,7 @@ but it's kinda sorta like CentOS 7, so enter CentOS 7 here.
 
 ![The second step of the "create a new virtual machine" wizard in virt-manager
 with "CentOS 7" selected as the OS the virtual machine will be
-running](https://cdn.christine.website/file/christine-static/blog/20210604_06h45m35s_grim.png)
+running](https://cdn.xeiaso.net/file/christine-static/blog/20210604_06h45m35s_grim.png)
 
 </center>
 
@@ -199,7 +199,7 @@ you have more restrictive hardware requirements.
 
 ![The third step of the "create a new virtual machine" wizard in virt-manager
 with 1024 MB of ram and 2 virtual CPU cores
-selected](https://cdn.christine.website/file/christine-static/blog/20210604_06h50m09s_grim.png)
+selected](https://cdn.xeiaso.net/file/christine-static/blog/20210604_06h50m09s_grim.png)
 
 </center>
 
@@ -213,7 +213,7 @@ location.
 
 ![The fourth step of the "create a new virtual machine" wizard in virt-manager
 with `/dev/zvol/rpool/safe/vms/mayhem` selected as the path to the
-disk](https://cdn.christine.website/file/christine-static/blog/20210604_06h53m58s_grim.png)
+disk](https://cdn.xeiaso.net/file/christine-static/blog/20210604_06h53m58s_grim.png)
 
 </center>
 
@@ -225,7 +225,7 @@ you can mount the seed data.
 ![The last step of the "create a new virtual machine" wizard in virt-manager,
 setting the virtual machine name to "mayhem" and indicating that you want to
 customize configuration before
-installation](https://cdn.christine.website/file/christine-static/blog/20210604_06h56m54s_grim.png)
+installation](https://cdn.xeiaso.net/file/christine-static/blog/20210604_06h56m54s_grim.png)
 
 </center>
 
@@ -234,7 +234,7 @@ window.
 
 <center>
 
-![](https://cdn.christine.website/file/christine-static/blog/20210604_06h58m53s_grim.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/20210604_06h58m53s_grim.png)
 
 </center>
 
@@ -242,7 +242,7 @@ Make a new CDROM storage device that points to your seed image:
 
 <center>
 
-![](https://cdn.christine.website/file/christine-static/blog/20210604_07h01m24s_grim.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/20210604_07h01m24s_grim.png)
 
 </center>
 
@@ -252,7 +252,7 @@ VM's IP address will be listed:
 
 <center>
 
-![](https://cdn.christine.website/file/christine-static/blog/20210604_07h05m28s_grim.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/20210604_07h05m28s_grim.png)
 
 </center>
 
@@ -415,9 +415,9 @@ it.](conversation://Mara/happy)
 
 <center>
   <picture>
-    <source srcset="https://cdn.christine.website/file/christine-static/stickers/cadey/percussive-maintenance.avif" type="image/avif">
-    <source srcset="https://cdn.christine.website/file/christine-static/stickers/cadey/percussive-maintenance.webp" type="image/webp">
-    <img src="https://cdn.christine.website/file/christine-static/stickers/cadey/percussive-maintenance.png" alt="Cadey is percussive-maintenance">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/cadey/percussive-maintenance.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/cadey/percussive-maintenance.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/stickers/cadey/percussive-maintenance.png" alt="Cadey is percussive-maintenance">
   </picture>
 </center>
 

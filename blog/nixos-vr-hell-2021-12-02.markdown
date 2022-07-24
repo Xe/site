@@ -235,7 +235,7 @@ instead of to the headset directly, it looks something like this:
 
 ![The SteamVR home, but the raw image that the headset sees. You do not want to
 see this on your
-desktop.](https://cdn.christine.website/file/christine-static/blog/Screenshot+from+2021-12-02+07-31-01.png)
+desktop.](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+from+2021-12-02+07-31-01.png)
 
 I told SteamVR to restart in "direct display" mode, but it was failing because
 SteamVR couldn't restart due to a missing dynamic library problem:
@@ -268,7 +268,7 @@ though:
 
 ![Error starting SteamVR: SteamVR failed to initialized for unknown reasons.
 (Error: Shared IPC Compositor Invalid Connect Response
-(307))](https://cdn.christine.website/file/christine-static/blog/Screenshot+from+2021-11-30+22-36-04.png)
+(307))](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+from+2021-11-30+22-36-04.png)
 
 This seems to be a sort of "catchall" error in SteamVR for when something really
 wrong happens at lower parts of the stack. Googling for this mostly got people
@@ -387,7 +387,7 @@ login prompt. I felt like a dunce.
 
 <center>
 
-![](https://cdn.christine.website/file/christine-static/stickers/cadey/percussive-maintenance.png)
+![](https://cdn.xeiaso.net/file/christine-static/stickers/cadey/percussive-maintenance.png)
 
 </center>
 

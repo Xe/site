@@ -171,8 +171,8 @@ efficient.](conversation://Mara/hacker)
 Using KOS-MOS as the experimental machine again, I installed NixOS by hand and
 took notes. Here's a scan of the notes I took:
 
-- [Page 1](https://cdn.christine.website/file/christine-static/blog/KOS-MOS+notes+Page+1.jpeg)
-- [Page 2](https://cdn.christine.website/file/christine-static/blog/KOS-MOS+notes+Page+2.jpeg)
+- [Page 1](https://cdn.xeiaso.net/file/christine-static/blog/KOS-MOS+notes+Page+1.jpeg)
+- [Page 2](https://cdn.xeiaso.net/file/christine-static/blog/KOS-MOS+notes+Page+2.jpeg)
 
 I set up KOS-MOS to have three partitions: root, swap and the EFI system
 partition. I then set up my ZFS datasets with the following pattern:

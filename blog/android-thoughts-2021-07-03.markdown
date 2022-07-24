@@ -37,7 +37,7 @@ Power](https://www.gsmarena.com/motorola_moto_g8_power-10052.php) from Amazon
 and then I used it for the final testing on the app before I shipped it on the
 Google Play store. I unboxed the phone, set it up, plugged it into my MacBook
 and then hit "run" in Android Studio. The app installed instantly and I saw [the
-homepage for my site](https://cdn.christine.website/file/christine-static/blog/Screenshot_20210703-101654.png).
+homepage for my site](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20210703-101654.png).
 
 It was a magical experience. Me, someone that has no idea what they are doing
 with Android app development was able to take an existing project I've poured

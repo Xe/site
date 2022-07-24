@@ -19,7 +19,7 @@ This review is NOT sponsored. I paid for this device with my own money. I have
 no influence pushing me either way on this keyboard.
 
 ![a picture of the keyboard on my
-desk](https://cdn.christine.website/file/christine-static/img/keeb/Elm3dN8XUAAYHws.jpg)
+desk](https://cdn.xeiaso.net/file/christine-static/img/keeb/Elm3dN8XUAAYHws.jpg)
 
 [That 3d printed brain is built from the 3D model that was made as a part of <a
 href="https://xeiaso.net/blog/brain-fmri-to-3d-model-2019-08-23">this
@@ -47,7 +47,7 @@ The palmrests are detachable and when they are off it gives the keyboard a
 space-age vibe to it:
 
 ![the left half of the keyboard without the palmrest
-attached](https://cdn.christine.website/file/christine-static/img/keeb/EmJ1bqNXUAAJy4d.jpg)
+attached](https://cdn.xeiaso.net/file/christine-static/img/keeb/EmJ1bqNXUAAJy4d.jpg)
 
 The palmrests feel very solid and fold up into the back of the keyboard for
 travel. However folding up the palmrest does mess up the tenting stability, so
@@ -119,7 +119,7 @@ have a limited view of it embedded below:
 
 If you want to flash my layout to your Moonlander for some reason, you can find
 the firmware binary
-[here](https://cdn.christine.website/file/christine-static/img/keeb/moonlander_kadis.bin).
+[here](https://cdn.xeiaso.net/file/christine-static/img/keeb/moonlander_kadis.bin).
 You can then flash this to your keyboard with
 [Wally](https://ergodox-ez.com/pages/wally).
 

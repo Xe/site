@@ -6,7 +6,7 @@ tags:
  - o11y
 ---
 
-[*Last time in the christine dot website cinematic
+[*Last time in the xeiaso dot net cinematic
 universe:*](https://xeiaso.net/blog/unix-domain-sockets-2021-04-01) 
 
 *Unix sockets started to be used to grace the cluster. Things were at peace.

@@ -243,7 +243,7 @@ useful hammer to beat your infrastructure with when you need it.
 
 <center>
 
-![Cadey bashing a sever rack with a wrench](https://cdn.christine.website/file/christine-static/stickers/cadey/percussive-maintenance.png)
+![Cadey bashing a sever rack with a wrench](https://cdn.xeiaso.net/file/christine-static/stickers/cadey/percussive-maintenance.png)
 
 </center>
 

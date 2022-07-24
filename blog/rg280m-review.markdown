@@ -13,7 +13,7 @@ completely different to my normal blog fare. I'm going to talk about a handheld
 console that I got recently to get my retro game fix on the go, the Anbernic
 RG280M.
 
-![A picture of the RG280M handheld](https://cdn.christine.website/file/christine-static/blog/E-d4eCMXoAgZUEz.jpeg)
+![A picture of the RG280M handheld](https://cdn.xeiaso.net/file/christine-static/blog/E-d4eCMXoAgZUEz.jpeg)
 
 People don't really expect this out of me for some reason, but I am a gamer. I
 play a lot of games old and new, and I've wanted to get into some older games;
@@ -66,7 +66,7 @@ RG280M stores data. It uses 2 MicroSD cards, one for your games and the other fo
 OS and savedata.
 
 ![A picture of the two TF/MicroSD
-cards](https://cdn.christine.website/file/christine-static/blog/E-d4NpyWEAoEgz7.jpeg)
+cards](https://cdn.xeiaso.net/file/christine-static/blog/E-d4NpyWEAoEgz7.jpeg)
 
 [The "TF" acronym here means <a
 href="https://appuals.com/what-is-tf-transflash-card-and-how-is-it-different-from-micro-sd/">TransFlash</a>,

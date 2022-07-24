@@ -128,7 +128,7 @@ Open your [tor browser](https://www.torproject.org/download/) and punch in the
 onion URL. You should get a page that looks like this:
 
 ![Mara's
-Realm](https://cdn.christine.website/file/christine-static/blog/Screenshot_20201125_101515.png)
+Realm](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot_20201125_101515.png)
 
 This shows some confusing combinations of letters and some hexadecimal text.
 We'll get back to the hexadecimal text in a moment, but let's take a closer look
@@ -154,7 +154,7 @@ challenge!](conversation://Mara/hacker)
 
 Going to /test.wasm we get a WebAssembly download. I've uploaded a copy to my
 blog's CDN
-[here](https://cdn.christine.website/file/christine-static/blog/test.wasm).
+[here](https://cdn.xeiaso.net/file/christine-static/blog/test.wasm).
 
 ## Layer 4
 

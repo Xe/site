@@ -118,7 +118,7 @@ description:
 
 <center>
 
-![](https://cdn.christine.website/file/christine-static/blog/friday_deploy.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/friday_deploy.png)
 
 </center>
 

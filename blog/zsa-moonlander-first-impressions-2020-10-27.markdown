@@ -14,7 +14,7 @@ writing this post from my Moonlander, and as such I may do a few more typos
 than normal, I'm still getting used to this.
 
 ![a picture of the keyboard on my
-desk](https://cdn.christine.website/file/christine-static/img/keeb/ElVbBm_XUAcVhOg.jpg)
+desk](https://cdn.xeiaso.net/file/christine-static/img/keeb/ElVbBm_XUAcVhOg.jpg)
 
 The Moonlander is a weird keyboard. I knew that it would be odd from the get-go
 (split ergonomic keyboards have this reputation for a reason), but I was
@@ -44,12 +44,12 @@ Each key has a programmable RGB light under it. This allows you to get some
 really nice effects like this:
 
 ![The left hand of my steno
-layout](https://cdn.christine.website/file/christine-static/img/keeb/ElTG7QSW0AEqXeE.jpg)
+layout](https://cdn.xeiaso.net/file/christine-static/img/keeb/ElTG7QSW0AEqXeE.jpg)
 
 However brown colors don't come out as well as I'd hoped:
 
 ![My media layer that mostly has brown lighting, this looks a bit better in the
-dark](https://cdn.christine.website/file/christine-static/img/keeb/ElVdFKoX0AE_dAA.jpg)
+dark](https://cdn.xeiaso.net/file/christine-static/img/keeb/ElVdFKoX0AE_dAA.jpg)
 
 I am not sure how I feel about the armrests. On one hand they feel a bit cold
 (context: it is currently 1.57 degrees outside and I'm wearing a hoodie at my
@@ -66,9 +66,9 @@ Expect to see many more glory shots on
 As an added bonus, here is the `if err != nil` key in action:
 
 <video controls width="100%">
-    <source src="https://cdn.christine.website/file/christine-static/img/keeb/tmp.ZdCemPUcnd.webm"
+    <source src="https://cdn.xeiaso.net/file/christine-static/img/keeb/tmp.ZdCemPUcnd.webm"
             type="video/webm">
-    <source src="https://cdn.christine.website/file/christine-static/img/keeb/tmp.ZdCemPUcnd.mp4"
+    <source src="https://cdn.xeiaso.net/file/christine-static/img/keeb/tmp.ZdCemPUcnd.mp4"
             type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
 </video>

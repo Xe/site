@@ -74,7 +74,7 @@ reverse proxy. Here is the configuration that I use for Caddy:
 ```
 home.cetacean.club {
   # Set up automagic Let's Encrypt
-  tls me@christine.website
+  tls me@xeiaso.net
 
   # Proxy the playlist, stream data 
   # and statistics to the rtmp server

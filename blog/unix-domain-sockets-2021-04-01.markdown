@@ -323,7 +323,7 @@ that socket to send back printer facts. Let's deploy it and see what happens:
 <center>
 
 ![A picture of the nginx "502 Bad Gateway" error message with a man scolding a
-router](https://cdn.christine.website/file/christine-static/blog/57f66e907bb62.jpeg)
+router](https://cdn.xeiaso.net/file/christine-static/blog/57f66e907bb62.jpeg)
 
 </center>
 
@@ -371,14 +371,14 @@ scrape metrics?](conversation://Mara/hmm?smol)
 
 <center>
 
-![](https://cdn.christine.website/file/christine-static/stickers/cadey/percussive-maintenance.png)
+![](https://cdn.xeiaso.net/file/christine-static/stickers/cadey/percussive-maintenance.png)
 
 </center>
 
 ---
 
 I'm experimenting with a new "smol" mode for the Mara interludes as well as
-introducing a few more characters to the christine dot website cinematic
+introducing a few more characters to the xeiaso dot net cinematic
 universe. Please do let me know how this works out for you. I think I have the
 sizes optimized for mobile usage better, but [contributions to fix my horrible
 CSS](https://github.com/Xe/site/blob/main/css/shim.css) would really, really,

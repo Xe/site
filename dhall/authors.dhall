@@ -4,7 +4,7 @@ in  [ Author::{
       , name = "Xe Iaso"
       , handle = "xe"
       , picUrl = Some "/static/img/avatar.png"
-      , link = Some "https://christine.website"
+      , link = Some "https://xeiaso.net"
       , twitter = Some "theprincessxena"
       , default = True
       , inSystem = True
@@ -13,7 +13,7 @@ in  [ Author::{
       , name = "Jessie"
       , handle = "Heartmender"
       , picUrl = Some
-          "https://cdn.christine.website/file/christine-static/img/UPRcp1pO_400x400.jpg"
+          "https://cdn.xeiaso.net/file/christine-static/img/UPRcp1pO_400x400.jpg"
       , twitter = Some "BeJustFine"
       , inSystem = True
       }
@@ -21,7 +21,7 @@ in  [ Author::{
       , name = "Ashe"
       , handle = "ectamorphic"
       , picUrl = Some
-          "https://cdn.christine.website/file/christine-static/img/FFVV1InX0AkDX3f_cropped_smol.jpg"
+          "https://cdn.xeiaso.net/file/christine-static/img/FFVV1InX0AkDX3f_cropped_smol.jpg"
       , inSystem = True
       }
     , Author::{ name = "Nicole", handle = "Twi", inSystem = True }

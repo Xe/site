@@ -5,9 +5,9 @@ export const mkConversation = (who, mood, message, extraClasses = "") =>
       h("div", {className: "conversation gruvbox-dark " + extraClasses}, [
           h("div", {className: "conversation-picture conversation-smol"}, [
               h("picture", {}, [
-                  h("source", {type: "image/avif", srcset: `https://cdn.christine.website/file/christine-static/stickers/${who.toLowerCase()}/${mood}.avif`}),
-                  h("source", {type: "image/webp", srcset: `https://cdn.christine.website/file/christine-static/stickers/${who.toLowerCase()}/${mood}.webp`}),
-                  h("img", {alt: `${who} is ${mood}`, src: `https://cdn.christine.website/file/christine-static/stickers/${who.toLowerCase()}/${mood}.png`})
+                  h("source", {type: "image/avif", srcset: `https://cdn.xeiaso.net/file/christine-static/stickers/${who.toLowerCase()}/${mood}.avif`}),
+                  h("source", {type: "image/webp", srcset: `https://cdn.xeiaso.net/file/christine-static/stickers/${who.toLowerCase()}/${mood}.webp`}),
+                  h("img", {alt: `${who} is ${mood}`, src: `https://cdn.xeiaso.net/file/christine-static/stickers/${who.toLowerCase()}/${mood}.png`})
               ])
           ]),
           h("div", {className: "conversation-chat"}, [

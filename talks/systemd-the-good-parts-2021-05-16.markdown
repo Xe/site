@@ -75,7 +75,7 @@ questions:
 - If you need to reboot the server right now for some reason, will that service
   come back up on reboot?
   
-![](https://cdn.christine.website/file/christine-static/blog/Screen+Shot+2021-05-11+at+23.02.15.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screen+Shot+2021-05-11+at+23.02.15.png)
 
 systemd includes a tool called systemctl that allows you to query the status of
 services as well as start and stop them; but for right now we're going to look
@@ -112,7 +112,7 @@ syslog for every service managed by systemd). Something neat about the journal
 is that it lets you tail the logs for the entire system with one command:
 `journalctl -f`. Here's that command running on a server of mine:
 
-![journalctl output](https://cdn.christine.website/file/christine-static/blog/Screen+Shot+2021-05-15+at+11.04.17.png)
+![journalctl output](https://cdn.xeiaso.net/file/christine-static/blog/Screen+Shot+2021-05-15+at+11.04.17.png)
 
 There's a lot more to the journal involving structured logging, automatically
 streaming the logs to places, and advanced filtering based off of different

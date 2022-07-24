@@ -181,7 +181,7 @@ buildGoPackage rec {
   pname = "christinewebsite";
   version = "latest";
   
-  goPackagePath = "christine.website";
+  goPackagePath = "xeiaso.net";
   src = ./.;
   goDeps = ./nix/deps.nix;
   allowGoReference = false;

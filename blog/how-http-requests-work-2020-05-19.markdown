@@ -10,7 +10,7 @@ tags:
 Reading this webpage is possible because of millions of hours of effort with
 tens of thousands of actors across thousands of companies. At some level it's a
 minor miracle that this all works at all. Here's a preview into the madness that
-goes into hitting enter on christine.website and this website being loaded.
+goes into hitting enter on xeiaso.net and this website being loaded.
 
 ## Beginnings
 
@@ -22,9 +22,9 @@ to a windowing server talking to the browser program.
 
 The browser selects the memory region normally reserved for the address bar. The
 browser then parses this string as an [RFC 3986][rfc3986] URI and scrapes out
-the protocol (https), hostname (christine.website) and path (/). The browser
+the protocol (https), hostname (xeiaso.net) and path (/). The browser
 then uses this information to create an abstract HTTP request object with the
-Host header set to christine.website, HTTP method (GET), and path set to the
+Host header set to xeiaso.net, HTTP method (GET), and path set to the
 path. This request object then passes through various layers of credential
 storage and middleware to add the appropriate cookies and other headers in order
 to tell my website what language it should localize the response to, what
@@ -35,9 +35,9 @@ make the request.
 
 ## Connections
 
-The browser then checks if it has a connection to christine.website open
+The browser then checks if it has a connection to xeiaso.net open
 already. If it does not, then it creates a new one. It creates a new connection
-by figuring out what the IP address of christine.website is using [DNS][dns]. A
+by figuring out what the IP address of xeiaso.net is using [DNS][dns]. A
 DNS request is made over [UDP][udp] on port 53 to the DNS server configured in
 the operating system (such as 8.8.8.8, 1.1.1.1 or 75.75.75.75). The UDP
 connection is created using operating system-dependent system calls and a DNS
@@ -80,7 +80,7 @@ UDP is unreliable by design, so this packet may or may not survive the entire
 round trip. It may take one or more retries for the DNS information to get to
 the remote server and back, but it usually works the first time. The response to
 this request is cached based on the time-to-live specified in the DNS response.
-The response also contains the IP address of christine.website.
+The response also contains the IP address of xeiaso.net.
 
 ## Security
 
@@ -98,7 +98,7 @@ be transferred and read through it.
 However, this data is UNENCRYPTED by default. [Transport Layer Security][tls] is
 used to encrypt this data so prying eyes can't look into it. TLS has its own
 handshake too. The session is established by sending a TLS ClientHello packet
-with the domain name (christine.website), the list of ciphers the client
+with the domain name (xeiaso.net), the list of ciphers the client
 supports, any application layer protocols the client supports (like HTTP/2) and
 the list of TLS versions that the client supports. This information is sent over
 the wire to the remote server using that entire long and complicated process
@@ -143,7 +143,7 @@ there may be layers of encryption involved.
 Now, the request finally gets to the application server. This TCP session is
 accepted by the application server and the headers are read into memory. The
 path is read by the application server and the correct handler is chosen. The
-HTML for the front page of christine.website is rendered and written to the TCP
+HTML for the front page of xeiaso.net is rendered and written to the TCP
 session and travels to the load balancer, gets encrypted with TLS, the encrypted
 HTML gets sent back over the internet to your browser and then your browser
 decrypts it and starts to parse and display the website. The browser will run

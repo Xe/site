@@ -39,22 +39,22 @@ An [app manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest) is a co
 
 This information will be used as the OS-level metadata for your progressive web app when it is installed.
 
-Here is an example web app manifest [from my portfolio site](https://github.com/Xe/site/blob/master/static/manifest.json).
+Here is an example web app manifest [from my portfolio site](https://github.com/Xe/site/blob/d7b817b22db9e10dbdfe97082ec2330e13cfff18/static/manifest.json).
 
 ```json
 {
-    "name": "Christine Dodrill",
-    "short_name": "Christine",
+    "name": "Xeblog",
+    "short_name": "Xeblog",
     "theme_color": "#ffcbe4",
     "background_color": "#fa99ca",
     "display": "standalone",
     "scope": "/",
-    "start_url": "https://xeiaso.net/",
-    "description": "Blog and Resume for Christine Dodrill",
+    "start_url": "/",
+    "description": "Blog and Resume for Xe Iaso",
     "orientation": "any",
     "icons": [
         {
-            "src": "https://xeiaso.net/static/img/avatar.png",
+            "src": "/static/img/avatar.png",
             "sizes": "1024x1024"
         }
     ]

@@ -276,9 +276,9 @@ $ nixops deploy -d hexagone
 ```
 
 <video controls width="100%">
-    <source src="https://cdn.christine.website/file/christine-static/img/nixops/tmp.Tr7HTFFd2c.webm"
+    <source src="https://cdn.xeiaso.net/file/christine-static/img/nixops/tmp.Tr7HTFFd2c.webm"
             type="video/webm">
-    <source src="https://cdn.christine.website/file/christine-static/img/nixops/tmp.Tr7HTFFd2c.mp4"
+    <source src="https://cdn.xeiaso.net/file/christine-static/img/nixops/tmp.Tr7HTFFd2c.mp4"
             type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
 </video>

@@ -43,7 +43,7 @@ Here are some comparisons to before and after the change:
 
 Hopefully this should improve the contrast ratio a lot more. I've always wanted
 this website to look a lot like [my emacs
-config](https://cdn.christine.website/file/christine-static/blog/Screenshot+from+2021-12-19+12-06-39.png),
+config](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+from+2021-12-19+12-06-39.png),
 but these changes should hopefully reach a balance of readability and stylistic
 choices to get across the vision I have for my website.
 
@@ -54,7 +54,7 @@ choices to get across the vision I have for my website.
 Sorry, but you may want to scroll past this section. At the time of writing I
 don't currently have a good fallback set up for people that don't have
 JavaScript enabled on their browser. If you have ideas, please [email
-me](mailto:me@christine.website) and let me know them.
+me](mailto:me@xeiaso.net) and let me know them.
 
 </noscript>
 

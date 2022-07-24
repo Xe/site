@@ -337,7 +337,7 @@ example you can take a folder, zip it up and then unzip it over on another
 machine using a command like this:
 
 ```
-$ tar cz ./blog | ssh pneuma tar xz -C ~/code/christine.website/blog
+$ tar cz ./blog | ssh pneuma tar xz -C ~/code/xeiaso.net/blog
 ```
 
 This will run `tar` to create a compressed copy of the `./blog` folder and then

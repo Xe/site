@@ -10,7 +10,7 @@
   <updated>@Utc::now().to_rfc3339()</updated>
   <author>
     <name>Xe Iaso</name>
-    <email>me@@christine.website</email>
+    <email>me@@xeiaso.net</email>
   </author>
   <link href="https://xeiaso.net/blog.atom" rel="self"/>
   <link href="https://xeiaso.net/blog" rel="alternate"/>

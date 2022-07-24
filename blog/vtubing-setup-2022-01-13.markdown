@@ -142,7 +142,7 @@ looking over several options, I arbitrarily chose
 model](/blog/vrchat-avatar-to-vrm-vtubing-2022-01-02) that I converted from
 VRChat, the VSeeFace UI looks something like this:
 
-![](https://cdn.christine.website/file/christine-static/blog/Screenshot+2022-01-12+204631.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/Screenshot+2022-01-12+204631.png)
 
 The green point cloud you see on the left of this is the data that VSeeFace is
 inferring from the webcam data. It uses that to pick out a small set of

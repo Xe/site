@@ -8,7 +8,7 @@ async fn main() -> Result<()> {
     let zone_id = std::env::var("CF_ZONE_ID")?;
 
     let cli = cfcache::Client::new(key, zone_id)?;
-    cli.purge(vec!["https://christine.website/.within/health".to_string()])
+    cli.purge(vec!["https://xeiaso.net/.within/health".to_string()])
         .await?;
 
     Ok(())
