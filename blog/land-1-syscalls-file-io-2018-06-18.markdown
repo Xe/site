@@ -265,7 +265,7 @@ A huge other feature is going to be the ability to read C structures out of the 
 [wasm]: https://webassembly.org
 [land]: https://git.xeserv.us/xena/land
 [syscall]: https://en.wikipedia.org/wiki/System_call
-[linux-syscalls]: https://syscalls.kernelgrok.com
+[linux-syscalls]: https://www.nullmethod.com/syscall-table/
 [abi]: https://en.m.wikipedia.org/wiki/Application_binary_interface
 [afero]: https://github.com/spf13/afero
 [importer]: https://gist.github.com/Xe/a29c86755a04a8096082ec8a32e0c13f
