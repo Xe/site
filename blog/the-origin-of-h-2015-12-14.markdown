@@ -64,7 +64,7 @@ Here is an example of it being used:
 -- [h] is logged in as h
 ```
 
-I also ended up porting h to matrix under the name [`h2`](https://tulpa.dev/cadey/h2). It currently sits in `#ponydevs:matrix.org` and has a bad habit of getting broken because [Comcast is a bad company](http://comcast.apps.xeserv.us/) and doesn't believe in uptime.
+I also ended up porting h to matrix under the name [`h2`](https://tulpa.dev/cadey/h2). It currently sits in `#ponydevs:matrix.org` and has a bad habit of getting broken because Comcast is a bad company and doesn't believe in uptime.
 
 Spread of h
 -----------
