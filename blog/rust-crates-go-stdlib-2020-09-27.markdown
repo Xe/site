@@ -80,7 +80,7 @@ And now let's run it with `RUST_LOG=trace`:
 ```console
 $ env RUST_LOG=trace cargo run --example logger_test
     Finished dev [unoptimized + debuginfo] target(s) in 0.07s
-     Running `/home/cadey/code/xeiaso.net/target/debug/logger_test`
+     Running `/home/cadey/code/christine.website/target/debug/logger_test`
  TRACE logger_test > starting main
  DEBUG logger_test > debug message
  INFO  logger_test > this is some information
@@ -353,7 +353,7 @@ And you can use it like this:
 
 ```console
 $ cargo run --example json
-   Compiling xesite v2.0.1 (/home/cadey/code/xeiaso.net)
+   Compiling xesite v2.0.1 (/home/cadey/code/christine.website)
     Finished dev [unoptimized + debuginfo] target(s) in 0.43s
      Running `target/debug/examples/json`
 comment: Comment {
@@ -433,7 +433,7 @@ And then let's run this:
 
 ```console
 $ cargo run --example http
-   Compiling xesite v2.0.1 (/home/cadey/code/xeiaso.net)
+   Compiling xesite v2.0.1 (/home/cadey/code/christine.website)
     Finished dev [unoptimized + debuginfo] target(s) in 2.20s
      Running `target/debug/examples/http`
 comment: Comment {
@@ -463,9 +463,9 @@ And then when we run it we get an error back:
 
 ```console
 $ cargo run --example http_fail
-   Compiling xesite v2.0.1 (/home/cadey/code/xeiaso.net)
+   Compiling xesite v2.0.1 (/home/cadey/code/christine.website)
     Finished dev [unoptimized + debuginfo] target(s) in 1.84s
-     Running `/home/cadey/code/xeiaso.net/target/debug/examples/http_fail`
+     Running `/home/cadey/code/christine.website/target/debug/examples/http_fail`
 Error: HTTP status client error (404 Not Found) for url (https://xena.greedo.xeserv.us/files/comment2.json)
 ```
 
