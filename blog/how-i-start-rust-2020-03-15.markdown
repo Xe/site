@@ -552,5 +552,4 @@ For some "extra credit" tasks, try and see if you can do the following:
 [dockerenvvars]: https://docs.docker.com/engine/reference/builder/#env
 [rockettemplate]: https://api.rocket.rs/v0.4/rocket_contrib/templates/index.html
 
-Many thanks to [Coleman McFarland](https://coleman.codes/) for proofreading this
-post.
+Many thanks to Coleman McFarland for proofreading this post.
