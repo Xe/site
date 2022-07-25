@@ -684,7 +684,7 @@ cp slirp ~/bin/slirp
 ```
 
 Just in case the person who created this buildpack takes it down, I have
-[mirrored it](https://git.xeserv.us/mirrors/heroku-buildpack-uml).
+[mirrored it](https://tulpa.dev/cadey/heroku-buildpack-uml).
 
 #### Configuring Networking
 
