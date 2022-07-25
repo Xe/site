@@ -175,8 +175,7 @@ This is a lot, so let's break it up into the individual parts.
 ### Configuration
 
 Drone steps normally don't have access to a docker daemon, privileged mode or
-host-mounted paths. I configured the
-[cadey/printerfacts](https://drone.tulpa.dev/cadey/printerfacts) job with the
+host-mounted paths. I configured the cadey/printerfacts job with the
 following settings:
 
 - I enabled Trusted mode so that the build could use the host docker daemon to

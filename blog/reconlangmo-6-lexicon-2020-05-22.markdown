@@ -119,8 +119,8 @@ repo][lewarepo]. The layout of this repo is as follows:
 | `words`   | Where the definitions of each word are defined in [Dhall][dhall], this will be fed into the dictionary server code       |
 
 I also have the entire process of building and testing everything (from the
-eBook to the unit tests of the tools) automated with [Drone][droneci]. You can
-see the past builds [here](https://drone.tulpa.dev/cadey/lewa). After I merge
+eBook to the unit tests of the tools) automated with [Drone][droneci].
+After I merge
 the information from the latest blogpost into this repo, I will put a rendered
 version of it [here](http://lewa-book-devel.kahless.cetacean.club:43001/). This
 will allow you to browse through the chapters of the eBook while it is being
