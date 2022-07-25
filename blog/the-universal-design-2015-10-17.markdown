@@ -124,7 +124,7 @@ What if this was applied to the CPU and a computer in general at a low level? Ho
 
 ## Urbit
 
-Over the past few weeks I have been off and on dipping my toes into [Urbit](http://urbit.org). They call Urbit an "operating function" and define it [as such](http://urbit.org/preview/~2015.9.25/materials/whitepaper#-definition):
+Over the past few weeks I have been off and on dipping my toes into [Urbit](http://urbit.org). They call Urbit an "operating function" and define it [as such](https://web.archive.org/web/20151009033435/http://urbit.org/preview/~2015.9.25/materials/whitepaper#-definition):
 
     V(I) => T
 
