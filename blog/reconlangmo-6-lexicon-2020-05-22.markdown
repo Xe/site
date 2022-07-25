@@ -120,11 +120,7 @@ repo][lewarepo]. The layout of this repo is as follows:
 
 I also have the entire process of building and testing everything (from the
 eBook to the unit tests of the tools) automated with [Drone][droneci].
-After I merge
-the information from the latest blogpost into this repo, I will put a rendered
-version of it [here](http://lewa-book-devel.kahless.cetacean.club:43001/). This
-will allow you to browse through the chapters of the eBook while it is being
-written. Eventually this will be automatically deployed to my Kubernetes cluster
+Eventually this will be automatically deployed to my Kubernetes cluster
 and the book will be a subpath/subdomain of `lewa.within.website`.
 
 I have created a system of defining words that allows you to focus on each word
