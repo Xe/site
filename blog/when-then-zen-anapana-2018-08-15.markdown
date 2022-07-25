@@ -14,7 +14,7 @@ Anapanasati (Pali: Sanskirt: anapanasmrti, English: mindfulness of breathing) is
 
 Simply put, anapana is the act of focusing on the sensations of breath in the body's nasal cavity and nostrils. Some practices will focus on the sensations in the belly instead (this is why there's fat buddha statues), but personally I find that the sensations of breath in the nostrils are a lot easier to focus on.
 
-The method presented in this article is based on the method taught in The Art Of Living by William Hart and S.N. Goenka. If you want a copy of this book you can get one here: http://www.cicp.org.kh/userfiles/file/Publications/Art%20of%20Living%20in%20English.pdf. Please do keep in mind that this book definitely leans towards the Buddhist lens and as it is presented the teaching methods really benefit from it. Also keep in mind that this PDF prevents copying and duplication.
+The method presented in this article is based on the method taught in The Art Of Living by William Hart and S.N. Goenka. If you want a copy of this book you can get one [here](https://web.archive.org/web/20180712115547/http://www.cicp.org.kh/userfiles/file/Publications/Art%20of%20Living%20in%20English.pdf). Please do keep in mind that this book definitely leans towards the Buddhist lens and as it is presented the teaching methods really benefit from it. Also keep in mind that this PDF prevents copying and duplication.
 
 Note: "the body" means the sack of meat and bone that you are currently living inside. For the purposes of explanation of this technique, please consider what makes you yourself separate from the body you live in.
 
