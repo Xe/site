@@ -35,18 +35,18 @@ worthless holding company and then inciting a lot of
 drama. For more information, check out the book Closed
 Projects.</xeblog-conv>
 
-I have made my book [Closed
+<del>I have made my book [Closed
 Projects](/blog/closed-projects-2022-03-24) free for the next week.
 This contains my moods, reactions and emotions as I was processing
 everything falling apart around me. I feel this may help you
 understand the emotions that you get watching this shitshow unfold
-with Twitter.
+with Twitter.</del>
 
-For a direct link to the sale page, click
+<del>For a direct link to the sale page, click
 [here](https://itch.io/s/69916/elon-bought-twitter-sale). I will
 donate proceeds from this sale to charity. If you choose to send me a
 couple bucks for my book, I will donate them to the [Orca
-Conservancy](https://www.orcaconservancy.org/).
+Conservancy](https://www.orcaconservancy.org/).</del>
 
 I am also on Mastodon at
 [@cadey@pony.social](https://pony.social/@cadey). Should something
