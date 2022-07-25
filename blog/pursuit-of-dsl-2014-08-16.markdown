@@ -22,7 +22,7 @@ Command "NAMEGEN", ->
 ```
 
 That's it. That creates a command named `NAMEGEN` that uses `lib/elfs` to
-generate goofy heroku-like application names based on names from [Pokemon Vietnamese Crystal](http://tvtropes.org/pmwiki/pmwiki.php/JustForFun/PokemonVietnameseCrystal).
+generate goofy heroku-like application names based on names from [Pokemon Vietnamese Crystal](https://tvtropes.org/pmwiki/pmwiki.php/VideoGame/PokemonVietnameseCrystal).
 
 In fact, because this is so simple and elegant, you can document code like this
 inline.
