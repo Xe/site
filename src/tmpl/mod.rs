@@ -58,6 +58,7 @@ pub fn xeblog_conv(name: String, mood: String, body: Markup) -> Markup {
 }
 
 pub fn xeblog_sticker(name: String, mood: String) -> Markup {
+    let name_lower = name.to_lowercase();
     html! {
         center {
             picture {
