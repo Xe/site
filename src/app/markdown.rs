@@ -100,7 +100,7 @@ pub fn render(cfg: Arc<Config>, inp: &str) -> Result<String> {
             }),
             element!("xeblog-hero", |el| {
                 let file = el.get_attribute("file").expect("wanted xeblog-hero to contain file");
-                el.replace(&crate::tmpl::xeblog_hero(file, el.get_attribute("prompt")).0, ContentType::Html);
+                el.replace(&crate::tmpl::xeblog_hero(file, el.get_attribute("prompt"), el.get_attribute("ai")).0, ContentType::Html);
                 Ok(())
             }),
             element!("xeblog-salary-history", |el| {
