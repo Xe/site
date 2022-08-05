@@ -341,7 +341,7 @@ p {
 }
 .container,
 .container-fluid {
-  margin: 0 auto;
+  margin: 1em auto;
   padding: 0 1rem;
 }
 .inner {
