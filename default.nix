@@ -26,7 +26,7 @@ let
   config = stdenv.mkDerivation {
     pname = "xesite-config";
     version = "HEAD";
-    buildInputs = [ dhallpkgs.dhall-simple ];
+    buildInputs = [ pkgs.dhall ];
 
     phases = "installPhase";
 
