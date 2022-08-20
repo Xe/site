@@ -93,6 +93,7 @@
 
             # tools
             ispell
+            pandoc
           ];
 
           SITE_PREFIX = "devel.";

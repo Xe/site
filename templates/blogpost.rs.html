@@ -58,13 +58,15 @@
 
 @Html(nag::referer(referer).0)
 
-<h1>@post.front_matter.title</h1>
+<article>
+    <h1>@post.front_matter.title</h1>
 
-@Html(nag::prerelease(&post).0)
+    @Html(nag::prerelease(&post).0)
 
-<small>A @post.read_time_estimate_minutes minute read.</small>
+    <small>A @post.read_time_estimate_minutes minute read.</small>
 
-@body
+    @body
+</article>
 
 <hr />
 
