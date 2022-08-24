@@ -104,6 +104,10 @@ this likely barely hacked together AI/ML thing.
 
 Here is what I needed to do in order to get things installed on NixOS:
 
+First I cloned the [optimized version of Stable Diffusion for GPUs with low
+amounts of vram](https://github.com/basujindal/stable-diffusion) and then I ran
+these commands:
+
 ```
 $ nix shell nixpkgs#conda
 $ conda-shell
