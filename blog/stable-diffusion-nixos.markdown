@@ -111,6 +111,7 @@ these commands:
 ```
 $ nix shell nixpkgs#conda
 $ conda-shell
+conda-shell$ conda-install
 conda-shell$ conda env create -f environment.yaml
 conda-shell$ exit
 $ conda-shell
