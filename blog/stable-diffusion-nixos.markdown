@@ -148,29 +148,29 @@ I've found that a 512x512 image will render in about 30 seconds on my 2060 and a
 
 Here are some images I've generated:
 
-![](https://f001.backblazeb2.com/file/christine-static/blog/ai/zelda-botw-vaporwave.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/ai/zelda-botw-vaporwave.png)
 
 > The legend of zelda breath of the wild, windows xp wallpaper, vaporwave style,
 > anime influences
 
-![](https://f001.backblazeb2.com/file/christine-static/blog/ai/cyberpunk-tesla.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/ai/cyberpunk-tesla.png)
 
 > Cyberpunk style image of a Telsa car reflection in rain
 
-![](https://f001.backblazeb2.com/file/christine-static/blog/ai/impressionist-painting-stallman-starbucks.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/ai/impressionist-painting-stallman-starbucks.png)
 
 > An impressionist painting of Richard Stallman at Starbucks
 
-![](https://f001.backblazeb2.com/file/christine-static/blog/ai/cyberpunk-motorcycle-ukiyo-e.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/ai/cyberpunk-motorcycle-ukiyo-e.png)
 
 > Cyberpunk style image of a motorcycle reflection in rain, ukiyo-e, unreal
 > engine, trending on artstation
 
-![](https://f001.backblazeb2.com/file/christine-static/blog/ai/cyberpunk-botw-motorcycle.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/ai/cyberpunk-botw-motorcycle.png)
 
 > Cyberpunk style image of the breath of the wild link on a motorcycle
 
-![](https://f001.backblazeb2.com/file/christine-static/blog/ai/tabaxi-cannabis-druid.png)
+![](https://cdn.xeiaso.net/file/christine-static/blog/ai/tabaxi-cannabis-druid.png)
 
 > A Tabaxi druid tending to her cannabis crop, weed, marijuana, digital art,
 > trending on artstation
@@ -188,7 +188,7 @@ images for my talk slides and blogposts and spending money on MidJourney and
 DALL-E to do it, but Stable Diffusion may just be good enough to not have to
 break out MidJourney or DALL-E unless I need something that they do better.
 MidJourney is [so much better at
-landscapes](https://f001.backblazeb2.com/file/christine-static/hero/colorful-bliss.webp).
+landscapes](https://cdn.xeiaso.net/file/christine-static/hero/colorful-bliss.webp).
 DALL-E is very good at inferring more of the exact thing I intended.
 
 However for just messing around and looking for things that match the aesthetic
