@@ -67,7 +67,7 @@ trying to fight the abuse and just close the door because doing that is cheaper
 than keeping the door open.
 
 It feels like giving up on the future to protect things the way they are now.
-This is a vaild choice to have to make as a company, it's understandable. I was
+This is a valid choice to have to make as a company, it's understandable. I was
 part of the group that advocated for keeping the free tier. I talked with the
 people that were trying to destroy it when I was inside Salesforce and I told
 them my story about how the free tier (and web.py of all things) was the reason
