@@ -78,6 +78,7 @@
             cargo
             rust-analyzer
             cargo-watch
+            cargo-license
             rustfmt
 
             # system dependencies
