@@ -337,7 +337,7 @@ In practice, basically every PAM service runs either as root or as effectively
 root. So this means that you can usually rely on having access to anything that
 root can, but assume you don't.
 
-<xeblog-conv name="Mara" mood="happy>This is why I'm calling it "as safe as an
+<xeblog-conv name="Mara" mood="happy">This is why I'm calling it "as safe as an
 earthquake". If you follow the building code to the letter and do absolutely
 everything correctly, you're fine. If you don't, oops the preschool building
 made out of asbestos just cracked in two with all the kids hiding in it. Good
