@@ -4,6 +4,7 @@
 , Job = ./Job.dhall
 , Link = ./Link.dhall
 , Location = ./Location.dhall
+, NagMessage = ./NagMessage.dhall
 , Person = ./Person.dhall
 , Resume = ./Resume.dhall
 , Salary = ./Salary.dhall

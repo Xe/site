@@ -4,6 +4,8 @@ let Author = ./Author.dhall
 
 let Job = ./Job.dhall
 
+let NagMessage = ./NagMessage.dhall
+
 let defaultPort = env:PORT ? 3030
 
 let defaultWebMentionEndpoint =
