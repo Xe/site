@@ -123,7 +123,8 @@ of information security professionals I am consulting with, but there is no hard
 evidence so we reiterate that we don't know what is going on. We do not want to
 cause panic. We are in the dark just as much as you are.
 
-We hope this is just a miscommunication being blown out of proportion.
+We hope this is just a miscommunication being blown out of proportion and we
+will continue to monitor the situation.
 
 Be well,
 
