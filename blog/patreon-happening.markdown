@@ -91,3 +91,41 @@ and my blog if the situation changes.
 Be well,
 
 Xe
+
+---
+
+<span id="m090820222203">UPDATE(M09 08 2022 22:03)</span>: I have been following
+the situation and have found a credible statement from Ellen Satterwhite,
+Patreon's US Policy Lead on [Web Pro
+News](https://www.webpronews.com/patreon-just-let-its-entire-security-team-go/).
+The exact statement is this:
+
+> As a global platform, we will always prioritize the security of our creators’
+> and customers’ data. As part of a strategic shift of a portion of our security
+> program, we have parted ways with five employees. We also partner with a
+> number of external organizations to continuously develop our security
+> capabilities and conduct regular security assessments to ensure we meet or
+> exceed the highest industry standards. The changes made this week will have no
+> impact on our ability to continue providing a secure and safe platform for our
+> creators and patrons.
+
+I have done basic research to confirm that Ellen Satterwhite is employed at
+Patreon by checking on Patreon's events site
+[here](https://events.patreon.com/connect-2022Q1policylive) and via a prior
+press release
+[here](https://www.theverge.com/2022/7/6/23197169/luke-ross-vr-dmca-takedown-take-two-rockstar-patreon).
+I am moderately confident that this is a genuine statement from the Patreon
+team, though I would personally prefer if this statement was released on one of
+their official communication channels.
+
+We still do not know anything else. There has been speculation between the group
+of information security professionals I am consulting with, but there is no hard
+evidence so we reiterate that we don't know what is going on. We do not want to
+cause panic. We are in the dark just as much as you are.
+
+We hope this is just a miscommunication being blown out of proportion.
+
+Be well,
+
+Xe
+
