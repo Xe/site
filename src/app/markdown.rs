@@ -110,10 +110,20 @@ pub fn render(cfg: Arc<Config>, inp: &str) -> Result<String> {
             }),
             element!("xeblog-sticker", |el| {
                 let name = el.get_attribute("name").expect("wanted xeblog-sticker to contain name");
-                let name_lower = name.clone().to_lowercase();
                 let mood = el.get_attribute("mood").expect("wanted xeblog-sticker to contain mood");
                 el.replace(&crate::tmpl::xeblog_sticker(name, mood).0, ContentType::Html);
 
+                Ok(())
+            }),
+            element!("xeblog-slide", |el| {
+                let name = el.get_attribute("name").expect("wanted xeblog-slide to contain name");
+                let essential = el.get_attribute("essential").is_some();
+                el.replace(&crate::tmpl::xeblog_slide(name, essential).0, ContentType::Html);
+
+                Ok(())
+            }),
+            element!("xeblog-talk-warning", |el| {
+                el.replace(&crate::tmpl::xeblog_talk_warning().0, ContentType::Html);
                 Ok(())
             }),
         ],
