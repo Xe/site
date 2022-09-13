@@ -40,7 +40,7 @@ pub fn xeblog_slide(name: String, essential: bool) -> Markup {
     html! {
         div.hero.{@if essential {("xeblog-slides-essential")} @else {("xeblog-slides-fluff")}} {
             picture style="margin:0" {
-                //source type="image/avif" srcset={"https://cdn.xeiaso.net/file/christine-static/talks/" (name) ".avif"};
+                source type="image/avif" srcset={"https://cdn.xeiaso.net/file/christine-static/talks/" (name) ".avif"};
                 source type="image/webp" srcset={"https://cdn.xeiaso.net/file/christine-static/talks/" (name) ".webp"};
                 img style="padding:0" loading="lazy" src={"https://cdn.xeiaso.net/file/christine-static/talks/" (name) "-smol.png"};
             }
