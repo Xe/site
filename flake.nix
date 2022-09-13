@@ -69,6 +69,16 @@
             name = "xesite-${bin.version}";
             paths = [ config posts static bin ];
           };
+
+          docker = pkgs.dockerTools.buildLayeredImage {
+            name = "xena/xesite";
+            tag = bin.version;
+            contents = [ default ];
+            config = {
+              Cmd = [ "${bin}/bin/xesite" ];
+              WorkdingDir = "${default}";
+            };
+          };
         };
 
         devShell = pkgs.mkShell {
