@@ -3235,7 +3235,7 @@ dependencies = [
 
 [[package]]
 name = "xesite"
-version = "2.4.0"
+version = "2.5.0"
 dependencies = [
  "axum 0.5.15",
  "axum-extra",
@@ -3265,7 +3265,7 @@ dependencies = [
  "pfacts",
  "pretty_env_logger",
  "prometheus",
- "rand 0.8.5",
+ "rand 0.7.3",
  "regex",
  "reqwest",
  "ructe",
