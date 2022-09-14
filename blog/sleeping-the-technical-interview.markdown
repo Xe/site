@@ -192,7 +192,7 @@ it. You worried for the "Jeff". He looked pale.
 
 "Why did you use such a weird sorting algorithm?"
 
-"Why did you use such a werid question?"
+"Why did you use such a weird question?"
 
 After settling down he made an expression you knew all too well. You were too
 powerful, you could not be contained there. The "Techaro" was not complicated
@@ -201,9 +201,9 @@ even though they would have been fine with a single dedicated server in Typhoon
 Digital. There was a spare development board in your closet that would be fine
 even.
 
-You would be done too quickly. It would not be a worthy challeng. You finished
+You would be done too quickly. It would not be a worthy challenge. You finished
 the call and took another sip of your cold brew. The rejection email was
-immenent. You knew it couldn't come to pass. 
+imminent. You knew it couldn't come to pass. 
 
 Locking the battlestation and unplugging the unlock key, you slink back to your
 precious haven. Entombing yourself in the blankets was the safest option.
