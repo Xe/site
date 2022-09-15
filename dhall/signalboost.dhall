@@ -1,6 +1,21 @@
 let Person = ./types/Person.dhall
 
 in  [ Person::{
+      , name = "Chuck Nelson"
+      , tags =
+        [ "C++"
+        , "Python"
+        , "JSON"
+        , "GO"
+        , "Linux"
+        , "bash"
+        , "PHP"
+        , "Java"
+        ]
+      , gitLink = Some "https://github.com/chuckn408"
+      , site = Some "https:/charles-nelson.com"
+      }
+    , Person::{
       , name = "Christian Sullivan"
       , tags =
         [ "go"
