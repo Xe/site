@@ -13,7 +13,7 @@ in  [ Person::{
         , "Java"
         ]
       , gitLink = Some "https://github.com/chuckn408"
-      , site = Some "https:/charles-nelson.com"
+      {-, site = Some "https:/charles-nelson.com" -}
       }
     , Person::{
       , name = "Christian Sullivan"
