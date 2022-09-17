@@ -48,6 +48,16 @@ pub fn xeblog_slide(name: String, essential: bool) -> Markup {
     }
 }
 
+pub fn xeblog_picture(path: String) -> Markup {
+    html! {
+        picture style="margin:0" {
+            source type="image/avif" srcset={"https://cdn.xeiaso.net/file/christine-static/" (path) ".avif"};
+            source type="image/webp" srcset={"https://cdn.xeiaso.net/file/christine-static/" (path) ".webp"};
+            img style="padding:0" loading="lazy" alt={"hero image " (path)} src={"https://cdn.xeiaso.net/file/christine-static/" (path) "-smol.png"};
+        }
+    }
+}
+
 pub fn xeblog_hero(file: String, prompt: Option<String>, ai: Option<String>) -> Markup {
     let ai = ai.unwrap_or("MidJourney".to_string());
     html! {

@@ -1,6 +1,6 @@
 ---
 title: My new, weird smartcard and how I learned to use it
-date: 2022-09-17
+date: 2022-09-18
 tags:
  - gpg
  - fido2

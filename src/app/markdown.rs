@@ -98,6 +98,11 @@ pub fn render(cfg: Arc<Config>, inp: &str) -> Result<String> {
                 el.remove_and_keep_content();
                 Ok(())
             }),
+            element!("xeblog-picture", |el| {
+                let path = el.get_attribute("path").expect("wanted xeblog-picture to contain path");
+                el.replace(&crate::tmpl::xeblog_picture(path).0, ContentType::Html);
+                Ok(())
+            }),
             element!("xeblog-hero", |el| {
                 let file = el.get_attribute("file").expect("wanted xeblog-hero to contain file");
                 el.replace(&crate::tmpl::xeblog_hero(file, el.get_attribute("prompt"), el.get_attribute("ai")).0, ContentType::Html);
