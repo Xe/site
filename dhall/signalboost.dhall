@@ -295,4 +295,22 @@ in  [ Person::{
       , gitLink = Some "https://github.com/gmemstr"
       , twitter = Some "https://twitter.com/gmem_"
       }
+      Person::{
+      , name = "Ananthakrishnan Potti"
+      , tags =
+        [ "Application Security"
+        , "VAPT & Gap Analysis"
+        , "SOC Deployment/Managing"
+        , "Splunk"
+        , "Linux"
+        , "Digital Forensics"
+        , "Python"
+        , "Ansible, Terraform"
+        , "Training"
+        ]
+      , gitLink = Some "https://github.com/ananthakrishnan3"
+      , twitter = Some "https://twitter.com/a55aS1n"
+      , linkedin = Some "https://www.linkedin.com/in/n-ananthakrishnan-potti-43925b125/"
+      , cover letter = Some "https://drive.google.com/file/d/1pSXTYRW-Yrw1hwhCeD2dm_R7ZrkOmZ9y/view?usp=sharing"
+      }
     ]
