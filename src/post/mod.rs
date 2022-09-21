@@ -83,12 +83,7 @@ impl Post {
     }
 }
 
-async fn read_post(
-    cfg: Arc<Config>,
-    dir: &str,
-    fname: PathBuf,
-    cli: &Option<mi::Client>,
-) -> Result<Post> {
+async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Result<Post> {
     debug!(
         "loading {}",
         fname.clone().into_os_string().into_string().unwrap()
@@ -151,7 +146,7 @@ async fn read_post(
     })
 }
 
-pub async fn load(cfg: Arc<Config>, dir: &str) -> Result<Vec<Post>> {
+pub async fn load(dir: &str) -> Result<Vec<Post>> {
     let cli = match std::env::var("MI_TOKEN") {
         Ok(token) => mi::Client::new(token.to_string(), crate::APPLICATION_NAME.to_string()).ok(),
         Err(_) => None,
@@ -159,7 +154,7 @@ pub async fn load(cfg: Arc<Config>, dir: &str) -> Result<Vec<Post>> {
 
     let futs = glob(&format!("{}/*.markdown", dir))?
         .filter_map(Result::ok)
-        .map(|fname| read_post(cfg.clone(), dir, fname, cli.borrow()));
+        .map(|fname| read_post(dir, fname, cli.borrow()));
 
     let mut result: Vec<Post> = futures::future::join_all(futs)
         .await

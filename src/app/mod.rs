@@ -68,9 +68,9 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
         cfg.clone().mi_token.clone(),
         crate::APPLICATION_NAME.to_string(),
     )?;
-    let blog = crate::post::load(cfg.clone(), "blog").await?;
-    let gallery = crate::post::load(cfg.clone(), "gallery").await?;
-    let talks = crate::post::load(cfg.clone(), "talks").await?;
+    let blog = crate::post::load("blog").await?;
+    let gallery = crate::post::load("gallery").await?;
+    let talks = crate::post::load("talks").await?;
     let mut everything: Vec<Post> = vec![];
 
     {

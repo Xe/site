@@ -402,21 +402,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2fff2a6927b3bb87f9595d67196a70493f627687a71d87a0d692242c33f58c11"
 
 [[package]]
-name = "cfcache"
-version = "0.1.0"
-dependencies = [
- "eyre",
- "kankyo",
- "reqwest",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
- "tracing",
- "tracing-futures",
-]
-
-[[package]]
 name = "cfg-if"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3243,7 +3228,6 @@ dependencies = [
  "axum 0.5.16",
  "axum-extra",
  "axum-macros",
- "cfcache",
  "chrono",
  "color-eyre",
  "derive_more",
