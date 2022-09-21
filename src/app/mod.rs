@@ -5,7 +5,6 @@ use std::{fs, path::PathBuf, sync::Arc};
 use tracing::{error, instrument};
 
 pub mod config;
-pub mod markdown;
 pub mod poke;
 
 pub use config::*;
@@ -64,7 +63,7 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     let cfg: Arc<Config> = Arc::new(serde_dhall::from_file(cfg).parse()?);
     let sb = cfg.signalboost.clone();
     let resume = fs::read_to_string(cfg.clone().resume_fname.clone())?;
-    let resume: String = markdown::render(cfg.clone(), &resume)?;
+    let resume: String = xesite_markdown::render(&resume)?;
     let mi = mi::Client::new(
         cfg.clone().mi_token.clone(),
         crate::APPLICATION_NAME.to_string(),

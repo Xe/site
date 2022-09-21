@@ -1,0 +1,18 @@
+[package]
+name = "xesite_markdown"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+color-eyre = "0.6"
+comrak = "0.14.0"
+lazy_static = "1.4"
+lol_html = "0.3"
+maud = "0.23.0"
+tracing = "0.1"
+url = "2"
+
+# local deps
+xesite_templates = { path = "../xesite_templates" }

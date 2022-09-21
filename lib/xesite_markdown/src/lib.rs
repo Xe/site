@@ -1,5 +1,3 @@
-use crate::app::Config;
-use crate::templates::Html;
 use color_eyre::eyre::{Result, WrapErr};
 use comrak::nodes::{Ast, AstNode, NodeValue};
 use comrak::plugins::syntect::SyntectAdapter;
@@ -9,15 +7,15 @@ use comrak::{
 };
 use lazy_static::lazy_static;
 use lol_html::{element, html_content::ContentType, rewrite_str, RewriteStrSettings};
-use std::cell::RefCell;
-use std::sync::Arc;
+use maud::PreEscaped;
+use std::{cell::RefCell, io::Write};
 use url::Url;
 
 lazy_static! {
     static ref SYNTECT_ADAPTER: SyntectAdapter<'static> = SyntectAdapter::new("base16-mocha.dark");
 }
 
-pub fn render(cfg: Arc<Config>, inp: &str) -> Result<String> {
+pub fn render(inp: &str) -> Result<String> {
     let mut options = ComrakOptions::default();
 
     options.extension.autolink = true;
@@ -58,7 +56,16 @@ pub fn render(cfg: Arc<Config>, inp: &str) -> Result<String> {
                 let name = u.host_str().unwrap_or("Mara");
 
                 let mut html = vec![];
-                crate::templates::mara(&mut html, mood, name, Html(message.trim().into()))?;
+                write!(
+                    html,
+                    "{}",
+                    xesite_templates::conv(
+                        name.to_string(),
+                        mood.to_string(),
+                        PreEscaped(message.trim().into())
+                    )
+                    .0
+                )?;
 
                 let new_node = arena.alloc(AstNode::new(RefCell::new(Ast::new(
                     NodeValue::HtmlInline(html),
@@ -100,35 +107,30 @@ pub fn render(cfg: Arc<Config>, inp: &str) -> Result<String> {
             }),
             element!("xeblog-picture", |el| {
                 let path = el.get_attribute("path").expect("wanted xeblog-picture to contain path");
-                el.replace(&crate::tmpl::xeblog_picture(path).0, ContentType::Html);
+                el.replace(&xesite_templates::picture(path).0, ContentType::Html);
                 Ok(())
             }),
             element!("xeblog-hero", |el| {
                 let file = el.get_attribute("file").expect("wanted xeblog-hero to contain file");
-                el.replace(&crate::tmpl::xeblog_hero(file, el.get_attribute("prompt"), el.get_attribute("ai")).0, ContentType::Html);
-                Ok(())
-            }),
-            element!("xeblog-salary-history", |el| {
-                el.replace(&crate::tmpl::xeblog_salary_history(cfg.clone()).0, ContentType::Html);
-
+                el.replace(&xesite_templates::hero(file, el.get_attribute("prompt"), el.get_attribute("ai")).0, ContentType::Html);
                 Ok(())
             }),
             element!("xeblog-sticker", |el| {
                 let name = el.get_attribute("name").expect("wanted xeblog-sticker to contain name");
                 let mood = el.get_attribute("mood").expect("wanted xeblog-sticker to contain mood");
-                el.replace(&crate::tmpl::xeblog_sticker(name, mood).0, ContentType::Html);
+                el.replace(&xesite_templates::sticker(name, mood).0, ContentType::Html);
 
                 Ok(())
             }),
             element!("xeblog-slide", |el| {
                 let name = el.get_attribute("name").expect("wanted xeblog-slide to contain name");
                 let essential = el.get_attribute("essential").is_some();
-                el.replace(&crate::tmpl::xeblog_slide(name, essential).0, ContentType::Html);
+                el.replace(&xesite_templates::slide(name, essential).0, ContentType::Html);
 
                 Ok(())
             }),
             element!("xeblog-talk-warning", |el| {
-                el.replace(&crate::tmpl::xeblog_talk_warning().0, ContentType::Html);
+                el.replace(&xesite_templates::talk_warning().0, ContentType::Html);
                 Ok(())
             }),
         ],

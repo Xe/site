@@ -3246,7 +3246,6 @@ dependencies = [
  "cfcache",
  "chrono",
  "color-eyre",
- "comrak",
  "derive_more",
  "dirs",
  "envy",
@@ -3260,7 +3259,6 @@ dependencies = [
  "kankyo",
  "lazy_static",
  "log",
- "lol_html",
  "maud",
  "mi",
  "mime",
@@ -3289,8 +3287,31 @@ dependencies = [
  "url",
  "uuid 0.8.2",
  "xe_jsonfeed",
+ "xesite_markdown",
+ "xesite_templates",
  "xesite_types",
  "xml-rs",
+]
+
+[[package]]
+name = "xesite_markdown"
+version = "0.1.0"
+dependencies = [
+ "color-eyre",
+ "comrak",
+ "lazy_static",
+ "lol_html",
+ "maud",
+ "tracing",
+ "url",
+ "xesite_templates",
+]
+
+[[package]]
+name = "xesite_templates"
+version = "0.1.0"
+dependencies = [
+ "maud",
 ]
 
 [[package]]

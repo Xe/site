@@ -32,7 +32,11 @@ might not want.
 The following table is a history of my software career by title, date and salary
 (company names are omitted).
 
-<xeblog-salary-history></xeblog-salary-history>
+<xeblog-conv name="Cadey" mood="coffee">While modernizing part of my site and
+lifting common code into crates, I was no longer able to embed this data into
+this page itself. This page has a better home [here](/salary-transparency).
+Sorry for this, I had no other option.
+</xeblog-conv>
 
 Even though I've been fired three times, I don't regret my career as it's been
 thus far. I've been able to work on experimental technology integrating into
@@ -49,7 +53,8 @@ like with the company that hired me over the border.
 
 [Fear stops you. Nothing prevents you.](https://twitter.com/theprincessxena/status/1106119712025382912?s=21)
 
-Please go out and try, Creator. Go for your larger dreams of success. Inaction is a lot easier to regret than action is.
+Please go out and try, Creator. Go for your larger dreams of success. Inaction
+is a lot easier to regret than action is.
 
 Be well.
 
@@ -67,6 +72,6 @@ Be well.
 
 If you can, please make a blogpost similar to this. Don't include company names.
 Include start date, end date, time spent there, time spent job hunting, salary
-(if you remember it) and how you left it. Let's [end salary
-secrecy](https://thegirlpowercode.com/2018/09/12/is-salary-secrecy-coming-to-an-end/)
+(if you remember it) and how you left it. Let's
+[end salary secrecy](https://thegirlpowercode.com/2018/09/12/is-salary-secrecy-coming-to-an-end/)
 one step at a time.

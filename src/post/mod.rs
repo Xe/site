@@ -103,7 +103,7 @@ async fn read_post(
     let date = NaiveDate::parse_from_str(&front_matter.clone().date, "%Y-%m-%d")
         .map_err(|why| eyre!("error parsing date in {:?}: {}", fname, why))?;
     let link = format!("{}/{}", dir, fname.file_stem().unwrap().to_str().unwrap());
-    let body_html = crate::app::markdown::render(cfg.clone(), &body)
+    let body_html = xesite_markdown::render(&body)
         .wrap_err_with(|| format!("can't parse markdown for {:?}", fname))?;
     let date: DateTime<FixedOffset> =
         DateTime::<Utc>::from_utc(NaiveDateTime::new(date, NaiveTime::from_hms(0, 0, 0)), Utc)

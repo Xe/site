@@ -12,7 +12,6 @@ use axum::{
 use color_eyre::eyre::Result;
 use hyper::StatusCode;
 use prometheus::{Encoder, TextEncoder};
-use sdnotify::SdNotify;
 use std::{
     env, io,
     net::{IpAddr, SocketAddr},
@@ -214,6 +213,8 @@ async fn main() -> Result<()> {
 
     #[cfg(target_os = "linux")]
     {
+        use sdnotify::SdNotify;
+
         match SdNotify::from_env() {
             Ok(ref mut n) => {
                 // shitty heuristic for detecting if we're running in prod

@@ -1,9 +1,9 @@
-use super::xeblog_conv;
 use crate::post::Post;
 use chrono::prelude::*;
 use lazy_static::lazy_static;
 use maud::{html, Markup};
 use regex::Regex;
+use xesite_templates::conv as xeblog_conv;
 
 lazy_static! {
     static ref HN: Regex = Regex::new(r#"^https?://news.ycombinator.com"#).unwrap();
