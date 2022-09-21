@@ -1,9 +1,8 @@
-use crate::app::Config;
 use chrono::prelude::*;
 use color_eyre::eyre::{eyre, Result, WrapErr};
 use glob::glob;
 use serde::{Deserialize, Serialize};
-use std::{borrow::Borrow, cmp::Ordering, path::PathBuf, sync::Arc};
+use std::{borrow::Borrow, cmp::Ordering, path::PathBuf};
 use tokio::fs;
 
 pub mod frontmatter;
@@ -174,30 +173,25 @@ pub async fn load(dir: &str) -> Result<Vec<Post>> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::app::Config;
     use color_eyre::eyre::Result;
-    use std::sync::Arc;
 
     #[tokio::test]
     async fn blog() {
         let _ = pretty_env_logger::try_init();
-        let cfg = Arc::new(Config::default());
-        load(cfg, "blog").await.expect("posts to load");
+        load("blog").await.expect("posts to load");
     }
 
     #[tokio::test]
     async fn gallery() -> Result<()> {
         let _ = pretty_env_logger::try_init();
-        let cfg = Arc::new(Config::default());
-        load(cfg, "gallery").await?;
+        load("gallery").await?;
         Ok(())
     }
 
     #[tokio::test]
     async fn talks() -> Result<()> {
         let _ = pretty_env_logger::try_init();
-        let cfg = Arc::new(Config::default());
-        load(cfg, "talks").await?;
+        load("talks").await?;
         Ok(())
     }
 }
