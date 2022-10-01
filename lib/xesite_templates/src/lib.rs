@@ -28,10 +28,12 @@ pub fn slide(name: String, essential: bool) -> Markup {
 
 pub fn picture(path: String) -> Markup {
     html! {
-        picture style="margin:0" {
-            source type="image/avif" srcset={"https://cdn.xeiaso.net/file/christine-static/" (path) ".avif"};
-            source type="image/webp" srcset={"https://cdn.xeiaso.net/file/christine-static/" (path) ".webp"};
-            img style="padding:0" loading="lazy" alt={"hero image " (path)} src={"https://cdn.xeiaso.net/file/christine-static/" (path) "-smol.png"};
+        a href={"https://cdn.xeiaso.net/file/christine-static/" (path) ".jpg"} target="_blank" {
+          picture style="margin:0" {
+              source type="image/avif" srcset={"https://cdn.xeiaso.net/file/christine-static/" (path) ".avif"};
+              source type="image/webp" srcset={"https://cdn.xeiaso.net/file/christine-static/" (path) ".webp"};
+              img style="padding:0" loading="lazy" alt={"hero image " (path)} src={"https://cdn.xeiaso.net/file/christine-static/" (path) "-smol.png"};
+          }
         }
     }
 }
