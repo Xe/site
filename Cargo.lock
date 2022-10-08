@@ -3286,6 +3286,7 @@ dependencies = [
  "lazy_static",
  "lol_html",
  "maud",
+ "thiserror",
  "tracing",
  "url",
  "xesite_templates",
@@ -3304,6 +3305,7 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "serde",
+ "serde_json",
 ]
 
 [[package]]

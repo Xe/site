@@ -48,6 +48,13 @@ img {
     background-color: #282828;
 }
 
+figcaption {
+    background-color: #282828;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+
 .logo {
     background-color: #fdf5d7;
     -webkit-mask: url("/static/img/xeiaso.svg");
@@ -65,6 +72,10 @@ img {
 
 @media (prefers-color-scheme: light) {
     .warning {
+        background-color: #fbf1c7;
+    }
+
+    figcaption {
         background-color: #fbf1c7;
     }
 

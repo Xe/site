@@ -1,6 +1,7 @@
 ---
 title: My new, weird smartcard and how I learned to use it
 date: 2022-09-18
+series: ethereum
 tags:
  - gpg
  - fido2

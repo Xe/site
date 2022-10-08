@@ -11,6 +11,7 @@ comrak = "0.14.0"
 lazy_static = "1.4"
 lol_html = "0.3"
 maud = "0.23.0"
+thiserror = "1"
 tracing = "0.1"
 url = "2"
 

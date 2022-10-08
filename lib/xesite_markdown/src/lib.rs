@@ -15,6 +15,12 @@ lazy_static! {
     static ref SYNTECT_ADAPTER: SyntectAdapter<'static> = SyntectAdapter::new("base16-mocha.dark");
 }
 
+#[derive(thiserror::Error, Debug, Clone)]
+pub enum Error {
+    #[error("missing element attribute {0}")]
+    MissingElementAttribute(String),
+}
+
 pub fn render(inp: &str) -> Result<String> {
     let mut options = ComrakOptions::default();
 
@@ -83,14 +89,21 @@ pub fn render(inp: &str) -> Result<String> {
 
     let html = String::from_utf8(html).wrap_err("post is somehow invalid UTF-8")?;
 
-    let html = rewrite_str(&html, RewriteStrSettings{
-        element_content_handlers: vec![
-            element!("xeblog-conv", |el| {
-                let name = el.get_attribute("name").expect("wanted xeblog-conv to contain name");
-                let name_lower = name.clone().to_lowercase();
-                let mood = el.get_attribute("mood").expect("wanted xeblog-conv to contain mood");
+    let html = rewrite_str(
+        &html,
+        RewriteStrSettings {
+            element_content_handlers: vec![
+                element!("xeblog-conv", |el| {
+                    let name = el
+                        .get_attribute("name")
+                        .ok_or(Error::MissingElementAttribute("name".to_string()))?;
+                    let name_lower = name.clone().to_lowercase();
+                    let mood = el
+                        .get_attribute("mood")
+                        .ok_or(Error::MissingElementAttribute("mood".to_string()))?;
+                    let name = name.replace("_", " ");
 
-                el.before(&format!(r#"
+                    el.before(&format!(r#"
 <div class="conversation">
     <div class="conversation-picture conversation-smol">
         <picture>
@@ -100,42 +113,64 @@ pub fn render(inp: &str) -> Result<String> {
         </picture>
     </div>
     <div class="conversation-chat">&lt;<b>{name}</b>&gt; "#), ContentType::Html);
-                el.after("</div></div>", ContentType::Html);
+                    el.after("</div></div>", ContentType::Html);
 
-                el.remove_and_keep_content();
-                Ok(())
-            }),
-            element!("xeblog-picture", |el| {
-                let path = el.get_attribute("path").expect("wanted xeblog-picture to contain path");
-                el.replace(&xesite_templates::picture(path).0, ContentType::Html);
-                Ok(())
-            }),
-            element!("xeblog-hero", |el| {
-                let file = el.get_attribute("file").expect("wanted xeblog-hero to contain file");
-                el.replace(&xesite_templates::hero(file, el.get_attribute("prompt"), el.get_attribute("ai")).0, ContentType::Html);
-                Ok(())
-            }),
-            element!("xeblog-sticker", |el| {
-                let name = el.get_attribute("name").expect("wanted xeblog-sticker to contain name");
-                let mood = el.get_attribute("mood").expect("wanted xeblog-sticker to contain mood");
-                el.replace(&xesite_templates::sticker(name, mood).0, ContentType::Html);
+                    el.remove_and_keep_content();
+                    Ok(())
+                }),
+                element!("xeblog-picture", |el| {
+                    let path = el
+                        .get_attribute("path")
+                        .expect("wanted xeblog-picture to contain path");
+                    el.replace(&xesite_templates::picture(path).0, ContentType::Html);
+                    Ok(())
+                }),
+                element!("xeblog-hero", |el| {
+                    let file = el
+                        .get_attribute("file")
+                        .ok_or(Error::MissingElementAttribute("file".to_string()))?;
+                    el.replace(
+                        &xesite_templates::hero(
+                            file,
+                            el.get_attribute("prompt"),
+                            el.get_attribute("ai"),
+                        )
+                        .0,
+                        ContentType::Html,
+                    );
+                    Ok(())
+                }),
+                element!("xeblog-sticker", |el| {
+                    let name = el
+                        .get_attribute("name")
+                        .ok_or(Error::MissingElementAttribute("name".to_string()))?;
+                    let mood = el
+                        .get_attribute("mood")
+                        .ok_or(Error::MissingElementAttribute("mood".to_string()))?;
+                    el.replace(&xesite_templates::sticker(name, mood).0, ContentType::Html);
 
-                Ok(())
-            }),
-            element!("xeblog-slide", |el| {
-                let name = el.get_attribute("name").expect("wanted xeblog-slide to contain name");
-                let essential = el.get_attribute("essential").is_some();
-                el.replace(&xesite_templates::slide(name, essential).0, ContentType::Html);
+                    Ok(())
+                }),
+                element!("xeblog-slide", |el| {
+                    let name = el
+                        .get_attribute("name")
+                        .ok_or(Error::MissingElementAttribute("name".to_string()))?;
+                    let essential = el.get_attribute("essential").is_some();
+                    el.replace(
+                        &xesite_templates::slide(name, essential).0,
+                        ContentType::Html,
+                    );
 
-                Ok(())
-            }),
-            element!("xeblog-talk-warning", |el| {
-                el.replace(&xesite_templates::talk_warning().0, ContentType::Html);
-                Ok(())
-            }),
-        ],
-        ..RewriteStrSettings::default()
-    }).unwrap();
+                    Ok(())
+                }),
+                element!("xeblog-talk-warning", |el| {
+                    el.replace(&xesite_templates::talk_warning().0, ContentType::Html);
+                    Ok(())
+                }),
+            ],
+            ..RewriteStrSettings::default()
+        },
+    )?;
 
     Ok(html)
 }
