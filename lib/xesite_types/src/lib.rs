@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+pub mod mastodon;
+
 #[derive(Eq, PartialEq, Deserialize, Default, Debug, Serialize, Clone)]
 pub struct Frontmatter {
     #[serde(default = "frontmatter_about")]
