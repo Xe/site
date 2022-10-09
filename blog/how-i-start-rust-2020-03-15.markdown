@@ -482,6 +482,8 @@ as UTF-8"` message.
 Many deployment systems use [Docker][docker] to describe a program's environment
 and dependencies. Create a `Dockerfile` with the following contents:
 
+[docker]: https://www.docker.com/
+
 ```Dockerfile
 # Use the minimal image
 FROM rustlang/rust:nightly-slim AS build
