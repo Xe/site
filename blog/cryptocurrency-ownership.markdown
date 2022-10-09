@@ -40,7 +40,19 @@ When the web3 people have tried to sell me on the web3 stuff they've been workin
 - Distributed computing, so that I can make additional bits of code run to validate things involving my presence on the blockchain, create arbitrary tokens (fungible and non-fungible) and more
 - Being able to use your hat or avatar in another game through blockchain cross-pollination of assets
 
-To be honest, this is a huge thing, and if even the first one is viable then it means that I can have less fear about making transactions on the Internet. I could use this to commission art, help friends meet rent when they land on hard times, and not have to worry about someone changing their name on all of their paperwork everywhere all at once so that we can send money to each other. I could just send them money to their Ethereum addresses. They could just send money to `xeiaso.eth` or `0xeA223Ca8968Ca59e0Bc79Ba331c2F6f636A3fB82`. Everything will work as normal.
+To be honest, this is a huge thing, and if even the first one is viable then it
+means that I can have less fear about making transactions on the Internet. I
+could use this to commission art, help friends meet rent when they land on hard
+times, and not have to worry about someone changing their name on all of their
+paperwork everywhere all at once so that we can send money to each other. I
+could just send them money to their Ethereum addresses. They could just send
+money to `xeiaso.eth` or `0xeA223Ca8968Ca59e0Bc79Ba331c2F6f636A3fB82`.
+Everything will work as normal.
+
+<div class="warning"><xeblog-conv name="Cadey" mood="coffee">Due to how this all
+is designed, anyone can send anything into anyone's cryptocurrency wallets.
+Beware anyone trying to call me out for things that have been shoved into my
+wallet against my will.</xeblog-conv></div>
 
 <xeblog-conv name="Numa" mood="delet">Except when it comes to paying rent, then you will need a middleman to convert your internet dollars into rent paying dollars.</xeblog-conv>
 
