@@ -147,7 +147,7 @@ It's also widely understood that having a hat, weapon skin, announcer voice, or 
 
 The furry fandom's social norms are a bit weird to outsiders. One of the big things that people have trouble with is the fact that there's no actual "source material" for the furry fandom. It's entirely self-standing and dates back to cartoonists wanting to draw funny animals. There's no real cohesive universe for the furry fandom, but we all like to pretend there is for our own collective amusement.
 
-One of the things you will see people do in the furry fandom is create their own Original Characters (OCs). The rationale for these can boil down to a number of things, including roleplay, characters to use in fiction, sexual fantasies, an idealized version of the self, or any number of of other things you can do with characters. For example, here's a shark typing on a split keyboard that you've seen before:
+One of the things you will see people do in the furry fandom is create their own Original Characters (OCs). The rationale for these can boil down to a number of things, including roleplay, characters to use in fiction, sexual fantasies, an idealized version of the self, or any number of other things you can do with characters. For example, here's a shark typing on a split keyboard that you've seen before:
 
 <xeblog-sticker name="Mara" mood="hacker"></xeblog-sticker>
 
