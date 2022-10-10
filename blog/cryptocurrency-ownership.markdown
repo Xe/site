@@ -322,7 +322,7 @@ In practice though, the distributed ledger usually ends up having a few big play
 
 <xeblog-conv name="Open_Skies" mood="flop">One terrifying consequence of the way people interact with Ethereum is the existence of the generalized transaction frontrunning bot. We’ll have to get into what that actually means in a future part, but here there be monsters.</xeblog-conv>
 
-<xeblog-conv name="Numa" mood="delet">The masses think they are free to send money to eachother but the rich just get richer off their backs along the way. As above, so below.</xeblog-conv>
+<xeblog-conv name="Numa" mood="delet">The masses think they are free to send money to each other but the rich just get richer off their backs along the way. As above, so below.</xeblog-conv>
 
 <xeblog-conv name="Cadey" mood="coffee">This whole thing is a mess. I only play this capitalism game because I have no other choice, not because I want to.</xeblog-conv>
 
