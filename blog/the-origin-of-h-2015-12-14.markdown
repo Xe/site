@@ -46,7 +46,7 @@ def h(inp, channel=None, conn=None):
     return inp.group(1) + suff
 ```
 
-The [code was pulled from here](https://git.xeserv.us/xena/h/src/f33fad269cc2c900079bae1e5bfc0b1f5536b223/plugins/shitposting.py#L7-L14).
+The [code was pulled from here](https://tulpa.dev/cadey/h/src/commit/f33fad269cc2c900079bae1e5bfc0b1f5536b223/plugins/shitposting.py#L7-L14).
 
 Here is an example of it being used:
 
@@ -64,7 +64,7 @@ Here is an example of it being used:
 -- [h] is logged in as h
 ```
 
-I also ended up porting h to matrix under the name [`h2`](https://git.xeserv.us/xena/h2). It currently sits in `#ponydevs:matrix.org` and has a bad habit of getting broken because [Comcast is a bad company](http://comcast.apps.xeserv.us/) and doesn't believe in uptime.
+I also ended up porting h to matrix under the name [`h2`](https://tulpa.dev/cadey/h2). It currently sits in `#ponydevs:matrix.org` and has a bad habit of getting broken because Comcast is a bad company and doesn't believe in uptime.
 
 Spread of h
 -----------

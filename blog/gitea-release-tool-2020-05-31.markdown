@@ -124,9 +124,7 @@ steps:
 ```
 
 This allows me to bump the `VERSION` and `CHANGELOG.md`, then push that commit
-to git and a new release will automatically be created. You can see an example
-of this in action with [the drone build history of the gitea-release
-repo](https://drone.tulpa.dev/cadey/gitea-release). You can also how the
+to git and a new release will automatically be created. You can see how the
 `CHANGELOG.md` file grows with the [CHANGELOG of
 gitea-release](https://tulpa.dev/cadey/gitea-release/src/branch/master/CHANGELOG.md).
 

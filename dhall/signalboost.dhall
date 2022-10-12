@@ -192,11 +192,6 @@ in  [ Person::{
       , gitLink = Some "https://github.com/ZacharyRMcKee"
       }
     , Person::{
-      , name = "Muazzam Kazmi"
-      , tags = [ "Rust", "C++", "x86assembly", "WinAPI", "Node.js", "React.js" ]
-      , gitLink = Some "https://github.com/muazzamalikazmi"
-      }
-    , Person::{
       , name = "Jeffin Mathew"
       , tags =
         [ "Python"
@@ -233,19 +228,6 @@ in  [ Person::{
         [ "python", "windows", "javascript", "html", "android", "java", "C#" ]
       , gitLink = Some "https://github.com/avipars"
       , twitter = Some "https://twitter.com/aviinfinity"
-      }
-    , Person::{
-      , name = "Tommy Nguyen"
-      , tags =
-        [ "c++"
-        , "linux"
-        , "cybersecurity"
-        , "privacy"
-        , "technical-writing"
-        , "web"
-        , "google-cloud-platform"
-        ]
-      , gitLink = Some "https://github.com/remyabel"
       }
     , Person::{
       , name = "Krish Jain"

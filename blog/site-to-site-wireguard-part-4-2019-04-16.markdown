@@ -135,10 +135,10 @@ These permissions are set as such:
 
 ### Systemd
 
-To install the [upstream systemd unit](https://github.com/mholt/caddy/blob/master/dist/init/linux-systemd/caddy.service), run the following:
+To install the [upstream systemd unit](https://github.com/caddyserver/caddy/blob/12107f035c5a807d31b6316f5087761531546f70/dist/init/linux-systemd/caddy.service), run the following:
 
 ```console
-curl -L https://github.com/mholt/caddy/raw/master/dist/init/linux-systemd/caddy.service \
+curl -L https://raw.githubusercontent.com/caddyserver/caddy/12107f035c5a807d31b6316f5087761531546f70/dist/init/linux-systemd/caddy.service \
       | sed "s/;CapabilityBoundingSet/CapabilityBoundingSet/" \
       | sed "s/;AmbientCapabilities/AmbientCapabilities/" \
       | sed "s/;NoNewPrivileges/NoNewPrivileges/" \

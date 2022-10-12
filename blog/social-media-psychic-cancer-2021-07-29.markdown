@@ -38,7 +38,7 @@ bigger than just people or small groups of them, it's something that affects us
 all.
 
 I'm going to participate in Social Media Detox Day on August 2nd, 2021. To get
-more information about it, click here: [detox.earth](https://detox.earth/). I
+more information about it, click here: [detox.earth](https://web.archive.org/web/20210729002615/https://detox.earth/). I
 will embed [a video by Techlore](https://youtu.be/HUQqHYjl2Pk) below:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/HUQqHYjl2Pk"

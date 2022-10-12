@@ -200,8 +200,7 @@ $ curl http://test.local.cetacean.club
 It's so cool *twerks*
 ```
 
-You can also check this out in a browser by clicking
-[here](http://test.local.cetacean.club):
+You can also check this out in a browser:
 
 ![a browser window titled "amazing website xD" with the header "look at my
 AMAZING WEBSITE" and content of "It's so cool

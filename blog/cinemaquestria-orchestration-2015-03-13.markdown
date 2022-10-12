@@ -101,7 +101,7 @@ static HTML is *hysterically fast* and efficient on the server, meaning that
 anything such as a Go binary, Lua/Lapis environment or other web application
 framework would have a very tough reputation to beat.
 
-I have looked into using Lapis for [this beta test site](http://cqsite-beta.apps.xeserv.us/),
+I have looked into using Lapis,
 but the fact that HTML is so dead easy to modify made that idea lose out.
 
 Maybe this is in the realm of something like [jekyll](http://jekyllrb.com/),

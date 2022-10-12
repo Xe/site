@@ -30,7 +30,7 @@ this iPad:
 
 - https://github.com/withinsoft/ventriloquist
 - https://github.com/Xe/arrival
-- https://git.xeserv.us/xena/register
+- https://tulpa.dev/cadey/register
 - https://github.com/Xe/when-then-zen (more on this in another blogpost)
 
 I seem to have naturally developed two basic workflows for developing from this
