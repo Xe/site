@@ -1,4 +1,4 @@
-use maud::{html, Markup};
+use maud::{html, Markup, PreEscaped};
 
 pub fn talk_warning() -> Markup {
     html! {
@@ -92,5 +92,36 @@ pub fn sticker(name: String, mood: String) -> Markup {
                 img alt={(name) " is " (mood)} src={"https://cdn.xeiaso.net/file/christine-static/stickers/" (name_lower) "/" (mood) ".png"};
             }
         }
+    }
+}
+
+pub fn video(path: String) -> Markup {
+    let hls_script = PreEscaped(format!(
+        r#"
+<script>
+  if (Hls.isSupported()) {{
+    var video = document.getElementById('video');
+    var hls = new Hls();
+    hls.on(Hls.Events.MEDIA_ATTACHED, function () {{
+      console.log('video and hls.js are now bound together !');
+    }});
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {{
+      console.log(
+        'manifest loaded, found ' + data.levels.length + ' quality level'
+      );
+    }});
+    hls.loadSource("https://cdn.xeiaso.net/file/christine-static/{}/index.m3u8");
+    // bind them together
+    hls.attachMedia(video);
+  }}
+</script>
+"#,
+        path
+    ));
+
+    html! {
+        script src="/static/js/hls.js" {}
+        video id="video" width="100%" controls {}
+        (hls_script)
     }
 }

@@ -4,6 +4,8 @@ date: 2022-06-09
 slides_link: https://cdn.xeiaso.net/file/christine-static/talks/Conf42+SRE+2022.pdf
 ---
 
+<xeblog-talk-warning></xeblog-talk-warning>
+
 # How Static Code Analysis Prevents You From Waking Up at 3AM With Production on Fire
 
 <style>
@@ -14,9 +16,10 @@ img {
 }
 </style>
 
-<center><iframe width="560" height="315" src="https://www.youtube.com/embed/cVUrScvthqs"
-title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen></iframe></center>
+<xeblog-video path="talks/conf42-staticcheck/talk"></xeblog-video>
+
+<xeblog-conv name="Mara" mood="hacker">If that didn't work, try
+[here](https://youtu.be/cVUrScvthqs) for the YouTube version!</xeblog-conv>
 
 <xeblog-conv name="Cadey" mood="coffee">The talk video will be live at 2022 M06
 10 at 13:00 EDT. It will not work if you are reading this at the exact

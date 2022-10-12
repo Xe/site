@@ -4,7 +4,10 @@ extern crate tracing;
 use axum::{
     body,
     extract::Extension,
-    http::header::{self, HeaderValue, CONTENT_TYPE},
+    http::{
+        header::{self, HeaderValue, CONTENT_TYPE},
+        Method,
+    },
     response::{Html, Response},
     routing::{get, get_service},
     Router,
@@ -17,9 +20,11 @@ use std::{
     net::{IpAddr, SocketAddr},
     str::FromStr,
     sync::Arc,
+    time::Duration,
 };
 use tokio::net::UnixListener;
 use tower_http::{
+    cors::{Any, CorsLayer},
     services::{ServeDir, ServeFile},
     set_header::SetResponseHeaderLayer,
     trace::TraceLayer,
@@ -99,7 +104,8 @@ async fn main() -> Result<()> {
         .layer(SetResponseHeaderLayer::overriding(
             header::HeaderName::from_static("x-hacker"),
             hacker_header,
-        ));
+        ))
+        .layer(CorsLayer::permissive());
 
     let app = Router::new()
         // meta

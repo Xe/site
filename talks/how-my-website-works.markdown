@@ -18,7 +18,7 @@ tags:
 
 ## YouTube video for the talk
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/-XX72twf7ZU" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<xeblog-video path="talks/my-website/hls/talk"></xeblog-video>
 
 [YouTube link](https://youtu.be/-XX72twf7ZU) (please [let me
 know](https://xeiaso.net/contact) if the iframe doesn't work for you)

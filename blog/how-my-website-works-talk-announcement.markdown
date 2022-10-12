@@ -11,7 +11,7 @@ out into the wild.
 
 Want to know more? Here's a teaser:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/lGwBMlq4TrA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<xeblog-video path="talks/my-website/hls/intro"></xeblog-video>
 
 <xeblog-conv name="Cadey" mood="enby">Extra credit for anyone that can
 at-mention me on Twitter with a screenshot of the game that the background in

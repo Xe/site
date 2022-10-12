@@ -167,6 +167,14 @@ pub fn render(inp: &str) -> Result<String> {
                     el.replace(&xesite_templates::talk_warning().0, ContentType::Html);
                     Ok(())
                 }),
+                element!("xeblog-video", |el| {
+                    let path = el
+                        .get_attribute("path")
+                        .ok_or(Error::MissingElementAttribute("path".to_string()))?;
+
+                    el.replace(&xesite_templates::video(path).0, ContentType::Html);
+                    Ok(())
+                }),
             ],
             ..RewriteStrSettings::default()
         },
