@@ -7,6 +7,8 @@ tags:
  - infosec
 ---
 
+<xeblog-hero ai="Waifu Diffusion V1.3" file="cyberpunk-forest-fire" prompt="studio ghibli, cyberpunk, trash can, fire, forest fire, forest, lots of fire"></xeblog-hero>
+
 [PolyMC](https://polymc.org/) is a modpack manager for
 [Minecraft](https://www.minecraft.net/en-us) that allows users to manage
 multiple logical installations of minecraft with their own sets of mods or
@@ -30,6 +32,9 @@ to yank or freeze PolyMC until we get more information.
 
 Here are other discussions about this:
 - [NixOS/nixpkgs#196460](https://github.com/NixOS/nixpkgs/issues/196460)
-- [The initial announcment from Modrith](https://twitter.com/modrinth/status/1582093129641234432)
+- [The initial announcment from
+  Modrith](https://twitter.com/modrinth/status/1582093129641234432)
+- [A thread from
+  @gamingonlinux](https://twitter.com/gamingonlinux/status/1582103691762405378)
 
 Future updates to come.
