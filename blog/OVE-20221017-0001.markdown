@@ -23,6 +23,10 @@ It is unknown at this time if PolyMC is compromised, but software like this
 being in the hands of reactionaries is a very sketchy situation. I am monitoring
 this situation and will give updates when I can.
 
+It is unknown if it is safe to run existing installations of PolyMC, as [it
+reportedly fetches metadata about .jar files to run at runtime](https://github.com/NixOS/nixpkgs/issues/196460)
+from a now presumably untrustworthy service.
+
 If you are a user of PolyMC, it may be best to uninstall it until we can get
 more information about this emerging situation. I am treating this as a
 compromise of the upstream because that is the least bad way to describe this.
