@@ -1,0 +1,35 @@
+---
+title: "OVE-20221017-0001: PolyMC appears to be compromised"
+date: 2022-10-17
+tags:
+ - minecraft
+ - polymc
+ - infosec
+---
+
+[PolyMC](https://polymc.org/) is a modpack manager for
+[Minecraft](https://www.minecraft.net/en-us) that allows users to manage
+multiple logical installations of minecraft with their own sets of mods or
+plugins. Today it seems that the main maintainer of PolyMC has deleted all of
+the contributors from having access to the GitHub ACLs and has removed the code
+of conduct as of
+[PolyMC/PolyMC@ccf282593dcdbe189c99b81b8bc90cb203aed3ee](https://github.com/PolyMC/PolyMC/commit/ccf282593dcdbe189c99b81b8bc90cb203aed3ee).
+The main maintainer has also been reportedly using charged language and slurs
+freely as a result of being called out for this.
+
+It is unknown at this time if PolyMC is compromised, but software like this
+being in the hands of reactionaries is a very sketchy situation. I am monitoring
+this situation and will give updates when I can.
+
+If you are a user of PolyMC, it may be best to uninstall it until we can get
+more information about this emerging situation. I am treating this as a
+compromise of the upstream because that is the least bad way to describe this.
+If you are a package maintainer for a distribution that packages PolyMC, use
+`OVE-20221017-0001` as the vulnerability ID for your bug tracker. It may be best
+to yank or freeze PolyMC until we get more information.
+
+Here are other discussions about this:
+- [NixOS/nixpkgs#196460](https://github.com/NixOS/nixpkgs/issues/196460)
+- [The initial announcment from Modrith](https://twitter.com/modrinth/status/1582093129641234432)
+
+Future updates to come.
