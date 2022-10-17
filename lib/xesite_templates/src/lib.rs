@@ -130,7 +130,7 @@ pub fn video(path: String) -> Markup {
         script src="/static/js/hls.js" {}
         noscript {
             div.warning {
-                (conv("Mara".into(), "hacker".into(), html!{"You need to enable JavaScript for this to work."}))
+                (conv("Mara".into(), "hacker".into(), PreEscaped("You may need to enable JavaScript for this to work. I'm a cartoon shark, not a cop.".to_string())))
             }
         }
         video id="video" width="100%" controls {
