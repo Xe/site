@@ -24,11 +24,6 @@
     <p>To get this data, I have scoured over past emails, contracts and everything so that I can be sure that this
         information is as accurate as possible. The data on this page intentionally omits employer names.</p>
 
-    <p>Raw data (including employer names) is available at <code>/api/salary_transparency.json</code>. The JSON format
-        is not stable. Do not treat it as such. I reserve the right to change the formatting or semantics of the JSON
-        format at any time without warning. The raw data is in <code>/dhall/jobHistory.dhall</code> in my site's git
-        repository.</p>
-
     @Html(salary_history(cfg.clone()).0)
 
     <p>I typically update this page once any of the following things happens:</p>
