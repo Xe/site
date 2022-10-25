@@ -6,45 +6,35 @@ use regex::Regex;
 use xesite_templates::conv as xeblog_conv;
 
 lazy_static! {
-    static ref HN: Regex = Regex::new(r#"^https?://news.ycombinator.com"#).unwrap();
-    static ref REDDIT: Regex = Regex::new(r#"^https?://((.+).)?reddit.com"#).unwrap();
+    static ref LOBSTERS: Regex = Regex::new(r#"^https?://lobste.rs"#).unwrap();
+    static ref DEV_SERVER: Regex = Regex::new(r#"^https?://pneuma:3030"#).unwrap();
 }
 
 pub fn referer(referer: Option<String>) -> Markup {
     if referer.is_none() {
-        return html! {};
+        return xesite_templates::advertiser_nag();
     }
 
     let referer = referer.unwrap();
 
-    let nag = html! {
-        script r#async src="https://media.ethicalads.io/media/client/ethicalads.min.js" { "" }
-        div.adaptive data-ea-publisher="christinewebsite" data-ea-type="image" data-ea-style="stickybox" {
+    if LOBSTERS.is_match(&referer) {
+        return html! {
+            (xeblog_conv("Mara".into(), "happy".into(), html!{
+                "Hey, thanks for reading Lobsters! We've disabled the ads to thank you for choosing to use a more ethical aggregator."
+            }))
+        };
+    }
+
+    if DEV_SERVER.is_match(&referer) {
+        return html! {
             .warning {
-                (xeblog_conv(
-                    "Cadey".into(),
-                    "coffee".into(),
-                    html! {
-                        "Hello! Thank you for visiting my website. You seem to be visiting from a news aggregator and have ads disabled. These ads help pay for running the website and are done by "
-                        a href="https://www.ethicalads.io/" { "Ethical Ads" }
-                        ". I do not receive detailed analytics on the ads and from what I understand neither does Ethical Ads. If you don't want to disable your ad blocker, please consider donating on "
-                        a href="https://patreon.com/cadey" { "Patreon" }
-                        ". It helps fund the website's hosting bills and pay for the expensive technical editor that I use for my longer articles. Thanks and be well!"
-                    },
-                ))
+                "This is a development instance of xesite. Things here are probably unfinished or in drafting. Don't take anything here super seriously."
+                br;
             }
-        }
-    };
-
-    if HN.is_match(&referer) {
-        return nag;
+        };
     }
 
-    if REDDIT.is_match(&referer) {
-        return nag;
-    }
-
-    html! {}
+    xesite_templates::advertiser_nag()
 }
 
 pub fn prerelease(post: &Post) -> Markup {
