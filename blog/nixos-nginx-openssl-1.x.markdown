@@ -20,11 +20,6 @@ security issue announced for OpenSSL
 3.x](https://xeiaso.net/blog/openssl-3.x-secvuln-incoming) (OpenSSL 1.1.1 isn't
 listed as CRITICAL).
 
-<xeblog-conv name="Cadey" mood="coffee">This is not needed unless you run NixOS
-unstable or use the nginx package from NixOS unstable. If you use NixOS 22.05,
-you are already using OpenSSL 1.1.1 unless you overrode things
-otherwise.</xeblog-conv>
-
 Open your `configuration.nix` file and add this inside the module block:
 
 ```nix
@@ -34,6 +29,9 @@ nixpkgs.overlays = [
   })
 ];
 ```
+
+<xeblog-conv name="Mara" mood="hacker">If you are using NixOS 22.05, use the
+package `openssl` instead of `openssl_1_1`.</xeblog-conv>
 
 This will create an [overlay](https://nixos.wiki/wiki/Overlays) that will
 replace the nginx package with a version that has OpenSSL replaced with the
