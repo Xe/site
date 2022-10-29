@@ -151,11 +151,11 @@ At this time it is not known if this is a _client_ or _server_ vulnerability. If
 it is a _server_ vulnerability (one that affects services with OpenSSL being
 used to encrypt data in-transit), then it is probably best to turn off
 public-facing daemons, upgrade your packages, and then turn them back on. If
-this is a _client_ vulnerability, depending on what kind of data your machines
-hold it may still be safe to upgrade your packages over the internet like
-normal. If this is a _client_ vulnerability then a lot of things will change
-about the response process. You may have to copy the target packages over SSH,
-install them manually, and then bring your external facing services back up.
+this is a _client_ vulnerability triggered by malicious servers then a lot of
+things will change about the response process. You may have to copy the target
+packages over SSH, install them manually, and then bring your external facing
+services back up. Depending on how much you trust your network, it may be safe
+to just install from your distributions package servers.
 
 When your distribution tells you the version of the packages that have the
 vulnerability fixed, record that as your target version of OpenSSL. Ensure every
