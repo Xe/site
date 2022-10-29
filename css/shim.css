@@ -83,3 +83,7 @@ figcaption {
         background-color: #1d2021;
     }
 }
+
+.ea-placement.ea-type-image {
+    background: #282828;
+}
