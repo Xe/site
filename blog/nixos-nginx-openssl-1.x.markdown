@@ -14,7 +14,11 @@ like override versions of packages so that you can customize what software is
 running on your computer. You can use this to manually patch programs, or
 alternatively override dependencies with other versions. Today I'm going to show
 you how to use an overlay to force NixOS to rebuild
-[nginx](https://nginx.org/en/) with OpenSSL 1.1.1 instead of OpenSSL 3.x.
+[nginx](https://nginx.org/en/) with OpenSSL 1.1.1 instead of OpenSSL 3.x. You
+may want to do this if you want to reduce risks involved with the [CRITICAL
+security issue announced for OpenSSL
+3.x](https://xeiaso.net/blog/openssl-3.x-secvuln-incoming) (OpenSSL 1.1.1 isn't
+listed as CRITICAL).
 
 <xeblog-conv name="Cadey" mood="coffee">This is not needed unless you run NixOS
 unstable or use the nginx package from NixOS unstable. If you use NixOS 22.05,
