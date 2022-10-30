@@ -54,11 +54,10 @@ what I can tell based on what has been done publicly:
 
 I am not a party to the embargo. I don't know how bad this is.
 
-I don't know how related this is, but the [Go](https://go.dev) programming
-language also has ["PRIVATE security fixes to the standard
-library"](https://groups.google.com/g/golang-announce/c/dRtDK7WS78g). The Go
-standard library contains TLS client and server support in the package
-[`crypto/tls`](https://pkg.go.dev/crypto/tls).
+<xeblog-conv name="Cadey" mood="coffee">EDIT(2022 M10 30 16:28): It seems the Go
+patches coming out on Tuesday are unrelated. I removed a section of the article
+that mentioned an upcoming Go patch. It is an unrelated security patch
+apparently.</xeblog-conv>
 
 ## Speculation
 
