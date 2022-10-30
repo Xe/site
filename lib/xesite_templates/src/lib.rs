@@ -1,4 +1,5 @@
 use maud::{html, Markup, PreEscaped};
+use xesite_types::mastodon::{Toot, User};
 
 pub fn talk_warning() -> Markup {
     html! {
@@ -161,6 +162,40 @@ pub fn advertiser_nag() -> Markup {
                         ". It helps fund the website's hosting bills and pay for the expensive technical editor that I use for my longer articles. Thanks and be well!"
                     },
                 ))
+            }
+        }
+    }
+}
+
+pub fn toot_embed(u: User, t: Toot) -> Markup {
+    html! {
+        .media {
+            .media-left {
+                .avatarholder {
+                    img src=(u.icon.url);
+                }
+            }
+            .media-body {
+                .media-heading { (u.name) " @" (u.preferred_username) }
+                .media-content {
+                    (PreEscaped::<String>(t.content))
+
+                    @for att in &t.attachment {
+                        @if att.media_type.starts_with("image/") {
+                            img src=(att.url) alt=(att.name.clone().unwrap_or("no description provided".into()));
+                        }
+
+                        @if att.media_type.starts_with("video/") {
+                            video width=(att.width) height=(att.height) controls {
+                                source src=(att.url) type=(att.media_type);
+                                "Your browser does not support the video tag, see this URL: "
+                                a href=(att.url) {(att.url)}
+                            }
+                        }
+                    }
+
+                    a href=(t.url) { "Link" }
+                }
             }
         }
     }

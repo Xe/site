@@ -4,193 +4,199 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize)]
 pub struct User {
     #[serde(rename = "id")]
-    id: String,
+    pub id: String,
 
     #[serde(rename = "type")]
-    user_type: String,
+    pub user_type: String,
 
     #[serde(rename = "following")]
-    following: String,
+    pub following: String,
 
     #[serde(rename = "followers")]
-    followers: String,
+    pub followers: String,
 
     #[serde(rename = "inbox")]
-    inbox: String,
+    pub inbox: String,
 
     #[serde(rename = "outbox")]
-    outbox: String,
+    pub outbox: String,
 
     #[serde(rename = "featured")]
-    featured: String,
+    pub featured: String,
 
     #[serde(rename = "featuredTags")]
-    featured_tags: String,
+    pub featured_tags: String,
 
     #[serde(rename = "preferredUsername")]
-    preferred_username: String,
+    pub preferred_username: String,
 
     #[serde(rename = "name")]
-    name: String,
+    pub name: String,
 
     #[serde(rename = "summary")]
-    summary: String,
+    pub summary: String,
 
     #[serde(rename = "url")]
-    url: String,
+    pub url: String,
 
     #[serde(rename = "manuallyApprovesFollowers")]
-    manually_approves_followers: bool,
+    pub manually_approves_followers: bool,
 
     #[serde(rename = "discoverable")]
-    discoverable: bool,
+    pub discoverable: bool,
 
     #[serde(rename = "published")]
-    published: String,
+    pub published: String,
 
     #[serde(rename = "devices")]
-    devices: String,
+    pub devices: String,
 
     #[serde(rename = "icon")]
-    icon: Icon,
+    pub icon: Icon,
 
     #[serde(rename = "image")]
-    image: Icon,
+    pub image: Icon,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Icon {
     #[serde(rename = "type")]
-    icon_type: String,
+    pub icon_type: String,
 
     #[serde(rename = "mediaType")]
-    media_type: String,
+    pub media_type: String,
 
     #[serde(rename = "url")]
-    url: String,
+    pub url: String,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Toot {
     #[serde(rename = "id")]
-    id: String,
+    pub id: String,
 
     #[serde(rename = "type")]
-    toot_type: String,
+    pub toot_type: String,
 
     #[serde(rename = "inReplyTo")]
-    in_reply_to: Option<String>,
+    pub in_reply_to: Option<String>,
 
     #[serde(rename = "published")]
-    published: DateTime<Utc>,
+    pub published: DateTime<Utc>,
 
     #[serde(rename = "url")]
-    url: String,
+    pub url: String,
 
     #[serde(rename = "attributedTo")]
-    attributed_to: String,
+    pub attributed_to: String,
 
     #[serde(rename = "to")]
-    to: Vec<String>,
+    pub to: Vec<String>,
 
     #[serde(rename = "cc")]
-    cc: Vec<String>,
+    pub cc: Vec<String>,
 
     #[serde(rename = "sensitive")]
-    sensitive: bool,
+    pub sensitive: bool,
 
     #[serde(rename = "atomUri")]
-    atom_uri: String,
+    pub atom_uri: String,
 
     #[serde(rename = "inReplyToAtomUri")]
-    in_reply_to_atom_uri: Option<String>,
+    pub in_reply_to_atom_uri: Option<String>,
 
     #[serde(rename = "conversation")]
-    conversation: String,
+    pub conversation: String,
 
     #[serde(rename = "content")]
-    content: String,
+    pub content: String,
 
     #[serde(rename = "contentMap")]
-    content_map: ContentMap,
+    pub content_map: ContentMap,
 
     #[serde(rename = "attachment")]
-    attachment: Vec<Attachment>,
+    pub attachment: Vec<Attachment>,
 
     #[serde(rename = "tag")]
-    tag: Vec<Tag>,
+    pub tag: Vec<Tag>,
 
     #[serde(rename = "replies")]
-    replies: Replies,
+    pub replies: Replies,
+}
+
+impl Toot {
+    pub fn content_text(&self) -> String {
+        html2text::from_read(std::io::Cursor::new(&self.content), 80)
+    }
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Tag {
     #[serde(rename = "type")]
-    tag_type: String,
+    pub tag_type: String,
 
     #[serde(rename = "href")]
-    href: String,
+    pub href: String,
 
     #[serde(rename = "name")]
-    name: String,
+    pub name: String,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Attachment {
     #[serde(rename = "type")]
-    attachment_type: String,
+    pub attachment_type: String,
 
     #[serde(rename = "mediaType")]
-    media_type: String,
+    pub media_type: String,
 
     #[serde(rename = "url")]
-    url: String,
+    pub url: String,
 
     #[serde(rename = "name")]
-    name: Option<serde_json::Value>,
+    pub name: Option<String>,
 
     #[serde(rename = "blurhash")]
-    blurhash: String,
+    pub blurhash: String,
 
     #[serde(rename = "width")]
-    width: i64,
+    pub width: i64,
 
     #[serde(rename = "height")]
-    height: i64,
+    pub height: i64,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct ContentMap {
     #[serde(rename = "en")]
-    en: String,
+    pub en: String,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Replies {
     #[serde(rename = "id")]
-    id: String,
+    pub id: String,
 
     #[serde(rename = "type")]
-    replies_type: String,
+    pub replies_type: String,
 
     #[serde(rename = "first")]
-    first: Page,
+    pub first: Page,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Page {
     #[serde(rename = "type")]
-    first_type: String,
+    pub first_type: String,
 
     #[serde(rename = "next")]
-    next: String,
+    pub next: String,
 
     #[serde(rename = "partOf")]
-    part_of: String,
+    pub part_of: String,
 
     #[serde(rename = "items")]
-    items: Vec<String>,
+    pub items: Vec<String>,
 }
 
 #[cfg(test)]

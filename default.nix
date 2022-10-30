@@ -47,6 +47,7 @@ in pkgs.stdenv.mkDerivation {
     cp -rf ${config} $out/config.dhall
     cp -rf $src/blog $out/blog
     cp -rf $src/css $out/css
+    cp -rf $src/data $out/data
     cp -rf $src/gallery $out/gallery
     cp -rf $src/static $out/static
     cp -rf $src/talks $out/talks

@@ -45,6 +45,7 @@
 
             installPhase = ''
               mkdir -p $out
+              cp -vrf $src/data $out
               cp -vrf $src/static $out
               cp -vrf $src/css $out
             '';
