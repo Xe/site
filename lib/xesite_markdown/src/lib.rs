@@ -8,8 +8,16 @@ use comrak::{
 use lazy_static::lazy_static;
 use lol_html::{element, html_content::ContentType, rewrite_str, RewriteStrSettings};
 use maud::PreEscaped;
+use sha2::{Digest, Sha256};
 use std::{cell::RefCell, io::Write};
 use url::Url;
+use xesite_types::mastodon::{Toot, User};
+
+pub fn hash_string(inp: String) -> String {
+    let mut h = Sha256::new();
+    h.update(&inp.as_bytes());
+    hex::encode(h.finalize())
+}
 
 lazy_static! {
     static ref SYNTECT_ADAPTER: SyntectAdapter<'static> = SyntectAdapter::new("base16-mocha.dark");
@@ -173,6 +181,36 @@ pub fn render(inp: &str) -> Result<String> {
                         .ok_or(Error::MissingElementAttribute("path".to_string()))?;
 
                     el.replace(&xesite_templates::video(path).0, ContentType::Html);
+                    Ok(())
+                }),
+                #[cfg(not(target_arch = "wasm32"))]
+                element!("xeblog-toot", |el| {
+                    use serde_json::from_reader;
+                    use std::fs;
+
+                    let mut toot_url = el
+                        .get_attribute("url")
+                        .ok_or(Error::MissingElementAttribute("url".to_string()))?;
+
+                    if !toot_url.ends_with(".json") {
+                        toot_url = format!("{toot_url}.json");
+                    }
+
+                    let toot_fname = format!("./data/toots/{}.json", hash_string(toot_url));
+                    tracing::debug!("opening {toot_fname}");
+                    let mut fin = fs::File::open(&toot_fname)?;
+                    let t: Toot = from_reader(&mut fin)?;
+
+                    let user_fname = format!(
+                        "./data/users/{}.json",
+                        hash_string(format!("{}.json", t.attributed_to.clone()))
+                    );
+                    tracing::debug!("opening {user_fname}");
+                    let mut fin = fs::File::open(&user_fname)?;
+
+                    let u: User = from_reader(&mut fin)?;
+
+                    el.replace(&xesite_templates::toot_embed(u, t).0, ContentType::Html);
                     Ok(())
                 }),
             ],

@@ -8,12 +8,16 @@ edition = "2021"
 [dependencies]
 color-eyre = "0.6"
 comrak = "0.14.0"
+hex = "0.4"
 lazy_static = "1.4"
 lol_html = "0.3"
 maud = "0.23.0"
+sha2 = "0.10"
+serde_json = "1"
 thiserror = "1"
 tracing = "0.1"
 url = "2"
 
 # local deps
 xesite_templates = { path = "../xesite_templates" }
+xesite_types = { path = "../xesite_types" }

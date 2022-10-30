@@ -168,33 +168,54 @@ pub fn advertiser_nag() -> Markup {
 }
 
 pub fn toot_embed(u: User, t: Toot) -> Markup {
+    let content = html! {
+        (PreEscaped::<String>(t.content))
+
+        @for att in &t.attachment {
+            @if att.media_type.starts_with("image/") {
+                a href=(att.url) {
+                    img height=(if att.height > att.width {"480"} else {"100%"}) src=(att.url) alt=(att.name.clone().unwrap_or("no description provided".into()));
+                }
+            }
+
+            @if att.media_type.starts_with("video/") {
+                video width=({att.width / 2}) height=({att.height / 2}) controls {
+                    source src=(att.url) type=(att.media_type);
+                    "Your browser does not support the video tag, see this URL: "
+                        a href=(att.url) {(att.url)}
+                }
+            }
+        }
+        @if t.attachment.len() != 0 {
+            br;
+        }
+
+        a href=(t.url) { "Link" }
+    };
     html! {
         .media {
             .media-left {
                 .avatarholder {
-                    img src=(u.icon.url);
+                    img src=(u.icon.url) alt={"the profile picture for " (u.preferred_username)};
                 }
             }
             .media-body {
-                .media-heading { (u.name) " @" (u.preferred_username) }
+                .media-heading {
+                    (u.name)
+                    " "
+                    a href=(u.url) {"@" (u.preferred_username)}
+                    br;
+                    (t.published.format("M%m %d %Y %H:%M (UTC)").to_string())
+                }
                 .media-content {
-                    (PreEscaped::<String>(t.content))
-
-                    @for att in &t.attachment {
-                        @if att.media_type.starts_with("image/") {
-                            img src=(att.url) alt=(att.name.clone().unwrap_or("no description provided".into()));
+                    @if let Some(warning) = t.summary {
+                        details {
+                            summary { "Content warning: " (warning) }
+                            (content)
                         }
-
-                        @if att.media_type.starts_with("video/") {
-                            video width=(att.width) height=(att.height) controls {
-                                source src=(att.url) type=(att.media_type);
-                                "Your browser does not support the video tag, see this URL: "
-                                a href=(att.url) {(att.url)}
-                            }
-                        }
+                    } @else {
+                        (content)
                     }
-
-                    a href=(t.url) { "Link" }
                 }
             }
         }

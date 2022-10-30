@@ -1,0 +1,23 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+PRODID:ics generator
+METHOD:PUBLISH
+X-PUBLISHED-TTL:PT1H
+BEGIN:VEVENT
+UID:0bb304b9-f1e3-4fd0-b0f9-65eee6e8544a
+SUMMARY:Xe streams Sonic Frontiers
+DTSTAMP:20221030T205030Z
+DTSTART:20221108T150000Z
+DTEND:20221108T170000Z
+DESCRIPTION:Xe Iaso streams first impressions and gameplay of Sonic Frontie
+	rs! Grab some chips and soda. We're gonna explore the open zone and see if
+	 it lives up to the promises of an open world Sonic game. It'll be a blast
+	!
+LOCATION:https://twitch.tv/princessxen
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT60M
+END:VALARM
+END:VEVENT
+END:VCALENDAR

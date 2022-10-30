@@ -4,10 +4,7 @@ extern crate tracing;
 use axum::{
     body,
     extract::Extension,
-    http::{
-        header::{self, HeaderValue, CONTENT_TYPE},
-        Method,
-    },
+    http::header::{self, HeaderValue, CONTENT_TYPE},
     response::{Html, Response},
     routing::{get, get_service},
     Router,
@@ -20,11 +17,10 @@ use std::{
     net::{IpAddr, SocketAddr},
     str::FromStr,
     sync::Arc,
-    time::Duration,
 };
 use tokio::net::UnixListener;
 use tower_http::{
-    cors::{Any, CorsLayer},
+    cors::CorsLayer,
     services::{ServeDir, ServeFile},
     set_header::SetResponseHeaderLayer,
     trace::TraceLayer,

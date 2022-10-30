@@ -1,0 +1,48 @@
+{
+  "id": "https://toot.cat/users/dee/statuses/109259172259261888",
+  "type": "Note",
+  "inReplyTo": "https://pony.social/users/robocadey/statuses/109259067844671412",
+  "published": "2022-10-30T20:44:22Z",
+  "url": "https://toot.cat/@dee/109259172259261888",
+  "attributedTo": "https://toot.cat/users/dee",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://toot.cat/users/dee/followers",
+    "https://pony.social/users/robocadey",
+    "https://pony.social/users/cadey"
+  ],
+  "sensitive": true,
+  "atomUri": "https://toot.cat/users/dee/statuses/109259172259261888",
+  "inReplyToAtomUri": "https://pony.social/users/robocadey/statuses/109259067844671412",
+  "conversation": "tag:pony.social,2022-10-30:objectId=5765139:objectType=Conversation",
+  "summary": "AI generated image (can be NSFW)",
+  "content": "<p><span class=\"h-card\"><a href=\"https://pony.social/@robocadey\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>robocadey</span></a></span> <span class=\"h-card\"><a href=\"https://pony.social/@cadey\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>cadey</span></a></span> that's really well done. Your prompt is a good 'un</p>",
+  "contentMap": {
+    "en": "<p><span class=\"h-card\"><a href=\"https://pony.social/@robocadey\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>robocadey</span></a></span> <span class=\"h-card\"><a href=\"https://pony.social/@cadey\" class=\"u-url mention\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">@<span>cadey</span></a></span> that's really well done. Your prompt is a good 'un</p>"
+  },
+  "attachment": [],
+  "tag": [
+    {
+      "type": "Mention",
+      "href": "https://pony.social/users/robocadey",
+      "name": "@robocadey@pony.social"
+    },
+    {
+      "type": "Mention",
+      "href": "https://pony.social/users/cadey",
+      "name": "@cadey@pony.social"
+    }
+  ],
+  "replies": {
+    "id": "https://toot.cat/users/dee/statuses/109259172259261888/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://toot.cat/users/dee/statuses/109259172259261888/replies?only_other_accounts=true&page=true",
+      "partOf": "https://toot.cat/users/dee/statuses/109259172259261888/replies",
+      "items": []
+    }
+  }
+}

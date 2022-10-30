@@ -1,5 +1,4 @@
 use color_eyre::Result;
-use sha2::{Digest, Sha256};
 use std::{env, fs};
 use tracing::debug;
 use xesite_types::mastodon::{Toot, User};
@@ -32,10 +31,13 @@ async fn main() -> Result<()> {
 
     let post_hash = xesite::hash_string(post_url);
 
+    debug!("wrote post to ./data/toots/{post_hash}.json");
+
     let mut fout = fs::File::create(&format!("./data/toots/{post_hash}.json"))?;
     serde_json::to_writer_pretty(&mut fout, &toot)?;
 
     let user_url = format!("{}.json", toot.attributed_to);
+    debug!("fetching {user_url} ...");
 
     let user: User = reqwest::get(&user_url)
         .await?
@@ -45,11 +47,12 @@ async fn main() -> Result<()> {
 
     fs::create_dir_all("./data/users")?;
 
-    debug!("got user {} ({})", user.name, user.preferred_username);
+    debug!("got user {} ({})", user.preferred_username, user.name);
 
     let user_hash = xesite::hash_string(user_url);
 
-    let mut fout = fs::File::create(&format!("./data/toots/{user_hash}.json"))?;
+    debug!("wrote post to ./data/users/{user_hash}.json");
+    let mut fout = fs::File::create(&format!("./data/users/{user_hash}.json"))?;
     serde_json::to_writer_pretty(&mut fout, &user)?;
 
     Ok(())

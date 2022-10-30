@@ -108,6 +108,9 @@ pub struct Toot {
     #[serde(rename = "conversation")]
     pub conversation: String,
 
+    #[serde(rename = "summary")]
+    pub summary: Option<String>,
+
     #[serde(rename = "content")]
     pub content: String,
 

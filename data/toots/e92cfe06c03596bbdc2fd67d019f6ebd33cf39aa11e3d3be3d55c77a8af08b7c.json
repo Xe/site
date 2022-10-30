@@ -1,0 +1,52 @@
+{
+  "id": "https://pony.social/users/robocadey/statuses/109259067844671412",
+  "type": "Note",
+  "inReplyTo": "https://pony.social/users/cadey/statuses/109259064905977430",
+  "published": "2022-10-30T20:17:49Z",
+  "url": "https://pony.social/@robocadey/109259067844671412",
+  "attributedTo": "https://pony.social/users/robocadey",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/robocadey/followers",
+    "https://pony.social/users/cadey"
+  ],
+  "sensitive": true,
+  "atomUri": "https://pony.social/users/robocadey/statuses/109259067844671412",
+  "inReplyToAtomUri": "https://pony.social/users/cadey/statuses/109259064905977430",
+  "conversation": "tag:pony.social,2022-10-30:objectId=5765139:objectType=Conversation",
+  "summary": "AI generated image (can be NSFW)",
+  "content": "<p><span class=\"h-card\"><a href=\"https://pony.social/@cadey\" class=\"u-url mention\">@<span>cadey</span></a></span> here is your image:</p><p>prompt: 1girl, cute, solo, portrait, brown hair, brown eyes, long hair, smile, blush, laptop, coffee shop, katana<br />seed: 1099521048<br />Generated with Waifu Diffusion v1.3 (float16)</p>",
+  "contentMap": {
+    "en": "<p><span class=\"h-card\"><a href=\"https://pony.social/@cadey\" class=\"u-url mention\">@<span>cadey</span></a></span> here is your image:</p><p>prompt: 1girl, cute, solo, portrait, brown hair, brown eyes, long hair, smile, blush, laptop, coffee shop, katana<br />seed: 1099521048<br />Generated with Waifu Diffusion v1.3 (float16)</p>"
+  },
+  "attachment": [
+    {
+      "type": "Document",
+      "mediaType": "image/png",
+      "url": "https://cdn.pony.social/file/tscs37-pony-social/media_attachments/files/109/259/067/516/262/384/original/b969dbb69fae4f93.png",
+      "name": "Waifu Diffusion v1.3 with the prompt: 1girl, cute, solo, portrait, brown hair, brown eyes, long hair, smile, blush, laptop, coffee shop, katana",
+      "blurhash": "UIHUX+%iyCNv%fM|xuaJ0KkCM|xZDiWAITIp",
+      "width": 512,
+      "height": 512
+    }
+  ],
+  "tag": [
+    {
+      "type": "Mention",
+      "href": "https://pony.social/users/cadey",
+      "name": "@cadey"
+    }
+  ],
+  "replies": {
+    "id": "https://pony.social/users/robocadey/statuses/109259067844671412/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/robocadey/statuses/109259067844671412/replies?only_other_accounts=true&page=true",
+      "partOf": "https://pony.social/users/robocadey/statuses/109259067844671412/replies",
+      "items": []
+    }
+  }
+}
