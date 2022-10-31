@@ -70,7 +70,16 @@ figcaption {
 }
 
 .ea-placement.ea-type-image {
-    background: #282828;
+    background-color: #282828;
+}
+
+.media {
+    background-color: #32302f;
+    color: #fbf1c7;
+
+    margin: auto;
+    max-width: 80ch;
+    padding: 2ch;
 }
 
 @media (prefers-color-scheme: light) {
@@ -88,5 +97,10 @@ figcaption {
 
     .logo {
         background-color: #1d2021;
+    }
+
+    .media {
+        color: #32302f;
+        background-color: #fbf1c7;
     }
 }

@@ -174,12 +174,12 @@ pub fn toot_embed(u: User, t: Toot) -> Markup {
         @for att in &t.attachment {
             @if att.media_type.starts_with("image/") {
                 a href=(att.url) {
-                    img height=(if att.height > att.width {"480"} else {"100%"}) src=(att.url) alt=(att.name.clone().unwrap_or("no description provided".into()));
+                    img width="100%" height="100%" src=(att.url) alt=(att.name.clone().unwrap_or("no description provided".into()));
                 }
             }
 
             @if att.media_type.starts_with("video/") {
-                video width=({att.width / 2}) height=({att.height / 2}) controls {
+                video width="100%" height="100%" controls {
                     source src=(att.url) type=(att.media_type);
                     "Your browser does not support the video tag, see this URL: "
                         a href=(att.url) {(att.url)}
