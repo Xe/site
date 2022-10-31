@@ -1,4 +1,5 @@
 @use chrono::{Datelike, Utc};
+@use crate::handlers::feeds::CACHEBUSTER;
 
 @(title: Option<&str>, styles: Option<&str>)
 
@@ -56,10 +57,10 @@ la budza pu cusku lu
         <title>Xe</title>
         }
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/css/hack.css" />
-        <link rel="stylesheet" href="/css/gruvbox-dark.css" />
-        <link rel="stylesheet" href="/css/shim.css" />
-        @if Utc::now().month() == 12 || Utc::now().month() == 1 || Utc::now().month() == 2 { <link rel="stylesheet" href="/css/snow.css?snowfix=20211201" /> }
+        <link rel="stylesheet" href="/css/hack.css?bustCache=@CACHEBUSTER" />
+        <link rel="stylesheet" href="/css/gruvbox-dark.css?bustCache=@CACHEBUSTER" />
+        <link rel="stylesheet" href="/css/shim.css?bustCache=@CACHEBUSTER" />
+        @if Utc::now().month() == 12 || Utc::now().month() == 1 || Utc::now().month() == 2 { <link rel="stylesheet" href="/css/snow.css?bustCache=@CACHEBUSTER" /> }
         <link rel="manifest" href="/static/manifest.json" />
 
         <link rel="alternate" title="Xe's Blog" type="application/rss+xml" href="https://xeiaso.net/blog.rss" />
