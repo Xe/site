@@ -5,6 +5,7 @@ tags:
  - openssl
  - rant
  - security
+ - noxp
 ---
 
 <xeblog-hero ai="Waifu Diffusion v1.3 (float16)" file="angy-foxgirl-disapproves" prompt="1girl, kimono, animal crossing, klaxon, loud noises, overwhelming, red sky, clouds, storms, long hair, purple hair, yellow eyes, fox ears, thick outlines, ink outlines, black outlines"></xeblog-hero>
