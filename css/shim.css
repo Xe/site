@@ -31,6 +31,7 @@ img {
 .conversation-smol {
     min-width: 6rem;
     max-width: 6rem;
+    padding: 0.5rem;
 }
 
 .conversation-chat {
