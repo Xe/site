@@ -133,7 +133,7 @@ a win regardless.
 
 Maybe we need to stop writing new security-critical code in C. Here is the
 _entire contents_ of one of the patches that fixed
-[CVE-2011-3602](https://github.com/openssl/openssl/commit/fe3b639dc19b325846f4f6801f2f4604f56e3de3):
+[CVE-2022-3602](https://github.com/openssl/openssl/commit/fe3b639dc19b325846f4f6801f2f4604f56e3de3):
 
 ```diff
 --- a/crypto/punycode.c
