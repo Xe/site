@@ -1,0 +1,56 @@
+{
+  "id": "https://botsin.space/users/randomColorContrasts/statuses/109212579424662451",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-10-22T15:15:12Z",
+  "url": "https://botsin.space/@randomColorContrasts/109212579424662451",
+  "attributedTo": "https://botsin.space/users/randomColorContrasts",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://botsin.space/users/randomColorContrasts/followers"
+  ],
+  "sensitive": false,
+  "atomUri": "https://botsin.space/users/randomColorContrasts/statuses/109212579424662451",
+  "inReplyToAtomUri": null,
+  "conversation": "tag:botsin.space,2022-10-22:objectId=57700332:objectType=Conversation",
+  "summary": null,
+  "content": "<p>Ripe Lemon <a href=\"https://botsin.space/tags/F1DD15\" class=\"mention hashtag\" rel=\"tag\">#<span>F1DD15</span></a><br />Midnight <a href=\"https://botsin.space/tags/0E102E\" class=\"mention hashtag\" rel=\"tag\">#<span>0E102E</span></a></p><p>(Contrast ratio: 13.3:1 | AAA)</p>",
+  "contentMap": {
+    "en": "<p>Ripe Lemon <a href=\"https://botsin.space/tags/F1DD15\" class=\"mention hashtag\" rel=\"tag\">#<span>F1DD15</span></a><br />Midnight <a href=\"https://botsin.space/tags/0E102E\" class=\"mention hashtag\" rel=\"tag\">#<span>0E102E</span></a></p><p>(Contrast ratio: 13.3:1 | AAA)</p>"
+  },
+  "attachment": [
+    {
+      "type": "Document",
+      "mediaType": "image/png",
+      "url": "https://files.botsin.space/media_attachments/files/109/212/579/401/911/853/original/479970995d705b8f.png",
+      "name": "Ripe Lemon (#F1DD15) and Midnight (#0E102E)",
+      "blurhash": "U~KT:njtj@j@~NfQt4j@odfQazfQItfQWDfQ",
+      "width": 460,
+      "height": 260
+    }
+  ],
+  "tag": [
+    {
+      "type": "Hashtag",
+      "href": "https://botsin.space/tags/F1DD15",
+      "name": "#F1DD15"
+    },
+    {
+      "type": "Hashtag",
+      "href": "https://botsin.space/tags/0E102E",
+      "name": "#0E102E"
+    }
+  ],
+  "replies": {
+    "id": "https://botsin.space/users/randomColorContrasts/statuses/109212579424662451/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://botsin.space/users/randomColorContrasts/statuses/109212579424662451/replies?only_other_accounts=true&page=true",
+      "partOf": "https://botsin.space/users/randomColorContrasts/statuses/109212579424662451/replies",
+      "items": []
+    }
+  }
+}

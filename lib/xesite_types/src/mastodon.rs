@@ -55,7 +55,7 @@ pub struct User {
     pub icon: Icon,
 
     #[serde(rename = "image")]
-    pub image: Icon,
+    pub image: Option<Icon>,
 }
 
 #[derive(Serialize, Deserialize)]

@@ -196,9 +196,9 @@ pub fn render(inp: &str) -> Result<String> {
                         toot_url = format!("{toot_url}.json");
                     }
 
-                    let toot_fname = format!("./data/toots/{}.json", hash_string(toot_url));
+                    let toot_fname = format!("./data/toots/{}.json", hash_string(toot_url.clone()));
                     tracing::debug!("opening {toot_fname}");
-                    let mut fin = fs::File::open(&toot_fname)?;
+                    let mut fin = fs::File::open(&toot_fname).context(toot_url)?;
                     let t: Toot = from_reader(&mut fin)?;
 
                     let user_fname = format!(
@@ -206,7 +206,7 @@ pub fn render(inp: &str) -> Result<String> {
                         hash_string(format!("{}.json", t.attributed_to.clone()))
                     );
                     tracing::debug!("opening {user_fname}");
-                    let mut fin = fs::File::open(&user_fname)?;
+                    let mut fin = fs::File::open(&user_fname).context(t.attributed_to.clone())?;
 
                     let u: User = from_reader(&mut fin)?;
 

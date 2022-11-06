@@ -1,0 +1,24 @@
+{
+  "id": "https://botsin.space/users/randomColorContrasts",
+  "type": "Service",
+  "following": "https://botsin.space/users/randomColorContrasts/following",
+  "followers": "https://botsin.space/users/randomColorContrasts/followers",
+  "inbox": "https://botsin.space/users/randomColorContrasts/inbox",
+  "outbox": "https://botsin.space/users/randomColorContrasts/outbox",
+  "featured": "https://botsin.space/users/randomColorContrasts/collections/featured",
+  "featuredTags": "https://botsin.space/users/randomColorContrasts/collections/tags",
+  "preferredUsername": "randomColorContrasts",
+  "name": "random color contrasts",
+  "summary": "<p>Inspired by and using: <a href=\"https://randoma11y.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"><span class=\"invisible\">https://</span><span class=\"\">randoma11y.com</span><span class=\"invisible\"></span></a></p><p>Gets colours, finds their WCAG contrast ratio. Attempts to name them.</p><p>See pinned toots for more info.</p>",
+  "url": "https://botsin.space/@randomColorContrasts",
+  "manuallyApprovesFollowers": false,
+  "discoverable": true,
+  "published": "2020-08-11T00:00:00Z",
+  "devices": "https://botsin.space/users/randomColorContrasts/collections/devices",
+  "icon": {
+    "type": "Image",
+    "mediaType": "image/png",
+    "url": "https://files.botsin.space/accounts/avatars/000/248/959/original/dcea077e7cba981b.png"
+  },
+  "image": null
+}
