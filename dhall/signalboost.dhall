@@ -2,16 +2,7 @@ let Person = ./types/Person.dhall
 
 in  [ Person::{
       , name = "Chuck Nelson"
-      , tags =
-        [ "C++"
-        , "Python"
-        , "JSON"
-        , "GO"
-        , "Linux"
-        , "bash"
-        , "PHP"
-        , "Java"
-        ]
+      , tags = [ "C++", "Python", "JSON", "GO", "Linux", "bash", "PHP", "Java" ]
       , gitLink = Some "https://github.com/chuckn408"
       }
     , Person::{
@@ -173,23 +164,6 @@ in  [ Person::{
         ]
       , gitLink = Some "https://github.com/dudymas"
       , twitter = Some "https://twitter.com/dudymas"
-      }
-    , Person::{
-      , name = "Zachary McKee"
-      , tags =
-        [ "javascript"
-        , "django"
-        , "react"
-        , "postgresql"
-        , "firebase"
-        , "aws"
-        , "python"
-        , "csharp"
-        , "java"
-        , "nginx"
-        , "gunicorn"
-        ]
-      , gitLink = Some "https://github.com/ZacharyRMcKee"
       }
     , Person::{
       , name = "Jeffin Mathew"
