@@ -27,6 +27,18 @@
             @if person.twitter.is_some() {
               <a href="@person.twitter.unwrap()">Twitter</a>
             }
+            @if person.linkedin.is_some() {
+              <a href="#person.linkedin.unwrap()">LinkedIn</a>
+            }
+            @if person.fediverse.is_some() {
+              <a href="@person.fediverse.unwrap()">Fediverse</a>
+            }
+            @if person.cover_letter.is_some() {
+              <a href="@person.cover_letter.unwrap()">Cover letter</a>
+            }
+            @if person.website.is_some() {
+              <a href="@person.website.unwrap()">Website</a>
+            }
         </div>
     }
 </div>
