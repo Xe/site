@@ -1,0 +1,28 @@
+{
+  "id": "https://mastodon.sdf.org/users/Ricardus",
+  "type": "Person",
+  "following": "https://mastodon.sdf.org/users/Ricardus/following",
+  "followers": "https://mastodon.sdf.org/users/Ricardus/followers",
+  "inbox": "https://mastodon.sdf.org/users/Ricardus/inbox",
+  "outbox": "https://mastodon.sdf.org/users/Ricardus/outbox",
+  "featured": "https://mastodon.sdf.org/users/Ricardus/collections/featured",
+  "featuredTags": "https://mastodon.sdf.org/users/Ricardus/collections/tags",
+  "preferredUsername": "Ricardus",
+  "name": "Ricardus",
+  "summary": "<p>Recording Engineer and former Technical Director (A1 Tech). Currently running an Antique Mall for a friend. I enjoy: building recording equipment, music, science fiction, Cons, wellness, absurdist humour, and other stuff.</p><p>Sometimes I play guitar.</p><p>Frustrated writer.</p><p>Geek.</p><p>Does not code.</p><p>If you enjoy anything I do on Masto please consider a donation.</p><p>Donations can be made to:</p><p>Paypal:  &#39;ricardus @ sdf . org&#39;</p><p>Venmo: Ricardus-W</p><p><a href=\"https://liberapay.com/Ricardus/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"><span class=\"invisible\">https://</span><span class=\"\">liberapay.com/Ricardus/</span><span class=\"invisible\"></span></a></p>",
+  "url": "https://mastodon.sdf.org/@Ricardus",
+  "manuallyApprovesFollowers": false,
+  "discoverable": true,
+  "published": "2017-04-26T00:00:00Z",
+  "devices": "https://mastodon.sdf.org/users/Ricardus/collections/devices",
+  "icon": {
+    "type": "Image",
+    "mediaType": "image/jpeg",
+    "url": "https://mastodon.sdf.org/system/accounts/avatars/000/000/850/original/e794501e9dc0b32d.jpg"
+  },
+  "image": {
+    "type": "Image",
+    "mediaType": "image/jpeg",
+    "url": "https://mastodon.sdf.org/system/accounts/headers/000/000/850/original/3dcda4182cf11abb.jpg"
+  }
+}

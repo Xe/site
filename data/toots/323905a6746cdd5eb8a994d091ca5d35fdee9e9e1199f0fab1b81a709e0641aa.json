@@ -1,0 +1,34 @@
+{
+  "id": "https://vt.social/users/xe/statuses/109308323411835557",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-11-08T13:04:09Z",
+  "url": "https://vt.social/@xe/109308323411835557",
+  "attributedTo": "https://vt.social/users/xe",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://vt.social/users/xe/followers"
+  ],
+  "sensitive": false,
+  "conversation": "tag:vt.social,2022-11-08:objectId=3240:objectType=Conversation",
+  "summary": null,
+  "content": "<p>coi! 👋 le tarci (☀️) cu galtu (⬆️) ^^</p>",
+  "contentMap": {
+    "en": "<p>coi! 👋 le tarci (☀️) cu galtu (⬆️) ^^</p>"
+  },
+  "attachment": [],
+  "tag": [],
+  "replies": {
+    "id": "https://vt.social/users/xe/statuses/109308323411835557/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://vt.social/users/xe/statuses/109308323411835557/replies?only_other_accounts=true&page=true",
+      "partOf": "https://vt.social/users/xe/statuses/109308323411835557/replies",
+      "items": []
+    }
+  },
+  "source": null
+}

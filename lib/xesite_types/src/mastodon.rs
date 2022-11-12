@@ -25,7 +25,7 @@ pub struct User {
     pub featured: String,
 
     #[serde(rename = "featuredTags")]
-    pub featured_tags: String,
+    pub featured_tags: Option<String>,
 
     #[serde(rename = "preferredUsername")]
     pub preferred_username: String,
@@ -46,10 +46,10 @@ pub struct User {
     pub discoverable: bool,
 
     #[serde(rename = "published")]
-    pub published: String,
+    pub published: Option<String>,
 
     #[serde(rename = "devices")]
-    pub devices: String,
+    pub devices: Option<String>,
 
     #[serde(rename = "icon")]
     pub icon: Icon,
@@ -64,7 +64,7 @@ pub struct Icon {
     pub icon_type: String,
 
     #[serde(rename = "mediaType")]
-    pub media_type: String,
+    pub media_type: Option<String>,
 
     #[serde(rename = "url")]
     pub url: String,
@@ -85,7 +85,7 @@ pub struct Toot {
     pub published: DateTime<Utc>,
 
     #[serde(rename = "url")]
-    pub url: String,
+    pub url: Option<String>,
 
     #[serde(rename = "attributedTo")]
     pub attributed_to: String,
@@ -97,13 +97,7 @@ pub struct Toot {
     pub cc: Vec<String>,
 
     #[serde(rename = "sensitive")]
-    pub sensitive: bool,
-
-    #[serde(rename = "atomUri")]
-    pub atom_uri: String,
-
-    #[serde(rename = "inReplyToAtomUri")]
-    pub in_reply_to_atom_uri: Option<String>,
+    pub sensitive: Option<bool>,
 
     #[serde(rename = "conversation")]
     pub conversation: String,
@@ -115,7 +109,7 @@ pub struct Toot {
     pub content: String,
 
     #[serde(rename = "contentMap")]
-    pub content_map: ContentMap,
+    pub content_map: Option<ContentMap>,
 
     #[serde(rename = "attachment")]
     pub attachment: Vec<Attachment>,
@@ -124,13 +118,24 @@ pub struct Toot {
     pub tag: Vec<Tag>,
 
     #[serde(rename = "replies")]
-    pub replies: Replies,
+    pub replies: Option<Replies>,
+
+    #[serde(rename = "source")]
+    pub source: Option<Source>,
 }
 
 impl Toot {
     pub fn content_text(&self) -> String {
         html2text::from_read(std::io::Cursor::new(&self.content), 80)
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Source {
+    #[serde(rename = "content")]
+    pub content: String,
+    #[serde(rename = "mediaType")]
+    pub content_type: String,
 }
 
 #[derive(Serialize, Deserialize)]

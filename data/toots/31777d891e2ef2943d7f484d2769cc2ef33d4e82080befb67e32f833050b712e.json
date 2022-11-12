@@ -1,0 +1,34 @@
+{
+  "id": "https://mastodon.sdf.org/users/Ricardus/statuses/109322650979345324",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-11-11T01:47:51Z",
+  "url": "https://mastodon.sdf.org/@Ricardus/109322650979345324",
+  "attributedTo": "https://mastodon.sdf.org/users/Ricardus",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://mastodon.sdf.org/users/Ricardus/followers"
+  ],
+  "sensitive": false,
+  "conversation": "tag:mastodon.sdf.org,2022-11-11:objectId=57740029:objectType=Conversation",
+  "summary": null,
+  "content": "<p>I wish people would just fucking say this out loud:</p><p>INSTANCE CHOICE IS LARGELY IRRELEVANT. EVEN IF YOU DID FIND AN INSTANCE OF (INSERT YOUR HOBBY/INTEREST HERE) IT&#39;S NOT LIKE YOU GET TOGETHER AND PARTY ON WEEKENDS.</p><p>Just avoid toxic instances where you find the kind of people like we beat in WW2. Just hang out and have fun.</p><p>SDF is a great instance with a wide variety of users.</p><p>Once you have chosen an instance your experience will basically be EXACTLY like twitter from an end-user perspective.</p>",
+  "contentMap": {
+    "en": "<p>I wish people would just fucking say this out loud:</p><p>INSTANCE CHOICE IS LARGELY IRRELEVANT. EVEN IF YOU DID FIND AN INSTANCE OF (INSERT YOUR HOBBY/INTEREST HERE) IT&#39;S NOT LIKE YOU GET TOGETHER AND PARTY ON WEEKENDS.</p><p>Just avoid toxic instances where you find the kind of people like we beat in WW2. Just hang out and have fun.</p><p>SDF is a great instance with a wide variety of users.</p><p>Once you have chosen an instance your experience will basically be EXACTLY like twitter from an end-user perspective.</p>"
+  },
+  "attachment": [],
+  "tag": [],
+  "replies": {
+    "id": "https://mastodon.sdf.org/users/Ricardus/statuses/109322650979345324/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://mastodon.sdf.org/users/Ricardus/statuses/109322650979345324/replies?only_other_accounts=true&page=true",
+      "partOf": "https://mastodon.sdf.org/users/Ricardus/statuses/109322650979345324/replies",
+      "items": []
+    }
+  },
+  "source": null
+}

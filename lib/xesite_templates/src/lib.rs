@@ -190,7 +190,7 @@ pub fn toot_embed(u: User, t: Toot) -> Markup {
             br;
         }
 
-        a href=(t.url) { "Link" }
+        a href=(t.url.unwrap_or(t.id)) { "Link" }
     };
     html! {
         .media {
@@ -202,6 +202,9 @@ pub fn toot_embed(u: User, t: Toot) -> Markup {
             .media-body {
                 .media-heading {
                     (u.name)
+                    @if u.id == "https://pony.social/users/cadey" {
+                        img src="https://cdn.xeiaso.net/file/christine-static/blog/verified.png" style="height=1.5ch;width=1.5ch";
+                    }
                     " "
                     a href=(u.url) {"@" (u.preferred_username)}
                     br;

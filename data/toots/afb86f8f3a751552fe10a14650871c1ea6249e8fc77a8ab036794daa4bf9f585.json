@@ -1,0 +1,50 @@
+{
+  "id": "https://fediverse.ghuntley.com/users/ghuntley/statuses/109329174967503675",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-11-12T05:26:59Z",
+  "url": "https://fediverse.ghuntley.com/@ghuntley/109329174967503675",
+  "attributedTo": "https://fediverse.ghuntley.com/users/ghuntley",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://fediverse.ghuntley.com/users/ghuntley/followers"
+  ],
+  "sensitive": false,
+  "conversation": "tag:ghuntley.com,2022-11-12:objectId=4484:objectType=Conversation",
+  "summary": null,
+  "content": "<p>If you want to <a href=\"https://fediverse.ghuntley.com/tags/selfhost\" class=\"mention hashtag\" rel=\"tag\">#<span>selfhost</span></a> a <a href=\"https://fediverse.ghuntley.com/tags/mastodon\" class=\"mention hashtag\" rel=\"tag\">#<span>mastodon</span></a> server on <a href=\"https://fediverse.ghuntley.com/tags/nixos\" class=\"mention hashtag\" rel=\"tag\">#<span>nixos</span></a> heres how you do it / here is my config <a href=\"https://gist.github.com/ghuntley/9369011a979ce2422d9851e38e784895\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">gist.github.com/ghuntley/93690</span><span class=\"invisible\">11a979ce2422d9851e38e784895</span></a></p>",
+  "contentMap": {
+    "en": "<p>If you want to <a href=\"https://fediverse.ghuntley.com/tags/selfhost\" class=\"mention hashtag\" rel=\"tag\">#<span>selfhost</span></a> a <a href=\"https://fediverse.ghuntley.com/tags/mastodon\" class=\"mention hashtag\" rel=\"tag\">#<span>mastodon</span></a> server on <a href=\"https://fediverse.ghuntley.com/tags/nixos\" class=\"mention hashtag\" rel=\"tag\">#<span>nixos</span></a> heres how you do it / here is my config <a href=\"https://gist.github.com/ghuntley/9369011a979ce2422d9851e38e784895\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">gist.github.com/ghuntley/93690</span><span class=\"invisible\">11a979ce2422d9851e38e784895</span></a></p>"
+  },
+  "attachment": [],
+  "tag": [
+    {
+      "type": "Hashtag",
+      "href": "https://fediverse.ghuntley.com/tags/selfhost",
+      "name": "#selfhost"
+    },
+    {
+      "type": "Hashtag",
+      "href": "https://fediverse.ghuntley.com/tags/mastodon",
+      "name": "#mastodon"
+    },
+    {
+      "type": "Hashtag",
+      "href": "https://fediverse.ghuntley.com/tags/nixos",
+      "name": "#nixos"
+    }
+  ],
+  "replies": {
+    "id": "https://fediverse.ghuntley.com/users/ghuntley/statuses/109329174967503675/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://fediverse.ghuntley.com/users/ghuntley/statuses/109329174967503675/replies?only_other_accounts=true&page=true",
+      "partOf": "https://fediverse.ghuntley.com/users/ghuntley/statuses/109329174967503675/replies",
+      "items": []
+    }
+  },
+  "source": null
+}

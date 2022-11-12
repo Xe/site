@@ -1,0 +1,24 @@
+{
+  "id": "https://akko.within.website/users/xe",
+  "type": "Person",
+  "following": "https://akko.within.website/users/xe/following",
+  "followers": "https://akko.within.website/users/xe/followers",
+  "inbox": "https://akko.within.website/users/xe/inbox",
+  "outbox": "https://akko.within.website/users/xe/outbox",
+  "featured": "https://akko.within.website/users/xe/collections/featured",
+  "featuredTags": null,
+  "preferredUsername": "xe",
+  "name": "Xe",
+  "summary": "Hey,<br/><br/>I&#39;m the admin of this place. My main account is <span class=\"h-card\"><a class=\"u-url mention\" data-user=\"APH5MA5JhypBfazQ0W\" href=\"https://pony.social/@cadey\" rel=\"ugc\">@<span>cadey@pony.social</span></a></span>. Consider this an alt in the Twitter sense.",
+  "url": "https://akko.within.website/users/xe",
+  "manuallyApprovesFollowers": false,
+  "discoverable": false,
+  "published": null,
+  "devices": null,
+  "icon": {
+    "type": "Image",
+    "mediaType": null,
+    "url": "https://f001.backblazeb2.com/file/xeserv-akko/74777ece434cea213de37d78c46df8623572331aa27183d4bc225182c7be2e17.png"
+  },
+  "image": null
+}

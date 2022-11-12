@@ -1,0 +1,34 @@
+{
+  "id": "https://toot.cat/users/Gankra/statuses/109320427252456972",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-11-10T16:22:19Z",
+  "url": "https://toot.cat/@Gankra/109320427252456972",
+  "attributedTo": "https://toot.cat/users/Gankra",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://toot.cat/users/Gankra/followers"
+  ],
+  "sensitive": false,
+  "conversation": "tag:toot.cat,2022-11-10:objectId=35170513:objectType=Conversation",
+  "summary": null,
+  "content": "<p>tired: documenting that a function has weird behaviour</p><p>wired: documenting that a function shouldn&#39;t be used because it won&#39;t do what you want</p><p>inspired: making most of the documentation for a function a detailed treatise on how to use *other* APIs to do the thing you really want</p>",
+  "contentMap": {
+    "en": "<p>tired: documenting that a function has weird behaviour</p><p>wired: documenting that a function shouldn&#39;t be used because it won&#39;t do what you want</p><p>inspired: making most of the documentation for a function a detailed treatise on how to use *other* APIs to do the thing you really want</p>"
+  },
+  "attachment": [],
+  "tag": [],
+  "replies": {
+    "id": "https://toot.cat/users/Gankra/statuses/109320427252456972/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://toot.cat/users/Gankra/statuses/109320427252456972/replies?only_other_accounts=true&page=true",
+      "partOf": "https://toot.cat/users/Gankra/statuses/109320427252456972/replies",
+      "items": []
+    }
+  },
+  "source": null
+}

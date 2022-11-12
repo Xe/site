@@ -1,0 +1,28 @@
+{
+  "id": "https://fediverse.ghuntley.com/users/ghuntley",
+  "type": "Person",
+  "following": "https://fediverse.ghuntley.com/users/ghuntley/following",
+  "followers": "https://fediverse.ghuntley.com/users/ghuntley/followers",
+  "inbox": "https://fediverse.ghuntley.com/users/ghuntley/inbox",
+  "outbox": "https://fediverse.ghuntley.com/users/ghuntley/outbox",
+  "featured": "https://fediverse.ghuntley.com/users/ghuntley/collections/featured",
+  "featuredTags": "https://fediverse.ghuntley.com/users/ghuntley/collections/tags",
+  "preferredUsername": "ghuntley",
+  "name": "Geoffrey Huntley :vim: :nixos:",
+  "summary": "<p>🙌 I’m Geoff, I “stole” all of your NFTs via <a href=\"https://thenftbay.org\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"><span class=\"invisible\">https://</span><span class=\"\">thenftbay.org</span><span class=\"invisible\"></span></a>. Software Engineer at Coder and ex Gitpod. </p><p>Opinions are my own.  I live a minimalist lifestyle and work remotely from a van doing <a href=\"https://fediverse.ghuntley.com/tags/vanlife\" class=\"mention hashtag\" rel=\"tag\">#<span>vanlife</span></a>. The internet is already decentralised (<a href=\"https://fediverse.ghuntley.com/tags/indieweb\" class=\"mention hashtag\" rel=\"tag\">#<span>indieweb</span></a>)</p><p> p.s Just in case it it isn&#39;t clear enough <a href=\"https://fediverse.ghuntley.com/tags/blockchain\" class=\"mention hashtag\" rel=\"tag\">#<span>blockchain</span></a> / <a href=\"https://fediverse.ghuntley.com/tags/nft\" class=\"mention hashtag\" rel=\"tag\">#<span>nft</span></a>&#39;s are dumb and so is my avatar. 👇👇🏿👇 </p><p>1. <a href=\"https://concerned.tech\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"><span class=\"invisible\">https://</span><span class=\"\">concerned.tech</span><span class=\"invisible\"></span></a>  <br />2. <a href=\"https://www.smh.com.au/business/companies/extortion-why-web3-is-pissing-off-a-lot-of-software-developers-20220\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"><span class=\"invisible\">https://www.</span><span class=\"ellipsis\">smh.com.au/business/companies/</span><span class=\"invisible\">extortion-why-web3-is-pissing-off-a-lot-of-software-developers-20220</span></a></p>",
+  "url": "https://fediverse.ghuntley.com/@ghuntley",
+  "manuallyApprovesFollowers": false,
+  "discoverable": true,
+  "published": "2022-11-11T00:00:00Z",
+  "devices": "https://fediverse.ghuntley.com/users/ghuntley/collections/devices",
+  "icon": {
+    "type": "Image",
+    "mediaType": "image/png",
+    "url": "https://fediverse.ghuntley.com/system/accounts/avatars/109/325/034/786/571/675/original/c5843b458911682c.png"
+  },
+  "image": {
+    "type": "Image",
+    "mediaType": "image/jpeg",
+    "url": "https://fediverse.ghuntley.com/system/accounts/headers/109/325/034/786/571/675/original/332eac79a4bfd21b.jpeg"
+  }
+}
