@@ -701,6 +701,7 @@ select.form-control {
 }
 .media-content {
   margin-top: 0.3rem;
+  word-break: break-word;
 }
 .avatarholder,
 .placeholder {
