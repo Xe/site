@@ -83,6 +83,13 @@ figcaption {
     padding: 2ch;
 }
 
+.verified {
+    max-width: 16px;
+    max-height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+}
+
 @media (prefers-color-scheme: light) {
     .warning {
         background-color: #fbf1c7;

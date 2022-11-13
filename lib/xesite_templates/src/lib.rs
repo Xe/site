@@ -203,7 +203,7 @@ pub fn toot_embed(u: User, t: Toot) -> Markup {
                 .media-heading {
                     (u.name)
                     @if u.id == "https://pony.social/users/cadey" {
-                        img src="https://cdn.xeiaso.net/file/christine-static/blog/verified.png" style="height=1.5ch;width=1.5ch";
+                        img.verified src="https://cdn.xeiaso.net/file/christine-static/blog/verified.png";
                     }
                     " "
                     a href=(u.url) {"@" (u.preferred_username)}
