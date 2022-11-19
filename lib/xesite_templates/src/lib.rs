@@ -101,11 +101,13 @@ pub fn video(path: String) -> Markup {
         "https://cdn.xeiaso.net/file/christine-static/{}/index.m3u8",
         path
     );
+    let uuid = uuid::Uuid::new_v4();
+    let uuid = format!("{uuid}").replace("-", "");
     let hls_script = PreEscaped(format!(
         r#"
 <script>
   if (Hls.isSupported()) {{
-    let video = document.getElementById('video');
+    let video = document.getElementById('{uuid}');
     let hls = new Hls();
     let videoSrc = "{}";
     hls.on(Hls.Events.MEDIA_ATTACHED, function () {{
@@ -134,7 +136,7 @@ pub fn video(path: String) -> Markup {
                 (conv("Mara".into(), "hacker".into(), PreEscaped("You may need to enable JavaScript for this to work. I'm a cartoon shark, not a cop.".to_string())))
             }
         }
-        video id="video" width="100%" controls {
+        video id=(uuid) width="100%" controls {
             source src=(stream_url) r#type="application/vnd.apple.mpegurl";
             source src="https://cdn.xeiaso.net/file/christine-static/blog/HLSBROKE.mp4" r#type="video/mp4";
         }

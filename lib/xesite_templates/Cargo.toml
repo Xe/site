@@ -7,5 +7,6 @@ edition = "2021"
 
 [dependencies]
 maud = "0.23.0"
+uuid = { version = "1", features = [ "v4" ] }
 
 xesite_types = { path = "../xesite_types" }

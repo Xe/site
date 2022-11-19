@@ -3458,6 +3458,7 @@ name = "xesite_templates"
 version = "0.1.0"
 dependencies = [
  "maud",
+ "uuid 1.1.1",
  "xesite_types",
 ]
 
