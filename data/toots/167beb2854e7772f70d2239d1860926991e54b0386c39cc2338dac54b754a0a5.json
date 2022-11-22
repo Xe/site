@@ -1,0 +1,41 @@
+{
+  "id": "https://pony.social/users/cadey/statuses/109388957068451434",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-11-22T18:50:21Z",
+  "url": "https://pony.social/@cadey/109388957068451434",
+  "attributedTo": "https://pony.social/users/cadey",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/cadey/followers",
+    "https://vt.social/users/xe"
+  ],
+  "sensitive": false,
+  "conversation": "tag:pony.social,2022-11-22:objectId=6283328:objectType=Conversation",
+  "summary": null,
+  "content": "<p>test mention <span class=\"h-card\"><a href=\"https://vt.social/@xe\" class=\"u-url mention\">@<span>xe</span></a></span> so I can see what HTML mastodon makes</p>",
+  "contentMap": {
+    "en": "<p>test mention <span class=\"h-card\"><a href=\"https://vt.social/@xe\" class=\"u-url mention\">@<span>xe</span></a></span> so I can see what HTML mastodon makes</p>"
+  },
+  "attachment": [],
+  "tag": [
+    {
+      "type": "Mention",
+      "href": "https://vt.social/users/xe",
+      "name": "@xe@vt.social"
+    }
+  ],
+  "replies": {
+    "id": "https://pony.social/users/cadey/statuses/109388957068451434/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/cadey/statuses/109388957068451434/replies?only_other_accounts=true&page=true",
+      "partOf": "https://pony.social/users/cadey/statuses/109388957068451434/replies",
+      "items": []
+    }
+  },
+  "source": null
+}
