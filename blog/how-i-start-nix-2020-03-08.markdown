@@ -44,7 +44,7 @@ Try 'nix-env --help' for more information.
 Let's install a few other tools to help us with development. First, let's
 install [lorri][lorri] to help us manage our development shell:
 
-[lorri]: https://github.com/target/lorri
+[lorri]: https://github.com/nix-community/lorri
 
 ```
 $ nix-env --install --file https://github.com/target/lorri/archive/master.tar.gz
