@@ -25,7 +25,13 @@
           bin = naersk-lib.buildPackage {
             pname = "xesite-bin";
             root = src;
-            buildInputs = with pkgs; [ pkg-config openssl git ];
+            buildInputs = with pkgs; [
+              pkg-config
+              openssl
+              git
+              deno
+              nodePackages.uglify-js
+            ];
           };
 
           config = pkgs.stdenv.mkDerivation {
@@ -37,10 +43,14 @@
             phases = "installPhase";
 
             installPhase = ''
-              cd $src
+              set -x
               mkdir -p $out
-              export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall
-              dhall resolve < $src/config.dhall >> $out/config.dhall
+              cp -rf ${pkgs.dhallPackages.Prelude}/.cache .cache
+              chmod -R u+w .cache
+              export XDG_CACHE_HOME=.cache
+              export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall;
+              dhall resolve --file $src/config.dhall >> $out/config.dhall
+              set +x
             '';
           };
 
@@ -104,10 +114,14 @@
             openssl
             pkg-config
 
-            # kubernetes deployment
+            # dhall
             dhall
             dhall-json
             dhall-lsp-server
+
+            # frontend
+            deno
+            nodePackages.uglify-js
 
             # dependency manager
             niv
@@ -122,7 +136,7 @@
           RUST_LOG = "debug";
           RUST_BACKTRACE = "1";
           GITHUB_SHA = "devel";
-          DHALL_PRELUDE = "${pkgs.dhallPackages.Prelude}/binary.dhall";
+          DHALL_PRELUDE = "${pkgs.dhallPackages.Prelude}";
         };
 
         nixosModules.bot = { config, lib, ... }:
