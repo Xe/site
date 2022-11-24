@@ -211,6 +211,20 @@ in  [ Person::{
       , twitter = Some "https://twitter.com/krishjain02"
       }
     , Person::{
+      , name = "Violet White"
+      , tags =
+        [ "c++"
+        , "linux"
+        , "python"
+        , "javascript"
+        , "sql"
+        , "lisps"
+        , "rust"
+        , "backend"
+        ]
+      , gitLink = Some "https://github.com/epsilon-phase"
+      }
+    , Person::{
       , name = "Henri Shustak"
       , tags =
         [ "backend"
