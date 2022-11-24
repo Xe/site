@@ -32,13 +32,14 @@
             pname = "xesite-config";
             inherit (bin) version;
             inherit src;
-            buildInputs = with pkgs; [ dhall ];
+            buildInputs = with pkgs; [ dhall dhallPackages.Prelude ];
 
             phases = "installPhase";
 
             installPhase = ''
               cd $src
               mkdir -p $out
+              export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall
               dhall resolve < $src/config.dhall >> $out/config.dhall
             '';
           };
@@ -121,7 +122,7 @@
           RUST_LOG = "debug";
           RUST_BACKTRACE = "1";
           GITHUB_SHA = "devel";
-          DHALL_PRELUDE = pkgs.dhallPackages.Prelude;
+          DHALL_PRELUDE = "${pkgs.dhallPackages.Prelude}/binary.dhall";
         };
 
         nixosModules.bot = { config, lib, ... }:
