@@ -54,6 +54,25 @@
             '';
           };
 
+          frontend = pkgs.stdenv.mkDerivation {
+            pname = "xesite-frontend";
+             inherit (bin) version;
+             src = ./src/frontend;
+             buildInputs = with pkgs; [ deno nodePackages.uglify-js ];
+
+             phases = "installPhase";
+
+             installPhase = ''
+               mkdir -p $out/static/js
+               mkdir -p .deno
+               export HOME=./.deno
+
+               deno bundle --config $src/deno.json $src/mastodon_share_button.tsx ./mastodon_share_button.js
+
+               uglifyjs ./mastodon_share_button.js -c -m > $out/static/js/mastodon_share_button.js
+             '';
+          };
+
           static = pkgs.stdenv.mkDerivation {
             pname = "xesite-static";
             inherit (bin) version;
@@ -86,7 +105,7 @@
 
           default = pkgs.symlinkJoin {
             name = "xesite-${bin.version}";
-            paths = [ config posts static bin ];
+            paths = [ config posts static bin frontend ];
           };
 
           docker = pkgs.dockerTools.buildLayeredImage {
