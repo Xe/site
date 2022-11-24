@@ -85,7 +85,7 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     everything.sort();
     everything.reverse();
 
-    let today = Utc::today();
+    let today = Utc::now().date_naive();
     let everything: Vec<Post> = everything
         .into_iter()
         .filter(|p| today.num_days_from_ce() >= p.date.num_days_from_ce())

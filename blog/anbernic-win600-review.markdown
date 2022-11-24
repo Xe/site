@@ -1,7 +1,7 @@
 ---
 title: Anbernic Win600 Review
 date: 2022-08-19
-series: review
+series: reviews
 tags:
  - anbernic
  - win600

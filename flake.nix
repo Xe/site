@@ -8,7 +8,10 @@
       flake = false;
     };
     flake-utils.url = "github:numtide/flake-utils";
-    naersk.url = "github:nix-community/naersk";
+    naersk = {
+      url = "github:nix-community/naersk";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, flake-utils, naersk, ... }:
@@ -103,6 +106,7 @@
             # kubernetes deployment
             dhall
             dhall-json
+            dhall-lsp-server
 
             # dependency manager
             niv
@@ -117,6 +121,7 @@
           RUST_LOG = "debug";
           RUST_BACKTRACE = "1";
           GITHUB_SHA = "devel";
+          DHALL_PRELUDE = pkgs.dhallPackages.Prelude;
         };
 
         nixosModules.bot = { config, lib, ... }:

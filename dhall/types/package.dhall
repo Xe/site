@@ -8,6 +8,7 @@
 , Person = ./Person.dhall
 , Resume = ./Resume.dhall
 , Salary = ./Salary.dhall
+, SeriesDescription = ./SeriesDescription.dhall
 , Stock = ./Stock.dhall
 , StockKind = ./StockKind.dhall
 }

@@ -1,14 +1,16 @@
 use super::Result;
-use crate::{app::State, post::Post, templates};
+use crate::{app::State, post::Post, templates, tmpl};
 use axum::{
     extract::{Extension, Path},
+    http::StatusCode,
     response::Html,
 };
 use http::HeaderMap;
 use lazy_static::lazy_static;
+use maud::Markup;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::sync::Arc;
-use tracing::{error, instrument};
+use tracing::instrument;
 
 lazy_static! {
     static ref HIT_COUNTER: IntCounterVec = register_int_counter_vec!(
@@ -19,40 +21,27 @@ lazy_static! {
 }
 
 #[instrument(skip(state))]
-pub async fn index(Extension(state): Extension<Arc<State>>) -> Result {
+pub async fn index(Extension(state): Extension<Arc<State>>) -> Result<Markup> {
     let state = state.clone();
-    let mut result: Vec<u8> = vec![];
-    templates::blogindex_html(&mut result, state.blog.clone())?;
-    Ok(Html(result))
+    let result = tmpl::post_index(&state.blog, "Blogposts", true);
+    Ok(result)
 }
 
 #[instrument(skip(state))]
-pub async fn series(Extension(state): Extension<Arc<State>>) -> Result {
+pub async fn series(Extension(state): Extension<Arc<State>>) -> Result<Markup> {
     let state = state.clone();
-    let mut series: Vec<String> = vec![];
-    let mut result: Vec<u8> = vec![];
 
-    for post in &state.blog {
-        if post.front_matter.series.is_some() {
-            series.push(post.front_matter.series.as_ref().unwrap().clone());
-        }
-    }
-
-    series.sort();
-    series.dedup();
-
-    templates::series_html(&mut result, series)?;
-    Ok(Html(result))
+    Ok(tmpl::blog_series(&state.cfg.clone().series_descriptions))
 }
 
 #[instrument(skip(state))]
 pub async fn series_view(
     Path(series): Path<String>,
     Extension(state): Extension<Arc<State>>,
-) -> Result {
+) -> (StatusCode, Markup) {
     let state = state.clone();
+    let cfg = state.cfg.clone();
     let mut posts: Vec<Post> = vec![];
-    let mut result: Vec<u8> = vec![];
 
     for post in &state.blog {
         if post.front_matter.series.is_none() {
@@ -64,13 +53,25 @@ pub async fn series_view(
         posts.push(post.clone());
     }
 
-    if posts.len() == 0 {
-        error!("series not found");
-        return Err(super::Error::SeriesNotFound(series));
-    }
+    posts.reverse();
 
-    templates::series_posts_html(&mut result, series, &posts).unwrap();
-    Ok(Html(result))
+    let desc = cfg.series_desc_map.get(&series);
+
+    if posts.len() == 0 {
+        (
+            StatusCode::NOT_FOUND,
+            tmpl::error(format!("series not found: {series}")),
+        )
+    } else {
+        if let Some(desc) = desc {
+            (StatusCode::OK, tmpl::series_view(&series, desc, &posts))
+        } else {
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                tmpl::error(format!("series metadata in dhall not found: {series}")),
+            )
+        }
+    }
 }
 
 #[instrument(skip(state, headers))]

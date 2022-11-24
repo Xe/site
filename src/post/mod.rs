@@ -99,10 +99,12 @@ async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Resul
     let link = format!("{}/{}", dir, fname.file_stem().unwrap().to_str().unwrap());
     let body_html = xesite_markdown::render(&body)
         .wrap_err_with(|| format!("can't parse markdown for {:?}", fname))?;
-    let date: DateTime<FixedOffset> =
-        DateTime::<Utc>::from_utc(NaiveDateTime::new(date, NaiveTime::from_hms(0, 0, 0)), Utc)
-            .with_timezone(&Utc)
-            .into();
+    let date: DateTime<FixedOffset> = DateTime::<Utc>::from_utc(
+        NaiveDateTime::new(date, NaiveTime::from_hms_opt(0, 0, 0).unwrap()),
+        Utc,
+    )
+    .with_timezone(&Utc)
+    .into();
 
     let mentions: Vec<mi::WebMention> = match cli {
         Some(cli) => cli

@@ -38,7 +38,7 @@ pub fn referer(referer: Option<String>) -> Markup {
 }
 
 pub fn prerelease(post: &Post) -> Markup {
-    if Utc::today().num_days_from_ce() < post.date.num_days_from_ce() {
+    if Utc::now().date_naive().num_days_from_ce() < post.date.num_days_from_ce() {
         html! {
             .warning {
                 (xeblog_conv("Mara".into(), "hacker".into(), html!{

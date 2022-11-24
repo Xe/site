@@ -1,89 +1,8 @@
+let Link = ./types/Link.dhall
+
 let Person = ./types/Person.dhall
 
 in  [ Person::{
-      , name = "Chuck Nelson"
-      , tags = [ "C++", "Python", "JSON", "GO", "Linux", "bash", "PHP", "Java" ]
-      , gitLink = Some "https://github.com/chuckn408"
-      }
-    , Person::{
-      , name = "Christian Sullivan"
-      , tags =
-        [ "go"
-        , "wasm"
-        , "react"
-        , "rust"
-        , "react-native"
-        , "swift"
-        , "google-cloud"
-        , "aws"
-        , "docker"
-        , "kubernetes"
-        , "istio"
-        , "typescript"
-        ]
-      , gitLink = Some "https://github.com/euforic"
-      , twitter = Some "https://twitter.com/euforic"
-      }
-    , Person::{
-      , name = "David Roberts"
-      , tags =
-        [ "ux"
-        , "ui"
-        , "documentation"
-        , "web"
-        , "html5"
-        , "javascript"
-        , "python"
-        , "qt"
-        , "bash"
-        , "front-end"
-        , "full-stack"
-        , "linux"
-        , "embedded"
-        , "sql"
-        ]
-      , gitLink = Some "https://github.com/ddr0"
-      , twitter = Some "https://twitter.com/DDR_4"
-      }
-    , Person::{
-      , name = "Faizan Jamil"
-      , tags =
-        [ "java"
-        , "c#"
-        , "python"
-        , "javascript"
-        , "typescript"
-        , "html"
-        , "css"
-        , "vue.js"
-        , "express.js"
-        , "flask"
-        , "asp.net core"
-        , "razor pages"
-        , "ef core"
-        , "front-end"
-        , "back-end"
-        , "full-stack"
-        , "linux"
-        ]
-      , gitLink = Some "https://github.com/faizjamil"
-      }
-    , Person::{
-      , name = "Joseph Crawley"
-      , tags =
-        [ "javascript"
-        , "react"
-        , "csharp"
-        , "python"
-        , "full-stack"
-        , "web"
-        , "bash"
-        , "linux"
-        ]
-      , gitLink = Some "https://github.com/espe-on"
-      , twitter = Some "https://twitter.com/espe_on_"
-      }
-    , Person::{
       , name = "nicoo"
       , tags =
         [ "cryptography"
@@ -96,7 +15,8 @@ in  [ Person::{
         , "security"
         , "SDR"
         ]
-      , gitLink = Some "https://github.com/nbraud"
+      , links =
+        [ Link::{ url = "https://github.com/nbraud", title = "GitHub" } ]
       }
     , Person::{
       , name = "Prajjwal Singh"
@@ -112,8 +32,10 @@ in  [ Person::{
         , "google-cloud"
         , "typescript"
         ]
-      , gitLink = Some "https://github.com/Prajjwal"
-      , twitter = Some "https://twitter.com/prajjwalsin"
+      , links =
+        [ Link::{ url = "https://github.com/Prajjwal", title = "GitHub" }
+        , Link::{ url = "https://twitter.com/prajjwalsin", title = "Twitter" }
+        ]
       }
     , Person::{
       , name = "Piyushh Bhutoria"
@@ -125,25 +47,10 @@ in  [ Person::{
         , "php"
         , "google-cloud"
         ]
-      , gitLink = Some "https://github.com/Piyushhbhutoria"
-      , twitter = Some "https://twitter.com/PiyushhB"
-      }
-    , Person::{
-      , name = "Ryan Casalino"
-      , tags =
-        [ "golang"
-        , "react"
-        , "python"
-        , "javascript"
-        , "aws"
-        , "vue"
-        , "sql"
-        , "ruby"
-        , "rails"
-        , "flask"
-        , "unix"
+      , links =
+        [ Link::{ url = "https://github.com/Piyushhbhutoria", title = "GitHub" }
+        , Link::{ url = "https://twitter.com/PiyushhB", title = "twitter" }
         ]
-      , gitLink = Some "https://github.com/rjpcasalino"
       }
     , Person::{
       , name = "Jeremy White"
@@ -162,53 +69,10 @@ in  [ Person::{
         , "google-cloud"
         , "azure"
         ]
-      , gitLink = Some "https://github.com/dudymas"
-      , twitter = Some "https://twitter.com/dudymas"
-      }
-    , Person::{
-      , name = "Jeffin Mathew"
-      , tags =
-        [ "Python"
-        , "routing&switching"
-        , "django"
-        , "vue"
-        , "ansible"
-        , "aws"
-        , "javascript"
-        , "iot"
+      , links =
+        [ Link::{ url = "https://github.com/dudymas", title = "GitHub" }
+        , Link::{ url = "https://twitter.com/dudymas", title = "Twitter" }
         ]
-      , gitLink = Some "https://github.com/mjeffin"
-      , twitter = Some "https://twitter.com/mpjeffin"
-      }
-    , Person::{
-      , name = "Nasir Hussain"
-      , tags =
-        [ "python"
-        , "linux"
-        , "javascript"
-        , "ansible"
-        , "nix"
-        , "docker&podman"
-        , "django"
-        , "golang"
-        , "rpm packaging"
-        ]
-      , gitLink = Some "https://github.com/nasirhm"
-      , twitter = Some "https://twitter.com/_nasirhm_"
-      }
-    , Person::{
-      , name = "Avi Parshan"
-      , tags =
-        [ "python", "windows", "javascript", "html", "android", "java", "C#" ]
-      , gitLink = Some "https://github.com/avipars"
-      , twitter = Some "https://twitter.com/aviinfinity"
-      }
-    , Person::{
-      , name = "Krish Jain"
-      , tags =
-        [ "c++", "linux", "c", "python", "ios", "nlp", "machine learning" ]
-      , gitLink = Some "https://github.com/Krish-sysadmin"
-      , twitter = Some "https://twitter.com/krishjain02"
       }
     , Person::{
       , name = "Violet White"
@@ -222,7 +86,8 @@ in  [ Person::{
         , "rust"
         , "backend"
         ]
-      , gitLink = Some "https://github.com/epsilon-phase"
+      , links =
+        [ Link::{ url = "https://github.com/epsilon-phase", title = "GitHub" } ]
       }
     , Person::{
       , name = "Henri Shustak"
@@ -246,15 +111,22 @@ in  [ Person::{
         , "R&D"
         , "SRE / system adminsitration"
         ]
-      , gitLink = Some "https://github.com/henri"
-      , twitter = Some "https://twitter.com/henri_shustak"
+      , links =
+        [ Link::{ url = "https://github.com/henri", title = "GitHub" }
+        , Link::{ url = "https://twitter.com/henri_shustak", title = "Twitter" }
+        ]
       }
     , Person::{
       , name = "Andrei Jiroh Halili"
       , tags = [ "backend", "bash", "nodejs", "deno", "alpinelinux", "linux" ]
-      , gitLink = Some "https://github.com/ajhalili2006"
-      , twitter = Some "https://twitter.com/Kuys_Potpot"
-      , fediverse = Some "https://tilde.zone/@ajhalili2006"
-      , website = Some "https://ajhalili2006.bio.link"
+      , links =
+        [ Link::{ url = "https://github.com/ajhalili2006", title = "GitHub" }
+        , Link::{ url = "https://twitter.com/Kuys_Potpot", title = "Twitter" }
+        , Link::{
+          , url = "https://tilde.zone/@ajhalili2006"
+          , title = "Fediverse"
+          }
+        , Link::{ url = "https://ajhalili2006.bio.link", title = "Website" }
+        ]
       }
     ]

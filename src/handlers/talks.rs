@@ -1,11 +1,12 @@
 use super::{Error::*, Result};
-use crate::{app::State, post::Post, templates};
+use crate::{app::State, post::Post, templates, tmpl};
 use axum::{
     extract::{Extension, Path},
     response::Html,
 };
 use http::header::HeaderMap;
 use lazy_static::lazy_static;
+use maud::Markup;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::sync::Arc;
 use tracing::instrument;
@@ -19,11 +20,9 @@ lazy_static! {
 }
 
 #[instrument(skip(state))]
-pub async fn index(Extension(state): Extension<Arc<State>>) -> Result {
+pub async fn index(Extension(state): Extension<Arc<State>>) -> Result<Markup> {
     let state = state.clone();
-    let mut result: Vec<u8> = vec![];
-    templates::talkindex_html(&mut result, state.talks.clone())?;
-    Ok(Html(result))
+    Ok(tmpl::post_index(&state.talks, "Talks", false))
 }
 
 #[instrument(skip(state, headers))]
