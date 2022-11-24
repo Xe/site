@@ -83,14 +83,14 @@ impl Display for Salary {
 impl Salary {
     pub fn html(&self) -> Markup {
         if self.stock.is_none() {
-            return html! { (self) };
+            return html! { (maud::display(self)) };
         }
 
         let stock = self.stock.as_ref().unwrap();
         html! {
             details {
                 summary {
-                    (self)
+                    (maud::display(self))
                 }
 
                 p{
