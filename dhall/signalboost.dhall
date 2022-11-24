@@ -249,4 +249,12 @@ in  [ Person::{
       , gitLink = Some "https://github.com/henri"
       , twitter = Some "https://twitter.com/henri_shustak"
       }
+    , Person::{
+      , name = "Andrei Jiroh Halili"
+      , tags = [ "backend", "bash", "nodejs", "deno", "alpinelinux", "linux" ]
+      , gitLink = Some "https://github.com/ajhalili2006"
+      , twitter = Some "https://twitter.com/Kuys_Potpot"
+      , fediverse = Some "https://tilde.zone/@ajhalili2006"
+      , website = Some "https://ajhalili2006.bio.link"
+      }
     ]
