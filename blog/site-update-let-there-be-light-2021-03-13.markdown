@@ -3,6 +3,7 @@ title: "Site Update: Let There Be Light"
 date: 2021-03-13
 tags: 
  - a11y
+series: site-update
 ---
 
 In the beginning there was darkness. Darkness was all, and darkness was where the author of this site was comfortable with. However, we live in a time of (supposed) enlightenment. Thanks to the magic of CSS media queries, if you have your computer set to prefer light mode, you will get the light mode version of this website.

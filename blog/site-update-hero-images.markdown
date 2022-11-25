@@ -1,6 +1,7 @@
 ---
 title: "Site Update: Hero Images"
 date: 2022-06-08
+series: site-update
 ---
 
 For a while I've been wondering how I can add dramatic flair to my website with

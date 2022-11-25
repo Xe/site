@@ -1,6 +1,7 @@
 ---
 title: "Site Updates: Better Contrast Ratio and Using Xeact"
 date: 2021-12-19
+series: site-update
 ---
 
 Happy holidays all! As the year rolls to a close I wanted to take a moment to

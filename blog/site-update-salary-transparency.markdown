@@ -1,7 +1,8 @@
 ---
 title: "Site Update: Salary Transparency Page Added"
 date: 2022-06-14
-author: Sephie
+author: sephiraloveboo
+series: site-update
 ---
 
 <xeblog-hero file="miku-dark-souls" prompt="hatsune miku, elden ring, dark souls, concept art, crowbar"></xeblog-hero>

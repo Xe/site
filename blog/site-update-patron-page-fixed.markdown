@@ -1,6 +1,7 @@
 ---
 title: "Site Update: I Fixed the Patron Page"
 date: 2022-05-18
+series: site-update
 ---
 
 So I fixed [the patron page](https://xeiaso.net/patrons) and the

@@ -4,6 +4,7 @@ date: 2021-01-14
 tags:
  - devops
  - optimization
+series: site-update
 ---
 
 Well, so I think I found out where my Kubernetes cluster cost came from. For

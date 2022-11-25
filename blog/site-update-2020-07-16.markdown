@@ -3,6 +3,7 @@ title: "Site Update: Rewrite in Rust"
 date: 2020-07-16
 tags:
  - rust
+series: site-update
 ---
 
 Hello there! You are reading this post thanks to a lot of effort, research and

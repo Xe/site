@@ -7,6 +7,7 @@ tags:
  - sonicfrontiers
  - robocadey
  - noxp
+series: site-update
 ---
 
 <xeblog-hero ai="Waifu Diffusion v1.3 (float16)" file="foxgirl-surfing" prompt="landscape, mountains, breath of the wild, 1girl, fox ears, dark blue hair, blue eyes, surfboard, surfing, beach, simple sketch, clean lines, rakugaki"></xeblog-hero>
