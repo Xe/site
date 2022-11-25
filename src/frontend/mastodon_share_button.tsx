@@ -18,7 +18,7 @@ r(() => {
 
 ${articleURL}
 
-${series}${tags.innerText}@cadey@pony.social`;
+${series}${tags.innerText} @cadey@pony.social`;
 
   const instanceBox = (
     <input type="text" placeholder="https://pony.social" value={defaultURL} />

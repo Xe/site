@@ -166,6 +166,176 @@ pub fn post_index(posts: &Vec<Post>, title: &str, show_extra: bool) -> Markup {
     )
 }
 
+fn post_metadata(post: &Post) -> Markup {
+    html! {
+        meta name="twitter:card" content="summary";
+        meta name="twitter:site" content="@theprincessxena";
+        meta name="twitter:title" content={(post.front_matter.title)};
+        meta property="og:type" content="website";
+        meta property="og:title" content={(post.front_matter.title)};
+        meta property="og:site_name" content="Xe's Blog";
+        meta name="description" content={(post.front_matter.title) " - Xe's Blog"};
+        meta name="author" content="Xe Iaso";
+
+        @if let Some(redirect_to) = &post.front_matter.redirect_to {
+            link rel="canonical" href=(redirect_to);
+            meta http-equiv="refresh" content=(format!("0;URL='{redirect_to}'"));
+        } @else {
+            link rel="canonical" href={"https://xeiaso.net/" (post.link)};
+        }
+    }
+}
+
+fn share_button(post: &Post) -> Markup {
+    html! {
+        div # mastodon_share_button {}
+        div # mastodon_share_series style="display:none" {(post.front_matter.series.as_ref().unwrap_or(&"".to_string()))}
+        div # mastodon_share_tags style="display:none" {@for tag in post.front_matter.tags.as_ref().unwrap_or(&Vec::new()) {"#" (tag) " "}}
+        script r#type="module" src="/static/js/mastodon_share_button.js" {}
+    }
+}
+
+fn twitch_vod(post: &Post) -> Markup {
+    html! {
+        @if let Some(vod) = &post.front_matter.vod {
+            p {
+                "This post was written live on "
+                    a href="https://twitch.tv/princessxen" {"Twitch"}
+                ". You can check out the stream recording on "
+                    a href=(vod.twitch) {"Twitch"}
+                " and on "
+                    a href=(vod.youtube) {"YouTube"}
+                ". If you are reading this in the first day or so of this post being published, you will need to watch it on Twitch."
+            }
+        }
+    }
+}
+
+pub fn blog_view(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> Markup {
+    base(
+        Some(&post.front_matter.title),
+        None,
+        html! {
+            (post_metadata(post))
+            (nag::referer(referer))
+
+            article {
+                h1 {(post.front_matter.title)}
+
+                (nag::prerelease(post))
+
+                small {
+                    "Read time in minutes: "
+                    (post.read_time_estimate_minutes)
+                }
+
+                (body)
+            }
+
+            (share_button(post))
+            (twitch_vod(post))
+
+            p {
+                "This article was posted on "
+                (post.detri())
+                ". Facts and circumstances may have changed since publication Please "
+                a href="/contact" {"contact me"}
+                " before jumping to conclusions if something seems wrong or unclear."
+            }
+
+            @if let Some(series) = &post.front_matter.series {
+                p {
+                    "Series: "
+                    a href={"/blog/series/" (series)} {(series)}
+                }
+            }
+
+            @if let Some(tags) = &post.front_matter.tags {
+               p {
+                   "Tags: "
+                    @for tag in tags {
+                        code {(tag)}
+                        " "
+                    }
+               }
+            }
+
+            @if post.mentions.is_empty() {
+                p {
+                    "This post was not "
+                    a href="https://www.w3.org/TR/webmention/" {"WebMention"}
+                    "ed yet. You could be the first!"
+                }
+            } @else {
+                ul {
+                    @for mention in &post.mentions {
+                        li {
+                            a href=(mention.source) {(mention.title.as_ref().unwrap_or(&mention.source))}
+                        }
+                    }
+                }
+            }
+
+            p {
+                "The art for Mara was drawn by "
+                a href="https://selic.re/" {"Selicre"}
+                "."
+            }
+
+            p {
+                "The art for Cadey was drawn by "
+                a href="https://artzorastudios.weebly.com/" {"ArtZorea Studios"}
+                "."
+            }
+        },
+    )
+}
+
+pub fn talk_view(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> Markup {
+    base(
+        Some(&post.front_matter.title),
+        None,
+        html! {
+            (post_metadata(post))
+            (nag::referer(referer))
+
+            article {
+                {(post.front_matter.title)}
+
+                (nag::prerelease(post))
+
+                (body)
+            }
+
+            @if let Some(slides) = &post.front_matter.slides_link {
+                a href=(slides) {"Link to the slides"}
+            }
+
+            (share_button(post))
+
+            p {
+                "This talk was posted on "
+                (post.detri())
+                ". Facts and circumstances may have changed since publication Please "
+                a href="/contact" {"contact me"}
+                " before jumping to conclusions if something seems wrong or unclear."
+            }
+
+            p {
+                "The art for Mara was drawn by "
+                    a href="https://selic.re/" {"Selicre"}
+                "."
+            }
+
+            p {
+                "The art for Cadey was drawn by "
+                    a href="https://artzorastudios.weebly.com/" {"ArtZorea Studios"}
+                "."
+            }
+        },
+    )
+}
+
 pub fn gallery_index(posts: &Vec<Post>) -> Markup {
     base(
         Some("Gallery"),
@@ -205,6 +375,7 @@ pub fn gallery_post(post: &Post) -> Markup {
         Some(&post.front_matter.title),
         None,
         html! {
+            (post_metadata(post))
             h1 {(post.front_matter.title)}
 
             (PreEscaped(&post.body_html))
@@ -230,6 +401,8 @@ pub fn gallery_post(post: &Post) -> Markup {
                     }
                 }
             }
+
+            (share_button(post))
         },
     )
 }

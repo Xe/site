@@ -1,9 +1,8 @@
 use super::Result;
-use crate::{app::State, post::Post, templates, tmpl};
+use crate::{app::State, post::Post, tmpl};
 use axum::{
     extract::{Extension, Path},
     http::StatusCode,
-    response::Html,
 };
 use http::HeaderMap;
 use lazy_static::lazy_static;
@@ -79,7 +78,7 @@ pub async fn post_view(
     Path(name): Path<String>,
     Extension(state): Extension<Arc<State>>,
     headers: HeaderMap,
-) -> Result {
+) -> Result<(StatusCode, Markup)> {
     let mut want: Option<Post> = None;
     let want_link = format!("blog/{}", name);
 
@@ -97,15 +96,13 @@ pub async fn post_view(
     };
 
     match want {
-        None => Err(super::Error::PostNotFound(name)),
+        None => Ok((StatusCode::NOT_FOUND, tmpl::not_found(want_link))),
         Some(post) => {
             HIT_COUNTER
                 .with_label_values(&[name.clone().as_str()])
                 .inc();
-            let body = templates::Html(post.body_html.clone());
-            let mut result: Vec<u8> = vec![];
-            templates::blogpost_html(&mut result, post, body, referer)?;
-            Ok(Html(result))
+            let body = maud::PreEscaped(&post.body_html);
+            Ok((StatusCode::OK, tmpl::blog_view(&post, body, referer)))
         }
     }
 }
