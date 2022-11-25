@@ -3,7 +3,15 @@ title: "Site Update: Version 3.0"
 date: 2022-11-26
 author: Heartmender
 series: site-update
+tags:
+ - dhall
+ - LaTeX
+ - rust
+ - typescript
+ - Xeact
 ---
+
+<xeblog-hero ai="Waifu Diffusion v1.3 (float16)" file="aoi-onsen" prompt="1girl, fox ears, dark blue hair, blue eyes, kimono, festival, landscape, makoto shinrai, arknights, fireworks, pagodas, onsen, long hair, princess, -hands, -amputee"></xeblog-hero>
 
 Hey all! Welcome to Xesite 3.0! Over the last few days I've taken a huge chunk
 out of my backlog and I have redone _a lot_ of this website. My hope is that
