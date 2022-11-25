@@ -360,22 +360,26 @@ pub fn gitea(pkg_name: &str, git_repo: &str, branch: &str) -> Markup {
     }
 }
 
-pub fn resume(data: impl Render) -> Markup {
+pub fn resume() -> Markup {
     base(
         Some("Resume"),
         None,
         html! {
-            (data)
+            h1 {"Resume"}
+
+            p {"This resume is automatically generated when the website gets deployed."}
+
+            iframe src="/static/resume/resume.pdf" width="100%" height="900px" {}
 
             hr;
 
-            a href="/static/resume/resume.md" { "Plain-text version" }
+            a href="/static/resume/resume.pdf" { "PDF version" }
         },
     )
 }
 
 fn schema_person(a: &Author) -> Markup {
-    let data = PreEscaped(serde_json::to_string_pretty(&a).unwrap());
+    let data = PreEscaped(serde_json::to_string(&a).unwrap());
 
     html! {
         script type="application/ld+json" { (data) }

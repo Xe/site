@@ -6,6 +6,7 @@ use std::{borrow::Borrow, cmp::Ordering, path::PathBuf};
 use tokio::fs;
 
 pub mod frontmatter;
+pub mod schemaorg;
 
 #[derive(Eq, PartialEq, Debug, Clone, Serialize, Deserialize)]
 pub struct Post {
@@ -24,6 +25,19 @@ pub struct NewPost {
     pub title: String,
     pub summary: String,
     pub link: String,
+}
+
+impl Into<schemaorg::Article> for &Post {
+    fn into(self) -> schemaorg::Article {
+        schemaorg::Article {
+            context: "https://schema.org".to_string(),
+            r#type: "Article".to_string(),
+            headline: self.front_matter.title.clone(),
+            image: "https://xeiaso.net/static/img/avatar.png".to_string(),
+            url: format!("https://xeiaso.net/{}", self.link),
+            date_published: self.date.format("%Y-%m-%d").to_string(),
+        }
+    }
 }
 
 impl Into<xe_jsonfeed::Item> for Post {

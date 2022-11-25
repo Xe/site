@@ -1,8 +1,11 @@
 use super::{base, nag};
-use crate::post::Post;
+use crate::post::{schemaorg::Article, Post};
 use maud::{html, Markup, PreEscaped};
 
 fn post_metadata(post: &Post) -> Markup {
+    let art: Article = post.into();
+    let json = PreEscaped(serde_json::to_string(&art).unwrap());
+
     html! {
         meta name="twitter:card" content="summary";
         meta name="twitter:site" content="@theprincessxena";
@@ -19,6 +22,8 @@ fn post_metadata(post: &Post) -> Markup {
         } @else {
             link rel="canonical" href={"https://xeiaso.net/" (post.link)};
         }
+
+        script type="application/ld+json" {(json)}
     }
 }
 

@@ -20,6 +20,9 @@
         pkgs = import nixpkgs { inherit system; };
         naersk-lib = naersk.lib."${system}";
         src = ./.;
+
+        tex = with pkgs;
+          texlive.combine { inherit (texlive) scheme-medium bitter titlesec; };
       in rec {
         packages = rec {
           bin = naersk-lib.buildPackage {
@@ -43,14 +46,36 @@
             phases = "installPhase";
 
             installPhase = ''
-              set -x
               mkdir -p $out
               cp -rf ${pkgs.dhallPackages.Prelude}/.cache .cache
               chmod -R u+w .cache
               export XDG_CACHE_HOME=.cache
               export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall;
               dhall resolve --file $src/config.dhall >> $out/config.dhall
-              set +x
+            '';
+          };
+
+          resumePDF = pkgs.stdenv.mkDerivation {
+            pname = "xesite-resume-pdf";
+            inherit (bin) version;
+            inherit src;
+            buildInputs = with pkgs; [ dhall dhallPackages.Prelude tex pandoc ];
+
+            phases = "installPhase";
+
+            installPhase = ''
+              mkdir -p $out/static/resume
+              cp -rf ${pkgs.dhallPackages.Prelude}/.cache .cache
+              chmod -R u+w .cache
+              export XDG_CACHE_HOME=.cache
+              export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall;
+
+              ln -s $src/dhall/latex/resume.cls
+              dhall text --file $src/dhall/latex/resume.dhall > resume.tex
+
+              xelatex ./resume.tex
+              cp resume.pdf $out/static/resume/resume.pdf
+              
             '';
           };
 
@@ -105,7 +130,7 @@
 
           default = pkgs.symlinkJoin {
             name = "xesite-${bin.version}";
-            paths = [ config posts static bin frontend ];
+            paths = [ config posts static bin frontend resumePDF ];
           };
 
           docker = pkgs.dockerTools.buildLayeredImage {
@@ -137,6 +162,8 @@
             dhall
             dhall-json
             dhall-lsp-server
+            tex
+            pandoc
 
             # frontend
             deno

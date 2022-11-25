@@ -7,7 +7,7 @@ use axum::{
 };
 use chrono::{Datelike, Timelike, Utc, Weekday};
 use lazy_static::lazy_static;
-use maud::{Markup, PreEscaped};
+use maud::Markup;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::sync::Arc;
 use tracing::instrument;
@@ -105,12 +105,10 @@ pub async fn salary_transparency(Extension(state): Extension<Arc<State>>) -> Res
 }
 
 #[axum_macros::debug_handler]
-#[instrument(skip(state))]
-pub async fn resume(Extension(state): Extension<Arc<State>>) -> Result<Markup> {
+pub async fn resume() -> Markup {
     HIT_COUNTER.with_label_values(&["resume"]).inc();
-    let state = state.clone();
 
-    Ok(tmpl::resume(PreEscaped(&state.resume)))
+    tmpl::resume()
 }
 
 #[instrument(skip(state))]
