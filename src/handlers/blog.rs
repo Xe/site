@@ -102,7 +102,7 @@ pub async fn post_view(
                 .with_label_values(&[name.clone().as_str()])
                 .inc();
             let body = maud::PreEscaped(&post.body_html);
-            Ok((StatusCode::OK, tmpl::blog_view(&post, body, referer)))
+            Ok((StatusCode::OK, tmpl::blog::blog(&post, body, referer)))
         }
     }
 }

@@ -41,7 +41,7 @@ pub async fn post_view(
             HIT_COUNTER
                 .with_label_values(&[name.clone().as_str()])
                 .inc();
-            (StatusCode::OK, tmpl::gallery_post(&post))
+            (StatusCode::OK, tmpl::blog::gallery(&post))
         }
     }
 }
