@@ -84,6 +84,11 @@ let descriptions
         , details = "Flash fiction stories I've written over the years"
         }
       , Desc::{
+        , name = "site-update"
+        , details =
+            "Updates on this website. These articles will contain details on how this website is changed, new things I'm cooking up with it or more."
+        }
+      , Desc::{
         , name = "site-to-site-wireguard"
         , details = "Instructions on setting up your own VPN with WireGuard."
         }

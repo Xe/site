@@ -75,7 +75,6 @@
 
               xelatex ./resume.tex
               cp resume.pdf $out/static/resume/resume.pdf
-              
             '';
           };
 

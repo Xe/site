@@ -1551,14 +1551,14 @@ dependencies = [
 
 [[package]]
 name = "mio"
-version = "0.8.3"
+version = "0.8.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "713d550d9b44d89174e066b7a6217ae06234c10cb47819a88290d2b353c31799"
+checksum = "e5d732bc30207a6423068df043e3d02e0735b155ad7ce1a6f76fe2baa5b158de"
 dependencies = [
  "libc",
  "log",
  "wasi 0.11.0+wasi-snapshot-preview1",
- "windows-sys 0.36.1",
+ "windows-sys 0.42.0",
 ]
 
 [[package]]
@@ -2812,16 +2812,16 @@ checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
 
 [[package]]
 name = "tokio"
-version = "1.19.2"
+version = "1.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c51a52ed6686dd62c320f9b89299e9dfb46f730c7a48e635c19f21d116cb1439"
+checksum = "d76ce4a75fb488c605c54bf610f221cea8b0dafb53333c1a67e8ee199dcd2ae3"
 dependencies = [
+ "autocfg",
  "bytes",
  "libc",
  "memchr",
  "mio",
  "num_cpus",
- "once_cell",
  "parking_lot",
  "pin-project-lite",
  "signal-hook-registry",
@@ -2929,9 +2929,9 @@ dependencies = [
 
 [[package]]
 name = "tower-layer"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "343bc9466d3fe6b0f960ef45960509f84480bf4fd96f92901afe7ff3df9d3a62"
+checksum = "c20c8dbed6283a09604c3e69b4b7eeb54e298b8a600d4d5ecb5ad39de609f1d0"
 
 [[package]]
 name = "tower-service"
@@ -3456,7 +3456,7 @@ dependencies = [
  "pfacts",
  "pretty_env_logger",
  "prometheus",
- "rand 0.7.3",
+ "rand 0.8.5",
  "regex",
  "reqwest",
  "ructe",

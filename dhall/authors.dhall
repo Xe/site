@@ -23,7 +23,7 @@ let authors =
         }
       , Author::{ name = "Nicole", handle = "Twi", inSystem = True }
       , Author::{ name = "Mai", handle = "Mai", inSystem = True }
-      , Author::{ name = "Sephira", handle = "Sephie", inSystem = True }
+      , Author::{ name = "Sephira", handle = "sephiraloveboo", inSystem = True }
       ]
 
 let authorToMapValue = \(a : Author.Type) -> { mapKey = a.handle, mapValue = a }
