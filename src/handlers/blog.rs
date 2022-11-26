@@ -1,14 +1,15 @@
 use super::Result;
-use crate::{app::State, post::Post, templates};
+use crate::{app::State, post::Post, tmpl};
 use axum::{
     extract::{Extension, Path},
-    response::Html,
+    http::StatusCode,
 };
 use http::HeaderMap;
 use lazy_static::lazy_static;
+use maud::Markup;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::sync::Arc;
-use tracing::{error, instrument};
+use tracing::instrument;
 
 lazy_static! {
     static ref HIT_COUNTER: IntCounterVec = register_int_counter_vec!(
@@ -19,40 +20,27 @@ lazy_static! {
 }
 
 #[instrument(skip(state))]
-pub async fn index(Extension(state): Extension<Arc<State>>) -> Result {
+pub async fn index(Extension(state): Extension<Arc<State>>) -> Result<Markup> {
     let state = state.clone();
-    let mut result: Vec<u8> = vec![];
-    templates::blogindex_html(&mut result, state.blog.clone())?;
-    Ok(Html(result))
+    let result = tmpl::post_index(&state.blog, "Blogposts", true);
+    Ok(result)
 }
 
 #[instrument(skip(state))]
-pub async fn series(Extension(state): Extension<Arc<State>>) -> Result {
+pub async fn series(Extension(state): Extension<Arc<State>>) -> Result<Markup> {
     let state = state.clone();
-    let mut series: Vec<String> = vec![];
-    let mut result: Vec<u8> = vec![];
 
-    for post in &state.blog {
-        if post.front_matter.series.is_some() {
-            series.push(post.front_matter.series.as_ref().unwrap().clone());
-        }
-    }
-
-    series.sort();
-    series.dedup();
-
-    templates::series_html(&mut result, series)?;
-    Ok(Html(result))
+    Ok(tmpl::blog_series(&state.cfg.clone().series_descriptions))
 }
 
 #[instrument(skip(state))]
 pub async fn series_view(
     Path(series): Path<String>,
     Extension(state): Extension<Arc<State>>,
-) -> Result {
+) -> (StatusCode, Markup) {
     let state = state.clone();
+    let cfg = state.cfg.clone();
     let mut posts: Vec<Post> = vec![];
-    let mut result: Vec<u8> = vec![];
 
     for post in &state.blog {
         if post.front_matter.series.is_none() {
@@ -64,13 +52,25 @@ pub async fn series_view(
         posts.push(post.clone());
     }
 
-    if posts.len() == 0 {
-        error!("series not found");
-        return Err(super::Error::SeriesNotFound(series));
-    }
+    posts.reverse();
 
-    templates::series_posts_html(&mut result, series, &posts).unwrap();
-    Ok(Html(result))
+    let desc = cfg.series_desc_map.get(&series);
+
+    if posts.len() == 0 {
+        (
+            StatusCode::NOT_FOUND,
+            tmpl::error(format!("series not found: {series}")),
+        )
+    } else {
+        if let Some(desc) = desc {
+            (StatusCode::OK, tmpl::series_view(&series, desc, &posts))
+        } else {
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                tmpl::error(format!("series metadata in dhall not found: {series}")),
+            )
+        }
+    }
 }
 
 #[instrument(skip(state, headers))]
@@ -78,7 +78,7 @@ pub async fn post_view(
     Path(name): Path<String>,
     Extension(state): Extension<Arc<State>>,
     headers: HeaderMap,
-) -> Result {
+) -> Result<(StatusCode, Markup)> {
     let mut want: Option<Post> = None;
     let want_link = format!("blog/{}", name);
 
@@ -96,15 +96,13 @@ pub async fn post_view(
     };
 
     match want {
-        None => Err(super::Error::PostNotFound(name)),
+        None => Ok((StatusCode::NOT_FOUND, tmpl::not_found(want_link))),
         Some(post) => {
             HIT_COUNTER
                 .with_label_values(&[name.clone().as_str()])
                 .inc();
-            let body = templates::Html(post.body_html.clone());
-            let mut result: Vec<u8> = vec![];
-            templates::blogpost_html(&mut result, post, body, referer)?;
-            Ok(Html(result))
+            let body = maud::PreEscaped(&post.body_html);
+            Ok((StatusCode::OK, tmpl::blog::blog(&post, body, referer)))
         }
     }
 }

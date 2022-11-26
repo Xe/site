@@ -2,7 +2,7 @@
 title: "One Day"
 date: 2018-11-01
 for: "Nicole"
-series: stories
+series: short-story
 ---
 
 In the beginning there was the void. All was the void and the void was all.  

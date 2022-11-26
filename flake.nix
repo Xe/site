@@ -8,7 +8,10 @@
       flake = false;
     };
     flake-utils.url = "github:numtide/flake-utils";
-    naersk.url = "github:nix-community/naersk";
+    naersk = {
+      url = "github:nix-community/naersk";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, flake-utils, naersk, ... }:
@@ -17,27 +20,81 @@
         pkgs = import nixpkgs { inherit system; };
         naersk-lib = naersk.lib."${system}";
         src = ./.;
+
+        tex = with pkgs;
+          texlive.combine { inherit (texlive) scheme-medium bitter titlesec; };
       in rec {
         packages = rec {
           bin = naersk-lib.buildPackage {
             pname = "xesite-bin";
             root = src;
-            buildInputs = with pkgs; [ pkg-config openssl git ];
+            buildInputs = with pkgs; [
+              pkg-config
+              openssl
+              git
+              deno
+              nodePackages.uglify-js
+            ];
           };
 
           config = pkgs.stdenv.mkDerivation {
             pname = "xesite-config";
             inherit (bin) version;
             inherit src;
-            buildInputs = with pkgs; [ dhall ];
+            buildInputs = with pkgs; [ dhall dhallPackages.Prelude ];
 
             phases = "installPhase";
 
             installPhase = ''
-              cd $src
               mkdir -p $out
-              dhall resolve < $src/config.dhall >> $out/config.dhall
+              cp -rf ${pkgs.dhallPackages.Prelude}/.cache .cache
+              chmod -R u+w .cache
+              export XDG_CACHE_HOME=.cache
+              export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall;
+              dhall resolve --file $src/config.dhall >> $out/config.dhall
             '';
+          };
+
+          resumePDF = pkgs.stdenv.mkDerivation {
+            pname = "xesite-resume-pdf";
+            inherit (bin) version;
+            inherit src;
+            buildInputs = with pkgs; [ dhall dhallPackages.Prelude tex pandoc ];
+
+            phases = "installPhase";
+
+            installPhase = ''
+              mkdir -p $out/static/resume
+              cp -rf ${pkgs.dhallPackages.Prelude}/.cache .cache
+              chmod -R u+w .cache
+              export XDG_CACHE_HOME=.cache
+              export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall;
+
+              ln -s $src/dhall/latex/resume.cls
+              dhall text --file $src/dhall/latex/resume.dhall > resume.tex
+
+              xelatex ./resume.tex
+              cp resume.pdf $out/static/resume/resume.pdf
+            '';
+          };
+
+          frontend = pkgs.stdenv.mkDerivation {
+            pname = "xesite-frontend";
+             inherit (bin) version;
+             src = ./src/frontend;
+             buildInputs = with pkgs; [ deno nodePackages.uglify-js ];
+
+             phases = "installPhase";
+
+             installPhase = ''
+               mkdir -p $out/static/js
+               mkdir -p .deno
+               export HOME=./.deno
+
+               deno bundle --config $src/deno.json $src/mastodon_share_button.tsx ./mastodon_share_button.js
+
+               uglifyjs ./mastodon_share_button.js -c -m > $out/static/js/mastodon_share_button.js
+             '';
           };
 
           static = pkgs.stdenv.mkDerivation {
@@ -72,7 +129,7 @@
 
           default = pkgs.symlinkJoin {
             name = "xesite-${bin.version}";
-            paths = [ config posts static bin ];
+            paths = [ config posts static bin frontend resumePDF ];
           };
 
           docker = pkgs.dockerTools.buildLayeredImage {
@@ -100,9 +157,16 @@
             openssl
             pkg-config
 
-            # kubernetes deployment
+            # dhall
             dhall
             dhall-json
+            dhall-lsp-server
+            tex
+            pandoc
+
+            # frontend
+            deno
+            nodePackages.uglify-js
 
             # dependency manager
             niv
@@ -117,6 +181,7 @@
           RUST_LOG = "debug";
           RUST_BACKTRACE = "1";
           GITHUB_SHA = "devel";
+          DHALL_PRELUDE = "${pkgs.dhallPackages.Prelude}";
         };
 
         nixosModules.bot = { config, lib, ... }:

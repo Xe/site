@@ -1,9 +1,9 @@
 ---
 title: "My review of Sonic Frontiers"
 date: 2022-11-25
+series: reviews
 tags:
  - sonicFrontiers
- - review
  - sonicTheHedgehog
 ---
 

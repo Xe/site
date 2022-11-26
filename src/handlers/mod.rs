@@ -1,4 +1,4 @@
-use crate::{app::State, templates};
+use crate::{app::State, tmpl};
 use axum::{
     body,
     extract::Extension,
@@ -7,6 +7,7 @@ use axum::{
 };
 use chrono::{Datelike, Timelike, Utc, Weekday};
 use lazy_static::lazy_static;
+use maud::Markup;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
 use std::sync::Arc;
 use tracing::instrument;
@@ -67,82 +68,74 @@ lazy_static! {
     };
 }
 
-#[instrument]
-pub async fn index() -> Result {
+#[instrument(skip(state))]
+pub async fn index(Extension(state): Extension<Arc<State>>) -> Result<Markup> {
     HIT_COUNTER.with_label_values(&["index"]).inc();
-    let mut result: Vec<u8> = vec![];
-    templates::index_html(&mut result)?;
-    Ok(Html(result))
+    let state = state.clone();
+    let cfg = state.cfg.clone();
+
+    Ok(tmpl::index(&cfg.default_author, &cfg.notable_projects))
 }
 
-#[instrument]
-pub async fn contact() -> Result {
+#[instrument(skip(state))]
+pub async fn contact(Extension(state): Extension<Arc<State>>) -> Markup {
     HIT_COUNTER.with_label_values(&["contact"]).inc();
-    let mut result: Vec<u8> = vec![];
-    templates::contact_html(&mut result)?;
-    Ok(Html(result))
+    let state = state.clone();
+    let cfg = state.cfg.clone();
+
+    crate::tmpl::contact(&cfg.contact_links)
 }
 
 #[instrument]
-pub async fn feeds() -> Result {
+pub async fn feeds() -> Markup {
     HIT_COUNTER.with_label_values(&["feeds"]).inc();
-    let mut result: Vec<u8> = vec![];
-    templates::feeds_html(&mut result)?;
-    Ok(Html(result))
+    crate::tmpl::feeds()
 }
 
 #[axum_macros::debug_handler]
 #[instrument(skip(state))]
-pub async fn salary_transparency(Extension(state): Extension<Arc<State>>) -> Result {
+pub async fn salary_transparency(Extension(state): Extension<Arc<State>>) -> Result<Markup> {
     HIT_COUNTER
         .with_label_values(&["salary_transparency"])
         .inc();
     let state = state.clone();
-    let mut result: Vec<u8> = vec![];
-    templates::salary_transparency(&mut result, state.cfg.clone())?;
-    Ok(Html(result))
+    let cfg = state.cfg.clone();
+
+    Ok(tmpl::salary_transparency(&cfg.job_history))
 }
 
 #[axum_macros::debug_handler]
-#[instrument(skip(state))]
-pub async fn resume(Extension(state): Extension<Arc<State>>) -> Result {
+pub async fn resume() -> Markup {
     HIT_COUNTER.with_label_values(&["resume"]).inc();
-    let state = state.clone();
-    let mut result: Vec<u8> = vec![];
-    templates::resume_html(&mut result, templates::Html(state.resume.clone()))?;
-    Ok(Html(result))
+
+    tmpl::resume()
 }
 
 #[instrument(skip(state))]
-pub async fn patrons(Extension(state): Extension<Arc<State>>) -> Result {
+pub async fn patrons(Extension(state): Extension<Arc<State>>) -> (StatusCode, Markup) {
     HIT_COUNTER.with_label_values(&["patrons"]).inc();
     let state = state.clone();
-    let mut result: Vec<u8> = vec![];
     match &state.patrons {
-        None => Err(Error::NoPatrons),
-        Some(patrons) => {
-            templates::patrons_html(&mut result, patrons.clone())?;
-            Ok(Html(result))
-        }
+        None => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            tmpl::error("Patreon API config is broken, no patrons in ram"),
+        ),
+        Some(patrons) => (StatusCode::IM_A_TEAPOT, tmpl::patrons(&patrons)),
     }
 }
 
 #[axum_macros::debug_handler]
 #[instrument(skip(state))]
-pub async fn signalboost(Extension(state): Extension<Arc<State>>) -> Result {
+pub async fn signalboost(Extension(state): Extension<Arc<State>>) -> Markup {
     HIT_COUNTER.with_label_values(&["signalboost"]).inc();
     let state = state.clone();
-    let mut result: Vec<u8> = vec![];
-    templates::signalboost_html(&mut result, state.signalboost.clone())?;
-    Ok(Html(result))
+    tmpl::signalboost(&state.signalboost)
 }
 
 #[instrument]
-pub async fn not_found() -> Result {
+pub async fn not_found(uri: axum::http::Uri) -> (StatusCode, Markup) {
     HIT_COUNTER.with_label_values(&["not_found"]).inc();
-    let mut result: Vec<u8> = vec![];
-    templates::notfound_html(&mut result, "some path".into())?;
-    Ok(Html(result))
+    (StatusCode::NOT_FOUND, tmpl::not_found(uri.path()))
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -170,8 +163,8 @@ pub type Result<T = Html<Vec<u8>>> = std::result::Result<T, Error>;
 
 impl IntoResponse for Error {
     fn into_response(self) -> Response {
-        let mut result: Vec<u8> = vec![];
-        templates::error_html(&mut result, format!("{}", self)).unwrap();
+        let result = tmpl::error(format!("{}", self));
+        let result = result.0;
 
         let body = body::boxed(body::Full::from(result));
 

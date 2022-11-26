@@ -4,8 +4,9 @@ extern crate tracing;
 use axum::{
     body,
     extract::Extension,
+    handler::Handler,
     http::header::{self, HeaderValue, CONTENT_TYPE},
-    response::{Html, Response},
+    response::Response,
     routing::{get, get_service},
     Router,
 };
@@ -211,6 +212,7 @@ async fn main() -> Result<()> {
                 )
             }),
         )
+        .fallback(handlers::not_found.into_service())
         .layer(middleware);
 
     #[cfg(target_os = "linux")]
@@ -276,16 +278,12 @@ async fn metrics() -> Response {
         .unwrap()
 }
 
-async fn go_vanity() -> Html<Vec<u8>> {
-    let mut buffer: Vec<u8> = vec![];
-    templates::gitea_html(
-        &mut buffer,
+async fn go_vanity() -> maud::Markup {
+    tmpl::gitea(
         "christine.website/jsonfeed",
         "https://tulpa.dev/Xe/jsonfeed",
         "master",
     )
-    .unwrap();
-    Html(buffer)
 }
 
 include!(concat!(env!("OUT_DIR"), "/templates.rs"));

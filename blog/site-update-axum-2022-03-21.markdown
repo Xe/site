@@ -1,6 +1,7 @@
 ---
 title: "Site Update: Axum"
 date: 2022-03-21
+series: site-update
 ---
 
 I have made a bunch of huge changes to my website that hopefully you won't

@@ -6,6 +6,7 @@ use std::{borrow::Borrow, cmp::Ordering, path::PathBuf};
 use tokio::fs;
 
 pub mod frontmatter;
+pub mod schemaorg;
 
 #[derive(Eq, PartialEq, Debug, Clone, Serialize, Deserialize)]
 pub struct Post {
@@ -24,6 +25,19 @@ pub struct NewPost {
     pub title: String,
     pub summary: String,
     pub link: String,
+}
+
+impl Into<schemaorg::Article> for &Post {
+    fn into(self) -> schemaorg::Article {
+        schemaorg::Article {
+            context: "https://schema.org".to_string(),
+            r#type: "Article".to_string(),
+            headline: self.front_matter.title.clone(),
+            image: "https://xeiaso.net/static/img/avatar.png".to_string(),
+            url: format!("https://xeiaso.net/{}", self.link),
+            date_published: self.date.format("%Y-%m-%d").to_string(),
+        }
+    }
 }
 
 impl Into<xe_jsonfeed::Item> for Post {
@@ -99,10 +113,12 @@ async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Resul
     let link = format!("{}/{}", dir, fname.file_stem().unwrap().to_str().unwrap());
     let body_html = xesite_markdown::render(&body)
         .wrap_err_with(|| format!("can't parse markdown for {:?}", fname))?;
-    let date: DateTime<FixedOffset> =
-        DateTime::<Utc>::from_utc(NaiveDateTime::new(date, NaiveTime::from_hms(0, 0, 0)), Utc)
-            .with_timezone(&Utc)
-            .into();
+    let date: DateTime<FixedOffset> = DateTime::<Utc>::from_utc(
+        NaiveDateTime::new(date, NaiveTime::from_hms_opt(0, 0, 0).unwrap()),
+        Utc,
+    )
+    .with_timezone(&Utc)
+    .into();
 
     let mentions: Vec<mi::WebMention> = match cli {
         Some(cli) => cli

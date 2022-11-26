@@ -1,8 +1,8 @@
 [package]
 name = "xesite"
-version = "2.5.0"
+version = "3.0.0"
 authors = ["Xe Iaso <me@xeiaso.net>"]
-edition = "2018"
+edition = "2021"
 build = "src/build.rs"
 repository = "https://github.com/Xe/site"
 license = "zlib"

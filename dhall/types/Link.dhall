@@ -1,1 +1,3 @@
-{ Type = { url : Text, title : Text }, default = { url = "", title = "" } }
+{ Type = { url : Text, title : Text, description : Text }
+, default = { url = "", title = "", description = "" }
+}

@@ -1,7 +1,7 @@
 ---
 title: A Tool to Aid Forgetfulness
 date: 2022-01-12
-series: stories
+series: short-story
 ---
 
 The Egyptian God Thoth lived in the Egyptian city of Naucratis. Thoth was the

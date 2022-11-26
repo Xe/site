@@ -1,7 +1,7 @@
 use crate::{post::Post, signalboost::Person};
 use chrono::prelude::*;
 use color_eyre::eyre::Result;
-use std::{fs, path::PathBuf, sync::Arc};
+use std::{path::PathBuf, sync::Arc};
 use tracing::{error, instrument};
 
 pub mod config;
@@ -48,7 +48,6 @@ pub const ICON: &'static str = "https://xeiaso.net/static/img/avatar.png";
 pub struct State {
     pub cfg: Arc<Config>,
     pub signalboost: Vec<Person>,
-    pub resume: String,
     pub blog: Vec<Post>,
     pub gallery: Vec<Post>,
     pub talks: Vec<Post>,
@@ -62,8 +61,6 @@ pub struct State {
 pub async fn init(cfg: PathBuf) -> Result<State> {
     let cfg: Arc<Config> = Arc::new(serde_dhall::from_file(cfg).parse()?);
     let sb = cfg.signalboost.clone();
-    let resume = fs::read_to_string(cfg.clone().resume_fname.clone())?;
-    let resume: String = xesite_markdown::render(&resume)?;
     let mi = mi::Client::new(
         cfg.clone().mi_token.clone(),
         crate::APPLICATION_NAME.to_string(),
@@ -85,7 +82,7 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
     everything.sort();
     everything.reverse();
 
-    let today = Utc::today();
+    let today = Utc::now().date_naive();
     let everything: Vec<Post> = everything
         .into_iter()
         .filter(|p| today.num_days_from_ce() >= p.date.num_days_from_ce())
@@ -141,7 +138,6 @@ pub async fn init(cfg: PathBuf) -> Result<State> {
         mi,
         cfg,
         signalboost: sb,
-        resume,
         blog,
         gallery,
         talks,
