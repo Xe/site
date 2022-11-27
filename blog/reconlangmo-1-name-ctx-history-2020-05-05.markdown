@@ -16,7 +16,7 @@ on out) are a simpler model of this. You might be familiar with
 [Klingon][tlhnganhol] from the Star Trek series, the [various forms of
 Elvish][elvish] as described by J. R. R. Tolkien or [Dothraki][dothraki] from
 Game of Thrones. This series will show an example of how one of those kinds of
-languages are created. 
+languages are created.
 
 [conlangs]: https://en.wikipedia.org/wiki/Constructed_language
 [tlhnganhol]: https://en.wikipedia.org/wiki/Klingon_language
@@ -68,7 +68,7 @@ features I plan to include are:
 - A decorative script that I'll turn into a font
 
 [seximal]: https://www.seximal.net
-[lojban]: https://lojban.pw/cll/uncll-1.2.6/xhtml_section_chunks/chapter-tour.html#section-bridi
+[lojban]: https://web.archive.org/web/20200928095138/https://lojban.pw/cll/uncll-1.2.6/xhtml_section_chunks/chapter-tour.html
 [salishan]: https://en.wikipedia.org/wiki/Salishan_languages
 [apriori]: https://en.wikipedia.org/wiki/Constructed_language#A_priori_and_a_posteriori_languages
 
@@ -88,14 +88,14 @@ want to go through and take the time to learn the ins and outs of a tool I
 created for myself to archive my personal thoughts, they probably deserve to be
 able to read them. Otherwise, this would allow me to write my diary from pretty
 much anywhere, even in plain sight out in public. People can't shoulder-surf and
-read what they literally cannot understand. 
+read what they literally cannot understand.
 
 ---
 
 I plan to continue going through this series as the prompts come out and will
 put my responses on my blog along with explanations, analysis and sample code
 (where relevant). I will probably also reformat these posts (and relevant
-dictionary files) to an eBook and later into a reference grammar book. 
+dictionary files) to an eBook and later into a reference grammar book.
 
 Like I said though, this project is for myself. I do not expect this language to
 change the world for anyone but me. Let's see where this rabbit hole goes.
