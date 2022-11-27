@@ -62,10 +62,11 @@ here](https://github.com/Xe/waifud). It is released under the terms of the
 permissive [Be Gay, Do Crimes](https://github.com/Xe/waifud/blob/main/LICENSE)
 license, which should sufficiently scare people away for now while I implement
 the service. The biggest thing in the repo right now is
-[`mkvm`](https://github.com/Xe/waifud/tree/main/cmd/mkvm), which is essentially
+[`mkvm`](https://github.com/Xe/waifud/tree/df8e362034e3923158813a9260cf9d3cf399ebf6/cmd/mkvm),
+which is essentially
 the prototype of this project. It downloads a cloud template, injects it into a
 ZFS zvol and then configures libvirt to use that ZFS zvol as the root filesystem
-of the virtual machine. 
+of the virtual machine.
 
 This tool works great and I use it very often both personally and in work
 settings, however one of the biggest problems that it has is that it assumes
@@ -77,7 +78,7 @@ I'm still pondering options.
 
 I would also like to have some kind of web management interface for waifud.
 Historically frontend web development has been one of my biggest weaknesses. I
-would like to use [Alpine.js](https://alpinejs.dev) to make an admin panel. 
+would like to use [Alpine.js](https://alpinejs.dev) to make an admin panel.
 
 At a high level, I want waifuctl to have the following features:
 
