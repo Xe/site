@@ -75,7 +75,8 @@ setting various weird environment variables, setting build overrides, it was a
 catastrophe.
 
 Other people have reported that you need to use
-[Lutris](https://dumbotaku.com/info/401) to install and use VSeeFace on Linux.
+[Lutris](https://web.archive.org/web/20220830184802/https://dumbotaku.com/info/401)
+to install and use VSeeFace on Linux.
 This did not work. This did not work at all. Trying to do it this way on a NixOS
 machine was an absolute waste of my time and was demoralizing and frustrating.
 
