@@ -242,7 +242,7 @@ scripts. I personally went with `RemoteSigned`.
 I use stuff cribbed from [oh my fish](https://github.com/oh-my-fish/oh-my-fish)
 for my fish prompt. I googled "oh my powershell" and hoped I would get lucky 
 with finding some nice batteries-included tools. 
-[I got lucky](https://ohmyposh.dev/docs/installation/).
+[I got lucky](https://ohmyposh.dev/docs).
 
 After looking through the options I saw a theme named `sorin` that looks like
 this:
