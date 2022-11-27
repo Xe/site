@@ -95,10 +95,10 @@ home.cetacean.club {
 For more information on the Caddy configuration directives used here, see the
 following:
 
-- [tls](https://caddyserver.com/v1/docs/tls)
-- [proxy](https://caddyserver.com/v1/docs/proxy)
-- [ext](https://caddyserver.com/v1/docs/ext)
-- [root](https://caddyserver.com/v1/docs/root)
+- [tls](https://web.archive.org/web/20200505225233/https://caddyserver.com/v1/docs/tls)
+- [proxy](https://web.archive.org/web/20200505225233/https://caddyserver.com/v1/docs/proxy)
+- [ext](https://web.archive.org/web/20200505225233/https://caddyserver.com/v1/docs/ext)
+- [root](https://web.archive.org/web/20200505225233/https://caddyserver.com/v1/docs/root)
 
 ## Caveats
 
