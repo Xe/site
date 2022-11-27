@@ -49,7 +49,7 @@ source code to the image, builds it (in a way that makes the resulting binary a
 [static executable][staticbin]), and creates the runtime environment for it.
 
 [godockerfile]: https://github.com/Xe/dockerfiles/blob/master/lang/go/Dockerfile
-[staticbin]: https://oddcode.daveamit.com/2018/08/16/statically-compile-golang-binary/
+[staticbin]: https://web.archive.org/web/20220504183916/https://oddcode.daveamit.com/2018/08/16/statically-compile-golang-binary/
 
 Let's let it build and see how big the result is:
 
@@ -70,7 +70,7 @@ Investigating this image with [dive][dive], we see the following:
   binary was _statically linked_ to specifically avoid this)
 - Most of the files in the docker image are unrelated to my website's
   functionality and are involved with the normal functioning of Linux systems
-  
+
 Granted, [Alpine Linux][alpine] does a good job at keeping this chaff to a
 minimum, but it is still there, still needs to be updated (causing all of my
 docker images to be rebuilt and applications to be redeployed) and still takes
@@ -248,7 +248,7 @@ $ docker images | grep xena
 xena/christinewebsite  latest  0d1ccd676af8  50 years ago  94.6MB
 ```
 
-And the output is 16 megabytes smaller. 
+And the output is 16 megabytes smaller.
 
 The image age might look weird at first, but it's part of the reproducibility
 Nix offers. The date an image was built is something that can change with time
@@ -272,7 +272,7 @@ are:
 And that's it. This is _fantastic_. Nearly all of the disk usage has been
 eliminated. If someone manages to trick my website into executing code, that
 attacker cannot do anything but run more copies of my website (that will
-immediately fail and die because the port is already allocated). 
+immediately fail and die because the port is already allocated).
 
 This strategy pans out to more complicated projects too. Consider a case where a
 frontend and backend need to be built and deployed as a unit. Let's create a new
