@@ -129,7 +129,7 @@ I ended up with this image:
 </center>
 
 Then with some clever use of the
-[Chroma key filter in VRChat](https://docs.vrchat.com/docs/vrchat-201812)
+[Chroma key filter in VRChat](https://web.archive.org/web/20180612173651/https://docs.vrchat.com/docs/vrchat-201812)
 I was able to get some basic compositing of my avatar onto the picture. I
 fiddled with the placement of things and then I was able to declare success
 with this image I posted to Twitter:
