@@ -201,7 +201,7 @@ which will implicitly pull from the Docker Hub. This can lead to bad things.
 If you would like to have a call with me for examining your process for building
 Docker images in CI and get a list of actionable suggestions for how to work
 around this, [contact me](/contact) so that we can discuss pricing and
-scheduling. 
+scheduling.
 
 I have been using Docker for my entire professional career (way back since
 Docker required you to recompile your kernel to enable cgroup support in public
@@ -216,7 +216,8 @@ something out.
 Here's hoping that the immigration purgatory ends soon. I'm lucky enough to have
 enough cash built up that I can weather this jobless month. I've been using this
 time to work on personal projects (like mi and
-[wasmcloud](https://wasmcloud.app)) and better myself. I've also done a little
+[wasmcloud](https://tulpa.dev/within/wasmcloud)) and better myself.
+I've also done a little
 writing that I plan to release in the future after I clean it up.
 
 In retrospect I probably should have done [NaNoWriMo](https://nanowrimo.org/)
