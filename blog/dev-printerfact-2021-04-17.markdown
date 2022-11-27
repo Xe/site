@@ -41,7 +41,7 @@ At a high level to do something like this you need to have a few things:
 - A way to run tests to ensure that kernel is behaving cromulently
 - A way to be able to _repeat_ these tests on another machine to be more certain
   that the thing you made works more than once
-  
+
 To aid in that first step, the Rust for Linux team shipped a [Nix
 config](https://github.com/Rust-for-Linux/nix) to let you `nix-build -A kernel`
 yourself a new kernel whenever you wanted. So let's do that and see what
@@ -182,7 +182,7 @@ $ du -hs /nix/store/yf2a8gvaypch9p4xxbk7151x9lq2r6ia-linux-5.11
 ## Ensuring Cromulence
 
 > A noble spirit embiggens the smallest man.
-> 
+>
 > I've never heard of the word "embiggens" before.
 >
 > I don't know why, it's a perfectly cromulent word
@@ -361,7 +361,7 @@ impl FileOperations for RustFile {
         println!("user attempted to read from the file!");
 
         Ok(0)
-    } 
+    }
 }
 
 struct PrinterFacts {
@@ -466,7 +466,7 @@ impl RustFile {
     fn get_fact(&self) -> KernelResult<&'static str> {
         let mut ent = [0u8; 1]; // Mara\ declare a 1-sized array of bytes
         kernel::random::getrandom(&mut ent)?; // Mara\ fill it with entropy
-        
+
         Ok(FACTS[ent[0] as usize % FACTS.len()]) // Mara\ return a random fact
     }
 }
@@ -556,7 +556,7 @@ a_tier = []
 for chara in characters:
   if "a" in chara:
     a_tier.append(chara)
-    
+
 print(a_tier)
 ```
 
@@ -619,7 +619,7 @@ machine # cat: /dev/printerfact: Invalid argument
 ```
 
 Oh dear. It's failing. Let's take a closer look at that
-[FileOperations](https://rust-for-linux.github.io/docs/kernel/file_operations/trait.FileOperations.html)
+[FileOperations](https://web.archive.org/web/20210621170531/https://rust-for-linux.github.io/docs/kernel/file_operations/trait.FileOperations.html)
 trait and see if there are any hints. It looks like the
 `declare_file_operations!` macro is setting the `TO_USE` constant somehow. Let's
 see what it's doing under the hood:
