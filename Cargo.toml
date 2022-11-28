@@ -10,7 +10,7 @@ license = "zlib"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-axum = { version = "0.5", features = ["headers"] }
+axum = { version = "0.6", features = ["headers"] }
 axum-macros = "0.2"
 axum-extra = "0.3"
 color-eyre = "0.6"
