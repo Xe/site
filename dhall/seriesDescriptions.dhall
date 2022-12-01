@@ -17,6 +17,11 @@ let descriptions
             "Information about constructed languages I've attempted to make."
         }
       , Desc::{
+        , name = "CVE"
+        , details =
+            "Vulnerability information and my responsible disclosures of said vulnerabilities."
+        }
+      , Desc::{
         , name = "dreams"
         , details = "My attempts to write about my dreams"
         }

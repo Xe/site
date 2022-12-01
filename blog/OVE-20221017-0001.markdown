@@ -5,6 +5,7 @@ tags:
  - minecraft
  - polymc
  - infosec
+series: CVE
 ---
 
 <xeblog-hero ai="Waifu Diffusion V1.3" file="cyberpunk-forest-fire" prompt="studio ghibli, cyberpunk, trash can, fire, forest fire, forest, lots of fire"></xeblog-hero>

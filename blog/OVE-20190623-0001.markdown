@@ -1,10 +1,11 @@
 ---
-title: "OVE-20190623-0001"
+title: "OVE-20190623-0001: V playground allows remote users to run arbitrary code as root"
 date: 2019-06-24
 tags:
  - v
  - security
  - release
+series: CVE
 ---
 
 ## Within Security Advisory
