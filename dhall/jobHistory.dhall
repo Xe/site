@@ -67,82 +67,173 @@ let tailscale =
       }
 
 in  [ Job::{
-      , company = Company::{
-        , name = "Symplicity"
-        , tagline =
-            "a company that provides students with the tools and connections they need to enhance their employability while preparing to succeed in today's job market."
-        , url = Some "https://www.symplicity.com"
-        , location = Location::{
-          , city = "Arlington"
-          , stateOrProvince = "VA"
-          , country = "USA"
-          , remote = False
-          }
-        }
-      , title = "Junior Systems Administrator"
-      , startDate = "2013-11-11"
-      , endDate = Some "2014-01-06"
-      , daysWorked = Some 56
-      , salary = annual 50000
-      , leaveReason = Some "terminated"
-      , locations =
-        [ Location::{
-          , city = "Arlington"
-          , stateOrProvince = "VA"
-          , country = "USA"
-          , remote = False
-          }
-        ]
-      , highlights = [ "Python message queue processing" ]
-      , hideFromResume = True
-      }
-    , Job::{
-      , company = Company::{
-        , name = "OpDemand"
-        , defunct = True
-        , tagline =
-            "the company behind the open source project Deis, a distributed platform-as-a-service (PaaS) designed from the ground up to emulate Heroku but on privately owned servers."
-        , location = Location::{
-          , city = "Boulder"
-          , stateOrProvince = "CO"
-          , country = "USA"
-          }
-        }
-      , title = "Software Engineering Intern"
-      , startDate = "2014-07-14"
-      , endDate = Some "2014-08-27"
-      , daysWorked = Some 44
-      , daysBetween = Some 189
-      , salary = annual 35000
-      , leaveReason = Some "terminated"
-      , locations = [ mercerIsland ]
+      , company = tailscale
+      , title = "Archmage of Infrastructure"
+      , startDate = "2022-03-01"
+      , salary = annualCAD 147150
+      , locations = [ ottawa ]
       , highlights =
-        [ "Built new base image for Deis components"
-        , "Research and development on a new builder component"
+        [ "The first developer relations person at Tailscale"
+        , "Public-facing content writing"
+        , "Public speaking"
+        , "Developing custom integration solutions and supporting them"
         ]
-      , hideFromResume = True
+      }
+    , Job::{
+      , company = tailscale
+      , title = "Software Designer"
+      , startDate = "2020-12-14"
+      , endDate = Some "2022-03-01"
+      , daysWorked = Some 442
+      , daysBetween = Some 0
+      , salary = annualCAD 135000
+      , leaveReason = Some "raise"
+      , locations = [ montreal // { remote = True }, ottawa ]
+      , highlights =
+        [ "Go programming"
+        , "SQL integrations"
+        , "Public-facing content writing"
+        , "Customer support"
+        ]
       }
     , Job::{
       , company = Company::{
-        , name = "Appen"
-        , url = Some "https://appen.com/"
+        , name = "Lightspeed POS"
+        , url = Some "https://lightspeedhq.com"
         , tagline =
-            "is a company that uses crowdsourcing to have its customers submit tasks to be done, similar to Amazon's Mechanical Turk."
-        , location = mountainView // { city = "San Francisco", remote = True }
+            "a provider of retail, ecommerce and point-of-sale solutions for small and medium scale businesses."
+        , location = montreal
+        }
+      , title = "Expert principal en fiabilité du site"
+      , startDate = "2019-05-06"
+      , endDate = Some "2020-11-27"
+      , daysWorked = Some 540
+      , daysBetween = Some 48
+      , salary =
+              annualCAD 115000
+          //  { stock = Some Stock::{ amount = 7500, liquid = True } }
+      , leaveReason = Some "quit"
+      , locations = [ montreal ]
+      , highlights =
+        [ "Migration from cloud to cloud"
+        , "Work on the cloud platform initiative"
+        , "Crafting reliable infrastructure for clients of customers"
+        , "Creation of an internally consistent and extensible command line interface for internal tooling"
+        ]
+      }
+    , Job::{
+      , company = Company::{
+        , name = "Heroku"
+        , url = Some "https://heroku.com"
+        , tagline =
+            "a cloud Platform-as-a-Service (PaaS) that created the term 'platform as a service'. Heroku currently supports several programming languages that are commonly used on the web. Heroku, one of the first cloud platforms, has been in development since June 2007, when it supported only the Ruby programming language, but now supports Java, Node.js, Scala, Clojure, Python, PHP, and Go."
+        , location = sf
+        }
+      , title = "Senior Software Engineer"
+      , startDate = "2017-11-13"
+      , endDate = Some "2019-03-08"
+      , daysWorked = Some 480
+      , daysBetween = Some 0
+      , salary = annual 150000
+      , leaveReason = Some "quit"
+      , locations = [ mountainView, bellevue ]
+      , highlights =
+        [ "JVM Application Metrics"
+        , "Go Runtime Metrics Agent"
+        , "Other backend fixes and improvements on Threshold Autoscaling and Threshold Alerting"
+        , "Public-facing blogpost writing"
+        ]
+      }
+    , Job::{
+      , company = Company::{
+        , name = "MBO Partners (Heroku)"
+        , tagline = "a staffing agency used to contract me for Heroku."
+        , location = Location::{
+          , city = "Herndon"
+          , stateOrProvince = "VA"
+          , country = "USA"
+          }
         }
       , title = "Consultant"
       , contract = True
-      , startDate = "2014-09-17"
-      , endDate = Some "2014-10-15"
-      , daysWorked = Some 28
+      , startDate = "2017-02-13"
+      , endDate = Some "2017-11-13"
+      , daysWorked = Some 273
+      , daysBetween = Some 83
+      , salary = hourly 120
+      , leaveReason = Some "hired"
+      , locations = [ mountainView ]
+      }
+    , Job::{
+      , company = Company::{
+        , name = "Backplane.io"
+        , defunct = True
+        , location = sf
+        }
+      , title = "Software Engineer"
+      , startDate = "2016-08-24"
+      , endDate = Some "2016-11-22"
+      , daysWorked = Some 90
       , daysBetween = Some 21
-      , salary = hourly 90
-      , leaveReason = Some "contract not renewed"
-      , locations = [ mercerIsland ]
+      , salary = annual 105000 // { stock = Some Stock::{ amount = 85000 } }
+      , leaveReason = Some "terminated"
+      , locations = [ sf ]
       , highlights =
-        [ "Research and development on scalable Linux deployments on AWS via CoreOS and Docker"
-        , "Development of in-house tools to speed instance creation"
-        , "Laid groundwork on the creation and use of better tools for managing large clusters of CoreOS and Fleet machines"
+        [ "Performance monitoring of production servers"
+        , "Continuous deployment and development in Go"
+        , "Learning a lot about HTTP/2 and load balancing"
+        ]
+      }
+    , Job::{
+      , company = Company::{
+        , name = "Pure Storage"
+        , url = Some "https://www.purestorage.com/"
+        , tagline =
+            "a Mountain View, California-based enterprise data flash storage company founded in 2009. It is traded on the NYSE (PSTG)."
+        , location = mountainView
+        }
+      , title = "Member of Technical Staff"
+      , startDate = "2016-04-04"
+      , endDate = Some "2016-08-03"
+      , daysWorked = Some 121
+      , daysBetween = Some 3
+      , salary =
+              annual 135000
+          //  { stock = Some Stock::{
+                , amount = 5000
+                , liquid = True
+                , kind = StockKind.Grant
+                }
+              }
+      , leaveReason = Some "quit"
+      , locations = [ mountainView ]
+      , highlights = [ "Python 2 code maintenance", "Working with Foone" ]
+      }
+    , Job::{
+      , company = imvu
+      , title = "Systems Administrator"
+      , startDate = "2016-03-08"
+      , endDate = Some "2016-04-01"
+      , daysWorked = Some 24
+      , daysBetween = Some 1
+      , salary = annual 105000
+      , leaveReason = Some "quit"
+      , locations = [ mountainView // { city = "Redwood City" } ]
+      }
+    , Job::{
+      , company = imvu
+      , title = "Site Reliability Engineer"
+      , startDate = "2015-03-30"
+      , endDate = Some "2016-03-07"
+      , daysWorked = Some 343
+      , daysBetween = Some 49
+      , salary = annual 125000 // { stock = Some Stock::{ amount = 20000 } }
+      , leaveReason = Some "demoted"
+      , locations = [ mountainView ]
+      , highlights =
+        [ "Wrote up technical designs"
+        , "Implemented technical designs on an over 800 machine cluster"
+        , "Continuous learning of a lot of very powerful systems and improving upon them when it is needed"
         ]
       }
     , Job::{
@@ -174,173 +265,82 @@ in  [ Job::{
         ]
       }
     , Job::{
-      , company = imvu
-      , title = "Site Reliability Engineer"
-      , startDate = "2015-03-30"
-      , endDate = Some "2016-03-07"
-      , daysWorked = Some 343
-      , daysBetween = Some 49
-      , salary = annual 125000 // { stock = Some Stock::{ amount = 20000 } }
-      , leaveReason = Some "demoted"
-      , locations = [ mountainView ]
-      , highlights =
-        [ "Wrote up technical designs"
-        , "Implemented technical designs on an over 800 machine cluster"
-        , "Continuous learning of a lot of very powerful systems and improving upon them when it is needed"
-        ]
-      }
-    , Job::{
-      , company = imvu
-      , title = "Systems Administrator"
-      , startDate = "2016-03-08"
-      , endDate = Some "2016-04-01"
-      , daysWorked = Some 24
-      , daysBetween = Some 1
-      , salary = annual 105000
-      , leaveReason = Some "quit"
-      , locations = [ mountainView // { city = "Redwood City" } ]
-      }
-    , Job::{
       , company = Company::{
-        , name = "Pure Storage"
-        , url = Some "https://www.purestorage.com/"
+        , name = "Appen"
+        , url = Some "https://appen.com/"
         , tagline =
-            "a Mountain View, California-based enterprise data flash storage company founded in 2009. It is traded on the NYSE (PSTG)."
-        , location = mountainView
-        }
-      , title = "Member of Technical Staff"
-      , startDate = "2016-04-04"
-      , endDate = Some "2016-08-03"
-      , daysWorked = Some 121
-      , daysBetween = Some 3
-      , salary =
-              annual 135000
-          //  { stock = Some Stock::{
-                , amount = 5000
-                , liquid = True
-                , kind = StockKind.Grant
-                }
-              }
-      , leaveReason = Some "quit"
-      , locations = [ mountainView ]
-      , highlights = [ "Python 2 code maintenance", "Working with Foone" ]
-      }
-    , Job::{
-      , company = Company::{
-        , name = "Backplane.io"
-        , defunct = True
-        , location = sf
-        }
-      , title = "Software Engineer"
-      , startDate = "2016-08-24"
-      , endDate = Some "2016-11-22"
-      , daysWorked = Some 90
-      , daysBetween = Some 21
-      , salary = annual 105000 // { stock = Some Stock::{ amount = 85000 } }
-      , leaveReason = Some "terminated"
-      , locations = [ sf ]
-      , highlights =
-        [ "Performance monitoring of production servers"
-        , "Continuous deployment and development in Go"
-        , "Learning a lot about HTTP/2 and load balancing"
-        ]
-      }
-    , Job::{
-      , company = Company::{
-        , name = "MBO Partners (Heroku)"
-        , tagline = "a staffing agency used to contract me for Heroku."
-        , location = Location::{
-          , city = "Herndon"
-          , stateOrProvince = "VA"
-          , country = "USA"
-          }
+            "is a company that uses crowdsourcing to have its customers submit tasks to be done, similar to Amazon's Mechanical Turk."
+        , location = mountainView // { city = "San Francisco", remote = True }
         }
       , title = "Consultant"
       , contract = True
-      , startDate = "2017-02-13"
-      , endDate = Some "2017-11-13"
-      , daysWorked = Some 273
-      , daysBetween = Some 83
-      , salary = hourly 120
-      , leaveReason = Some "hired"
-      , locations = [ mountainView ]
-      }
-    , Job::{
-      , company = Company::{
-        , name = "Heroku"
-        , url = Some "https://heroku.com"
-        , tagline =
-            "a cloud Platform-as-a-Service (PaaS) that created the term 'platform as a service'. Heroku currently supports several programming languages that are commonly used on the web. Heroku, one of the first cloud platforms, has been in development since June 2007, when it supported only the Ruby programming language, but now supports Java, Node.js, Scala, Clojure, Python, PHP, and Go."
-        , location = sf
-        }
-      , title = "Senior Software Engineer"
-      , startDate = "2017-11-13"
-      , endDate = Some "2019-03-08"
-      , daysWorked = Some 480
-      , daysBetween = Some 0
-      , salary = annual 150000
-      , leaveReason = Some "quit"
-      , locations = [ mountainView, bellevue ]
+      , startDate = "2014-09-17"
+      , endDate = Some "2014-10-15"
+      , daysWorked = Some 28
+      , daysBetween = Some 21
+      , salary = hourly 90
+      , leaveReason = Some "contract not renewed"
+      , locations = [ mercerIsland ]
       , highlights =
-        [ "JVM Application Metrics"
-        , "Go Runtime Metrics Agent"
-        , "Other backend fixes and improvements on Threshold Autoscaling and Threshold Alerting"
-        , "Public-facing blogpost writing"
+        [ "Research and development on scalable Linux deployments on AWS via CoreOS and Docker"
+        , "Development of in-house tools to speed instance creation"
+        , "Laid groundwork on the creation and use of better tools for managing large clusters of CoreOS and Fleet machines"
         ]
       }
     , Job::{
       , company = Company::{
-        , name = "Lightspeed POS"
-        , url = Some "https://lightspeedhq.com"
+        , name = "OpDemand"
+        , defunct = True
         , tagline =
-            "a provider of retail, ecommerce and point-of-sale solutions for small and medium scale businesses."
-        , location = montreal
+            "the company behind the open source project Deis, a distributed platform-as-a-service (PaaS) designed from the ground up to emulate Heroku but on privately owned servers."
+        , location = Location::{
+          , city = "Boulder"
+          , stateOrProvince = "CO"
+          , country = "USA"
+          }
         }
-      , title = "Expert principal en fiabilité du site"
-      , startDate = "2019-05-06"
-      , endDate = Some "2020-11-27"
-      , daysWorked = Some 540
-      , daysBetween = Some 48
-      , salary =
-              annualCAD 115000
-          //  { stock = Some Stock::{ amount = 7500, liquid = True } }
-      , leaveReason = Some "quit"
-      , locations = [ montreal ]
+      , title = "Software Engineering Intern"
+      , startDate = "2014-07-14"
+      , endDate = Some "2014-08-27"
+      , daysWorked = Some 44
+      , daysBetween = Some 189
+      , salary = annual 35000
+      , leaveReason = Some "terminated"
+      , locations = [ mercerIsland ]
       , highlights =
-        [ "Migration from cloud to cloud"
-        , "Work on the cloud platform initiative"
-        , "Crafting reliable infrastructure for clients of customers"
-        , "Creation of an internally consistent and extensible command line interface for internal tooling"
+        [ "Built new base image for Deis components"
+        , "Research and development on a new builder component"
         ]
+      , hideFromResume = True
       }
     , Job::{
-      , company = tailscale
-      , title = "Software Designer"
-      , startDate = "2020-12-14"
-      , endDate = Some "2022-03-01"
-      , daysWorked = Some 442
-      , daysBetween = Some 0
-      , salary = annualCAD 135000
-      , leaveReason = Some "raise"
-      , locations = [ montreal // { remote = True }, ottawa ]
-      , highlights =
-        [ "Go programming"
-        , "SQL integrations"
-        , "Public-facing content writing"
-        , "Customer support"
+      , company = Company::{
+        , name = "Symplicity"
+        , tagline =
+            "a company that provides students with the tools and connections they need to enhance their employability while preparing to succeed in today's job market."
+        , url = Some "https://www.symplicity.com"
+        , location = Location::{
+          , city = "Arlington"
+          , stateOrProvince = "VA"
+          , country = "USA"
+          , remote = False
+          }
+        }
+      , title = "Junior Systems Administrator"
+      , startDate = "2013-11-11"
+      , endDate = Some "2014-01-06"
+      , daysWorked = Some 56
+      , salary = annual 50000
+      , leaveReason = Some "terminated"
+      , locations =
+        [ Location::{
+          , city = "Arlington"
+          , stateOrProvince = "VA"
+          , country = "USA"
+          , remote = False
+          }
         ]
-      }
-    , Job::{
-      , company = tailscale
-      , title = "Archmage of Infrastructure"
-      , startDate = "2022-03-01"
-      , salary = annualCAD 147150
-      , locations = [ ottawa ]
-      , highlights =
-        [ "The first developer relations person at Tailscale"
-        , "Public-facing content writing"
-        , "Public speaking"
-        , "Developing custom integration solutions and supporting them"
-        ]
+      , highlights = [ "Python message queue processing" ]
+      , hideFromResume = True
       }
     ]
