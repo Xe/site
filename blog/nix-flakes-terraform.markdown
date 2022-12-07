@@ -1,6 +1,6 @@
 ---
 title: "Automagically assimilating NixOS machines into your Tailnet with Terraform"
-date: 2022-12-04
+date: 2022-12-07
 series: nix-flakes
 tags:
  - Terraform
