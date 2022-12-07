@@ -5,6 +5,10 @@ r(() => {
 
   let defaultURL = localStorage["mastodon_instance"];
 
+  if (defaultURL == undefined) {
+    defaultURL = "";
+  }
+
   const title = document.querySelectorAll('meta[property="og:title"]')[0]
     .getAttribute("content");
   let series = g("mastodon_share_series").innerText;
@@ -26,12 +30,17 @@ ${series}${tags.innerText} @cadey@pony.social`;
   const tootBox = <textarea rows="6" cols="40">{tootTemplate}</textarea>;
 
   const doShare = () => {
-    const instanceURL = instanceBox.value;
+    let instanceURL = instanceBox.value;
+
+    if (!instanceURL.startsWith("https://")) {
+        instanceURL = `https://${instanceURL}`;
+    }
+
     localStorage["mastodon_instance"] = instanceURL;
     const text = tootBox.value;
-    const mastodon_url = u(instanceURL + "/share", { text });
-    console.log({ text, mastodon_url });
-    window.open(mastodon_url, "_blank");
+    const mastodonURL = u(instanceURL + "/share", { text, visibility: "public" });
+    console.log({ text, mastodonURL });
+    window.open(mastodonURL, "_blank");
   };
 
   const shareButton = <button onclick={doShare}>Share</button>;
