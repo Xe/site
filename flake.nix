@@ -87,18 +87,25 @@
             '';
           };
 
-          frontend.share-button = pkgs.deno2nix.mkBundled {
-            pname = "xesite-frontend-mastodon-share-button";
-            inherit (bin) version;
+          frontend = rec {
+            share-button = pkgs.deno2nix.mkBundled {
+              pname = "xesite-frontend-mastodon-share-button";
+              inherit (bin) version;
 
-            src = ./src/frontend;
-            lockfile = ./src/frontend/lock.json;
+              src = ./src/frontend;
+              lockfile = ./src/frontend/lock.json;
 
-            output = "mastodon_share_button.js";
-            outPath = "static/js";
-            entrypoint = "./mastodon_share_button.tsx";
-            importMap = "./import_map.json";
-            minify = true;
+              output = "mastodon_share_button.js";
+              outPath = "static/js";
+              entrypoint = "./mastodon_share_button.tsx";
+              importMap = "./import_map.json";
+              minify = true;
+            };
+
+            all = pkgs.symlinkJoin {
+              name = "xesite-frontend-${bin.version}";
+              paths = [ share-button ];
+            };
           };
 
           static = pkgs.stdenv.mkDerivation {
@@ -133,7 +140,7 @@
 
           default = pkgs.symlinkJoin {
             name = "xesite-${bin.version}";
-            paths = [ config posts static bin frontend.share-button resumePDF ];
+            paths = [ config posts static bin frontend.all resumePDF ];
           };
 
           docker = pkgs.dockerTools.buildLayeredImage {
