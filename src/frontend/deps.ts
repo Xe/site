@@ -1,6 +1,10 @@
 import * as wasi from "https://deno.land/x/wasm@v1.2.2/wasi.ts";
+//import * as xterm from "https://esm.sh/xterm@5.0.0";
+
 import * as xeact from "xeact";
 
-await wasi.init();
-
-export { wasi, xeact };
+export {
+    wasi,
+    xeact,
+    //xterm
+};

@@ -88,23 +88,28 @@
           };
 
           frontend = let
-            share-button = pkgs.deno2nix.mkBundled {
-              pname = "xesite-frontend-mastodon-share-button";
+            build = { entrypoint, name ? entrypoint, minify ? true }: pkgs.deno2nix.mkBundled {
+              pname = "xesite-frontend-${name}";
               inherit (bin) version;
 
               src = ./src/frontend;
-              lockfile = ./src/frontend/lock.json;
+              lockfile = ./src/frontend/deno.lock;
 
-              output = "mastodon_share_button.js";
+              output = "${entrypoint}.js";
               outPath = "static/js";
-              entrypoint = "./mastodon_share_button.tsx";
+              entrypoint = "./${entrypoint}.tsx";
               importMap = "./import_map.json";
-              minify = true;
+              inherit minify;
             };
-
+            share-button = build {
+              entrypoint = "mastodon_share_button";
+            };
+            wasiterm = build {
+              entrypoint = "wasiterm";
+            };
           in pkgs.symlinkJoin {
             name = "xesite-frontend-${bin.version}";
-            paths = [ share-button ];
+            paths = [ share-button wasiterm ];
           };
 
           static = pkgs.stdenv.mkDerivation {
