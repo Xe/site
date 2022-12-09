@@ -1,6 +1,72 @@
 {
   "nodes": {
+    "deno2nix": {
+      "inputs": {
+        "devshell": "devshell",
+        "flake-compat": "flake-compat",
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1670562741,
+        "narHash": "sha256-13PVEXOYrbsGn05bIp/WWhG6lREgfcQtRTQU9Jd4g8w=",
+        "owner": "Xe",
+        "repo": "deno2nix",
+        "rev": "db3563f20f74eab34e2c268e2a159325df315085",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Xe",
+        "repo": "deno2nix",
+        "type": "github"
+      }
+    },
+    "devshell": {
+      "inputs": {
+        "flake-utils": [
+          "deno2nix",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "deno2nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1667210711,
+        "narHash": "sha256-IoErjXZAkzYWHEpQqwu/DeRNJGFdR7X2OGbkhMqMrpw=",
+        "owner": "numtide",
+        "repo": "devshell",
+        "rev": "96a9dd12b8a447840cc246e17a47b81a4268bba7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "devshell",
+        "type": "github"
+      }
+    },
     "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1668681692,
+        "narHash": "sha256-Ht91NGdewz8IQLtWZ9LCeNXMSXHUss+9COoqu6JLmXU=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "009399224d5e398d03b22badca40a37ac85412a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-compat_2": {
       "flake": false,
       "locked": {
         "lastModified": 1668681692,
@@ -68,7 +134,8 @@
     },
     "root": {
       "inputs": {
-        "flake-compat": "flake-compat",
+        "deno2nix": "deno2nix",
+        "flake-compat": "flake-compat_2",
         "flake-utils": "flake-utils",
         "naersk": "naersk",
         "nixpkgs": "nixpkgs"

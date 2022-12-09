@@ -1,0 +1,11 @@
+{
+  "version": "2",
+  "remote": {
+    "https://deno.land/x/wasm@v1.2.2/pkg/wasmer_wasi_js.d.ts": "0e202696f693f922ed63e1f372dd7b4641ce587d357fcf32de3d09cb48785867",
+    "https://deno.land/x/wasm@v1.2.2/pkg/wasmer_wasi_js.js": "33c58765ded371211b754157955a7ab1d2de921a9c8fee8748112d25605726dd",
+    "https://deno.land/x/wasm@v1.2.2/wasi.ts": "4fde34f8fa8c52af06adcc241f1b18fabf2df0d8b1f1b62d05e70377688a8fcb",
+    "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/jsx-runtime.js": "a8e0e04c44bbc80bb0a8c59e1d3ee338dd799e25e89792cadb67f00bf4f6ceca",
+    "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/xeact.js": "4b943b147cddd20b514b0cf85c68438e585712e809d8da4283ee5f0b8ac1ab8d",
+    "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/xeact.ts": "b6def4bebff19548539f4708cff028cd1fd7abdf6bfd7b3cd8dd5025b97d676e"
+  }
+}

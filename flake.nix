@@ -12,12 +12,21 @@
       url = "github:nix-community/naersk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    deno2nix = {
+      url = "github:Xe/deno2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, naersk, ... }:
+  outputs = { self, nixpkgs, flake-utils, naersk, deno2nix, ... }:
     flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ] (system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ deno2nix.overlays.default ];
+        };
         naersk-lib = naersk.lib."${system}";
         src = ./.;
 
@@ -78,23 +87,18 @@
             '';
           };
 
-          frontend = pkgs.stdenv.mkDerivation {
-            pname = "xesite-frontend";
-             inherit (bin) version;
-             src = ./src/frontend;
-             buildInputs = with pkgs; [ deno nodePackages.uglify-js ];
+          frontend.share-button = pkgs.deno2nix.mkBundled {
+            pname = "xesite-frontend-mastodon-share-button";
+            inherit (bin) version;
 
-             phases = "installPhase";
+            src = ./src/frontend;
+            lockfile = ./src/frontend/lock.json;
 
-             installPhase = ''
-               mkdir -p $out/static/js
-               mkdir -p .deno
-               export HOME=./.deno
-
-               deno bundle --config $src/deno.json $src/mastodon_share_button.tsx ./mastodon_share_button.js
-
-               uglifyjs ./mastodon_share_button.js -c -m > $out/static/js/mastodon_share_button.js
-             '';
+            output = "mastodon_share_button.js";
+            outPath = "static/js";
+            entrypoint = "./mastodon_share_button.tsx";
+            importMap = "./import_map.json";
+            minify = true;
           };
 
           static = pkgs.stdenv.mkDerivation {
@@ -129,7 +133,7 @@
 
           default = pkgs.symlinkJoin {
             name = "xesite-${bin.version}";
-            paths = [ config posts static bin frontend resumePDF ];
+            paths = [ config posts static bin frontend.share-button resumePDF ];
           };
 
           docker = pkgs.dockerTools.buildLayeredImage {

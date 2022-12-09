@@ -1,7 +1,7 @@
 {
     "imports": {
-        "xeact": "./xeact/xeact.ts",
-        "xeact/jsx-runtime": "./xeact/jsx-runtime.js",
+        "xeact": "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/xeact.ts",
+        "xeact/jsx-runtime": "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/jsx-runtime.js",
         "/": "./",
         "./": "./"
     }
