@@ -87,7 +87,7 @@
             '';
           };
 
-          frontend = rec {
+          frontend = let
             share-button = pkgs.deno2nix.mkBundled {
               pname = "xesite-frontend-mastodon-share-button";
               inherit (bin) version;
@@ -102,10 +102,9 @@
               minify = true;
             };
 
-            all = pkgs.symlinkJoin {
-              name = "xesite-frontend-${bin.version}";
-              paths = [ share-button ];
-            };
+          in pkgs.symlinkJoin {
+            name = "xesite-frontend-${bin.version}";
+            paths = [ share-button ];
           };
 
           static = pkgs.stdenv.mkDerivation {
@@ -140,7 +139,7 @@
 
           default = pkgs.symlinkJoin {
             name = "xesite-${bin.version}";
-            paths = [ config posts static bin frontend.all resumePDF ];
+            paths = [ config posts static bin frontend resumePDF ];
           };
 
           docker = pkgs.dockerTools.buildLayeredImage {
