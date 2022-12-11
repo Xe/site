@@ -1,0 +1,36 @@
+{
+  "id": "https://pony.social/users/cadey/statuses/109491091250474567",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-12-10T19:44:25Z",
+  "url": "https://pony.social/@cadey/109491091250474567",
+  "attributedTo": "https://pony.social/users/cadey",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/cadey/followers"
+  ],
+  "sensitive": false,
+  "conversation": "tag:pony.social,2022-12-10:objectId=6729945:objectType=Conversation",
+  "summary": null,
+  "content": "<p>Investigating how JPEG-XL would affect my site if I adopted it. So far AVIF is still winning in filesize/quality tradeoffs: <a href=\"https://pneuma.shark-harmonic.ts.net/.within/x/imgcomp-stress/foxgirl-surfing/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">pneuma.shark-harmonic.ts.net/.</span><span class=\"invisible\">within/x/imgcomp-stress/foxgirl-surfing/</span></a></p>",
+  "contentMap": {
+    "en": "<p>Investigating how JPEG-XL would affect my site if I adopted it. So far AVIF is still winning in filesize/quality tradeoffs: <a href=\"https://pneuma.shark-harmonic.ts.net/.within/x/imgcomp-stress/foxgirl-surfing/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">pneuma.shark-harmonic.ts.net/.</span><span class=\"invisible\">within/x/imgcomp-stress/foxgirl-surfing/</span></a></p>"
+  },
+  "attachment": [],
+  "tag": [],
+  "replies": {
+    "id": "https://pony.social/users/cadey/statuses/109491091250474567/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/cadey/statuses/109491091250474567/replies?min_id=109491117436899206&page=true",
+      "partOf": "https://pony.social/users/cadey/statuses/109491091250474567/replies",
+      "items": [
+        "https://pony.social/users/cadey/statuses/109491117436899206"
+      ]
+    }
+  },
+  "source": null
+}
