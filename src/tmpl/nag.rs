@@ -20,6 +20,7 @@ pub fn referer(_: Option<String>) -> Markup {
 #[cfg(not(debug_assertions))]
 pub fn referer(referer: Option<String>) -> Markup {
     use xesite_templates::conv as xeblog_conv;
+
     if referer.is_none() {
         return xesite_templates::advertiser_nag();
     }
@@ -34,8 +35,6 @@ pub fn referer(referer: Option<String>) -> Markup {
         };
     }
 
-    if DEV_SERVER.is_match(&referer) {}
-
     xesite_templates::advertiser_nag()
 }
 
@@ -47,6 +46,8 @@ pub fn prerelease(_: &Post) -> Markup {
 #[cfg(not(debug_assertions))]
 pub fn prerelease(post: &Post) -> Markup {
     use chrono::prelude::*;
+    use xesite_templates::conv as xeblog_conv;
+
     if Utc::now().date_naive().num_days_from_ce() < post.date.num_days_from_ce() {
         html! {
             .warning {
