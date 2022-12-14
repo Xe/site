@@ -1,16 +1,25 @@
 use crate::post::Post;
-use chrono::prelude::*;
 use lazy_static::lazy_static;
 use maud::{html, Markup};
 use regex::Regex;
-use xesite_templates::conv as xeblog_conv;
 
 lazy_static! {
     static ref LOBSTERS: Regex = Regex::new(r#"^https?://lobste.rs"#).unwrap();
-    static ref DEV_SERVER: Regex = Regex::new(r#"^https?://pneuma:3030"#).unwrap();
 }
 
+#[cfg(debug_assertions)]
+pub fn referer(_: Option<String>) -> Markup {
+    html! {
+        .warning {
+            "This is a development instance of xesite. Things here are probably unfinished or in drafting. Don't take anything here super seriously. If you want to share this to an online aggregator, please don't. Drafts are not finalized yet for a reason."
+        }
+        br;
+    }
+}
+
+#[cfg(not(debug_assertions))]
 pub fn referer(referer: Option<String>) -> Markup {
+    use xesite_templates::conv as xeblog_conv;
     if referer.is_none() {
         return xesite_templates::advertiser_nag();
     }
@@ -25,19 +34,19 @@ pub fn referer(referer: Option<String>) -> Markup {
         };
     }
 
-    if DEV_SERVER.is_match(&referer) {
-        return html! {
-            .warning {
-                "This is a development instance of xesite. Things here are probably unfinished or in drafting. Don't take anything here super seriously."
-                br;
-            }
-        };
-    }
+    if DEV_SERVER.is_match(&referer) {}
 
     xesite_templates::advertiser_nag()
 }
 
+#[cfg(debug_assertions)]
+pub fn prerelease(_: &Post) -> Markup {
+    html! {}
+}
+
+#[cfg(not(debug_assertions))]
 pub fn prerelease(post: &Post) -> Markup {
+    use chrono::prelude::*;
     if Utc::now().date_naive().num_days_from_ce() < post.date.num_days_from_ce() {
         html! {
             .warning {
@@ -47,6 +56,7 @@ pub fn prerelease(post: &Post) -> Markup {
                     " UTC. Right now you are reading a pre-publication version of this post. Please do not share this on social media. This post will automatically go live for everyone on the intended publication date. If you want access to these posts, please join the "
                     a href="https://patreon.com/cadey" { "Patreon" }
                     ". It helps me afford the copyeditor that I contract for the technical content I write."
+                    br;
                 }))
             }
         }
