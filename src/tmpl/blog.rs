@@ -73,6 +73,8 @@ pub fn blog(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> 
                 (body)
             }
 
+            hr;
+
             (share_button(post))
             (twitch_vod(post))
 
@@ -188,6 +190,8 @@ pub fn talk(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> 
             @if let Some(slides) = &post.front_matter.slides_link {
                 a href=(slides) {"Link to the slides"}
             }
+
+            hr;
 
             (share_button(post))
 
