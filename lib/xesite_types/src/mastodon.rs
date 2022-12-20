@@ -119,9 +119,6 @@ pub struct Toot {
 
     #[serde(rename = "replies")]
     pub replies: Option<Replies>,
-
-    #[serde(rename = "source")]
-    pub source: Option<Source>,
 }
 
 impl Toot {

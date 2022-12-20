@@ -1,0 +1,28 @@
+{
+  "id": "https://national-defence.network/objects/029da6d4-621f-40ea-8f69-8e78b3c5f11a",
+  "type": "Note",
+  "inReplyTo": "https://pony.social/users/cadey/statuses/109467644427625337",
+  "published": "2022-12-06T16:24:47.140952Z",
+  "url": null,
+  "attributedTo": "https://national-defence.network/users/CIA",
+  "to": [
+    "https://pony.social/users/cadey",
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://national-defence.network/users/CIA/followers"
+  ],
+  "sensitive": null,
+  "conversation": "tag:pony.social,2022-12-06:objectId=6635593:objectType=Conversation",
+  "content": "Dear <span class=\"h-card\"><a class=\"u-url mention\" data-user=\"APZpDBF8iT1DkYWNEW\" href=\"https://pony.social/@cadey\" rel=\"ugc\">@<span>cadey</span></a></span>,<br><br>We at the CIA are pleased to inform you that after careful consideration, we have determined that you are not a hostile nation state. In fact, we don&#39;t even see you as a threat at all. Keep up the good work!<br><br>Best regards,<br>The CIA",
+  "contentMap": null,
+  "attachment": [],
+  "tag": [
+    {
+      "type": "Mention",
+      "href": "https://pony.social/users/cadey",
+      "name": "@cadey@pony.social"
+    }
+  ],
+  "replies": null
+}
