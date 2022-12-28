@@ -10,6 +10,7 @@ use axum::{
     routing::{get, get_service},
     Router,
 };
+use axum_extra::routing::SpaRouter;
 use color_eyre::eyre::Result;
 use hyper::StatusCode;
 use prometheus::{Encoder, TextEncoder};
@@ -104,6 +105,8 @@ async fn main() -> Result<()> {
         ))
         .layer(CorsLayer::permissive());
 
+    let files = SpaRouter::new("/static", "static");
+
     let app = Router::new()
         // meta
         .route("/.within/health", get(healthcheck))
@@ -194,25 +197,8 @@ async fn main() -> Result<()> {
         // junk google wants
         .route("/sitemap.xml", get(handlers::feeds::sitemap))
         // static files
-        .nest(
-            "/css",
-            get_service(ServeDir::new("./css")).handle_error(|err: io::Error| async move {
-                (
-                    StatusCode::INTERNAL_SERVER_ERROR,
-                    format!("unhandled internal server error: {}", err),
-                )
-            }),
-        )
-        .nest(
-            "/static",
-            get_service(ServeDir::new("./static")).handle_error(|err: io::Error| async move {
-                (
-                    StatusCode::INTERNAL_SERVER_ERROR,
-                    format!("unhandled internal server error: {}", err),
-                )
-            }),
-        )
-        .fallback(handlers::not_found.into_service())
+        .merge(files)
+        .fallback(handlers::not_found)
         .layer(middleware);
 
     #[cfg(target_os = "linux")]

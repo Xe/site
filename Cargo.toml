@@ -10,9 +10,9 @@ license = "zlib"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-axum = { version = "0.5", features = ["headers"] }
+axum = { version = "0.6", features = ["headers"] }
 axum-macros = "0.3"
-axum-extra = "0.3"
+axum-extra = { version = "0.4", features = ["spa"] }
 color-eyre = "0.6"
 chrono = "0.4"
 derive_more = "0.99"
@@ -28,7 +28,6 @@ hyper = "0.14"
 kankyo = "0.3"
 lazy_static = "1.4"
 log = "0.4"
-maud = { version = "0.24.0", features = ["axum"] }
 mime = "0.3.0"
 prometheus = { version = "0.13", default-features = false, features = ["process"] }
 rand = "0"
@@ -58,6 +57,11 @@ mi = { path = "./lib/mi" }
 patreon = { path = "./lib/patreon" }
 xesite_markdown =  { path = "./lib/xesite_markdown" }
 xesite_templates = { path = "./lib/xesite_templates" }
+
+[dependencies.maud]
+git = "https://github.com/Xe/maud"
+rev = "a40596c42c7603cc4610bbeddea04c4bd8b312d9"
+features = ["axum"]
 
 [dependencies.tower]
 version = "0.4"

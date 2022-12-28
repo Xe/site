@@ -27,12 +27,12 @@ pub fn base(title: Option<&str>, styles: Option<&str>, content: Markup) -> Marku
                     }
                 }
                 meta name="viewport" content="width=device-width, initial-scale=1.0";
-                link rel="stylesheet" href={"/css/hack.css?bustCache=" (*CACHEBUSTER)};
-                link rel="stylesheet" href={"/css/gruvbox-dark.css?bustCache=" (*CACHEBUSTER)};
-                link rel="stylesheet" href={"/css/shim.css?bustCache=" (*CACHEBUSTER)};
+                link rel="stylesheet" href={"/static/css/hack.css?bustCache=" (*CACHEBUSTER)};
+                link rel="stylesheet" href={"/static/css/gruvbox-dark.css?bustCache=" (*CACHEBUSTER)};
+                link rel="stylesheet" href={"/static/css/shim.css?bustCache=" (*CACHEBUSTER)};
                 @match now.month() {
                     12|1|2 => {
-                        link rel="stylesheet" href={"/css/snow.css?bustCache=" (*CACHEBUSTER)};
+                        link rel="stylesheet" href={"/static/css/snow.css?bustCache=" (*CACHEBUSTER)};
                     }
                     _ => {},
                 }
