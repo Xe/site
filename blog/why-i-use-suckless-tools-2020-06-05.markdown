@@ -138,8 +138,8 @@ arbitrarily, signals with dwmc and other overhead like that.
 
 The rest of my desktop environment is built up using a few other tools that
 build on top of dwm. You can see the NixOS modules I've made for it
-[here](https://github.com/Xe/nixos-configs/blob/master/common/programs/dwm.nix)
-and [here](https://github.com/Xe/nixos-configs/blob/master/common/users/cadey/dwm.nix):
+[here](https://github.com/Xe/nixos-configs/blob/f9303523e0eacd75aef96c55626d6aac3c04007f/common/programs/dwm.nix)
+and [here](https://github.com/Xe/nixos-configs/blob/f9303523e0eacd75aef96c55626d6aac3c04007f/common/users/cadey/dwm.nix):
 
 - [xrandr](https://wiki.archlinux.org/index.php/Xrandr) to set up my multiple
   monitors and rotation for them

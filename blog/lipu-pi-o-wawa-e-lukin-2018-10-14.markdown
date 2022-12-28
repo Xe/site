@@ -68,7 +68,7 @@ machine easier.
 
 ---
 
-This post is written primarily in [toki pona](http://tokipona.net/tp/Default.aspx),
+This post is written primarily in [toki pona](https://tokipona.org/),
 or the language of good. It is a constructed language that is minimal (only about
 120 words in total) yet it is enough to express just about every practical day to
 day communication need. [It's also small enough there's tokenizers for it](https://github.com/Xe/x/blob/master/web/tokiponatokens/toki_pona.go).

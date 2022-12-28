@@ -126,7 +126,7 @@ steps:
 This allows me to bump the `VERSION` and `CHANGELOG.md`, then push that commit
 to git and a new release will automatically be created. You can see how the
 `CHANGELOG.md` file grows with the [CHANGELOG of
-gitea-release](https://tulpa.dev/cadey/gitea-release/src/branch/master/CHANGELOG.md).
+gitea-release](https://tulpa.dev/cadey/gitea-release/src/branch/main/CHANGELOG.md).
 
 Once the release is pushed to gitea, you can then use drone to trigger
 deployment commands. For example here is the deployment pipeline used to

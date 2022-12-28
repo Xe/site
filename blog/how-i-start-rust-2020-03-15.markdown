@@ -443,8 +443,7 @@ $ ./target/debug/helloworld
 
 And [open the swagger UI](http://127.0.0.1:8000/swagger-ui/) in your favorite
 browser. This will show you a graphical display of all of the routes and the
-data types in your service. For an example, see
-[here](https://printerfacts.cetacean.club/swagger-ui/index.html).
+data types in your service.
 
 ## Error responses
 

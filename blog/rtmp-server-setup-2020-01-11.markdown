@@ -7,8 +7,8 @@ tags:
  - live-streaming
 ---
 
-I have set up my own [RTMP][rtmp] server that allows me to live stream to [my own
-infrastructure][streampage]. This allows me to own my own setup and not need to
+I have set up my own [RTMP][rtmp] server that allows me to live stream to my own
+infrastructure. This allows me to own my own setup and not need to
 rely on other services such as Twitch or YouTube. As a side effect of doing
 this, I can enable people who use my streaming server to use picture-in-picture
 mode in iPadOS without having to hack the streaming app, among other things.
@@ -17,7 +17,6 @@ This is part of my 2020 goal to reduce my dependencies on corporate social
 platforms as much as possible.
 
 [rtmp]: https://en.wikipedia.org/wiki/Real-Time_Messaging_Protocol
-[streampage]: https://home.cetacean.club/stream
 
 I chose to do my setup with a few key parts:
 
@@ -58,13 +57,13 @@ that's involved in RTMP.
 
 ## stream.html
 
-I have a custom stream page set up [on my server][streampage] that has a
+I have a custom stream page set up on my server that has a
 friendly little wrapper to the video player. [Here][streamhtml] is the source
 code for it. It's very short and easy to follow. I have these files at
 `/srv/http/home.cetacean.club` on my VPN server.
 
 This wraps [hls.js][hlsjs] so that users on every browser I care to support can
-watch the stream as it happens. 
+watch the stream as it happens.
 
 ## Caddy
 
@@ -76,7 +75,7 @@ home.cetacean.club {
   # Set up automagic Let's Encrypt
   tls me@xeiaso.net
 
-  # Proxy the playlist, stream data 
+  # Proxy the playlist, stream data
   # and statistics to the rtmp server
   proxy /hls http://127.0.0.1:8080
   proxy /live http://127.0.0.1:8080
@@ -84,7 +83,7 @@ home.cetacean.club {
 
   # make /stream.html show up as /stream
   ext .html
-  
+
   # serve data out of /srv/http/home.cetacan.club
   # you can put your HTTP document root
   # anywhere you want, but I like it being
@@ -96,10 +95,10 @@ home.cetacean.club {
 For more information on the Caddy configuration directives used here, see the
 following:
 
-- [tls](https://caddyserver.com/v1/docs/tls)
-- [proxy](https://caddyserver.com/v1/docs/proxy)
-- [ext](https://caddyserver.com/v1/docs/ext)
-- [root](https://caddyserver.com/v1/docs/root)
+- [tls](https://web.archive.org/web/20200505225233/https://caddyserver.com/v1/docs/tls)
+- [proxy](https://web.archive.org/web/20200505225233/https://caddyserver.com/v1/docs/proxy)
+- [ext](https://web.archive.org/web/20200505225233/https://caddyserver.com/v1/docs/ext)
+- [root](https://web.archive.org/web/20200505225233/https://caddyserver.com/v1/docs/root)
 
 ## Caveats
 
@@ -114,7 +113,7 @@ automatically. I don't consider this a problem, as links can always be sent out
 manually on social media platforms.
 
 I hope this little overview of my setup was informative. I'll be
-streaming [there][streampage] very irregularly, mostly as time permits/the
+streaming there very irregularly, mostly as time permits/the
 spirit moves me. I plan to stream art, gaming and code.
 
 Thanks for reading, have a good day.

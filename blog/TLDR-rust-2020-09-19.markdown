@@ -80,7 +80,7 @@ fn foo() -> i32 {
     if some_cond {
         2
     }
-    
+
     4
 }
 ```
@@ -125,7 +125,7 @@ let val = if some_cond { 2 } else { 4 };
 The [Result](https://doc.rust-lang.org/std/result/) type represents things that
 can fail with specific errors. The [eyre Result
 type](https://docs.rs/eyre) represents things that can fail
-with any error. For readability, this post will use the eyre Result type. 
+with any error. For readability, this post will use the eyre Result type.
 
 [The angle brackets in the `Result` type are arguments to the type, this allows
 the Result type to work across any type you could imagine.](conversation://Mara/hacker)
@@ -137,7 +137,7 @@ func divide(x, y int) (int, err) {
   if y == 0 {
     return 0, errors.New("cannot divide by zero")
   }
-  
+
   return x / y, nil
 }
 ```
@@ -236,7 +236,7 @@ func doThing() (int, error) {
   if err != nil {
     return 0, err
   }
-  
+
   return result, nil
 }
 ```
@@ -544,7 +544,7 @@ but at a high level most projects only uses a few of them:
 - String, an owned UTF-8 string
 - PathBuf, a filepath string (encoded in whatever encoding the OS running this
   code uses for filesystems)
-  
+
 The strings are different types for safety reasons. See the linked blogpost for
 more detail about this.
 
@@ -614,7 +614,7 @@ mod tests { // not required but it is good practice
   fn math_works() {
     assert_eq!(2 + 2, 4);
   }
-  
+
   #[tokio::test] // needs tokio as a dependency
   async fn http_works() {
     let _ = get_html("https://within.website").await.unwrap();
@@ -626,7 +626,7 @@ Avoid the use of `unwrap()` outside of tests. In the wrong cases, using
 `unwrap()` in production code can cause the server to crash and can incur data
 loss.
 
-[Alternatively, you can also use the <a href="https://learning-rust.github.io/docs/e4.unwrap_and_expect.html#expect">`.expect()`</a> method instead
+[Alternatively, you can also use the <a href="https://doc.rust-lang.org/std/error/index.html#common-message-styles">`.expect()`</a> method instead
 of `.unwrap()`. This lets you attach a message that will be shown when the
 result isn't Ok.](conversation://Mara/hacker)
 

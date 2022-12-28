@@ -20,7 +20,7 @@ Recently I wanted to test a
 a coworker wrote that allows users to automatically install Tailscale on every
 distro and version Tailscale supports. I wanted to try and avoid having to
 install each version of every distribution manually, so I started looking for
-options. 
+options.
 
 [This may seem like overkill (and at some level it probably is), however as a
 side effect of going through this song and dance you can spin up a bunch of VMs
@@ -80,7 +80,7 @@ users:
     groups: [ wheel ]
     sudo: [ "ALL=(ALL) NOPASSWD:ALL" ]
     shell: /bin/bash
-    ssh-authorized-keys: 
+    ssh-authorized-keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPYr9hiLtDHgd6lZDgQMkJzvYeAXmePOrgFaWHAjJvNU cadey@ontos
 
 write_files:
@@ -94,7 +94,7 @@ write_files:
 Please make sure to change the username and swap out the SSH key as needed,
 unless you want to get locked out of your VM. For more information about what
 you can do from cloud-init, see the list of modules
-[here](http://cloudinit.readthedocs.io/en/latest/topics/modules.html). 
+[here](http://cloudinit.readthedocs.io/en/latest/topics/modules.html).
 
 Now that you have the two yaml files you can make the seed image with this
 command (Linux):
@@ -378,11 +378,11 @@ distros:
   one)
 - [CentOS 8](https://cloud.centos.org/centos/8-stream/x86_64/images/) (use the
   `GenericCloud` one)
-- [Debian 9](http://cloud.debian.org/images/cloud/OpenStack/9.13.22-20210531/)
+- [Debian 9](https://cloud.debian.org/images/cloud/OpenStack/current-9/)
   (use the `openstack` one)
-- [Debian 10](http://cloud.debian.org/images/cloud/buster/20210329-591/) (use
+- [Debian 10](https://cloud.debian.org/images/cloud/buster/latest/) (use
   the `generic` one)
-- [Debian 11](http://cloud.debian.org/images/cloud/bullseye/daily/) (use the
+- [Debian 11](https://cloud.debian.org/images/cloud/bullseye/latest/) (use the
   `generic` one)
 - [Fedora 34](https://alt.fedoraproject.org/cloud/) (use the Openstack image)
 - [OpenSUSE Leap

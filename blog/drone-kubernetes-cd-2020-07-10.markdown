@@ -48,7 +48,7 @@ let
 
   naersk = pkgs.callPackage sources.naersk { };
   gruvbox-css = pkgs.callPackage sources.gruvbox-css { };
-  
+
   pfacts = naersk.buildPackage {
     inherit src;
     remapPathPrefix = true;
@@ -117,7 +117,7 @@ Now that we have a way to make a docker image, let's look how I use
 Hub](https://hub.docker.com/repository/docker/xena/printerfacts/tags).
 
 I have a drone manifest that looks like
-[this](https://tulpa.dev/cadey/printerfacts/src/branch/master/.drone.yml):
+[this](https://tulpa.dev/cadey/printerfacts/src/commit/6d152cde84fc8a6424d438b6c75fe9216801c972/.drone.yml):
 
 ```yaml
 kind: pipeline
@@ -280,7 +280,7 @@ The deploy step does two small things. First, it installs
 for generating the Kubernetes manifest (see
 [here](https://xeiaso.net/blog/dhall-kubernetes-2020-01-25)) and then
 runs
-[`scripts/release.sh`](https://tulpa.dev/cadey/printerfacts/src/branch/master/scripts/release.sh):
+[`scripts/release.sh`](https://tulpa.dev/cadey/printerfacts/src/commit/6d152cde84fc8a6424d438b6c75fe9216801c972/scripts/release.sh):
 
 ```
 #!/usr/bin/env nix-shell
