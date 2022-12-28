@@ -706,11 +706,11 @@ It's a 10/10 anime and I can't suggest watching it more.
 
 This show was okay. I really didn't like how the elves spoke the wrong language
 (it's like going around Rome and having casual conversations in liturgical
-Latin), they should be speaking Sinadrin, not Quenya. They adapted things from a
-few paragraphs at the end of the Simarillion, and oh god it shows.
+Latin), they should be speaking Sindarin, not Quenya. They adapted things from a
+few paragraphs at the end of the Silmarillion, and oh god it shows.
 
 They really made a mistake not starting out as _strong_ as possible, but they
-were trying to literary style of Toliken's subtle worldbuilding feeding into the
+were trying to literary style of Tolkien's subtle worldbuilding feeding into the
 plot feeding into the worldbuilding. This works _great_ in printed media but not
 really in a TV series where they only have 15 hours to get across the vision.
 
