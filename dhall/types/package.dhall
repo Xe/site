@@ -10,5 +10,7 @@
 , Salary = ./Salary.dhall
 , SeriesDescription = ./SeriesDescription.dhall
 , Stock = ./Stock.dhall
+, Story = ./Story.dhall
+, StoryStep = ./StoryStep.dhall
 , StockKind = ./StockKind.dhall
 }

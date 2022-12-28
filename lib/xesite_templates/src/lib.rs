@@ -96,6 +96,26 @@ pub fn sticker(name: String, mood: String) -> Markup {
     }
 }
 
+pub fn story(name: String) -> Markup {
+    let uuid = uuid::Uuid::new_v4();
+    let uuid = format!("{uuid}").replace("-", "");
+    let story_script = PreEscaped(format!(
+        r#"
+<script type="module">
+import {{ init }} from "/static/js/stories.js?cachebust={uuid}";
+
+init("{uuid}", "{name}");
+</script>
+"#
+    ));
+
+    html! {
+        div id=(uuid) {
+            (story_script)
+        }
+    }
+}
+
 pub fn video(path: String) -> Markup {
     let stream_url = format!(
         "https://cdn.xeiaso.net/file/christine-static/{}/index.m3u8",

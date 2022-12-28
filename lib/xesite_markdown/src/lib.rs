@@ -175,6 +175,14 @@ pub fn render(inp: &str) -> Result<String> {
                     el.replace(&xesite_templates::talk_warning().0, ContentType::Html);
                     Ok(())
                 }),
+                element!("xeblog-story", |el| {
+                    let name = el
+                        .get_attribute("name")
+                        .ok_or(Error::MissingElementAttribute("name".to_string()))?;
+
+                    el.replace(&xesite_templates::story(name).0, ContentType::Html);
+                    Ok(())
+                }),
                 element!("xeblog-video", |el| {
                     let path = el
                         .get_attribute("path")

@@ -1,0 +1,25 @@
+{
+  "name": "unwrapped-2022",
+  "steps": [
+    {
+      "file": "title",
+      "text": "The last year all wrapped up!",
+      "title": "Xesite 2022"
+    },
+    {
+      "file": "posts",
+      "text": "Xe wrote $NUMBER posts this year!",
+      "title": "Blogposts"
+    },
+    {
+      "file": "talks",
+      "text": "Xe gave 4 talks this year! Which one was your favorite?",
+      "title": "Talks"
+    },
+    {
+      "file": "commits",
+      "text": "There were 340 commits to Xesite this year!",
+      "title": "340 commits"
+    }
+  ]
+}

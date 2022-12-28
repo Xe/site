@@ -10,3 +10,4 @@ set -e
 export RUST_LOG=info
 denobuild ./mastodon_share_button.tsx ../../static/js/mastodon_share_button.js
 denobuild ./wasiterm.tsx ../../static/js/wasiterm.js
+denobuild ./stories.tsx ../../static/js/stories.js
