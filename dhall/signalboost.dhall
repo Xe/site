@@ -129,4 +129,21 @@ in  [ Person::{
         , Link::{ url = "https://ajhalili2006.bio.link", title = "Website" }
         ]
       }
+    , Person::{
+      , name = "Zachary Sohovich"
+      , tags =
+        [ "full-stack javascript"
+        , "rust"
+        , "go"
+        , "react"
+        , "docker"
+        , "data pipelining"
+        , "aws"
+        , "typescript"
+        ]
+      , links =
+        [ Link::{ url = "https://github.com/sneakycrow", title = "GitHub" }
+        , Link::{ url = "https://sneakycrow.dev", title = "Website" }
+        ]
+      }
     ]
