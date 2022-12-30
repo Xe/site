@@ -88,25 +88,22 @@
           };
 
           frontend = let
-            build = { entrypoint, name ? entrypoint, minify ? true }: pkgs.deno2nix.mkBundled {
-              pname = "xesite-frontend-${name}";
-              inherit (bin) version;
+            build = { entrypoint, name ? entrypoint, minify ? true }:
+              pkgs.deno2nix.mkBundled {
+                pname = "xesite-frontend-${name}";
+                inherit (bin) version;
 
-              src = ./src/frontend;
-              lockfile = ./src/frontend/deno.lock;
+                src = ./src/frontend;
+                lockfile = ./src/frontend/deno.lock;
 
-              output = "${entrypoint}.js";
-              outPath = "static/js";
-              entrypoint = "./${entrypoint}.tsx";
-              importMap = "./import_map.json";
-              inherit minify;
-            };
-            share-button = build {
-              entrypoint = "mastodon_share_button";
-            };
-            wasiterm = build {
-              entrypoint = "wasiterm";
-            };
+                output = "${entrypoint}.js";
+                outPath = "static/js";
+                entrypoint = "./${entrypoint}.tsx";
+                importMap = "./import_map.json";
+                inherit minify;
+              };
+            share-button = build { entrypoint = "mastodon_share_button"; };
+            wasiterm = build { entrypoint = "wasiterm"; };
           in pkgs.symlinkJoin {
             name = "xesite-frontend-${bin.version}";
             paths = [ share-button wasiterm ];
@@ -197,116 +194,7 @@
           GITHUB_SHA = "devel";
           DHALL_PRELUDE = "${pkgs.dhallPackages.Prelude}";
         };
-
-        nixosModules.bot = { config, lib, ... }:
-          with lib;
-          let cfg = config.xeserv.services.xesite;
-          in {
-            options.within.services.xesite = {
-              enable = mkEnableOption "Activates my personal website";
-              useACME = mkEnableOption "Enables ACME for cert stuff";
-
-              port = mkOption {
-                type = types.port;
-                default = 32837;
-                example = 9001;
-                description =
-                  "The port number xesite should listen on for HTTP traffic";
-              };
-
-              domain = mkOption {
-                type = types.str;
-                default = "xesite.akua";
-                example = "xeiaso.net";
-                description =
-                  "The domain name that nginx should check against for HTTP hostnames";
-              };
-
-              sockPath = mkOption rec {
-                type = types.str;
-                default = "/srv/within/run/xesite.sock";
-                example = default;
-                description =
-                  "The unix domain socket that xesite should listen on";
-              };
-            };
-
-            config = mkIf cfg.enable {
-              users.users.xesite = {
-                createHome = true;
-                description = "github.com/Xe/site";
-                isSystemUser = true;
-                group = "within";
-                home = "/srv/within/xesite";
-                extraGroups = [ "keys" ];
-              };
-
-              systemd.services.xesite = {
-                wantedBy = [ "multi-user.target" ];
-
-                serviceConfig = {
-                  User = "xesite";
-                  Group = "within";
-                  Restart = "on-failure";
-                  WorkingDirectory = "/srv/within/xesite";
-                  RestartSec = "30s";
-                  Type = "notify";
-
-                  # Security
-                  CapabilityBoundingSet = "";
-                  DeviceAllow = [ ];
-                  NoNewPrivileges = "true";
-                  ProtectControlGroups = "true";
-                  ProtectClock = "true";
-                  PrivateDevices = "true";
-                  PrivateUsers = "true";
-                  ProtectHome = "true";
-                  ProtectHostname = "true";
-                  ProtectKernelLogs = "true";
-                  ProtectKernelModules = "true";
-                  ProtectKernelTunables = "true";
-                  ProtectSystem = "true";
-                  ProtectProc = "invisible";
-                  RemoveIPC = "true";
-                  RestrictSUIDSGID = "true";
-                  RestrictRealtime = "true";
-                  SystemCallArchitectures = "native";
-                  SystemCallFilter = [
-                    "~@reboot"
-                    "~@module"
-                    "~@mount"
-                    "~@swap"
-                    "~@resources"
-                    "~@cpu-emulation"
-                    "~@obsolete"
-                    "~@debug"
-                    "~@privileged"
-                  ];
-                  UMask = "007";
-                };
-
-                script = let site = packages.default;
-                in ''
-                  export SOCKPATH=${cfg.sockPath}
-                  export DOMAIN=${toString cfg.domain}
-                  cd ${site}
-                  exec ${site}/bin/xesite
-                '';
-              };
-
-              services.nginx.virtualHosts."xesite" = {
-                serverName = "${cfg.domain}";
-                locations."/" = {
-                  proxyPass = "http://unix:${toString cfg.sockPath}";
-                  proxyWebsockets = true;
-                };
-                forceSSL = cfg.useACME;
-                useACMEHost = "xeiaso.net";
-                extraConfig = ''
-                  access_log /var/log/nginx/xesite.access.log;
-                '';
-              };
-            };
-          };
-      });
+      }) // {
+        nixosModules.default = import ./nix/xesite.nix self;
+      };
 }
