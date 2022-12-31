@@ -1,6 +1,7 @@
 ---
 title: The Origin of h
 date: 2015-12-14
+series: h
 ---
 
 NOTE: There is a [second part](https://xeiaso.net/blog/formal-grammar-of-h-2019-05-19) to this article now with a formal grammar.

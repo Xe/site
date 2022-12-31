@@ -1,7 +1,7 @@
 ---
 title: A Formal Grammar of h
 date: 2019-05-19
-series: conlangs
+series: h
 ---
 
 ## Introduction

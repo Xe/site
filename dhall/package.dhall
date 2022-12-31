@@ -23,6 +23,11 @@ in  Config::{
         , title = "Aura"
         , description = "PonyvilleFM live DJ recording bot"
         }
+        , Link::{
+        , url = "https://h.within.lgbt"
+        , title = "The h Programming Language"
+        , description = "An esoteric programming language that compiles to WebAssembly"
+        }
       , Link::{
         , url = "https://github.com/Xe/olin"
         , title = "Olin"
