@@ -40,14 +40,6 @@ in {
       extraGroups = [ "keys" ];
     };
 
-    within.secrets.xesite = {
-      source = ./secrets/xesite.env;
-      dest = "/srv/within/xesite/.env";
-      owner = "xesite";
-      group = "within";
-      permissions = "0400";
-    };
-
     systemd.services.xesite = {
       wantedBy = [ "multi-user.target" ];
       after = [ "xesite-key.service" "mi.service" ];
