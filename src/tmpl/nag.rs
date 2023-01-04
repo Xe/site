@@ -23,13 +23,13 @@ pub fn referer(referer: Option<String>) -> Markup {
     use xesite_templates::conv as xeblog_conv;
 
     if referer.is_none() {
-        return xesite_templates::advertiser_nag();
+        return xesite_templates::advertiser_nag(None);
     }
 
     let referer = referer.unwrap();
 
     if HACKER_NEWS.is_match(&referer) {
-        return xeblog_conv(
+        return xesite_templates::advertiser_nag(Some(xeblog_conv(
             "Mara".into(),
             "hacker".into(),
             html! {
@@ -37,7 +37,7 @@ pub fn referer(referer: Option<String>) -> Markup {
                 a href="/pronouns" {"this page"}
                 " that explains the pronouns that you should be using. tl;dr: the author of this website is NOT male. Please do not use \"he\" or \"him\" when referring to the author."
             },
-        );
+        )));
     }
 
     if LOBSTERS.is_match(&referer) {
@@ -50,7 +50,7 @@ pub fn referer(referer: Option<String>) -> Markup {
         );
     }
 
-    xesite_templates::advertiser_nag()
+    xesite_templates::advertiser_nag(None)
 }
 
 #[cfg(debug_assertions)]

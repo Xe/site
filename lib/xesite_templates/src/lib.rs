@@ -144,26 +144,30 @@ pub fn video(path: String) -> Markup {
     }
 }
 
-pub fn advertiser_nag() -> Markup {
+pub fn advertiser_nag(nag: Option<Markup>) -> Markup {
     html! {
         script r#async src="https://media.ethicalads.io/media/client/ethicalads.min.js" { "" }
         div.adaptive data-ea-publisher="christinewebsite" data-ea-type="text" data-ea-style="fixedfooter" {
             .warning {
-                (conv(
-                    "Cadey".into(),
-                    "coffee".into(),
-                    html! {
-                        "Hello! Thank you for visiting my website. You seem to be using an ad-blocker. I understand why you do this, but I'd really appreciate if it you would turn it off for my website. These ads help pay for running the website and are done by "
-                        a href="https://www.ethicalads.io/" { "Ethical Ads" }
-                        ". I do not receive detailed analytics on the ads and from what I understand neither does Ethical Ads. If you don't want to disable your ad blocker, please consider donating on "
-                        a href="https://patreon.com/cadey" { "Patreon" }
-                        " or sending some extra cash to "
-                        code { "xeiaso.eth" }
-                        " or "
-                        code { "0xeA223Ca8968Ca59e0Bc79Ba331c2F6f636A3fB82" }
-                        ". It helps fund the website's hosting bills and pay for the expensive technical editor that I use for my longer articles. Thanks and be well!"
-                    },
-                ))
+                @if let Some(nag) = nag {
+                    (nag)
+                } @else {
+                    (conv(
+                        "Cadey".into(),
+                        "coffee".into(),
+                        html! {
+                            "Hello! Thank you for visiting my website. You seem to be using an ad-blocker. I understand why you do this, but I'd really appreciate if it you would turn it off for my website. These ads help pay for running the website and are done by "
+                            a href="https://www.ethicalads.io/" { "Ethical Ads" }
+                            ". I do not receive detailed analytics on the ads and from what I understand neither does Ethical Ads. If you don't want to disable your ad blocker, please consider donating on "
+                            a href="https://patreon.com/cadey" { "Patreon" }
+                            " or sending some extra cash to "
+                            code { "xeiaso.eth" }
+                            " or "
+                            code { "0xeA223Ca8968Ca59e0Bc79Ba331c2F6f636A3fB82" }
+                            ". It helps fund the website's hosting bills and pay for the expensive technical editor that I use for my longer articles. Thanks and be well!"
+                        },
+                    ))
+                }
             }
         }
     }
