@@ -4,7 +4,6 @@ use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
     fmt::{self, Display},
-    path::PathBuf,
 };
 
 #[derive(Clone, Deserialize, Default)]
@@ -16,8 +15,6 @@ pub struct Config {
     pub port: u16,
     #[serde(rename = "clackSet")]
     pub clack_set: Vec<String>,
-    #[serde(rename = "resumeFname")]
-    pub resume_fname: PathBuf,
     #[serde(rename = "miToken")]
     pub mi_token: String,
     #[serde(rename = "jobHistory")]
@@ -30,6 +27,63 @@ pub struct Config {
     pub notable_projects: Vec<Link>,
     #[serde(rename = "contactLinks")]
     pub contact_links: Vec<Link>,
+    pub pronouns: Vec<PronounSet>,
+}
+
+#[derive(Clone, Deserialize, Serialize, Default)]
+pub struct PronounSet {
+    nominative: String,
+    accusative: String,
+    #[serde(rename = "possessiveDeterminer")]
+    possessive_determiner: String,
+    possessive: String,
+    reflexive: String,
+    singular: bool,
+}
+
+impl Render for PronounSet {
+    fn render(&self) -> Markup {
+        html! {
+            big { (self.nominative) "/" (self.accusative) }
+            table {
+                tr {
+                    th { "Subject" }
+                    td {(self.nominative)}
+                }
+                tr {
+                    th { "Object" }
+                    td {(self.accusative)}
+                }
+                tr {
+                    th { "Dependent Possessive" }
+                    td {(self.possessive_determiner)}
+                }
+                tr {
+                    th { "Independent Possessive" }
+                    td {(self.possessive)}
+                }
+                tr {
+                    th { "Reflexive" }
+                    td {(self.reflexive)}
+                }
+            }
+            p {"Here are some example sentences with these pronouns:"}
+            ul {
+                li { i{(self.nominative)} " went to the park." }
+                li { "I went with " i{(self.accusative)} "." }
+                li { i{(self.nominative)} " brought " i{(self.possessive_determiner)} " frisbee." }
+                li { "At least I think it was " i{(self.possessive)} "." }
+                li { i{(self.nominative)} " threw the frisbee to " i{(self.reflexive)} "." }
+            }
+            @if !self.singular {
+                p {
+                    "Please note that this pronoun is normally a plural pronoun. It is used here to refer to a single person. For more information on this, see "
+                    a href="https://www.merriam-webster.com/words-at-play/singular-nonbinary-they" {"this page from Merriam-Webster"}
+                    " that will explain in more detail."
+                }
+            }
+        }
+    }
 }
 
 #[derive(Clone, Deserialize, Serialize, Default)]

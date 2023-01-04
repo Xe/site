@@ -582,3 +582,27 @@ fn salary_history(jobs: &Vec<Job>) -> Markup {
         }
     }
 }
+
+pub fn pronoun_page(pronouns: &Vec<PronounSet>) -> Markup {
+    base(
+        Some("Pronouns"),
+        None,
+        html! {
+            h1 {"Pronouns"}
+            p {"This page lists the pronouns you should use for me. Please try to use one of these sets:"}
+            .grid {
+                @for ps in pronouns {
+                    .card.cell."-4of12" {
+                        (ps)
+                    }
+                }
+            }
+
+            (xesite_templates::conv("Mara".to_string(), "happy".to_string(), html!{
+                "You can access this data with "
+                a href="/api/pronouns" {"an API call"}
+                " too!"
+            }))
+        },
+    )
+}

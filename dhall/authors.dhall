@@ -21,7 +21,12 @@ let authors =
             "https://cdn.xeiaso.net/file/christine-static/img/FFVV1InX0AkDX3f_cropped_smol.jpg"
         , inSystem = True
         }
-      , Author::{ name = "Nicole", handle = "Twi", inSystem = True }
+      , Author::{
+        , name = "Nicole Brennan"
+        , handle = "Twi"
+        , url = Some "https://tech.lgbt/@twi"
+        , inSystem = True
+        }
       , Author::{ name = "Mai", handle = "Mai", inSystem = True }
       , Author::{ name = "Sephira", handle = "sephiraloveboo", inSystem = True }
       ]

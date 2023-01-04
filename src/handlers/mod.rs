@@ -86,6 +86,15 @@ pub async fn contact(Extension(state): Extension<Arc<State>>) -> Markup {
     crate::tmpl::contact(&cfg.contact_links)
 }
 
+#[instrument(skip(state))]
+pub async fn pronouns(Extension(state): Extension<Arc<State>>) -> Markup {
+    HIT_COUNTER.with_label_values(&["pronouns"]).inc();
+    let state = state.clone();
+    let cfg = state.cfg.clone();
+
+    crate::tmpl::pronoun_page(&cfg.pronouns)
+}
+
 #[instrument]
 pub async fn feeds() -> Markup {
     HIT_COUNTER.with_label_values(&["feeds"]).inc();

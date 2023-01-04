@@ -5,13 +5,14 @@ use regex::Regex;
 
 lazy_static! {
     static ref LOBSTERS: Regex = Regex::new(r#"^https?://lobste.rs"#).unwrap();
+    static ref HACKER_NEWS: Regex = Regex::new(r#"^https?://news.ycombinator.com"#).unwrap();
 }
 
 #[cfg(debug_assertions)]
 pub fn referer(_: Option<String>) -> Markup {
     html! {
         .warning {
-            "This is a development instance of xesite. Things here are probably unfinished or in drafting. Don't take anything here super seriously. If you want to share this to an online aggregator, please don't. Drafts are not finalized yet for a reason."
+            "This is a development instance of xesite. Things here are probably unfinished or in drafting. Don't take anything here super seriously. If you want to share this to an online aggregator, please don't. Drafts are not finalized yet for a reason. Please don't be the reason I need to implement more advanced security than just obscurity."
         }
         br;
     }
@@ -27,12 +28,26 @@ pub fn referer(referer: Option<String>) -> Markup {
 
     let referer = referer.unwrap();
 
+    if HACKER_NEWS.is_match(&referer) {
+        return xeblog_conv(
+            "Mara".into(),
+            "hacker".into(),
+            html! {
+                "Hello. Before commenting about the author, please read "
+                a href="/pronouns" {"this page"}
+                " that explains the pronouns that you should be using. tl;dr: the author of this website is NOT male. Please do not use \"he\" or \"him\" when referring to the author."
+            },
+        );
+    }
+
     if LOBSTERS.is_match(&referer) {
-        return html! {
-            (xeblog_conv("Mara".into(), "happy".into(), html!{
+        return xeblog_conv(
+            "Mara".into(),
+            "happy".into(),
+            html! {
                 "Hey, thanks for reading Lobsters! We've disabled the ads to thank you for choosing to use a more ethical aggregator."
-            }))
-        };
+            },
+        );
     }
 
     xesite_templates::advertiser_nag()

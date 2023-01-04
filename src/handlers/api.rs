@@ -1,5 +1,5 @@
 use crate::{
-    app::{config::Job, State},
+    app::{config::Job, PronounSet, State},
     handlers::Result,
     post::Post,
 };
@@ -27,8 +27,22 @@ pub async fn salary_transparency(Extension(state): Extension<Arc<State>>) -> Jso
     super::HIT_COUNTER
         .with_label_values(&["salary_transparency_json"])
         .inc();
+    let state = state.clone();
+    let cfg = state.cfg.clone();
 
-    Json(state.clone().cfg.clone().job_history.clone())
+    Json(cfg.job_history.clone())
+}
+
+#[axum_macros::debug_handler]
+#[instrument(skip(state))]
+pub async fn pronouns(Extension(state): Extension<Arc<State>>) -> Json<Vec<PronounSet>> {
+    super::HIT_COUNTER
+        .with_label_values(&["pronouns_json"])
+        .inc();
+    let state = state.clone();
+    let cfg = state.cfg.clone();
+
+    Json(cfg.pronouns.clone())
 }
 
 #[instrument(skip(state))]

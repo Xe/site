@@ -10,6 +10,8 @@ let NagMessage = ./NagMessage.dhall
 
 let SeriesDescription = ./SeriesDescription.dhall
 
+let PronounSet = ./PronounSet.dhall
+
 let Prelude = ../Prelude.dhall
 
 let defaultPort = env:PORT ? 3030
@@ -24,7 +26,6 @@ in  { Type =
         , authors : Prelude.Map.Type Text Author.Type
         , port : Natural
         , clackSet : List Text
-        , resumeFname : Text
         , webMentionEndpoint : Text
         , miToken : Text
         , jobHistory : List Job.Type
@@ -32,6 +33,7 @@ in  { Type =
         , seriesDescMap : Prelude.Map.Type Text Text
         , notableProjects : List Link.Type
         , contactLinks : List Link.Type
+        , pronouns : List PronounSet.Type
         }
     , default =
       { signalboost = [] : List Person.Type
@@ -39,7 +41,6 @@ in  { Type =
       , authors = [] : List Author.Type
       , port = defaultPort
       , clackSet = [ "Ashlynn" ]
-      , resumeFname = "./static/resume/resume.md"
       , webMentionEndpoint = defaultWebMentionEndpoint
       , miToken = "${env:MI_TOKEN as Text ? ""}"
       , jobHistory = [] : List Job.Type
@@ -47,5 +48,6 @@ in  { Type =
       , seriesDescMap = [] : Prelude.Map.Type Text Text
       , notableProjects = [] : List Link.Type
       , contactLinks = [] : List Link.Type
+      , pronouns = [] : List PronounSet.Type
       }
     }

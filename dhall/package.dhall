@@ -23,10 +23,11 @@ in  Config::{
         , title = "Aura"
         , description = "PonyvilleFM live DJ recording bot"
         }
-        , Link::{
+      , Link::{
         , url = "https://h.within.lgbt"
         , title = "The h Programming Language"
-        , description = "An esoteric programming language that compiles to WebAssembly"
+        , description =
+            "An esoteric programming language that compiles to WebAssembly"
         }
       , Link::{
         , url = "https://github.com/Xe/olin"
@@ -80,4 +81,5 @@ in  Config::{
       , Link::{ url = "https://t.me/miamorecadenza", title = "Telegram" }
       , Link::{ url = "irc://irc.libera.chat/#xeserv", title = "IRC" }
       ]
+    , pronouns = ./pronouns.dhall
     }

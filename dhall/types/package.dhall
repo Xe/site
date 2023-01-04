@@ -6,6 +6,7 @@
 , Location = ./Location.dhall
 , NagMessage = ./NagMessage.dhall
 , Person = ./Person.dhall
+, PronounSet = ./PronounSet.dhall
 , Resume = ./Resume.dhall
 , Salary = ./Salary.dhall
 , SeriesDescription = ./SeriesDescription.dhall

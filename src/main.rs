@@ -161,6 +161,7 @@ async fn main() -> Result<()> {
             ),
         )
         // api
+        .route("/api/pronouns", get(handlers::api::pronouns))
         .route("/api/new_post", get(handlers::feeds::new_post))
         .route(
             "/api/salary_transparency.json",
@@ -176,6 +177,7 @@ async fn main() -> Result<()> {
         .route("/patrons", get(handlers::patrons))
         .route("/signalboost", get(handlers::signalboost))
         .route("/salary-transparency", get(handlers::salary_transparency))
+        .route("/pronouns", get(handlers::pronouns))
         // feeds
         .route("/blog.json", get(handlers::feeds::jsonfeed))
         .route("/blog.atom", get(handlers::feeds::atom))

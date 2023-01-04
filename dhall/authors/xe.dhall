@@ -1,6 +1,4 @@
-let xesite = ../types/package.dhall
-
-let Author = xesite.Author
+let Author = ../types/Author.dhall
 
 in  Author::{
     , name = "Xe Iaso"
