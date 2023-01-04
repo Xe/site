@@ -130,6 +130,16 @@ async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Resul
             .filter(|wm| {
                 wm.title.as_ref().unwrap_or(&"".to_string()) != &"Bridgy Response".to_string()
             })
+            .map(|wm| {
+                let mut wm = wm.clone();
+                wm.title = Some(
+                    mastodon2text::convert(
+                        wm.title.as_ref().unwrap_or(&"".to_string()).to_string(),
+                    )
+                    .unwrap(),
+                );
+                wm
+            })
             .collect(),
         None => vec![],
     };

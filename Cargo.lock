@@ -1475,6 +1475,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "mastodon2text"
+version = "0.1.0"
+dependencies = [
+ "lol_html",
+]
+
+[[package]]
 name = "matches"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3503,6 +3510,7 @@ dependencies = [
  "kankyo",
  "lazy_static",
  "log",
+ "mastodon2text",
  "maud",
  "mi",
  "mime",

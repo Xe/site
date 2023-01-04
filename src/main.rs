@@ -4,7 +4,6 @@ extern crate tracing;
 use axum::{
     body,
     extract::Extension,
-    handler::Handler,
     http::header::{self, HeaderValue, CONTENT_TYPE},
     response::Response,
     routing::{get, get_service},
@@ -22,10 +21,7 @@ use std::{
 };
 use tokio::net::UnixListener;
 use tower_http::{
-    cors::CorsLayer,
-    services::{ServeDir, ServeFile},
-    set_header::SetResponseHeaderLayer,
-    trace::TraceLayer,
+    cors::CorsLayer, services::ServeFile, set_header::SetResponseHeaderLayer, trace::TraceLayer,
 };
 
 pub mod app;
