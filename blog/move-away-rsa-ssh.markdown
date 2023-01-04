@@ -51,7 +51,8 @@ I'm going to cover how to make SSH keys using
 [ed25519](https://en.wikipedia.org/wiki/EdDSA#Ed25519) keys instead of RSA. 
 
 <xeblog-conv name="Mara" mood="hacker">It's worth noting that RSA has not been
-broken yet, the paper in question
+broken yet, the paper in question describes a theoretical attack. Quantum
+computers are nowhere near good enough for this yet.</xeblog-conv>
 
 ## Generating new keys
 
