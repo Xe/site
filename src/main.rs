@@ -157,14 +157,16 @@ async fn main() -> Result<()> {
             ),
         )
         // api
+        .route("/api/authors", get(handlers::api::authors))
         .route("/api/pronouns", get(handlers::api::pronouns))
         .route("/api/new_post", get(handlers::feeds::new_post))
-        .route(
-            "/api/salary_transparency.json",
-            get(handlers::api::salary_transparency),
-        )
         .route("/api/blog/:name", get(handlers::api::blog))
         .route("/api/talks/:name", get(handlers::api::talk))
+        // json-ld metadata
+        .route(
+            "/api/json-ld/PronounSet",
+            get(handlers::json_ld::pronoun_set),
+        )
         // static pages
         .route("/", get(handlers::index))
         .route("/contact", get(handlers::contact))

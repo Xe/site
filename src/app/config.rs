@@ -30,8 +30,14 @@ pub struct Config {
     pub pronouns: Vec<PronounSet>,
 }
 
+fn schema_pronoun_set_type() -> String {
+    "https://xeiaso.net/api/json-ld/PronounSet".to_string()
+}
+
 #[derive(Clone, Deserialize, Serialize, Default)]
 pub struct PronounSet {
+    #[serde(rename = "@type", default = "schema_pronoun_set_type")]
+    pub schema_type: String,
     nominative: String,
     accusative: String,
     #[serde(rename = "possessiveDeterminer")]
@@ -119,8 +125,10 @@ impl Default for StockKind {
     }
 }
 
-fn schema_context() -> String {
-    "http://schema.org/".to_string()
+fn schema_person_context() -> serde_json::Value {
+    serde_json::json!(["https://schema.org/", {
+        "pronouns": { "@type": "https://xeiaso.net/api/json-ld/PronounSet", },
+    }])
 }
 
 fn schema_person_type() -> String {
@@ -129,8 +137,8 @@ fn schema_person_type() -> String {
 
 #[derive(Clone, Deserialize, Serialize, Default)]
 pub struct Author {
-    #[serde(rename = "@context", default = "schema_context")]
-    pub context: String,
+    #[serde(rename = "@context", default = "schema_person_context")]
+    pub context: serde_json::Value,
     #[serde(rename = "@type", default = "schema_person_type")]
     pub schema_type: String,
     pub name: String,
@@ -140,12 +148,13 @@ pub struct Author {
     pub pic_url: Option<String>,
     #[serde(rename = "inSystem", skip_serializing)]
     pub in_system: bool,
-    #[serde(rename = "jobTitle")]
+    #[serde(rename = "jobTitle", skip_serializing_if = "String::is_empty")]
     pub job_title: String,
-    #[serde(rename = "sameAs")]
+    #[serde(rename = "sameAs", skip_serializing_if = "Vec::is_empty")]
     pub same_as: Vec<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
+    pub pronouns: PronounSet,
 }
 
 #[derive(Clone, Deserialize, Serialize, Default)]

@@ -1,12 +1,12 @@
 use crate::{
-    app::{config::Job, PronounSet, State},
+    app::{config::Author, PronounSet, State},
     handlers::Result,
     post::Post,
 };
 use axum::extract::{Extension, Json, Path};
 use lazy_static::lazy_static;
 use prometheus::{opts, register_int_counter_vec, IntCounterVec};
-use std::sync::Arc;
+use std::{collections::HashMap, sync::Arc};
 
 lazy_static! {
     static ref BLOG: IntCounterVec = register_int_counter_vec!(
@@ -23,14 +23,14 @@ lazy_static! {
 
 #[axum_macros::debug_handler]
 #[instrument(skip(state))]
-pub async fn salary_transparency(Extension(state): Extension<Arc<State>>) -> Json<Vec<Job>> {
+pub async fn authors(Extension(state): Extension<Arc<State>>) -> Json<HashMap<String, Author>> {
     super::HIT_COUNTER
-        .with_label_values(&["salary_transparency_json"])
+        .with_label_values(&["authors_json"])
         .inc();
     let state = state.clone();
     let cfg = state.cfg.clone();
 
-    Json(cfg.job_history.clone())
+    Json(cfg.authors.clone())
 }
 
 #[axum_macros::debug_handler]
