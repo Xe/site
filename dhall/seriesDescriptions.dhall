@@ -85,6 +85,10 @@ let descriptions
         , details = "Reviews on various tech or media properties."
         }
       , Desc::{
+        , name = "revueBackup"
+        , details = "My revue posts converted to xesite posts."
+        }
+      , Desc::{
         , name = "short-stories"
         , details = "Flash fiction stories I've written over the years"
         }
