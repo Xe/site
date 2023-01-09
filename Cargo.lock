@@ -1125,9 +1125,9 @@ dependencies = [
 
 [[package]]
 name = "html2text"
-version = "0.4.4"
+version = "0.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "63009e2578b64b51d15a23fc5e440e3952eafba3d1e20ec76dd3f63221d95ed1"
+checksum = "8177c65914761eea31e755aadea4db42d516e425046824564979e2158eec7fcb"
 dependencies = [
  "html5ever",
  "markup5ever",
