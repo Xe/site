@@ -58,7 +58,9 @@ pub fn blog(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> 
         None,
         html! {
             (post_metadata(post))
-            (nag::referer(referer))
+            @if !post.front_matter.skip_ads {
+                (nag::referer(referer))
+            }
 
             article {
                 h1 {(post.front_matter.title)}
@@ -140,7 +142,7 @@ pub fn gallery(post: &Post) -> Markup {
         None,
         html! {
             (post_metadata(post))
-                h1 {(post.front_matter.title)}
+             h1 {(post.front_matter.title)}
 
             (PreEscaped(&post.body_html))
 
@@ -177,10 +179,13 @@ pub fn talk(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> 
         None,
         html! {
             (post_metadata(post))
-            (nag::referer(referer))
+
+            @if !post.front_matter.skip_ads {
+                (nag::referer(referer))
+            }
 
             article {
-                {(post.front_matter.title)}
+                h1 {(post.front_matter.title)}
 
                 (nag::prerelease(post))
 

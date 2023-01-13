@@ -26,6 +26,8 @@ pub struct Frontmatter {
     pub redirect_to: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub vod: Option<Vod>,
+    #[serde(default)]
+    pub skip_ads: bool,
 }
 
 fn frontmatter_about() -> String {
