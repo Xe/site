@@ -2,7 +2,13 @@
     "compilerOptions": {
         "jsx": "react-jsx",
         "jsxImportSource": "xeact",
-        "lib": ["esnext", "dom", "dom.iterable"]
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "dom.asynciterable",
+            "deno.ns",
+            "deno.unstable"
+        ],
     },
     "importMap": "./import_map.json",
 }
