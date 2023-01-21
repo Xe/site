@@ -20,6 +20,9 @@ img {
 
 .conversation {
   display: flex;
+  background-color: #3c3836;
+  border-radius: 5px;
+  margin-top: 0.25rem;
 }
 
 .conversation-standalone {
@@ -39,6 +42,7 @@ img {
 .conversation-chat {
   align-self: center;
   min-width: 0;
+  margin: 0.5rem;
 }
 
 .gruvbox-dark pre, pre {
@@ -96,6 +100,10 @@ figcaption {
     .warning {
         background-color: #fbf1c7;
     }
+
+    .conversation {
+        background-color: #ebdbb2;
+    };
 
     .ea-placement.ea-type-image {
         background: #fbf1c7;
