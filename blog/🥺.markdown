@@ -39,18 +39,26 @@ malicious inputs by fuzzing all public attack surfaces, and try to minimize the
 amount of code involved in order to prevent vulnerabilities from being a
 problem?</xeblog-conv>
 
-<xeblog-conv name="Cadey" mood="coffee">God I wish they did. They wrote the
-program in C, (as far as I can tell) have no intention of rewriting it in Rust, and it's had
-[many](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-22809)
-[viable](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3156)
-[attacks](https://www.sudo.ws/security/advisories/sudoedit_selinux) over the
-years that allowed attackers to gain root privileges and worse. It's also
-debatable if the entire concept of privilege separation as implemented in Linux
-and UNIX was a bad idea to begin with but we're stuck with it because of an
-endless ball of legacy programs controlled by egotistical open source people
-that refuse to change because then [obscure targets that nobody uses won't be
-able to leech off of the rest of the ecosystem by holding back any chance to let
-us have a modicum of nice things](https://lwn.net/Articles/845535/).</xeblog-conv>
+<div class="warning">A prior version of this conversation snippet was badly
+phrased. You are reading an edited version in case this is relevant in internet
+comment arguments.</div>
+
+<xeblog-conv name="Cadey" mood="coffee">I don't know about the code quality
+standards of the sudo project, but overall I don't see them doing any concerted
+effort to try to migrate away from C (or to reduce the complexity of sudo) and
+there are
+[frequent](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-22809) 
+[security](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3156)
+[vulnerabilities](https://www.sudo.ws/security/advisories/sudoedit_selinux) that
+result in attackers getting root access anyways. I really wish the industry as a
+whole would take languages like Rust a bit more seriously and start actually
+moving towards programs being safer to use because security vulnerabilities in
+core infrastructure result in emergency patches. It was disappointing to see [an
+attempt at using Rust in an important Python library torpedoed by users of
+obscure architectures not supporting Rust](https://lwn.net/Articles/845535/).
+Maybe the solution there is to use WebAssembly as a compile target instead of
+making everything be native code. I wouldn't wish hppa's reverse stack growth on
+anyone trying to write a compiler though.</xeblog-conv>
 
 <xeblog-conv name="Aoi" mood="sus">Oh god...</xeblog-conv>
 
