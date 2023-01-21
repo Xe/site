@@ -22,21 +22,23 @@ img {
   display: flex;
 }
 
-.conversation-picture {
+.conversation-standalone {
   flex: 1;
-  min-width: 9rem;
-  max-width: calc(((70rem - 2rem)/6));
+  min-width: 6rem;
+  max-width: 6rem;
+  padding: 0.5rem;
 }
 
 .conversation-smol {
-    min-width: 6rem;
-    max-width: 6rem;
-    padding: 0.5rem;
+  flex: 1;
+  min-width: 4.5rem;
+  max-width: 4.5rem;
+  padding: 0.25rem;
 }
 
 .conversation-chat {
-    align-self: center;
-    min-width: 0;
+  align-self: center;
+  min-width: 0;
 }
 
 .gruvbox-dark pre, pre {

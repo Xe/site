@@ -11,17 +11,13 @@ tags:
 
 <xeblog-conv name="Mara" mood="hmm">I wonder how many people's RSS/JSONFeed
 readers we broke with the title...</xeblog-conv>
-
 <xeblog-conv name="Aoi" mood="cheer">Come on, it couldn't have been _that_ many,
 things support Unicode now, right?</xeblog-conv>
-
 <xeblog-conv name="Numa" mood="delet"><span style="color:green">&gt;implying
 things support Unicode properly in the year of our lord two thousand and
 twenty-three</span></xeblog-conv>
-
 <xeblog-conv name="Aoi" mood="facepalm">They do support Unicode though...right?
 They have to.</xeblog-conv>
-
 <xeblog-conv name="Cadey" mood="coffee">We'll find out.</xeblog-conv>
 
 Security is impossible. We just like to pretend otherwise so that we can
@@ -59,7 +55,6 @@ obscure architectures not supporting Rust](https://lwn.net/Articles/845535/).
 Maybe the solution there is to use WebAssembly as a compile target instead of
 making everything be native code. I wouldn't wish hppa's reverse stack growth on
 anyone trying to write a compiler though.</xeblog-conv>
-
 <xeblog-conv name="Aoi" mood="sus">Oh god...</xeblog-conv>
 
 I'm tired of this situation and I bet a lot of the ecosystem is too. There's
@@ -88,11 +83,9 @@ uid=0(root) gid=0(root) groups=0(root),102(docker),1000(xe)
 secure at all? If it doesn't ask you for your password how can you be sure that
 an actual human is making the request and not some malicious
 script?</xeblog-conv>
-
 <xeblog-conv name="Numa" mood="delet">Using this program requires you to be able
 to type an emoji. Most attack code is of such poor quality that they are unable
 to run commands named with emoji. This makes the program secure.</xeblog-conv>
-
 <xeblog-conv name="Aoi" mood="coffee">This is not how any of this
 works.</xeblog-conv>
 
@@ -130,9 +123,7 @@ if env::args().len() == 1 {
 <xeblog-conv name="Aoi" mood="wut">Wait, what? Why is it returning that
 everything is okay if the user is doing it wrong? Shouldn't it return some kind
 of error code that the running program or shell can catch?</xeblog-conv>
-
 <xeblog-conv name="Numa" mood="delet">It's a feature.</xeblog-conv>
-
 <xeblog-conv name="Aoi" mood="coffee">I really hope I never have to maintain any
 of your code.</xeblog-conv>
 
@@ -158,9 +149,7 @@ writer
 <xeblog-conv name="Aoi" mood="wut">Wait so the emoji works there, but it
 probably isn't going to work in people's RSS feed readers? How does that make
 any sense?</xeblog-conv>
-
 <xeblog-conv name="Numa" mood="delet">It doesn't, lololol</xeblog-conv>
-
 <xeblog-conv name="Cadey" mood="coffee">UNIX is mostly devoid of the concept of
 character sets. Any character is fine as long as it doesn't have a null
 terminator (this ends the string in C). I'd be more amazed if the emoji use
@@ -210,9 +199,10 @@ $ cargo run --release ls
 Error: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
 ```
 
-<xeblog-conv name="Numa" mood="delet">Sure, this error message could be better,
-but that's a 2.0 feature. This is a disruptive program poised to totally reshape
-the security industry so we have to _move fast and break things_!</xeblog-conv>
+<xeblog-conv standalone name="Numa" mood="delet">Sure, this error message could
+be better, but that's a 2.0 feature. This is a disruptive program poised to
+totally reshape the security industry so we have to _move fast and break
+things_!</xeblog-conv>
 
 I'm fairly sure that this program has no bugs that aren't either a part of the
 syslog crate or the Rust standard library.
@@ -224,9 +214,10 @@ fileserver](https://pneuma.shark-harmonic.ts.net/.within/xn--ts9h/) and
 installing it with `dpkg -i`. This will give you the `🥺` command that you can
 use in place of `sudo`.
 
-<xeblog-conv name="Numa" mood="delet">This will let you stick it to the man and
-let you self-host your own sudo on a $5 a month VPS from a budget host. You
-can't have any vulnerabilities if there are no bugs to begin with!</xeblog-conv>
+<xeblog-conv standalone name="Numa" mood="delet">This will let you stick it to
+the man and let you self-host your own sudo on a $5 a month VPS from a budget
+host. You can't have any vulnerabilities if there are no bugs to begin
+with!</xeblog-conv>
 
 <xeblog-sticker name="Aoi" mood="facepalm"></xeblog-sticker>
 
@@ -247,9 +238,9 @@ https://aws.amazon.com/amazon-linux-2/
 uid=0(root) gid=0(root) groups=0(root),10(wheel),1000(xe)
 ```
 
-<xeblog-conv name="Mara" mood="hacker">Pro tip! You can apparently pass a URL to
-a `.rpm` file to `yum install` and it will just download and install that `.rpm`
-file. This is incredibly cursed.</xeblog-conv>
+<xeblog-conv standalone name="Mara" mood="hacker">Pro tip! You can apparently
+pass a URL to a `.rpm` file to `yum install` and it will just download and
+install that `.rpm` file. This is incredibly cursed.</xeblog-conv>
 
 The `.deb` package was built on Ubuntu 18.04 and the `.rpm` package was built on
 Amazon Linux 2, so it should be compatible with enough distributions that you
@@ -257,7 +248,6 @@ don't have to care.
 
 <xeblog-conv name="Mara" mood="hacker">There's even a manpage you can read with
 `man 8 🥺`!</xeblog-conv>
-
 <xeblog-conv name="Numa" mood="delet">And most importantly, [patches
 welcome](https://github.com/Xe/xn--ts9h)!</xeblog-conv>
 
@@ -266,10 +256,8 @@ welcome](https://github.com/Xe/xn--ts9h)!</xeblog-conv>
 <xeblog-conv name="Numa" mood="delet">By the way, there are many more lovely
 ways to get root than just by asking nicely with `setuid`. Why doesn't this
 program use those?</xeblog-conv>
-
 <xeblog-conv name="Cadey" mood="coffee">We gotta save _something_ for part 2,
 otherwise that would spoil all the _fun_.</xeblog-conv>
-
 <xeblog-conv name="Aoi" mood="sus">I don't know if I like what you mean by "fun"
 there...</xeblog-conv>
 

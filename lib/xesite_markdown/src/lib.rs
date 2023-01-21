@@ -111,16 +111,23 @@ pub fn render(inp: &str) -> Result<String> {
                         .ok_or(Error::MissingElementAttribute("mood".to_string()))?;
                     let name = name.replace("_", " ");
 
-                    el.before(&format!(r#"
+                    let (size, class) = el
+                        .get_attribute("standalone")
+                        .map_or((64, "conversation-smol"), |_| {
+                            (128, "conversation-standalone")
+                        });
+
+                    el.before(
+                        &format!(
+                            r#"
 <div class="conversation">
-    <div class="conversation-picture conversation-smol">
-        <picture>
-            <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/{name_lower}/{mood}.avif" type="image/avif">
-            <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/{name_lower}/{mood}.webp" type="image/webp">
-            <img src="https://cdn.xeiaso.net/file/christine-static/stickers/{name_lower}/{mood}.png" alt="{name} is {mood}">
-        </picture>
+    <div class="{class}">
+        <img src="https://cdn.xeiaso.net/sticker/{name_lower}/{mood}/{size}" alt="{name} is {mood}">
     </div>
-    <div class="conversation-chat">&lt;<b>{name}</b>&gt; "#), ContentType::Html);
+    <div class="conversation-chat">&lt;<b>{name}</b>&gt; "#
+                        ),
+                        ContentType::Html,
+                    );
                     el.after("</div></div>", ContentType::Html);
 
                     el.remove_and_keep_content();

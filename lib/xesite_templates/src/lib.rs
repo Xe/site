@@ -66,11 +66,11 @@ pub fn conv(name: String, mood: String, body: Markup) -> Markup {
 
     html! {
         .conversation {
-            ."conversation-picture"."conversation-smol" {
+            ."conversation-standalone" {
                 picture {
                     source type="image/avif" srcset={"https://cdn.xeiaso.net/file/christine-static/stickers/" (name_lower) "/" (mood) ".avif"};
                     source type="image/webp" srcset={"https://cdn.xeiaso.net/file/christine-static/stickers/" (name_lower) "/" (mood) ".webp"};
-                    img alt={(name) " is " (mood)} loading="lazy" src={"https://cdn.xeiaso.net/file/christine-static/stickers/" (name_lower) "/" (mood) ".png"};
+                    img style="max-height:4.5rem" alt={(name) " is " (mood)} loading="lazy" src={"https://cdn.xeiaso.net/file/christine-static/stickers/" (name_lower) "/" (mood) ".png"};
                 }
             }
             ."conversation-chat" {
