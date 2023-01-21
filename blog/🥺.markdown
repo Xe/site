@@ -273,4 +273,6 @@ otherwise that would spoil all the _fun_.</xeblog-conv>
 <xeblog-conv name="Aoi" mood="sus">I don't know if I like what you mean by "fun"
 there...</xeblog-conv>
 
+---
 
+<xeblog-sticker name="Aoi" mood="yawn"></xeblog-sticker>

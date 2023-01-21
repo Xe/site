@@ -129,7 +129,13 @@ pub fn blog(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> 
 
             p {
                 "The art for Cadey was drawn by "
-                a href="https://artzorastudios.weebly.com/" {"ArtZorea Studios"}
+                a href="https://artzorastudios.weebly.com/" {"ArtZora Studios"}
+                "."
+            }
+
+            p {
+                "Some of the art for Aoi was drawn by "
+                a href="https://twitter.com/Sandra_Thomas01" {"@Sandra_Thomas01"}
                 "."
             }
         },
@@ -216,7 +222,13 @@ pub fn talk(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> 
 
             p {
                 "The art for Cadey was drawn by "
-                    a href="https://artzorastudios.weebly.com/" {"ArtZorea Studios"}
+                    a href="https://artzorastudios.weebly.com/" {"ArtZora Studios"}
+                "."
+            }
+
+            p {
+                "Some of the art for Aoi was drawn by "
+                a href="https://twitter.com/Sandra_Thomas01" {"@Sandra_Thomas01"}
                 "."
             }
         },
