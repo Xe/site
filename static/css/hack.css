@@ -1,5 +1,7 @@
 html {
   font-size: 14px;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 * {
   box-sizing: border-box;
