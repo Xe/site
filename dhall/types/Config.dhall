@@ -2,6 +2,8 @@ let Person = ./Person.dhall
 
 let Author = ./Author.dhall
 
+let Character = ./Character.dhall
+
 let Job = ./Job.dhall
 
 let Link = ./Link.dhall
@@ -34,6 +36,7 @@ in  { Type =
         , notableProjects : List Link.Type
         , contactLinks : List Link.Type
         , pronouns : List PronounSet.Type
+        , characters : List Character.Type
         }
     , default =
       { signalboost = [] : List Person.Type
@@ -49,5 +52,6 @@ in  { Type =
       , notableProjects = [] : List Link.Type
       , contactLinks = [] : List Link.Type
       , pronouns = [] : List PronounSet.Type
+      , characters = [] : List Character.Type
       }
     }

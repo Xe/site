@@ -82,4 +82,5 @@ in  Config::{
       , Link::{ url = "irc://irc.libera.chat/#xeserv", title = "IRC" }
       ]
     , pronouns = ./pronouns.dhall
+    , characters = ./characters.dhall
     }

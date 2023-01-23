@@ -167,6 +167,7 @@ async fn main() -> Result<()> {
         .route("/api/talks/:name", get(handlers::api::talk))
         // static pages
         .route("/", get(handlers::index))
+        .route("/characters", get(handlers::characters))
         .route("/contact", get(handlers::contact))
         .route("/feeds", get(handlers::feeds))
         .route("/resume", get(handlers::resume))

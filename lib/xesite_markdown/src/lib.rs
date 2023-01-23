@@ -124,7 +124,7 @@ pub fn render(inp: &str) -> Result<String> {
     <div class="{class}">
         <img src="https://cdn.xeiaso.net/sticker/{name_lower}/{mood}/{size}" alt="{name} is {mood}">
     </div>
-    <div class="conversation-chat">&lt;<b>{name}</b>&gt; "#
+    <div class="conversation-chat">&lt;<a href="/characters#{name_lower}"><b>{name}</b></a>&gt; "#
                         ),
                         ContentType::Html,
                     );

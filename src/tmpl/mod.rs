@@ -233,6 +233,25 @@ pub fn contact(links: &Vec<Link>) -> Markup {
     )
 }
 
+pub fn characters(characters: &Vec<Character>) -> Markup {
+    base(
+        Some("Characters"),
+        None,
+        html! {
+            h1 {"Characters"}
+            p{
+                "When I am writing articles on this blog, sometimes I will use "
+                a href="https://en.wikipedia.org/wiki/Socratic_method" {"the Socratic method"}
+                " to help illustrate my point. These characters are written off of a set of tropes to help give them a place in the discussions. The characters are just that, characters. Their dialogues are fiction, unless otherwise indicated everything that happens in those dialogues are products of the author's imagination or are used in a fictitious manner. Any resemblance to actual persons (living or dead) is purely coincidental."
+            }
+
+            @for character in characters {
+                (character)
+            }
+        },
+    )
+}
+
 pub fn patrons(patrons: &Users) -> Markup {
     base(
         Some("Patrons"),

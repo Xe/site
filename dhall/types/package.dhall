@@ -1,4 +1,5 @@
 { Author = ./Author.dhall
+, Character = ./Character.dhall
 , Company = ./Company.dhall
 , Config = ./Config.dhall
 , Job = ./Job.dhall

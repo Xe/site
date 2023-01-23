@@ -69,6 +69,15 @@ lazy_static! {
 }
 
 #[instrument(skip(state))]
+pub async fn characters(Extension(state): Extension<Arc<State>>) -> Markup {
+    HIT_COUNTER.with_label_values(&["characters"]).inc();
+    let state = state.clone();
+    let cfg = state.cfg.clone();
+
+    tmpl::characters(&cfg.characters)
+}
+
+#[instrument(skip(state))]
 pub async fn index(Extension(state): Extension<Arc<State>>) -> Result<Markup> {
     HIT_COUNTER.with_label_values(&["index"]).inc();
     let state = state.clone();

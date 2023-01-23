@@ -28,17 +28,18 @@ pub struct Config {
     #[serde(rename = "contactLinks")]
     pub contact_links: Vec<Link>,
     pub pronouns: Vec<PronounSet>,
+    pub characters: Vec<Character>,
 }
 
 #[derive(Clone, Deserialize, Serialize, Default)]
 pub struct PronounSet {
-    nominative: String,
-    accusative: String,
+    pub nominative: String,
+    pub accusative: String,
     #[serde(rename = "possessiveDeterminer")]
-    possessive_determiner: String,
-    possessive: String,
-    reflexive: String,
-    singular: bool,
+    pub possessive_determiner: String,
+    pub possessive: String,
+    pub reflexive: String,
+    pub singular: bool,
 }
 
 impl Render for PronounSet {
@@ -80,6 +81,45 @@ impl Render for PronounSet {
                     "Please note that this pronoun is normally a plural pronoun. It is used here to refer to a single person. For more information on this, see "
                     a href="https://www.merriam-webster.com/words-at-play/singular-nonbinary-they" {"this page from Merriam-Webster"}
                     " that will explain in more detail."
+                }
+            }
+        }
+    }
+}
+
+#[derive(Clone, Deserialize, Serialize, Default)]
+pub struct Character {
+    pub name: String,
+    #[serde(rename = "stickerName")]
+    pub sticker_name: String,
+    #[serde(rename = "defaultPose")]
+    pub default_pose: String,
+    pub description: String,
+    pub pronouns: PronounSet,
+    pub stickers: Vec<String>,
+}
+
+impl Render for Character {
+    fn render(&self) -> Markup {
+        html! {
+            h2 #(self.sticker_name) {(self.name)}
+            (xesite_templates::sticker(self.sticker_name.clone(), self.default_pose.clone()))
+            p {(self.description)}
+            details {
+                summary { "Pronouns (" (self.pronouns.nominative) "/" (self.pronouns.accusative) ")" }
+                (self.pronouns)
+            }
+
+            details {
+                summary { "All stickers" }
+                .grid {
+                    @for sticker in &self.stickers {
+                        .cell."-3of12" {
+                            (xesite_templates::sticker(self.sticker_name.clone(), sticker.clone()))
+                            br;
+                            (sticker)
+                        }
+                    }
                 }
             }
         }

@@ -75,7 +75,7 @@ pub fn conv(name: String, mood: String, body: Markup) -> Markup {
             }
             ."conversation-chat" {
                 "<"
-                b { (name) }
+                a href={"/characters#" (name_lower)} { b { (name) } }
                 "> "
                 (body)
             }
