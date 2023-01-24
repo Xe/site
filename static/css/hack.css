@@ -8,10 +8,10 @@ html {
   text-rendering: geometricPrecision;
 }
 body {
-  font-size: 1.125rem;
+  font-size: 1rem;
   line-height: 1.75rem;
   margin: 0;
-  font-family: "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif;
+  font-family: Menlo, monospace;
   word-wrap: break-word;
 }
 ::selection {
@@ -160,9 +160,9 @@ a:hover {
 .hack blockquote,
 .hack em,
 .hack strong {
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-style: normal;
-  font-family: "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif;
+  font-family: Menlo, monospace;
 }
 .hack blockquote,
 .hack code,
