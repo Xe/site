@@ -8,23 +8,14 @@ html {
   text-rendering: geometricPrecision;
 }
 body {
-  font-size: 1rem;
-  line-height: 1.5rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
   margin: 0;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-family: "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif;
   word-wrap: break-word;
 }
 ::selection {
   background: #d3869b;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  line-height: 1.3em;
 }
 fieldset {
   border: none;
@@ -164,26 +155,20 @@ a:hover {
     flex: 0 0 auto;
   }
 }
-.hack,
+.hack p,
+.hack .conversation-chat,
 .hack blockquote,
-.hack code,
 .hack em,
-.hack h1,
-.hack h2,
-.hack h3,
-.hack h4,
-.hack h5,
-.hack h6,
 .hack strong {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-style: normal;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-family: "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif;
 }
 .hack blockquote,
 .hack code,
 .hack em,
 .hack strong {
+  font-size: 1rem;
   line-height: 20px;
 }
 .hack blockquote,
@@ -206,29 +191,11 @@ a:hover {
   padding: 0;
 }
 .hack blockquote,
-.hack h1,
 .hack ol,
 .hack p,
 .hack ul {
   margin-top: 20px;
   margin-bottom: 20px;
-}
-.hack h1 {
-  position: relative;
-  display: inline-block;
-  display: table-cell;
-  padding: 20px 0 30px;
-  margin: 0;
-  overflow: hidden;
-}
-.hack h1:after {
-  content: "===============================================================================================================================================================";
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-}
-.hack h1 + * {
-  margin-top: 0;
 }
 .hack h2,
 .hack h3,
@@ -244,21 +211,6 @@ a:hover {
 .hack h5:before,
 .hack h6:before {
   display: inline;
-}
-.hack h2:before {
-  content: "## ";
-}
-.hack h3:before {
-  content: "### ";
-}
-.hack h4:before {
-  content: "#### ";
-}
-.hack h5:before {
-  content: "##### ";
-}
-.hack h6:before {
-  content: "###### ";
 }
 .hack li {
   position: relative;
@@ -305,11 +257,6 @@ a:hover {
 }
 .hack code {
   font-weight: 700;
-}
-.hack code:after,
-.hack code:before {
-  content: "`";
-  display: inline;
 }
 .hack hr {
   position: relative;
