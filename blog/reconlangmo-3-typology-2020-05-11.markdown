@@ -15,7 +15,7 @@ headings so it's a bit easier to grok. This is a response to [this
 prompt][rclm3].
 
 [reconlangmoseries]: /blog/series/reconlangmo
-[rclm3]: thttps://www.reddit.com/r/conlangs/comments/ghvo48/reconlangmo_3_morphosyntactic_typology/
+[rclm3]: https://www.reddit.com/r/conlangs/comments/ghvo48/reconlangmo_3_morphosyntactic_typology/
 
 ## Word Order
 
@@ -79,7 +79,7 @@ functions a lot like the selma'o FA from Lojban).
 
 L'ewa is a analytic language. Every single word has only one form and particles
 are used to modify the meaning or significance of words. There are only two word
-classes: content and particles. 
+classes: content and particles.
 
 ### Alignment
 
