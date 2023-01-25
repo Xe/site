@@ -7,7 +7,7 @@ As I have been digging through existing code, systems and the like I have been w
 
 ## Deconstructing Monoliths
 
-One monolith I have been maintaining is [Elemental-IRCd](http://elemental-ircd.com). Taking the head of a project I care about has taught me more about software engineering, community/project management and the like than I would have gotten otherwise. One of these things is that there need to be five basic primitives in your application:
+One monolith I have been maintaining is [Elemental-IRCd](https://github.com/Elemental-IRCd/elemental-ircd). Taking the head of a project I care about has taught me more about software engineering, community/project management and the like than I would have gotten otherwise. One of these things is that there need to be five basic primitives in your application:
 
 1. State - What is true now? What was true? What happened in the past? What is the persistent view of the world?
 2. Events - What is being changed? How will it be routed?
