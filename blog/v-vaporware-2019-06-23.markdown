@@ -136,7 +136,7 @@ $ ldd v
 So the compiler with "zero dependencies" is a _dynamically linked binary_ with
 dependencies on libpthread and libc (the other two are glibc-specific).
 
-Also of note, I had to modify the [Makefile](https://github.com/vlang/v/blob/master/compiler/Makefile)
+Also of note, I had to modify the [Makefile](https://github.com/vlang/v/blob/978ec58fe300929555786fdf58cae1969ea317ba/compiler/Makefile)
 in order to get it to build on Linux without segfaulting every time it tried
 to compile code:
 
@@ -231,7 +231,7 @@ hello, world
 Looking at the [generated C code](https://gist.github.com/Xe/1afdd4c7e7c9cfa23d1aa87194ee5190#file-hello-c-L3698-L3705)
 it's plainly obvious to see this memory leak. `init_consts` creates a 1000 byte
 allocation and never frees it. This is a memory leak that is unavoidable in
-any program compiled with V. This is potentially confusing for people who are 
+any program compiled with V. This is potentially confusing for people who are
 trying to debug memory leaks in their V code. They will always be off by 1
 allocation and 1000 bytes leaked without an easy way to tell why that is the
 case. The compiler itself also leaks memory:
@@ -317,7 +317,7 @@ RUN apt update \
  && apt -y remove clang
 ```
 
-As of the time of writing this article, the image `ubuntu:latest` has an 
+As of the time of writing this article, the image `ubuntu:latest` has an
 uncompressed size of `64.2MB`. If the V compiler only requires 400 KB to build
 like it claims, the resulting image size for this Dockerfile should be around
 65 MB at worst, right?
@@ -334,7 +334,7 @@ the compilation of "Hello, world".
 
 ## HTTP Module
 
-V has a [http module](https://github.com/vlang/v/tree/master/http). It leaves a
+V has a [http module](https://github.com/vlang/v/tree/978ec58fe300929555786fdf58cae1969ea317ba/http). It leaves a
 lot to be desired. My favorite part is the implementation of [`download_file` on macOS](https://github.com/vlang/v/blob/978ec58fe300929555786fdf58cae1969ea317ba/http/download_mac.v):
 
 ```
@@ -348,12 +348,12 @@ fn download_file(url, out string) {
 }
 ```
 
-This has no error checking (the function `os.system2` returns the exit code of 
-curl) and it _shells out to curl instead of using libcurl_. 
-[Other parts of the http module use libcurl](https://github.com/vlang/v/blob/master/http/http_mac.v#L79-L191)
+This has no error checking (the function `os.system2` returns the exit code of
+curl) and it _shells out to curl instead of using libcurl_.
+[Other parts of the http module use libcurl](https://github.com/vlang/v/blob/978ec58fe300929555786fdf58cae1969ea317ba/http/http_mac.v#L79-L191)
 correctly (though the HTTP status code, headers and other important metadata
 are not returned). There is also no support for overriding the HTTP transport,
-setting a custom TLS configuration or many other basic features that 
+setting a custom TLS configuration or many other basic features that
 _libcurl provides for free_.
 
 I wasn't expecting it to have HTTP support out of the box, but even then I still
@@ -365,17 +365,17 @@ I would like to see V be a tool for productive development. I can't see it doing
 that in the near future though. I would like to suggest the following to the V
 developer in order for them to be able to improve in the future:
 
-Firstly, do not make claims about disk space, speed or dependencies without 
-explaining what you mean by that _in detail_. 
+Firstly, do not make claims about disk space, speed or dependencies without
+explaining what you mean by that _in detail_.
 
 Do not shell out to arbitrary commands in the standard library for any reason.
-If an attacker can somehow run code on a server with a V binary that uses the 
-`download_file` function, they can replace `curl` with a malicious binary that 
+If an attacker can somehow run code on a server with a V binary that uses the
+`download_file` function, they can replace `curl` with a malicious binary that
 is able to do anything the attacker wants. This feels like a huge vulnerability,
 especially given that the playground allows you to run this function.
 
 AMD64 is not the only processor architecture that exists. It's nice that you're
-supporting it, but this means that any program compiled with V will be stuck on 
+supporting it, but this means that any program compiled with V will be stuck on
 that architecture. This also means that V cannot currently be used for systems
 programming like building a system-level package manager.
 
@@ -388,21 +388,21 @@ void destroy_consts() { free(g_str_buf); }
 ```
 
 If you claim your compiler can support 1.2 million lines of code, do not make it
-have a limit of 50,000 statements in one function. Yes it is somewhat crazy to 
+have a limit of 50,000 statements in one function. Yes it is somewhat crazy to
 have 1.2 million statements in a single function, but as a compiler author it's
 generally not your position to make these kinds of judgments. If the user wants
 to have 1.2 million statements in a function, let them.
 
 Do not give code examples for libraries that you have not released. This means
 don't show anything about the "built-in web framework" until you have code to
-back your claim. If there is no code to back it up, you have backed yourself 
+back your claim. If there is no code to back it up, you have backed yourself
 into a corner where you are looking like you are lying. I would have loved to
 benchmark V's web framework against Nim's Jester and Go's net/http, but I can't.
 
 Thanks for reading this far. I hope this feedback can help make V a productive
 tool for programming. It's a shame it seems to have been hyped so much for
-comparatively so little as a result. The developer has been hyping and selling 
-this language like it's the new sliced bread. It is not. This is a very alpha 
-product. I bet you could use it for productive development as is if you really 
+comparatively so little as a result. The developer has been hyping and selling
+this language like it's the new sliced bread. It is not. This is a very alpha
+product. I bet you could use it for productive development as is if you really
 stuck your head into it, but as it stands I recommend against using it for
 anything.
