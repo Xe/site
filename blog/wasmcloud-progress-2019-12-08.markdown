@@ -40,7 +40,7 @@ system calls:
 - `write()` - writes to a stream
 - `flush()` - flushes intermediate data and turns async behavior into syncronous
   behavior
-  
+
 And yet this was enough to implement a HTTP client.
 
 The core guiding idea was that a cloud-native OS API should expose internet
@@ -52,7 +52,7 @@ else should just be provided by the system.
 
 I wrote a
 [blogpost](https://xeiaso.net/blog/land-1-syscalls-file-io-2018-06-18)
-about this work and even did a 
+about this work and even did a
 [talk at GoCon
 Canada](https://xeiaso.net/talks/webassembly-on-the-server-system-calls-2019-05-31)
 about it.
@@ -81,7 +81,7 @@ host API for the Webassembly side of things. I forked some of the existing Rust
 code for this and gradually started adding more and more things. The [test
 harness][olincwatest] is the biggest wasm program I've written for a while.
 Seriously, there's a lot going on there. It tests every single function exposed
-in the CWA spec as well as all of the schemes I had implemented. 
+in the CWA spec as well as all of the schemes I had implemented.
 
 Over time I ended up testing Olin in more and more places and on more and more
 hardware. As a side effect of all of this being pure go, it was very easy to
@@ -228,7 +228,7 @@ keep the dream alive!
 [newlib]: https://wiki.osdev.org/Porting_Newlib
 [cwa]: https://github.com/CommonWA
 [olincwa]: https://github.com/Xe/olin/tree/master/docs/cwa-spec
-[olincwarust]: https://github.com/Xe/olin/tree/master/cwa/olin
-[olincwatest]: https://github.com/Xe/olin/blob/master/cwa/tests/src/main.rs
+[olincwarust]: https://github.com/Xe/olin/tree/53746b195a6fb302e968d76ffa01b49ad7505330/cwa/olin
+[olincwatest]: https://github.com/Xe/olin/blob/53746b195a6fb302e968d76ffa01b49ad7505330/cwa/tests/src/main.rs
 [olintempleos]: https://xeiaso.net/blog/templeos-2-god-the-rng-2019-05-30
 [wasmcloud]: https://tulpa.dev/within/wasmcloud
