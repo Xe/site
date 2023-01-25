@@ -88,9 +88,9 @@ become trivially obvious to point out.
 
 However, there is a drawback to this: you're dealing with sapient beings. They
 sometimes don't want to cooperate. Internal drama can and has happened. It helps
-for us to have a quarterly [date with a word document](https://tulpaforce.xyz/within/guides/internal-meetings-to-bring-harmonic-synergy.html) 
-in order to make sure everyone is on the same page. Disagreements happen, but 
-ultimately I've noticed that the net result is far more positive than if the 
+for us to have a quarterly date with a word document
+in order to make sure everyone is on the same page. Disagreements happen, but
+ultimately I've noticed that the net result is far more positive than if the
 disagreement hadn't happened at all.
 
 Anyways, plurality-driven development works for me, but it's really _not_ for 
