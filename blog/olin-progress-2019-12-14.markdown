@@ -19,11 +19,9 @@ Over the last week or so I've been doing a _lot_ of improvements to [Olin][olin]
 
 ## What is Olin?
 
-[Olin][olin] is a userspace kernel designed for multi-tenant secure computing. It provides isolation via WebAssembly to limit the attack scope of malicious user input, resource accounting via its runtime statistics, and a familiar Unix-like API. It is the core that you can build a functions as a service platform on top of. 
-For an example of Olin in action, please click [here][olin-example]. 
+[Olin][olin] is a userspace kernel designed for multi-tenant secure computing. It provides isolation via WebAssembly to limit the attack scope of malicious user input, resource accounting via its runtime statistics, and a familiar Unix-like API. It is the core that you can build a functions as a service platform on top of.
 
 [olin]: https://github.com/Xe/olin
-[olin-example]: https://home.cetacean.club/cwagi
 
 As Olin is just a kernel, it needs some work in order to really shine as a true child of the cloud. That work is incoming during the next weeks and months.
 
@@ -41,7 +39,7 @@ Here is what has been done since the [last Olin post][last-olin-post]:
 
 ### Official Docker Hub Build
 
-The Docker Hub repo [xena/olin][docker-hub] now is automatically built off of the latest master release of Olin. 
+The Docker Hub repo [xena/olin][docker-hub] now is automatically built off of the latest master release of Olin.
 
 [docker-hub]: https://hub.docker.com/r/xena/olin
 
@@ -122,7 +120,7 @@ Olin now has a declarative policy engine for accessing external resources. This 
 * The maximum amount of memory an Olin program can use
 * The maximum number of WebAssembly instructions a WebAssembly program can execute
 
-Here's an example policy file intended to help with relaying webhooks: 
+Here's an example policy file intended to help with relaying webhooks:
 
 ```
 ## This is an example policy, the ## signifies this line is a comment.
@@ -146,7 +144,7 @@ ram-page-limit 128
 gas-limit 1048576
 ```
 
-This would allow a WebAssembly program to open a HTTP socket to https://tulpa.dev (my git server) and Discord, but disallows any administrative API calls to my git server. It also allows the Olin program to use up to 128 pages of memory (about 8MB, which goes surprisingly far) and 1.04 million instructions. If the handler tries to open any resource that is not explicitly allowed, it is killed. If the handler tries to open a resource that is explicitly forbidden, it is killed. If the handler uses too much ram or too many instructions, it is killed. 
+This would allow a WebAssembly program to open a HTTP socket to https://tulpa.dev (my git server) and Discord, but disallows any administrative API calls to my git server. It also allows the Olin program to use up to 128 pages of memory (about 8MB, which goes surprisingly far) and 1.04 million instructions. If the handler tries to open any resource that is not explicitly allowed, it is killed. If the handler tries to open a resource that is explicitly forbidden, it is killed. If the handler uses too much ram or too many instructions, it is killed.
 
 This allows handlers to safely process user controlled input and even use that as part of the call to the open function.
 
@@ -174,7 +172,7 @@ It's probably best to save this call for cases where the program _really can't/s
 
 ### Generic CGI Support
 
-Previously there was a half-baked idea I called cwagi in Olin's codebase. The idea was to emulate part of how CGI worked in order to let Olin programs handle HTTP easily. I realize this was a mistake, so now it [just supports normal CGI][cgi-patch], conforming to [RFC 3875][rfc3875]. 
+Previously there was a half-baked idea I called cwagi in Olin's codebase. The idea was to emulate part of how CGI worked in order to let Olin programs handle HTTP easily. I realize this was a mistake, so now it [just supports normal CGI][cgi-patch], conforming to [RFC 3875][rfc3875].
 
 [cgi-patch]: https://github.com/Xe/olin/commit/92e703fcb2571e1f32e0bf1ba4f17bb45c1d6408
 [rfc3875]: https://tools.ietf.org/html/rfc3875
@@ -202,6 +200,6 @@ As of the writing of this post, wasmcloud is currently 75% through the [MVP deve
 * Policy support for handlers [link](https://tulpa.dev/within/wasmcloud/issues/12)
 * Configuration variables for handlers [link](https://tulpa.dev/within/wasmcloud/issues/6)
 
---- 
+---
 
 Overall, this project is fun. Here's to 1.0 happening soon! Be well.
