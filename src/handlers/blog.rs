@@ -79,12 +79,12 @@ pub async fn post_view(
     Extension(state): Extension<Arc<State>>,
     headers: HeaderMap,
 ) -> Result<(StatusCode, Markup)> {
-    let mut want: Option<Post> = None;
+    let mut want: Option<&Post> = None;
     let want_link = format!("blog/{}", name);
 
     for post in &state.blog {
         if post.link == want_link {
-            want = Some(post.clone());
+            want = Some(&post);
         }
     }
 
