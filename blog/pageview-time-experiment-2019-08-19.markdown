@@ -19,7 +19,7 @@ Here is how it works:
 
 ![A diagram on how this works](/static/img/pageview_flowchart.png)
 
-When the page is loaded, a [javascript file records the start time](/static/js/pageview_timer.js).
+When the page is loaded, a [javascript file records the start time][js].
 This then sets a [pagehide handler](https://developer.mozilla.org/en-US/docs/Web/API/Window/pagehide_event)
 to send a [navigator beacon](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon)
 containing the following data:
@@ -29,8 +29,10 @@ containing the following data:
 - The end time recorded by the pagehide handler
 
 This information is asynchronously pushed to [`/api/pageview-timer`](https://github.com/Xe/site/blob/91d7214b341088edba7a37a83a753e75ed02d7ad/cmd/site/pageview.go)
-and added to an in-memory prometheus histogram. These histograms can be checked at 
+and added to an in-memory prometheus histogram. These histograms can be checked at
 [`/metrics`](/metrics). This data is not permanently logged.
+
+[js]: https://github.com/Xe/site/blob/a6c66568c8b59563b64f3ad3d2d4f4a36ec53004/static/js/pageview_timer.js
 
 ## Security Concerns
 
@@ -54,7 +56,7 @@ intend to use it for any moneymaking purposes (though I doubt it could be to beg
 with).
 
 I fully respect the [do not track](https://allaboutdnt.com) header and flag in browsers.
-If [`pageview_timer.js`](/static/js/pageview_timer.js) detects the presence of
+If [`pageview_timer.js`][js] detects the presence of
 do not track in the browser, it stops running immediately and does not set the pagehide
 handler. If that somehow fails, the server looks for the presence of the `DNT` header
 set to `1` and instantly discards the data and replies with a 404.
@@ -71,7 +73,7 @@ Thanks and be well.
 
 ---
 
-EDIT 2019-10-15: browsers disable this call from the context I am using and I don't 
-really care enough to figure out how to fix it. This experiment is over. Thank you 
-to everyone that participated. All data will be scrubbed and a followup will be 
+EDIT 2019-10-15: browsers disable this call from the context I am using and I don't
+really care enough to figure out how to fix it. This experiment is over. Thank you
+to everyone that participated. All data will be scrubbed and a followup will be
 posted soon.
