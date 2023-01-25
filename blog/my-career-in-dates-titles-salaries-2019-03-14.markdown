@@ -73,5 +73,5 @@ Be well.
 If you can, please make a blogpost similar to this. Don't include company names.
 Include start date, end date, time spent there, time spent job hunting, salary
 (if you remember it) and how you left it. Let's
-[end salary secrecy](https://thegirlpowercode.com/2018/09/12/is-salary-secrecy-coming-to-an-end/)
+[end salary secrecy](https://web.archive.org/web/20190403165849/https://thegirlpowercode.com/2018/09/12/is-salary-secrecy-coming-to-an-end/)
 one step at a time.
