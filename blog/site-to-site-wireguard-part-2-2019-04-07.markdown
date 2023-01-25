@@ -80,7 +80,7 @@ As seen above, DNS supports having multiple answers to a single name. This is us
 
 ## Why Should I Create a Custom DNS Server?
 
-There are two main benefits to creating a custom DNS server like this: ad blocking in DNS and custom DNS routes. The main benefit is having seamless [AdBlock DNS](https://adguard.com/en/adguard-dns/overview.html), kind of like a [Pi-hole](https://pi-hole.net) built into your VPN for free. The benefits of the AdBlock DNS cannot be understated. It literally makes it impossible to see ads for a large number of websites, without triggering the adblock protection scripts news sites like to use. This will be covered in more detail below.  Custom DNS routes sound like they would be overkill for keeping things private, but people can't easily get information on names that literally only exist in your domain.
+There are two main benefits to creating a custom DNS server like this: ad blocking in DNS and custom DNS routes. The main benefit is having seamless [AdBlock DNS](https://adguard.com/en/adguard-dns/overview.html), kind of like a [Pi-hole](https://pi-hole.net) built into your VPN for free. The benefits of the AdBlock DNS cannot be understated. It literally makes it impossible to see ads for a large number of websites, without triggering the adblock protection scripts news sites like to use. This will be covered in more detail below. Custom DNS routes sound like they would be overkill for keeping things private, but people can't easily get information on names that literally only exist in your domain.
 
 However, there are reasons why you would NOT want to create a custom DNS server. By creating a custom DNS server, you effectively put yourself in charge of an internet infrastrcture component that is usually handled by people who are dedicated to keeping it working 24/7. You may not be able to provide the same uptime guarantees as your current DNS provider. You are not CloudFlare, Comcast or Google. It's perfectly okay to not want to go through with this.
 
@@ -88,7 +88,7 @@ I think the benefits are worth the risks though.
 
 ## How Do I Create a Custom DNS Server?
 
-There are many DNS servers out there, each with their benefits and shortcomings. In order to make this tutorial simpler, I'm going to be using a self-created DNS server named [`dnsd`](https://github.com/Xe/x/tree/master/cmd/dnsd). This server is extremely simple and reloads its zone files every minute over HTTP, to make updating records easier. There are going to be a few steps to setting this up:
+There are many DNS servers out there, each with their benefits and shortcomings. In order to make this tutorial simpler, I'm going to be using a self-created DNS server named [`dnsd`](https://github.com/Xe/x/tree/c6e141548632e051b1780cd28f8e2bf245a64eb2/cmd/dnsd). This server is extremely simple and reloads its zone files every minute over HTTP, to make updating records easier. There are going to be a few steps to setting this up:
 
 - Creating a DNS zonefile
 - Hosting the zonefile over HTTP/HTTPS
@@ -186,7 +186,7 @@ $ sh ./download-lists-and-generate-zonefile.sh
 
 This should produce `adblock.zone` in the current working directory. Put this file in the same place you put your custom zone.
 
- If you are unable to run this script for whatever reason, I update my [adblock.zone file](https://xena.greedo.xeserv.us/files/adblock.zone) weekly (please download this file instead of configuring your copy of `dnsd` to use this URL).
+If you are unable to run this script for whatever reason, I update my [adblock.zone file](https://xena.greedo.xeserv.us/files/adblock.zone) weekly (please download this file instead of configuring your copy of `dnsd` to use this URL).
 
 ### Installing `dnsd` with Docker
 
@@ -200,7 +200,7 @@ $ docker run --name dnsd -p 53:53/udp -dit --restart always xena/dnsd:$DNSD_VERS
        -forward-server 1.1.1.1:53
 ```
 
-This will create a new container named `dnsd` running the Docker Image [`xena/dnsd:1.0.2-6-g1a2bc63`](https://hub.docker.com/r/xena/dnsd) (the docker image is created by [this script](https://github.com/Xe/x/blob/master/docker.go) and [this dockerfile](https://github.com/Xe/x/blob/master/cmd/dnsd/Dockerfile)), exposing the DNS server on the host's UDP port 53. To test it:
+This will create a new container named `dnsd` running the Docker Image [`xena/dnsd:1.0.2-6-g1a2bc63`](https://hub.docker.com/r/xena/dnsd) (the docker image is created by [this script](https://github.com/Xe/x/blob/c6e141548632e051b1780cd28f8e2bf245a64eb2/docker.go) and [this dockerfile](https://github.com/Xe/x/blob/c6e141548632e051b1780cd28f8e2bf245a64eb2/cmd/dnsd/Dockerfile)), exposing the DNS server on the host's UDP port 53. To test it:
 
 ```console
 $ dig @127.0.0.1 oho.pele
