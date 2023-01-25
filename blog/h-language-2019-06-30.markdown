@@ -7,7 +7,7 @@ tags:
  - release
 ---
 
-[h](https://h.christine.website) is a project of mine that I have released 
+[h](https://h.christine.website) is a project of mine that I have released
 recently. It is a single-paradigm, multi-tenant friendly, turing-incomplete
 programming language that does nothing but print one of two things:
 
@@ -32,16 +32,16 @@ This is a continuation of the following two posts:
 - https://xeiaso.net/blog/the-origin-of-h-2015-12-14
 - https://xeiaso.net/blog/formal-grammar-of-h-2019-05-19
 
-All of the relevant code for h is [here](https://github.com/Xe/x/tree/master/cmd/h).
+All of the relevant code for h is [here](https://github.com/Xe/x/tree/v1.1.7/cmd/h).
 
 h is a somewhat standard three-phase compiler. Each of the phases is as follows:
 
 ## Parsing the Grammar
 
 As mentioned in a prior post, h has a formal grammar defined in [Parsing Expression Grammar](https://en.wikipedia.org/wiki/Parsing_expression_grammar).
-I took this [grammar](https://github.com/Xe/x/blob/v1.1.7/h/h.peg) (with some 
-minor modifications) and fed it into a tool called [peggy](https://github.com/eaburns/peggy) 
-to generate a Go source [version of the parser](https://github.com/Xe/x/blob/v1.1.7/h/h_gen.go). 
+I took this [grammar](https://github.com/Xe/x/blob/v1.1.7/h/h.peg) (with some
+minor modifications) and fed it into a tool called [peggy](https://github.com/eaburns/peggy)
+to generate a Go source [version of the parser](https://github.com/Xe/x/blob/v1.1.7/h/h_gen.go).
 This parser has some minimal [wrappers](https://github.com/Xe/x/blob/v1.1.7/h/parser.go)
 around it, mostly to simplify the output and remove unneeded nodes from the tree.
 This simplifies the later compilation phases.
@@ -180,12 +180,12 @@ Now that the final binary is created, we can move to the runtime phase.
 ## Runtime
 
 The h [runtime](https://github.com/Xe/x/blob/v1.1.7/cmd/h/run.go) is incredibly
-simple. It provides the `h.h` putchar-like function and executes the `h` 
+simple. It provides the `h.h` putchar-like function and executes the `h`
 function from the binary you feed it. It also times execution as well as keeps
 track of the number of instructions the program runs. This is called "gas" for
 historical reasons involving [blockchains](https://blockgeeks.com/guides/ethereum-gas/).
 
-I use [Perlin Network's life](https://github.com/perlin-network/life) as the 
+I use [Perlin Network's life](https://github.com/perlin-network/life) as the
 implementation of WebAssembly in h. I have experience with it from [Olin](https://github.com/Xe/olin).
 
 ## The Playground
@@ -221,7 +221,7 @@ curl -H "Content-Type: text/plain" --data "h" https://h.christine.website/api/pl
 }
 ```
 
-The execution duration is in [nanoseconds](https://godoc.org/time#Duration), as 
+The execution duration is in [nanoseconds](https://godoc.org/time#Duration), as
 it is just directly a Go standard library time duration.
 
 ## Bugs h has Found
@@ -314,14 +314,14 @@ And congrats, you have now compiled h to a native shared object.
 ## Why
 
 Now, something you might be asking yourself as you read through this post is
-something like: "Why the heck are you doing this?" That's honestly a good 
+something like: "Why the heck are you doing this?" That's honestly a good
 question. One of the things I want to do with computers is to create art for the
 sake of art. h is one of these such projects. h is not a productive tool. You
 cannot create anything useful with h. This is an exercise in creating a compiler
-and runtime from scratch, based on my past experiences with parsing lojban, 
+and runtime from scratch, based on my past experiences with parsing lojban,
 WebAssembly on the server and frustrating marketing around programming tools. I
 wanted to create something that deliberately pokes at all of the common ways
 that programming languages and tooling are advertised. I wanted to make it a
 fully secure tool as well, with an arbitrary limitation of having no memory
 usage. Everything is fully functional. There are a few grammar bugs that I'm
-calling features. 
+calling features.
