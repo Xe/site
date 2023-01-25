@@ -340,7 +340,7 @@ for the simpler way of doing things.
 
 Thanks for reading, I hope this was entertaining. Be well.
 
-[dokku]: http://dokku.viewdocs.io/dokku/
+[dokku]: https://dokku.com/
 [dok8s]: https://www.digitalocean.com/products/kubernetes/
 [terraform]: https://www.terraform.io
 [dyson]: https://github.com/Xe/within-terraform/tree/master/dyson
