@@ -285,5 +285,5 @@ a very long-term project that radically redesigns how software should be written
 [syscall]: https://en.wikipedia.org/wiki/System_call
 [olin]: https://github.com/Xe/olin
 [goslack]: https://invite.slack.golangbridge.org
-[wasmgo]: https://github.com/Xe/olin/tree/master/internal/abi/wasmgo
+[wasmgo]: https://github.com/Xe/olin/tree/3daf7b85e0c39c56637df8c6680894742c06821b/internal/abi/wasmgo
 [wasm]: https://webassembly.org
