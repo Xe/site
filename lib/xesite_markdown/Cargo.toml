@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 color-eyre = "0.6"
-comrak = "0.15.0"
+comrak = "0.16.0"
 hex = "0.4"
 lazy_static = "1.4"
 lol_html = "0.3"
