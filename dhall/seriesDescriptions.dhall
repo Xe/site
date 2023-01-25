@@ -65,6 +65,7 @@ let descriptions
         , details =
             "Instructions on how to use Nix flakes, a new way to use Nix in a more reproducible way."
         }
+      , Desc::{ name = "nixos", details = "Nix." }
       , Desc::{
         , name = "olin"
         , details = "My attempts at running WebAssembly on the server."
