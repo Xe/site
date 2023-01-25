@@ -90,7 +90,7 @@ let descriptions
         , details = "My revue posts converted to xesite posts."
         }
       , Desc::{
-        , name = "short-stories"
+        , name = "short-story"
         , details = "Flash fiction stories I've written over the years"
         }
       , Desc::{
