@@ -60,7 +60,7 @@ set off to create a cluster via [DigitalOcean managed Kubernetes][dok8s].
 
 ## The Cluster
 
-I decided it would be a good idea to create my cluster using 
+I decided it would be a good idea to create my cluster using
 [Terraform][terraform], mostly because I wanted to learn how to use it better.
 I use Terraform at work, so I figured this would also be a way to level up my
 skills in a mostly sane environment.
@@ -157,7 +157,7 @@ I wanted to do the following:
 - setup HTTP/HTTPS request ingress with [nginx-ingress][nginxingress] (which uses [nginx](https://www.nginx.com/))
 - setup [automatic DNS management][autodns] because the external IP addresses of Kubernetes nodes can and will change
 
-After a lot of trial, error, pain, suffering and the like, I created 
+After a lot of trial, error, pain, suffering and the like, I created
 [this script][setupdotsh] which I am not pasting here. Look at it if you want to
 get a streamlined overview of how to set these things up.
 
@@ -233,13 +233,13 @@ spec:
 
 It was about this time when I wondered if I was making a mistake moving off of
 Dokku. Dokku really does a lot to abstract almost everything involved with nginx
-away from you, and it _really shows_. 
+away from you, and it _really shows_.
 
 However, as a side effect of everything being so declarative and Kubernetes really
-not assuming anything, you have _a lot_ more freedom to do basically anything 
-you want. You don't have to have specially magic names for tasks like `web` or 
-`worker` like you do in Heroku/Dokku. You just have a deployment that belongs to 
-an "app" that just so happens to expose a TCP port that just so happens to have 
+not assuming anything, you have _a lot_ more freedom to do basically anything
+you want. You don't have to have specially magic names for tasks like `web` or
+`worker` like you do in Heroku/Dokku. You just have a deployment that belongs to
+an "app" that just so happens to expose a TCP port that just so happens to have
 a correlating ingress associated with it.
 
 Lucky for me, most of the apps I write fit into that general format, and the ones
@@ -267,7 +267,7 @@ send it on its merry way.
 
 ## GitHub Actions
 
-This does however mean that deployment is no longer as simple as 
+This does however mean that deployment is no longer as simple as
 "git push; don't care". This is where [GitHub Actions][actions] come into play.
 They claimed to have the ability to run full end-to-end CI/CD on my applications.
 
@@ -281,11 +281,11 @@ was that GitHub Actions had recently had _a lot_ of changes made to
 configuration and usage as compared to when it was in private beta. This
 included changing the configuration schema from [HCL][hcl] to [YAML][yaml].
 
-Of course, all of the documentation (outside of GitHub's 
+Of course, all of the documentation (outside of GitHub's
 [quite excellent documentation][githubactionsdocs]) was out of date and wrong.
 I tried following a tutorial by [DigitalOcean themselves][dotutorialkube] on
 how to do this exact thing I wanted to do, but it referenced the old HCL syntax
-for GitHub Actions and did not work. To make things worse, examples 
+for GitHub Actions and did not work. To make things worse, examples
 [in the marketplace READMEs][marketplacereadmeexample] simply DID NOT WORK because
 they were written for the old GitHub Actions syntax.
 
@@ -357,10 +357,10 @@ Thanks for reading, I hope this was entertaining. Be well.
 [actions]: https://github.com/features/actions
 [sitegoci]: https://github.com/Xe/site/blob/master/.github/workflows/go.yml
 [githubactionsdocs]: https://help.github.com/en/articles/about-github-actions
-[kubernetescddotyml]: https://github.com/Xe/site/commits/master/.github/workflows/kubernetes-cd.yml
+[kubernetescddotyml]: https://github.com/Xe/site/commits/8e1a2b73670decde87d6c307b3658383f0bcd136/.github/workflows/kubernetes-cd.yml
 [hcl]: https://github.com/hashicorp/hcl
 [yaml]: https://yaml.org
 [marketplacereadmeexample]: https://github.com/marketplace/actions/github-action-for-digitalocean-doctl
-[monster]: https://github.com/Xe/site/blob/master/.github/workflows/kubernetes-cd.yml#L53-L65
+[monster]: https://github.com/Xe/site/blob/8e1a2b73670decde87d6c307b3658383f0bcd136/.github/workflows/kubernetes-cd.yml#L53-L65
 [dotutorialkube]: https://blog.digitalocean.com/how-to-deploy-to-digitalocean-kubernetes-with-github-actions/
 [doctlgithubaction]: https://github.com/digitalocean/action-doctl
