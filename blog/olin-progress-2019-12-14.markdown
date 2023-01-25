@@ -70,7 +70,7 @@ This behavior is copied in the [Olin rust package][olin-rust-entrypoint], which 
 I am waiting on Zig to release a new nightly version in order to enable it, but the [bring-your-own-OS package][bring-your-own-os] support in Zig means that the Zig standard library is starting to be exposed into Olin programs. Here's an example based on the [example program][zig-example-program]:
 
 [bring-your-own-os]: https://github.com/ziglang/zig/commit/b375f6e027a159616e80906aa05e253fbe8cc9df
-[zig-example-program]: https://github.com/ziglang/zig/blob/master/lib/std/special/init-exe/src/main.zig
+[zig-example-program]: https://github.com/ziglang/zig/blob/b375f6e027a159616e80906aa05e253fbe8cc9df/lib/std/special/init-exe/src/main.zig
 
 ```zig
 pub const os = @import("./olin/olin.zig");
