@@ -18,7 +18,7 @@ The method presented in this article is based on the method taught in The Art Of
 
 Note: "the body" means the sack of meat and bone that you are currently living inside. For the purposes of explanation of this technique, please consider what makes you yourself separate from the body you live in.
 
-This article is a more verbose version of [the correlating feature from when-then-zen](https://github.com/Xe/when-then-zen/blob/master/meditation/anapana.feature).
+This article is a more verbose version of [the correlating feature from when-then-zen](https://github.com/Xe/when-then-zen/blob/master/bonus/anapana.feature).
 
 ## Background Assumptions of Reader
 
@@ -169,7 +169,7 @@ The body does not breathe very intensely. It will breathe calmly and slowly, unl
 
 ### In order to meditate for <time>
 
-The time is intentionally left as a variable so you can decide what session time length to use. If you need help deciding how long to pick, you can always try [tapering upwards](https://github.com/Xe/when-then-zen/blob/master/skills/tapering-upward.feature) over the course of a month. I find that tapering upwards helps A LOT.
+The time is intentionally left as a variable so you can decide what session time length to use. If you need help deciding how long to pick, you can always try [tapering upwards](https://github.com/Xe/when-then-zen/blob/master/bonus/tapering-upward.feature) over the course of a month. I find that tapering upwards helps A LOT.
 
 ### Given a timer of some kind is open
 
@@ -210,7 +210,7 @@ The body is naturally able to breathe for you. You don't need to manually breath
 This is all material that I have found useful while running into "problems" (there aren't actually any good or bad things, only labels, but that's a topic for another day) while learning or teaching anapana meditation or the concepts of it. All of these articles have been linked in the topic, save three I want to talk about specially.
 
 - [To Walk on the Path](https://write.as/mya249cn84nosg9r)
-- [Tapering Upward](https://github.com/Xe/when-then-zen/blob/master/skills/tapering-upward.feature)
+- [Tapering Upward](https://github.com/Xe/when-then-zen/blob/master/bonus/tapering-upward.feature)
 - [Listen To Your Heart - Roxette](https://www.youtube.com/watch?v=yCC_b5WHLX0)
 - [Maybe](https://write.as/excerpts/maybe)
 - [Ebbs and Flows](https://write.as/excerpts/ebbs-and-flows)
