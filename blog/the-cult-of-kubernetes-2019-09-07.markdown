@@ -355,12 +355,12 @@ Thanks for reading, I hope this was entertaining. Be well.
 [deploymenttemplateyaml]: https://github.com/Xe/within-terraform/blob/master/dyson/src/dysonPkg/deployment_with_ingress.yaml
 [exampledysonmanifestcommand]: https://github.com/Xe/within-terraform/blob/master/kube_manifests/h.sh
 [actions]: https://github.com/features/actions
-[sitegoci]: https://github.com/Xe/site/blob/master/.github/workflows/go.yml
+[sitegoci]: https://github.com/Xe/site/blob/e4d7c3c2691acad73d6240ff0c9b208273b95997/.github/workflows/go.yml
 [githubactionsdocs]: https://help.github.com/en/articles/about-github-actions
-[kubernetescddotyml]: https://github.com/Xe/site/commits/8e1a2b73670decde87d6c307b3658383f0bcd136/.github/workflows/kubernetes-cd.yml
+[kubernetescddotyml]: https://github.com/Xe/site/commits/e4d7c3c2691acad73d6240ff0c9b208273b95997/.github/workflows/kubernetes-cd.yml
 [hcl]: https://github.com/hashicorp/hcl
 [yaml]: https://yaml.org
 [marketplacereadmeexample]: https://github.com/marketplace/actions/github-action-for-digitalocean-doctl
-[monster]: https://github.com/Xe/site/blob/8e1a2b73670decde87d6c307b3658383f0bcd136/.github/workflows/kubernetes-cd.yml#L53-L65
+[monster]: https://github.com/Xe/site/blob/e4d7c3c2691acad73d6240ff0c9b208273b95997/.github/workflows/kubernetes-cd.yml#L53-L65
 [dotutorialkube]: https://blog.digitalocean.com/how-to-deploy-to-digitalocean-kubernetes-with-github-actions/
 [doctlgithubaction]: https://github.com/digitalocean/action-doctl
