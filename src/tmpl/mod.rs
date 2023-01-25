@@ -97,7 +97,9 @@ pub fn base(title: Option<&str>, styles: Option<&str>, content: Markup) -> Marku
                     hr;
                     footer {
                         blockquote {
-                            "Copyright 2012-2022 Xe Iaso (Christine Dodrill). Any and all opinions listed here are my own and not representative of my employers; future, past and present."
+                            "Copyright 2012-"
+                            (now.year())
+                            " Xe Iaso (Christine Dodrill). Any and all opinions listed here are my own and not representative of my employers; future, past and present."
                         }
                         p {
                             "Like what you see? Donate on "
