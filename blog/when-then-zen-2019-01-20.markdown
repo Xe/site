@@ -85,9 +85,9 @@ feature:
 
 > Note: "the body" means the sack of meat and bone that you are currently living inside. For the purposes of explanation of this technique, please consider what makes you yourself separate from the body you live in.
 
-You are not your thoughts. Your thoughts are something [you can witness](https://github.com/Xe/when-then-zen/blob/master/meditation/noting.feature#L41).
+You are not your thoughts. Your thoughts are something [you can witness](https://github.com/Xe/when-then-zen/blob/master/bonus/noting.feature#L41).
 You are not required to give your thoughts any attention they don't need. Try
-not immediately associating yourself with a few "negative" thoughts when they 
+not immediately associating yourself with a few "negative" thoughts when they
 come up next. Try digging through the chains of meaning to understand why they
 are "negative" and if that end result is actually truly what you want to align
 yourself with.
@@ -105,9 +105,9 @@ sub-par teachers. A lot of it got so ingrained in the cuture that the actions
 themselves can be confused with the culture.
 
 I do not plan to set too many expectations for what people will experience.
-When possible, [I tell people to avoid having "spiritual experiences"](https://github.com/Xe/when-then-zen/blob/master/meditation/quantum-pause.feature#L12-L16).
+When possible, [I tell people to avoid having "spiritual experiences"](https://github.com/Xe/when-then-zen/blob/master/bonus/quantum-pause.feature#L12-L16).
 The only point in the project where I could be interpreted as telling people
-how to have a "spiritual experience" is probably the [paracosm immersion](https://github.com/Xe/when-then-zen/blob/master/skills/paracosm-immersion.feature)
+how to have a "spiritual experience" is probably the [paracosm immersion](https://github.com/Xe/when-then-zen/blob/master/bonus/paracosm-immersion.feature)
 feature. But even then, [paracosms](https://en.m.wikipedia.org/wiki/Paracosm) are
 a well-known psychological phenomenon.
 

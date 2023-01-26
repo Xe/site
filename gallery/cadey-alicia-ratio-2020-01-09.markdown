@@ -13,6 +13,6 @@ thumb: /static/art/Cadey_Alicia_Ratio_tn.jpg
 Created with Procreate on iPadOS using an iPad Pro and an Apple Pencil.
 
 [Time-lapse video](https://mst3k.interlinked.me/@cadey/103456010097441867) -
-[PSD on my Patreon] (https://www.patreon.com/posts/i-arted-my-33016810)
+[PSD on my Patreon](https://www.patreon.com/posts/i-arted-my-33016810)
 
-Based on a base by [DeviantArtist Kawaii-princess-paws](https://www.deviantart.com/kawaii-princess-paws/art/F2U-FTU-Orca-Dragon-Base-723430992).
+Based on a base by [DeviantArtist Kawaii-princess-paws](https://web.archive.org/web/20210318104511/https://www.deviantart.com/kawaii-princess-paws/art/F2U-FTU-Orca-Dragon-Base-723430992).

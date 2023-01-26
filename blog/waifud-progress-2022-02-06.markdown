@@ -83,7 +83,7 @@ is how you can set it up:
   /path/to/config.yaml` to contain one of your hostnames, the right zfs parent
   dataset and your cloudconfig user data, then hope it works.
 - SSH into the VM and laugh at the haters for doubting you.
-  
+
 [The default set of hosts are the MagicDNS names of my homelab machines. You
 will definitely want to replace them with your server/s unless you also have an
 affinity for Xenoblade-inspired server names.](conversation://Cadey/enby)
@@ -94,7 +94,7 @@ Previously I have liked Rocket and Warp, however Axum seems more likely to stick
 around for a very long time and is actively maintained.
 
 In its current state, here's what it looks like to create a VM running Arch
-Linux. 
+Linux.
 
 [Arch Linux is notoriously annoying to install, so let's see how hard it is with waifud.](conversation://Mara/hmm)
 
@@ -188,7 +188,7 @@ that gets mounted to the VM and then cloud-init picks up on it and does what it
 says. This is an incredibly cursed affair, but it does work.
 
 waifud instead uses the
-[nocloud-net](https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html)
+[nocloud-net](https://cloudinit.readthedocs.io/en/latest/reference/datasources/nocloud.html)
 data source to fetch the cloudconfig over HTTP. When you create an instance in
 waifud, waifuctl uploads the user-data to the server. This is then stored in
 SQLite and queried from when a VM boots. cloud-init picks up on this data and

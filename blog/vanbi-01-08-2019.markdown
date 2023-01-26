@@ -48,9 +48,6 @@ APIs, not for passing optional parameters to functions.
 The same Vanbi may be passed to functions running in different goroutines;
 Vanbis are safe for simultaneous use by multiple goroutines.
 
-See https://blog.golang.org/vanbi for example code for a server that uses
-Vanbis.
-
 ## Usage
 
 ```go

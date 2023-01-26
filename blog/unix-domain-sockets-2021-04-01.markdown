@@ -157,7 +157,7 @@ to type. The URL host information usually tells curl where to connect, but the
 
 [Wait, what the heck are printer facts?](conversation://Mara/wat?smol)
 
-Blame Foone and #infoforcefeed. 
+Blame Foone and #infoforcefeed.
 
 Anyways, let's make the TCP logic a bit more clean in the process. Right now it
 only listens on IPv4 and it would be nice if it listened on IPv6 too. Let's
@@ -220,13 +220,14 @@ if let Ok(sockpath) = std::env::var("SOCKPATH") {
 unconditionally and throw away any errors?](conversation://Mara/hmm?smol)
 
 Two reasons:
+
 1. Statistically if the file doesn't exist and the service can't create it when
    it binds to that path, you probably have bigger problems and it's probably
    better for the program to explode there.
 2. The filename is passed in as an environment variable. If your environment
    variable is wrong, we can treat this as a fundamental assertion error and
    blow up when the file fails to bind.
-   
+
 Let's define this in the [NixOS module for the printerfacts
 service](https://github.com/Xe/nixos-configs/blob/master/common/services/printerfacts.nix).
 First we will need to add a configuration option for the socket path:
@@ -381,8 +382,8 @@ I'm experimenting with a new "smol" mode for the Mara interludes as well as
 introducing a few more characters to the xeiaso dot net cinematic
 universe. Please do let me know how this works out for you. I think I have the
 sizes optimized for mobile usage better, but [contributions to fix my horrible
-CSS](https://github.com/Xe/site/blob/main/css/shim.css) would really, really,
-really be appreciated.
+CSS](https://github.com/Xe/site/blob/main/static/css/shim.css) would really,
+really, really be appreciated.
 
 I'm considering moving over all of the Mara interludes to use smol mode. If you
 have opinions about this please let me know them.

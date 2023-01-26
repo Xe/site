@@ -34,7 +34,7 @@ src="https://platform.twitter.com/widgets.js"
 charset="utf-8"></script> <center>](conversation://Mara/hacker)
 
 cloud-init has a feature called the
-[NoCloud](https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html)
+[NoCloud](https://cloudinit.readthedocs.io/en/latest/reference/datasources/nocloud.html)
 data source. To use it, you need to write two yaml files, put them into a
 specially named ISO file and then mount it to the virtual machine. cloud-init
 will then pick up your configuration data and apply it.

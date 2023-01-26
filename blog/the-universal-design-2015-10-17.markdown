@@ -7,7 +7,7 @@ As I have been digging through existing code, systems and the like I have been w
 
 ## Deconstructing Monoliths
 
-One monolith I have been maintaining is [Elemental-IRCd](http://elemental-ircd.com). Taking the head of a project I care about has taught me more about software engineering, community/project management and the like than I would have gotten otherwise. One of these things is that there need to be five basic primitives in your application:
+One monolith I have been maintaining is [Elemental-IRCd](https://github.com/Elemental-IRCd/elemental-ircd). Taking the head of a project I care about has taught me more about software engineering, community/project management and the like than I would have gotten otherwise. One of these things is that there need to be five basic primitives in your application:
 
 1. State - What is true now? What was true? What happened in the past? What is the persistent view of the world?
 2. Events - What is being changed? How will it be routed?
@@ -141,7 +141,5 @@ Subjects applied to formulae become results that are later applied to formulae a
 Because of this design, you can easily do live code reloading, because there is literally no reason you can't. Wait for a formula to finish and replace it with the new version, provided it compiles. Why not apply this to the above ideas too?
 
 ---
-
-\* Link here: http://hidduc-posmeg.urbit.org/home/pub/hoon-intro/ as of publishing this revision of the article hidduc's urbit is offline, so they cannot be accessed at the moment. If that link fails, the source code for it is apparently [here](https://bitbucket.org/zaphar/hoon-intro/src/6a69c2048036f3e6d4ea1ef065577adf0b21be5f/0/hymn.hook?at=default&fileviewer=file-view-default). Thanks `mst` on Freenode!
 
 For comments on this article, please feel free to email me, poke me in `#geek` on `irc.ponychat.net` (my nick is Xena, on freenode it is Xe), or leave thoughts at one of the places this article has been posted.

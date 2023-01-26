@@ -59,7 +59,7 @@ joining channels formatted like `#freenode_#ipfs:matrix.org` or their main home
 base `#matrix:matrix.org`. The bridging is seamless, with one matrix user 
 created per active IRC user and vice versa.
 
-Usage of matrix via the [Vector](https://vector.im/beta) client is very simple:
+Usage of matrix via the Vector client is very simple:
 
 1. Sign up for an account by clicking on "Create a New Account"
 2. Enter in a valid email address, a password and your desired username

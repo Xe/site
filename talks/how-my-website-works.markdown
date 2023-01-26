@@ -124,7 +124,7 @@ something so efficient that it's hard to really express how fast it is.
 
 <xeblog-conv name="Cadey" mood="coffee">As a look into the kind of suffering it
 is, take a smell of this. This is what <a
-href="https://github.com/Xe/site/blob/main/templates/talkpost.rs.html">my
+href="https://github.com/Xe/site/blob/eb77e4b7c02511463a871ab5eb27c5503026f17b/templates/talkpost.rs.html">my
 templates</a> have to look like. ructe is great and all, but this is kind of
 annoying to deal with.</xeblog-conv>
 

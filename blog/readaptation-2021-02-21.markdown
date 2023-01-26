@@ -1,7 +1,7 @@
 ---
 title: Readaptation
 date: 2021-02-21
-series: short-stories
+series: short-story
 ---
 
 Thena suddenly saw a large red sign labeled "system overload" in front of her.

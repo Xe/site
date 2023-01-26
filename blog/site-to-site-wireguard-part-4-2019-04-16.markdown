@@ -158,12 +158,12 @@ These permissions are set as such:
 | Others       | Yes  | No    | No      |
 
 This will also configure Caddy to start on boot.
-        
+
     * Configure Caddy for static file serving for aloha.pele
         * root directive
         * browse directive
     * Link to Caddy documentation
-    
+
 ## Configure aloha.pele
 
 In the last post, we created the domain and TLS certificates for `aloha.pele`. Let's create a website for it.
@@ -222,14 +222,14 @@ And open `/srv/http/aloha.pele/templates/page.html`:
       <nav>
         <a href="/">Aloha</a>
       </nav>
-      
+
       {{ .Doc.body }}
     </main>
   </body>
 </html>
 ```
 
-This will give a nice [simple style kind of like this](https://jrl.ninja/etc/1/) using [Caddy's built-in markdown templating support](https://caddyserver.com/docs/markdown). Now create `/srv/http/aloha.pele/index.md`:
+This will give a nice [simple style kind of like this](https://web.archive.org/web/20190408174002/https://jrl.ninja/etc/1/) using [Caddy's built-in markdown templating support](https://caddyserver.com/docs/markdown). Now create `/srv/http/aloha.pele/index.md`:
 
 ```markdown
 <!-- /srv/http/aloha.pele/index.md -->
@@ -341,4 +341,3 @@ This seems like enough for this time. Next time we are going to approach adding 
 Please give me [feedback](/contact) on my approach to this. I also have a [Patreon](https://www.patreon.com/cadey) and a [Ko-Fi](https://ko-fi.com/A265JE0) in case you want to support this series. I hope this is useful to you all in some way. Stay tuned for the future parts of this series as I build up the network infrastructure from scratch. If you would like to give feedback on the posts as they are written, please watch [this page](https://github.com/Xe/site/pulls) for new pull requests.
 
 Be well. The sky is the limit, Creator!
-

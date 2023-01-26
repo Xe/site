@@ -18,7 +18,7 @@ The method I have found for doing this fairly repeatably is a combination of two
 * 5 senses visualization for the scene you are in to ground yourself
 * Semantic feature analysis for randomly selected items from that visualization
 
-As an example, consider [this](https://write.as/ma-insa/ma-insa-sense-visualization-morning-1-1-2019). This kind of detail is what you'd be looking for. 
+As an example, consider [this](https://write.as/ma-insa/ma-insa-sense-visualization-morning-1-1-2019). This kind of detail is what you'd be looking for.
 
 Breaking it down further though, let's consider a scene where you are sitting at a table in a cold, metal chair.
 
@@ -87,4 +87,4 @@ Be well, Creator.
 
 ---
 
-This is a slightly edited version of [this article](https://when-then-zen.christine.website/skills/paracosm-immerson).
+This is a slightly edited version of [this article](https://when-then-zen.christine.website/skills/paracosm-immersion).

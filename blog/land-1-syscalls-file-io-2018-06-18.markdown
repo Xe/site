@@ -107,7 +107,7 @@ func (p *Process) readMem(ptr int32) []byte {
 
 Every system call that deals with C-style strings uses these functions to get arguments out of the WebAssembly virtual machine's memory and to put the results back into the WebAssembly virtual machine.
 
-Below is the [`open(2)`](open2) implementation for Land. It implements the following C-style function type:
+Below is the [`open(2)`][open2] implementation for Land. It implements the following C-style function type:
 
 ```
 int open(const char *name, int flags);

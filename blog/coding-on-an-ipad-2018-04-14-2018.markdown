@@ -29,7 +29,6 @@ So far I have written the following projects either mostly or completely from
 this iPad:
 
 - https://github.com/withinsoft/ventriloquist
-- https://github.com/Xe/arrival
 - https://tulpa.dev/cadey/register
 - https://github.com/Xe/when-then-zen (more on this in another blogpost)
 

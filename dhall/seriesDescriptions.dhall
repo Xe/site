@@ -65,6 +65,7 @@ let descriptions
         , details =
             "Instructions on how to use Nix flakes, a new way to use Nix in a more reproducible way."
         }
+      , Desc::{ name = "nixos", details = "Nix." }
       , Desc::{
         , name = "olin"
         , details = "My attempts at running WebAssembly on the server."
@@ -88,8 +89,9 @@ let descriptions
         , name = "revueBackup"
         , details = "My revue posts converted to xesite posts."
         }
+      , Desc::{ name = "rust", details = "Rust." }
       , Desc::{
-        , name = "short-stories"
+        , name = "short-story"
         , details = "Flash fiction stories I've written over the years"
         }
       , Desc::{
