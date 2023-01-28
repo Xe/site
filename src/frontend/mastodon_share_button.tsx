@@ -27,7 +27,7 @@ ${series}${tags.innerText} @cadey@pony.social`;
   const instanceBox = (
     <input type="text" placeholder="https://pony.social" value={defaultURL} />
   );
-  const tootBox = <textarea rows="6" cols="40">{tootTemplate}</textarea>;
+  const tootBox = <textarea rows={6} cols={40}>{tootTemplate}</textarea>;
 
   const doShare = () => {
     let instanceURL = instanceBox.value;
