@@ -62,7 +62,7 @@
 }
 
 .gruvbox-dark table tbody td:first-child {
-	color: #b0bec5
+	font-weight: bold;
 }
 
 .gruvbox-dark .form-control,

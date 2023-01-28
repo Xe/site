@@ -355,12 +355,8 @@ table th {
   line-height: 15px;
   padding: 10px;
 }
-table thead th {
-  font-size: 10px;
-}
 table tbody td:first-child {
   font-weight: 700;
-  color: #333;
 }
 .form {
   width: 30rem;
