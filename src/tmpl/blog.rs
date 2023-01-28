@@ -59,7 +59,7 @@ pub fn blog(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> 
         html! {
             (post_metadata(post))
             @if !post.front_matter.skip_ads {
-                (nag::referer(referer))
+                (nag::referer(post, referer))
             }
 
             article {
@@ -187,7 +187,7 @@ pub fn talk(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> 
             (post_metadata(post))
 
             @if !post.front_matter.skip_ads {
-                (nag::referer(referer))
+                (nag::referer(post, referer))
             }
 
             article {

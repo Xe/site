@@ -9,7 +9,7 @@ lazy_static! {
 }
 
 #[cfg(debug_assertions)]
-pub fn referer(_: Option<String>) -> Markup {
+pub fn referer(_: &Post, _: Option<String>) -> Markup {
     html! {
         .warning {
             "This is a development instance of xesite. Things here are probably unfinished or in drafting. Don't take anything here super seriously. If you want to share this to an online aggregator, please don't. Drafts are not finalized yet for a reason. Please don't be the reason I need to implement more advanced security than just obscurity."
@@ -19,7 +19,7 @@ pub fn referer(_: Option<String>) -> Markup {
 }
 
 #[cfg(not(debug_assertions))]
-pub fn referer(referer: Option<String>) -> Markup {
+pub fn referer(post: &Post, referer: Option<String>) -> Markup {
     use xesite_templates::conv as xeblog_conv;
 
     if referer.is_none() {
@@ -27,6 +27,10 @@ pub fn referer(referer: Option<String>) -> Markup {
     }
 
     let referer = referer.unwrap();
+
+    if Utc::now().date_naive().num_days_from_ce() < post.date.num_days_from_ce() {
+        return html! {};
+    }
 
     if HACKER_NEWS.is_match(&referer) {
         return xesite_templates::advertiser_nag(Some(xeblog_conv(
