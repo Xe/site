@@ -34,7 +34,7 @@ information about the place the command is used as well as explain the
 arguments involved.
 
 Because Tetra is a polyglot of Lua, Moonscript and Go, the relevant Go objects
-will have their type definitions linked to on [godoc](http://godoc.org)
+will have their type definitions linked to on [godoc](https://pkg.go.dev/)
 
 Declaring commands is done with the `Command` macro. It takes in two arguments.
 
@@ -51,12 +51,12 @@ only.
 The command function can have up to 3 arguments set when it is called. These
 are:
 
-1. The [Client](https://godoc.org/github.com/Xe/Tetra/bot#Client) that
+1. The [Client](https://pkg.go.dev/github.com/Xe/Tetra/bot#Client) that
    originated the command call.
-2. The [Destination](https://godoc.org/github.com/Xe/Tetra/bot#Targeter) or
+2. The [Destination](https://pkg.go.dev/github.com/Xe/Tetra/bot#Targeter) or
    where the command was sent to. This will be a Client if the target is an
    internal client or
-   a [Channel](https://godoc.org/github.com/Xe/Tetra/bot#Channel) if the target
+   a [Channel](https://pkg.go.dev/github.com/Xe/Tetra/bot#Channel) if the target
    is a channel.
 3. The command arguments as a string array.
 

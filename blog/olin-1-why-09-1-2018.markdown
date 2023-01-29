@@ -231,7 +231,7 @@ dependent HTTP request.
 
 ## Go ABI
 
-Olin also includes support for running webassembly modules created by [Go 1.11's webassembly support](https://golang.org/wiki/WebAssembly).
+Olin also includes support for running webassembly modules created by [Go 1.11's webassembly support](https://github.com/golang/go/wiki/WebAssembly).
 It uses [the `wasmgo` ABI][wasmgo] package in order to do things. Right now
 this is incredibly basic, but should be extendable to more things in the future.
 

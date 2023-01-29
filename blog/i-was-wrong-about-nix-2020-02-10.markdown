@@ -265,9 +265,9 @@ are:
   package needs
 - Time zone data that the [`time`][gotime] package needs
 
-[gonet]: https://godoc.org/net
-[gonethttp]: https://godoc.org/net/http
-[gotime]: https://godoc.org/time
+[gonet]: https://pkg.go.dev/net
+[gonethttp]: https://pkg.go.dev/net/http
+[gotime]: https://pkg.go.dev/time
 
 And that's it. This is _fantastic_. Nearly all of the disk usage has been
 eliminated. If someone manages to trick my website into executing code, that

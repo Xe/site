@@ -193,7 +193,7 @@ fn divide(x: i32, y: i32) -> Result<i32, DivideByZero> {
 
 However there is still one thing left: the function returns a DivideByZero
 error, not _any_ error like the [error interface in
-Go](https://godoc.org/builtin#error). In order to represent that we need to
+Go](https://pkg.go.dev/builtin#error). In order to represent that we need to
 return something that implements the Error trait:
 
 ```rust
@@ -211,7 +211,7 @@ to mess with this code interactively.
 
 [Pro tip: eyre (via <a href="https://docs.rs/color-eyre">color-eyre</a>) also
 has support for adding <a href="https://docs.rs/color-eyre/0.5.4/color_eyre/#custom-sections-for-error-reports-via-help-trait">custom
-sections and context</a> to errors similar to Go's <a href="https://godoc.org/fmt#Errorf">`fmt.Errorf` `%w`
+sections and context</a> to errors similar to Go's <a href="https://pkg.go.dev/fmt#Errorf">`fmt.Errorf` `%w`
 format argument</a>, which will help in real world
 applications. When you do need to actually make your own errors, you may want to look into
 crates like <a href="https://docs.rs/thiserror">thiserror</a> to help with

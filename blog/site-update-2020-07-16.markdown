@@ -69,7 +69,7 @@ which is the actual routing setup for this website!
 ## ructe
 
 In the previous version of this site, I used Go's
-[html/template](https://godoc.org/html/template). Rust does not have an
+[html/template](https://pkg.go.dev/html/template). Rust does not have an
 equivalent of html/template in its standard library. After some research, I
 settled on [ructe](https://github.com/kaj/ructe) for the HTML templates. ructe
 works by preprocessing templates using a little domain-specific language that

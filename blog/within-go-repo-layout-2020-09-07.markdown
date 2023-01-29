@@ -214,5 +214,5 @@ Here are a few examples of views of this layout in action:
 
 [stdlibcmd]: https://github.com/golang/go/tree/master/src/cmd
 [internalcode]: https://docs.google.com/document/d/1e8kOo3r51b2BWtTs_1uADIA5djfXhPT36s6eHVRIvaU/edit
-[gotest]: https://golang.org/pkg/testing/
+[gotest]: https://pkg.go.dev/testing
 [pkgfolder]: https://www.digitalocean.com/community/tutorials/understanding-the-gopath

@@ -373,7 +373,7 @@ pub fn gitea(pkg_name: &str, git_repo: &str, branch: &str) -> Markup {
             body {
                 p {
                     "Please see"
-                    a href={"https://godoc.org/" (pkg_name)} {"here"}
+                    a href={"https://pkg.go.dev/" (pkg_name)} {"here"}
                     " for documentation on this package."
                 }
             }

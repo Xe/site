@@ -56,7 +56,7 @@ Then you can use the `cwa` tool to run programs in `/wasm`. See `cwa -help` for 
 
 For the moment, I am deprecating support for [Go][golang] in `GOOS=js GOARCH=wasm`. The ABI for the Go compiler in this mode is too unstable for me right now. If other people want to fix [`abi/wasmgo`][abi-wasmgo] to support Go 1.13 and newer, I would be _very_ welcome to the patches.
 
-[golang]: https://golang.org
+[golang]: https://go.dev/
 [abi-wasmgo]: https://github.com/Xe/olin/tree/master/abi/wasmgo
 
 ### The Entrypoint is Now `_start()`

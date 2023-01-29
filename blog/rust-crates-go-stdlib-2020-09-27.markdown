@@ -16,7 +16,7 @@ work!](conversation://Mara/hacker)
 
 ## Logging
 
-Go has logging out of the box with package [`log`](https://godoc.org/log).
+Go has logging out of the box with package [`log`](https://pkg.go.dev/log).
 Package `log` is a very uncontroversial logger. It does what it says it does and
 with little fuss. However it does not include a lot of niceties like logging
 levels and context-aware values. 
@@ -97,7 +97,7 @@ more information.
 
 ## Flags
 
-Go's standard library has the [`flag`](https://godoc.org/flag) package out of
+Go's standard library has the [`flag`](https://pkg.go.dev/flag) package out of
 the box. This package is incredibly basic, but is surprisingly capable in terms
 of what you can actually do with it. A common thing to do is use flags for
 configuration or other options, such as
@@ -193,7 +193,7 @@ but will also work for cases where `flag` falls apart.
 ## Errors
 
 Go's standard library has the [`error`
-interface](https://godoc.org/builtin#error) which lets you create a type that
+interface](https://pkg.go.dev/builtin#error) which lets you create a type that
 describes why functions fail to do what they intend. Rust has the [`Error`
 trait](https://doc.rust-lang.org/std/error/trait.Error.html) which lets you also
 create a type that describes why functions fail to do what they intend.
@@ -259,7 +259,7 @@ information on what details you can include here.](conversation://Mara/hacker)
 ## Serialization / Deserialization
 
 Go has JSON encoding/decoding in its standard library via package
-[`encoding/json`](https://godoc.org/encoding/json). This allows you to define
+[`encoding/json`](https://pkg.go.dev/encoding/json). This allows you to define
 types that can be read from and write to JSON easily. Let's take this simple
 JSON object representing a comment from some imaginary API as an example:
 
@@ -370,7 +370,7 @@ comment: Comment {
 ## HTTP
 
 Many APIs expose their data over HTTP. Go has the
-[`net/http`](https://godoc.org/net/http) package that acts as a production-grade
+[`net/http`](https://pkg.go.dev/net/http) package that acts as a production-grade
 (Google uses this in production) HTTP client and server. This allows you to get
 going with new projects very easily. The Rust standard library doesn't have this
 out of the box, but there are some very convenient crates that can fill in the
@@ -534,8 +534,8 @@ warp!](conversation://Mara/hacker)
 ## Templating
 
 Go's standard library also includes HTML and plain text templating with its
-packages [`html/template`](https://godoc.org/html/template) and
-[`text/template`](https://godoc.org/text/template). There are many solutions for
+packages [`html/template`](https://pkg.go.dev/html/template) and
+[`text/template`](https://pkg.go.dev/text/template). There are many solutions for
 templating HTML in Rust, but the one I like the most is
 [`ructe`](https://docs.rs/ructe). `ructe` uses Cargo's
 [build.rs](https://doc.rust-lang.org/cargo/reference/build-scripts.html) feature
