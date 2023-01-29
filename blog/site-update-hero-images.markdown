@@ -83,7 +83,7 @@ figure.hero {
 I'm likely going to convert over most of my website templates to use Maud. I'm
 very happy with it and I think it is incredibly useful to express your HTML in
 Rust instead of something that has to be compiled to Rust. In practice it
-reminds me of the Nim library [emerald](http://flyx.github.io/emerald/), which
+reminds me of the Nim library [emerald](https://flyx.github.io/emerald/), which
 lets you write HTML using Nim functions similar to how you use Maud.
 
 Here's a few more examples of hero images I have generated:

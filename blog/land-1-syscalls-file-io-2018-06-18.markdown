@@ -271,4 +271,4 @@ A huge other feature is going to be the ability to read C structures out of the 
 [importer]: https://gist.github.com/Xe/a29c86755a04a8096082ec8a32e0c13f
 [open2]: https://linux.die.net/man/2/open
 [pretty]: https://github.com/kr/pretty
-[errno]: http://man7.org/linux/man-pages/man3/errno.3.html
+[errno]: https://man7.org/linux/man-pages/man3/errno.3.html

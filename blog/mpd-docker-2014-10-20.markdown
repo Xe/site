@@ -7,7 +7,7 @@ Today I got mpd set up inside docker to replace running it locally.
 
 
 Being the perfectionist I am, I also got a simple web UI for mpd
-([ympd](http://www.ympd.org/)) set up.
+([ympd](https://ympd.org/)) set up.
 
 You can find the source repos here:
 

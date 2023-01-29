@@ -102,7 +102,7 @@ I have been completely unsure how I should broach the topic of pissnet in these
 articles. For people unfamiliar with IRC culture, you must think I'm making shit
 up or something. It is _so_ out there that it's almost like an abstact art
 gallery or something. But no, pissnet happened. It started as IRC spam and then
-turned into this: [letspiss.net](http://letspiss.net/). I don't really think I
+turned into this: [letspiss.net](https://letspiss.net/). I don't really think I
 can suggest readers of this blog go there. It is some kind of weird anarchist
 IRC hackerspace, but most of the users are ircops and can see your IP address.
 

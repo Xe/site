@@ -3,12 +3,12 @@ title: Pursuit of a DSL
 date: 2014-08-16
 ---
 
-A project we have been working on is [Tetra](http://github.com/Xe/Tetra). It is
+A project we have been working on is [Tetra](https://github.com/Xe/Tetra). It is
 an extended services package in Go with Lua and Moonscript extensions. While
 writing Tetra, I have found out how to create a Domain Specific Language, and
 I would like to recommend Moonscript as a toolkit for creating DSL's.
 
-[Moonscript](http://moonscript.org) is a high level wrapper around Lua designed
+[Moonscript](https://moonscript.org) is a high level wrapper around Lua designed
 to make programming easier. We have used Moonscript heavily in Tetra because of
 how easy it is to make very idiomatic code in it.
 

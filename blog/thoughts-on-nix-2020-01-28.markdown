@@ -175,7 +175,7 @@ every project are easy to reproduce on other machines. Consider the
 [`ldd(1)`][ldd1] (which shows the dynamic libraries associated with a program)
 output of `ls` on my Ubuntu system vs a package I installed from Nix:
 
-[ldd1]: http://man7.org/linux/man-pages/man1/ldd.1.html
+[ldd1]: https://man7.org/linux/man-pages/man1/ldd.1.html
 
 ```console
 $ ldd $(which ls)
@@ -192,7 +192,7 @@ All of these dependencies are managed by [`apt(8)`][apt8] and are supposedly
 reproducible on other Ubuntu systems. Compare this to the `ldd(1)` output of a
 Nix program:
 
-[apt8]: http://manpages.ubuntu.com/manpages/bionic/man8/apt.8.html
+[apt8]: https://manpages.ubuntu.com/manpages/bionic/man8/apt.8.html
 
 ```
 $ ldd $(which dhall)

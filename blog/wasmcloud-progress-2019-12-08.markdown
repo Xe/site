@@ -224,7 +224,7 @@ If you want to support my work, please do so via
 keep the dream alive!
 
 [wasm]: https://webassembly.org
-[land]: http://tulpa.dev/cadey/land
+[land]: https://tulpa.dev/cadey/land
 [newlib]: https://wiki.osdev.org/Porting_Newlib
 [cwa]: https://github.com/CommonWA
 [olincwa]: https://github.com/Xe/olin/tree/master/docs/cwa-spec

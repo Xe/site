@@ -81,7 +81,7 @@ need to happen one after the other.
 However, this version differs because of the `Doers` element of
 `maybedoer.Impl`. This allows you to specify an entire process of steps as long
 as those steps don't return any values. This is very similar to how Haskell's
-[`Data.Monoid.First`](http://hackage.haskell.org/package/base-4.14.0.0/docs/Data-Monoid.html#t:First)
+[`Data.Monoid.First`](https://hackage.haskell.org/package/base-4.14.0.0/docs/Data-Monoid.html#t:First)
 type works, except in Go this is locked to the `error` type (due to the language
 not letting you describe things as precisely as you would need to get an analog
 to `Data.Monoid.First`). This is also similar to Rust's `and_then` combinator.

@@ -1,6 +1,6 @@
 [package]
 authors = ["Paul Woolcock <paul@woolcock.us>", "Xe Iaso <me@xeiaso.net>"]
-description = "Parser for the JSONFeed (http://jsonfeed.org) specification"
+description = "Parser for the JSONFeed (https://jsonfeed.org) specification"
 documentation = "https://docs.rs/xe_jsonfeed"
 homepage = "https://github.com/Xe/site"
 license = "MIT/Apache-2.0"

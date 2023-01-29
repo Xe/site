@@ -37,7 +37,7 @@ Test run it and get a message like this:
 
 ## How to automate it
 
-To automate it, first open your [`crontab(5)`](http://man7.org/linux/man-pages/man5/crontab.5.html) file:
+To automate it, first open your [`crontab(5)`](https://man7.org/linux/man-pages/man5/crontab.5.html) file:
 
 ```console
 $ crontab -e

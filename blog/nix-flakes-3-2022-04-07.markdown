@@ -272,7 +272,7 @@ This will do the following things:
 - Automatically restarts the service when it crashes
 - Starts our `web-server` binary when running the service
 - Creates a random, unique user account for the service (see
-  [here](http://0pointer.net/blog/dynamic-users-with-systemd.html) for more
+  [here](https://0pointer.net/blog/dynamic-users-with-systemd.html) for more
   information on how/why this works)
 - Creates temporary, home and cache directories for the service, makes sure that
   random user has permission to use them (with the specified directory modes

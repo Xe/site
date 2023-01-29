@@ -425,7 +425,7 @@ use eyre::{eyre, Result}; // exposes the eyre! and Result members of eyre
 ```
 
 [This doesn't cover how the <a
-href="http://www.sheshbabu.com/posts/rust-module-system/">module system</a>
+href="https://www.sheshbabu.com/posts/rust-module-system/">module system</a>
 works, however the post I linked there covers this better than I
 can.](conversation://Mara/hacker)
 

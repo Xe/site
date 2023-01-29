@@ -4,7 +4,7 @@ date: 2019-07-07
 series: howto
 ---
 
-[User Mode Linux](http://user-mode-linux.sourceforge.net) is a port of the
+[User Mode Linux](https://user-mode-linux.sourceforge.net) is a port of the
 [Linux kernel](https://www.kernel.org) to itself. This allows you to run a
 full blown Linux kernel as a normal userspace process. This is used by kernel
 developers for testing drivers, but is also useful as a generic isolation layer
@@ -366,7 +366,7 @@ linux \
 This tells the guest kernel to do the following things:
 
 - Assume the root filesystem is the pseudo-device `/dev/root`
-- Select [hostfs](http://user-mode-linux.sourceforge.net/hostfs.html) as the root filesystem driver
+- Select [hostfs](https://user-mode-linux.sourceforge.net/hostfs.html) as the root filesystem driver
 - Mount the guest filesystem we have created as the root device
 - In read-write mode
 - Use only 64 megabytes of ram (you can get away with far less depending on what you are doing, but 64 MB seems to be a happy medium)
@@ -603,8 +603,8 @@ No locals.
 So it's failing [in its main loop](https://github.com/Pradeo/Slirp/blob/master/src/main.c#L972)
 while it is trying to check if any timeouts occured. This is where I had to give
 up trying to debug this further. Let's see if building it from source works. I
-re-uploaded the tarball from [Sourceforge](http://slirp.sourceforge.net) because
-downloading tarballs from Sourceforge from the command line is a pain.
+re-uploaded the tarball from [Sourceforge](https://slirp.sourceforge.net)
+because downloading tarballs from Sourceforge from the command line is a pain.
 
 ```
 cd ~/dl
@@ -688,7 +688,7 @@ Just in case the person who created this buildpack takes it down, I have
 
 #### Configuring Networking
 
-Now let's configure networking on our guest. [Adjust your kernel command line](http://user-mode-linux.sourceforge.net/old/networking.html):
+Now let's configure networking on our guest. [Adjust your kernel command line](https://user-mode-linux.sourceforge.net/old/networking.html):
 
 ```
 linux \

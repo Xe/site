@@ -21,7 +21,7 @@ custom controller driver) and uses a pair of [Unix fifos][ufifo] to communicate
 between it and the game it is controlling. Overall the flow of data between the
 two programs looks like this:
 
-[ufifo]: http://man7.org/linux/man-pages/man7/fifo.7.html
+[ufifo]: https://man7.org/linux/man-pages/man7/fifo.7.html
 
 ![A diagram explaining how control/state/data flows between components of the
 gamebridge stack](/static/blog/gamebridge.png)
@@ -82,7 +82,7 @@ seemed to conform to the [Mupen64 demo file spec as described on
 tasvideos.org][mupendemo], and I ended up using this to help test and verify
 ideas.
 
-[mupendemo]: http://tasvideos.org/EmulatorResources/Mupen/M64.html
+[mupendemo]: https://tasvideos.org/EmulatorResources/Mupen/M64.html
 
 The thing that struck me was how _simple_ the format was. Every frame of input
 uses its own four-byte sequence. The constants in the demo file spec also helped
@@ -135,7 +135,7 @@ the lojban emotion-particle for "to desire", the name was inspired from it
 seeming to fake what the desired inputs were).
 
 [lerper]: https://github.com/Xe/gamebridge/blob/b2e7ba21aa14b556e34d7a99dd02e22f9a1365aa/src/au.rs
-[au]: http://jbovlaste.lojban.org/dict/au
+[au]: https://jbovlaste.lojban.org/dict/au
 
 At its core, a Lerper stores a few basic things:
 

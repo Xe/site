@@ -27,7 +27,7 @@ This has turned into a large scale game for people, and is teachable to people w
 Origins
 -------
 
-This all started on a particularly boring day when we found a video by [motdef](https://www.youtube.com/user/motdef) with gameplay from [Moonbase Alpha](https://www.nasa.gov/offices/education/programs/national/ltp/games/moonbasealpha/index.html), an otherwise boring game made to help educate people on what would go on when a moonbase has a disaster. This game was played by many people because of its [text-to-speech engine](http://knowyourmeme.com/memes/moonbase-alpha-text-to-speech), which lead to many things like flooding "JOHN MADDEN" or other inane things like that.
+This all started on a particularly boring day when we found a video by [motdef](https://www.youtube.com/user/motdef) with gameplay from [Moonbase Alpha](https://www.nasa.gov/offices/education/programs/national/ltp/games/moonbasealpha/index.html), an otherwise boring game made to help educate people on what would go on when a moonbase has a disaster. This game was played by many people because of its [text-to-speech engine](https://knowyourmeme.com/memes/moonbase-alpha-text-to-speech), which lead to many things like flooding "JOHN MADDEN" or other inane things like that.
 
 Specifically there was a video called ["Moonbase 4lpha: *****y Space Skeletons"](https://www.youtube.com/watch?v=SnTludRdZDw) that at one point had recorded the phrase "H H H RETURN OF GANON". Me and a few friends were flooding that in an IRC room for a while and it eventually devolved into just flooding "h" to eachother. The flooding of "h" lasted over 8 hours (we were really bored) and has evolved into the modern "h" experience we all know and love today.
 
@@ -83,9 +83,9 @@ I hope this helps clear things up on this very interesting and carefully researc
 
 ---
 
-Below verbatim is the forum post (it was deleted, then converted to a [blog post](http://parclytaxel.tumblr.com/post/135227842874/derpibooru-xena-h) on his blog) that inspired the writing of this article.
+Below verbatim is the forum post (it was deleted, then converted to a [blog post](https://parclytaxel.tumblr.com/post/135227842874/derpibooru-xena-h) on his blog) that inspired the writing of this article.
 
-> > [Parcly Taxel](http://parclytaxel.tumblr.com/)
+> > [Parcly Taxel](https://parclytaxel.tumblr.com/)
 >
 > Lately, if you’ve been going up to our [Derpibooru](https://derpibooru.org) [IRC channel](https://derpibooru.org/irc), you may notice that a significant portion of sayings and rebuttals are countered with the single letter h (lowercase). So where does this come from?
 >

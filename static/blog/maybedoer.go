@@ -27,7 +27,7 @@ type Impl struct {
 // to any pointer-like datatype in Go, but Rob Pike says we can't have nice things.
 //
 // See the Haskell documentation for Data.Monad.First for more information:
-// http://hackage.haskell.org/package/base-4.14.0.0/docs/Data-Monoid.html#t:First
+// https://hackage.haskell.org/package/base-4.14.0.0/docs/Data-Monoid.html#t:First
 func (c *Impl) Do(ctx context.Context) error {
 	for _, doer := range c.Doers {
 		c.Maybe(ctx, doer)
