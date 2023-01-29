@@ -111,7 +111,7 @@ pronouns for `ce/cem` by going to
 
 <xeblog-conv name="Mara" mood="happy">If you want to watch things like this get
 coded and deployed live, be sure to follow [the Twitch
-channel](https://twitch.tv/princessxen) and the [stream announcement Mastodon
+channel](https://www.twitch.tv/princessxen) and the [stream announcement Mastodon
 account](https://vt.social/@xe). Streams will usually be on Saturdays around
 12-13 EST and go on until they are done. The streams will usually contain things
 that don't get recorded in the blogposts that result from them.</xeblog-conv>

@@ -13,7 +13,7 @@ For a summary of the article without spoilers, this game is 10 out of 10 game of
 year 2019 for me.
 
 I have also been playing through this game [on
-twitch](https://twitch.tv/princessxen) and have streams archived
+twitch](https://www.twitch.tv/princessxen) and have streams archived
 [here](https://xena.greedo.xeserv.us/files/kojima_unchained).
 
 There's a long-standing rule of thumb to tell fiction apart from non-fiction.

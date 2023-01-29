@@ -15,7 +15,7 @@ difficult to interpret comments like "ur website is gay furry trash because I
 can't tell what is a conversation snippet lol" in a positive enough light to
 want to act on it.
 
-I decided to just fix the problem on [stream](https://twitch.tv/princessxen) and
+I decided to just fix the problem on [stream](https://www.twitch.tv/princessxen) and
 now hopefully people should complain about this less.
 
 <xeblog-conv standalone name="Numa" mood="delet"><span
@@ -73,4 +73,4 @@ to be done on every request. It's done lazily by the CDN itself.
 
 <xeblog-conv standalone name="Mara" mood="hacker">If you want to see these
 things written live, [give a follow on
-Twitch](https://twitch.tv/princessxen)!</xeblog-conv>
+Twitch](https://www.twitch.tv/princessxen)!</xeblog-conv>
