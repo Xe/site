@@ -898,5 +898,5 @@ changing any time soon.
 ---
 
 <xeblog-conv name="Mara" mood="happy">If you had subscribed to the
-[Patreon](https://patreon.com/cadey) you could have read this a week
+[Patreon](https://www.patreon.com/cadey) you could have read this a week
 ago!</xeblog-conv>

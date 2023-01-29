@@ -55,6 +55,6 @@ fascinating set of talks that I am going to enjoy watching.
 
 As always, I'll get a page up on my website with the slides, talk transcript,
 youtube embed and more! I'm looking at having this page up by M09 12 2022.
-If you subscribe to my [Patreon](https://patreon.com/cadey) you'll get access to
-my raw scripts (including draft scripts) and initial notes so you can see the
-evolutions that took place in my creative process.
+If you subscribe to my [Patreon](https://www.patreon.com/cadey) you'll get
+access to my raw scripts (including draft scripts) and initial notes so you can
+see the evolutions that took place in my creative process.

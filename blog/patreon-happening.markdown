@@ -5,7 +5,7 @@ date: 2022-09-08
 
 Hey, I don't usually write these kinds of posts, but I have been made aware of a
 post on twitter that seems fairly credible. It seems that the
-[Patreon](https://patreon.com) security team has been let go.
+[Patreon](https://www.patreon.com) security team has been let go.
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Whoa <a href="https://twitter.com/Patreon?ref_src=twsrc%5Etfw">@Patreon</a> laid off their ENTIRE security team. <br><br>Wouldn’t trust my data there. Also there’s some amazing talent to scoop up.</p>&mdash; Whitney Merrill (@wbm312) <a href="https://twitter.com/wbm312/status/1567974063578185728?ref_src=twsrc%5Etfw">September 8, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 

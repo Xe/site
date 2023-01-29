@@ -15,7 +15,7 @@ too much effort on my part and the results are pretty fantastic:
 
 I have generated a bunch of other images that I'm going to use for my other
 posts. I'll give out a desktop wallpaper sized version of each of these images
-on my [Patreon](https://patreon.com/cadey).
+on my [Patreon](https://www.patreon.com/cadey).
 
 Under the hood this is powered by
 [lol_html](https://github.com/cloudflare/lol-html) and

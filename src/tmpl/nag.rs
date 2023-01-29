@@ -70,7 +70,7 @@ pub fn prerelease(post: &Post) -> Markup {
                     "Hey, this post is set to go live on "
                     (format!("{}", post.detri()))
                     " UTC. Right now you are reading a pre-publication version of this post. Please do not share this on social media. This post will automatically go live for everyone on the intended publication date. If you want access to these posts, please join the "
-                    a href="https://patreon.com/cadey" { "Patreon" }
+                    a href="https://www.patreon.com/cadey" { "Patreon" }
                     ". It helps me afford the copyeditor that I contract for the technical content I write."
                     br;
                 }))

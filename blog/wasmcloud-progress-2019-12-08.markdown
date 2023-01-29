@@ -220,8 +220,8 @@ And many more I can't remember because it's been so many.
 ---
 
 If you want to support my work, please do so via
-[Patreon](https://patreon.com/cadey). It really means a lot to me and helps to
-keep the dream alive!
+[Patreon](https://www.patreon.com/cadey). It really means a lot to me and helps
+to keep the dream alive!
 
 [wasm]: https://webassembly.org
 [land]: https://tulpa.dev/cadey/land

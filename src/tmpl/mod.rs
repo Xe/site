@@ -263,7 +263,7 @@ pub fn patrons(patrons: &Users) -> Markup {
 
             p {
                 "These awesome people donate to me on "
-                a href="https://patreon.com/cadey" {"Patreon"}
+                a href="https://www.patreon.com/cadey" {"Patreon"}
                 ". If you would like to show up in this list, please donate to me on Patreon. This is refreshed every time the site is deployed."
             }
 

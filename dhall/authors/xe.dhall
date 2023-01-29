@@ -10,7 +10,7 @@ in  Author::{
       , "https://github.com/Xe"
       , "https://www.linkedin.com/in/xe-iaso-87a883254/"
       , "https://www.youtube.com/user/shadowh511"
-      , "https://patreon.com/cadey"
+      , "https://www.patreon.com/cadey"
       ]
     , jobTitle = "Archmage of Infrastructure"
     , inSystem = True
