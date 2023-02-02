@@ -2519,9 +2519,9 @@ dependencies = [
 
 [[package]]
 name = "serde_dhall"
-version = "0.12.0"
+version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8e1875f011ba1a37810617c9325b590a2539f44adae194578eafa681a276ec98"
+checksum = "655a5c686ad80aef90d2e6bfea3715778623c9a659017c8346bc97eb58f9b27d"
 dependencies = [
  "dhall",
  "dhall_proc_macros",
