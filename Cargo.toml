@@ -49,8 +49,6 @@ xml-rs = "0.8"
 url = "2"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 
-xesite_types = { path = "./lib/xesite_types" }
-
 # workspace dependencies
 mastodon2text = { path = "./lib/mastodon2text" }
 mi = { path = "./lib/mi" }
@@ -58,6 +56,7 @@ patreon = { path = "./lib/patreon" }
 xe_jsonfeed = { path = "./lib/jsonfeed" }
 xesite_markdown =  { path = "./lib/xesite_markdown" }
 xesite_templates = { path = "./lib/xesite_templates" }
+xesite_types = { path = "./lib/xesite_types" }
 
 [dependencies.maud]
 git = "https://github.com/Xe/maud"

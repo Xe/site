@@ -13,4 +13,5 @@
 , SeriesDescription = ./SeriesDescription.dhall
 , Stock = ./Stock.dhall
 , StockKind = ./StockKind.dhall
+, StreamVOD = ./StreamVOD.dhall
 }
