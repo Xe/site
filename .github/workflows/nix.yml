@@ -10,9 +10,9 @@ jobs:
   docker-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: cachix/install-nix-action@v12
-      - uses: cachix/cachix-action@v7
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v18
+      - uses: cachix/cachix-action@v12
         with:
           name: xe
       - run: nix-build --no-out-link
