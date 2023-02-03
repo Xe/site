@@ -16,6 +16,7 @@ pub mod api;
 pub mod blog;
 pub mod feeds;
 pub mod gallery;
+pub mod streams;
 pub mod talks;
 
 fn weekday_to_name(w: Weekday) -> &'static str {

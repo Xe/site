@@ -80,7 +80,7 @@ pub fn base(title: Option<&str>, styles: Option<&str>, content: Markup) -> Marku
                             " - "
                             a href="/signalboost" { "Signal Boost" }
                             " - "
-                            a href="/feeds" { "Feeds" }
+                            a href="/vods" { "VODs" }
                             " | "
                             a target="_blank" rel="noopener noreferrer" href="https://graphviz.christine.website" { "Graphviz" }
                             " - "

@@ -12,6 +12,8 @@ let NagMessage = ./NagMessage.dhall
 
 let SeriesDescription = ./SeriesDescription.dhall
 
+let VOD = ./StreamVOD.dhall
+
 let PronounSet = ./PronounSet.dhall
 
 let Prelude = ../Prelude.dhall
@@ -37,6 +39,7 @@ in  { Type =
         , contactLinks : List Link.Type
         , pronouns : List PronounSet.Type
         , characters : List Character.Type
+        , vods : List VOD.Type
         }
     , default =
       { signalboost = [] : List Person.Type
@@ -53,5 +56,6 @@ in  { Type =
       , contactLinks = [] : List Link.Type
       , pronouns = [] : List PronounSet.Type
       , characters = [] : List Character.Type
+      , vods = [] : List VOD.Type
       }
     }

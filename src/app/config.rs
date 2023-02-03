@@ -1,10 +1,14 @@
 use crate::signalboost::Person;
-use maud::{html, Markup, Render};
+use chrono::prelude::*;
+use maud::{html, Markup, PreEscaped, Render};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
     fmt::{self, Display},
 };
+
+mod markdown_string;
+use markdown_string::MarkdownString;
 
 #[derive(Clone, Deserialize, Default)]
 pub struct Config {
@@ -29,6 +33,7 @@ pub struct Config {
     pub contact_links: Vec<Link>,
     pub pronouns: Vec<PronounSet>,
     pub characters: Vec<Character>,
+    pub vods: Vec<VOD>,
 }
 
 #[derive(Clone, Deserialize, Serialize, Default)]
@@ -332,6 +337,59 @@ impl Render for Job {
                 td { (if self.days_worked.is_some() { self.days_worked.as_ref().unwrap().to_string() } else { "n/a".to_string() }) }
                 td { (self.salary) }
                 td { (self.leave_reason.as_ref().unwrap_or(&"n/a".to_string())) }
+            }
+        }
+    }
+}
+
+#[derive(Clone, Deserialize, Serialize, Default)]
+pub struct VOD {
+    pub title: String,
+    pub slug: String,
+    pub date: NaiveDate,
+    pub description: MarkdownString,
+    #[serde(rename = "cdnPath")]
+    pub cdn_path: String,
+    pub tags: Vec<String>,
+}
+
+impl VOD {
+    pub fn detri(&self) -> String {
+        self.date.format("M%m %d %Y").to_string()
+    }
+}
+
+impl Render for VOD {
+    fn render(&self) -> Markup {
+        html! {
+            meta name="twitter:card" content="summary";
+            meta name="twitter:site" content="@theprincessxena";
+            meta name="twitter:title" content={(self.title)};
+            meta property="og:type" content="website";
+            meta property="og:title" content={(self.title)};
+            meta property="og:site_name" content="Xe's Blog";
+            meta name="description" content={(self.title) " - Xe's Blog"};
+            meta name="author" content="Xe Iaso";
+
+            h1 {(self.title)}
+            small {"Streamed on " (self.detri())}
+
+            (xesite_templates::advertiser_nag(Some(html!{
+                (xesite_templates::conv("Cadey".into(), "coffee".into(), html!{
+                    "Hi. This page embeds a video file that is potentially multiple hours long. Hosting this stuff is not free. Bandwidth in particular is expensive. If you really want to continue to block ads, please consider donating via "
+                        a href="https://patreon.com/cadey" {"Patreon"}
+                    " because servers and bandwidth do not grow on trees."
+                }))
+            })))
+
+            (xesite_templates::video(self.cdn_path.clone()))
+            (self.description)
+            p {
+                "Tags: "
+                @for tag in &self.tags {
+                    code{(tag)}
+                    " "
+                }
             }
         }
     }

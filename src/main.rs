@@ -175,6 +175,10 @@ async fn main() -> Result<()> {
         .route("/signalboost", get(handlers::signalboost))
         .route("/salary-transparency", get(handlers::salary_transparency))
         .route("/pronouns", get(handlers::pronouns))
+        // vods
+        .route("/vods", get(handlers::streams::list))
+        .route("/vods/", get(handlers::streams::list))
+        .route("/vods/:year/:month/:slug", get(handlers::streams::show))
         // feeds
         .route("/blog.json", get(handlers::feeds::jsonfeed))
         .route("/blog.atom", get(handlers::feeds::atom))

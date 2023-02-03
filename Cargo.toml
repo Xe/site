@@ -35,7 +35,7 @@ regex = "1"
 reqwest = { version = "0.11", features = ["json"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-serde_dhall = "0.12.0"
+serde_dhall = "0.12.1"
 serde_yaml = "0.9"
 sha2 = "0.10"
 sitemap = "0.4"
@@ -49,8 +49,6 @@ xml-rs = "0.8"
 url = "2"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 
-xesite_types = { path = "./lib/xesite_types" }
-
 # workspace dependencies
 mastodon2text = { path = "./lib/mastodon2text" }
 mi = { path = "./lib/mi" }
@@ -58,6 +56,7 @@ patreon = { path = "./lib/patreon" }
 xe_jsonfeed = { path = "./lib/jsonfeed" }
 xesite_markdown =  { path = "./lib/xesite_markdown" }
 xesite_templates = { path = "./lib/xesite_templates" }
+xesite_types = { path = "./lib/xesite_types" }
 
 [dependencies.maud]
 git = "https://github.com/Xe/maud"
