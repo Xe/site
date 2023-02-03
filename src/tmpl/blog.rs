@@ -41,7 +41,7 @@ fn twitch_vod(post: &Post) -> Markup {
         @if let Some(vod) = &post.front_matter.vod {
             p {
                 "This post was written live on "
-                a href="https://twitch.tv/princessxen" {"Twitch"}
+                a href="https://www.twitch.tv/princessxen" {"Twitch"}
                 ". You can check out the stream recording on "
                 a href=(vod.twitch) {"Twitch"}
                 " and on "

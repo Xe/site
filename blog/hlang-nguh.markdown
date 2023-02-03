@@ -105,7 +105,7 @@ an identical replica in code. That's fun.
 ## The nguh compiler
 
 On December 31st, 2022, I wrote the nguh compiler [on
-stream](https://twitch.tv/princessxen). The nguh (nguh gives u hlang or
+stream](https://www.twitch.tv/princessxen). The nguh (nguh gives u hlang or
 Next-Generation Universal Hlang compiler, whichever you prefer) compiler outputs
 WebAssembly bytecode directly instead of using `wat2wasm` as a middleman.
 
@@ -262,7 +262,7 @@ EAAgABAAAQEL
 
 If you want to play with hlang, head to its new home at
 [h.within.lgbt](https://h.within.lgbt). If you want to witness things such as
-this being created live, follow me [on twitch](https://twitch.tv/princessxen) or
+this being created live, follow me [on twitch](https://www.twitch.tv/princessxen) or
 on my VTuber business account at [@xe@vt.social](https://vt.social/@xe).
 
 <xeblog-conv name="Cadey" mood="enby">Happy new year to those that

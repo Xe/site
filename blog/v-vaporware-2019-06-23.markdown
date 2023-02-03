@@ -6,7 +6,7 @@ tags:
  - rant
 ---
 
-[V](http://vlang.io) is a programming language that has been hyped a lot. As it's
+[V](https://vlang.io) is a programming language that has been hyped a lot. As it's
 recently had its first alpha release, I figured it would be a good idea to step
 through it and see if it lives up to the promises that the author has been
 claiming for months.

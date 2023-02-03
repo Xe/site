@@ -73,7 +73,7 @@ Which is fine, but we still have the type-safety problem that you would have in
 normal yaml. Dhall lets us define [record types][dhallrecord] for this data like
 this:
 
-[dhallrecord]: http://www.haskellforall.com/2020/01/dhall-year-in-review-2019-2020.html
+[dhallrecord]: https://www.haskellforall.com/2020/01/dhall-year-in-review-2019-2020.html
 
 ```dhall
 let User =

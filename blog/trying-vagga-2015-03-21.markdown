@@ -22,7 +22,7 @@ No Easy Way To Establish Inheritance From Common Code
 -----------------------------------------------------
 
 With Docker I can create an image `xena/lapis` and have it contain all of the
-stuff needed for [lapis](http://leafo.net/lapis) applications to run. With
+stuff needed for [lapis](https://leafo.net/lapis/) applications to run. With
 Vagga I currently have to constantly reinvent the setup for this or risk
 copying and pasting code everywhere
 
@@ -41,7 +41,7 @@ the IP stack in a new namespace, but really? It's just inconvenient to have to
 wrap Vagga containers in Docker or the like just to be able to run things
 without the containers using TCP ports on the host up.
 
-http://vagga.readthedocs.org/en/latest/network.html is interesting.
+https://vagga.readthedocs.io/en/latest/network.html is interesting.
 
 Overall, Vagga looks very interesting and I'd like to see how it turns out.
 

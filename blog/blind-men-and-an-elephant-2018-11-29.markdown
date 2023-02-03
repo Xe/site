@@ -10,7 +10,7 @@ or
 
 [Adapted from here](https://en.wikipedia.org/wiki/Blind_men_and_an_elephant). Done in Lojban to help learn the language. I am avoiding the urge to make too many lujvo (compound words) because the rafsi (compound word components) don't always immediately relate to the words in question in obvious ways.
 
-| [KOhA4](http://lojban.org/publications/cll/cll_v1.1_xhtml-section-chunks/section-koha-broda-series.html) | lojban | english |
+| [KOhA4](https://lojban.org/publications/cll/cll_v1.1_xhtml-section-chunks/section-koha-broda-series.html) | lojban | english |
 | --- | --- | --- |
 | ko'a | le'i na viska kakne | the blind people |
 | ko'e | le xanto | the elephant |

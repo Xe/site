@@ -15,7 +15,7 @@ it. This is a sort of spiritual successor to my old
 [Getting Started with Go][gswg] post from 2015. A lot has changed in the
 ecosystem since then, as well as my understanding of the language.
 
-[go]: https://golang.org
+[go]: https://go.dev/
 [gswg]: https://xeiaso.net/blog/getting-started-with-go-2015-01-28
 
 Like always, feedback is very welcome. Any feedback I get will be used to help
@@ -52,7 +52,7 @@ func Add(x int, y int) int {
 ```
 
 This function wraps [integer
-addition](https://golang.org/ref/spec#Arithmetic_operators). When you call it it
+addition](https://go.dev/ref/spec#Arithmetic_operators). When you call it it
 returns the sum of x and y.
 
 ## Installing Go
@@ -66,13 +66,13 @@ for more information.
 
 ### macOS
 
-* Go to https://golang.org/dl
+* Go to https://go.dev/dl/
 * Download the .pkg file
 * Double-click on it and go through the installer process
 
 ### Windows
 
-* Go to https://golang.org/dl
+* Go to https://go.dev/dl/
 * Download the .msi file
 * Double-click on it and go through the installer process
 
@@ -209,7 +209,7 @@ The following is a list of optional exercises that may help you understand more:
 2. Rename `hello.go` to `main.go`. Does everything still work?
 3. Read through the documentation of the [fmt][fmt] package.
 
-[fmt]: https://golang.org/pkg/fmt
+[fmt]: https://pkg.go.dev/fmt
 
 ---
 

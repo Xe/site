@@ -103,7 +103,7 @@ Special thanks to CelestialBoon, Grapz and MoonGoodGryph for proofreading and he
 [perfectloversdescription]: https://www.moma.org/collection/works/81074
 [codersnotestempleos]: http://www.codersnotes.com/notes/a-constructive-look-at-templeos/
 [terrydavis]: https://en.wikipedia.org/wiki/Terry_A._Davis
-[curtisbannedfromlambdaconf]: http://www.inc.com/tess-townsend/why-it-matters-that-an-obscure-programming-conference-is-hosting-mencius-moldbug.html
+[curtisbannedfromlambdaconf]: https://www.inc.com/tess-townsend/why-it-matters-that-an-obscure-programming-conference-is-hosting-mencius-moldbug.html
 [anathema]: https://en.wikipedia.org/wiki/Anathema
 [minecraft]: https://www.minecraft.net/en-us/
 [minecraftintrotextpatch]: https://variety.com/2019/gaming/news/notch-removed-minecraft-1203174964/

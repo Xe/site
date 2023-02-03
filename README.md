@@ -29,5 +29,5 @@ mind:
    about issues or remediation instructions.
 
 This is probably not what you are looking for. Make your own website. Look into
-[Hugo](http://gohugo.io/) or [Zola](https://www.getzola.org/). They are going to
+[Hugo](https://gohugo.io/) or [Zola](https://www.getzola.org/). They are going to
 be better maintained than this site will be.

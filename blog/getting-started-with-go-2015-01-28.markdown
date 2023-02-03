@@ -75,7 +75,7 @@ Testing
 -------
 
 To test the go compilers with a simple
-[todo command](http://github.com/mattn/todo), run this:
+[todo command](https://github.com/mattn/todo), run this:
 
 ```console
 $ go get github.com/mattn/todo
@@ -109,13 +109,13 @@ code.
 Resources
 ---------
 
-[Effective Go](https://golang.org/doc/effective_go.html) and the
-[language spec](https://golang.org/ref/spec) provide a nice overview of the
+[Effective Go](https://go.dev/doc/effective_go) and the
+[language spec](https://go.dev/ref/spec) provide a nice overview of the
 syntax.
 
-The Go [blog](http://blog.golang.org) contains a lot of detailed articles
+The Go [blog](https://go.dev/blog/) contains a lot of detailed articles
 covering advanced and simple Go topics.
-[This page](https://golang.org/doc/#articles) has a list of past articles that
+[This page](https://go.dev/doc/#blog) has a list of past articles that
 you may find useful.
 
 The Go standard library is a fantastic collection of Go code for solving many
@@ -123,7 +123,7 @@ problems. In some cases you can even write entire programs using only the
 standard library. This includes things like web application support, tarfile
 support, sql drivers, support for most kinds of commonly used crypto, command
 line flag parsing, html templating, and regular expressions. A full list of
-the standard library packages can be found [here](http://godoc.org/-/go).
+the standard library packages can be found [here](https://pkg.go.dev/std).
 
 Variable type declarations will look backwards. It takes a bit to get used to
 but makes a lot of sense once you realize it reads better left to right.
@@ -134,7 +134,7 @@ You can find his work in progress book
 [here](http://codegangsta.gitbooks.io/building-web-apps-with-go/).
 
 Go has support for unit testing baked into the core language tools. You can
-find information about writing unit tests [here](http://golang.org/pkg/testing/).
+find information about writing unit tests [here](http://pkg.go.dev/testing).
 
 When creating a new go project, please resist the urge to make the folder in your
 normal code folder. Drink the `$GOPATH` koolaid. Yes it's annoying, yes it's the

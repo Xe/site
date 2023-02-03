@@ -344,7 +344,7 @@ should work admirably for most needs.
 SQLite is able to be a NOSQL database. It's good enough for your needs. If you
 want to play with the code I wrote while writing this article, check it out
 [here](https://git.io/JSDVR). This post was written live on
-[twitch.tv](https://twitch.tv/princessxen). Please follow or subscribe to be
+[twitch.tv](https://www.twitch.tv/princessxen). Please follow or subscribe to be
 kept up to date on when I go live!
 
 The VOD for this post is [here](https://www.twitch.tv/videos/1253083566). The

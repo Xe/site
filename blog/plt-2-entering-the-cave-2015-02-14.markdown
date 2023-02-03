@@ -59,7 +59,7 @@ Some time passed with no activity in the channel.
 ```
 
 When I am running unknown code, I use a virtual machine running [Alpine
-Linux](http://alpinelinux.org). I literally do need the source code to be able
+Linux](https://alpinelinux.org). I literally do need the source code to be able
 to run binaries as Alpine doesn't use glibc.
 
 ```
@@ -83,7 +83,7 @@ How did I not see that before?
 [19:27:23] <plt> Purebasic [...]
 ```
 
-I took a look at the site for [PureBasic](http://www.purebasic.com). It looks
+I took a look at the site for [PureBasic](https://www.purebasic.com). It looks
 like Visual Basic's proprietary cousin as written by someone who hates
 programmers. Looking at its feature set:
 
@@ -103,7 +103,7 @@ PureBasic is supposed to be a compiler for people who can't learn Go, Ruby,
 Python, C, or Java. This looks promising.
 
 I'm just going to paste the code for the 99 bottles of beer example. It
-requires OOP. I got this from [Rosetta Code](http://rosettacode.org/wiki/99_Bottles_of_Beer/Basic#PureBasic).
+requires OOP. I got this from [Rosetta Code](https://rosettacode.org/wiki/99_Bottles_of_Beer/Basic#PureBasic).
 
 ```
 Prototype Wall_Action(*Self, Number.i)

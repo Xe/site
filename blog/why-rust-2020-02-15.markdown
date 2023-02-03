@@ -122,12 +122,12 @@ for i in vec.iter() {
 ```
 
 The Go version uses `interface{}` as the data element because Go [literally
-cannot describe types as parameters to functions][gonerics]. The Rust version
+cannot describe types as parameters to functions][generics]. The Rust version
 took me a bit longer to write, but there is _no_ ambiguity as to what the vector
 holds. The Go version can also hold multiple types of data in the same list,
 a-la:
 
-[gonerics]: https://golang.org/doc/faq#generics
+[generics]: https://go.dev/doc/faq#generics
 
 ```go
 l := list.New()
@@ -146,7 +146,7 @@ runtime lets you hack around this with [reflection][wtfisreflection].
 [wtfisreflection]: https://golangbot.com/reflection/
 
 This allows the standard library to handle things like JSON parsing with
-functions [that look like this](https://godoc.org/encoding/json#Unmarshal):
+functions [that look like this](https://pkg.go.dev/encoding/json#Unmarshal):
 
 ```
 func Unmarshal(data []byte, v interface{}) error

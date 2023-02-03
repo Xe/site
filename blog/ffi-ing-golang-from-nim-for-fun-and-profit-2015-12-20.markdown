@@ -53,7 +53,7 @@ $ python
 And there we go, a Go function exposed and usable in Python. However now we
 need to consider the overhead when switching contexts from your app to your Go
 code. To minimize context switches, I am going to write the rest of the code in
-this post in [Nim](http://nim-lang.org) because it natively compiles down to
+this post in [Nim](https://nim-lang.org) because it natively compiles down to
 C and has some of the best C FFI I have used.
 
 We can now define `libsum.nim` as:

@@ -3,12 +3,12 @@ title: Pursuit of a DSL
 date: 2014-08-16
 ---
 
-A project we have been working on is [Tetra](http://github.com/Xe/Tetra). It is
+A project we have been working on is [Tetra](https://github.com/Xe/Tetra). It is
 an extended services package in Go with Lua and Moonscript extensions. While
 writing Tetra, I have found out how to create a Domain Specific Language, and
 I would like to recommend Moonscript as a toolkit for creating DSL's.
 
-[Moonscript](http://moonscript.org) is a high level wrapper around Lua designed
+[Moonscript](https://moonscript.org) is a high level wrapper around Lua designed
 to make programming easier. We have used Moonscript heavily in Tetra because of
 how easy it is to make very idiomatic code in it.
 
@@ -34,7 +34,7 @@ information about the place the command is used as well as explain the
 arguments involved.
 
 Because Tetra is a polyglot of Lua, Moonscript and Go, the relevant Go objects
-will have their type definitions linked to on [godoc](http://godoc.org)
+will have their type definitions linked to on [godoc](https://pkg.go.dev/)
 
 Declaring commands is done with the `Command` macro. It takes in two arguments.
 
@@ -51,12 +51,12 @@ only.
 The command function can have up to 3 arguments set when it is called. These
 are:
 
-1. The [Client](https://godoc.org/github.com/Xe/Tetra/bot#Client) that
+1. The [Client](https://pkg.go.dev/github.com/Xe/Tetra/bot#Client) that
    originated the command call.
-2. The [Destination](https://godoc.org/github.com/Xe/Tetra/bot#Targeter) or
+2. The [Destination](https://pkg.go.dev/github.com/Xe/Tetra/bot#Targeter) or
    where the command was sent to. This will be a Client if the target is an
    internal client or
-   a [Channel](https://godoc.org/github.com/Xe/Tetra/bot#Channel) if the target
+   a [Channel](https://pkg.go.dev/github.com/Xe/Tetra/bot#Channel) if the target
    is a channel.
 3. The command arguments as a string array.
 

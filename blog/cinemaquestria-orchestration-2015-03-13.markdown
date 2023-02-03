@@ -7,7 +7,7 @@ tags:
 
 ### Or: Continuous Defenstration in a Container-based Ecosystem
 
-I've been a core member of the staff for [CinemaQuestria](http://cinemaquestria.com)
+I've been a core member of the staff for [CinemaQuestria](https://cinemaquestria.com)
 for many months. In that time we have gone from shared hosting (updated by hand
 with FTP) to a git-based deployment system that has won over the other
 staffers.
@@ -104,8 +104,8 @@ framework would have a very tough reputation to beat.
 I have looked into using Lapis,
 but the fact that HTML is so dead easy to modify made that idea lose out.
 
-Maybe this is in the realm of something like [jekyll](http://jekyllrb.com/),
-[Hugo](http://gohugo.io/) or [sw](https://github.com/jroimartin/sw) to take
+Maybe this is in the realm of something like [jekyll](https://jekyllrb.com/),
+[Hugo](https://gohugo.io/) or [sw](https://github.com/jroimartin/sw) to take
 care of. I'd need to do more research into this when I have the time.
 
 If you look at the website code currently a lot of it is heavily duplicated

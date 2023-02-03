@@ -253,7 +253,7 @@ Special thanks to LithiumFox and lesliepone for reviewing this article for
 content before publishing.
 
 Want to watch these posts get written live? Check me out on
-[twitch.tv](https://twitch.tv/princessxen)! The VOD for this post will be live
+[twitch.tv](https://www.twitch.tv/princessxen)! The VOD for this post will be live
 on Twitch for the next two weeks [here](https://www.twitch.tv/videos/1250763144)
 and on YouTube permanently [here](https://youtu.be/ZTnFjBsm5Rs) (if you are
 reading this the day of this post, the YouTube link will not be live).

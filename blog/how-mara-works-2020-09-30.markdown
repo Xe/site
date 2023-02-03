@@ -20,7 +20,7 @@ pronouns. Mara enjoys hacking, swimming and is a Chaotic Good Rogue in the
 tabletop games I've played her in. Mara was originally made to help test my
 upcoming tabletop game The Source, and I have used them in a few solitaire
 tabletop sessions (click
-[here](http://cetacean.club/journal/mara-castle-charon.gmi) to read the results
+[here](https://cetacean.club/journal/mara-castle-charon.gmi) to read the results
 of one of these).
 
 [I use a hand-soldered <a href="https://www.ergodox.io/">Ergodox</a> with the <a

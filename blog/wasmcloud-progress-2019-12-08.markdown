@@ -220,11 +220,11 @@ And many more I can't remember because it's been so many.
 ---
 
 If you want to support my work, please do so via
-[Patreon](https://patreon.com/cadey). It really means a lot to me and helps to
-keep the dream alive!
+[Patreon](https://www.patreon.com/cadey). It really means a lot to me and helps
+to keep the dream alive!
 
 [wasm]: https://webassembly.org
-[land]: http://tulpa.dev/cadey/land
+[land]: https://tulpa.dev/cadey/land
 [newlib]: https://wiki.osdev.org/Porting_Newlib
 [cwa]: https://github.com/CommonWA
 [olincwa]: https://github.com/Xe/olin/tree/master/docs/cwa-spec

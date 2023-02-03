@@ -28,7 +28,7 @@ Torture Nexus.</xeblog-conv>
 [Stable Diffusion](https://stability.ai/blog/stable-diffusion-public-release) is
 a machine learning model that lets you enter in plain text descriptions of what
 you want an image to contain and then get an image back. You can try it out at
-their official website [here](http://beta.dreamstudio.ai/) (log in with your
+their official website [here](https://beta.dreamstudio.ai/) (log in with your
 Google account). However, that's running it on someone else's computer. The real
 magic comes from the fact that Stable Diffusion can run on very high-end
 consumer hardware. A fork of Stable Diffusion's code even lets this run on

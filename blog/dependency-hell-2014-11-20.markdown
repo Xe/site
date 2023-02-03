@@ -70,7 +70,7 @@ graphs and code line counts are skewed based on the contents of your
 upstream packages instead of just the code you wrote. Admittedly,
 locking dependencies like this does mean that fantastic language level
 tools such as [go
-get](https://golang.org/cmd/go/#hdr-Download_and_install_packages_and_dependencies)
+get](https://pkg.go.dev/cmd/go#hdr-Add_dependencies_to_current_module_and_install_them)
 work again, but overall it is just not worth the pain
 of having to manually merge in patches from upstream (but if you do
 think it is worth the pain contact me, I'm open for contract work)
@@ -80,16 +80,15 @@ making sure to change the file paths to match your changes.
 
 I believe the solution to all this and something that needs to be a
 wider community effort for users of all programming languages is the use
-of a technique called [semantic
-versioning](http://semver.org/). In
+of a technique called [semantic versioning](https://semver.org/). In
 some lanaguages like Go where the [import paths are based on repository
-paths](https://golang.org/doc/code.html#PackagePaths), this may mean that 
+paths](https://go.dev/doc/code#Organization), this may mean that
 a new major version has a different repository. This is okay. Backward
-compatability is good. After you make a stable (1.0 or whathaveyou) 
-release, nothing should be ever taken away or changed in the public API. 
-If there needs to be a change in how something in the public API works, 
-you must keep backwards compatabilty. As soon as you take away or modify 
-something in the public API, you have just made a significant enough 
+compatability is good. After you make a stable (1.0 or whathaveyou)
+release, nothing should be ever taken away or changed in the public API.
+If there needs to be a change in how something in the public API works,
+you must keep backwards compatabilty. As soon as you take away or modify
+something in the public API, you have just made a significant enough
 change worthy of a major release.
 
 We need to make semver a de-facto standard in the community instead of

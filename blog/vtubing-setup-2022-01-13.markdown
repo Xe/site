@@ -14,8 +14,7 @@ capture technology instead of a webcam. This allows me to have a unique
 presentation experience and helps me stand out from all the other people that
 create technical content.
 
-[I stream <a href="https://twitch.tv/princessxen">on Twitch</a> when I get the
-inspiration to. I usually announce streams about a half hour in advance on
+[I stream <a href="https://www.twitch.tv/princessxen">on Twitch</a> when I get the inspiration to. I usually announce streams about a half hour in advance on
 Twitter. I plan to get a proper schedule soon.](conversation://Cadey/enby)
 
 This also makes it so much easier to edit videos because of the fact that the
@@ -213,8 +212,8 @@ I hope this was an amusing trip through all of the things I use to make my
 VTubing work. Or at least pretend to work. I'm doing my best to make sure that I
 document things I learn in forms that are not badly organized YouTube tutorials.
 I have a few things in the pipeline and will stream writing them [on
-Twitch](https://twitch.tv/princessxen) when they are ready to be fully written
-out.
+Twitch](https://www.twitch.tv/princessxen) when they are ready to be fully
+written out.
 
 This post was written live on Twitch. 
 You can catch the VOD on Twitch [here](https://www.twitch.tv/videos/1261737101).

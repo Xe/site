@@ -78,13 +78,13 @@ To give feedback about gopreload, please contact me on [twitter][twitter-addr] o
 on the Gophers slack (I'm `@xena` there). For issues with gopreload please file
 [an issue on Github][gopreload-issues].
 
-[initf]: https://golang.org/doc/effective_go.html#init
+[initf]: https://go.dev/doc/effective_go#init
 [manhole]: https://github.com/Xe/gopreload/tree/master/manhole
 [good-ld-preload]: http://www.logix.cz/michal/devel/faketime/
 [evil-ld-preload]: https://rafalcieslak.wordpress.com/2013/04/02/dynamic-linker-tricks-using-ld_preload-to-cheat-inject-features-and-investigate-programs/
-[underscore-import]: https://golang.org/doc/effective_go.html#blank
+[underscore-import]: https://go.dev/doc/effective_go#blank
 [gopreload]: https://github.com/Xe/gopreload
-[go-plugins]: https://golang.org/pkg/plugin/
+[go-plugins]: https://pkg.go.dev/plugin
 [manhole-tools]: https://github.com/Xe/gopreload/blob/master/manhole/server.go
 [ld-preload]: https://rafalcieslak.wordpress.com/2013/04/02/dynamic-linker-tricks-using-ld_preload-to-cheat-inject-features-and-investigate-programs/
 [twitter-addr]: https://twitter.com/theprincessxena

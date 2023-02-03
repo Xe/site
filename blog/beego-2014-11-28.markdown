@@ -46,7 +46,7 @@ edit code:
 
 The Models are Beego's powerful database-backed models (we'll get into
 those in a little bit), the Views are normal Go
-[html/template](https://godoc.org/html/template)s, and 
+[html/template](https://pkg.go.dev/html/template)s, and
 the Controllers are the Go code that controls the Views based on the Models.
 
 ![](https://d262ilb51hltx0.cloudfront.net/max/600/1*EZ1qIqeXNW_NfKuLbudogA.png)

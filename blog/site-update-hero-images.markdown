@@ -15,7 +15,7 @@ too much effort on my part and the results are pretty fantastic:
 
 I have generated a bunch of other images that I'm going to use for my other
 posts. I'll give out a desktop wallpaper sized version of each of these images
-on my [Patreon](https://patreon.com/cadey).
+on my [Patreon](https://www.patreon.com/cadey).
 
 Under the hood this is powered by
 [lol_html](https://github.com/cloudflare/lol-html) and
@@ -83,7 +83,7 @@ figure.hero {
 I'm likely going to convert over most of my website templates to use Maud. I'm
 very happy with it and I think it is incredibly useful to express your HTML in
 Rust instead of something that has to be compiled to Rust. In practice it
-reminds me of the Nim library [emerald](http://flyx.github.io/emerald/), which
+reminds me of the Nim library [emerald](https://flyx.github.io/emerald/), which
 lets you write HTML using Nim functions similar to how you use Maud.
 
 Here's a few more examples of hero images I have generated:

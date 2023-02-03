@@ -230,5 +230,5 @@ the path a bit clearer if you want to do VTubing on Linux like I am.
 
 This article was written live on Twitch! Check out the stream vod
 [here](https://www.twitch.tv/videos/1264594247), and in a few days it will be live on YouTube
-[here](https://youtu.be/cSR1ZA012aQ). Follow [my channel](https://twitch.tv/princessxen)
+[here](https://youtu.be/cSR1ZA012aQ). Follow [my channel](https://www.twitch.tv/princessxen)
 and get notified when I go live with more writing.

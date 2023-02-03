@@ -159,7 +159,7 @@ pub fn advertiser_nag(nag: Option<Markup>) -> Markup {
                             "Hello! Thank you for visiting my website. You seem to be using an ad-blocker. I understand why you do this, but I'd really appreciate if it you would turn it off for my website. These ads help pay for running the website and are done by "
                             a href="https://www.ethicalads.io/" { "Ethical Ads" }
                             ". I do not receive detailed analytics on the ads and from what I understand neither does Ethical Ads. If you don't want to disable your ad blocker, please consider donating on "
-                            a href="https://patreon.com/cadey" { "Patreon" }
+                            a href="https://www.patreon.com/cadey" { "Patreon" }
                             " or sending some extra cash to "
                             code { "xeiaso.eth" }
                             " or "

@@ -91,7 +91,7 @@ body of the client be wired to the standard in of the underlying module, which
 will enable me to parse CGI replies from WebAssembly functions. This will allow
 you to host HTTP endpoints on Trisiel using the same code that powers
 [this](https://olin.within.website) and
-[this](http://cetacean.club/cgi-bin/olinfetch.wasm).
+[this](https://cetacean.club/cgi-bin/olinfetch.wasm).
 
 I also need to go in and completely refactor the
 [olin](https://github.com/Xe/pahi/tree/main/wasm/olin/src) crate and make the

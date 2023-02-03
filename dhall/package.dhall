@@ -76,7 +76,7 @@ in  Config::{
       [ Link::{ url = "https://github.com/Xe", title = "GitHub" }
       , Link::{ url = "https://keybase.io/xena", title = "Keybase" }
       , Link::{ url = "https://www.patreon.com/cadey", title = "Patreon" }
-      , Link::{ url = "https://twitch.tv/princessxen", title = "Twitch" }
+      , Link::{ url = "https://www.twitch.tv/princessxen", title = "Twitch" }
       , Link::{ url = "https://pony.social/@cadey", title = "Fediverse" }
       , Link::{ url = "https://t.me/miamorecadenza", title = "Telegram" }
       , Link::{ url = "irc://irc.libera.chat/#xeserv", title = "IRC" }

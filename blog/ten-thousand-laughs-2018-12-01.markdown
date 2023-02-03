@@ -19,7 +19,7 @@ ni'o pano ki'o nu cmila
 .i mi brodu
 ```
 
-This is a synthesis of the [broda](http://lojban.org/publications/cll/cll_v1.1_xhtml-section-chunks/section-koha-broda-series.html) family of gismu in Lojban. In order to properly understand this lojban text, you must conceive laughter ten thousand times. This is a reference to the [Billion laughs attack](https://en.wikipedia.org/wiki/Billion_laughs_attack) that XML parsers can suffer from.
+This is a synthesis of the [broda](https://lojban.org/publications/cll/cll_v1.1_xhtml-section-chunks/section-koha-broda-series.html) family of gismu in Lojban. In order to properly understand this lojban text, you must conceive laughter ten thousand times. This is a reference to the [Billion laughs attack](https://en.wikipedia.org/wiki/Billion_laughs_attack) that XML parsers can suffer from.
 
 Translation:
 

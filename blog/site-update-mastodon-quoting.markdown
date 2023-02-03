@@ -20,7 +20,7 @@ gotten to on the blog.
 
 I'm going to be streaming the game [Sonic
 Frontiers](https://frontiers.sonicthehedgehog.com/) on
-[Twitch](https://twitch.tv/princessxen) on November 8th, 2022 at 10:00 EDT
+[Twitch](https://www.twitch.tv/princessxen) on November 8th, 2022 at 10:00 EDT
 through at least 12:00 EDT. I may go longer depending on how the game is, but I
 took the day off for this so I may as well take advantage of it.
 

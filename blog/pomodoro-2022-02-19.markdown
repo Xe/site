@@ -103,7 +103,7 @@ but I do not feel comfortable sharing my estimates with anyone else yet.
 I am definitly going to continue with this experiment. I haven't found a
 suitable pomodoro timer for Gnome yet, though I haven't looked too much. I've
 been trying to reserve pomodoro for my dayjob, but I may integrate it into
-[streams](https://twitch.tv/princessxen) as integrated breaks to talk about
+[streams](https://www.twitch.tv/princessxen) as integrated breaks to talk about
 something else for a moment.
 
 Overall though, I've been liking this technique. It makes me feel like I have

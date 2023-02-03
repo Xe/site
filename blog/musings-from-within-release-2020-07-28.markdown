@@ -71,8 +71,9 @@ Most of these are available on this site, but a good portion of them are not
 available anywhere else. There's poetry about shamanism, stories about
 reincarnation, koans and more.
 
-I am also uploading eBook files to my [Patreon](https://patreon.com/cadey) page,
-anyone who supports me for $1 or more has [immediate
+I am also uploading eBook files to my
+[Patreon](https://www.patreon.com/cadey) page.
+Anyone who supports me for $1 or more has [immediate
 access](https://www.patreon.com/posts/39825969)
 to the DRM-free ePub, MOBIPocket and PDF files of this book.
 

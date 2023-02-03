@@ -94,7 +94,7 @@ write_files:
 Please make sure to change the username and swap out the SSH key as needed,
 unless you want to get locked out of your VM. For more information about what
 you can do from cloud-init, see the list of modules
-[here](http://cloudinit.readthedocs.io/en/latest/topics/modules.html).
+[here](https://cloudinit.readthedocs.io/en/latest/topics/modules.html).
 
 Now that you have the two yaml files you can make the seed image with this
 command (Linux):

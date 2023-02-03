@@ -221,7 +221,7 @@ curl -H "Content-Type: text/plain" --data "h" https://h.christine.website/api/pl
 }
 ```
 
-The execution duration is in [nanoseconds](https://godoc.org/time#Duration), as
+The execution duration is in [nanoseconds](https://pkg.go.dev/time#Duration), as
 it is just directly a Go standard library time duration.
 
 ## Bugs h has Found

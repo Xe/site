@@ -3,7 +3,7 @@ title: "That Which Is For Kings"
 date: "2018-12-02"
 ---
 
-My [recent post](/blog/experimental-rilkef-2018-11-30) was quite a thing. It is a highly abstract and very very intentionally vague that I feel needs a bit of [context](https://godoc.org/context) to help break apart.
+My [recent post](/blog/experimental-rilkef-2018-11-30) was quite a thing. It is a highly abstract and very very intentionally vague that I feel needs a bit of [context](https://pkg.go.dev/context) to help break apart.
 
 Ultimately, this post is the result of a lot of the internal problems and struggles that I've been going through as a result of the experiences I've had in life. I've been terrified about the idea that nothing truly has any meaning, and now I've found peace in knowing that it doesn't matter if it does or not in the moment. I've been having trouble expressing things with language, failures at this have lead to issues getting the message out due to fear of rejection and the [fear of separation](/blog/fear-07-24-2018). I'm working through this. It's a slow process. You have to unwind so much. There are many feelings to forgive.
 

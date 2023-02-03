@@ -27,8 +27,8 @@ that at least one of these formats wouldn't work for you.
 
 <iframe frameborder="0" src="https://itch.io/embed/1454153?dark=true" width="552" height="167"><a href="https://withinstudios.itch.io/closed-projects">Closed Projects by Within</a></iframe>
 
-If you are a [Patreon supporter](https://patreon.com/cadey), you can get this
-for free by clicking [this
+If you are a [Patreon supporter](https://www.patreon.com/cadey), you can get
+this for free by clicking [this
 link](https://withinstudios.itch.io/closed-projects/patreon-access).
 
 If you are a part of a marginalized group and cannot afford this but want to

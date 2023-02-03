@@ -20,7 +20,7 @@ Last thursday, I found out that there was an online furry convention happening t
 
 It was a blast. Furry conventions usually have this weird but wholesome vibe to them. There's this feeling of community as existing friend groups meet up and as these groups mix together, new friendships get formed as well.
 
-When I registered for the convention, there was an option to donate to the convention organization itself and to [Hobbitsee Wildlife Refuge](http://www.hobbitstee.com). I kicked over some money and then hopped in the Discord to get the supporter badge prop to glue onto my avatar. After a few rounds of testing, being confused by Unity, having that golden moment of understanding and then actually getting it to do what I wanted it to do, I managed to get the badge to a place where I was happy with it (and where it wouldn't clip through my body when I sat down).
+When I registered for the convention, there was an option to donate to the convention organization itself and to [Hobbitsee Wildlife Refuge](https://www.hobbitstee.com). I kicked over some money and then hopped in the Discord to get the supporter badge prop to glue onto my avatar. After a few rounds of testing, being confused by Unity, having that golden moment of understanding and then actually getting it to do what I wanted it to do, I managed to get the badge to a place where I was happy with it (and where it wouldn't clip through my body when I sat down).
 
 <center>
 

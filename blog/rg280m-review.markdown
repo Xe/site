@@ -101,7 +101,7 @@ over USB). Software gets categorized and everything just works out for you with
 little effort required.
 
 The game I've gotten the most playtime out of is [Hyper
-Metroid](http://hyper.metroidconstruction.com), a sort of enhanced and remixed
+Metroid](https://hyper.metroidconstruction.com), a sort of enhanced and remixed
 hack of Super Metroid that does some really interesting experimental takes on
 the Metroid ammo system (Missiles, Super Missiles and Power Bombs all pull from
 the same ammo pool instead of having separate pools per weapon), and it runs

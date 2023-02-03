@@ -14,7 +14,7 @@ Sometimes you wake up and realize that reality has chosen violence against you.
 The consequences of this violence mean that it's hard to cope with the choices
 that other people have made for you and then you just have to make things work.
 This is the situation that I face when compiling things written in
-[Go](https://golang.org) in my NixOS configurations.
+[Go](https://go.dev/) in my NixOS configurations.
 
 However, I have figured out a way past this wicked fate and have forged a new
 path. I have found [`gomod2nix`](https://github.com/nix-community/gomod2nix) to

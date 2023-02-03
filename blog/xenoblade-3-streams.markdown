@@ -8,7 +8,7 @@ tags:
 
 [Xenoblade Chronicles 3](https://en.wikipedia.org/wiki/Xenoblade_Chronicles_3)
 is set to come out on this friday, July 29th. I plan to stream the game all
-weekend on [twitch](https://twitch.tv/princessxen). If you want to come and
+weekend on [twitch](https://www.twitch.tv/princessxen). If you want to come and
 watch, please join me on Twitch at midnight EDT. I will stream it for an hour or
 two and then go to bed and proceed to stream more when I wake up, minus life
 things. Saturday and Sunday should be the days with the most streaming in them.

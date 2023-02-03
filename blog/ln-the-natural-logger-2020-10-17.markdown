@@ -30,9 +30,10 @@ func main() {
 }
 ```
 
-ln works with key value pairs called [F](https://godoc.org/within.website/ln#F).
-This type allows you to log just about _anything_ you want, including custom
-data types with an [Fer](https://godoc.org/within.website/ln#Fer). This will let
+ln works with key value pairs called
+[F](https://pkg.go.dev/within.website/ln#F). This type allows you to
+log just about _anything_ you want, including custom data types with an
+[Fer](https://pkg.go.dev/within.website/ln#Fer). This will let
 you annotate your data types so that you can automatically extract the important
 information into your logs while automatically filtering out passwords or other
 secret data. Here's an example:
@@ -93,6 +94,6 @@ kind of things are a bit of a waste of time, because most of the time your
 logging library is NOT going to be your bottleneck), but it is designed to have
 very usable defaults and solve the problem good enough that you shouldn't need
 to care. There are a few useful tools in the
-[ex](https://godoc.org/within.website/ln/ex) package nested in ln. The biggest
+[ex](https://pkg.go.dev/within.website/ln/ex) package nested in ln. The biggest
 thing is the HTTP middleware, which has saved me a lot of effort when writing
 web services in Go.

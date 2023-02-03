@@ -4,7 +4,7 @@ date: 2015-06-10
 ---
 
 I have been recently playing with and using a new lanugage for
-my personal development, [Nim](http://nim-lang.org). It looks like
+my personal development, [Nim](https://nim-lang.org). It looks like
 Python, runs like C and integrates well into other things. Its
 compiler targets C, and as a result of this binding things to C
 libraries is a lot more trivial in Nim; even moreso than with go.
@@ -43,7 +43,7 @@ string, no extra wrappers (like with Python or Lua), you just
 write the code and it just works.
 
 At the idea of another coworker, I've also started to use
-[tup](http://gittup.org/tup/) for building things. Nim didn't
+[tup](https://gittup.org/tup/) for building things. Nim didn't
 initially work very well with tup (temporary cache needed, etc),
 but a very simple set of tup rules were able to fix that:
 

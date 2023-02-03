@@ -108,8 +108,8 @@ scale circumstances. Gorm spun up way too many database connections (as many as
 a new one for every operation!) and quickly exhausted postgres' pool of client.
 connections.
 
-I rewrote this to use [`database/sql`](https://godoc.org/database/sql) and
-[`sqlx`](https://godoc.org/github.com/jmoiron/sqlx) and all of the tests passed
+I rewrote this to use [`database/sql`](https://pkg.go.dev/database/sql) and
+[`sqlx`](https://pkg.go.dev/github.com/jmoiron/sqlx) and all of the tests passed
 the first time I tried to run this, no joke.
 
 ### Scaling to 50,000 Checks
@@ -119,9 +119,9 @@ reasons I thought it would be. One of the main things that I discovered when
 I was trying to scale this was that I was putting way too much load on the 
 database way too quickly. 
 
-The solution to this was to use [bundler](https://godoc.org/google.golang.org/api/support/bundler)
+The solution to this was to use [bundler](https://pkg.go.dev/google.golang.org/api/support/bundler)
 to batch-write the most frequently written database items, see [here](https://github.com/Xe/lokahi/blob/7fc03120f731def3a351ddd516430feb635345b4/internal/lokahiadminserver/local_run.go#L245).
-Even then, [database connection count limiting](https://godoc.org/database/sql#DB.SetMaxOpenConns)
+Even then, [database connection count limiting](https://pkg.go.dev/database/sql#DB.SetMaxOpenConns)
 was also needed in order to scale to the full 50,000 checks needed for this
 to exist as more than a proof of concept.
 

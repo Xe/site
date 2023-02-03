@@ -25,7 +25,7 @@ from Twitter about this yet. I have a backup account at
 mastodon as [@cadey@mst3k.interlinked.me](https://mst3k.interlinked.me/@cadey).
 
 In place of my tweeting about quarantine life, I am writing about my experiences
-[here](http://cetacean.club/journal/).
+[here](https://cetacean.club/journal/).
 
 ## Why I Can't Unlock My Account
 
