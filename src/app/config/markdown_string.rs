@@ -1,10 +1,9 @@
-use std::fmt;
-
 use maud::{html, Markup, PreEscaped, Render};
 use serde::{
     de::{self, Visitor},
     Deserialize, Deserializer, Serialize,
 };
+use std::fmt;
 
 struct StringVisitor;
 
