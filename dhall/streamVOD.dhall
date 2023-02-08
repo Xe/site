@@ -16,7 +16,7 @@ in  [ VOD::{
             * Writing custom interactive commands in Emacs
             * Proving chat wrong about the capabilities of Emacs
           ''
-      , date = "2022-02-04"
+      , date = "2023-02-04"
       , cdnPath = "talks/vod/2023/02-04-emacs"
       , tags = [ "emacs", "nix", "lisp", "tmux" ]
       }
@@ -34,7 +34,7 @@ in  [ VOD::{
           * Implementing image resizing capabilities into an existing CDN program (XeDN)
           * Design with end-users in mind
           ''
-      , date = "2022-01-21"
+      , date = "2023-01-21"
       , cdnPath = "talks/vod/2023/01-21-reader-mode"
       , tags = [ "css", "xedn", "imageProcessing", "scalability", "bugFix" ]
       }
@@ -55,7 +55,7 @@ in  [ VOD::{
           * Writing API documentation
           * Writing [the writeup](https://xeiaso.net/blog/pronouns-service) on the service
           ''
-      , date = "2022-01-07"
+      , date = "2023-01-07"
       , cdnPath = "talks/vod/2023/01-07-pronouns"
       , tags = [ "rust", "axum", "terraform", "nix", "flyio", "docker" ]
       }
