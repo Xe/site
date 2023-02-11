@@ -230,7 +230,7 @@ video in a way that isn't painful to watch.
 ## The encode-ening
 
 As an example, let's take a look at [my most recent
-stream](https://xeiaso.net/vods/2022/2/emacs-nix) where I mostly
+stream](https://xeiaso.net/vods/2023/2/emacs-nix) where I mostly
 hacked up my Nix-based Emacs config so that I could use it instead of
 my Spacemacs config. In my video folder, the 1 hour, 54 minute video
 file takes up about 4.82 GB of space. When I pass it to ffprobe (the
