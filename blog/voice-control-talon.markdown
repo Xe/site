@@ -39,7 +39,8 @@ of text. Human speech can peak it around two hundred words per
 minute, and that's where most dictation engines can really shine.
 
 But, we're technologists. For many people being able to write basic
-emails and messages is more than enough. We do not have such luck. We
+emails and messages is more than enough. Statistically, if you're
+reading this blog, you probably need to do more. A lot more. We
 regularly have to speak in the arcane sigils of foreign languages in
 order to command automatons into doing our will. When you think about
 it, programming is actually a lot like witchcraft, except we don't
@@ -232,7 +233,7 @@ that is deeply unethical, this is one of the greatest things we can
 due to help truly ensure equitable outcomes.
 
 If you write applications, regularly test them with voice control
-software appear. Especially if it's in a browser. Few companies do
+software. Especially if it's in a browser. Few companies do
 this, so there is a clear market advantage in making things more
 accessible.
 
