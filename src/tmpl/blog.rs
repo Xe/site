@@ -83,7 +83,7 @@ pub fn blog(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> 
             p {
                 "This article was posted on "
                 (post.detri())
-                ". Facts and circumstances may have changed since publication Please "
+                ". Facts and circumstances may have changed since publication. Please "
                 a href="/contact" {"contact me"}
                 " before jumping to conclusions if something seems wrong or unclear."
             }
