@@ -3,11 +3,30 @@ let xesite = ./types/package.dhall
 let VOD = xesite.StreamVOD
 
 in  [ VOD::{
+      , title = "Shouting at my editor"
+      , slug = "cursorless"
+      , description =
+          ''
+          This is a bit of an experimental stream where I attempted to dictate code with [cursorless](https://www.cursorless.org/). When I recorded this stream, I was at minute twenty of playing with this tool. This stream is going to sound really weird, because I am going to be rattling off voice commands that will sound weird at first.
+
+          On this stream, I decided to implement a stable diffusion feature for my CDN XeDN. It replicates the API of the service gravatar, but backed by stable diffusion based off of the hash. There is a terrible bit of code that turns a gravatar hash into a stable diffusion prompt and seed combination.
+
+          This stream covers the following topics:
+
+          * Basic navigation with cursorless
+          * Data transformations
+          * How to execute on terrible ideas
+          ''
+      , date = "2023-03-04"
+      , cdnPath = "talks/vod/2023/03-04-cursorless"
+      , tags = [ "accessibility", "voiceControl", "go", "stableDiffusion" ]
+      }
+    , VOD::{
       , title = "Ripping the bandaid off and using Emacs managed by Nix"
       , slug = "emacs-nix"
       , description =
           ''
-            This is a shorter stream where I switched my Emacs config from [Spacemacs](https://spacemacs.org) to a custom configuration I've been prototyping for a year or so that has everything managed with [home-manager](https://nixos.wiki/wiki/Home_Manager) on NixOS. This allows my configuration to be completely managed in configuration and _all packages that I depend on can be precompiled at deploy time_, allowing me to run my complicated configurations on less powerful hardware without having to wait for bytecode compilation to happen. Most of the rest of the stream was just going through the motions of actually making the change, and then trying to make some ergonomics changes so that I could use it as a replacement for tmux.
+            This is a shorter stream where I switched my Emacs config from [Spacemacs](https://spacemacs.org) to a custom configuration I've been prototyping for a year or so that has everything managed with [home-manager](https://nixos.wiki/wiki/Home_Manager) on NixOS. This allows my configuration to be completely managed in configuration and all packages that I depend on can be precompiled at deploy time_, allowing me to run my complicated configurations on less powerful hardware without having to wait for bytecode compilation to happen. Most of the rest of the stream was just going through the motions of actually making the change, and then trying to make some ergonomics changes so that I could use it as a replacement for tmux.
 
             This stream covers the following topics:
 
