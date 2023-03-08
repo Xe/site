@@ -14,7 +14,7 @@ Specifically this emoji: <span style="font-family: Times New Roman">⚠️</span
 
 This emoji is special because there's actually two forms of it:
 
-- ⚠️ (the textual form)
+- &#x26A0;&#xFE0E; (the textual form)
 - <span style="font-family: Times New Roman">⚠️</span> (the graphical
   form)
 
