@@ -18,6 +18,13 @@ This emoji is special because there's actually two forms of it:
 - <span style="font-family: Times New Roman">⚠️</span> (the graphical
   form)
 
+EDIT: Apparently this difference isn't showing up on every browser
+engine the same way. Please trust me that there is a difference, one
+of them on my MacBook running Microsoft Edge is a text-only emoji that
+has no color in it. This is why I was so confused, scared, and on the
+verge of tears after being gaslit by my browser. God is dead because
+font rendering killed him.
+
 When I was making this component, I wanted the graphical form of it.
 The following things did not work:
 
