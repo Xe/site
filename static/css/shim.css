@@ -83,7 +83,9 @@ article blockquote {
 
 figcaption {
     background-color: #282828;
-    padding: 1rem;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
 }
 
 .logo {
@@ -108,6 +110,7 @@ figcaption {
 .media {
     background-color: #32302f;
     color: #fbf1c7;
+
     margin: auto;
     max-width: 80ch;
     padding: 2ch;
@@ -118,19 +121,6 @@ figcaption {
     max-height: 16px;
     min-width: 16px;
     min-height: 16px;
-}
-
-@media screen and (min-width: 992px) {
-    picture.hero > img {
-        left: 72.5%;
-        right: 30%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        width: 100vw;
-        max-width: 1280px;
-        position: relative;
-        overflow: hidden;
-    }
 }
 
 @media (prefers-color-scheme: light) {

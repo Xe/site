@@ -38,7 +38,6 @@ there is more of a border:
 
 When a conversation has mutiple parts, they will get smaller and look like this:
 
-<div>
 <xeblog-conv name="Numa" mood="delet">Have you ever been far even as decided to
 use even go want to do look more like?</xeblog-conv>
 <xeblog-conv name="Aoi" mood="coffee">What.</xeblog-conv>
@@ -50,7 +49,6 @@ then that he has really been far even as decided to use even go want to do look
 more like. It's just common sense.</xeblog-conv>
 <xeblog-conv name="Aoi" mood="coffee">Is that supposed to be
 English????</xeblog-conv>
-</div>
 
 As you can see, this is a lot more clear and easy to understand. The
 "standalone" snippets are a bit bigger so that the character is emphasized.
