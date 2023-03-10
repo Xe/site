@@ -26,7 +26,7 @@ content to the point that it's impossible to find another human. The
 same arguments cycle back and forth throughout the forums with new
 dramatis personae every iteration.
 
-To be clear, this theory has literally written is absolute nonsense
+To be clear, this theory as literally written is absolute nonsense
 and probably not worth taking too seriously. A lot of this theory was
 originally designed to come up with reasons why people in forums will
 just randomly vanish forever, never to be seen or heard from again.
@@ -88,7 +88,7 @@ people read are very basic high level things:
   Happens
 
 Statistically, most people won't even read past the title anyways.
-This is why titles get clickbated. Because people want you to read
+This is why titles get clickbaited. Because people want you to read
 the fucking article, and nobody reads past the title. Consider the
 fact that when Elon Musk, one of the biggest accounts on Twitter,
 tweeted a link to someone's webpage, there was a less than one percent
