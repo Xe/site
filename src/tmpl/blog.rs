@@ -72,7 +72,9 @@ pub fn blog(post: &Post, body: PreEscaped<&String>, referer: Option<String>) -> 
                     (post.read_time_estimate_minutes)
                 }
 
-                (body)
+                div {
+                    (body)
+                }
             }
 
             hr;
