@@ -97,6 +97,25 @@
         "type": "github"
       }
     },
+    "iosevka": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "utils": "utils"
+      },
+      "locked": {
+        "lastModified": 1679172980,
+        "narHash": "sha256-B9RMXNbKk6ZY1Xom/3j/psIW7xJIaWTy1hSOplvDjps=",
+        "owner": "Xe",
+        "repo": "iosevka",
+        "rev": "7ff508fdc3b00f822d4b8dcd14f0ed2a5eb302fd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Xe",
+        "repo": "iosevka",
+        "type": "github"
+      }
+    },
     "naersk": {
       "inputs": {
         "nixpkgs": [
@@ -132,13 +151,44 @@
         "type": "indirect"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1678898370,
+        "narHash": "sha256-xTICr1j+uat5hk9FyuPOFGxpWHdJRibwZC+ATi0RbtE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ac718d02867a84b42522a0ece52d841188208f2c",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-unstable",
+        "type": "indirect"
+      }
+    },
     "root": {
       "inputs": {
         "deno2nix": "deno2nix",
         "flake-compat": "flake-compat_2",
         "flake-utils": "flake-utils",
+        "iosevka": "iosevka",
         "naersk": "naersk",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
+      }
+    },
+    "utils": {
+      "locked": {
+        "lastModified": 1678901627,
+        "narHash": "sha256-U02riOqrKKzwjsxc/400XnElV+UtPUQWpANPlyazjH0=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "93a2b84fc4b70d9e089d029deacc3583435c2ed6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
       }
     }
   },

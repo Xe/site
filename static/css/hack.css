@@ -11,9 +11,9 @@
 }
 
 @font-face {
-    font-family: "Iosevka Term Iaso";
+    font-family: "Iosevka Curly Iaso";
     font-weight: 100 900;
-    src: local("Iosevka Term Iaso"), url("iosevka/iosevka-curly-regular.woff2") format("woff2");
+    src: local("Iosevka Curly Iaso"), url("iosevka/iosevka-curly-regular.woff2") format("woff2");
 }
 
 html {
@@ -49,10 +49,10 @@ pre code {
   text-shadow: none;
   margin: 1.75rem 0;
   font-size: 1.5rem;
-  font-family: "Iosevka Term Iaso", Menlo, monospace;
+  font-family: "Iosevka Curly Iaso", Menlo, monospace;
 }
 code {
-  font-family: "Iosevka Term Iaso", Menlo, monospace;
+  font-family: "Iosevka Curly Iaso", Menlo, monospace;
 }
 iframe {
   max-width: 100%;
