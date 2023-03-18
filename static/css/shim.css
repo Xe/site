@@ -22,6 +22,14 @@ article blockquote {
   max-width: 70ch;
 }
 
+article h1 {
+    font-weight: 900;
+}
+
+article small {
+    font-weight: 600;
+}
+
 .conversation {
   margin-top: 0.25rem;
   display: flex;
@@ -121,6 +129,14 @@ figcaption {
     max-height: 16px;
     min-width: 16px;
     min-height: 16px;
+}
+
+img.picture {
+    max-height: 36rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Iosevka Etoile Iaso", Menlo, monospace;
 }
 
 @media (prefers-color-scheme: light) {
