@@ -4,8 +4,6 @@ date: 2021-05-16
 slides_link: https://docs.google.com/presentation/d/1a0XaGu87xUcpQQVLkrnXKoKrdpN1ObiPrG9aGYVMw7k/edit?usp=sharing
 ---
 
-# systemd: The Good Parts
-
 [Video](https://youtu.be/TJdKXq197Qk)
 
 <center><iframe width="560" height="315" src="https://www.youtube.com/embed/TJdKXq197Qk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>

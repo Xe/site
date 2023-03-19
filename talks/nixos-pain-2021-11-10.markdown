@@ -9,8 +9,6 @@ tags:
  - packagingcon
 ---
 
-# How Nix and NixOS Get So Close to Perfect
-
 ## Author's Note
 
 Since my [last

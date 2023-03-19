@@ -14,8 +14,6 @@ tags:
 
 <xeblog-talk-warning></xeblog-talk-warning>
 
-# My Blog is Hilariously Overengineered to the Point People Think it's a Static Site
-
 ## YouTube video for the talk
 
 <xeblog-video path="talks/my-website/hls/talk"></xeblog-video>

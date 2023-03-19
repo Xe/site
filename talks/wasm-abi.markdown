@@ -11,8 +11,6 @@ tags:
 
 <xeblog-talk-warning></xeblog-talk-warning>
 
-# The Go WebAssembly ABI at a Low Level
-
 <xeblog-video path="talks/golab-wasm"></xeblog-video>
 
 <xeblog-conv name="Mara" mood="hacker">If that doesn't load, try viewing the

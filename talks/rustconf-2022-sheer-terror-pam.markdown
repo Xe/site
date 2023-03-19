@@ -4,8 +4,6 @@ date: 2022-09-05
 slides_link: https://cdn.xeiaso.net/file/christine-static/blog/rc2022/slides.pdf
 ---
 
-# The Sheer Terror of PAM
-
 Hey all, this is my [RustConf 2022](https://rustconf.com/) for 2022! I'm super
 excited to _finally_ be able to share this page publicly. Enjoy the talk! I've
 included a video of it, my script and slides embedded below and finally a link

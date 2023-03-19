@@ -6,8 +6,6 @@ slides_link: https://cdn.xeiaso.net/file/christine-static/talks/Conf42+SRE+2022.
 
 <xeblog-talk-warning></xeblog-talk-warning>
 
-# How Static Code Analysis Prevents You From Waking Up at 3AM With Production on Fire
-
 <style>
 img {
   display: block;
