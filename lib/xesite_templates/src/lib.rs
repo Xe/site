@@ -144,7 +144,7 @@ pub fn video(path: String) -> Markup {
 
 pub fn advertiser_nag(nag: Option<Markup>) -> Markup {
     html! {
-        script r#async src="https://media.ethicalads.io/media/client/ethicalads.min.js" { "" }
+        script async src="https://media.ethicalads.io/media/client/ethicalads.min.js" { "" }
         div.adaptive data-ea-publisher="christinewebsite" data-ea-type="text" data-ea-style="fixedfooter" {
             .warning {
                 @if let Some(nag) = nag {

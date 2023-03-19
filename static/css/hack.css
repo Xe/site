@@ -17,7 +17,7 @@
 }
 
 html {
-  font-size: 14px;
+  font-size: 16px;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
 }
@@ -188,7 +188,7 @@ a:hover {
 .hack em,
 .hack strong {
   font-size: 1rem;
-  line-height: 20px;
+  line-height: 0.5rem;
 }
 .hack blockquote,
 .hack code,

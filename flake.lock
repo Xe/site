@@ -103,11 +103,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1679172980,
-        "narHash": "sha256-B9RMXNbKk6ZY1Xom/3j/psIW7xJIaWTy1hSOplvDjps=",
+        "lastModified": 1679241422,
+        "narHash": "sha256-ueCrGqZHj9Grf/yCxbbaOkLBI9D8lH5NiPRu9Bcy8+Q=",
         "owner": "Xe",
         "repo": "iosevka",
-        "rev": "7ff508fdc3b00f822d4b8dcd14f0ed2a5eb302fd",
+        "rev": "09abe22e07d8d20d718e782d990af02d430d3f33",
         "type": "github"
       },
       "original": {
