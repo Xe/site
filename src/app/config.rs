@@ -107,7 +107,7 @@ pub struct Character {
 impl Render for Character {
     fn render(&self) -> Markup {
         html! {
-            h2 #(self.sticker_name) {(self.name)}
+            h3 #(self.sticker_name) {(self.name)}
             (xesite_templates::sticker(self.sticker_name.clone(), self.default_pose.clone()))
             p {(self.description)}
             details {
