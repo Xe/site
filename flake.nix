@@ -122,7 +122,8 @@
             buildPhase =
               ''
                 mkdir -p out
-                for ttf in ${self.inputs.iosevka.packages.${system}.default}/*.ttf; do
+                ${pkgs.unzip}/bin/unzip ${self.inputs.iosevka.packages.${system}.default}/ttf.zip
+                for ttf in ttf/*.ttf; do
                   cp $ttf out
                   name=`basename -s .ttf $ttf`
                   pyftsubset \
