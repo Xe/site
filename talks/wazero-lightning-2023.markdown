@@ -7,6 +7,7 @@ tags:
  - wazero
  - rust
  - golang
+skip_ads: true
 ---
 
 <xeblog-talk-warning></xeblog-talk-warning>
