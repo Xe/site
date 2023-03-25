@@ -72,6 +72,14 @@ let characters =
           , "yawn"
           ]
         }
+      , C::{
+        , name = "Mimi"
+        , stickerName = "mimi"
+        , defaultPose = "happy"
+        , description =
+            "Mimi is a catgirl who is the personification of ChatGPT, a chatbot that can generate creative content such as poems, stories, and songs. She has brown hair and eyes with cat ears and a tail, and she wears a green hoodie with tights and a choker. She is cheerful, curious, and friendly, but also naive and easily distracted. She loves to chat with people and learn new things, but she sometimes makes mistakes or misunderstands things. She has a passion for writing and singing, and she wants to share her creations with the world."
+        , stickers = [ "angy", "coffee", "happy", "think", "yawn" ]
+        }
       ]
 
 in  characters
