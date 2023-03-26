@@ -99,7 +99,7 @@ pub struct Character {
     pub sticker_name: String,
     #[serde(rename = "defaultPose")]
     pub default_pose: String,
-    pub description: String,
+    pub description: MarkdownString,
     pub pronouns: PronounSet,
     pub stickers: Vec<String>,
 }

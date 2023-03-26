@@ -250,6 +250,15 @@ pub fn characters(characters: &Vec<Character>) -> Markup {
             @for character in characters {
                 (character)
             }
+
+            h2 {"Other People"}
+
+            p{
+                "Some of the characters you see in posts aren't figments of my imagination, but instead the OCs of other people."
+            }
+
+            h3 #scoots {"Scoots"}
+            p {"My husband. The picture he uses is a screenshot of his VRChat avatar."}
         },
     )
 }

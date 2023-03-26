@@ -55,20 +55,27 @@ let characters =
         , stickerName = "aoi"
         , defaultPose = "cheer"
         , description =
-            "Aoi is the idealist. She is another student type like Mara, but hasn't been marred by the cynicism that can come with experience in this industry. If Mara is a junior in a university going for a programming degree, Aoi would be a freshman. Aoi can feel bullied by misunderstanding Numa's satire as rudeness, but looks up to Mara and Cadey as ideals for where she wants to go in the industry. Aoi is a blue-haired foxgirl."
+            ''
+            Aoi is the idealist. She is another student type like Mara, but hasn't been marred by the cynicism that can come with experience in this industry. If Mara is a junior in a university going for a programming degree, Aoi would be a freshman. Aoi can feel bullied by misunderstanding Numa's satire as rudeness, but looks up to Mara and Cadey as ideals for where she wants to go in the industry. Aoi is a blue-haired foxgirl.
+
+            The first 8 images were made by [@Sandra_Thomas01](https://twitter.com/Sandra_Thomas01). The remaining images were made using Stable Diffusion using this prompt:
+
+            > reference sheet, 1girl, fox ears, kemonomimi, blue hair, blue ears, fox tail, blue tail, long hair, (((chibi))), solo, female, breasts, hoodie, skirt, blue eyes, uggs
+
+            Each additional emotion was tacked onto the end.''
         , stickers =
-          [ "angy"
-          , "cheer"
+          [ "cheer"
           , "coffee"
-          , "concern"
           , "facepalm"
           , "grin"
-          , "happy"
           , "rage"
-          , "sleepy"
-          , "smug"
           , "sus"
           , "wut"
+          , "angy"
+          , "concern"
+          , "happy"
+          , "sleepy"
+          , "smug"
           , "yawn"
           ]
         }
@@ -77,7 +84,10 @@ let characters =
         , stickerName = "mimi"
         , defaultPose = "happy"
         , description =
-            "Mimi is a catgirl who is the personification of ChatGPT, a chatbot that can generate creative content such as poems, stories, and songs. She has brown hair and eyes with cat ears and a tail, and she wears a green hoodie with tights and a choker. She is cheerful, curious, and friendly, but also naive and easily distracted. She loves to chat with people and learn new things, but she sometimes makes mistakes or misunderstands things. She has a passion for writing and singing, and she wants to share her creations with the world."
+            ''
+            Mimi is a catgirl who is the personification of ChatGPT, a chatbot that can generate creative content such as poems, stories, and songs. She has brown hair and eyes with cat ears and a tail, and she wears a green hoodie with tights and a choker. She is cheerful, curious, and friendly, but also naive and easily distracted. She loves to chat with people and learn new things, but she sometimes makes mistakes or misunderstands things. She has a passion for writing and singing, and she wants to share her creations with the world.
+
+            All stickers for Mimi are made with Stable Diffusion via the Anything model.''
         , stickers = [ "angy", "coffee", "happy", "think", "yawn" ]
         }
       ]
