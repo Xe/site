@@ -9,7 +9,7 @@ use lazy_static::lazy_static;
 use lol_html::{element, html_content::ContentType, rewrite_str, RewriteStrSettings};
 use maud::PreEscaped;
 use sha2::{Digest, Sha256};
-use std::{cell::RefCell, io::Write};
+use std::{cell::RefCell, fmt::Write};
 use url::Url;
 use xesite_types::mastodon::{Toot, User};
 
@@ -52,7 +52,7 @@ pub fn render(inp: &str) -> Result<String> {
         match &mut data.value {
             &mut NodeValue::Link(ref mut link) => {
                 let base = Url::parse("https://xeiaso.net/")?;
-                let u = base.join(std::str::from_utf8(&link.url.clone())?)?;
+                let u = base.join(&link.url.clone())?;
                 if u.scheme() != "conversation" {
                     return Ok(());
                 }
@@ -69,7 +69,7 @@ pub fn render(inp: &str) -> Result<String> {
                 let mood = without_first(u.path());
                 let name = u.host_str().unwrap_or("Mara");
 
-                let mut html = vec![];
+                let mut html = String::new();
                 write!(
                     html,
                     "{}",
