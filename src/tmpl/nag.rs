@@ -3,6 +3,10 @@ use lazy_static::lazy_static;
 use maud::{html, Markup};
 use regex::Regex;
 
+// XXX(S): needed because release builds need this
+#[allow(unused)]
+use chrono::prelude::*;
+
 lazy_static! {
     static ref LOBSTERS: Regex = Regex::new(r#"^https?://lobste.rs"#).unwrap();
     static ref HACKER_NEWS: Regex = Regex::new(r#"^https?://news.ycombinator.com"#).unwrap();
