@@ -28,7 +28,7 @@ hyper = "0.14"
 kankyo = "0.3"
 lazy_static = "1.4"
 log = "0.4"
-mime = "0.3.0"
+mime = "0.3.17"
 prometheus = { version = "0.13", default-features = false, features = ["process"] }
 rand = "0"
 regex = "1"
