@@ -12,7 +12,7 @@ license = "zlib"
 [dependencies]
 axum = { version = "0.6", features = ["headers"] }
 axum-macros = "0.3"
-axum-extra = { version = "0.5", features = ["spa"] }
+axum-extra = { version = "0.6", features = ["spa"] }
 color-eyre = "0.6"
 chrono = "0.4"
 derive_more = "0.99"
