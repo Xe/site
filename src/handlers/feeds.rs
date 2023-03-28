@@ -16,7 +16,7 @@ lazy_static! {
         &["kind"]
     )
     .unwrap();
-    pub static ref ETAG: String = format!(r#"W/"{}""#, uuid::Uuid::new_v4().to_simple());
+    pub static ref ETAG: String = format!(r#"W/"{}""#, uuid::Uuid::new_v4().to_string().replace("-", ""));
     pub static ref CACHEBUSTER: String = uuid::Uuid::new_v4().to_string().replace("-", "");
 }
 
