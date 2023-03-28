@@ -42,7 +42,7 @@ pub fn picture(path: String) -> Markup {
 pub fn hero(file: String, prompt: Option<String>, ai: Option<String>) -> Markup {
     let ai = ai.unwrap_or("MidJourney".to_string());
     html! {
-        meta property="og:image" content={"https://cdn.xeiaso.net/file/christine-static/hero/" (file) "-smol.png"}
+        meta property="og:image" content={"https://cdn.xeiaso.net/file/christine-static/hero/" (file) "-smol.png"};
         figure.hero style="margin:0" {
             picture style="margin:0" {
                 source type="image/avif" srcset={"https://cdn.xeiaso.net/file/christine-static/hero/" (file) ".avif"};

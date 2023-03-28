@@ -1,6 +1,6 @@
 use crate::signalboost::Person;
 use chrono::prelude::*;
-use maud::{html, Markup, PreEscaped, Render};
+use maud::{html, Markup, Render};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,

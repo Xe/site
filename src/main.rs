@@ -10,7 +10,6 @@ use axum::{
     Router,
 };
 use color_eyre::eyre::Result;
-use hyper::StatusCode;
 use prometheus::{Encoder, TextEncoder};
 use std::{
     env,

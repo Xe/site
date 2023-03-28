@@ -20,6 +20,8 @@
       <id>https://xeiaso.net/@post.link</id>
       <title>@post.front_matter.title</title>
       <published>@post.date.to_rfc3339()</published>
+      <updated>@post.date.to_rfc3339()</updated>
+      <content type="html" xml:base="https://xeiaso.net/@post.link"><![CDATA[@Html(post.body_html)]]></content>
       <link href="https://xeiaso.net/@post.link" rel="alternate"/>
     </entry>
   }

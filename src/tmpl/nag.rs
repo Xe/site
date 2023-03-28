@@ -1,5 +1,4 @@
 use crate::post::Post;
-use chrono::prelude::*;
 use lazy_static::lazy_static;
 use maud::{html, Markup};
 use regex::Regex;

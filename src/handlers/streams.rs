@@ -1,6 +1,6 @@
 use crate::{
     app::{State, VOD},
-    tmpl::{base, nag},
+    tmpl::base,
 };
 use axum::{extract::Path, Extension};
 use chrono::prelude::*;
