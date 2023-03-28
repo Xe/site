@@ -30,6 +30,10 @@ let descriptions
         , details = "Why Ethereum doesn't work in the real world."
         }
       , Desc::{
+        , name = "flightJournal"
+        , details = "My Gemini posts, copied over to my blog for safe-keeping."
+        }
+      , Desc::{
         , name = "freenode"
         , details =
             "My lamentations about the collapse of the IRC network freenode."
