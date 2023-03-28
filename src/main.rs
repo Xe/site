@@ -14,7 +14,7 @@ use color_eyre::eyre::Result;
 use hyper::StatusCode;
 use prometheus::{Encoder, TextEncoder};
 use std::{
-    env, io,
+    env,
     net::{IpAddr, SocketAddr},
     str::FromStr,
     sync::Arc,
@@ -114,47 +114,19 @@ async fn main() -> Result<()> {
         .route("/metrics", get(metrics))
         .route(
             "/sw.js",
-            get_service(ServeFile::new("./static/js/sw.js")).handle_error(
-                |err: io::Error| async move {
-                    (
-                        StatusCode::INTERNAL_SERVER_ERROR,
-                        format!("unhandled internal server error: {}", err),
-                    )
-                },
-            ),
+            get_service(ServeFile::new("./static/js/sw.js")),
         )
         .route(
             "/.well-known/assetlinks.json",
-            get_service(ServeFile::new("./static/assetlinks.json")).handle_error(
-                |err: io::Error| async move {
-                    (
-                        StatusCode::INTERNAL_SERVER_ERROR,
-                        format!("unhandled internal server error: {}", err),
-                    )
-                },
-            ),
+            get_service(ServeFile::new("./static/assetlinks.json")),
         )
         .route(
             "/robots.txt",
-            get_service(ServeFile::new("./static/robots.txt")).handle_error(
-                |err: io::Error| async move {
-                    (
-                        StatusCode::INTERNAL_SERVER_ERROR,
-                        format!("unhandled internal server error: {}", err),
-                    )
-                },
-            ),
+            get_service(ServeFile::new("./static/robots.txt")),
         )
         .route(
             "/favicon.ico",
-            get_service(ServeFile::new("./static/favicon/favicon.ico")).handle_error(
-                |err: io::Error| async move {
-                    (
-                        StatusCode::INTERNAL_SERVER_ERROR,
-                        format!("unhandled internal server error: {}", err),
-                    )
-                },
-            ),
+            get_service(ServeFile::new("./static/favicon/favicon.ico")),
         )
         // api
         .route("/api/pronouns", get(handlers::api::pronouns))
