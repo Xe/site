@@ -9,7 +9,6 @@ use axum::{
     routing::{get, get_service},
     Router,
 };
-use axum_extra::routing::SpaRouter;
 use color_eyre::eyre::Result;
 use hyper::StatusCode;
 use prometheus::{Encoder, TextEncoder};
@@ -21,7 +20,7 @@ use std::{
 };
 use tokio::net::UnixListener;
 use tower_http::{
-    cors::CorsLayer, services::ServeFile, set_header::SetResponseHeaderLayer, trace::TraceLayer,
+    cors::CorsLayer, services::{ServeFile, ServeDir}, set_header::SetResponseHeaderLayer, trace::TraceLayer,
 };
 
 pub mod app;
@@ -101,7 +100,7 @@ async fn main() -> Result<()> {
         ))
         .layer(CorsLayer::permissive());
 
-    let files = SpaRouter::new("/static", "static");
+    let files = ServeDir::new("static");
 
     let app = Router::new()
         // meta
@@ -172,7 +171,7 @@ async fn main() -> Result<()> {
         // junk google wants
         .route("/sitemap.xml", get(handlers::feeds::sitemap))
         // static files
-        .merge(files)
+        .nest_service("/static", files)
         .fallback(handlers::not_found)
         .layer(middleware);
 
