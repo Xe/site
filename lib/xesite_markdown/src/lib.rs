@@ -1,5 +1,5 @@
 use color_eyre::eyre::{Result, WrapErr};
-use comrak::nodes::{Ast, AstNode, NodeValue};
+use comrak::nodes::{Ast, AstNode, LineColumn, NodeValue};
 use comrak::plugins::syntect::SyntectAdapter;
 use comrak::{
     format_html_with_plugins, markdown_to_html_with_plugins, parse_document, Arena, ComrakOptions,
@@ -20,7 +20,7 @@ pub fn hash_string(inp: String) -> String {
 }
 
 lazy_static! {
-    static ref SYNTECT_ADAPTER: SyntectAdapter<'static> = SyntectAdapter::new("base16-mocha.dark");
+    static ref SYNTECT_ADAPTER: SyntectAdapter = SyntectAdapter::new("base16-mocha.dark");
 }
 
 #[derive(thiserror::Error, Debug, Clone)]
@@ -83,6 +83,7 @@ pub fn render(inp: &str) -> Result<String> {
 
                 let new_node = arena.alloc(AstNode::new(RefCell::new(Ast::new(
                     NodeValue::HtmlInline(html),
+                    LineColumn { line: 0, column: 0 },
                 ))));
                 parent.append(new_node);
 
