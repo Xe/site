@@ -12,8 +12,8 @@ const ConvSnippet = ({ name, mood, children }: ConvSnippetProps) => {
   name = name.replace(" ", "_");
 
   return (
-    <div className="conversation">
-      <div className="conversation-standalone">
+    <div class="conversation">
+      <div class="conversation-standalone">
         <picture>
           <source
             type="image/avif"
@@ -32,9 +32,11 @@ const ConvSnippet = ({ name, mood, children }: ConvSnippetProps) => {
         </picture>
       </div>
       <div className="conversation-chat">
-        &lt;<a href={`/characters#${nameLower}`}>
+        {"<"}
+        <a href={`/characters#${nameLower}`}>
           <b>{name}</b>
-        </a>&gt; {children}
+        </a>
+        {">"} {children}
       </div>
     </div>
   );

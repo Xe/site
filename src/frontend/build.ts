@@ -8,6 +8,7 @@ const result = await esbuild.build({
   entryPoints: [
     "./components/ConvSnippet.tsx",
     "./components/MastodonShareButton.tsx",
+    "./components/NoFunAllowed.tsx",
     "./components/Video.tsx",
     "./components/WASITerm.tsx",
   ],

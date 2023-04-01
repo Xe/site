@@ -51,7 +51,7 @@ ${series ? "#" + series + " " : ""}${
         {tootBox}
         <br />
         <button
-          onClick={() => {
+          onClick={(() => {
             let instanceURL = instanceBox.value;
 
             if (!instanceURL.startsWith("https://")) {
@@ -66,7 +66,7 @@ ${series ? "#" + series + " " : ""}${
             });
             console.log({ text, mastodonURL });
             window.open(mastodonURL, "_blank");
-          }}
+          })()}
         >
           Share
         </button>

@@ -5,9 +5,9 @@ pub fn talk_warning() -> Markup {
     html! {
         div.warning {
             (conv("Cadey".to_string(), "coffee".to_string(), html!{
-                "So you are aware: you are reading the written version of a conference talk. This is written in a different style that is more lighthearted, conversational and different than the content normally on this blog. The words being said are the verbatim words that were spoken at the conference. The slides are the literal slides for each spoken utterance. If you want to hide the non-essential slides, please install this userstyle: "
-                a href="/static/css/no-fun-allowed.user.css" {code {"No fun allowed"}}
-                ". If this isn't enough, please edit it to also hide this CSS class: "
+                "So you are aware: you are reading the written version of a conference talk. This is written in a different style that is more lighthearted, conversational and different than the content normally on this blog. The words being said are the verbatim words that were spoken at the conference. The slides are the literal slides for each spoken utterance. If you want to hide the non-essential slides, please press this button: "
+                (xeact_component("NoFunAllowed", serde_json::Value::Null))
+                "If this isn't enough, please edit it to also hide this CSS class: "
                 code { "xeblog-slides-essential" }
                 ". Doing this may make the presentation page harder to understand."
             }))

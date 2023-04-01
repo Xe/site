@@ -36,15 +36,6 @@ fn share_button(post: &Post) -> Markup {
     }));
 }
 
-fn share_button_old(post: &Post) -> Markup {
-    html! {
-        div # mastodon_share_button {}
-        div # mastodon_share_series style="display:none" {(post.front_matter.series.as_ref().unwrap_or(&"".to_string()))}
-        div # mastodon_share_tags style="display:none" {@for tag in post.front_matter.tags.as_ref().unwrap_or(&Vec::new()) {"#" (tag) " "}}
-        script type="module" src="/static/js/mastodon_share_button.js" {}
-    }
-}
-
 fn twitch_vod(post: &Post) -> Markup {
     html! {
         @if let Some(vod) = &post.front_matter.vod {
