@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    
+
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
@@ -93,50 +93,60 @@
             '';
           };
 
-          frontend = let
-            build = { entrypoint, name ? entrypoint, minify ? true }:
-              pkgs.deno2nix.mkBundled {
-                pname = "xesite-frontend-${name}";
-                inherit (bin) version;
+          frontend = pkgs.stdenv.mkDerivation rec {
+            pname = "xesite-frontend";
+            inherit (bin) version;
+            dontUnpack = true;
+            src = ./src/frontend;
+            buildInputs = with pkgs; [ deno jq nodePackages.uglify-js ];
+            ESBUILD_BINARY_PATH = "${pkgs.esbuild}/bin/esbuild";
 
-                src = ./src/frontend;
-                lockfile = ./src/frontend/deno.lock;
+            buildPhase = ''
+              export DENO_DIR="$(pwd)/.deno2nix"
+              mkdir -p $DENO_DIR
+              ln -s "${pkgs.deno2nix.internal.mkDepsLink ./src/frontend/deno.lock}" $(deno info --json | jq -r .modulesCache)
 
-                output = "${entrypoint}.js";
-                outPath = "static/js";
-                entrypoint = "./${entrypoint}.tsx";
-                importMap = "./import_map.json";
-                inherit minify;
-              };
-            share-button = build { entrypoint = "mastodon_share_button"; };
-            wasiterm = build { entrypoint = "wasiterm"; };
-          in pkgs.symlinkJoin {
-            name = "xesite-frontend-${bin.version}";
-            paths = [ share-button wasiterm ];
+              mkdir -p dist
+              export WRITE_TO=$(pwd)/dist
+
+              pushd $(pwd)
+              cd $src
+              deno run -A ./build.ts
+              popd
+            '';
+
+            installPhase = ''
+              mkdir -p $out/static/xeact
+              cp -vrf dist/* $out/static/xeact
+            '';
           };
 
           iosevka = pkgs.stdenvNoCC.mkDerivation {
             name = "xesite-iosevka";
-            buildInputs = with pkgs; [ python311Packages.brotli python311Packages.fonttools ];
+            buildInputs = with pkgs; [
+              python311Packages.brotli
+              python311Packages.fonttools
+            ];
             dontUnpack = true;
-            buildPhase =
-              ''
-                mkdir -p out
-                ${pkgs.unzip}/bin/unzip ${self.inputs.iosevka.packages.${system}.default}/ttf.zip
-                for ttf in ttf/*.ttf; do
-                  cp $ttf out
-                  name=`basename -s .ttf $ttf`
-                  pyftsubset \
-                      $ttf \
-                      --output-file=out/"$name".woff2 \
-                      --flavor=woff2 \
-                      --layout-features=* \
-                      --no-hinting \
-                      --desubroutinize \
-                      --unicodes="U+0000-00A0,U+00A2-00A9,U+00AC-00AE,U+00B0-00B7,U+00B9-00BA,U+00BC-00BE,U+00D7,U+00F7,U+2000-206F,U+2074,U+20AC,U+2122,U+2190-21BB,U+2212,U+2215,U+F8FF,U+FEFF,U+FFFD"
-                done
+            buildPhase = ''
+              mkdir -p out
+              ${pkgs.unzip}/bin/unzip ${
+                self.inputs.iosevka.packages.${system}.default
+              }/ttf.zip
+              for ttf in ttf/*.ttf; do
+                cp $ttf out
+                name=`basename -s .ttf $ttf`
+                pyftsubset \
+                    $ttf \
+                    --output-file=out/"$name".woff2 \
+                    --flavor=woff2 \
+                    --layout-features=* \
+                    --no-hinting \
+                    --desubroutinize \
+                    --unicodes="U+0000-00A0,U+00A2-00A9,U+00AC-00AE,U+00B0-00B7,U+00B9-00BA,U+00BC-00BE,U+00D7,U+00F7,U+2000-206F,U+2074,U+20AC,U+2122,U+2190-21BB,U+2212,U+2215,U+F8FF,U+FEFF,U+FFFD"
+              done
 
-              '';
+            '';
             installPhase = ''
               mkdir -p $out/static/css/iosevka
               cp out/* $out/static/css/iosevka
@@ -212,9 +222,8 @@
             # frontend
             deno
             nodePackages.uglify-js
-
-            # dependency manager
-            niv
+            esbuild
+            zig
 
             # tools
             ispell
@@ -224,6 +233,7 @@
 
           SITE_PREFIX = "devel.";
           CLACK_SET = "Ashlynn,Terry Davis,Dennis Ritchie";
+          ESBUILD_BINARY_PATH = "${pkgs.esbuild}/bin/esbuild";
           RUST_LOG = "debug";
           RUST_BACKTRACE = "1";
           GITHUB_SHA = "devel";

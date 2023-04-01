@@ -228,3 +228,40 @@ pub fn toot_embed(u: User, t: Toot) -> Markup {
         }
     }
 }
+
+pub fn xeact_component(name: &str, data: serde_json::Value) -> Markup {
+    let uuid = uuid::Uuid::new_v4();
+    let uuid = format!("{uuid}").replace("-", "");
+
+    let script = PreEscaped(format!(
+        r#"
+<script type="module">
+import Component from "/static/xeact/{name}.js";
+
+const g = (name) => document.getElementById(name);
+const x = (elem) => {{
+    while (elem.lastChild) {{
+        elem.removeChild(elem.lastChild);
+    }}
+}};
+
+const root = g("{uuid}");
+x(g);
+
+root.appendChild(Component({data}))
+</script>
+"#,
+        data=serde_json::to_string(&data).unwrap(),
+    ));
+    
+    html! {
+        div id=(uuid) {
+            noscript {
+                div.warning {
+                    (conv("Aoi".into(), "coffee".into(), PreEscaped("This dynamic component requires JavaScript to function, sorry!".to_string())))
+                }
+            }
+        }
+        (script)
+    }
+}

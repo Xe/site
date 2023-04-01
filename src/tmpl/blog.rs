@@ -1,6 +1,7 @@
 use super::{base, nag};
 use crate::post::{schemaorg::Article, Post};
 use maud::{html, Markup, PreEscaped};
+use xesite_templates::xeact_component;
 
 fn post_metadata(post: &Post) -> Markup {
     let art: Article = post.into();
@@ -28,11 +29,19 @@ fn post_metadata(post: &Post) -> Markup {
 }
 
 fn share_button(post: &Post) -> Markup {
+    return xeact_component("MastodonShareButton", serde_json::json!({
+        "title": post.front_matter.title,
+        "series": post.front_matter.series,
+        "tags": post.front_matter.tags.as_ref().unwrap_or(&Vec::new())
+    }));
+}
+
+fn share_button_old(post: &Post) -> Markup {
     html! {
         div # mastodon_share_button {}
         div # mastodon_share_series style="display:none" {(post.front_matter.series.as_ref().unwrap_or(&"".to_string()))}
         div # mastodon_share_tags style="display:none" {@for tag in post.front_matter.tags.as_ref().unwrap_or(&Vec::new()) {"#" (tag) " "}}
-        script r#type="module" src="/static/js/mastodon_share_button.js" {}
+        script type="module" src="/static/js/mastodon_share_button.js" {}
     }
 }
 

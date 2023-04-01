@@ -1,8 +1,15 @@
 {
     "imports": {
+        "@bjorn3/browser_wasi_shim": "https://esm.sh/v113/@bjorn3/browser_wasi_shim@0.2.7/es2022/browser_wasi_shim.mjs",
+        "@xterm": "https://esm.sh/v113/xterm@5.1.0/es2022/xterm.mjs",
+        "@xterm/addon-fit": "https://esm.sh/v113/xterm-addon-fit@0.7.0/es2022/xterm-addon-fit.mjs",
+
+        "@esbuild": "https://deno.land/x/esbuild@v0.17.13/mod.js",
+        "@esbuild/deno": "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts",
+        
         "xeact": "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/xeact.ts",
         "xeact/jsx-runtime": "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/jsx-runtime.js",
-        "/": "./",
+        "@/": "./",
         "./": "./"
     }
 }

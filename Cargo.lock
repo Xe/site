@@ -3649,6 +3649,7 @@ name = "xesite_templates"
 version = "0.1.0"
 dependencies = [
  "maud",
+ "serde_json",
  "uuid",
  "xesite_types",
 ]
