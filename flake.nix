@@ -105,6 +105,7 @@
               export DENO_DIR="$(pwd)/.deno2nix"
               mkdir -p $DENO_DIR
               ln -s "${pkgs.deno2nix.internal.mkDepsLink ./src/frontend/deno.lock}" $(deno info --json | jq -r .modulesCache)
+              export MINIFY=yes
 
               mkdir -p dist
               export WRITE_TO=$(pwd)/dist

@@ -16,7 +16,7 @@ const result = await esbuild.build({
   bundle: true,
   splitting: true,
   format: "esm",
-  //minifyWhitespace: true,
+  minifyWhitespace: !!Deno.env.get("MINIFY"),
   inject: ["xeact"],
   jsxFactory: "h",
 });
