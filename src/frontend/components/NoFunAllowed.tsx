@@ -3,16 +3,20 @@
 
 import { c } from "xeact";
 
+const onclick = () => {
+  Array.from(c("xeblog-slides-fluff")).forEach((el) =>
+    el.classList.toggle("hidden")
+  );
+};
+
 export default function NoFunAllowed() {
-  return (
+  const button = (
     <button
-      onclick={(() => {
-        Array.from(c("xeblog-slides-fluff")).forEach((el) =>
-          el.classList.toggle("hidden")
-        );
-      })()}
+      class=""
+      onclick={() => onclick()}
     >
       No fun allowed
     </button>
   );
+  return button;
 }
