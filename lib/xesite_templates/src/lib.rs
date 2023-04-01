@@ -95,51 +95,7 @@ pub fn sticker(name: String, mood: String) -> Markup {
 }
 
 pub fn video(path: String) -> Markup {
-    let stream_url = format!(
-        "https://cdn.xeiaso.net/file/christine-static/{}/index.m3u8",
-        path
-    );
-    let uuid = uuid::Uuid::new_v4();
-    let uuid = format!("{uuid}").replace("-", "");
-    let hls_script = PreEscaped(format!(
-        r#"
-<script>
-  if (Hls.isSupported()) {{
-    let video = document.getElementById('{uuid}');
-    let hls = new Hls();
-    let videoSrc = "{}";
-    hls.on(Hls.Events.MEDIA_ATTACHED, function () {{
-      console.log('video and hls.js are now bound together !');
-    }});
-    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {{
-      console.log(
-        'manifest loaded, found ' + data.levels.length + ' quality level'
-      );
-    }});
-    hls.loadSource(videoSrc);
-    // bind them together
-    hls.attachMedia(video);
-  }} else if (video.canPlayType('application/vnd.apple.mpegurl')) {{
-      video.src = videoSrc;
-  }}
-</script>
-"#,
-        stream_url
-    ));
-
-    html! {
-        script src="/static/js/hls.js" {}
-        noscript {
-            div.warning {
-                (conv("Mara".into(), "hacker".into(), PreEscaped("You may need to enable JavaScript for this to work. I'm a cartoon shark, not a cop.".to_string())))
-            }
-        }
-        video id=(uuid) width="100%" controls {
-            source src=(stream_url) r#type="application/vnd.apple.mpegurl";
-            source src="https://cdn.xeiaso.net/file/christine-static/blog/HLSBROKE.mp4" r#type="video/mp4";
-        }
-        (hls_script)
-    }
+    xeact_component("Video", serde_json::json!({"path": path}))
 }
 
 pub fn advertiser_nag(nag: Option<Markup>) -> Markup {
