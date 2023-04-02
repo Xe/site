@@ -46,7 +46,11 @@ impl Into<xe_jsonfeed::Item> for Post {
             .title(self.front_matter.title.clone())
             .content_html(self.body_html)
             .id(format!("https://xeiaso.net/{}", self.link))
-            .url(format!("https://xeiaso.net/{}", self.link))
+            .url(if let Some(url) = self.front_matter.redirect_to.as_ref() {
+                url.clone()
+            } else {
+                format!("https://xeiaso.net/{}", self.link)
+            })
             .date_published(self.date.to_rfc3339())
             .author(
                 xe_jsonfeed::Author::new()

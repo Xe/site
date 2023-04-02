@@ -160,7 +160,7 @@ pub fn post_index(posts: &Vec<Post>, title: &str, show_extra: bool) -> Markup {
                         li {
                             (post.detri())
                             " - "
-                            a href={"/" (post.link)} { (post.front_matter.title) }
+                                a href={ @if post.front_matter.redirect_to.as_ref().is_some() {(post.front_matter.redirect_to.as_ref().unwrap())} @else {"/" (post.link)}} { (post.front_matter.title) }
                         }
                     }
                 }
