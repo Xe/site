@@ -146,4 +146,27 @@ in  [ Person::{
         , Link::{ url = "https://sneakycrow.dev", title = "Website" }
         ]
       }
+    , Person::{
+      , name = "Ryan Heywood"
+      , tags =
+        [ "backend"
+        , "rust"
+        , "linux"
+        , "docker"
+        , "kubernetes"
+        , "rook+ceph"
+        , "calico"
+        , "aws"
+        , "terraform"
+        , "ansible"
+        , "nodejs"
+        , "react"
+        , "python"
+        ]
+      , links =
+        [ Link::{ url = "https://github.com/RyanSquared", title = "GitHub" }
+        , Link::{ url = "https://tilde.zone/@ryan", title = "Fediverse" }
+        , Link::{ url = "https://ryansquared.pub", title = "Website" }
+        ]
+      }
     ]
