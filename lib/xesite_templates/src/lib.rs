@@ -189,7 +189,7 @@ pub fn xeact_component(name: &str, data: serde_json::Value) -> Markup {
     let script = PreEscaped(format!(
         r#"
 <script type="module">
-import Component from "/static/xeact/{name}.js";
+import Component from "/static/xeact/{name}.js?cacheBuster={uuid}";
 
 const g = (name) => document.getElementById(name);
 const x = (elem) => {{
