@@ -2,6 +2,7 @@
 // @jsxRuntime automatic
 
 import { u } from "xeact";
+import { useState } from "@/state.js";
 
 export interface MastodonShareButtonProps {
   title: string;
@@ -27,18 +28,8 @@ ${series ? "#" + series + " " : ""}${
     tags ? tags.map((x) => "#" + x).join(" ") : ""
   } @cadey@pony.social`;
 
-  const instanceBox = (
-    <input
-      type="text"
-      placeholder="https://pony.social"
-      value={defaultURL}
-    />
-  );
-  const tootBox = (
-    <textarea rows={6} cols={40}>
-      {tootTemplate}
-    </textarea>
-  );
+  const [getURL, setURL] = useState(defaultURL);
+  const [getToot, setToot] = useState(tootTemplate);
 
   return (
     <div>
@@ -46,20 +37,31 @@ ${series ? "#" + series + " " : ""}${
         <summary>Share on Mastodon</summary>
         <span>{"Instance URL (https://mastodon.example)"}</span>
         <br />
-        {instanceBox}
+        <input
+          type="text"
+          placeholder="https://pony.social"
+          value={defaultURL}
+          oninput={(e) => setURL(e.target.value)}
+        />
         <br />
-        {tootBox}
+        <textarea
+          rows={6}
+          cols={40}
+          oninput={(e) => setToot(e.target.value)}
+        >
+          {getToot()}
+        </textarea>
         <br />
         <button
           onclick={() => {
-            let instanceURL = instanceBox.value;
+            let instanceURL = getURL();
 
             if (!instanceURL.startsWith("https://")) {
               instanceURL = `https://${instanceURL}`;
             }
 
             localStorage["mastodon_instance"] = instanceURL;
-            const text = tootBox.value;
+            const text = getToot();
             const mastodonURL = u(instanceURL + "/share", {
               text,
               visibility: "public",
