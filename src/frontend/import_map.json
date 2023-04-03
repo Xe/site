@@ -8,7 +8,7 @@
         "@esbuild": "https://deno.land/x/esbuild@v0.17.13/mod.js",
         "@esbuild/deno": "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts",
 
-        "xeact": "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/xeact.ts",
+        "xeact": "https://xena.greedo.xeserv.us/pkg/xeact/v0.70.0/xeact.ts",
         "xeact/jsx-runtime": "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/jsx-runtime.js",
         "@/": "./",
         "./": "./"

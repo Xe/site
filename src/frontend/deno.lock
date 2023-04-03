@@ -32,6 +32,7 @@
     "https://esm.sh/v113/xterm@5.1.0/es2022/xterm.mjs": "e0697e20cbe92d2177abe9fb744457df5c0f89f77a8e8ce7e9515b7d60f5cb57",
     "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/jsx-runtime.js": "a8e0e04c44bbc80bb0a8c59e1d3ee338dd799e25e89792cadb67f00bf4f6ceca",
     "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/xeact.js": "4b943b147cddd20b514b0cf85c68438e585712e809d8da4283ee5f0b8ac1ab8d",
-    "https://xena.greedo.xeserv.us/pkg/xeact/v0.69.71/xeact.ts": "b6def4bebff19548539f4708cff028cd1fd7abdf6bfd7b3cd8dd5025b97d676e"
+    "https://xena.greedo.xeserv.us/pkg/xeact/v0.70.0/xeact.js": "9c422c796fdd745a9c2115e5b6b1c1f6d762e95421be4090b0f267d8c4311f74",
+    "https://xena.greedo.xeserv.us/pkg/xeact/v0.70.0/xeact.ts": "b6def4bebff19548539f4708cff028cd1fd7abdf6bfd7b3cd8dd5025b97d676e"
   }
 }

@@ -143,6 +143,10 @@ h1, h2, h3, h4, h5, h6 {
   display: none;
 }
 
+.hack pre {
+  line-height: 1.125rem;
+}
+
 @media (prefers-color-scheme: light) {
     .warning {
         background-color: #fbf1c7;
