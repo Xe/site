@@ -1,8 +1,7 @@
 // @jsxImportSource xeact
 // @jsxRuntime automatic
 
-import { u } from "xeact";
-import { useState } from "@/state.js";
+import { u, useState } from "xeact";
 
 export interface MastodonShareButtonProps {
   title: string;
