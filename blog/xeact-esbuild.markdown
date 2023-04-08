@@ -1,6 +1,6 @@
 ---
 title: Building Xeact components with esbuild and Nix
-date: 2023-04-09
+date: 2023-04-08
 tags:
  - nix
  - xeact
