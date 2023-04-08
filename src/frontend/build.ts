@@ -5,13 +5,7 @@ const result = await esbuild.build({
   plugins: [denoPlugin({
     importMapURL: new URL("./import_map.json", import.meta.url),
   })],
-  entryPoints: [
-    "./components/ConvSnippet.tsx",
-    "./components/MastodonShareButton.tsx",
-    "./components/NoFunAllowed.tsx",
-    "./components/Video.tsx",
-    "./components/WASITerm.tsx",
-  ],
+  entryPoints: Deno.args,
   outdir: Deno.env.get("WRITE_TO")
     ? Deno.env.get("WRITE_TO")
     : "../../static/xeact",
@@ -19,8 +13,6 @@ const result = await esbuild.build({
   splitting: true,
   format: "esm",
   minifyWhitespace: !!Deno.env.get("MINIFY"),
-  inject: ["xeact"],
-  jsxFactory: "h",
 });
 console.log(result.outputFiles);
 
