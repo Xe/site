@@ -5,7 +5,7 @@ tags:
  - javascript
  - framework
  - satire
- - xeact
+series: xeact
 ---
 
 [Writing JavaScript is so lame. All the tools require me to do so much bullshit

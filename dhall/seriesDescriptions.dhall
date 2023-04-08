@@ -135,6 +135,10 @@ let descriptions
         , name = "when-then-zen"
         , details = "Meditation information sans bullshit."
         }
+      , Desc::{
+        , name = "xeact"
+        , details = "Xeact, the best frontend femtoframework in the galaxy"
+        }
       ]
 
 let descToMapValue =

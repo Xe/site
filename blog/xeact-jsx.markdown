@@ -2,10 +2,10 @@
 title: "Xeact Version 0.69.71: JSX support"
 date: 2022-08-17
 tags:
- - xeact
  - jsx
  - frontend
  - javascript
+series: xeact
 ---
 
 <xeblog-hero file="the-magician-anime" prompt="The Magician in the style of an anime as a tarot card"></xeblog-hero>

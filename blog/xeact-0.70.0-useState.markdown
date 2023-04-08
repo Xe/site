@@ -4,9 +4,9 @@ date: 2023-04-03
 tags:
  - jsx
  - react
- - xeact
  - frontend
  - javascript
+series: xeact
 ---
 
 Xeact continues to dominate the front-end ecosystem. Every facet of

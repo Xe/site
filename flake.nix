@@ -105,6 +105,7 @@
               export DENO_DIR="$(pwd)/.deno2nix"
               mkdir -p $DENO_DIR
               ln -s "${pkgs.deno2nix.internal.mkDepsLink ./src/frontend/deno.lock}" $(deno info --json | jq -r .modulesCache)
+              ${pkgs.tree}/bin/tree "${pkgs.deno2nix.internal.mkDepsLink ./src/frontend/deno.lock}"
               export MINIFY=yes
 
               mkdir -p dist
@@ -112,7 +113,7 @@
 
               pushd $(pwd)
               cd $src
-              deno run -A ./build.ts
+              deno run -A ./build.ts **/*.tsx
               popd
             '';
 
