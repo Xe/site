@@ -3,22 +3,6 @@ let Link = ./types/Link.dhall
 let Person = ./types/Person.dhall
 
 in  [ Person::{
-      , name = "nicoo"
-      , tags =
-        [ "cryptography"
-        , "Debian"
-        , "distributed systems"
-        , "embedded"
-        , "nix"
-        , "rust"
-        , "privacy"
-        , "security"
-        , "SDR"
-        ]
-      , links =
-        [ Link::{ url = "https://github.com/nbraud", title = "GitHub" } ]
-      }
-    , Person::{
       , name = "Prajjwal Singh"
       , tags =
         [ "full-stack javascript"
