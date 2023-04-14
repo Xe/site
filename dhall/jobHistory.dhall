@@ -68,8 +68,23 @@ let tailscale =
 
 in  [ Job::{
       , company = tailscale
+      , title = "Archmage of Infrastructure II"
+      , startDate = "2023-04-06"
+      , salary = annualCAD 203651
+      , locations = [ ottawa ]
+      , highlights =
+        [ "Founding the developer relations team"
+        , "Crafting engaging talks and posts to help people master Tailscale"
+        , "Mentorship and fostering growth of my coworkers"
+        ]
+      }
+    , Job::{
+      , company = tailscale
       , title = "Archmage of Infrastructure"
       , startDate = "2022-03-01"
+      , endDate = Some "2022-04-06"
+      , daysWorked = Some 401
+      , leaveReason = Some "raise"
       , salary = annualCAD 147150
       , locations = [ ottawa ]
       , highlights =
