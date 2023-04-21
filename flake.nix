@@ -111,9 +111,8 @@
               export XDG_CACHE_HOME=.cache
               export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall;
 
+              mkdir -p icons
               cp -vrf $src/dhall/resume/* .
-              rm icons/xeiaso.svg
-              cp -f $src/static/img/xeiaso.svg icons
               dhall-to-json --file $src/dhall/resume.dhall --output resume.json
 
               typst compile resume.typ $out/static/resume/resume.pdf
