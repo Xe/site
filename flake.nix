@@ -23,14 +23,18 @@
 
     # Explicitly pulling from that version of nixpkgs to avoid font duplication.
     iosevka.url = "github:Xe/iosevka";
+
+    typst.url = "github:typst/typst";
+    typst.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, naersk, deno2nix, iosevka, ... }:
+  outputs =
+    { self, nixpkgs, flake-utils, naersk, deno2nix, iosevka, typst, ... }:
     flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ] (system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ deno2nix.overlays.default ];
+          overlays = [ deno2nix.overlays.default typst.overlays.default ];
         };
         naersk-lib = naersk.lib."${system}";
         src = ./.;
@@ -38,6 +42,21 @@
 
         tex = with pkgs;
           texlive.combine { inherit (texlive) scheme-medium bitter titlesec; };
+
+        typstWithIosevka = let
+          fontsConf = pkgs.symlinkJoin {
+            name = "typst-fonts";
+            paths = [ "${self.packages.${system}.iosevka}/static/css/iosevka" ];
+          };
+        in pkgs.writeShellApplication {
+          name = "typst";
+          text = ''
+            ${pkgs.typst-dev}/bin/typst \
+            --font-path ${fontsConf} \
+            "$@"
+          '';
+          runtimeInputs = [ ];
+        };
       in rec {
         packages = rec {
           bin = naersk-lib.buildPackage {
@@ -74,22 +93,30 @@
             pname = "xesite-resume-pdf";
             inherit (bin) version;
             inherit src;
-            buildInputs = with pkgs; [ dhall dhallPackages.Prelude tex pandoc ];
+            buildInputs = with pkgs; [
+              dhall-json
+              dhallPackages.Prelude
+              tex
+              pandoc
+              typstWithIosevka
+            ];
 
             phases = "installPhase";
 
             installPhase = ''
               mkdir -p $out/static/resume
+
               cp -rf ${pkgs.dhallPackages.Prelude}/.cache .cache
               chmod -R u+w .cache
               export XDG_CACHE_HOME=.cache
               export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall;
 
-              ln -s $src/dhall/latex/resume.cls
-              dhall text --file $src/dhall/latex/resume.dhall > resume.tex
+              cp -vrf $src/dhall/resume/* .
+              rm icons/xeiaso.svg
+              cp -f $src/static/img/xeiaso.svg icons
+              dhall-to-json --file $src/dhall/resume.dhall --output resume.json
 
-              xelatex ./resume.tex
-              cp resume.pdf $out/static/resume/resume.pdf
+              typst compile resume.typ $out/static/resume/resume.pdf
             '';
           };
 
@@ -104,8 +131,9 @@
             buildPhase = ''
               export DENO_DIR="$(pwd)/.deno2nix"
               mkdir -p $DENO_DIR
-              ln -s "${pkgs.deno2nix.internal.mkDepsLink ./src/frontend/deno.lock}" $(deno info --json | jq -r .modulesCache)
-              ${pkgs.tree}/bin/tree "${pkgs.deno2nix.internal.mkDepsLink ./src/frontend/deno.lock}"
+              ln -s "${
+                pkgs.deno2nix.internal.mkDepsLink ./src/frontend/deno.lock
+              }" $(deno info --json | jq -r .modulesCache)
               export MINIFY=yes
 
               mkdir -p dist
@@ -220,6 +248,7 @@
             dhall-lsp-server
             tex
             pandoc
+            typstWithIosevka
 
             # frontend
             deno

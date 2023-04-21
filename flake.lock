@@ -173,7 +173,28 @@
         "flake-utils": "flake-utils",
         "iosevka": "iosevka",
         "naersk": "naersk",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "typst": "typst"
+      }
+    },
+    "typst": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1680860298,
+        "narHash": "sha256-aDLg97A+isOBFJMIww2mjVPyTCPSVlguo2tojzms/04=",
+        "owner": "typst",
+        "repo": "typst",
+        "rev": "94e052b8ccace3221aa960b9abe3b3f32b1d894f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "typst",
+        "repo": "typst",
+        "type": "github"
       }
     },
     "utils": {
