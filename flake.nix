@@ -252,7 +252,8 @@
             # frontend
             deno
             nodePackages.uglify-js
-            esbuild
+            nodejs
+            yarn
             zig
 
             # tools
@@ -260,6 +261,10 @@
             pandoc
             python311Packages.fonttools
           ];
+
+          shellHook = ''
+            export PATH="$PATH":$(pwd)/src/frontend/node_modules/.bin
+          '';
 
           SITE_PREFIX = "devel.";
           CLACK_SET = "Ashlynn,Terry Davis,Dennis Ritchie";

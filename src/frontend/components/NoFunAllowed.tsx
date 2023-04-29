@@ -1,7 +1,4 @@
-// @jsxImportSource xeact
-// @jsxRuntime automatic
-
-import { c } from "xeact";
+import { c } from "@xeserv/xeact";
 
 const onclick = () => {
   Array.from(c("xeblog-slides-fluff")).forEach((el) =>
@@ -13,7 +10,7 @@ export default function NoFunAllowed() {
   const button = (
     <button
       class=""
-      onclick={() => onclick()}
+      onClick={() => onclick()}
     >
       No fun allowed
     </button>

@@ -1,17 +1,15 @@
-// @jsxImportSource xeact
-// @jsxRuntime automatic
-
-import { u, useState } from "xeact";
+import { u } from "@xeserv/xeact";
+import { useState } from 'preact/hooks';
 
 export interface MastodonShareButtonProps {
   title: string;
   url: string;
   series?: string;
-  tags: string;
+  tags: string[];
 }
 
 export default function MastodonShareButton(
-  { title, url = u(), series, tags }: MastodonShareButtonProps,
+  { title, url = u("", {}), series, tags }: MastodonShareButtonProps,
 ) {
   let defaultURL = localStorage["mastodon_instance"];
 
@@ -27,8 +25,8 @@ ${series ? "#" + series + " " : ""}${
     tags ? tags.map((x) => "#" + x).join(" ") : ""
   } @cadey@pony.social`;
 
-  const [getURL, setURL] = useState(defaultURL);
-  const [getToot, setToot] = useState(tootTemplate);
+  const [theURL, setURL] = useState(defaultURL);
+  const [toot, setToot] = useState(tootTemplate);
 
   return (
     <div>
@@ -40,27 +38,33 @@ ${series ? "#" + series + " " : ""}${
           type="text"
           placeholder="https://pony.social"
           value={defaultURL}
-          oninput={(e) => setURL(e.target.value)}
+            onInput={(e) => {
+                const target = e.target as HTMLInputElement;
+                setURL(target.value);
+            }}
         />
         <br />
         <textarea
           rows={6}
           cols={40}
-          oninput={(e) => setToot(e.target.value)}
+            onInput={(e) => {
+                const target = e.target as HTMLTextAreaElement;
+                setToot(target.value)
+            }}
         >
-          {getToot()}
+          {toot}
         </textarea>
         <br />
         <button
-          onclick={() => {
-            let instanceURL = getURL();
+          onClick={() => {
+            let instanceURL = theURL;
 
             if (!instanceURL.startsWith("https://")) {
               instanceURL = `https://${instanceURL}`;
             }
 
             localStorage["mastodon_instance"] = instanceURL;
-            const text = getToot();
+            const text = toot;
             const mastodonURL = u(instanceURL + "/share", {
               text,
               visibility: "public",

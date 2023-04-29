@@ -1,9 +1,6 @@
-// @jsxImportSource xeact
-// @jsxRuntime automatic
-
-import { t, x } from "xeact";
-import Terminal from "@xterm";
-import * as fitAdd from "@xterm/addon-fit";
+import { t, x, h } from "@xeserv/xeact";
+import { Terminal } from "xterm";
+import { FitAddon } from 'xterm-addon-fit';
 import { Fd, File, PreopenDirectory, WASI } from "@bjorn3/browser_wasi_shim";
 
 class XtermStdio extends Fd {
@@ -41,16 +38,17 @@ export interface WASITermProps {
 }
 
 export default function WASITerm({ href, env, args }: WASITermProps) {
-  const root = <div style="max-width:80ch;max-height:20ch"></div>;
+  const root = h("div", {style:"max-width:80ch;max-height:20ch"}, []);
 
   const term = new Terminal({
     convertEol: true,
     fontFamily: "Iosevka Curly Iaso",
   });
 
-  const fit = new fitAdd.default();
-  term.loadAddon(fit);
-  fit.fit();
+  const fitAddon = new FitAddon();
+  term.loadAddon(fitAddon);
+  term.open(root);
+  fitAddon.fit();
 
   return (
     <div>

@@ -1,0 +1,37 @@
+{
+  "name": "xesite-frontend",
+  "version": "2.0.0",
+  "description": "The frontend for Xesite, now in node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xe/site.git"
+  },
+  "keywords": [
+    "frontend",
+    "xeact"
+  ],
+  "author": "Xe Iaso <xesite@xeserv.us>",
+  "license": "Zlib",
+  "bugs": {
+    "url": "https://github.com/Xe/site/issues"
+  },
+  "homepage": "https://github.com/Xe/site#readme",
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "esbuild": "0.17.13",
+    "prettier": "^2.8.8",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@bjorn3/browser_wasi_shim": "^0.2.8",
+    "@xeserv/xeact": "0.71.1",
+    "hls.js": "^1.4.0",
+    "preact": "^10.13.2",
+    "xterm": "^5.1.0",
+    "xterm-addon-fit": "^0.7.0"
+  }
+}

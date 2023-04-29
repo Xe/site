@@ -1,6 +1,3 @@
-// @jsxImportSource xeact
-// @jsxRuntime automatic
-
 export interface ConvSnippetProps {
   name: string;
   mood: string;
