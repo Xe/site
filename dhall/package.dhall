@@ -80,6 +80,7 @@ in  Config::{
       , Link::{ url = "https://pony.social/@cadey", title = "Fediverse" }
       , Link::{ url = "https://t.me/miamorecadenza", title = "Telegram" }
       , Link::{ url = "irc://irc.libera.chat/#xeserv", title = "IRC" }
+      , Link::{ url = "https://staging.bsky.app/profile/xeiaso.net", title = "Bluesky" }
       ]
     , pronouns = ./pronouns.dhall
     , characters = ./characters.dhall
