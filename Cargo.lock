@@ -1459,9 +1459,9 @@ dependencies = [
 
 [[package]]
 name = "lol_html"
-version = "0.4.0"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1610d7994d67a05bb35861cd733b069b1171de8693bc8452849c59361a1bb87b"
+checksum = "ce59b33732efed2480f7d15722ed56905e81004b402196a738f7532ff44d9798"
 dependencies = [
  "bitflags 2.0.2",
  "cfg-if",
