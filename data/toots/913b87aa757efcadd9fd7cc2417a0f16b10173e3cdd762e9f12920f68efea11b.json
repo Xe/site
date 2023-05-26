@@ -1,0 +1,43 @@
+{
+  "id": "https://pony.social/users/cadey/statuses/110434991652438811",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2023-05-26T12:30:42Z",
+  "url": "https://pony.social/@cadey/110434991652438811",
+  "attributedTo": "https://pony.social/users/cadey",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/cadey/followers"
+  ],
+  "sensitive": false,
+  "conversation": "tag:pony.social,2023-05-26:objectId=12636484:objectType=Conversation",
+  "summary": null,
+  "content": "<p>Proof of ownership of these games on cartridge</p>",
+  "contentMap": {
+    "en": "<p>Proof of ownership of these games on cartridge</p>"
+  },
+  "attachment": [
+    {
+      "type": "Document",
+      "mediaType": "image/png",
+      "url": "https://cdn.pony.social/media_attachments/files/110/434/990/860/302/689/original/543b33d1bdae13e6.png",
+      "name": null,
+      "blurhash": "UMHBujIWs,R.8zSh%1IU0KIp-;s,pvr^V[kV",
+      "width": 1152,
+      "height": 1536
+    }
+  ],
+  "tag": [],
+  "replies": {
+    "id": "https://pony.social/users/cadey/statuses/110434991652438811/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/cadey/statuses/110434991652438811/replies?only_other_accounts=true&page=true",
+      "partOf": "https://pony.social/users/cadey/statuses/110434991652438811/replies",
+      "items": []
+    }
+  }
+}
