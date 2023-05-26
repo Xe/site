@@ -158,7 +158,7 @@ pub fn toot_embed(u: User, t: Toot) -> Markup {
             }
             .media-body {
                 .media-heading {
-                    (u.name)
+                    (u.name.replace(":verified:", ""))
                     @if u.id == "https://pony.social/users/cadey" {
                         img.verified src="https://cdn.xeiaso.net/file/christine-static/blog/verified.png";
                     }
