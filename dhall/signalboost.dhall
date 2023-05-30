@@ -153,4 +153,23 @@ in  [ Person::{
         , Link::{ url = "https://ryansquared.pub", title = "Website" }
         ]
       }
+    , Person::{
+      , name = "Aurorah Harmony"
+      , tags =
+        [ "full-stack"
+        , "typescript"
+        , "javascript"
+        , "vue"
+        , "nodejs"
+        , "php"
+        , "laravel"
+        , "docker"
+        , "linux"
+        ]
+      , links =
+        [ Link::{ url = "https://github.com/aurorahHarmony", title = "GitHub" }
+        , Link::{ url = "https://pony.social/@aurorahHarmony", title = "Fediverse" }
+        , Link::{ url = "https://itsaury.net", title = "Website" }
+        ]
+      }
     ]
