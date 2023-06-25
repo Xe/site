@@ -162,7 +162,7 @@ be a decent substrate for mold to grow on top of. Time is incidental
 to the mold developing, not causal. It is the same way with computer
 programs. Waiting one second does not make the service ready. The
 service being ready makes it ready. The worst part is that waiting a
-second or two will usually work well enough taht you don't have to
+second or two will usually work well enough that you don't have to
 care.</xeblog-conv>
 <xeblog-conv name="Aoi" mood="grin">I see, thanks!</xeblog-conv>
 
