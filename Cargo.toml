@@ -46,7 +46,7 @@ tracing-futures = "0.2"
 tracing-subscriber = { version = "0.3", features = ["fmt"] }
 xml-rs = "0.8"
 url = "2"
-uuid = { version = "1.3", features = ["serde", "v4"] }
+uuid = { version = "1.4", features = ["serde", "v4"] }
 
 # workspace dependencies
 mastodon2text = { path = "./lib/mastodon2text" }
