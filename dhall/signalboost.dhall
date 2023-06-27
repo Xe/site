@@ -155,4 +155,21 @@ in  [ Person::{
         , Link::{ url = "https://itsaury.net", title = "Website" }
         ]
       }
+   , Person::{
+      , name = "Caramel Drop"
+      , tags =
+        [ "full-stack"
+        , "c#"
+        , "javascript"
+        , "docker"
+        , "nodejs"
+        , "linux"
+        , "system administration"
+        , "bash"
+        ]
+      , links =
+        [ Link::{ url = "https://github.com/caramelpony", title = "GitHub" }
+        , Link::{ url = "https://caramel.horse", title = "Website" }
+        ]
+      }
     ]
