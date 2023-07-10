@@ -172,4 +172,23 @@ in  [ Person::{
         , Link::{ url = "https://caramel.horse", title = "Website" }
         ]
       }
+    , Person::{
+      , name = "Satvik Jagannath"
+      , tags =
+        [ "backend"
+        , "nodejs"
+        , "linux"
+        , "javascript"
+        , "nextjs"
+        , "aws"
+        , "nodejs"
+        , "react"
+        , "python"
+        ]
+      , links =
+        [ Link::{ url = "https://github.com/bozzmob", title = "GitHub" }
+        , Link::{ url = "https://twitter.com/@bozzmob", title = "Twitter" }
+        , Link::{ url = "https://debugpointer.com", title = "Website" }
+        ]
+      }
     ]

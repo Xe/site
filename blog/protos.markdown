@@ -90,9 +90,9 @@ to the lunch area and asked the barista to make him his usual: a
 double shot latte a-le sirop d'érable. With his cup in hand, he walked
 over to where his team was standing and started small talk.
 
-Palima was present in the office today, she had her keyboard mounted
-to her hips and was obviously writing into some smart glasses of some
-kind. Jeff waved to aer and ae looked up and yawned. "'morning"
+Palima was present in the office today, ae had aer keyboard mounted
+to aer hips and was obviously gazing into smart glasses of some kind.
+Jeff waved to aer as ae looked up and yawned. "'morning"
 
 "Good afternoon Palima, what're you working on today?"
 

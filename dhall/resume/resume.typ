@@ -166,7 +166,7 @@ I maintained the subsystem for processing terabytes of customer metrics per week
 
 - Wrote and maintained integrations for JVM application metrics and Go runtime metrics
 - Developed a FaaS platform prototype with my team
-- Helped my team navigate complicated coporate politics and market conditions beyond our control
+- Helped my team navigate complicated corporate politics and market conditions beyond our control
 
 #coloredLine()
 
