@@ -1,0 +1,35 @@
+{
+  "id": "https://pony.social/users/cadey/statuses/110715083282612029",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2023-07-14T23:41:41Z",
+  "url": "https://pony.social/@cadey/110715083282612029",
+  "attributedTo": "https://pony.social/users/cadey",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/cadey/followers"
+  ],
+  "sensitive": false,
+  "conversation": "tag:pony.social,2023-07-14:objectId=14507076:objectType=Conversation",
+  "summary": null,
+  "content": "<p>I tried using Email but the onboarding was very confusing. I have to choose a server? And I'm at the whims of server admins having petty disputes for if my posts are delivered to my friends?</p>",
+  "contentMap": {
+    "en": "<p>I tried using Email but the onboarding was very confusing. I have to choose a server? And I'm at the whims of server admins having petty disputes for if my posts are delivered to my friends?</p>"
+  },
+  "attachment": [],
+  "tag": [],
+  "replies": {
+    "id": "https://pony.social/users/cadey/statuses/110715083282612029/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/cadey/statuses/110715083282612029/replies?min_id=110715201702388712&page=true",
+      "partOf": "https://pony.social/users/cadey/statuses/110715083282612029/replies",
+      "items": [
+        "https://pony.social/users/cadey/statuses/110715201702388712"
+      ]
+    }
+  }
+}

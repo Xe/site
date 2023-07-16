@@ -1,0 +1,33 @@
+{
+  "id": "https://pony.social/users/cadey/statuses/110670332949574140",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2023-07-07T02:01:05Z",
+  "url": "https://pony.social/@cadey/110670332949574140",
+  "attributedTo": "https://pony.social/users/cadey",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/cadey/followers"
+  ],
+  "sensitive": false,
+  "conversation": "tag:pony.social,2023-07-07:objectId=14134085:objectType=Conversation",
+  "summary": null,
+  "content": "<blockquote><p>Becoming incredibly deranged watching people jump between a half dozen mobile-only centralized algorithmic troughs because the equivalent of an email address is too hard</p></blockquote>",
+  "contentMap": {
+    "en": "<blockquote><p>Becoming incredibly deranged watching people jump between a half dozen mobile-only centralized algorithmic troughs because the equivalent of an email address is too hard</p></blockquote>"
+  },
+  "attachment": [],
+  "tag": [],
+  "replies": {
+    "id": "https://pony.social/users/cadey/statuses/110670332949574140/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/cadey/statuses/110670332949574140/replies?only_other_accounts=true&page=true",
+      "partOf": "https://pony.social/users/cadey/statuses/110670332949574140/replies",
+      "items": []
+    }
+  }
+}
