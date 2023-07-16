@@ -63,7 +63,7 @@ What do you mean email servers don't come with spamfilters by default?
 
 What do you mean that the default configuration of email servers means
 that I have to vigilantly monitor everything to ensure that bots don't
-send emails and destroy my reputation at unreasionable hours of the
+send emails and destroy my reputation at unreasonable hours of the
 night?
 
 What do you mean that if someone else on my server chooses a bad
