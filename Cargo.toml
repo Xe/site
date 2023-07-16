@@ -56,10 +56,13 @@ xe_jsonfeed = { path = "./lib/jsonfeed" }
 xesite_markdown =  { path = "./lib/xesite_markdown" }
 xesite_templates = { path = "./lib/xesite_templates" }
 xesite_types = { path = "./lib/xesite_types" }
+encre-css = "0.10.1"
+encre-css-typography = "0.1.1"
 
 [dependencies.maud]
-git = "https://github.com/Xe/maud"
-rev = "a40596c42c7603cc4610bbeddea04c4bd8b312d9"
+version = "0.25"
+#git = "https://github.com/Xe/maud"
+#rev = "a40596c42c7603cc4610bbeddea04c4bd8b312d9"
 features = ["axum"]
 
 [dependencies.tower]

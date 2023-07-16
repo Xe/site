@@ -169,6 +169,8 @@ async fn main() -> Result<()> {
         .route("/talks/:name", get(handlers::talks::post_view))
         // junk google wants
         .route("/sitemap.xml", get(handlers::feeds::sitemap))
+        // tailwind for Xedium
+        .route("/.within/css/blog/:name", get(handlers::tailwind::post_view))
         // static files
         .nest_service("/static", files)
         .fallback(handlers::not_found)

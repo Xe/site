@@ -12,6 +12,7 @@ uuid = { version = "1", features = [ "v4" ] }
 xesite_types = { path = "../xesite_types" }
 
 [dependencies.maud]
-git = "https://github.com/Xe/maud"
-rev = "a40596c42c7603cc4610bbeddea04c4bd8b312d9"
+version = "0.25"
+#git = "https://github.com/Xe/maud"
+#rev = "a40596c42c7603cc4610bbeddea04c4bd8b312d9"
 features = ["axum"]

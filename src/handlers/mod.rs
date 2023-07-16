@@ -18,6 +18,7 @@ pub mod feeds;
 pub mod gallery;
 pub mod streams;
 pub mod talks;
+pub mod tailwind;
 
 fn weekday_to_name(w: Weekday) -> &'static str {
     use Weekday::*;

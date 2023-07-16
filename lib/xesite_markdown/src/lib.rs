@@ -121,11 +121,11 @@ pub fn render(inp: &str) -> Result<String> {
                     el.before(
                         &format!(
                             r#"
-<div class="conversation">
-    <div class="{class}">
+<div class="conversation my-4 flex space-x-4 rounded-md border border-solid border-gray-200 bg-gray-100 p-3 dark:border-gray-700 dark:bg-gray-800">
+    <div class="{class} flex h-16 w-16 shrink-0 items-center justify-center self-center overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
         <img src="https://cdn.xeiaso.net/sticker/{name_lower}/{mood}/{size}" alt="{name} is {mood}">
     </div>
-    <div class="conversation-chat">&lt;<a href="/characters#{name_lower}"><b>{name}</b></a>&gt; "#
+    <div class="conversation-chat min-w-0 self-center">&lt;<a href="/characters#{name_lower}"><b>{name}</b></a>&gt; "#
                         ),
                         ContentType::Html,
                     );
