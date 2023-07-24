@@ -29,7 +29,7 @@ checksum = "939d59666dd9a7964a3a5312b9d24c9c107630752ee64f2dd5038189a23fe331"
 dependencies = [
  "abnf",
  "indexmap 1.9.2",
- "itertools",
+ "itertools 0.10.5",
  "pretty",
 ]
 
@@ -617,7 +617,7 @@ dependencies = [
  "half 2.1.0",
  "hex",
  "home",
- "itertools",
+ "itertools 0.10.5",
  "lazy_static",
  "minicbor",
  "once_cell",
@@ -1372,6 +1372,15 @@ name = "itertools"
 version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b0fd2260e829bddf4cb6ea802289de2f86d6a7a690192fbe91b3f46e0f2c8473"
+dependencies = [
+ "either",
+]
+
+[[package]]
+name = "itertools"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1c173a5686ce8bfa551b3563d0c2170bf24ca44da99c7ca4bfdab5418c3fe57"
 dependencies = [
  "either",
 ]
@@ -2391,13 +2400,13 @@ dependencies = [
 
 [[package]]
 name = "ructe"
-version = "0.16.1"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "79c86c1631418815c5947a34be5872806586c65398754ec91cc2df35a8e26ba8"
+checksum = "9b0a930679d54e46fa4e66be3d9a333026da04d2b659e42aab4dfd1586452815"
 dependencies = [
  "base64 0.21.0",
  "bytecount",
- "itertools",
+ "itertools 0.11.0",
  "md5",
  "mime",
  "nom",
