@@ -5,7 +5,7 @@
         "@xterm": "https://esm.sh/v113/xterm@5.1.0/es2022/xterm.mjs",
         "@xterm/addon-fit": "https://esm.sh/v113/xterm-addon-fit@0.7.0/es2022/xterm-addon-fit.mjs",
 
-        "@esbuild": "https://deno.land/x/esbuild@v0.17.13/mod.js",
+        "@esbuild": "https://deno.land/x/esbuild@v0.18.14/mod.js",
         "@esbuild/deno": "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts",
 
         "xeact": "https://xena.greedo.xeserv.us/pkg/xeact/v0.70.0/xeact.ts",
