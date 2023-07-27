@@ -43,12 +43,12 @@
         tex = with pkgs;
           texlive.combine { inherit (texlive) scheme-medium bitter titlesec; };
 
-        typstWithIosevka = let
-          fontsConf = pkgs.symlinkJoin {
+        fontsConf = pkgs.symlinkJoin {
             name = "typst-fonts";
             paths = [ "${self.packages.${system}.iosevka}/static/css/iosevka" ];
           };
-        in pkgs.writeShellApplication {
+
+        typstWithIosevka = pkgs.writeShellApplication {
           name = "typst";
           text = ''
             ${pkgs.typst-dev}/bin/typst \
@@ -98,7 +98,7 @@
               dhallPackages.Prelude
               tex
               pandoc
-              typstWithIosevka
+              typst-dev
             ];
 
             phases = "installPhase";
@@ -115,7 +115,7 @@
               cp -vrf $src/dhall/resume/* .
               dhall-to-json --file $src/dhall/resume.dhall --output resume.json
 
-              typst compile resume.typ $out/static/resume/resume.pdf
+              typst compile --font-path ${fontsConf} resume.typ $out/static/resume/resume.pdf
             '';
           };
 
