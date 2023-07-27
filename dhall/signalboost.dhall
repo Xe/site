@@ -3,25 +3,6 @@ let Link = ./types/Link.dhall
 let Person = ./types/Person.dhall
 
 in  [ Person::{
-      , name = "Prajjwal Singh"
-      , tags =
-        [ "full-stack javascript"
-        , "ruby"
-        , "rails"
-        , "vuejs"
-        , "emberjs"
-        , "golang"
-        , "linux"
-        , "docker"
-        , "google-cloud"
-        , "typescript"
-        ]
-      , links =
-        [ Link::{ url = "https://github.com/Prajjwal", title = "GitHub" }
-        , Link::{ url = "https://twitter.com/prajjwalsin", title = "Twitter" }
-        ]
-      }
-    , Person::{
       , name = "Piyushh Bhutoria"
       , tags =
         [ "golang"
