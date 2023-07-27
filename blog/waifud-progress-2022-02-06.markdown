@@ -1,6 +1,7 @@
 ---
 title: "waifud Progress Report #1"
 date: 2022-02-06
+series: waifud
 tags:
  - waifud
  - zfs
