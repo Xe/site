@@ -28,7 +28,7 @@ the install to flakes there isn't much more new material here.
 
 Head to the NixOS-WSL [releases
 page](https://github.com/nix-community/NixOS-WSL/releases/) and download the
-`nixos-wsl-installer-fixed.tar.gz` file to your Downloads folder.
+`nixos-wsl-installer.tar.gz` file to your Downloads folder.
 
 Then open Powershell and make a folder called `WSL`:
 
