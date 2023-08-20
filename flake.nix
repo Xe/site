@@ -236,6 +236,7 @@
             cargo-watch
             cargo-license
             rustfmt
+            hyperfine
 
             # system dependencies
             openssl
