@@ -7,9 +7,19 @@ tags:
  - plt
 ---
 
+<div class="warning" style="padding-left:1rem;padding-right:1rem;padding-top:0.5rem;padding-bottom:1rem;margin-bottom:1rem">
+
+<xeblog-conv name="Cadey" mood="coffee" standalone>By the way, this
+problem was fixed with the release of [serde
+v1.0.185](https://github.com/serde-rs/serde/commit/360606b9a63ba4e594dc20ddf0e20228b60b34cb).
+Please enjoy the technical overview of the problem and problem space
+regardless.</xeblog-conv>
+
+</div>
+
 Recently serde, one of the most popular Rust libraries made a decision
-that sped up compile times by using a precompiled version of a
-procedural macro instead of compiling it on the fly. Like any
+that supposedly sped up compile times by using a precompiled version
+of a procedural macro instead of compiling it on the fly. Like any
 technical decision, there are tradeoffs and advantages to everything.
 I don't think the inherent ecosystem risks in slinging around
 precompiled binaries are worth the build speed advantages, and in this
@@ -281,6 +291,14 @@ Mickens](https://scholar.harvard.edu/files/mickens/files/towashitallaway.pdf),
 the best way to find out what something does is by executing it to
 discover more clues.</xeblog-conv>
 
+<details>
+<summary>Out of date "file not found" error with a friend using cargo2nix</summary>
+
+<xeblog-conv name="Cadey" mood="coffee" standalone>This is out of
+date. The friend of mine in question has since rebooted their system
+and cannot reproduce this problem. We assume rac's machine got
+bitflipped or something.</xeblog-conv>
+
 Frustratingly, a friend of mine that uses
 [cargo2nix](https://github.com/cargo2nix/cargo2nix) is reporting
 getting a "file not found" error when trying to build programs
@@ -302,6 +320,8 @@ confusing, this bites _everyone_ eventually. The first time I
 encountered it, I spent more time than I'm comfortable admitting
 figuring it out. I had to resort to using strace. I felt like a
 massive idiot when I figured it out.</xeblog-conv>
+
+</details>
 
 There's also additional concerns around [the binary in question not
 being totally
@@ -495,9 +515,8 @@ to WASI called [WASIX](https://wasix.org/) that does solve nearly all
 of the compatibility problems, but WASIX isn't standard yet and my
 runtime of choice [wazero](https://wazero.io/) doesn't have out-of-the
 box support for it yet. Hopefully [it will be supported
-soon](https://github.com/tetratelabs/wazero/issues/1495)!</xeblog-conv>
-
-
+soon](https://github.com/tetratelabs/wazero/issues/1495)! I just wish
+it wasn't associated to the wasmer mark of Cain.</xeblog-conv>
 
 </details>
 
