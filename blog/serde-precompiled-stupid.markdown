@@ -537,11 +537,7 @@ making cold builds in CI barely faster.
 The biggest fear I have is that this practice becomes widespread
 across the Rust ecosystem. I really hate that the Rust ecosystem seems
 to have so much drama. It's scaring people away from using the tool to
-build scalable and stable systems. Until there's closure on this, I'll just
-keep writing [my hobby code in Go](https://github.com/Xe/x). I really
-hope I don't have to port my website back to Go due to another spat of
-community drama targeting one of the libraries I depend on (eg: axum,
-rustls). That would suck, but I could deal with it if I had to.
+build scalable and stable systems. 
 
 <xeblog-conv name="Cadey" mood="percussive-maintenance">I mean at some
 level, to be in a community is to eventually cause conflict. I'm not
