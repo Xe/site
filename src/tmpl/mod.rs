@@ -584,7 +584,7 @@ pub fn salary_transparency(jobs: &Vec<Job>) -> Markup {
                 li {"I quit a job."}
                 li {"I get a raise/title change at the same company."}
                 li {"I get terminated from a job."}
-                li {"I get converted from a contracter to a full-time employee."}
+                li {"I get converted from a contractor to a full-time employee."}
                 li {"Other unspecified extranormal events happen."}
             }
 
