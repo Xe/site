@@ -15,7 +15,7 @@ use xesite_types::mastodon::{Toot, User};
 
 pub fn hash_string(inp: String) -> String {
     let mut h = Sha256::new();
-    h.update(&inp.as_bytes());
+    h.update(inp.as_bytes());
     hex::encode(h.finalize())
 }
 
@@ -106,11 +106,11 @@ pub fn render(inp: &str) -> Result<String> {
                     let name = el
                         .get_attribute("name")
                         .ok_or(Error::MissingElementAttribute("name".to_string()))?;
-                    let name_lower = name.clone().to_lowercase();
+                    let name_lower = name.to_lowercase();
                     let mood = el
                         .get_attribute("mood")
                         .ok_or(Error::MissingElementAttribute("mood".to_string()))?;
-                    let name = name.replace("_", " ");
+                    let name = name.replace('_', " ");
 
                     let (size, class) = el
                         .get_attribute("standalone")
@@ -211,7 +211,7 @@ pub fn render(inp: &str) -> Result<String> {
 
                     let user_fname = format!(
                         "./data/users/{}.json",
-                        hash_string(format!("{}.json", t.attributed_to.clone()))
+                        hash_string(format!("{}.json", t.attributed_to))
                     );
                     tracing::debug!("opening {user_fname}");
                     let mut fin = fs::File::open(&user_fname).context(t.attributed_to.clone())?;
