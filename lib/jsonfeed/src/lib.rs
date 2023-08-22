@@ -39,6 +39,8 @@
 //! }
 //! ```
 
+#![allow(clippy::new_without_default)]
+
 extern crate serde;
 #[macro_use]
 extern crate error_chain;
@@ -82,7 +84,7 @@ pub fn from_reader<R: ::std::io::Read>(r: R) -> Result<Feed> {
 }
 
 /// Deserialize a Feed object from bytes of JSON text
-pub fn from_slice<'a>(v: &'a [u8]) -> Result<Feed> {
+pub fn from_slice(v: &[u8]) -> Result<Feed> {
     Ok(serde_json::from_slice(v)?)
 }
 

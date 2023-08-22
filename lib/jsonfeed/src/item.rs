@@ -306,9 +306,9 @@ impl<'de> Deserialize<'de> for Item {
 
                 let id = id.ok_or_else(|| de::Error::missing_field("id"))?;
                 let content = match (content_html, content_text) {
-                    (Some(s), Some(t)) => Content::Both(s.to_string(), t.to_string()),
-                    (Some(s), _) => Content::Html(s.to_string()),
-                    (_, Some(t)) => Content::Text(t.to_string()),
+                    (Some(s), Some(t)) => Content::Both(s, t),
+                    (Some(s), _) => Content::Html(s),
+                    (_, Some(t)) => Content::Text(t),
                     _ => return Err(de::Error::missing_field("content_html or content_text")),
                 };
 
@@ -331,7 +331,7 @@ impl<'de> Deserialize<'de> for Item {
             }
         }
 
-        const FIELDS: &'static [&'static str] = &[
+        const FIELDS: &[&str] = &[
             "id",
             "url",
             "external_url",

@@ -3,7 +3,7 @@ use std::default::Default;
 use builder::Builder;
 use item::Item;
 
-const VERSION_1: &'static str = "https://jsonfeed.org/version/1";
+const VERSION_1: &str = "https://jsonfeed.org/version/1";
 
 /// Represents a single feed
 ///
