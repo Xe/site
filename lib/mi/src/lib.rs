@@ -20,11 +20,11 @@ impl Client {
         let mut headers = header::HeaderMap::new();
         headers.insert(
             header::AUTHORIZATION,
-            header::HeaderValue::from_str(&token.clone())?,
+            header::HeaderValue::from_str(&token)?,
         );
 
         let cli = reqwest::Client::builder()
-            .user_agent(&format!("{} {}", user_agent, USER_AGENT_BASE))
+            .user_agent(format!("{} {}", user_agent, USER_AGENT_BASE))
             .default_headers(headers)
             .build()?;
 
