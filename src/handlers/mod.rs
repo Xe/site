@@ -139,7 +139,7 @@ pub async fn patrons(Extension(state): Extension<Arc<State>>) -> (StatusCode, Ma
             StatusCode::INTERNAL_SERVER_ERROR,
             tmpl::error("Patreon API config is broken, no patrons in ram"),
         ),
-        Some(patrons) => (StatusCode::IM_A_TEAPOT, tmpl::patrons(&patrons)),
+        Some(patrons) => (StatusCode::IM_A_TEAPOT, tmpl::patrons(patrons)),
     }
 }
 

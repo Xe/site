@@ -16,8 +16,8 @@ lazy_static! {
         &["kind"]
     )
     .unwrap();
-    pub static ref ETAG: String = format!(r#"W/"{}""#, uuid::Uuid::new_v4().to_string().replace("-", ""));
-    pub static ref CACHEBUSTER: String = uuid::Uuid::new_v4().to_string().replace("-", "");
+    pub static ref ETAG: String = format!(r#"W/"{}""#, uuid::Uuid::new_v4().to_string().replace('-', ""));
+    pub static ref CACHEBUSTER: String = uuid::Uuid::new_v4().to_string().replace('-', "");
 }
 
 #[instrument(skip(state))]
@@ -31,7 +31,7 @@ pub async fn jsonfeed(Extension(state): Extension<Arc<State>>) -> Json<xe_jsonfe
 #[axum_macros::debug_handler]
 pub async fn new_post(Extension(state): Extension<Arc<State>>) -> Result<Json<NewPost>> {
     let state = state.clone();
-    let p: Post = state.everything.iter().next().unwrap().clone();
+    let p: Post = state.everything.get(0).unwrap().clone();
     Ok(Json(p.new_post))
 }
 

@@ -20,7 +20,6 @@ lazy_static! {
 }
 
 pub async fn list(Extension(state): Extension<Arc<State>>) -> Markup {
-    let state = state.clone();
     let cfg = state.cfg.clone();
 
     crate::tmpl::base(

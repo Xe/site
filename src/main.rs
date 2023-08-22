@@ -1,3 +1,5 @@
+#![allow(clippy::upper_case_acronyms, clippy::from_over_into)]
+
 #[macro_use]
 extern crate tracing;
 

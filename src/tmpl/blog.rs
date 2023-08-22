@@ -29,11 +29,11 @@ fn post_metadata(post: &Post) -> Markup {
 }
 
 fn share_button(post: &Post) -> Markup {
-    return xeact_component("MastodonShareButton", serde_json::json!({
+    xeact_component("MastodonShareButton", serde_json::json!({
         "title": post.front_matter.title,
         "series": post.front_matter.series,
         "tags": post.front_matter.tags.as_ref().unwrap_or(&Vec::new())
-    }));
+    }))
 }
 
 fn twitch_vod(post: &Post) -> Markup {

@@ -56,20 +56,18 @@ pub async fn series_view(
 
     let desc = cfg.series_desc_map.get(&series);
 
-    if posts.len() == 0 {
+    if posts.is_empty() {
         (
             StatusCode::NOT_FOUND,
             tmpl::error(format!("series not found: {series}")),
         )
+    } else if let Some(desc) = desc {
+        (StatusCode::OK, tmpl::series_view(&series, desc, &posts))
     } else {
-        if let Some(desc) = desc {
-            (StatusCode::OK, tmpl::series_view(&series, desc, &posts))
-        } else {
-            (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                tmpl::error(format!("series metadata in dhall not found: {series}")),
-            )
-        }
+        (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            tmpl::error(format!("series metadata in dhall not found: {series}")),
+        )
     }
 }
 
@@ -84,7 +82,7 @@ pub async fn post_view(
 
     for post in &state.blog {
         if post.link == want_link {
-            want = Some(&post);
+            want = Some(post);
         }
     }
 
@@ -102,7 +100,7 @@ pub async fn post_view(
                 .with_label_values(&[name.clone().as_str()])
                 .inc();
             let body = maud::PreEscaped(&post.body_html);
-            Ok((StatusCode::OK, tmpl::blog::blog(&post, body, referer)))
+            Ok((StatusCode::OK, tmpl::blog::blog(post, body, referer)))
         }
     }
 }

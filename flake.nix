@@ -232,6 +232,7 @@
             # Rust
             rustc
             cargo
+            clippy
             rust-analyzer
             cargo-watch
             cargo-license

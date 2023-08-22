@@ -70,7 +70,7 @@ impl Into<xe_jsonfeed::Item> for Post {
             tags.append(&mut meta_tags);
         }
 
-        if tags.len() != 0 {
+        if tags.is_empty() {
             result = result.tags(tags);
         }
 
@@ -84,7 +84,7 @@ impl Into<xe_jsonfeed::Item> for Post {
 
 impl Ord for Post {
     fn cmp(&self, other: &Self) -> Ordering {
-        self.partial_cmp(&other).unwrap()
+        self.partial_cmp(other).unwrap()
     }
 }
 
@@ -115,7 +115,7 @@ async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Resul
     let date = NaiveDate::parse_from_str(&front_matter.clone().date, "%Y-%m-%d")
         .map_err(|why| eyre!("error parsing date in {:?}: {}", fname, why))?;
     let link = format!("{}/{}", dir, fname.file_stem().unwrap().to_str().unwrap());
-    let body_html = xesite_markdown::render(&body)
+    let body_html = xesite_markdown::render(body)
         .wrap_err_with(|| format!("can't parse markdown for {:?}", fname))?;
     let date: DateTime<FixedOffset> = DateTime::<Utc>::from_utc(
         NaiveDateTime::new(date, NaiveTime::from_hms_opt(0, 0, 0).unwrap()),
@@ -134,8 +134,7 @@ async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Resul
             .filter(|wm| {
                 wm.title.as_ref().unwrap_or(&"".to_string()) != &"Bridgy Response".to_string()
             })
-            .map(|wm| {
-                let mut wm = wm.clone();
+            .map(|mut wm| {
                 wm.title = Some(
                     mastodon2text::convert(
                         wm.title.as_ref().unwrap_or(&"".to_string()).to_string(),
@@ -149,7 +148,7 @@ async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Resul
     };
 
     let time_taken = estimated_read_time::text(
-        &body,
+        body,
         &estimated_read_time::Options::new()
             .technical_document(true)
             .technical_difficulty(1)
@@ -177,7 +176,7 @@ async fn read_post(dir: &str, fname: PathBuf, cli: &Option<mi::Client>) -> Resul
 
 pub async fn load(dir: &str) -> Result<Vec<Post>> {
     let cli = match std::env::var("MI_TOKEN") {
-        Ok(token) => mi::Client::new(token.to_string(), crate::APPLICATION_NAME.to_string()).ok(),
+        Ok(token) => mi::Client::new(token, crate::APPLICATION_NAME.to_string()).ok(),
         Err(_) => None,
     };
 
@@ -191,7 +190,7 @@ pub async fn load(dir: &str) -> Result<Vec<Post>> {
         .map(Result::unwrap)
         .collect();
 
-    if result.len() == 0 {
+    if result.is_empty() {
         Err(eyre!("no posts loaded"))
     } else {
         result.sort();

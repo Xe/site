@@ -8,7 +8,7 @@ pub mod blog;
 pub mod nag;
 
 lazy_static! {
-    static ref CACHEBUSTER: String = uuid::Uuid::new_v4().to_string().replace("-", "");
+    static ref CACHEBUSTER: String = uuid::Uuid::new_v4().to_string().replace('-', "");
 }
 
 pub fn base(title: Option<&str>, styles: Option<&str>, content: Markup) -> Markup {
@@ -133,7 +133,7 @@ pub fn base(title: Option<&str>, styles: Option<&str>, content: Markup) -> Marku
     }
 }
 
-pub fn post_index(posts: &Vec<Post>, title: &str, show_extra: bool) -> Markup {
+pub fn post_index(posts: &[Post], title: &str, show_extra: bool) -> Markup {
     let today = Utc::now().date_naive();
     base(
         Some(title),
@@ -424,7 +424,7 @@ pub fn index(xe: &Author, projects: &Vec<Link>) -> Markup {
             link rel="authorization_endpoint" href="https://idp.christine.website/auth";
             link rel="canonical" href="https://xeiaso.net/";
             meta name="google-site-verification" content="rzs9eBEquMYr9Phrg0Xm0mIwFjDBcbdgJ3jF6Disy-k";
-            (schema_person(&xe))
+            (schema_person(xe))
 
             meta name="twitter:card" content="summary";
             meta name="twitter:site" content="@theprincessxena";

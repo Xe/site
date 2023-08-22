@@ -152,16 +152,11 @@ impl Render for Link {
     }
 }
 
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Clone, Default, Deserialize, Serialize)]
 pub enum StockKind {
     Grant,
+    #[default]
     Options,
-}
-
-impl Default for StockKind {
-    fn default() -> Self {
-        StockKind::Options
-    }
 }
 
 fn schema_context() -> String {
