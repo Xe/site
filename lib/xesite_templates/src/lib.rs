@@ -55,8 +55,8 @@ pub fn hero(file: String, prompt: Option<String>, ai: Option<String>) -> Markup 
 }
 
 pub fn conv(name: String, mood: String, body: Markup) -> Markup {
-    let name_lower = name.clone().to_lowercase();
-    let name = name.replace("_", " ");
+    let name_lower = name.to_lowercase();
+    let name = name.replace('_', " ");
 
     html! {
         .conversation {
@@ -142,7 +142,7 @@ pub fn toot_embed(u: User, t: Toot) -> Markup {
                 }
             }
         }
-        @if t.attachment.len() != 0 {
+        @if !t.attachment.is_empty() {
             br;
         }
 
@@ -183,7 +183,7 @@ pub fn toot_embed(u: User, t: Toot) -> Markup {
 
 pub fn xeact_component(name: &str, data: serde_json::Value) -> Markup {
     let uuid = uuid::Uuid::new_v4();
-    let uuid = format!("{uuid}").replace("-", "");
+    let uuid = format!("{uuid}").replace('-', "");
 
     let script = PreEscaped(format!(
         r#"
