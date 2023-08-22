@@ -5,7 +5,7 @@ fn main() -> Result<()> {
     Ructe::from_env()?.compile_templates("templates")?;
 
     let output = Command::new("git")
-        .args(&["rev-parse", "HEAD"])
+        .args(["rev-parse", "HEAD"])
         .output()
         .unwrap();
 
@@ -16,7 +16,7 @@ fn main() -> Result<()> {
     println!(
         "cargo:rustc-env=GITHUB_SHA={}",
         if git_hash.as_str() == "" {
-            out.into()
+            out
         } else {
             git_hash
         }

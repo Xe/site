@@ -43,7 +43,7 @@ async fn patrons() -> Result<Option<patreon::Users>> {
     }
 }
 
-pub const ICON: &'static str = "https://xeiaso.net/static/img/avatar.png";
+pub const ICON: &str = "https://xeiaso.net/static/img/avatar.png";
 
 pub struct State {
     pub cfg: Arc<Config>,

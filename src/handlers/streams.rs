@@ -66,7 +66,7 @@ pub async fn show(
     Extension(state): Extension<Arc<State>>,
     Path(args): Path<ShowArgs>,
 ) -> (StatusCode, Markup) {
-    let state = state.clone();
+    let state = state;
     let cfg = state.cfg.clone();
 
     let mut found: Option<&VOD> = None;

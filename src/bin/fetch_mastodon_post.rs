@@ -40,7 +40,7 @@ async fn main() -> Result<()> {
 
     debug!("wrote post to ./data/toots/{post_hash}.json");
 
-    let mut fout = fs::File::create(&format!("./data/toots/{post_hash}.json"))?;
+    let mut fout = fs::File::create(format!("./data/toots/{post_hash}.json"))?;
     serde_json::to_writer_pretty(&mut fout, &toot)?;
 
     debug!("fetching {} ...", toot.attributed_to);
@@ -61,7 +61,7 @@ async fn main() -> Result<()> {
     let user_hash = xesite::hash_string(user_url);
 
     debug!("wrote post to ./data/users/{user_hash}.json");
-    let mut fout = fs::File::create(&format!("./data/users/{user_hash}.json"))?;
+    let mut fout = fs::File::create(format!("./data/users/{user_hash}.json"))?;
     serde_json::to_writer_pretty(&mut fout, &user)?;
 
     Ok(())
