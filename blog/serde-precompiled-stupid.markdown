@@ -1,6 +1,6 @@
 ---
 title: "This isn't the way to speed up Rust compile times"
-date: 2023-08-27
+date: 2023-08-26
 tags:
  - rust
  - serde
@@ -9,11 +9,15 @@ tags:
 
 <div class="warning" style="padding-left:1rem;padding-right:1rem;padding-top:0.5rem;padding-bottom:1rem;margin-bottom:1rem">
 
-<xeblog-conv name="Cadey" mood="coffee" standalone>By the way, this
+<xeblog-conv name="Cadey" mood="coffee">By the way, this
 problem was fixed with the release of [serde
 v1.0.185](https://github.com/serde-rs/serde/commit/360606b9a63ba4e594dc20ddf0e20228b60b34cb).
 Please enjoy the technical overview of the problem and problem space
 regardless.</xeblog-conv>
+
+<xeblog-conv name="Mara" mood="happy">You could have read this a week
+ago if you subscribed to
+[Patreon](https://patreon.com/cadey).</xeblog-conv>
 
 </div>
 
