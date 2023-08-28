@@ -6,7 +6,10 @@ slides_link: https://drive.google.com/file/d/1j7sTnS2bs2XdvbpF2-1sncfkcPl8jRpE/v
 
 <br />
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/QNDvfez6QL0?si=mOkhoaKtIGbLr_vy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<xeblog-video path="talks/2023/gceu-wasm/video"></xeblog-video>
+
+[YouTube link](https://youtu.be/QNDvfez6QL0) (please let me know if
+the iframe doesn't work for you)
 
 <xeblog-slide name="2023/gceu-wasm/001" essential></xeblog-slide>
 
