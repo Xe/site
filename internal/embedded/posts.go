@@ -3,7 +3,7 @@ package embedded
 import (
 	"bytes"
 	_ "embed"
-	"encoding/gob"
+	"encoding/json"
 
 	"xeiaso.net/v4/internal"
 )
@@ -11,14 +11,14 @@ import (
 //go:generate go run generate.go
 
 var (
-	//go:embed posts.gob
-	postGob []byte
+	//go:embed posts.json
+	postJSON []byte
 
 	Posts []*internal.Post
 )
 
 func init() {
-	if err := gob.NewDecoder(bytes.NewReader(postGob)).Decode(&Posts); err != nil {
+	if err := json.NewDecoder(bytes.NewReader(postJSON)).Decode(&Posts); err != nil {
 		panic(err)
 	}
 }
