@@ -10,7 +10,20 @@ require (
 	tailscale.com v1.48.1
 )
 
-require go4.org/mem v0.0.0-20220726221520-4f986261bf13 // indirect
+require (
+	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
+	github.com/prometheus/client_golang v1.15.1 // indirect
+	github.com/prometheus/client_model v0.4.0 // indirect
+	github.com/prometheus/common v0.42.0 // indirect
+	github.com/prometheus/procfs v0.9.0 // indirect
+	go4.org/mem v0.0.0-20220726221520-4f986261bf13 // indirect
+	go4.org/netipx v0.0.0-20230728180743-ad4cb58a6516 // indirect
+	golang.org/x/crypto v0.11.0 // indirect
+	google.golang.org/protobuf v1.30.0 // indirect
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

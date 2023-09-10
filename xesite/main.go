@@ -11,6 +11,7 @@ import (
 	"sync"
 	"time"
 
+	"tailscale.com/tsweb"
 	"xeiaso.net/v4"
 	"xeiaso.net/v4/config"
 	"xeiaso.net/v4/internal"
@@ -89,7 +90,9 @@ func main() {
 	var talks []*internal.Post
 	var gallery []*internal.Post
 
-	for _, post := range posts {
+	postsIndex := map[string]int{}
+
+	for i, post := range posts {
 		switch strings.Split(post.Link, "/")[0] {
 		case "blog":
 			blog = append(blog, post)
@@ -98,6 +101,8 @@ func main() {
 		case "gallery":
 			gallery = append(gallery, post)
 		}
+
+		postsIndex[post.Link] = i
 	}
 
 	mux.Handle("/static/", http.FileServer(http.FS(xeiaso.Static)))
@@ -135,6 +140,8 @@ func main() {
 
 	mux.HandleFunc("/", site.Index)
 	mux.HandleFunc("/blog", site.BlogIndex)
+
+	mux.HandleFunc("/metrics", tsweb.VarzHandler)
 
 	slog.Info("listening", "addr", *addr)
 

@@ -1,5 +1,5 @@
 .gruvbox-dark {
-  background-color: #1d2021;
+	background-color: #1d2021;
 	color: #f9f5d7
 }
 
@@ -9,7 +9,7 @@
 .gruvbox-dark h4,
 .gruvbox-dark h5,
 .gruvbox-dark h6 {
-	  color: #CDCD23
+	color: #CDCD23
 }
 
 .gruvbox-dark h1 a,
@@ -153,8 +153,8 @@
 }
 
 .gruvbox-dark a:visited {
-	  color: #C1B7A9;
-	  border-color: #a89984;
+	color: #C1B7A9;
+	border-color: #a89984;
 }
 
 .gruvbox-dark a:visited:hover {
@@ -167,14 +167,16 @@
 		background-color: #f9f5d7;
 		color: #1d2021;
 	}
-  .gruvbox-dark h1,
-  .gruvbox-dark h2,
-  .gruvbox-dark h3,
-  .gruvbox-dark h4,
-  .gruvbox-dark h5,
-  .gruvbox-dark h6 {
-	    color: #4F4F0D
-  }
+
+	.gruvbox-dark h1,
+	.gruvbox-dark h2,
+	.gruvbox-dark h3,
+	.gruvbox-dark h4,
+	.gruvbox-dark h5,
+	.gruvbox-dark h6 {
+		color: #4F4F0D
+	}
+
 	.gruvbox-dark h1 a:hover,
 	.gruvbox-dark h2 a:hover,
 	.gruvbox-dark h3 a:hover,
@@ -184,70 +186,86 @@
 		background-color: #d79921;
 		color: #282828;
 	}
+
 	.gruvbox-dark pre {
 		background-color: #f9f5d7;
 		padding: 0;
 		border: none;
 	}
-  .gruvbox-dark a {
-      color: #B80050;
-      border-color: #B80050;
-  }
-  .gruvbox-dark a:hover {
-      color: #f9f5d7;
-      background-color: #9E0045;
-      border-color: #9E0045;
-  }
-  .gruvbox-dark a:visited {
-	    color: #53493C;
-	    border-color: #53493C;
-  }
-  .gruvbox-dark a:visited:hover {
-	    color: #fdf4c1;
-	    background-color: #282828;
-  }
+
+	.gruvbox-dark a {
+		color: #B80050;
+		border-color: #B80050;
+	}
+
+	.gruvbox-dark a:hover {
+		color: #f9f5d7;
+		background-color: #9E0045;
+		border-color: #9E0045;
+	}
+
+	.gruvbox-dark a:visited {
+		color: #53493C;
+		border-color: #53493C;
+	}
+
+	.gruvbox-dark a:visited:hover {
+		color: #fdf4c1;
+		background-color: #282828;
+	}
+
 	.gruvbox-dark table {
 		color: #1d2021;
 	}
+
 	.gruvbox-dark .form-control,
 	.gruvbox-dark .form-group label {
 		color: #1d2021;
 		border-color: #98971a
 	}
+
 	.gruvbox-dark .form-group.form-textarea label:after {
 		background-color: #3c3836;
 	}
+
 	.gruvbox-dark .form-control:focus {
 		border-color: #665c54;
 		color: #665c54;
 	}
+
 	.gruvbox-dark textarea.form-control {
 		color: #282828;
 	}
+
 	.gruvbox-dark .card .card-header {
 		background-color: transparent;
 		color: #282828;
 		border-bottom: 1px solid #98971a
 	}
+
 	.gruvbox-dark .btn.btn-ghost.btn-default:focus,
 	.gruvbox-dark .btn.btn-ghost.btn-default:hover {
 		z-index: 1;
 		border-color: #3c3836;
 		color: #3c3836;
 	}
+
 	.gruvbox-dark .menu .menu-item {
 		color: #282828;
 		border-color: #98971a
 	}
+
 	.gruvbox-dark .menu .menu-item.active,
 	.gruvbox-dark .menu .menu-item:hover {
 		color: #282828;
 		border-color: #282828;
 	}
+
 	.gruvbox-dark a:visited {
-		  color: #4D4442;
-		  border-color: #4D4442;
+		color: #4D4442;
+		border-color: #4D4442;
 	}
+
 	.gruvbox-dark a:visited:hover {
 		color: #3c3836;
 		background-color: #bdae93;
