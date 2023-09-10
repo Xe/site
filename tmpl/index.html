@@ -1,31 +1,32 @@
 {{template "base.html" .}}
 
+{{define "title"}}Xe Iaso{{end}}
+
 {{define "content"}}
 {{$cfg := config}}
 <h1 class="text-3xl mb-4">{{$cfg.Resume.Name}}</h1>
 <p class="text-xl mb-4">{{$cfg.Resume.Tagline}} - {{$cfg.Resume.Location.String}}</p>
 <p class="text-lg mb-4">I'm a speaker, writer, chaos magician, and commited technologist. I regularly write articles on
-    my <a class="text-blue-dark dark:text-blueDark-dark" href="/blog">blog</a> and give <a
-        class="text-blue-dark dark:text-blueDark-dark" href="/talks">conference talks</a>.</p>
+    my <a href="/blog">blog</a> and give <a href="/talks">conference talks</a>.</p>
 
 <h2 class="text-2xl mb-4">Highlighted Projects</h2>
 <ul class="list-disc ml-4 mb-4">
     {{range $cfg.NotableProjects}}
-    <li><a class="text-blue-dark dark:text-blueDark-dark" href="{{.URL}}">{{.Title}}</a>: {{.Description}}</li>
+    <li><a href="{{.URL}}">{{.Title}}</a>: {{.Description}}</li>
     {{end}}
 </ul>
 
 <h2 class="text-2xl mb-4">Recent Articles</h2>
 <ul class="list-disc ml-4 mb-4">
     {{range recentPosts}}
-    <li>{{.Detri}} - <a class="text-blue-dark dark:text-blueDark-dark" href="/{{.Link}}">{{.FrontMatter.Title}}</a></li>
+    <li>{{.Detri}} - <a href="/{{.Link}}">{{.FrontMatter.Title}}</a></li>
     {{end}}
 </ul>
 
 <h2 class="text-2xl mb-4">Quick Links</h2>
 <ul class="list-disc ml-4 mb-4">
     {{range $cfg.ContactLinks}}
-    <li><a class="text-blue-dark dark:text-blueDark-dark" rel="me" href="{{.URL}}">{{.Title}}</a></li>
+    <li><a rel="me" href="{{.URL}}">{{.Title}}</a></li>
     {{end}}
 </ul>
 

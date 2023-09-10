@@ -1,0 +1,18 @@
+{{template "base.html" .}}
+
+{{define "title"}}Blog{{end}}
+
+{{define "content"}}
+
+<h1 class="text-3xl mb-4">Articles</h1>
+<p class="mb-4">If you have a compatible reader, be sure to check out my <a href="/blog.rss">RSS feed</a> for automatic
+    updates. Also check out the <a href="/blog.json">JSONFeed</a>.</p>
+
+<p class="mb-4">For a breakdown by post series, see <a href="/blog/series">here</a>.</p>
+<ul class="list-disc ml-4 mb-4">
+    {{range .}}
+    <li>{{.Detri}} - <a class="text-blue-dark dark:text-blueDark-dark" href="/{{.Link}}">{{.FrontMatter.Title}}</a></li>
+    {{end}}
+</ul>
+
+{{end}}

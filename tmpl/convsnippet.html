@@ -1,0 +1,17 @@
+<div
+    className="my-4 flex space-x-4 rounded-md border border-solid border-gray-light bg-bg-2 p-3 dark:border-grayDark-dark dark:bg-bgDark2">
+    <div className="flex h-16 w-16 shrink-0 items-center justify-center self-center overflow-hidden rounded-lg">
+        <picture>
+            <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/{{.NameLower}}/{{.Mood}}.avif"
+                type="image/avif">
+            <source srcset="https://cdn.xeiaso.net/file/christine-static/stickers/{{.NameLower}}/{{.Mood}}.webp"
+                type="image/webp">
+            <img src="https://cdn.xeiaso.net/file/christine-static/stickers/{{.NameLower}}/{{.Mood}}.png"
+                alt="{{.Name}} is {{.Mood}}">
+        </picture>
+        <br />
+    </div>
+    <div className=" conversation-chat min-w-0 self-center">
+        &lt;<b>{{.Name}}</b>&gt; {{.Message}}
+    </div>
+</div>

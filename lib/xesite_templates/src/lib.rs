@@ -59,15 +59,15 @@ pub fn conv(name: String, mood: String, body: Markup) -> Markup {
     let name = name.replace('_', " ");
 
     html! {
-        .conversation {
-            ."conversation-standalone" {
+        ."my-4 flex space-x-4 rounded-md border border-solid border-gray-light bg-bg-2 p-3 dark:border-grayDark-dark dark:bg-bgDark2" {
+            ."flex h-16 w-16 shrink-0 items-center justify-center self-center overflow-hidden rounded-lg" {
                 picture {
                     source type="image/avif" srcset={"https://cdn.xeiaso.net/file/christine-static/stickers/" (name_lower) "/" (mood) ".avif"};
                     source type="image/webp" srcset={"https://cdn.xeiaso.net/file/christine-static/stickers/" (name_lower) "/" (mood) ".webp"};
                     img style="max-height:4.5rem" alt={(name) " is " (mood)} loading="lazy" src={"https://cdn.xeiaso.net/file/christine-static/stickers/" (name_lower) "/" (mood) ".png"};
                 }
             }
-            ."conversation-chat" {
+            ."min-w-0 self-center" {
                 "<"
                 a href={"/characters#" (name_lower)} { b { (name) } }
                 "> "

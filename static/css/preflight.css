@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    a {
+        @apply text-blue-dark;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        a {
+            @apply text-blueDark-light;
+        }
+    }
+}
