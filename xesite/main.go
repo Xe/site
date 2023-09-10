@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -42,13 +43,13 @@ func templateFor(name string) *template.Template {
 }
 
 type Site struct {
-	Config *config.Config
-	Posts  []*internal.Post
+	Config  *config.Config
+	Blog    []*internal.Post
+	Talks   []*internal.Post
+	Gallery []*internal.Post
 }
 
-func (s *Site) HandleIndex(w http.ResponseWriter, r *http.Request) {
-	slog.Debug("request", "path", r.URL.Path, "method", r.Method, "remote", r.RemoteAddr)
-
+func (s *Site) Index(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		w.WriteHeader(http.StatusNotFound)
 		if err := templateFor("404.html").Execute(w, map[string]string{
@@ -60,6 +61,12 @@ func (s *Site) HandleIndex(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := templateFor("index.html").Execute(w, nil); err != nil {
+		slog.Error("can't render template", "err", err)
+	}
+}
+
+func (s *Site) BlogIndex(w http.ResponseWriter, r *http.Request) {
+	if err := templateFor("blogindex.html").Execute(w, s.Blog); err != nil {
 		slog.Error("can't render template", "err", err)
 	}
 }
@@ -78,7 +85,31 @@ func main() {
 
 	posts := embedded.Posts
 
-	tmpl := template.Must(
+	var blog []*internal.Post
+	var talks []*internal.Post
+	var gallery []*internal.Post
+
+	for _, post := range posts {
+		switch strings.Split(post.Link, "/")[0] {
+		case "blog":
+			blog = append(blog, post)
+		case "talks":
+			talks = append(talks, post)
+		case "gallery":
+			gallery = append(gallery, post)
+		}
+	}
+
+	mux.Handle("/static/", http.FileServer(http.FS(xeiaso.Static)))
+
+	site := &Site{
+		Config:  config,
+		Blog:    blog,
+		Talks:   talks,
+		Gallery: gallery,
+	}
+
+	baseTmpl = template.Must(
 		template.New("xesite/v4").Funcs(template.FuncMap{
 			"getYear": func() string {
 				return time.Now().Format("2006")
@@ -95,15 +126,6 @@ func main() {
 		}).
 			ParseFS(xeiaso.Templates, "tmpl/base.html"),
 	)
-	baseTmpl = tmpl
-	tmpl = template.Must(tmpl.ParseFS(xeiaso.Templates, "tmpl/*.html"))
-
-	mux.Handle("/static/", http.FileServer(http.FS(xeiaso.Static)))
-
-	site := &Site{
-		Config: config,
-		Posts:  posts,
-	}
 
 	for k, v := range config.Redirects {
 		mux.HandleFunc(k, func(w http.ResponseWriter, r *http.Request) {
@@ -111,7 +133,8 @@ func main() {
 		})
 	}
 
-	mux.HandleFunc("/", site.HandleIndex)
+	mux.HandleFunc("/", site.Index)
+	mux.HandleFunc("/blog", site.BlogIndex)
 
 	slog.Info("listening", "addr", *addr)
 

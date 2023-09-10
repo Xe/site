@@ -9,8 +9,10 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "tailwindcss build -o static/css/tailwind.css",
-    "watch:css": "tailwindcss build -o static/css/tailwind.css --watch",
+    "build:css": "tailwindcss build -i static/css/preflight.css -o static/css/tailwind.css",
+    "build:posts": "go generate ./internal/embedded",
+    "build:xemd2html": "cd ./lib/xesite_markdown && cargo build --bin xemd2html --target wasm32-wasi --release && cd ../.. && cp ./target/wasm32-wasi/release/xemd2html.wasm ./bin",
+    "watch:css": "tailwindcss build -i static/css/preflight.css -o static/css/tailwind.css --watch",
     "watch:posts": "bash ./scripts/rebuild.sh"
   },
   "repository": {

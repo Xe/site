@@ -99,7 +99,7 @@ func (p Post) ToJSONFeedItem() jsonfeed.Item {
 	}
 }
 
-const iOS13DetriFormat = `M1 02 2006`
+const iOS13DetriFormat = `M01 02 2006`
 
 func (p Post) Detri() string {
 	return p.Date.Format(iOS13DetriFormat)
