@@ -191,7 +191,6 @@ pub fn render(inp: &str) -> Result<String> {
                     el.replace(&xesite_templates::video(path).0, ContentType::Html);
                     Ok(())
                 }),
-                #[cfg(not(target_arch = "wasm32"))]
                 element!("xeblog-toot", |el| {
                     use serde_json::from_reader;
                     use std::fs;
@@ -206,7 +205,7 @@ pub fn render(inp: &str) -> Result<String> {
 
                     let toot_fname = format!("./data/toots/{}.json", hash_string(toot_url.clone()));
                     tracing::debug!("opening {toot_fname}");
-                    let mut fin = fs::File::open(&toot_fname).context(toot_url)?;
+                    let mut fin = fs::File::open(&toot_fname)?;
                     let t: Toot = from_reader(&mut fin)?;
 
                     let user_fname = format!(
@@ -214,7 +213,7 @@ pub fn render(inp: &str) -> Result<String> {
                         hash_string(format!("{}.json", t.attributed_to))
                     );
                     tracing::debug!("opening {user_fname}");
-                    let mut fin = fs::File::open(&user_fname).context(t.attributed_to.clone())?;
+                    let mut fin = fs::File::open(&user_fname)?;
 
                     let u: User = from_reader(&mut fin)?;
 

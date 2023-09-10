@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"go.jetpack.io/tyson"
-	"xeiaso.net/internal/jsonfeed"
+	"xeiaso.net/v4/internal/jsonfeed"
 )
 
 type Config struct {
@@ -19,6 +19,7 @@ type Config struct {
 	NotableProjects    []Link            `json:"notableProjects"`
 	Pronouns           []Pronoun         `json:"pronouns"`
 	SeriesDescriptions map[string]string `json:"seriesDescriptions"`
+	Resume             Resume            `json:"resume"`
 	VODs               []VOD             `json:"vods"`
 	WebMentionEndpoint string            `json:"webMentionEndpoint"`
 	Redirects          map[string]string `json:"redirects"`
@@ -135,6 +136,10 @@ type Location struct {
 	StateOrProvince string `json:"stateOrProvince"`
 	Country         string `json:"country"`
 	Remote          bool   `json:"remote"`
+}
+
+func (l Location) String() string {
+	return fmt.Sprintf("%s, %s, %s", l.City, l.StateOrProvince, l.Country)
 }
 
 type NagMessage struct {

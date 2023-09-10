@@ -1,0 +1,31 @@
+{
+  "name": "xesite",
+  "version": "4.0.0",
+  "description": "Xe's site",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "tailwindcss build -o static/css/tailwind.css",
+    "watch:css": "tailwindcss build -o static/css/tailwind.css --watch",
+    "watch:posts": "bash ./scripts/rebuild.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xe/site.git"
+  },
+  "author": "Xe Iaso <me@xeiaso.net>",
+  "license": "Zlib",
+  "bugs": {
+    "url": "https://github.com/Xe/site/issues"
+  },
+  "homepage": "https://github.com/Xe/site#readme",
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.6",
+    "@tailwindcss/typography": "^0.5.10",
+    "tailwindcss": "^3.3.3"
+  }
+}

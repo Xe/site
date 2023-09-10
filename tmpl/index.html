@@ -1,0 +1,40 @@
+{{template "base.html" .}}
+
+{{define "content"}}
+{{$cfg := config}}
+<h1 class="text-3xl mb-4">{{$cfg.Resume.Name}}</h1>
+<p class="text-xl mb-4">{{$cfg.Resume.Tagline}} - {{$cfg.Resume.Location.String}}</p>
+<p class="text-lg mb-4">I'm a speaker, writer, chaos magician, and commited technologist. I regularly write articles on
+    my <a class="text-blue-dark dark:text-blueDark-dark" href="/blog">blog</a> and give <a
+        class="text-blue-dark dark:text-blueDark-dark" href="/talks">conference talks</a>.</p>
+
+<h2 class="text-2xl mb-4">Highlighted Projects</h2>
+<ul class="list-disc ml-4 mb-4">
+    {{range $cfg.NotableProjects}}
+    <li><a class="text-blue-dark dark:text-blueDark-dark" href="{{.URL}}">{{.Title}}</a>: {{.Description}}</li>
+    {{end}}
+</ul>
+
+<h2 class="text-2xl mb-4">Recent Articles</h2>
+<ul class="list-disc ml-4 mb-4">
+    {{range recentPosts}}
+    <li>{{.Detri}} - <a class="text-blue-dark dark:text-blueDark-dark" href="/{{.Link}}">{{.FrontMatter.Title}}</a></li>
+    {{end}}
+</ul>
+
+<h2 class="text-2xl mb-4">Quick Links</h2>
+<ul class="list-disc ml-4 mb-4">
+    {{range $cfg.ContactLinks}}
+    <li><a class="text-blue-dark dark:text-blueDark-dark" rel="me" href="{{.URL}}">{{.Title}}</a></li>
+    {{end}}
+</ul>
+
+<p class="mb-4">Looking for someone for your team? Check <a class="text-blue-dark dark:text-blueDark-dark"
+        href="/signalboost">here</a>.</p>
+
+<div class="flex flex-wrap items-start justify-center p-5">
+    {{range $cfg.Resume.Buzzwords}}
+    <span class="m-2 p-2 text-sm bg-bg-1 dark:bg-bgDark-1 text-fg-1 dark:text-fgDark-1 rounded-lg">{{.}}</span>
+    {{end}}
+</div>
+{{end}}

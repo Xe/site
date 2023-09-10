@@ -8,3 +8,4 @@ cw.tar
 /target
 .patreon.json
 .direnv
+node_modules

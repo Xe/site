@@ -80,7 +80,6 @@ export type Resume = {
   tagline: string;
   location: Location;
   buzzwords: string[];
-  jobs: Job[];
   notablePublications: Link[];
 };
 

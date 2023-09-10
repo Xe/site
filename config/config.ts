@@ -6,6 +6,7 @@ import contactLinks from "./contactLinks.ts";
 import jobHistory from "./jobHistory.ts";
 import notableProjects from "./notableProjects.ts";
 import pronouns from "./pronouns.ts";
+import resume from "./resume.ts";
 import seriesDescriptions from "./seriesDescriptions.ts";
 import signalBoost from "./signalboost.ts";
 import vods from "./vods.ts";
@@ -18,6 +19,7 @@ export type Config = {
     webMentionEndpoint: string;
     jobHistory: types.Job[];
     seriesDescriptions: Record<string, string>;
+    resume: types.Resume;
     notableProjects: types.Link[];
     contactLinks: types.Link[];
     pronouns: types.PronounSet[];
@@ -40,6 +42,7 @@ const config: Config = {
     webMentionEndpoint: "https://mi.within.website/api/webmention/accept",
     jobHistory,
     seriesDescriptions,
+    resume,
     notableProjects,
     contactLinks,
     pronouns,

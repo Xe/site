@@ -15,6 +15,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
     deno2nix = {
       url = "github:Xe/deno2nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,24 +35,34 @@
   };
 
   outputs =
-    { self, nixpkgs, flake-utils, naersk, deno2nix, iosevka, typst, ... }:
+    { self, nixpkgs, flake-utils, rust-overlay, naersk, deno2nix, iosevka, typst, ... }:
     flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ] (system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ deno2nix.overlays.default typst.overlays.default ];
+          overlays = [
+            deno2nix.overlays.default
+            typst.overlays.default             
+            rust-overlay.overlays.default
+          ];
         };
-        naersk-lib = naersk.lib."${system}";
         src = ./.;
         lib = pkgs.lib;
 
-        tex = with pkgs;
-          texlive.combine { inherit (texlive) scheme-medium bitter titlesec; };
+        rust = pkgs.rust-bin.stable.latest.default.override {
+          extensions = [ "rust-src" "rust-analysis" "clippy" "rustfmt" ];
+          targets = [ "wasm32-wasi" ];
+        };
 
         fontsConf = pkgs.symlinkJoin {
             name = "typst-fonts";
             paths = [ "${self.packages.${system}.iosevka}/static/css/iosevka" ];
           };
+
+        naersk' = pkgs.callPackage naersk {
+          cargo = rust;
+          rustc = rust;
+        };
 
         typstWithIosevka = pkgs.writeShellApplication {
           name = "typst";
@@ -59,7 +75,7 @@
         };
       in rec {
         packages = rec {
-          bin = naersk-lib.buildPackage {
+          bin = naersk'.buildPackage {
             pname = "xesite-bin";
             root = src;
             buildInputs = with pkgs; [
@@ -230,14 +246,22 @@
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             # Rust
-            rustc
-            cargo
+            rust
             clippy
-            rust-analyzer
             cargo-watch
             cargo-license
-            rustfmt
             hyperfine
+
+            # go
+            go_1_21
+            go-tools
+            gotools
+            gopls
+
+            # wasm
+            binaryen
+            wabt
+            bloaty
 
             # system dependencies
             openssl
@@ -246,8 +270,6 @@
             # dhall
             dhall
             dhall-json
-            dhall-lsp-server
-            tex
             pandoc
             typstWithIosevka
 
@@ -256,11 +278,14 @@
             nodePackages.uglify-js
             esbuild
             zig
+            nodejs
 
             # tools
             ispell
             pandoc
             python311Packages.fonttools
+            entr
+            inotify-tools
           ];
 
           SITE_PREFIX = "devel.";
