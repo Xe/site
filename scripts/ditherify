@@ -2,4 +2,4 @@
 #! nix-shell -p imagemagick -i bash
 
 BASEDIR=$(dirname "$0")
-convert $1 -dither FloydSteinberg -remap ${BASEDIR}/gruvbox-dark.png $2
+convert "$1" -dither FloydSteinberg -remap ${BASEDIR}/gruvbox-dark.png "$2"
