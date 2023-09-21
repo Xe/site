@@ -185,4 +185,25 @@ in  [ Person::{
         , Link::{ url = "https://debugpointer.com", title = "Website" }
         ]
       }
+    , Person::{
+      , name = "Connor Edwards"
+      , tags =
+        [ "golang"
+        , "javascript"
+        , "python"
+        , "kubernetes"
+        , "devops"
+        , "sysadmin"
+        , "google-cloud"
+        , "aws"
+        , "terraform"
+        , "pulumi"
+        , "ansible"
+        , "puppet"
+        ]
+      , links =
+        [ Link::{ url = "https://github.com/cedws", title = "GitHub" }
+        , Link::{ url = "https://cedwards.xyz", title = "Website" }
+        ]
+      }
     ]
