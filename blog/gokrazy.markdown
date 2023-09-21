@@ -5,6 +5,7 @@ tags:
   - go
   - gokrazy
   - linux
+skip_ads: true
 ---
 
 When you deal with Linux, you end up hearing about "distributions" as different "flavors" of Linux combined with a bunch of other tools. This is mostly true, but it's slightly missing the forest for the trees.
