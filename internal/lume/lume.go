@@ -2,6 +2,7 @@ package lume
 
 import (
 	"context"
+	"expvar"
 	"io/fs"
 	"log/slog"
 	"os"
@@ -11,9 +12,23 @@ import (
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
+	"tailscale.com/metrics"
 )
 
-var denoLocation string
+var (
+	denoLocation string
+
+	_ fs.FS         = (*FS)(nil)
+	_ fs.ReadFileFS = (*FS)(nil)
+	_ fs.ReadDirFS  = (*FS)(nil)
+
+	opens       = metrics.LabelMap{Label: "name"}
+	readFiles   = metrics.LabelMap{Label: "name"}
+	readDirs    = metrics.LabelMap{Label: "name"}
+	builds      = expvar.NewInt("gauge_xesite_builds")
+	buildErrors = expvar.NewInt("gauge_xesite_build_errors")
+	updates     = expvar.NewInt("gauge_xesite_updates")
+)
 
 func init() {
 	var err error
@@ -21,6 +36,10 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	expvar.Publish("gauge_xesite_opens", &opens)
+	expvar.Publish("gauge_xesite_read_files", &readFiles)
+	expvar.Publish("gauge_xesite_read_dirs", &readDirs)
 }
 
 type FS struct {
@@ -45,12 +64,16 @@ func (f *FS) Open(name string) (fs.File, error) {
 	f.lock.RLock()
 	defer f.lock.RUnlock()
 
+	opens.Add(name, 1)
+
 	return f.fs.Open(name)
 }
 
 func (f *FS) ReadDir(name string) ([]fs.DirEntry, error) {
 	f.lock.RLock()
 	defer f.lock.RUnlock()
+
+	readDirs.Add(name, 1)
 
 	rdfs := f.fs.(fs.ReadDirFS)
 	return rdfs.ReadDir(name)
@@ -59,6 +82,8 @@ func (f *FS) ReadDir(name string) ([]fs.DirEntry, error) {
 func (f *FS) ReadFile(name string) ([]byte, error) {
 	f.lock.RLock()
 	defer f.lock.RUnlock()
+
+	readFiles.Add(name, 1)
 
 	rfs := f.fs.(fs.ReadFileFS)
 	return rfs.ReadFile(name)

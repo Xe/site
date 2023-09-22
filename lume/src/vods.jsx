@@ -8,8 +8,6 @@ export default ({ search }) => {
     <>
       <h1 className="text-3xl mb-4">{title}</h1>
 
-      <div className="max-w-xl my-4" id="search"></div>
-
       <p class="my-4">
         I'm a VTuber and I stream every other weekend on{" "}
         <a href="https://twitch.tv/princessxen">Twitch</a>{" "}
