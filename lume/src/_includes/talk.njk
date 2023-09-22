@@ -1,0 +1,23 @@
+---
+layout: base.njk
+---
+
+<script async src="https://media.ethicalads.io/media/client/ethicalads.min.js"></script>
+
+<div class="adaptive" data-ea-publisher="christinewebsite" data-ea-type="text" data-ea-style="fixedfooter"></div>
+
+<article class="prose dark:prose-invert max-w-2xl">
+    <h1>{{title}}</h1>
+    <p class="text-sm text-fg-3 dark:text-fgDark-3">
+        {{date.toDateString()}}
+    </p>
+
+    {% if hero %}
+        <meta property="og:image" content={`https://cdn.xeiaso.net/file/christine-static/hero/${hero.file}.jpg`}/>
+        {{ comp.XeblogHero(hero) | safe }}
+    {% endif %}
+
+    {{content | safe}}
+
+    <a href="{{slides_link}}">View slides</a>
+</article>

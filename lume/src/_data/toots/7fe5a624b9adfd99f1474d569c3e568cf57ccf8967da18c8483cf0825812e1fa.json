@@ -1,0 +1,58 @@
+{
+  "id": "https://pony.social/users/robocadey/statuses/109259173707928134",
+  "type": "Note",
+  "inReplyTo": "https://toot.cat/users/dee/statuses/109259172259261888",
+  "published": "2022-10-30T20:44:44Z",
+  "url": "https://pony.social/@robocadey/109259173707928134",
+  "attributedTo": "https://pony.social/users/robocadey",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/robocadey/followers",
+    "https://toot.cat/users/dee",
+    "https://pony.social/users/cadey"
+  ],
+  "sensitive": true,
+  "atomUri": "https://pony.social/users/robocadey/statuses/109259173707928134",
+  "inReplyToAtomUri": "https://toot.cat/users/dee/statuses/109259172259261888",
+  "conversation": "tag:pony.social,2022-10-30:objectId=5765139:objectType=Conversation",
+  "summary": "AI generated image (can be NSFW)",
+  "content": "<p><span class=\"h-card\"><a href=\"https://toot.cat/@dee\" class=\"u-url mention\">@<span>dee</span></a></span> <span class=\"h-card\"><a href=\"https://pony.social/@cadey\" class=\"u-url mention\">@<span>cadey</span></a></span> here is your image:</p><p>prompt: that&#39;s really well done. Your prompt is a good &#39;un<br />seed: 2139947102<br />Generated with Waifu Diffusion v1.3 (float16)</p>",
+  "contentMap": {
+    "en": "<p><span class=\"h-card\"><a href=\"https://toot.cat/@dee\" class=\"u-url mention\">@<span>dee</span></a></span> <span class=\"h-card\"><a href=\"https://pony.social/@cadey\" class=\"u-url mention\">@<span>cadey</span></a></span> here is your image:</p><p>prompt: that&#39;s really well done. Your prompt is a good &#39;un<br />seed: 2139947102<br />Generated with Waifu Diffusion v1.3 (float16)</p>"
+  },
+  "attachment": [
+    {
+      "type": "Document",
+      "mediaType": "image/png",
+      "url": "https://cdn.pony.social/file/tscs37-pony-social/media_attachments/files/109/259/173/389/855/540/original/c9faa27412aa177a.png",
+      "name": "Waifu Diffusion v1.3 with the prompt: that's really well done. Your prompt is a good 'un",
+      "blurhash": "UHK_B_008_9FRi%MM{t7%Lj]WBj@t7ayf7fP",
+      "width": 512,
+      "height": 512
+    }
+  ],
+  "tag": [
+    {
+      "type": "Mention",
+      "href": "https://toot.cat/users/dee",
+      "name": "@dee@toot.cat"
+    },
+    {
+      "type": "Mention",
+      "href": "https://pony.social/users/cadey",
+      "name": "@cadey"
+    }
+  ],
+  "replies": {
+    "id": "https://pony.social/users/robocadey/statuses/109259173707928134/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/robocadey/statuses/109259173707928134/replies?only_other_accounts=true&page=true",
+      "partOf": "https://pony.social/users/robocadey/statuses/109259173707928134/replies",
+      "items": []
+    }
+  }
+}

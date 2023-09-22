@@ -1,0 +1,28 @@
+{
+  "id": "https://vt.social/users/xe",
+  "type": "Person",
+  "following": "https://vt.social/users/xe/following",
+  "followers": "https://vt.social/users/xe/followers",
+  "inbox": "https://vt.social/users/xe/inbox",
+  "outbox": "https://vt.social/users/xe/outbox",
+  "featured": "https://vt.social/users/xe/collections/featured",
+  "featuredTags": "https://vt.social/users/xe/collections/tags",
+  "preferredUsername": "xe",
+  "name": "la .zi. :verified_purple:​",
+  "summary": "<p>coi!</p><p>ni&#39;o mi&#39;e la .zi. .i mi cu vtubar .i mi nelci la&#39;oi zo NixOS je lonu samyzilkei loi kelproga je lonu ciska .i mi cu samseltcanytivni fo la&#39;oi Twitch (<a href=\"https://twitch.tv/princessxen\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"><span class=\"invisible\">https://</span><span class=\"\">twitch.tv/princessxen</span><span class=\"invisible\"></span></a>)</p><p>.i ko gleki je kurji .ua.</p>",
+  "url": "https://vt.social/@xe",
+  "manuallyApprovesFollowers": false,
+  "discoverable": true,
+  "published": "2022-11-08T00:00:00Z",
+  "devices": "https://vt.social/users/xe/collections/devices",
+  "icon": {
+    "type": "Image",
+    "mediaType": "image/png",
+    "url": "https://vt.social/media/accounts/avatars/109/306/006/417/606/734/original/b81ee6243764b836.png"
+  },
+  "image": {
+    "type": "Image",
+    "mediaType": "image/png",
+    "url": "https://vt.social/media/accounts/headers/109/306/006/417/606/734/original/99ca3d0bbf69c436.png"
+  }
+}

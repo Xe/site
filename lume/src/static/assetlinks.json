@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "website.christine.xesite",
+    "sha256_cert_fingerprints":
+    ["C9:5B:9C:65:85:FF:D5:6F:6C:12:46:61:1D:1F:2E:A3:C7:E1:7E:8F:B0:F1:F6:7C:EF:24:DE:54:2E:94:24:0C"]
+  }
+}]

@@ -1,0 +1,44 @@
+{
+  "id": "https://pony.social/users/cadey/statuses/109258440953407431",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-10-30T17:38:23Z",
+  "url": "https://pony.social/@cadey/109258440953407431",
+  "attributedTo": "https://pony.social/users/cadey",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/cadey/followers"
+  ],
+  "sensitive": false,
+  "atomUri": "https://pony.social/users/cadey/statuses/109258440953407431",
+  "inReplyToAtomUri": null,
+  "conversation": "tag:pony.social,2022-10-30:objectId=5763802:objectType=Conversation",
+  "content": "<p>Testing a video upload for writing something to do with Mastodon</p>",
+  "contentMap": {
+    "en": "<p>Testing a video upload for writing something to do with Mastodon</p>"
+  },
+  "attachment": [
+    {
+      "type": "Document",
+      "mediaType": "video/mp4",
+      "url": "https://cdn.pony.social/file/tscs37-pony-social/media_attachments/files/109/258/439/779/239/363/original/66210576226643d7.mp4",
+      "name": null,
+      "blurhash": "UMAKXFoe4TWWtQkCRQV@jEj[WDjbWVjYoLf+",
+      "width": 1280,
+      "height": 720
+    }
+  ],
+  "tag": [],
+  "replies": {
+    "id": "https://pony.social/users/cadey/statuses/109258440953407431/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/cadey/statuses/109258440953407431/replies?only_other_accounts=true&page=true",
+      "partOf": "https://pony.social/users/cadey/statuses/109258440953407431/replies",
+      "items": []
+    }
+  }
+}

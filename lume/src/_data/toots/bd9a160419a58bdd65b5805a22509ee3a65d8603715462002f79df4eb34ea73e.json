@@ -1,0 +1,54 @@
+{
+  "id": "https://pony.social/users/withinscreenshots/statuses/109583599804802439",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-12-27T03:50:34Z",
+  "url": "https://pony.social/@withinscreenshots/109583599804802439",
+  "attributedTo": "https://pony.social/users/withinscreenshots",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/withinscreenshots/followers"
+  ],
+  "sensitive": false,
+  "conversation": "tag:pony.social,2022-12-27:objectId=7304576:objectType=Conversation",
+  "summary": null,
+  "content": "<p><a href=\"https://pony.social/tags/XenobladeChronicles3\" class=\"mention hashtag\" rel=\"tag\">#<span>XenobladeChronicles3</span></a> <a href=\"https://pony.social/tags/NintendoSwitch\" class=\"mention hashtag\" rel=\"tag\">#<span>NintendoSwitch</span></a></p>",
+  "contentMap": {
+    "en": "<p><a href=\"https://pony.social/tags/XenobladeChronicles3\" class=\"mention hashtag\" rel=\"tag\">#<span>XenobladeChronicles3</span></a> <a href=\"https://pony.social/tags/NintendoSwitch\" class=\"mention hashtag\" rel=\"tag\">#<span>NintendoSwitch</span></a></p>"
+  },
+  "attachment": [
+    {
+      "type": "Document",
+      "mediaType": "video/mp4",
+      "url": "https://cdn.pony.social/file/tscs37-pony-social/media_attachments/files/109/583/599/527/637/539/original/a9317728387eae31.mp4",
+      "name": null,
+      "blurhash": "UADu;wRN8X={E4-B$jAE15nO#DOqRWNHEM=e",
+      "width": 1280,
+      "height": 720
+    }
+  ],
+  "tag": [
+    {
+      "type": "Hashtag",
+      "href": "https://pony.social/tags/xenobladechronicles3",
+      "name": "#xenobladechronicles3"
+    },
+    {
+      "type": "Hashtag",
+      "href": "https://pony.social/tags/nintendoswitch",
+      "name": "#nintendoswitch"
+    }
+  ],
+  "replies": {
+    "id": "https://pony.social/users/withinscreenshots/statuses/109583599804802439/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/withinscreenshots/statuses/109583599804802439/replies?only_other_accounts=true&page=true",
+      "partOf": "https://pony.social/users/withinscreenshots/statuses/109583599804802439/replies",
+      "items": []
+    }
+  }
+}

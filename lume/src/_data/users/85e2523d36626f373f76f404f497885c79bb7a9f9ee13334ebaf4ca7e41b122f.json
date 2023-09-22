@@ -1,0 +1,24 @@
+{
+  "id": "https://toot.cat/users/Gankra",
+  "type": "Person",
+  "following": "https://toot.cat/users/Gankra/following",
+  "followers": "https://toot.cat/users/Gankra/followers",
+  "inbox": "https://toot.cat/users/Gankra/inbox",
+  "outbox": "https://toot.cat/users/Gankra/outbox",
+  "featured": "https://toot.cat/users/Gankra/collections/featured",
+  "featuredTags": "https://toot.cat/users/Gankra/collections/tags",
+  "preferredUsername": "Gankra",
+  "name": "Gankra",
+  "summary": "<p>It&#39;s me, the gay cat who maintains your docs</p>",
+  "url": "https://toot.cat/@Gankra",
+  "manuallyApprovesFollowers": false,
+  "discoverable": true,
+  "published": "2022-11-04T00:00:00Z",
+  "devices": "https://toot.cat/users/Gankra/collections/devices",
+  "icon": {
+    "type": "Image",
+    "mediaType": "image/png",
+    "url": "https://pool.jortage.com/tootcat/accounts/avatars/109/287/068/466/286/465/original/99d44c73ee0b2e69.png"
+  },
+  "image": null
+}

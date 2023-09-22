@@ -1,0 +1,305 @@
+---
+title: "🥺: the best sudo replacement"
+date: 2023-01-20
+tags:
+  - infosec
+  - sudo
+  - rust
+hero:
+  ai: "Waifu Diffusion"
+  file: "aoi-flee"
+  prompt: "1girl, fox ears, blue hair, blue eyes, katana, bamboo forest, kimono, long hair, princess, pokemon, fluffy hair, shouting, coffee, chibi, portrait, dialogue, monado, running, fox tail, blue tail"
+---
+
+<XeblogConv name="Mara" mood="hmm">
+  I wonder how many people's RSS/JSONFeed readers we broke with the title...
+</XeblogConv>
+<XeblogConv name="Aoi" mood="cheer">
+  Come on, it couldn't have been _that_ many, things support Unicode now, right?
+</XeblogConv>
+<XeblogConv name="Numa" mood="delet">
+  <span style="color:green">
+    &gt;implying things support Unicode properly in the year of our lord two
+    thousand and twenty-three
+  </span>
+</XeblogConv>
+<XeblogConv name="Aoi" mood="facepalm">
+  They do support Unicode though...right? They have to.
+</XeblogConv>
+<XeblogConv name="Cadey" mood="coffee">
+  We'll find out.
+</XeblogConv>
+
+Security is impossible. We just like to pretend otherwise so that we can
+constantly project this aura of impenetrability that will save us from having to
+admit the reality that it's impossible. One of the biggest targets in the modern
+information security world is [sudo](https://www.sudo.ws/). It is a command that
+lets you *s*et *u*ser and then _do_ a command. Sudo is one of the most widely
+deployed programs on the Internet and is widely regarded as critical
+infrastructure.
+
+<XeblogConv name="Aoi" mood="grin">
+  Sooo the creators and maintainers of sudo take things very seriously by using
+  something like [Rust](https://www.rust-lang.org/), maintain a high quality
+  standard of malicious inputs by fuzzing all public attack surfaces, and try to
+  minimize the amount of code involved in order to prevent vulnerabilities from
+  being a problem?
+</XeblogConv>
+
+<div class="p-4 bg-bg-3 text-fg-3">
+  A prior version of this conversation snippet was badly phrased. You are
+  reading an edited version in case this is relevant in internet comment
+  arguments.
+</div>
+
+<XeblogConv name="Cadey" mood="coffee">
+  I don't know about the code quality standards of the sudo project, but overall
+  I don't see them doing any concerted effort to try to migrate away from C (or
+  to reduce the complexity of sudo) and there are
+  [frequent](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-22809)
+  [security](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3156)
+  [vulnerabilities](https://www.sudo.ws/security/advisories/sudoedit_selinux)
+  that result in attackers getting root access anyways. I really wish the
+  industry as a whole would take languages like Rust a bit more seriously and
+  start actually moving towards programs being safer to use because security
+  vulnerabilities in core infrastructure result in emergency patches. It was
+  disappointing to see [an attempt at using Rust in an important Python library
+  torpedoed by users of obscure architectures not supporting
+  Rust](https://lwn.net/Articles/845535/). Maybe the solution there is to use
+  WebAssembly as a compile target instead of making everything be native code. I
+  wouldn't wish hppa's reverse stack growth on anyone trying to write a compiler
+  though.
+</XeblogConv>
+<XeblogConv name="Aoi" mood="sus">
+  Oh god...
+</XeblogConv>
+
+I'm tired of this situation and I bet a lot of the ecosystem is too. There's
+been talk and ideas, but not enough in the action department. I made a new tool.
+A better tool. One that will let all of us proceed towards the future we
+deserve. I made a sudo replacement named 🥺.
+
+## <span class="text-3xl">🥺</span>
+
+🥺 has no pronounceable name in English or any other speakable human language.
+It is named 🥺, but it is referred to as `xn--ts9h` (the punycode form of 🥺) in
+situations where emoji are not yet supported (such as Debian package names).
+
+To use 🥺, install it (such as from the Debian package) and then run it in place
+of sudo:
+
+```
+$ id
+uid=1000(xe) gid=1000(xe) groups=1000(xe),102(docker)
+
+$ 🥺 id
+uid=0(root) gid=0(root) groups=0(root),102(docker),1000(xe)
+```
+
+<XeblogConv name="Mara" mood="hmm">
+  Wait, what? That's it? How is this even secure at all? If it doesn't ask you
+  for your password how can you be sure that an actual human is making the
+  request and not some malicious script?
+</XeblogConv>
+<XeblogConv name="Numa" mood="delet">
+  Using this program requires you to be able to type an emoji. Most attack code
+  is of such poor quality that they are unable to run commands named with emoji.
+  This makes the program secure.
+</XeblogConv>
+<XeblogConv name="Aoi" mood="coffee">
+  This is not how any of this works.
+</XeblogConv>
+
+Here it is broken down statement by statement.
+
+First, I pull in a bunch of imports from the standard library and also the
+[syslog](https://docs.rs/syslog/latest/syslog/) to write a message to syslog
+about what's going on:
+
+```rust
+use std::{env, os::unix::process::CommandExt, process::Command};
+use syslog::{unix, Facility::LOG_AUTH, Formatter3164};
+```
+
+Next, I create a main function that returns an
+[`io::Result`](https://doc.rust-lang.org/std/io/type.Result.html), this is an
+error that is returned by most of the standard library functions that do I/O
+operations with the OS.
+
+```rust
+fn main() -> io::Result<()> {
+```
+
+The correct usage of this program is to run it like `🥺 id`, so if the user
+doesn't specify a program to run, then it should blow up with an error message
+instead of panicking:
+
+```rust
+if env::args().len() == 1 {
+    eprintln!("usage: {} <command> [args]", env::args().nth(0).unwrap());
+    return Ok(());
+}
+```
+
+<XeblogConv name="Aoi" mood="wut">
+  Wait, what? Why is it returning that everything is okay if the user is doing
+  it wrong? Shouldn't it return some kind of error code that the running program
+  or shell can catch?
+</XeblogConv>
+<XeblogConv name="Numa" mood="delet">
+  It's a feature.
+</XeblogConv>
+<XeblogConv name="Aoi" mood="coffee">
+  I really hope I never have to maintain any of your code.
+</XeblogConv>
+
+Next, we grab the program name and arguments from the command line arguments of
+🥺 and send a message to syslog that it's being run so that there is _some_
+accountability after-the-fact:
+
+```rust
+let program = env::args().nth(1).unwrap();
+let args = env::args().skip(2).collect::<Vec<String>>();
+let mut writer = unix(Formatter3164 {
+    facility: LOG_AUTH,
+    hostname: None,
+    process: "🥺".into(),
+    pid: 0,
+})
+.unwrap();
+writer
+    .err(format!("running {:?} {:?}", program, args))
+    .unwrap();
+```
+
+<XeblogConv name="Aoi" mood="wut">
+  Wait so the emoji works there, but it probably isn't going to work in people's
+  RSS feed readers? How does that make any sense?
+</XeblogConv>
+<XeblogConv name="Numa" mood="delet">
+  It doesn't, lololol
+</XeblogConv>
+<XeblogConv name="Cadey" mood="coffee">
+  UNIX is mostly devoid of the concept of character sets. Any character is fine
+  as long as it doesn't have a null terminator (this ends the string in C). I'd
+  be more amazed if the emoji use broke something, as there are legitimate uses
+  for putting non-Latin characters into message buses like that. Also most RSS
+  feed readers have very poor code quality.
+</XeblogConv>
+
+Finally, the actual command is executed:
+
+```rust
+Err(Command::new(program).args(args).uid(0).gid(0).exec().into())
+```
+
+This works because I'm using the
+[`CommandExt`](https://doc.rust-lang.org/std/os/unix/process/trait.CommandExt.html)
+trait implementation of
+[`Command`](https://doc.rust-lang.org/std/process/struct.Command.html) that adds
+some methods we need:
+
+- [`uid(&mut self, id:
+u32)`](https://doc.rust-lang.org/std/process/struct.Command.html#method.uid)
+  to set the user ID of the child process
+  ([`setuid(2)`](https://man7.org/linux/man-pages/man2/setuid.2.html) in C)
+- [`gid(&mut self, id:
+u32)`](https://doc.rust-lang.org/std/process/struct.Command.html#method.gid)
+  to set the group ID of the child process
+  ([`setgid(2)`](https://man7.org/linux/man-pages/man2/setgid.2.html), though
+  groups are starting to die out due to them not being across multiple machines
+  without extra effort like configuration managment)
+- [`exec(&mut
+self)`](https://doc.rust-lang.org/std/os/unix/process/trait.CommandExt.html#tymethod.exec)
+  which runs the
+  [`execvp(3)`](https://man7.org/linux/man-pages/man3/exec.3.html) system call
+  that _replaces_ the current 🥺 with the child process
+
+The key part is the `exec` call at the end. One of the interesting things about
+the `exec`-family of system calls in UNIX is that it _replaces_ the current
+process if it succeeds. This means that the function will never return unless
+some error happened, so the `exec` method _always_ returns an error. This will
+make error handling happen properly and if things fail the process will exit
+with a non-zero error code:
+
+```
+$ cargo run --release ls
+    Finished release [optimized] target(s) in 0.06s
+     Running `target/release/🥺 ls`
+Error: Os { code: 1, kind: PermissionDenied, message: "Operation not permitted" }
+```
+
+<XeblogConv name="Numa" mood="delet">
+  Sure, this error message could be better, but that's a 2.0 feature. This is a
+  disruptive program poised to totally reshape the security industry so we have
+  to _move fast and break things_!
+</XeblogConv>
+
+I'm fairly sure that this program has no bugs that aren't either a part of the
+syslog crate or the Rust standard library.
+
+## Installation
+
+You can install 🥺 by downloading the `.deb` file from [my
+fileserver](https://pneuma.shark-harmonic.ts.net/.within/xn--ts9h/) and
+installing it with `dpkg -i`. This will give you the `🥺` command that you can
+use in place of `sudo`.
+
+<XeblogConv standalone name="Numa" mood="delet">
+  This will let you stick it to the man and let you self-host your own sudo on a
+  $5 a month VPS from a budget host. You can't have any vulnerabilities if there
+  are no bugs to begin with!
+</XeblogConv>
+
+<XeblogSticker name="Aoi" mood="facepalm"></XeblogSticker>
+
+This is also known to work on Amazon Linux 2, so you can create blursed things
+like this:
+
+```
+$ ssh -A xe@10.77.131.103
+Warning: Permanently added '10.77.131.103' (ED25519) to the list of known hosts.
+Last login: Fri Jan 20 04:09:11 2023 from 10.77.131.1
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[xe@inez-rengenne ~]$ 🥺 id
+uid=0(root) gid=0(root) groups=0(root),10(wheel),1000(xe)
+```
+
+<XeblogConv standalone name="Mara" mood="hacker">
+  Pro tip! You can apparently pass a URL to a `.rpm` file to `yum install` and
+  it will just download and install that `.rpm` file. This is incredibly cursed.
+</XeblogConv>
+
+The `.deb` package was built on Ubuntu 18.04 and the `.rpm` package was built on
+Amazon Linux 2, so it should be compatible with enough distributions that you
+don't have to care.
+
+<XeblogConv name="Mara" mood="hacker">
+  There's even a manpage you can read with `man 8 🥺`!
+</XeblogConv>
+<XeblogConv name="Numa" mood="delet">
+  And most importantly, [patches welcome](https://github.com/Xe/xn--ts9h)!
+</XeblogConv>
+
+---
+
+<XeblogConv name="Numa" mood="delet">
+  By the way, there are many more lovely ways to get root than just by asking
+  nicely with `setuid`. Why doesn't this program use those?
+</XeblogConv>
+<XeblogConv name="Cadey" mood="coffee">
+  We gotta save _something_ for part 2, otherwise that would spoil all the
+  _fun_.
+</XeblogConv>
+<XeblogConv name="Aoi" mood="sus">
+  I don't know if I like what you mean by "fun" there...
+</XeblogConv>
+
+---
+
+<XeblogSticker name="Aoi" mood="yawn"></XeblogSticker>

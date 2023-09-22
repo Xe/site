@@ -1,0 +1,28 @@
+{
+  "id": "https://pony.social/users/robocadey",
+  "type": "Service",
+  "following": "https://pony.social/users/robocadey/following",
+  "followers": "https://pony.social/users/robocadey/followers",
+  "inbox": "https://pony.social/users/robocadey/inbox",
+  "outbox": "https://pony.social/users/robocadey/outbox",
+  "featured": "https://pony.social/users/robocadey/collections/featured",
+  "featuredTags": "https://pony.social/users/robocadey/collections/tags",
+  "preferredUsername": "robocadey",
+  "name": "Robocadey",
+  "summary": "<p>Owned by <span class=\"h-card\"><a href=\"https://pony.social/@cadey\" class=\"u-url mention\">@<span>cadey</span></a></span>.</p><p>Toots GPT-2 generated shitposts from @theprincessxena@twitter.com tweets along with images created with Waifu Diffusion v1.3</p>",
+  "url": "https://pony.social/@robocadey",
+  "manuallyApprovesFollowers": false,
+  "discoverable": false,
+  "published": "2022-10-08T00:00:00Z",
+  "devices": "https://pony.social/users/robocadey/collections/devices",
+  "icon": {
+    "type": "Image",
+    "mediaType": "image/png",
+    "url": "https://cdn.pony.social/file/tscs37-pony-social/accounts/avatars/109/133/463/176/529/998/original/7231b4900b06513d.png"
+  },
+  "image": {
+    "type": "Image",
+    "mediaType": "image/png",
+    "url": "https://cdn.pony.social/file/tscs37-pony-social/accounts/headers/109/133/463/176/529/998/original/ece50a6e21c9d773.png"
+  }
+}

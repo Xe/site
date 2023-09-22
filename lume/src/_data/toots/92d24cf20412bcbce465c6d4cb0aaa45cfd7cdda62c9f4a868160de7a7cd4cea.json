@@ -1,0 +1,36 @@
+{
+  "id": "https://pony.social/users/cadey/statuses/109490514251688338",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-12-10T17:17:41Z",
+  "url": "https://pony.social/@cadey/109490514251688338",
+  "attributedTo": "https://pony.social/users/cadey",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/cadey/followers"
+  ],
+  "sensitive": false,
+  "conversation": "tag:pony.social,2022-12-10:objectId=6727348:objectType=Conversation",
+  "summary": null,
+  "content": "<p>thinking about writing a blog rant titled &quot;Google Chrome removing JPEGXL support is not a conspiracy&quot; with the subtitle &quot;But you have to admit it is pretty dumb&quot; and then analyzing it through google&#39;s flavor of Occam&#39;s Razor (nobody could get promoted by adding jpegxl to chrome)</p>",
+  "contentMap": {
+    "en": "<p>thinking about writing a blog rant titled &quot;Google Chrome removing JPEGXL support is not a conspiracy&quot; with the subtitle &quot;But you have to admit it is pretty dumb&quot; and then analyzing it through google&#39;s flavor of Occam&#39;s Razor (nobody could get promoted by adding jpegxl to chrome)</p>"
+  },
+  "attachment": [],
+  "tag": [],
+  "replies": {
+    "id": "https://pony.social/users/cadey/statuses/109490514251688338/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/cadey/statuses/109490514251688338/replies?min_id=109490558284634669&page=true",
+      "partOf": "https://pony.social/users/cadey/statuses/109490514251688338/replies",
+      "items": [
+        "https://pony.social/users/cadey/statuses/109490558284634669"
+      ]
+    }
+  },
+  "source": null
+}

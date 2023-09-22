@@ -30,11 +30,23 @@
 
   outputs =
     { self, nixpkgs, flake-utils, naersk, deno2nix, iosevka, typst, ... }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ] (system:
+    flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ] (system:
       let
+        graft = pkgs: pkg: pkg.override {
+          buildGoModule = pkgs.buildGo121Module;
+        };
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ deno2nix.overlays.default typst.overlays.default ];
+          overlays = [
+            deno2nix.overlays.default
+            typst.overlays.default
+            (final: prev: {
+              go = prev.go_1_21;
+              go-tools = graft prev prev.go-tools;
+              gotools = graft prev prev.gotools;
+              gopls = graft prev prev.gopls;
+            })
+          ];
         };
         naersk-lib = naersk.lib."${system}";
         src = ./.;
@@ -239,6 +251,12 @@
             rustfmt
             hyperfine
 
+            # Go
+            go
+            go-tools
+            gotools
+            gopls
+
             # system dependencies
             openssl
             pkg-config
@@ -246,16 +264,17 @@
             # dhall
             dhall
             dhall-json
-            dhall-lsp-server
             tex
             pandoc
             typstWithIosevka
+            pagefind
 
             # frontend
             deno
             nodePackages.uglify-js
             esbuild
             zig
+            nodejs
 
             # tools
             ispell

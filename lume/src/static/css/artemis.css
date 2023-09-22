@@ -1,0 +1,125 @@
+.artemis {
+	font-family: sans-serif;
+	line-height: 1.6;
+	font-size: 18px;
+	color: #fbf5ef;
+	background-color: #272744;
+	margin: 1em auto;
+	max-width: 750px;
+	padding: 0 0.55em
+}
+
+.artemis h1,h2,h3 {
+	line-height: 1.2
+}
+
+.artemis h1 {
+	margin-top: 1em;
+	margin-bottom: 0.34em
+}
+
+.artemis h2 {
+	margin-top: 1.25em;
+	margin-bottom: 0.41em
+}
+
+.artemis h3 {
+	margin-top: 1.5em;
+	margin-bottom: 0.5em
+}
+
+.artemis hr {
+	color: #494d7e;
+	background-color: #494d7e;
+	border: none;
+	height: 2px
+}
+
+.artemis a {
+	color: #f2d3ab
+}
+
+.artemis a:visited {
+	color: #f2d3ab
+}
+
+.artemis time {
+	font-weight: bold
+}
+
+.artemis table {
+	width: 100%;
+	outline: none;
+	border-spacing: 0px
+}
+
+.artemis th,td {
+	padding-left: 0.7em;
+	padding-right: 0.7em;
+	padding-top: 0.4em;
+	padding-bottom: 0.4em
+}
+
+.artemis table,th,td {
+	border: 1px solid #494d7e
+}
+
+.artemis code {
+	font-family: monospace
+}
+
+.artemis :not(pre) code {
+	background-color: #494d7e;
+	padding-left: 0.1em;
+	padding-right: 0.1em;
+	border-radius: 2px
+}
+
+.artemis img {
+	border: 0.1em solid #494d7e
+}
+
+.artemis video {
+	border: 0.1em solid #494d7e
+}
+
+.artemis img.right {
+	float: right;
+	margin-left: 1em
+}
+
+.artemis img.left {
+	float: left;
+	margin-right: 0.5em
+}
+
+.artemis img.full {
+	width: 100%;
+	height: auto
+}
+
+.artemis img.half {
+	width: 50%;
+	height: auto
+}
+
+.artemis img.emoji {
+	width: auto;
+	height: 0.75em;
+	border: none
+}
+
+.artemis pre {
+	font-family: monospace;
+	line-height: 1.45;
+	overflow-x: auto;
+	background-color: #494d7e;
+	padding: 0.2em;
+	border-radius: 2px
+}
+
+.artemis pre code {
+	font-size: 0.8em;
+	padding: 0.2em;
+	display: block
+}

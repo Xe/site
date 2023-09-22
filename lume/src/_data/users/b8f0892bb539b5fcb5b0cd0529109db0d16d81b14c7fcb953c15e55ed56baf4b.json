@@ -1,0 +1,28 @@
+{
+  "id": "https://pony.social/users/withinscreenshots",
+  "type": "Service",
+  "following": "https://pony.social/users/withinscreenshots/following",
+  "followers": "https://pony.social/users/withinscreenshots/followers",
+  "inbox": "https://pony.social/users/withinscreenshots/inbox",
+  "outbox": "https://pony.social/users/withinscreenshots/outbox",
+  "featured": "https://pony.social/users/withinscreenshots/collections/featured",
+  "featuredTags": "https://pony.social/users/withinscreenshots/collections/tags",
+  "preferredUsername": "withinscreenshots",
+  "name": "Within Screenshots",
+  "summary": "<p>This is <span class=\"h-card\"><a href=\"https://pony.social/@cadey\" class=\"u-url mention\">@<span>cadey</span></a></span>&#39;s alt account for uploading screenshots from Nintendo Switch Online via Twitter.</p>",
+  "url": "https://pony.social/@withinscreenshots",
+  "manuallyApprovesFollowers": false,
+  "discoverable": false,
+  "published": "2022-11-13T00:00:00Z",
+  "devices": "https://pony.social/users/withinscreenshots/collections/devices",
+  "icon": {
+    "type": "Image",
+    "mediaType": "image/jpeg",
+    "url": "https://cdn.pony.social/file/tscs37-pony-social/accounts/avatars/109/338/805/302/662/389/original/c838fb690b33bd46.jpg"
+  },
+  "image": {
+    "type": "Image",
+    "mediaType": "image/jpeg",
+    "url": "https://cdn.pony.social/file/tscs37-pony-social/accounts/headers/109/338/805/302/662/389/original/38e2bf8a92153f0d.jpg"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "https://national-defence.network/users/CIA",
+  "type": "Person",
+  "following": "https://national-defence.network/users/CIA/following",
+  "followers": "https://national-defence.network/users/CIA/followers",
+  "inbox": "https://national-defence.network/users/CIA/inbox",
+  "outbox": "https://national-defence.network/users/CIA/outbox",
+  "featured": "https://national-defence.network/users/CIA/collections/featured",
+  "featuredTags": null,
+  "preferredUsername": "CIA",
+  "name": "Central Intelligence Agency :verified: ",
+  "summary": "The CIA: because lying, cheating, and stealing is how we make America great again.<br/><br/>Overthrowing democratically elected Governments since 1947<br/><br/>",
+  "url": "https://national-defence.network/users/CIA",
+  "manuallyApprovesFollowers": false,
+  "discoverable": true,
+  "published": null,
+  "devices": null,
+  "icon": {
+    "type": "Image",
+    "mediaType": null,
+    "url": "https://national-defence.network/media/f6349000bb00273ed498676299b581e0c670521ad0636f44b2e6162bd9b106ee.blob"
+  },
+  "image": {
+    "type": "Image",
+    "mediaType": null,
+    "url": "https://national-defence.network/media/9c69767bca6ec0a2b141ff13c26f2974b61135c09dba310cec140b8522f2a559.png"
+  }
+}

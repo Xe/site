@@ -1,0 +1,24 @@
+---
+layout: base.njk
+---
+
+<!--
+<script async src="https://media.ethicalads.io/media/client/ethicalads.min.js"></script>
+
+<div class="adaptive" data-ea-publisher="christinewebsite" data-ea-type="text" data-ea-style="fixedfooter"></div>
+-->
+
+<article class="">
+    <h1 class="text-3xl">{{title}}</h1>
+    <p class="mt-2 text-sm text-fg-3 dark:text-fgDark-3">
+        {{date.toDateString()}}
+    </p>
+
+    <div class="not-prose my-4">
+        {{ comp.XeblogVideo(vod) | safe }}
+    </div>
+
+    <div class="prose dark:prose-invert max-w-2xl">
+        {{content | safe}}
+    </div>
+</article>

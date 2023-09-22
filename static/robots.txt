@@ -1,4 +1,0 @@
-User-Agent: *
-Sitemap: https://xeiaso.net/sitemap.xml
-Disallow: /metrics
-Disallow: /.within/health

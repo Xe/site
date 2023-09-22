@@ -1,0 +1,44 @@
+{
+  "id": "https://pony.social/users/cadey/statuses/109242201983408404",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-10-27T20:48:36Z",
+  "url": "https://pony.social/@cadey/109242201983408404",
+  "attributedTo": "https://pony.social/users/cadey",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/cadey/followers"
+  ],
+  "sensitive": false,
+  "atomUri": "https://pony.social/users/cadey/statuses/109242201983408404",
+  "inReplyToAtomUri": null,
+  "conversation": "tag:pony.social,2022-10-27:objectId=5737358:objectType=Conversation",
+  "content": "<p>This new watch feels great. I love how the pride edition band looks.</p>",
+  "contentMap": {
+    "en": "<p>This new watch feels great. I love how the pride edition band looks.</p>"
+  },
+  "attachment": [
+    {
+      "type": "Document",
+      "mediaType": "image/jpeg",
+      "url": "https://cdn.pony.social/file/tscs37-pony-social/media_attachments/files/109/242/197/624/573/230/original/e5a777ad56d3c3b3.jpeg",
+      "name": "An Apple Watch series 8 with the pride edition band and the time saying \"16:47\"",
+      "blurhash": "UFEL]Gbwr:V@~qofxtRQ5PMxNMNGMwM{RkNG",
+      "width": 1247,
+      "height": 1663
+    }
+  ],
+  "tag": [],
+  "replies": {
+    "id": "https://pony.social/users/cadey/statuses/109242201983408404/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/cadey/statuses/109242201983408404/replies?only_other_accounts=true&page=true",
+      "partOf": "https://pony.social/users/cadey/statuses/109242201983408404/replies",
+      "items": []
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "https://pony.social/users/cadey/statuses/109259064905977430",
+  "type": "Note",
+  "inReplyTo": null,
+  "published": "2022-10-30T20:17:04Z",
+  "url": "https://pony.social/@cadey/109259064905977430",
+  "attributedTo": "https://pony.social/users/cadey",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://pony.social/users/cadey/followers",
+    "https://pony.social/users/robocadey"
+  ],
+  "sensitive": false,
+  "atomUri": "https://pony.social/users/cadey/statuses/109259064905977430",
+  "inReplyToAtomUri": null,
+  "conversation": "tag:pony.social,2022-10-30:objectId=5765139:objectType=Conversation",
+  "content": "<p><span class=\"h-card\"><a href=\"https://pony.social/@robocadey\" class=\"u-url mention\">@<span>robocadey</span></a></span> 1girl, cute, solo, portrait, brown hair, brown eyes, long hair, smile, blush, laptop, coffee shop, katana</p>",
+  "contentMap": {
+    "en": "<p><span class=\"h-card\"><a href=\"https://pony.social/@robocadey\" class=\"u-url mention\">@<span>robocadey</span></a></span> 1girl, cute, solo, portrait, brown hair, brown eyes, long hair, smile, blush, laptop, coffee shop, katana</p>"
+  },
+  "attachment": [],
+  "tag": [
+    {
+      "type": "Mention",
+      "href": "https://pony.social/users/robocadey",
+      "name": "@robocadey"
+    }
+  ],
+  "replies": {
+    "id": "https://pony.social/users/cadey/statuses/109259064905977430/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://pony.social/users/cadey/statuses/109259064905977430/replies?only_other_accounts=true&page=true",
+      "partOf": "https://pony.social/users/cadey/statuses/109259064905977430/replies",
+      "items": []
+    }
+  }
+}

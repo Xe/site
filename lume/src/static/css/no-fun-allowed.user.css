@@ -1,0 +1,10 @@
+/* ==UserStyle==
+@name No Fun Allowed
+@updateURL https://xeiaso.net/static/css/no-fun-allowed.user.css
+==/UserStyle== */
+
+@-moz-document domain("xeiaso.net") {
+    .xeblog-slides-fluff {
+        display: none !important;
+    }
+}

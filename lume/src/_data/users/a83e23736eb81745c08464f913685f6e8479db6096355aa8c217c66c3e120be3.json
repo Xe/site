@@ -1,0 +1,28 @@
+{
+  "id": "https://pony.social/users/cadey",
+  "type": "Person",
+  "following": "https://pony.social/users/cadey/following",
+  "followers": "https://pony.social/users/cadey/followers",
+  "inbox": "https://pony.social/users/cadey/inbox",
+  "outbox": "https://pony.social/users/cadey/outbox",
+  "featured": "https://pony.social/users/cadey/collections/featured",
+  "featuredTags": "https://pony.social/users/cadey/collections/tags",
+  "preferredUsername": "cadey",
+  "name": "Xe :verified:",
+  "summary": "<p>🔞 Minors, please DNI</p><p>Any statements are my own, not my employer&#39;s</p><p>Archmage of Infrastructure, NixOS nephlemancer, kastermakfa, acquirer of S-tier waifus, one of six <a href=\"https://pony.social/tags/pluralgang\" class=\"mention hashtag\" rel=\"tag\">#<span>pluralgang</span></a></p><p>ΘΔ</p><p>zi ai-uh-so /zi ai.ə.soʊ/</p>",
+  "url": "https://pony.social/@cadey",
+  "manuallyApprovesFollowers": false,
+  "discoverable": true,
+  "published": "2021-06-30T00:00:00Z",
+  "devices": "https://pony.social/users/cadey/collections/devices",
+  "icon": {
+    "type": "Image",
+    "mediaType": "image/png",
+    "url": "https://cdn.pony.social/accounts/avatars/106/500/315/995/032/015/original/251c84a6c208efad.png"
+  },
+  "image": {
+    "type": "Image",
+    "mediaType": "image/jpeg",
+    "url": "https://cdn.pony.social/accounts/headers/106/500/315/995/032/015/original/d32327b86f0038ee.jpeg"
+  }
+}
