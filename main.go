@@ -58,6 +58,10 @@ func main() {
 	mux.Handle("/", http.FileServer(http.FS(fs)))
 	mux.HandleFunc("/metrics", tsweb.VarzHandler)
 
+	mux.HandleFunc("/blog.atom", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/blog/index.rss", http.StatusMovedPermanently)
+	})
+
 	mux.HandleFunc("/.within/hook/github", func(w http.ResponseWriter, r *http.Request) {
 		if err := fs.Update(r.Context()); err != nil {
 			if err == git.NoErrAlreadyUpToDate {
@@ -71,6 +75,10 @@ func main() {
 		}
 	})
 
+	var h http.Handler = mux
+	h = internal.ClackSet(fs.Clacks()).Middleware(h)
+	h = internal.CacheHeader(h)
+
 	slog.Info("starting server", "bind", *bind)
-	log.Fatal(http.Serve(ln, mux))
+	log.Fatal(http.Serve(ln, h))
 }

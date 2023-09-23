@@ -251,3 +251,9 @@ func (f *FS) writeConfig() error {
 
 	return nil
 }
+
+func (f *FS) Clacks() []string {
+	f.lock.RLock()
+	defer f.lock.RUnlock()
+	return f.conf.ClackSet
+}
