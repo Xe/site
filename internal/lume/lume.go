@@ -2,6 +2,7 @@ package lume
 
 import (
 	"context"
+	"encoding/json"
 	"expvar"
 	"io/fs"
 	"log/slog"
@@ -118,6 +119,7 @@ func New(ctx context.Context, conf *config.Config, o *Options) (*FS, error) {
 		repo:    repo,
 		repoDir: repoDir,
 		opt:     o,
+		conf:    conf,
 	}
 
 	if o.Development {
@@ -183,6 +185,10 @@ func (f *FS) build(ctx context.Context) error {
 	builds.Add(1)
 	destDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "_site")
 
+	if err := f.writeConfig(); err != nil {
+		return err
+	}
+
 	cmd := exec.CommandContext(ctx, denoLocation, "task", "build", "--location", f.opt.URL, "--quiet")
 
 	cmd.Dir = filepath.Join(f.repoDir, f.opt.StaticSiteDir)
@@ -197,6 +203,36 @@ func (f *FS) build(ctx context.Context) error {
 	slog.Debug("built site", "dir", destDir)
 
 	f.fs = os.DirFS(destDir)
+
+	return nil
+}
+
+func (f *FS) writeConfig() error {
+	dataDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "src", "_data")
+
+	if err := os.MkdirAll(dataDir, 0o755); err != nil {
+		return err
+	}
+
+	for fname, data := range map[string]any{
+		"authors.json":            f.conf.Authors,
+		"characters.json":         f.conf.Characters,
+		"contactLinks.json":       f.conf.ContactLinks,
+		"jobHistory.json":         f.conf.JobHistory,
+		"notableProjects.json":    f.conf.NotableProjects,
+		"pronouns.json":           f.conf.Pronouns,
+		"seriesDescriptions.json": f.conf.SeriesDescMap,
+		"signalboost.json":        f.conf.Signalboost,
+	} {
+		fh, err := os.Create(filepath.Join(dataDir, fname))
+		if err != nil {
+			return err
+		}
+		defer fh.Close()
+		if err := json.NewEncoder(fh).Encode(data); err != nil {
+			return err
+		}
+	}
 
 	return nil
 }

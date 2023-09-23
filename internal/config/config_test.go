@@ -1,6 +1,8 @@
 package config
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestLoad(t *testing.T) {
 	if _, err := Load("../../config.dhall"); err != nil {
