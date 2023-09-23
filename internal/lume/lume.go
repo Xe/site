@@ -22,12 +22,13 @@ var (
 	_ fs.ReadFileFS = (*FS)(nil)
 	_ fs.ReadDirFS  = (*FS)(nil)
 
-	opens       = metrics.LabelMap{Label: "name"}
-	readFiles   = metrics.LabelMap{Label: "name"}
-	readDirs    = metrics.LabelMap{Label: "name"}
-	builds      = expvar.NewInt("gauge_xesite_builds")
-	buildErrors = expvar.NewInt("gauge_xesite_build_errors")
-	updates     = expvar.NewInt("gauge_xesite_updates")
+	opens        = metrics.LabelMap{Label: "name"}
+	readFiles    = metrics.LabelMap{Label: "name"}
+	readDirs     = metrics.LabelMap{Label: "name"}
+	builds       = expvar.NewInt("gauge_xesite_builds")
+	buildErrors  = expvar.NewInt("gauge_xesite_build_errors")
+	updates      = expvar.NewInt("gauge_xesite_updates")
+	updateErrors = expvar.NewInt("gauge_xesite_update_errors")
 )
 
 func init() {
@@ -124,11 +125,13 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 }
 
 func (f *FS) Update(ctx context.Context) error {
+	updates.Add(1)
 	f.lock.Lock()
 	defer f.lock.Unlock()
 
 	wt, err := f.repo.Worktree()
 	if err != nil {
+		updateErrors.Add(1)
 		return err
 	}
 
@@ -136,6 +139,7 @@ func (f *FS) Update(ctx context.Context) error {
 		ReferenceName: plumbing.NewBranchReferenceName(f.opt.Branch),
 	})
 	if err != nil {
+		updateErrors.Add(1)
 		return err
 	}
 
@@ -143,6 +147,7 @@ func (f *FS) Update(ctx context.Context) error {
 		Branch: plumbing.NewBranchReferenceName(f.opt.Branch),
 	})
 	if err != nil {
+		updateErrors.Add(1)
 		return err
 	}
 
@@ -151,6 +156,7 @@ func (f *FS) Update(ctx context.Context) error {
 		Commit: plumbing.NewHash("HEAD"),
 	})
 	if err != nil {
+		updateErrors.Add(1)
 		return err
 	}
 
@@ -162,6 +168,7 @@ func (f *FS) Update(ctx context.Context) error {
 }
 
 func (f *FS) build(ctx context.Context) error {
+	builds.Add(1)
 	destDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "_site")
 
 	cmd := exec.CommandContext(ctx, denoLocation, "task", "build", "--location", f.opt.URL, "--quiet")
@@ -171,6 +178,7 @@ func (f *FS) build(ctx context.Context) error {
 	cmd.Stderr = os.Stderr
 
 	if err := cmd.Run(); err != nil {
+		buildErrors.Add(1)
 		return err
 	}
 

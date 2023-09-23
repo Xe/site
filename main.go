@@ -9,6 +9,7 @@ import (
 
 	"github.com/facebookgo/flagenv"
 	"github.com/go-git/go-git/v5"
+	"tailscale.com/tsweb"
 	"xeiaso.net/v4/internal/lume"
 )
 
@@ -42,9 +43,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	http.Handle("/", http.FileServer(http.FS(fs)))
+	mux := http.NewServeMux()
+	mux.Handle("/", http.FileServer(http.FS(fs)))
+	mux.HandleFunc("/metrics", tsweb.VarzHandler)
 
-	http.HandleFunc("/.within/hook/github", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/.within/hook/github", func(w http.ResponseWriter, r *http.Request) {
 		if err := fs.Update(r.Context()); err != nil {
 			if err == git.NoErrAlreadyUpToDate {
 				w.WriteHeader(http.StatusOK)
@@ -58,5 +61,5 @@ func main() {
 	})
 
 	log.Printf("listening on %s", *bind)
-	log.Fatal(http.ListenAndServe(*bind, nil))
+	log.Fatal(http.ListenAndServe(*bind, mux))
 }
