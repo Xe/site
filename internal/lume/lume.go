@@ -13,6 +13,7 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"tailscale.com/metrics"
+	"xeiaso.net/v4/internal/config"
 )
 
 var (
@@ -47,6 +48,7 @@ type FS struct {
 	repo    *git.Repository
 	repoDir string
 	opt     *Options
+	conf    *config.Config
 
 	fs   fs.FS
 	lock sync.RWMutex
@@ -91,13 +93,14 @@ func (f *FS) ReadFile(name string) ([]byte, error) {
 }
 
 type Options struct {
+	Development   bool
 	Branch        string
 	Repo          string
 	StaticSiteDir string
 	URL           string
 }
 
-func New(ctx context.Context, o *Options) (*FS, error) {
+func New(ctx context.Context, conf *config.Config, o *Options) (*FS, error) {
 	repoDir, err := os.MkdirTemp("", "lume-repo")
 	if err != nil {
 		return nil, err
@@ -115,6 +118,13 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 		repo:    repo,
 		repoDir: repoDir,
 		opt:     o,
+	}
+
+	if o.Development {
+		fs.repoDir, err = os.Getwd()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	if err := fs.build(ctx); err != nil {
@@ -135,29 +145,31 @@ func (f *FS) Update(ctx context.Context) error {
 		return err
 	}
 
-	err = wt.PullContext(ctx, &git.PullOptions{
-		ReferenceName: plumbing.NewBranchReferenceName(f.opt.Branch),
-	})
-	if err != nil {
-		updateErrors.Add(1)
-		return err
-	}
+	if !f.opt.Development {
+		err = wt.PullContext(ctx, &git.PullOptions{
+			ReferenceName: plumbing.NewBranchReferenceName(f.opt.Branch),
+		})
+		if err != nil {
+			updateErrors.Add(1)
+			return err
+		}
 
-	err = wt.Checkout(&git.CheckoutOptions{
-		Branch: plumbing.NewBranchReferenceName(f.opt.Branch),
-	})
-	if err != nil {
-		updateErrors.Add(1)
-		return err
-	}
+		err = wt.Checkout(&git.CheckoutOptions{
+			Branch: plumbing.NewBranchReferenceName(f.opt.Branch),
+		})
+		if err != nil {
+			updateErrors.Add(1)
+			return err
+		}
 
-	err = wt.Reset(&git.ResetOptions{
-		Mode:   git.HardReset,
-		Commit: plumbing.NewHash("HEAD"),
-	})
-	if err != nil {
-		updateErrors.Add(1)
-		return err
+		err = wt.Reset(&git.ResetOptions{
+			Mode:   git.HardReset,
+			Commit: plumbing.NewHash("HEAD"),
+		})
+		if err != nil {
+			updateErrors.Add(1)
+			return err
+		}
 	}
 
 	if err := f.build(ctx); err != nil {

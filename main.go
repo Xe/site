@@ -10,11 +10,13 @@ import (
 	"github.com/facebookgo/flagenv"
 	"github.com/go-git/go-git/v5"
 	"tailscale.com/tsweb"
+	"xeiaso.net/v4/internal/config"
 	"xeiaso.net/v4/internal/lume"
 )
 
 var (
 	bind         = flag.String("bind", ":3000", "Port to listen on")
+	devel        = flag.Bool("devel", false, "Enable development mode")
 	gitBranch    = flag.String("git-branch", "static_site", "Git branch to clone")
 	gitRepo      = flag.String("git-repo", "https://github.com/Xe/site", "Git repository to clone")
 	githubSecret = flag.String("github-secret", "", "GitHub secret to use for webhooks")
@@ -27,11 +29,17 @@ func main() {
 
 	ctx := context.Background()
 
-	fs, err := lume.New(ctx, &lume.Options{
+	conf, err := config.Load("./config.dhall")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fs, err := lume.New(ctx, conf, &lume.Options{
 		Branch:        *gitBranch,
 		Repo:          *gitRepo,
 		StaticSiteDir: "lume",
 		URL:           *siteURL,
+		Development:   *devel,
 	})
 	if err != nil {
 		log.Fatal(err)
