@@ -15,5 +15,50 @@ layout: base.njk
 
     {{content | safe}}
 
+    <button id="shareButton" type="button" class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"> Share <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon icon-tabler icon-tabler-share-2 h-8 w-8"
+        width=24
+        height=24
+        viewBox="0 0 24 24"
+        stroke-width=2
+        stroke="currentColor"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M8 9h-1a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-8a2 2 0 0 0 -2 -2h-1"/>
+            <path d="M12 14v-11"/>
+            <path d="M9 6l3 -3l3 3"/>
+        </svg>
+    </button>
+
+    <script>
+        const shareButton = document.getElementById("shareButton");
+        function doShareButton() {
+            console.log("got here");
+            const shareData = {
+                title: document.title,
+                url: window.location.href
+            };
+            if (!navigator.canShare(shareData)) {
+                console.log("can't share");
+                return;
+            }
+            navigator
+                .share({title: document.title, url: window.location.href})
+                .then(() => {
+                    console.log('Thanks for sharing!');
+                })
+                .catch(console.error);
+        }
+        shareButton.addEventListener("click", doShareButton);
+    </script>
+
+    <p class="mb-4">Facts and circumstances may have changed since publication. Please contact me before jumping to conclusions if something seems wrong or unclear.</p>
+
+    <p class="mb-4">Tags: {{tags.join(", ")}}</p>
+
     <a href="{{slides_link}}">View slides</a>
 </article>

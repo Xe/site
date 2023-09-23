@@ -85,4 +85,5 @@ in  Config::{
     , pronouns = ./pronouns.dhall
     , characters = ./characters.dhall
     , vods = ./streamVOD.dhall
+    , resume = ./resume.dhall
     }

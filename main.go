@@ -5,12 +5,14 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"log/slog"
+	"net"
 	"net/http"
 
 	"github.com/facebookgo/flagenv"
 	"github.com/go-git/go-git/v5"
 	"tailscale.com/tsweb"
-	"xeiaso.net/v4/internal/config"
+	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
 )
 
@@ -26,15 +28,16 @@ var (
 func main() {
 	flagenv.Parse()
 	flag.Parse()
+	internal.Slog()
 
 	ctx := context.Background()
 
-	conf, err := config.Load("./config.dhall")
+	ln, err := net.Listen("tcp", *bind)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fs, err := lume.New(ctx, conf, &lume.Options{
+	fs, err := lume.New(ctx, &lume.Options{
 		Branch:        *gitBranch,
 		Repo:          *gitRepo,
 		StaticSiteDir: "lume",
@@ -68,6 +71,6 @@ func main() {
 		}
 	})
 
-	log.Printf("listening on %s", *bind)
-	log.Fatal(http.ListenAndServe(*bind, mux))
+	slog.Info("starting server", "bind", *bind)
+	log.Fatal(http.Serve(ln, mux))
 }

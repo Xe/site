@@ -71,18 +71,6 @@
         };
       in rec {
         packages = rec {
-          bin = naersk-lib.buildPackage {
-            pname = "xesite-bin";
-            root = src;
-            buildInputs = with pkgs; [
-              pkg-config
-              openssl
-              git
-              deno
-              nodePackages.uglify-js
-            ];
-          };
-
           config = pkgs.stdenv.mkDerivation {
             pname = "xesite-config";
             inherit (bin) version;
@@ -131,101 +119,9 @@
             '';
           };
 
-          frontend = pkgs.stdenv.mkDerivation rec {
-            pname = "xesite-frontend";
-            inherit (bin) version;
-            dontUnpack = true;
-            src = ./src/frontend;
-            buildInputs = with pkgs; [ deno jq nodePackages.uglify-js ];
-            ESBUILD_BINARY_PATH = "${pkgs.esbuild}/bin/esbuild";
-
-            buildPhase = ''
-              export DENO_DIR="$(pwd)/.deno2nix"
-              mkdir -p $DENO_DIR
-              ln -s "${
-                pkgs.deno2nix.internal.mkDepsLink ./src/frontend/deno.lock
-              }" $(deno info --json | jq -r .modulesCache)
-              export MINIFY=yes
-
-              mkdir -p dist
-              export WRITE_TO=$(pwd)/dist
-
-              pushd $(pwd)
-              cd $src
-              deno run -A ./build.ts **/*.tsx
-              popd
-            '';
-
-            installPhase = ''
-              mkdir -p $out/static/xeact
-              cp -vrf dist/* $out/static/xeact
-            '';
-          };
-
-          iosevka = pkgs.stdenvNoCC.mkDerivation {
-            name = "xesite-iosevka";
-            buildInputs = with pkgs; [
-              python311Packages.brotli
-              python311Packages.fonttools
-            ];
-            dontUnpack = true;
-            buildPhase = ''
-              mkdir -p out
-              ${pkgs.unzip}/bin/unzip ${
-                self.inputs.iosevka.packages.${system}.default
-              }/ttf.zip
-              for ttf in ttf/*.ttf; do
-                cp $ttf out
-                name=`basename -s .ttf $ttf`
-                pyftsubset \
-                    $ttf \
-                    --output-file=out/"$name".woff2 \
-                    --flavor=woff2 \
-                    --layout-features=* \
-                    --no-hinting \
-                    --desubroutinize \
-                    --unicodes="U+0000-0170,U+00D7,U+00F7,U+2000-206F,U+2074,U+20AC,U+2122,U+2190-21BB,U+2212,U+2215,U+F8FF,U+FEFF,U+FFFD,U+00E8"
-              done
-
-            '';
-            installPhase = ''
-              mkdir -p $out/static/css/iosevka
-              cp out/* $out/static/css/iosevka
-            '';
-          };
-
-          static = pkgs.stdenv.mkDerivation {
-            pname = "xesite-static";
-            inherit (bin) version;
-            inherit src;
-
-            phases = "installPhase";
-
-            installPhase = ''
-              mkdir -p $out
-              cp -vrf $src/data $out
-              cp -vrf $src/static $out
-            '';
-          };
-
-          posts = pkgs.stdenv.mkDerivation {
-            pname = "xesite-posts";
-            inherit (bin) version;
-            inherit src;
-
-            phases = "installPhase";
-
-            installPhase = ''
-              mkdir -p $out
-              cp -vrf $src/blog $out
-              cp -vrf $src/gallery $out
-              cp -vrf $src/talks $out
-            '';
-          };
-
           default = pkgs.symlinkJoin {
             name = "xesite-${bin.version}";
-            paths = [ config posts static bin frontend resumePDF iosevka ];
+            paths = [ config resumePDF ];
           };
 
           docker = pkgs.dockerTools.buildLayeredImage {
@@ -241,25 +137,11 @@
 
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
-            # Rust
-            rustc
-            cargo
-            clippy
-            rust-analyzer
-            cargo-watch
-            cargo-license
-            rustfmt
-            hyperfine
-
             # Go
             go
             go-tools
             gotools
             gopls
-
-            # system dependencies
-            openssl
-            pkg-config
 
             # dhall
             dhall

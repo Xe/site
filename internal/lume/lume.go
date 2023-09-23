@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"expvar"
 	"io/fs"
+	"log"
 	"log/slog"
 	"os"
 	"os/exec"
@@ -101,7 +102,7 @@ type Options struct {
 	URL           string
 }
 
-func New(ctx context.Context, conf *config.Config, o *Options) (*FS, error) {
+func New(ctx context.Context, o *Options) (*FS, error) {
 	repoDir, err := os.MkdirTemp("", "lume-repo")
 	if err != nil {
 		return nil, err
@@ -119,7 +120,6 @@ func New(ctx context.Context, conf *config.Config, o *Options) (*FS, error) {
 		repo:    repo,
 		repoDir: repoDir,
 		opt:     o,
-		conf:    conf,
 	}
 
 	if o.Development {
@@ -128,6 +128,13 @@ func New(ctx context.Context, conf *config.Config, o *Options) (*FS, error) {
 			return nil, err
 		}
 	}
+
+	conf, err := config.Load(filepath.Join(fs.repoDir, "config.dhall"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fs.conf = conf
 
 	if err := fs.build(ctx); err != nil {
 		return nil, err
@@ -173,6 +180,13 @@ func (f *FS) Update(ctx context.Context) error {
 			return err
 		}
 	}
+
+	conf, err := config.Load(filepath.Join(f.repoDir, "config.dhall"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	f.conf = conf
 
 	if err := f.build(ctx); err != nil {
 		return err
@@ -221,6 +235,7 @@ func (f *FS) writeConfig() error {
 		"jobHistory.json":         f.conf.JobHistory,
 		"notableProjects.json":    f.conf.NotableProjects,
 		"pronouns.json":           f.conf.Pronouns,
+		"resume.json":             f.conf.Resume,
 		"seriesDescriptions.json": f.conf.SeriesDescMap,
 		"signalboost.json":        f.conf.Signalboost,
 	} {

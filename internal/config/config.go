@@ -48,6 +48,7 @@ type Config struct {
 	SeriesDescriptions []SeriesDescriptions `json:"seriesDescriptions"`
 	Signalboost        []Signalboost        `json:"signalboost"`
 	WebMentionEndpoint string               `json:"webMentionEndpoint"`
+	Resume             Resume               `json:"resume"`
 }
 
 type Pronouns struct {
@@ -145,4 +146,12 @@ type Signalboost struct {
 	Links []Link   `json:"links"`
 	Name  string   `json:"name"`
 	Tags  []string `json:"tags"`
+}
+
+type Resume struct {
+	Buzzwords           []string `json:"buzzwords"`
+	Location            Location `json:"location"`
+	Name                string   `json:"name"`
+	NotablePublications []Link   `json:"notablePublications"`
+	Tagline             string   `json:"tagline"`
 }

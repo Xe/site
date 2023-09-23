@@ -9,7 +9,6 @@ in  { Type =
         , tagline : Text
         , location : Location.Type
         , buzzwords : List Text
-        , jobs : List Job.Type
         , notablePublications : List Link.Type
         }
     , default =
@@ -21,7 +20,6 @@ in  { Type =
         , country = "CAN"
         }
       , buzzwords = [] : List Text
-      , jobs = [] : List Job.Type
       , notablePublications = [] : List Link.Type
       }
     }

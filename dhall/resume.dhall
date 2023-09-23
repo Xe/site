@@ -32,7 +32,6 @@ in  Resume::{
       , "Continuous Integration"
       , "Continuous Delivery"
       ]
-    , jobs = ./jobHistory.dhall
     , notablePublications =
       [ Link::{
         , url = "https://blog.heroku.com/how-to-make-progressive-web-app"

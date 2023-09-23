@@ -18,6 +18,8 @@ let PronounSet = ./PronounSet.dhall
 
 let Prelude = ../Prelude.dhall
 
+let Resume = ./Resume.dhall
+
 let defaultPort = env:PORT ? 3030
 
 let defaultWebMentionEndpoint =
@@ -40,6 +42,7 @@ in  { Type =
         , pronouns : List PronounSet.Type
         , characters : List Character.Type
         , vods : List VOD.Type
+        , resume : Resume.Type
         }
     , default =
       { signalboost = [] : List Person.Type
@@ -57,5 +60,6 @@ in  { Type =
       , pronouns = [] : List PronounSet.Type
       , characters = [] : List Character.Type
       , vods = [] : List VOD.Type
+      , resume = Resume::{=}
       }
     }
