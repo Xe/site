@@ -3,6 +3,24 @@ let Link = ./types/Link.dhall
 let Person = ./types/Person.dhall
 
 in  [ Person::{
+      , name = "bri recchia"
+      , tags = 
+        [ "virtualization"
+        , "linux"
+        , "generalist"
+        , "containers"
+        , "networking"
+        , "bgp"
+        , "dns"
+        , "bash"
+        , "python"
+        , "rust"
+        , "devops"
+        , "systems administration"
+        ]
+      , links = [ Link::{ url = "https://github.com/b-/", title = "Github" } ]
+      }
+    , Person::{
       , name = "Evan Pratten"
       , tags = 
         [ "rust"
@@ -87,7 +105,7 @@ in  [ Person::{
         , "full-stack"
         , "linux"
         , "R&D"
-        , "SRE / system adminsitration"
+        , "SRE / system administration"
         ]
       , links =
         [ Link::{ url = "https://github.com/henri", title = "GitHub" }
