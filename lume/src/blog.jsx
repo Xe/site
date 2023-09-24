@@ -22,12 +22,15 @@ export default ({ search }) => {
         For a breakdown by post series, see <a href="/blog/series">here</a>.
       </p>
       <ul class="list-disc ml-4 mb-4">
-        {search.pages("type=blog", "order date=desc").map((post) => (
+        {search.pages("type=blog", "order date=desc").map((post) => {
+          const url = post.data.redirect_to ? post.data.redirect_to : post.data.url;
+          return (
           <li>
             {post.data.date.toLocaleDateString("en-US", dateOptions)} -{" "}
-            <a href={post.data.url}>{post.data.title}</a>
+            <a href={url}>{post.data.title}</a>
           </li>
-        ))}
+        );
+        })}
       </ul>
     </>
   );

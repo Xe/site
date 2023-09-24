@@ -22,6 +22,7 @@ import rehypePrism from "npm:rehype-prism-plus/all";
 
 const site = lume({
   src: "./src",
+  emptyDist: false,
 });
 
 site.copy("static");
@@ -50,6 +51,7 @@ site.use(feed({
 site.use(mdx({
   components: {
     "XeblogConv": XeblogConv,
+    "XesiteConv": XeblogConv,
     "XeblogHero": XeblogHero,
     "XeblogPicture": XeblogPicture,
     "XeblogSlide": XeblogSlide,
