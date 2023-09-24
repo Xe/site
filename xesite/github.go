@@ -29,6 +29,8 @@ type GitHubWebhook struct {
 }
 
 func (gh *GitHubWebhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	webhookCount.Add(1)
+
 	if r.Header.Get("X-GitHub-Event") != "push" {
 		slog.Info("not a push event", "event", r.Header.Get("X-GitHub-Event"))
 	}

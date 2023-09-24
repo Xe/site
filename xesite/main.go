@@ -24,7 +24,7 @@ var (
 	gitBranch    = flag.String("git-branch", "main", "Git branch to clone")
 	gitRepo      = flag.String("git-repo", "https://github.com/Xe/site", "Git repository to clone")
 	githubSecret = flag.String("github-secret", "", "GitHub secret to use for webhooks")
-	siteURL      = flag.String("site-url", "https://kaine.shark-harmonic.ts.net/", "URL to use for the site")
+	siteURL      = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")
 )
 
 func main() {
