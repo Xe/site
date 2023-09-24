@@ -1,11 +1,13 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
+	"log/slog"
 	"net/http"
+	"time"
 
 	"github.com/go-git/go-git/v5"
-	"golang.org/x/exp/slog"
 	"xeiaso.net/v4/internal/github"
 	"xeiaso.net/v4/internal/lume"
 )
@@ -28,12 +30,16 @@ func (gh *GitHubWebhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	slog.Info("push!", "ref", event.Ref, "author", event.Pusher.Login)
 
-	if err := gh.fs.Update(r.Context()); err != nil {
-		if err == git.NoErrAlreadyUpToDate {
-			slog.Info("already up to date")
-			return
-		}
+	go func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+		defer cancel()
+		if err := gh.fs.Update(ctx); err != nil {
+			if err == git.NoErrAlreadyUpToDate {
+				slog.Info("already up to date")
+				return
+			}
 
-		slog.Error("error updating", "error", err)
-	}
+			slog.Error("error updating", "error", err)
+		}
+	}()
 }
