@@ -8,7 +8,7 @@ export default ({ search }) => {
     <>
       <h1 className="text-3xl mb-4">{title}</h1>
 
-      <div class="bg-white-800 rounded-xl m-2 px-2 py-1 shadow-md max-w-xl">
+      <div class="bg-bg-1 dark:bg-bg-1 rounded-xl m-2 px-2 py-1 shadow-md max-w-xl">
         <div className=" my-4" id="search"></div>
       </div>
 
