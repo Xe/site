@@ -9,10 +9,10 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/donatj/hmacsig"
 	"github.com/facebookgo/flagenv"
 	"github.com/go-git/go-git/v5"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/rjeczalik/gh/webhook"
 	"tailscale.com/tsweb"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
@@ -79,7 +79,8 @@ func main() {
 		})
 	} else {
 		gh := &GitHubWebhook{fs: fs}
-		mux.Handle("/.within/hook/github", webhook.New(*githubSecret, gh))
+		s := hmacsig.Handler256(gh, *githubSecret)
+		mux.Handle("/.within/hook/github", s)
 	}
 
 	var h http.Handler = mux

@@ -3,10 +3,10 @@ module xeiaso.net/v4
 go 1.21.1
 
 require (
+	github.com/donatj/hmacsig v1.1.0
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
 	github.com/go-git/go-git/v5 v5.9.0
 	github.com/joho/godotenv v1.5.1
-	github.com/rjeczalik/gh v0.0.0-20170725204103-1b50082e54d7
 	golang.org/x/exp v0.0.0-20230725093048-515e97ebf090
 	tailscale.com v1.48.2
 )

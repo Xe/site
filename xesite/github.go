@@ -1,12 +1,12 @@
 package main
 
 import (
-	"context"
-	"time"
+	"encoding/json"
+	"net/http"
 
 	"github.com/go-git/go-git/v5"
-	"github.com/rjeczalik/gh/webhook"
 	"golang.org/x/exp/slog"
+	"xeiaso.net/v4/internal/github"
 	"xeiaso.net/v4/internal/lume"
 )
 
@@ -14,16 +14,21 @@ type GitHubWebhook struct {
 	fs *lume.FS
 }
 
-func (gh *GitHubWebhook) Ping(event *webhook.PingEvent) {
-	slog.Debug("ping event received", "zen", event.Zen, "supportedEvents", event.Hook.Events)
-}
+func (gh *GitHubWebhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if r.Header.Get("X-GitHub-Event") != "push" {
+		slog.Info("not a push event", "event", r.Header.Get("X-GitHub-Event"))
+	}
 
-func (gh *GitHubWebhook) Push(event *webhook.PushEvent) {
+	var event github.PushEvent
+	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
+		slog.Error("error decoding event", "error", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	slog.Info("push!", "ref", event.Ref, "author", event.Pusher.Login)
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
-	defer cancel()
 
-	if err := gh.fs.Update(ctx); err != nil {
+	if err := gh.fs.Update(r.Context()); err != nil {
 		if err == git.NoErrAlreadyUpToDate {
 			slog.Info("already up to date")
 			return
