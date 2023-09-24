@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sync"
+	"time"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -25,13 +26,13 @@ var (
 	_ fs.ReadFileFS = (*FS)(nil)
 	_ fs.ReadDirFS  = (*FS)(nil)
 
-	opens        = metrics.LabelMap{Label: "name"}
-	readFiles    = metrics.LabelMap{Label: "name"}
-	readDirs     = metrics.LabelMap{Label: "name"}
-	builds       = expvar.NewInt("gauge_xesite_builds")
-	buildErrors  = expvar.NewInt("gauge_xesite_build_errors")
-	updates      = expvar.NewInt("gauge_xesite_updates")
-	updateErrors = expvar.NewInt("gauge_xesite_update_errors")
+	opens         = metrics.LabelMap{Label: "name"}
+	readFiles     = metrics.LabelMap{Label: "name"}
+	readDirs      = metrics.LabelMap{Label: "name"}
+	builds        = expvar.NewInt("gauge_xesite_builds")
+	updates       = expvar.NewInt("gauge_xesite_updates")
+	updateErrors  = expvar.NewInt("gauge_xesite_update_errors")
+	lastBuildTime = expvar.NewInt("gauge_xesite_last_build_time_ms")
 )
 
 func init() {
@@ -199,6 +200,8 @@ func (f *FS) build(ctx context.Context) error {
 	builds.Add(1)
 	destDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "_site")
 
+	begin := time.Now()
+
 	if err := f.writeConfig(); err != nil {
 		return err
 	}
@@ -210,13 +213,16 @@ func (f *FS) build(ctx context.Context) error {
 	cmd.Stderr = os.Stderr
 
 	if err := cmd.Run(); err != nil {
-		buildErrors.Add(1)
 		return err
 	}
 
 	slog.Debug("built site", "dir", destDir)
 
 	f.fs = os.DirFS(destDir)
+	dur := time.Since(begin)
+
+	lastBuildTime.Set(dur.Milliseconds())
+	slog.Info("built site", "time", dur.String())
 
 	return nil
 }
