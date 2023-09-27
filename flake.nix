@@ -21,6 +21,12 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    gomod2nix = {
+      url = "github:nix-community/gomod2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
     # Explicitly pulling from that version of nixpkgs to avoid font duplication.
     iosevka.url = "github:Xe/iosevka";
 
@@ -29,7 +35,7 @@
   };
 
   outputs =
-    { self, nixpkgs, flake-utils, naersk, deno2nix, iosevka, typst, ... }:
+    { self, nixpkgs, flake-utils, naersk, deno2nix, iosevka, typst, gomod2nix, ... }:
     flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ] (system:
       let
         graft = pkgs: pkg: pkg.override {
@@ -46,6 +52,7 @@
               gotools = graft prev prev.gotools;
               gopls = graft prev prev.gopls;
             })
+            gomod2nix.overlays.default
           ];
         };
         naersk-lib = naersk.lib."${system}";
@@ -64,73 +71,37 @@
           name = "typst";
           text = ''
             ${pkgs.typst-dev}/bin/typst \
+            compile \
             --font-path ${fontsConf} \
             "$@"
           '';
           runtimeInputs = [ ];
         };
+
+        # Generate a user-friendly version number.
+      version = builtins.substring 0 8 self.lastModifiedDate;
       in rec {
         packages = rec {
-          config = pkgs.stdenv.mkDerivation {
-            pname = "xesite-config";
-            inherit (bin) version;
-            inherit src;
-            buildInputs = with pkgs; [ dhall dhallPackages.Prelude ];
-
-            phases = "installPhase";
-
-            installPhase = ''
-              mkdir -p $out
-              cp -rf ${pkgs.dhallPackages.Prelude}/.cache .cache
-              chmod -R u+w .cache
-              export XDG_CACHE_HOME=.cache
-              export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall;
-              dhall resolve --file $src/config.dhall >> $out/config.dhall
-            '';
-          };
-
-          resumePDF = pkgs.stdenv.mkDerivation {
-            pname = "xesite-resume-pdf";
-            inherit (bin) version;
-            inherit src;
-            buildInputs = with pkgs; [
-              dhall-json
-              dhallPackages.Prelude
-              tex
-              pandoc
-              typst-dev
-            ];
-
-            phases = "installPhase";
-
-            installPhase = ''
-              mkdir -p $out/static/resume
-
-              cp -rf ${pkgs.dhallPackages.Prelude}/.cache .cache
-              chmod -R u+w .cache
-              export XDG_CACHE_HOME=.cache
-              export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall;
-
-              mkdir -p icons
-              cp -vrf $src/dhall/resume/* .
-              dhall-to-json --file $src/dhall/resume.dhall --output resume.json
-
-              typst compile --font-path ${fontsConf} resume.typ $out/static/resume/resume.pdf
-            '';
-          };
-
-          default = pkgs.symlinkJoin {
-            name = "xesite-${bin.version}";
-            paths = [ config resumePDF ];
+          bin = pkgs.buildGoApplication {
+            pname = "xesite_v4";
+            inherit version;
+            src = ./.;
+            modules = ./gomod2nix.toml;
+            subPackages = [ "xesite" ];
           };
 
           docker = pkgs.dockerTools.buildLayeredImage {
             name = "xena/xesite";
-            tag = bin.version;
-            contents = [ default ];
+            tag = version;
+            contents = with pkgs; [ ca-certificates typstWithIosevka dhall-json deno ];
             config = {
               Cmd = [ "${bin}/bin/xesite" ];
-              WorkdingDir = "${default}";
+              Env = [
+                "TMPDIR=/data"
+              ];
+              Volumes = {
+                "/data" = {};
+              };
             };
           };
         };
@@ -148,7 +119,7 @@
             dhall-json
             tex
             pandoc
-            typstWithIosevka
+            #typstWithIosevka
             pagefind
 
             # frontend
