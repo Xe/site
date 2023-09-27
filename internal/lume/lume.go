@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"expvar"
+	"fmt"
 	"io/fs"
 	"log"
 	"log/slog"
@@ -15,6 +16,7 @@ import (
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
+	"gopkg.in/mxpv/patreon-go.v1"
 	"tailscale.com/metrics"
 	"xeiaso.net/v4/internal/config"
 )
@@ -101,6 +103,7 @@ type Options struct {
 	Repo          string
 	StaticSiteDir string
 	URL           string
+	PatreonClient *patreon.Client
 }
 
 func New(ctx context.Context, o *Options) (*FS, error) {
@@ -227,8 +230,37 @@ func (f *FS) build(ctx context.Context) error {
 	return nil
 }
 
+func (f *FS) writePatrons(dataDir string) error {
+	camp, err := f.opt.PatreonClient.FetchCampaign()
+	if err != nil {
+		return fmt.Errorf("failed to fetch campaign: %w", err)
+	}
+
+	pledges, err := f.opt.PatreonClient.FetchPledges(camp.Data[0].ID, patreon.WithPageSize(100))
+	if err != nil {
+		return fmt.Errorf("failed to fetch pledges: %w", err)
+	}
+
+	fout, err := os.Create(filepath.Join(dataDir, "patrons.json"))
+	if err != nil {
+		return fmt.Errorf("failed to open patrons.json: %w", err)
+	}
+	defer fout.Close()
+
+	if err := json.NewEncoder(fout).Encode(pledges); err != nil {
+		return fmt.Errorf("failed to encode pledges: %w", err)
+	}
+
+	return nil
+}
+
 func (f *FS) writeConfig() error {
 	dataDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "src", "_data")
+
+	os.WriteFile(filepath.Join(dataDir, "patrons.json"), []byte(`null`), 0o644)
+	if err := f.writePatrons(dataDir); err != nil {
+		slog.Error("failed to write patrons", "err", err)
+	}
 
 	if err := os.MkdirAll(dataDir, 0o755); err != nil {
 		return err

@@ -39,12 +39,18 @@ func main() {
 		log.Fatal(err)
 	}
 
+	pc, err := NewPatreonClient()
+	if err != nil {
+		slog.Error("can't create patreon client", "err", err)
+	}
+
 	fs, err := lume.New(ctx, &lume.Options{
 		Branch:        *gitBranch,
 		Repo:          *gitRepo,
 		StaticSiteDir: "lume",
 		URL:           *siteURL,
 		Development:   *devel,
+		PatreonClient: pc,
 	})
 	if err != nil {
 		log.Fatal(err)
