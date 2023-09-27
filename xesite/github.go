@@ -16,11 +16,12 @@ import (
 )
 
 var (
-	webhookCount = expvar.NewInt("gauge_xesite_webhook_ingress")
+	webhookCount = metrics.LabelMap{Label: "source"}
 	buildErrors  = metrics.LabelMap{Label: "err"}
 )
 
 func init() {
+	expvar.Publish("gauge_xesite_webhook_count", &webhookCount)
 	expvar.Publish("gauge_xesite_build_errors", &buildErrors)
 }
 
@@ -29,7 +30,7 @@ type GitHubWebhook struct {
 }
 
 func (gh *GitHubWebhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	webhookCount.Add(1)
+	webhookCount.Add("github", 1)
 
 	if r.Header.Get("X-GitHub-Event") != "push" {
 		slog.Info("not a push event", "event", r.Header.Get("X-GitHub-Event"))

@@ -70,6 +70,11 @@ func main() {
 		http.Redirect(w, r, "/blog/index.rss", http.StatusMovedPermanently)
 	})
 
+	// NOTE(Xe): Had to rename this page because of a Lume/Go embed bug.
+	mux.HandleFunc(`/blog/%F0%9F%A5%BA`, func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/blog/xn--ts9h/", http.StatusMovedPermanently)
+	})
+
 	if *devel {
 		mux.HandleFunc("/.within/hook/github", func(w http.ResponseWriter, r *http.Request) {
 			if err := fs.Update(r.Context()); err != nil {
@@ -88,6 +93,8 @@ func main() {
 		s := hmacsig.Handler256(gh, *githubSecret)
 		mux.Handle("/.within/hook/github", s)
 	}
+
+	mux.Handle("/.within/hook/patreon", &PatreonWebhook{fs: fs})
 
 	var h http.Handler = mux
 	h = internal.ClackSet(fs.Clacks()).Middleware(h)

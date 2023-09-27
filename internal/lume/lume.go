@@ -22,7 +22,9 @@ import (
 )
 
 var (
-	denoLocation string
+	denoLocation        string
+	typstLocation       string
+	dhallToJSONLocation string
 
 	_ fs.FS         = (*FS)(nil)
 	_ fs.ReadFileFS = (*FS)(nil)
@@ -40,6 +42,16 @@ var (
 func init() {
 	var err error
 	denoLocation, err = exec.LookPath("deno")
+	if err != nil {
+		panic(err)
+	}
+
+	typstLocation, err = exec.LookPath("typst")
+	if err != nil {
+		panic(err)
+	}
+
+	dhallToJSONLocation, err = exec.LookPath("dhall-to-json")
 	if err != nil {
 		panic(err)
 	}
@@ -63,7 +75,9 @@ func (f *FS) Close() error {
 	f.lock.Lock()
 	defer f.lock.Unlock()
 
-	os.RemoveAll(f.repoDir)
+	if f.repo != nil {
+		os.RemoveAll(f.repoDir)
+	}
 
 	return nil
 }
@@ -209,6 +223,10 @@ func (f *FS) build(ctx context.Context) error {
 		return err
 	}
 
+	if err := f.buildResume(ctx); err != nil {
+		return err
+	}
+
 	cmd := exec.CommandContext(ctx, denoLocation, "task", "build", "--location", f.opt.URL, "--quiet")
 
 	cmd.Dir = filepath.Join(f.repoDir, f.opt.StaticSiteDir)
@@ -219,13 +237,11 @@ func (f *FS) build(ctx context.Context) error {
 		return err
 	}
 
-	slog.Debug("built site", "dir", destDir)
-
 	f.fs = os.DirFS(destDir)
 	dur := time.Since(begin)
 
 	lastBuildTime.Set(dur.Milliseconds())
-	slog.Info("built site", "time", dur.String())
+	slog.Info("built site", "dir", destDir, "time", dur.String())
 
 	return nil
 }
@@ -257,9 +273,12 @@ func (f *FS) writePatrons(dataDir string) error {
 func (f *FS) writeConfig() error {
 	dataDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "src", "_data")
 
-	os.WriteFile(filepath.Join(dataDir, "patrons.json"), []byte(`null`), 0o644)
-	if err := f.writePatrons(dataDir); err != nil {
-		slog.Error("failed to write patrons", "err", err)
+	os.WriteFile(filepath.Join(dataDir, "patrons.json"), []byte(`{"included": {"Items": []}}`), 0o644)
+
+	if f.opt.PatreonClient != nil {
+		if err := f.writePatrons(dataDir); err != nil {
+			slog.Error("failed to write patrons", "err", err)
+		}
 	}
 
 	if err := os.MkdirAll(dataDir, 0o755); err != nil {
@@ -294,4 +313,36 @@ func (f *FS) Clacks() []string {
 	f.lock.RLock()
 	defer f.lock.RUnlock()
 	return f.conf.ClackSet
+}
+
+func (f *FS) buildResume(ctx context.Context) error {
+	t0 := time.Now()
+	wd := filepath.Join(f.repoDir, "dhall", "resume")
+	if err := run(ctx, wd, dhallToJSONLocation, "--file", "../resume.dhall", "--output", "resume.json"); err != nil {
+		return fmt.Errorf("failed to build resume config: %w", err)
+	}
+
+	if err := run(ctx, filepath.Join(f.repoDir, "dhall", "resume"), typstLocation, "compile", "resume.typ", "resume.pdf"); err != nil {
+		return fmt.Errorf("failed to build resume: %w", err)
+	}
+
+	if err := os.MkdirAll(filepath.Join(f.repoDir, f.opt.StaticSiteDir, "static", "resume"), 0o755); err != nil {
+		return fmt.Errorf("failed to create resume dir: %w", err)
+	}
+
+	if err := os.Rename(filepath.Join(f.repoDir, "dhall", "resume", "resume.pdf"), filepath.Join(f.repoDir, f.opt.StaticSiteDir, "src", "static", "resume", "resume.pdf")); err != nil {
+		return fmt.Errorf("failed to move resume: %w", err)
+	}
+	dur := time.Since(t0)
+	slog.Debug("resume generated", "in", dur.String())
+
+	return nil
+}
+
+func run(ctx context.Context, wd string, name string, args ...string) error {
+	cmd := exec.CommandContext(ctx, name, args...)
+	cmd.Dir = wd
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }

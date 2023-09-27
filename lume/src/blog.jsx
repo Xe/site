@@ -18,9 +18,6 @@ export default ({ search }) => {
         <div className=" my-4" id="search"></div>
       </div>
 
-      <p className="mb-4">
-        For a breakdown by post series, see <a href="/blog/series">here</a>.
-      </p>
       <ul class="list-disc ml-4 mb-4">
         {search.pages("type=blog", "order date=desc").map((post) => {
           const url = post.data.redirect_to ? post.data.redirect_to : post.data.url;
