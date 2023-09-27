@@ -13,7 +13,19 @@ in  Config::{
     , authors = authors.map
     , defaultAuthor = authors.default
     , clackSet =
-      [ "Ashlynn", "Terry Davis", "Dennis Ritchie", "Steven Hawking" ]
+      [ "Ashlynn"
+      , "Terry Davis"
+      , "Dennis Ritchie"
+      , "Steven Hawking"
+      , "John Conway"
+      , "Ruth Gader Ginsburg"
+      , "Bram Moolenaar"
+      , "Grant Imahara"
+      , "David Bowie"
+      , "Sir Terry Pratchett"
+      , "Satoru Iwata"
+      , "Kris Nóva"
+      ]
     , jobHistory = ./jobHistory.dhall
     , seriesDescriptions = desc.descriptions
     , seriesDescMap = desc.map
@@ -80,7 +92,10 @@ in  Config::{
       , Link::{ url = "https://pony.social/@cadey", title = "Fediverse" }
       , Link::{ url = "https://t.me/miamorecadenza", title = "Telegram" }
       , Link::{ url = "irc://irc.libera.chat/#xeserv", title = "IRC" }
-      , Link::{ url = "https://staging.bsky.app/profile/xeiaso.net", title = "Bluesky" }
+      , Link::{
+        , url = "https://staging.bsky.app/profile/xeiaso.net"
+        , title = "Bluesky"
+        }
       ]
     , pronouns = ./pronouns.dhall
     , characters = ./characters.dhall

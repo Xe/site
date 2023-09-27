@@ -18,7 +18,7 @@ export default function Video({ path }: VideoProps) {
     `https://cdn.xeiaso.net/file/christine-static/${path}/index.m3u8`;
   const id = uuidv4();
   const video = (
-      <video autoplay="false" id={id} className="not-prose" style="width:100%" controls>
+      <video id={id} className="not-prose" style="width:100%" controls>
         <source src={streamURL} type="application/vnd.apple.mpegurl" />
         <source
           src="https://cdn.xeiaso.net/file/christine-static/blog/HLSBROKE.mp4"

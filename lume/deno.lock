@@ -2059,6 +2059,9 @@
       }
     }
   },
+  "redirects": {
+    "https://denopkg.com/chiefbiiko/std-encoding/mod.ts": "https://denopkg.com/chiefbiiko/std-encoding@master/mod.ts"
+  },
   "remote": {
     "https://deno.land/std@0.139.0/_util/assert.ts": "e94f2eb37cebd7f199952e242c77654e43333c1ac4c5c700e929ea3aa5489f74",
     "https://deno.land/std@0.139.0/_util/os.ts": "49b92edea1e82ba295ec946de8ffd956ed123e2948d9bd1d3e901b04e4307617",
@@ -2208,6 +2211,9 @@
     "https://deno.land/std@0.200.0/yaml/schema/mod.ts": "4472e827bab5025e92bc2eb2eeefa70ecbefc64b2799b765c69af84822efef32",
     "https://deno.land/std@0.200.0/yaml/stringify.ts": "fffc09c65c68d3d63f8159e8cbaa3f489bc20a8e55b4fbb61a8c2e9f914d1d02",
     "https://deno.land/std@0.200.0/yaml/type.ts": "1aabb8e0a3f4229ce0a3526256f68826d9bdf65a36c8a3890ead8011fcba7670",
+    "https://deno.land/x/base64@v0.2.1/base.ts": "47dc8d68f07dc91524bdd6db36eccbe59cf4d935b5fc09f27357a3944bb3ff7b",
+    "https://deno.land/x/base64@v0.2.1/base64url.ts": "18bbf879b31f1f32cca8adaa2b6885ae325c2cec6a66c5817b684ca12c46ad5e",
+    "https://deno.land/x/base64@v0.2.1/mod.ts": "1cbdc4ba7229d3c6d1763fecdb9d46844777c7e153abb6dabea8b0dd01448db4",
     "https://deno.land/x/cliffy@v0.25.7/_utils/distance.ts": "02af166952c7c358ac83beae397aa2fbca4ad630aecfcd38d92edb1ea429f004",
     "https://deno.land/x/cliffy@v0.25.7/ansi/ansi.ts": "7f43d07d31dd7c24b721bb434c39cbb5132029fa4be3dd8938873065f65e5810",
     "https://deno.land/x/cliffy@v0.25.7/ansi/ansi_escapes.ts": "885f61f343223f27b8ec69cc138a54bea30542924eacd0f290cd84edcf691387",
@@ -2405,6 +2411,8 @@
     "https://deno.land/x/xml@2.1.1/utils/stream.ts": "056e2f368d47932d77e431bbc4a8292359171cc9ce881ea31ce0aae30d763e68",
     "https://deno.land/x/xml@2.1.1/utils/streamable.ts": "1603a5f10c859b95d4e9502365a0fba0b19d5d068356e20d5a6813cd37fee780",
     "https://deno.land/x/xml@2.1.1/utils/stringifier.ts": "c701b506835237c0c6c0a08fd94e0a012b644def3f4c819c64788daf2e649ea3",
-    "https://deno.land/x/xml@2.1.1/utils/types.ts": "ecaf7785e54a6f1da6f8e56da2bce9853407ceb7d5b3b70f0a60a0890151fe4c"
+    "https://deno.land/x/xml@2.1.1/utils/types.ts": "ecaf7785e54a6f1da6f8e56da2bce9853407ceb7d5b3b70f0a60a0890151fe4c",
+    "https://denopkg.com/chiefbiiko/sha256@v1.0.0/mod.ts": "eca3d13a2cd11839e451055737ccde0c7c6cdbd331fcd0a8f7e954ee857bb13a",
+    "https://denopkg.com/chiefbiiko/std-encoding@master/mod.ts": "e61017da4cef146863d614a961b4e61f1df14b72c906092bd02161f913e76522"
   }
 }

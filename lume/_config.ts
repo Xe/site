@@ -16,6 +16,7 @@ import XeblogHero from "./src/_components/XeblogHero.tsx";
 import XeblogPicture from "./src/_components/XeblogPicture.tsx";
 import XeblogSlide from "./src/_components/XeblogSlide.tsx";
 import XeblogSticker from "./src/_components/XeblogSticker.tsx";
+import XeblogToot from "./src/_components/XeblogToot.tsx";
 import XeblogVideo from "./src/_components/XeblogVideo.tsx";
 
 import rehypePrism from "npm:rehype-prism-plus/all";
@@ -56,6 +57,7 @@ site.use(mdx({
     "XeblogPicture": XeblogPicture,
     "XeblogSlide": XeblogSlide,
     "XeblogSticker": XeblogSticker,
+    "XeblogToot": XeblogToot,
     "XeblogVideo": XeblogVideo,
   },
   rehypePlugins: [
