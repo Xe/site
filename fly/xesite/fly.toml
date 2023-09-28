@@ -1,0 +1,38 @@
+# fly.toml file generated for xesite on 2023-09-27T19:39:44-04:00
+
+app = "xesite"
+
+kill_signal = "SIGINT"
+kill_timeout = 5
+
+[mounts]
+source = "data"
+destination = "/data"
+
+[build]
+image = "ghcr.io/xe/site/bin:latest"
+
+[env]
+DATA_DIR = "/data"
+GIT_BRANCH = "static_site"
+SITE_URL = "https://xesite.fly.dev"
+PATH = "/bin"
+
+[[services]]
+  internal_port = 3000
+  processes = ["app"]
+  protocol = "tcp"
+
+  [services.concurrency]
+    hard_limit = 300
+    soft_limit = 250
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443

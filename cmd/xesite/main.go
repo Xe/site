@@ -8,29 +8,38 @@ import (
 	"log/slog"
 	"net"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/donatj/hmacsig"
 	"github.com/facebookgo/flagenv"
 	"github.com/go-git/go-git/v5"
 	_ "github.com/joho/godotenv/autoload"
+	"tailscale.com/hostinfo"
+	"tailscale.com/tsnet"
 	"tailscale.com/tsweb"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
 )
 
 var (
-	bind         = flag.String("bind", ":3000", "Port to listen on")
-	devel        = flag.Bool("devel", false, "Enable development mode")
-	gitBranch    = flag.String("git-branch", "main", "Git branch to clone")
-	gitRepo      = flag.String("git-repo", "https://github.com/Xe/site", "Git repository to clone")
-	githubSecret = flag.String("github-secret", "", "GitHub secret to use for webhooks")
-	siteURL      = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")
+	bind                = flag.String("bind", ":3000", "Port to listen on")
+	devel               = flag.Bool("devel", false, "Enable development mode")
+	dataDir             = flag.String("data-dir", "./var", "Directory to store data in")
+	gitBranch           = flag.String("git-branch", "main", "Git branch to clone")
+	gitRepo             = flag.String("git-repo", "https://github.com/Xe/site", "Git repository to clone")
+	githubSecret        = flag.String("github-secret", "", "GitHub secret to use for webhooks")
+	patreonSaasProxyURL = flag.String("patreon-saasproxy-url", "http://patreon-saasproxy/give-token", "URL to use for the patreon saasproxy")
+	siteURL             = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")
+	tsnetHostname       = flag.String("tailscale-hostname", "xesite", "Tailscale hostname to use")
 )
 
 func main() {
 	flagenv.Parse()
 	flag.Parse()
 	internal.Slog()
+
+	hostinfo.SetApp("xeiaso.net/v4/cmd/xesite")
 
 	ctx := context.Background()
 
@@ -39,7 +48,20 @@ func main() {
 		log.Fatal(err)
 	}
 
-	pc, err := NewPatreonClient()
+	os.MkdirAll(*dataDir, 0700)
+	os.MkdirAll(filepath.Join(*dataDir, "tsnet"), 0700)
+
+	srv := &tsnet.Server{
+		Hostname: *tsnetHostname + "-" + os.Getenv("FLY_REGION"),
+		Logf:     func(string, ...any) {},
+		Dir:      filepath.Join(*dataDir, "tsnet"),
+	}
+
+	if err := srv.Start(); err != nil {
+		log.Fatal(err)
+	}
+
+	pc, err := NewPatreonClient(srv.HTTPClient())
 	if err != nil {
 		slog.Error("can't create patreon client", "err", err)
 	}
@@ -51,6 +73,7 @@ func main() {
 		URL:           *siteURL,
 		Development:   *devel,
 		PatreonClient: pc,
+		DataDir:       *dataDir,
 	})
 	if err != nil {
 		log.Fatal(err)

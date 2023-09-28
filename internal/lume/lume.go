@@ -118,14 +118,19 @@ type Options struct {
 	StaticSiteDir string
 	URL           string
 	PatreonClient *patreon.Client
+	DataDir       string
 }
 
 func New(ctx context.Context, o *Options) (*FS, error) {
-	repoDir, err := os.MkdirTemp("", "lume-repo")
+	repoDir := filepath.Join(o.DataDir, "repo")
+
+	os.RemoveAll(repoDir)
+	err := os.MkdirAll(filepath.Join(o.DataDir, "repo"), 0o755)
 	if err != nil {
 		return nil, err
 	}
 
+	t0 := time.Now()
 	repo, err := git.PlainCloneContext(ctx, repoDir, false, &git.CloneOptions{
 		URL:           o.Repo,
 		ReferenceName: plumbing.NewBranchReferenceName(o.Branch),
@@ -133,6 +138,8 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 	if err != nil {
 		return nil, err
 	}
+	dur := time.Since(t0)
+	slog.Debug("repo cloned", "in", dur.String())
 
 	fs := &FS{
 		repo:    repo,

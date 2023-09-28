@@ -10,11 +10,6 @@
       flake = false;
     };
 
-    naersk = {
-      url = "github:nix-community/naersk";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     deno2nix = {
       url = "github:Xe/deno2nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,12 +30,24 @@
   };
 
   outputs =
-    { self, nixpkgs, flake-utils, naersk, deno2nix, iosevka, typst, gomod2nix, ... }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ] (system:
+    { self
+    , nixpkgs
+    , flake-utils
+    , deno2nix
+    , iosevka
+    , typst
+    , gomod2nix
+    , ...
+    }:
+    flake-utils.lib.eachSystem [
+      "x86_64-linux"
+      "aarch64-linux"
+      "aarch64-darwin"
+    ]
+      (system:
       let
-        graft = pkgs: pkg: pkg.override {
-          buildGoModule = pkgs.buildGo121Module;
-        };
+        graft = pkgs: pkg:
+          pkg.override { buildGoModule = pkgs.buildGo121Module; };
         pkgs = import nixpkgs {
           inherit system;
           overlays = [
@@ -55,17 +62,13 @@
             gomod2nix.overlays.default
           ];
         };
-        naersk-lib = naersk.lib."${system}";
         src = ./.;
         lib = pkgs.lib;
 
-        tex = with pkgs;
-          texlive.combine { inherit (texlive) scheme-medium bitter titlesec; };
-
         fontsConf = pkgs.symlinkJoin {
-            name = "typst-fonts";
-            paths = [ "${self.packages.${system}.iosevka}/static/css/iosevka" ];
-          };
+          name = "typst-fonts";
+          paths = [ "${self.packages.${system}.iosevka}/static/css/iosevka" ];
+        };
 
         typstWithIosevka = pkgs.writeShellApplication {
           name = "typst";
@@ -79,29 +82,83 @@
         };
 
         # Generate a user-friendly version number.
-      version = builtins.substring 0 8 self.lastModifiedDate;
-      in rec {
+        version = builtins.substring 0 8 self.lastModifiedDate;
+      in
+      rec {
         packages = rec {
           bin = pkgs.buildGoApplication {
             pname = "xesite_v4";
             inherit version;
             src = ./.;
             modules = ./gomod2nix.toml;
-            subPackages = [ "xesite" ];
+            subPackages = [ "cmd/xesite" ];
+          };
+
+          patreon-bin = pkgs.buildGoApplication {
+            pname = "patreon-saasproxy";
+            inherit version;
+            src = ./.;
+            modules = ./gomod2nix.toml;
+            subPackages = [ "cmd/patreon-saasproxy" ];
+          };
+
+          iosevka = pkgs.stdenvNoCC.mkDerivation {
+            name = "xesite-iosevka";
+            buildInputs = with pkgs; [
+              python311Packages.brotli
+              python311Packages.fonttools
+            ];
+            dontUnpack = true;
+            buildPhase = ''
+              mkdir -p out
+              ${pkgs.unzip}/bin/unzip ${
+                self.inputs.iosevka.packages.${system}.default
+              }/ttf.zip
+              for ttf in ttf/*.ttf; do
+                cp $ttf out
+                name=`basename -s .ttf $ttf`
+                pyftsubset \
+                    $ttf \
+                    --output-file=out/"$name".woff2 \
+                    --flavor=woff2 \
+                    --layout-features=* \
+                    --no-hinting \
+                    --desubroutinize \
+                    --unicodes="U+0000-0170,U+00D7,U+00F7,U+2000-206F,U+2074,U+20AC,U+2122,U+2190-21BB,U+2212,U+2215,U+F8FF,U+FEFF,U+FFFD,U+00E8"
+              done
+
+            '';
+            installPhase = ''
+              mkdir -p $out/static/css/iosevka
+              cp out/* $out/static/css/iosevka
+            '';
           };
 
           docker = pkgs.dockerTools.buildLayeredImage {
-            name = "xena/xesite";
-            tag = version;
-            contents = with pkgs; [ ca-certificates typstWithIosevka dhall-json deno ];
+            name = "ghcr.io/xe/site/bin";
+            tag = "latest";
+            contents = with pkgs; [ cacert typst-dev dhall-json deno pagefind ];
             config = {
               Cmd = [ "${bin}/bin/xesite" ];
               Env = [
-                "TMPDIR=/data"
+                "HOME=/data"
+                "DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}"
+                "TYPST_FONT_PATHS=${fontsConf}"
               ];
-              Volumes = {
-                "/data" = {};
-              };
+              Volumes."/data" = { };
+            };
+          };
+
+          patreon-docker = pkgs.dockerTools.buildLayeredImage {
+            name = "ghcr.io/xe/site/patreon";
+            tag = "latest";
+            contents = with pkgs; [ cacert ];
+            config = {
+              Cmd = [ "${patreon-bin}/bin/patreon-saasproxy" ];
+              Env = [
+                "HOME=/data"
+              ];
+              Volumes."/data" = { };
             };
           };
         };
@@ -113,13 +170,12 @@
             go-tools
             gotools
             gopls
+            gomod2nix.packages.${system}.default
 
             # dhall
             dhall
             dhall-json
-            tex
-            pandoc
-            #typstWithIosevka
+            typst-dev
             pagefind
 
             # frontend
@@ -135,15 +191,10 @@
             python311Packages.fonttools
           ];
 
-          SITE_PREFIX = "devel.";
-          CLACK_SET = "Ashlynn,Terry Davis,Dennis Ritchie";
-          ESBUILD_BINARY_PATH = "${pkgs.esbuild}/bin/esbuild";
-          RUST_LOG = "debug";
-          RUST_BACKTRACE = "1";
           GITHUB_SHA = "devel";
           DHALL_PRELUDE = "${pkgs.dhallPackages.Prelude}";
+          TYPST_FONT_PATHS = "${fontsConf}";
+          FLY_REGION = "dev";
         };
-      }) // {
-        nixosModules.default = import ./nix/xesite.nix self;
-      };
+      });
 }

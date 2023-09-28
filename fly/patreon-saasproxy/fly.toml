@@ -1,0 +1,17 @@
+# fly.toml file generated for xesite-patreon-saasproxy on 2023-09-27T19:47:18-04:00
+
+app = "xesite-patreon-saasproxy"
+
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[mounts]
+source = "data"
+destination = "/data"
+
+[env]
+DATA_DIR = "/data"
+
+[build]
+image = "ghcr.io/xe/site/patreon:latest"

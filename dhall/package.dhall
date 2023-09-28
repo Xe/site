@@ -25,6 +25,10 @@ in  Config::{
       , "Sir Terry Pratchett"
       , "Satoru Iwata"
       , "Kris Nóva"
+      , "Joe Armstrong"
+      , "Paul Allen"
+      , "Kevin Mitnick"
+      , "Sir Clive Sinclair"
       ]
     , jobHistory = ./jobHistory.dhall
     , seriesDescriptions = desc.descriptions

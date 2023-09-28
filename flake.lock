@@ -239,26 +239,6 @@
         "type": "github"
       }
     },
-    "naersk": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1694081375,
-        "narHash": "sha256-vzJXOUnmkMCm3xw8yfPP5m8kypQ3BhAIRe4RRCWpzy8=",
-        "owner": "nix-community",
-        "repo": "naersk",
-        "rev": "3f976d822b7b37fc6fb8e6f157c2dd05e7e94e89",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "naersk",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1678898370,
@@ -276,11 +256,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1695145219,
-        "narHash": "sha256-Eoe9IHbvmo5wEDeJXKFOpKUwxYJIOxKUesounVccNYk=",
+        "lastModified": 1695644571,
+        "narHash": "sha256-asS9dCCdlt1lPq0DLwkVBbVoEKuEuz+Zi3DG7pR/RxA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5ba549eafcf3e33405e5f66decd1a72356632b96",
+        "rev": "6500b4580c2a1f3d0f980d32d285739d8e156d92",
         "type": "github"
       },
       "original": {
@@ -296,7 +276,6 @@
         "flake-utils": "flake-utils",
         "gomod2nix": "gomod2nix",
         "iosevka": "iosevka",
-        "naersk": "naersk",
         "nixpkgs": "nixpkgs_2",
         "typst": "typst"
       }
@@ -383,11 +362,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1695284807,
-        "narHash": "sha256-y7kf1ziudYVm5wl50M5CFxjWYW9TAjAZ7YPGyxhleSo=",
+        "lastModified": 1695810029,
+        "narHash": "sha256-L2twUdRypSWCfyFCirUEz679WcXBHMYNca+SpQeHF40=",
         "owner": "typst",
         "repo": "typst",
-        "rev": "3dcbe859fb6c0db3672feddf4c2b5043d5c24e0e",
+        "rev": "ffcd951bc8a698af99d43f5245aea47a7c09adaf",
         "type": "github"
       },
       "original": {
