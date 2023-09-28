@@ -61,7 +61,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	pc, err := NewPatreonClient(srv.HTTPClient())
+	if _, err := srv.Up(context.Background()); err != nil {
+		log.Fatal(err)
+	}
+
+	hc := srv.HTTPClient()
+
+	pc, err := NewPatreonClient(hc)
 	if err != nil {
 		slog.Error("can't create patreon client", "err", err)
 	}

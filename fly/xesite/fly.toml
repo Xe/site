@@ -15,7 +15,7 @@ image = "ghcr.io/xe/site/bin:latest"
 [env]
 DATA_DIR = "/data"
 GIT_BRANCH = "static_site"
-SITE_URL = "https://xesite.fly.dev"
+SITE_URL = "https://xeiaso.net/"
 PATH = "/bin"
 
 [[services]]
