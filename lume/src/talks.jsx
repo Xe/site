@@ -2,7 +2,7 @@ export const title = "Conference Talks";
 export const layout = "base.njk";
 
 export default ({ search }) => {
-  const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
+  const dateOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
 
   return (
     <>

@@ -13,7 +13,7 @@ hero:
 export function ChatFrame({ children }) {
   return (
     <>
-      <div className="mx-auto w-full max-w-md space-y-4 p-4">{children}</div>
+      <div className="w-full space-y-4 p-4">{children}</div>
     </>
   );
 }
@@ -25,7 +25,7 @@ export function ChatBubble({
   children,
 }) {
   return (
-    <div className={`mx-auto w-full max-w-md ${reply ? "" : "space-y-4"}`}>
+    <div className={`mx-auto w-full ${reply ? "" : "space-y-4"}`}>
       <div className={`flex ${reply ? "justify-start" : "justify-end"}`}>
         <div className={`flex w-11/12 ${reply ? "" : "flex-row-reverse"}`}>
           <div
@@ -104,17 +104,22 @@ The bubble on the robot's end spun a few times as the large language model proce
 
         Remember that it's okay to ask for help, and there are people who care about your well-being. You don't have to go through this alone. If you'd like to discuss your feelings further or if there's anything specific you'd like to talk about, please feel free to share.
     </ChatBubble>
+
 </ChatFrame>
 
-*Of course,* thought Jeff, *of course their robot therapist would tell me to to talk to a "real" therapist. Why wouldn't it?* He felt a wave of anger and frustration wash over him. He was paying for this service and it was just a machine. He was being cheated.
+_Of course,_ thought Jeff, _of course their robot therapist would tell me to to talk to a "real" therapist. Why wouldn't it?_ He felt a wave of anger and frustration wash over him. He was paying for this service and it was just a machine. He was being cheated.
 
 <ChatFrame>
-    <ChatBubble reply>
-        But you are the therapist that my company pays for. My only option for a mental health professional is you unless I want to wait three years of my life I'll never get back. I'm paying for this service and I want to talk to a human. A real human. Not a machine. I want to talk to a human who can understand me and help me.
-    </ChatBubble>
+  <ChatBubble reply>
+    But you are the therapist that my company pays for. My only option for a
+    mental health professional is you unless I want to wait three years of my
+    life I'll never get back. I'm paying for this service and I want to talk to
+    a human. A real human. Not a machine. I want to talk to a human who can
+    understand me and help me.
+  </ChatBubble>
 </ChatFrame>
 
-Linear algebra churned through the sand in a remote data center, electricity was flowing through atoms and the sand continued to process the input. Jeff really took a moment to consider the adage of "we took sand and forced it to think" and really thought about it. *No,* he thought, *the problem is that the sand isn't thinking, it's that there's all the motions of thinking, but none of the finesse of a human. It's just...hollow. Is this my future? Are we really doomed to be so connected to eachother yet totally isolated when it really matters?*
+Linear algebra churned through the sand in a remote data center, electricity was flowing through atoms and the sand continued to process the input. Jeff really took a moment to consider the adage of "we took sand and forced it to think" and really thought about it. _No,_ he thought, _the problem is that the sand isn't thinking, it's that there's all the motions of thinking, but none of the finesse of a human. It's just...hollow. Is this my future? Are we really doomed to be so connected to eachother yet totally isolated when it really matters?_
 
 <ChatFrame>
     <ChatBubble bg="purple-800">
@@ -124,9 +129,10 @@ Linear algebra churned through the sand in a remote data center, electricity was
 
         In the meantime, if there's anything specific you'd like to discuss or any questions you have, please don't hesitate to share, and I'll do my best to assist you.
     </ChatBubble>
+
 </ChatFrame>
 
-Jeff laughed. He laughed and laughed and laughed. His laughter was deep and as he continued it progressed to a deep, profound sadness. *An unfeeling automaton that never felt the pangs of isolation is going to tell me how to combat loneliness! My human contact problems solved by sand and steel! The future of healthcare indeed.*
+Jeff laughed. He laughed and laughed and laughed. His laughter was deep and as he continued it progressed to a deep, profound sadness. _An unfeeling automaton that never felt the pangs of isolation is going to tell me how to combat loneliness! My human contact problems solved by sand and steel! The future of healthcare indeed._
 
 Jeff closed the app and abruptly left the office. He just started walking and walking, his laughter progressing to crying progressing back to laughter again.
 
@@ -144,16 +150,18 @@ The monk looked to be 40-50 years old. His hair had faded, and it looked like he
 
 The monk looked towards Jeff and continued, "Is something troubling you?"
 
-Jeff hesitated for a moment and cut loose with a torrent of his feelings, thoughts, and fears. He began to cry happily as he let it all out. *Finally! Human connection!*
+Jeff hesitated for a moment and cut loose with a torrent of his feelings, thoughts, and fears. He began to cry happily as he let it all out. _Finally! Human connection!_
 
 The monk sat next to him and offered a shoulder to cry on. Once Jeff had let everything out, he asked the monk "By the way, I'm Jeff. What's your name?"
 
-The kind face of the monk appeared to melt away and get replaced with cold steel and glowing purple eyes. 
+The kind face of the monk appeared to melt away and get replaced with cold steel and glowing purple eyes.
 
 <ChatFrame>
-    <ChatBubble bg="purple-800">
-        Hi, I am a large language model created by Sine. My job is to help you work with your problems so that you can find some inner peace. How have you been doing today Jeff?
-    </ChatBubble>
+  <ChatBubble bg="purple-800">
+    Hi, I am a large language model created by Sine. My job is to help you work
+    with your problems so that you can find some inner peace. How have you been
+    doing today Jeff?
+  </ChatBubble>
 </ChatFrame>
 
 Jeff screamed.
@@ -164,6 +172,6 @@ Jeff got up and confusedly surveyed the scene. It was the same park he always wa
 
 Jeff got up and walked into the open office at the Techaro campus. Walking to his desk he saw a slack message in the technology news channel. People were really excited about it. A new ZCombinator startup raised 1 billion dollars in a Series A round to offer an alternative to expensive therapists using large language models.
 
-Its name was Sine. 
+Its name was Sine.
 
 Jeff fainted.

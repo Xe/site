@@ -23,8 +23,8 @@ export default ({ contactLinks }) => (
       <div>
         <h2 className="text-2xl mb-2">Discord</h2>
         <p className="mb-4">
-          <code className="p-1 bg-bg-soft dark:bg-bgDark-soft">xeiaso</code> or{" "}
-          <code className="p-1 bg-bg-soft dark:bg-bgDark-soft">Cadey~#1337</code>
+          <code className="p-1 bg-bg-soft dark:bg-bgDark-soft m-1">xeiaso</code> or{" "}
+          <code className="p-1 bg-bg-soft dark:bg-bgDark-soft m-1">Cadey~#1337</code>
         </p>
         <p className="mb-4">
           Please note that Discord may reject friend requests if you aren't in a
@@ -48,14 +48,14 @@ export default ({ contactLinks }) => (
         <ul className="list-disc list-inside">
           <li>
             Ethereum:{" "}
-            <code className="p-1 bg-bg-soft dark:bg-bgDark-soft">xeiaso.eth</code> or{" "}
-            <code className="p-1 bg-bg-soft dark:bg-bgDark-soft">
+            <code className="bg-bg-soft dark:bg-bgDark-soft m-1">xeiaso.eth</code> or{" "}
+            <code className="bg-bg-soft dark:bg-bgDark-soft m-1">
               0xeA223Ca8968Ca59e0Bc79Ba331c2F6f636A3fB82
             </code>
           </li>
           <li>
             Bitcoin:{" "}
-            <code className="p-1 bg-bg-soft dark:bg-bgDark-soft">
+            <code className="bg-bg-soft dark:bg-bgDark-soft m-1">
               bc1qw0pa3zdus94nyehmys6g8td2xfaqtl9pmuv564
             </code>
           </li>

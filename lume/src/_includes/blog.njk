@@ -2,10 +2,10 @@
 layout: base.njk
 ---
 
-<article class="prose dark:prose-invert max-w-2xl">
+<article class="prose dark:prose-invert max-w-none">
     <h1>{{title}}</h1>
     <p class="text-sm text-fg-3 dark:text-fgDark-3">
-        {{date.toDateString()}}
+        Published on {{date.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" })}}
     </p>
 
     {% if hero %}
@@ -39,7 +39,7 @@ layout: base.njk
             console.log("got here");
             const shareData = {
                 title: document.title,
-                url: window.location.href,
+                url: window.location.href
             };
             if (!navigator.canShare(shareData)) {
                 console.log("can't share");
