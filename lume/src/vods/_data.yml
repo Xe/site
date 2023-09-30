@@ -1,0 +1,3 @@
+type: vod
+layout: vod.njk
+index: true

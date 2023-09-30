@@ -1,0 +1,81 @@
+---
+title: Resume
+layout: base.njk
+---
+
+<h1 class="text-3xl mb-4">{{ resume.name }}</h1>
+<p class="text-xl mb-4">{{ resume.tagline }} - {{ resume.location.city }}, {{ resume.location.country }}</p>
+
+<p class="text-md mb-4">Hello, I'm Xe Iaso. I am a skilled force multiplier, acclaimed speaker, artist, and prolific blogger. My writing is widely viewed across 15 time zones and is one of the most viewed software blogs in the world.</p>
+
+<p class="mb-4">
+    I specialize in helping people realize their latent abilities and help to unblock them when they get stuck. This creates unique value streams and lets me bring others up to my level to help create more senior engineers. I am looking for roles that allow me to build upon existing company cultures and transmute them into new and innovative ways of talking about a product I believe in. I am prioritizing remote work at companies that align with my values of transparency, honesty, equity, and equality.
+</p>
+
+<p class="mb-4">
+    If you want someone that is dedicated to their craft, a fearless innovator and a genuine force multiplier, please look no further. I'm more than willing to hear you out.
+</p>
+
+<div class="flex flex-wrap items-start justify-center p-5">
+    {% for word in resume.buzzwords %}
+        <span class="m-2 p-2 text-sm bg-bg-1 dark:bg-bgDark-1 text-fg-1 dark:text-fgDark-1 rounded-lg">{{word}}</span>
+    {% endfor %}
+</div>
+
+<h2 class="text-2xl mb-4">Experience</h2>
+
+<h3 class="text-xl mb-4">Tailscale - Archmage of Infrastructure</h3>
+<span class="text-md mb-4">2020 - Present, Ottawa, CAN</span>
+
+<p class="mb-4">At Tailscale I founded the developer relations team with the goal of inspiring people to use Tailscale in fun and interesting ways. I work with the DevRel team to write articles for <a href="https://tailscale.dev">tailscale.dev</a> to help teach people fundamentals of computer science and networking in the process of learning about new product features and things you can do with them.</p>
+
+<p class="mb-4">Tailscale has easily been the best job I've ever had and I've had an enormous impact on how Tailscale is percieved by developers worldwide. For a while my actions were directly attributable to MAU growth. One of the hardest projects I've worked on was making DevRel efforts more than single flashes in the pan and create a reason for people to visit the website on a regular basis.</p>
+
+<p class="mb-4">While I worked at Tailscale, I attempted to spearhead the use of Nix and NixOS to declaratively manage our servers. This would have given us full knowledge of what packages and services were running on which servers, allowing us to know at a glance what server was doing what. Unfortunately, this project ultimately failed in ways that taught me a lot about the importance of clean, accessible documentation that is written for people that don't already understand the topic at hand. Even when a technically superior solution may exist, it is better to meet people where they are at and move forward together as a team.</p>
+
+<p class="mb-4">I regularly write articles and lead internal talks about how to use Tailscale and other technology topics in new and interesting ways.</p>
+
+<h3 class="text-xl mb-4">Lightspeed POS - Expert principal en fiabileté du site</h3>
+<span class="text-md mb-4">2019-05 - 2020-11, Montréal, CAN</span>
+
+<p class="mb-4">My team and I created and maintained the internal Kubernetes deployment (with the goal of being functionally an in-house Platform-as-a-service) and all of the assorted tooling around it, helping internal developers deploy new features to customers faster. I also helped to create custom icons and color schemes for internal tools, with the goal of having consistent brand design for knowing which tool is which at a glance.
+</p>
+
+<p class="mb-4">This Kubernetes project ended up being too complicated for developers in practice. Even with a lot of tooling and deployment-on-rails templates to help bridge gaps between the inherent complexity of Kubernetes, Vault, Docker, and the intents of what they wanted to do, things ended up being very complicated once developers wanted to go beyond the die-cast templates we gave them.</p>
+
+<p class="mb-4">The misadventures through Kubernetes' hidden complexity (especially when faced with developers that rightfully don't care about the details as long as things work) has taught me that "simple" is relative. There must be complexity somewhere and making things "simple" at one end merely moves the complexity around to another end. Templates to get you out the door are great things, but you can't stop at "hello world" and then throw people to the sharks.</p>
+
+<p class="mb-4">I also learned a lot about how to teach via teaching my teammates how to write Go the way I learned how to write Go. I have learned that it is impossible to teach people without learning how to teach them, and it is impossible to learn things without teaching your teacher new insights.</p>
+
+<p class="mb-4">While working on internal tooling, we did user research on how to approach designing command-line tools from a linguistic approach. We found that commands should be verbs, arguments should be nouns, and flags should be adverb clauses. This seems to help the most people understand tools in the most detail.</p>
+
+<h3 class="text-xl mb-4">Heroku - Senior Software Engineer</h3>
+<span class="text-md mb-4">2017-02 - 2019-03, Bellevue, USA</span>
+
+<p class="mb-4">I maintained the subsystem for processing terabytes of customer metrics per week in real time, and tools that consumed this data, such as threshold alerting and autoscaling. We were hitting theoretical limits for Kafka performance by the time I left.</p>
+
+<ul class="list-disc ml-4">
+    <li>Wrote and maintained integrations for JVM application metrics and Go runtime metrics</li>
+    <li>Developed a FaaS platform prototype with my team</li>
+    <li>Helped my team navigate complicated corporate politics and market conditions beyond our control</li>
+</ul>
+
+<hr class="my-4"/>
+
+<p class="mb-4">My work history before 2017 is available upon request.</p>
+
+<h2 class="text-2xl mb-4">Notable Publications</h2>
+<ul class="list-disc list-inside">
+    {% for publication in resume.notablePublications %}
+        <li>
+            <a href="{{ publication.url }}">{{ publication.title }}</a>
+            <p class="ml-6">{{ publication.description }}</p>
+        </li>
+    {% endfor %}
+</ul>
+
+<p class="my-4">My full publication history is available upon request.</p>
+
+<p class="mb-4">I have also given many talks at conferences and meetups. My full speaking history is available upon request.</p>
+
+<p class="mb-4"><a href="/static/resume/resume.pdf">Download PDF</a></p>

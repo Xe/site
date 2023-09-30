@@ -1,0 +1,77 @@
+---
+title: "OVE-20221017-0001: PolyMC appears to be compromised"
+date: 2022-10-17
+tags:
+  - minecraft
+  - polymc
+  - infosec
+series: CVE
+hero:
+  ai: "Waifu Diffusion V1.3"
+  file: "cyberpunk-forest-fire"
+  prompt: "studio ghibli, cyberpunk, trash can, fire, forest fire, forest, lots of fire"
+---
+
+[PolyMC](https://polymc.org/) is a modpack manager for
+[Minecraft](https://www.minecraft.net/en-us) that allows users to manage
+multiple logical installations of minecraft with their own sets of mods or
+plugins. Today it seems that the main maintainer of PolyMC has deleted all of
+the contributors from having access to the GitHub ACLs and has removed the code
+of conduct as of
+[PolyMC/PolyMC@ccf282593dcdbe189c99b81b8bc90cb203aed3ee](https://github.com/PolyMC/PolyMC/commit/ccf282593dcdbe189c99b81b8bc90cb203aed3ee).
+The main maintainer has also been reportedly using charged language and slurs
+freely as a result of being called out for this.
+
+It is unknown at this time if PolyMC is compromised, but software like this
+being in the hands of reactionaries is a very sketchy situation. I am monitoring
+this situation and will give updates when I can.
+
+It is unknown if it is safe to run existing installations of PolyMC, as [it
+reportedly fetches metadata about .jar files to run at runtime](https://github.com/NixOS/nixpkgs/issues/196460)
+from a now presumably untrustworthy service.
+
+If you are a user of PolyMC, it may be best to uninstall it until we can get
+more information about this emerging situation. I am treating this as a
+compromise of the upstream because that is the least bad way to describe this.
+If you are a package maintainer for a distribution that packages PolyMC, use
+`OVE-20221017-0001` as the vulnerability ID for your bug tracker. It may be best
+to yank or freeze PolyMC until we get more information.
+
+Here are other discussions about this:
+
+- [NixOS/nixpkgs#196460](https://github.com/NixOS/nixpkgs/issues/196460)
+- [The initial announcment from
+  Modrith](https://twitter.com/modrinth/status/1582093129641234432)
+- [A thread from
+  @gamingonlinux](https://twitter.com/gamingonlinux/status/1582103691762405378)
+- [Gentoo Bug #877495](https://bugs.gentoo.org/877495)
+- [Important warning for users of the PolyMC mod
+  launcher](https://old.reddit.com/r/Minecraft/comments/y6lt6s/important_warning_for_users_of_the_polymc_mod/)
+- [Switch off of PolyMC
+  ASAP](https://www.reddit.com/r/PolyMCLauncher/comments/y6k4x7/switch_off_of_polymc_asap/)
+
+Future updates to come.
+
+UPDATE(2022 M10 17 22:35): Minecraft mod launchers work by downloading arbitrary
+Java bytecode as instructed to by a metadata server. The metadata server that
+PolyMC uses is in the hands of the threat actor in control of the GitHub
+organization and as such you should treat any file that the PolyMC launcher
+downloads as advised by that metadata server as compromised. We do not have
+evidence of any compromise at this time, but the Minecraft mod ecosystem does
+not cryptographically sign mods when they are published so we have no way to
+easily tell.
+
+Some people have advised that users of PolyMC can mitigate this issue by
+changing the metadata server that the client uses, however I do not feel this is
+a sufficient fix. I suggest that you should _purge_ the PolyMC launcher from
+your systems and wait a few days for the dust to settle. No offense to the
+estranged PolyMC devs that are just trying to create a working solution for
+users, but there is not enough clarity to really know what is going on.
+
+NixOS and Gentoo have masked the PolyMC package. PolyMC is no longer installable
+via those distributions. I am told that the Flatpak package is not under the
+control of the threat actor, but I want to wait and see.
+
+<XeblogConv name="Cadey" mood="coffee">
+  Happy monday, eh?
+</XeblogConv>

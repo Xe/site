@@ -1,0 +1,668 @@
+---
+title: "TL;DR Rust"
+date: 2020-09-19
+series: rust
+tags:
+  - go
+  - golang
+---
+
+Recently I've been starting to use Rust more and more for larger and larger
+projects. As things have come up, I realized that I am missing a good reference
+for common things in Rust as compared to Go. This post contains a quick
+high-level overview of patterns in Rust and how they compare to patterns
+in Go. This will focus on code samples. This is no replacement for the [Rust
+book](https://doc.rust-lang.org/book/), but should help you get spun up on the
+various patterns used in Rust code.
+
+Also I'm happy to introduce Mara to the blog!
+
+<XeblogConv name="Mara" mood="hacker">
+  Hey, happy to be here! I'm Mara, a shark hacker from Xe's imagination. I'll
+  interject with side information, challenge assertions and more! Thanks for
+  inviting me!
+</XeblogConv>
+
+Let's start somewhere simple: functions.
+
+## Making Functions
+
+Functions are defined using `fn` instead of `func`:
+
+```go
+func foo() {}
+```
+
+```rust
+fn foo() {}
+```
+
+### Arguments
+
+Arguments can be passed by separating the name from the type with a colon:
+
+```go
+func foo(bar int) {}
+```
+
+```rust
+fn foo(bar: i32) {}
+```
+
+### Returns
+
+Values can be returned by adding `-> Type` to the function declaration:
+
+```go
+func foo() int {
+  return 2
+}
+```
+
+```rust
+fn foo() -> i32 {
+  return 2;
+}
+```
+
+In Rust values can also be returned on the last statement without the `return`
+keyword or a terminating semicolon:
+
+```rust
+fn foo() -> i32 {
+  2
+}
+```
+
+<XeblogConv name="Mara" mood="hmm">
+Hmm, what if I try to do something like this. Will this
+work?
+
+```rust
+fn foo() -> i32 {
+    if some_cond {
+        2
+    }
+
+    4
+}
+```
+
+</XeblogConv>
+
+Let's find out! The compiler spits back an error:
+
+```
+error[E0308]: mismatched types
+ --> src/lib.rs:3:9
+  |
+2 | /     if some_cond {
+3 | |         2
+  | |         ^ expected `()`, found integer
+4 | |     }
+  | |     -- help: consider using a semicolon here
+  | |_____|
+  |       expected this to be `()`
+```
+
+This happens because most basic statements in Rust can return values. The best
+way to fix this would be to move the `4` return into an `else` block:
+
+```rust
+fn foo() -> i32 {
+    if some_cond {
+        2
+    } else {
+        4
+    }
+}
+```
+
+Otherwise, the compiler will think you are trying to use that `if` as a
+statement, such as like this:
+
+```rust
+let val = if some_cond { 2 } else { 4 };
+```
+
+### Functions that can fail
+
+The [Result](https://doc.rust-lang.org/std/result/) type represents things that
+can fail with specific errors. The [eyre Result
+type](https://docs.rs/eyre) represents things that can fail
+with any error. For readability, this post will use the eyre Result type.
+
+<XeblogConv name="Mara" mood="hacker">
+  The angle brackets in the `Result` type are arguments to the type, this allows
+  the Result type to work across any type you could imagine.
+</XeblogConv>
+
+```go
+import "errors"
+
+func divide(x, y int) (int, err) {
+  if y == 0 {
+    return 0, errors.New("cannot divide by zero")
+  }
+
+  return x / y, nil
+}
+```
+
+```rust
+use eyre::{eyre, Result};
+
+fn divide(x: i32, y: i32) -> Result<i32> {
+  match y {
+    0 => Err(eyre!("cannot divide by zero")),
+    _ => Ok(x / y),
+  }
+}
+```
+
+<XeblogConv name="Mara" mood="hacker">
+  Huh? I thought Rust had the [Error
+  trait](https://doc.rust-lang.org/std/error/trait.Error.html), shouldn't you be
+  able to use that instead of a third party package like eyre?
+</XeblogConv>
+
+Let's try that, however we will need to make our own error type because the
+[`eyre!`](https://docs.rs/eyre/0.6.0/eyre/macro.eyre.html) macro creates its own
+transient error type on the fly.
+
+First we need to make our own simple error type for a DivideByZero error:
+
+```rust
+use std::error::Error;
+use std::fmt;
+
+#[derive(Debug)]
+struct DivideByZero;
+
+impl fmt::Display for DivideByZero {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "cannot divide by zero")
+    }
+}
+
+impl Error for DivideByZero {}
+```
+
+So now let's use it:
+
+```rust
+fn divide(x: i32, y: i32) -> Result<i32, DivideByZero> {
+  match y {
+    0 => Err(DivideByZero{}),
+    _ => Ok(x / y),
+  }
+}
+```
+
+However there is still one thing left: the function returns a DivideByZero
+error, not _any_ error like the [error interface in
+Go](https://pkg.go.dev/builtin#error). In order to represent that we need to
+return something that implements the Error trait:
+
+```rust
+fn divide(x: i32, y: i32) -> Result<i32, impl Error> {
+    // ...
+}
+```
+
+And for the simple case, this will work. However as things get more complicated
+this simple facade will not work due to reality and its complexities. This is
+why I am shipping as much as I can out to other packages like eyre or
+[anyhow](https://docs.rs/anyhow). Check out this code in the [Rust
+Playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=946057d8eb02f388cb3f03bae226d10d)
+to mess with this code interactively.
+
+<XeblogConv name="Mara" mood="hacker">
+  Pro tip: eyre (via [color-eyre](https://docs.rs/color-eyre)) also has support
+  for adding [custom sections and
+  context](https://docs.rs/color-eyre/0.5.4/color_eyre/#custom-sections-for-error-reports-via-help-trait)
+  to errors similar to Go's `fmt.Errorf` `%w` format argument, which will help
+  in real world applications. When you do need to actually make
+  [thiserror](https://docs.rs/thiserror) generating your error implementation.
+</XeblogConv>
+
+### The `?` Operator
+
+In Rust, the `?` operator checks for an error in a function call and if there is
+one, it automatically returns the error and gives you the result of the function
+if there was no error. This only works in functions that return either an Option
+or a Result.
+
+<XeblogConv name="Mara" mood="hacker">
+  The <a href="https://doc.rust-lang.org/std/option/index.html">Option</a> type
+  isn't shown in very much detail here, but it acts like a "this thing might not
+  exist and it's your responsibility to check" container for any value. The
+  closest analogue in Go is making a pointer to a value or possibly putting a
+  value in an `interface{}` (which can be annoying to deal with in practice).
+</XeblogConv>
+
+```go
+func doThing() (int, error) {
+  result, err := divide(3, 4)
+  if err != nil {
+    return 0, err
+  }
+
+  return result, nil
+}
+```
+
+```rust
+use eyre::Result;
+
+fn do_thing() -> Result<i32> {
+  let result = divide(3, 4)?;
+  Ok(result)
+}
+```
+
+If the second argument of divide is changed to `0`, then `do_thing` will return
+an error.
+
+<XeblogConv name="Mara" mood="hmm">
+  And how does that work with eyre?
+</XeblogConv>
+
+It works with eyre because eyre has its own error wrapper type called
+[`Report`](https://docs.rs/eyre/0.6.0/eyre/struct.Report.html), which can
+represent anything that implements the Error trait.
+
+## Macros
+
+Rust macros are function calls with `!` after their name:
+
+```rust
+println!("hello, world");
+```
+
+## Variables
+
+Variables are created using `let`:
+
+```go
+var foo int
+var foo = 3
+foo := 3
+```
+
+```rust
+let foo: i32;
+let foo = 3;
+```
+
+### Mutability
+
+In Rust, every variable is immutable (unchangeable) by default. If we try to
+change those variables above we get a compiler error:
+
+```rust
+fn main() {
+    let foo: i32;
+    let foo = 3;
+    foo = 4;
+}
+```
+
+This makes the compiler return this error:
+
+```
+error[E0384]: cannot assign twice to immutable variable `foo`
+ --> src/main.rs:4:5
+  |
+3 |     let foo = 3;
+  |         ---
+  |         |
+  |         first assignment to `foo`
+  |         help: make this binding mutable: `mut foo`
+4 |     foo = 4;
+  |     ^^^^^^^ cannot assign twice to immutable variable
+```
+
+As the compiler suggests, you can create a mutable variable by adding the `mut`
+keyword after the `let` keyword. There is no analog to this in Go.
+
+```rust
+let mut foo: i32 = 0;
+foo = 4;
+```
+
+<XeblogConv name="Mara" mood="hacker">
+  This is slightly a lie. There's more advanced cases involving interior
+  mutability and other fun stuff like that, however this is a more advanced
+  topic that isn't covered here.
+</XeblogConv>
+
+### Lifetimes
+
+Rust does garbage collection at compile time. It also passes ownership of memory
+to functions as soon as possible. Lifetimes are how Rust calculates how "long" a
+given bit of data should exist in the program. Rust will then tell the compiled
+code to destroy the data from memory as soon as possible.
+
+<XeblogConv name="Mara" mood="hacker">
+  This is slightly inaccurate in order to make this simpler to explain and
+  understand. It's probably more accurate to say that Rust calculates _when_ to
+  collect garbage at compile time, but the difference doesn't really matter for
+  most cases.
+</XeblogConv>
+
+For example, this code will fail to compile because `quo` was moved into the
+second divide call:
+
+```rust
+let quo = divide(4, 8)?;
+let other_quo = divide(quo, 5)?;
+
+// Fails compile because ownership of quo was given to divide to create other_quo
+let yet_another_quo = divide(quo, 4)?;
+```
+
+To work around this you can pass a reference to the divide function:
+
+```rust
+let other_quo = divide(&quo, 5);
+let yet_another_quo = divide(&quo, 4)?;
+```
+
+Or even create a clone of it:
+
+```rust
+let other_quo = divide(quo.clone(), 5);
+let yet_another_quo = divide(quo, 4)?;
+```
+
+<XeblogConv name="Mara" mood="hacker">
+  You can also get more fancy with [explicit lifetime
+  annotations](https://doc.rust-lang.org/rust-by-example/scope/lifetime/explicit.html),
+  however as of Rust's 2018 edition they aren't usually required unless you are
+  doing something weird. This is something that is also covered in more detail
+  in [the Rust
+  Book](https://doc.rust-lang.org/stable/book/ch04-00-understanding-ownership.html).
+</XeblogConv>
+
+### Passing Mutability
+
+Sometimes functions need mutable variables. To pass a mutable reference, add
+`&mut` before the name of the variable:
+
+```rust
+let something = do_something_to_quo(&mut quo)?;
+```
+
+## Project Setup
+
+### Imports
+
+External dependencies are declared using the [Cargo.toml
+file](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html):
+
+```toml
+# Cargo.toml
+
+[dependencies]
+eyre = "0.6"
+```
+
+This depends on the crate [eyre](https://crates.io/crates/eyre) at version
+0.6.x.
+
+<XeblogConv name="Mara" mood="hacker">
+  You can do much more with version requirements with cargo, see more
+  [here](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html).
+</XeblogConv>
+
+Dependencies can also have optional features:
+
+```toml
+# Cargo.toml
+
+[dependencies]
+reqwest = { version = "0.10", features = ["json"] }
+```
+
+This depends on the crate [reqwest](https://crates.io/reqwest) at version 0.10.x
+with the `json` feature enabled (in this case it enables reqwest being able to
+automagically convert things to/from json using Serde).
+
+External dependencies can be used with the `use` statement:
+
+```go
+// go
+
+import "github.com/foo/bar"
+```
+
+```rust
+use foo; //      -> foo now has the members of crate foo behind the :: operator
+use foo::Bar; // -> Bar is now exposed as a type in this file
+
+use eyre::{eyre, Result}; // exposes the eyre! and Result members of eyre
+```
+
+<XeblogConv name="Mara" mood="hacker">
+  This doesn't cover how the [module
+  system](https://www.sheshbabu.com/posts/rust-module-system/) works, however
+  the post I linked there covers this better than I can.
+</XeblogConv>
+
+## Async/Await
+
+Async functions may be interrupted to let other things execute as needed. This
+program uses [tokio](https://tokio.rs/) to handle async tasks. To run an async
+task and wait for its result, do this:
+
+```
+let printer_fact = reqwest::get("https://printerfacts.cetacean.club/fact")
+  .await?
+  .text()
+  .await?;
+println!("your printer fact is: {}", printer_fact);
+```
+
+This will populate `response` with an amusing fact about everyone's favorite
+household pet, the [printer](https://printerfacts.cetacean.club).
+
+To make an async function, add the `async` keyword before the `fn` keyword:
+
+```rust
+async fn get_text(url: String) -> Result<String> {
+  reqwest::get(&url)
+    .await?
+    .text()
+    .await?
+}
+```
+
+This can then be called like this:
+
+```rust
+let printer_fact = get_text("https://printerfacts.cetacean.club/fact").await?;
+```
+
+## Public/Private Types and Functions
+
+Rust has three privacy levels for functions:
+
+- Only visible to the current file (no keyword, lowercase in Go)
+- Visible to anything in the current crate (`pub(crate)`, internal packages in
+  go)
+- Visible to everyone (`pub`, upper case in Go)
+
+<XeblogConv name="Mara" mood="hacker">
+  You can't get a perfect analog to `pub(crate)` in Go, but [internal
+  packages](https://docs.google.com/document/d/1e8kOo3r51b2BWtTs_1uADIA5djfXhPT36s6eHVRIvaU/edit)
+  can get close to this behavior. Additionally you can have a lot more control
+  over access levels than this, see
+  [here](https://doc.rust-lang.org/nightly/reference/visibility-and-privacy.html)
+  for more information.
+</XeblogConv>
+
+## Structures
+
+Rust structures are created using the `struct` keyword:
+
+```go
+type Client struct {
+  Token string
+}
+```
+
+```rust
+pub struct Client {
+  pub token: String,
+}
+```
+
+If the `pub` keyword is not specified before a member name, it will not be
+usable outside the Rust source code file it is defined in:
+
+```go
+type Client struct {
+  token string
+}
+```
+
+```rust
+pub(crate) struct Client {
+  token: String,
+}
+```
+
+### Encoding structs to JSON
+
+[serde](https://serde.rs) is used to convert structures to json. The Rust
+compiler's
+[derive](https://doc.rust-lang.org/stable/rust-by-example/trait/derive.html)
+feature is used to automatically implement the conversion logic.
+
+```go
+type Response struct {
+  Name        string  `json:"name"`
+  Description *string `json:"description,omitempty"`
+}
+```
+
+```rust
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize, Debug)]
+pub(crate) struct Response {
+  pub name: String,
+  pub description: Option<String>,
+}
+```
+
+## Strings
+
+Rust has a few string types that do different things. You can read more about
+this [here](https://fasterthanli.me/blog/2020/working-with-strings-in-rust/),
+but at a high level most projects only uses a few of them:
+
+- `&str`, a slice reference to a String owned by someone else
+- String, an owned UTF-8 string
+- PathBuf, a filepath string (encoded in whatever encoding the OS running this
+  code uses for filesystems)
+
+The strings are different types for safety reasons. See the linked blogpost for
+more detail about this.
+
+## Enumerations / Tagged Unions
+
+Enumerations, also known as tagged unions, are a way to specify a superposition
+of one of a few different kinds of values in one type. A neat way to show them
+off (along with some other fancy features like the derivation system) is with the
+[structopt](https://docs.rs/structopt/0.3.14/structopt/) crate. There is no easy
+analog for this in Go.
+
+<XeblogConv name="Mara" mood="hacker">
+  We've actually been dealing with enumerations ever since we touched the Result
+  type earlier.{" "}
+  <a href="https://doc.rust-lang.org/std/result/enum.Result.html">Result</a> and{" "}
+  <a href="https://doc.rust-lang.org/std/option/enum.Option.html">Option</a> are
+  implemented with enumerations.
+</XeblogConv>
+
+```rust
+#[derive(StructOpt, Debug)]
+#[structopt(about = "A simple release management tool")]
+pub(crate) enum Cmd {
+    /// Creates a new release for a git repo
+    Cut {
+        #[structopt(flatten)]
+        common: Common,
+        /// Changelog location
+        #[structopt(long, short, default_value="./CHANGELOG.md")]
+        changelog: PathBuf,
+    },
+
+    /// Runs releases as triggered by GitHub Actions
+    GitHubAction {
+        #[structopt(flatten)]
+        gha: GitHubAction,
+    },
+}
+```
+
+Enum variants can be matched using the `match` keyword:
+
+```rust
+match cmd {
+    Cmd::Cut { common, changelog } => {
+        cmd::cut::run(common, changelog).await
+    }
+    Cmd::GitHubAction { gha } => {
+        cmd::github_action::run(gha).await
+    }
+}
+```
+
+All variants of an enum must be matched in order for the code to compile.
+
+<XeblogConv name="Mara" mood="hacker">
+  This code was borrowed from{" "}
+  <a href="https://github.com/lightspeed/palisade">palisade</a> in order to
+  demonstrate this better. If you want to see these patterns in action, check
+  this repository out!
+</XeblogConv>
+
+## Testing
+
+Test functions need to be marked with the `#[test]` annotation, then they will
+be run alongside `cargo test`:
+
+```rust
+mod tests { // not required but it is good practice
+  #[test]
+  fn math_works() {
+    assert_eq!(2 + 2, 4);
+  }
+
+  #[tokio::test] // needs tokio as a dependency
+  async fn http_works() {
+    let _ = get_html("https://within.website").await.unwrap();
+  }
+}
+```
+
+Avoid the use of `unwrap()` outside of tests. In the wrong cases, using
+`unwrap()` in production code can cause the server to crash and can incur data
+loss.
+
+<XeblogConv name="Mara" mood="hacker">
+  Alternatively, you can also use the
+  [`.expect()`](https://doc.rust-lang.org/std/error/index.html#common-message-styles)
+  method instead of `.unwrap()`. This lets you attach a message that will be
+  shown when the result isn't Ok.
+</XeblogConv>
+
+---
+
+This is by no means comprehensive, see the rust book or [Learn X in Y Minutes
+Where X = Rust](https://learnxinyminutes.com/docs/rust/) for more information.
+This code is written to be as boring and obvious as possible. If things don't
+make sense, please reach out and don't be afraid to ask questions.

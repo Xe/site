@@ -1,0 +1,47 @@
+---
+title: "Salary Transparency"
+---
+
+<h1 class="mb-4 text-3xl">Salary Transparency</h1>
+
+<p class="mb-4">This page lists my salary for every job I've had in tech. I have had this data open to the public for years, but I feel this should be more prominently displayed on my website. Other people have copied my approach of having a list of every salary they have ever been paid on their websites, and I would like to set the example by making it prominent on my website.</p>
+
+<p class="mb-4">As someone who has seen pay discrimination work in action first-hand, data is one of the ways that we can end this pointless hiding of information that leads to people being uninformed and hurt by their lack of knowledge. By laying my hand out in the open like this, I hope to ensure that people are better informed about how much money they can make, so that they can be paid equally for equal work.</p>
+
+<p class="mb-4">Please keep in mind that this table doesn't tell the complete story. If you feel like judging me about any entry in this table, please do not do it around me.</p>
+
+<h2 class="mb-4 text-2xl">Salary History</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th class="font-semibold px-2 border-solid border-2">Title</th>
+            <th class="font-semibold px-2 border-solid border-2">Start Date</th>
+            <th class="font-semibold px-2 border-solid border-2">End Date</th>
+            <th class="font-semibold px-2 border-solid border-2">Salary</th>
+            <th class="font-semibold px-2 border-solid border-2">Leave Reason</th>
+        </tr>
+    </thead>
+    {% for job in jobHistory %}
+        <tr>
+            <td class="px-2 border-solid border-2">{{ job.title }}</td>
+            <td class="px-2 border-solid border-2">{{ job.startDate }}</td>
+            <td class="px-2 border-solid border-2">{{ job.endDate }}</td>
+            <td class="px-2 border-solid border-2">{{ job.salary.currency }}${{ job.salary.amount }}/{{ job.salary.per }}</td>
+            <td class="px-2 border-solid border-2">{{ job.leaveReason }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<p class="my-4">I typically update this page once any of the following things happens:</p>
+
+<ul class="list-disc list-inside">
+    <li>I get a new job</li>
+    <li>I get a raise</li>
+    <li>I get a promotion</li>
+    <li>I leave a job</li>
+    <li>I get converted from a contractor to a full-time employee</li>
+    <li>Other unexpected extranormal circumstances</li>
+</ul>
+
+<p class="mb-4">Please consider publishing your salary data like this as well. By open, voluntary transparency we can help to end stigmas around discussing pay and help ensure that the next generations of people in tech are treated fairly. Stigmas thrive in darkness but wither and die in the light of day. You can help end the stigma by playing your cards out in the open like this.</p

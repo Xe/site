@@ -10,13 +10,14 @@
       flake = false;
     };
 
-    naersk = {
-      url = "github:nix-community/naersk";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     deno2nix = {
       url = "github:Xe/deno2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
+    gomod2nix = {
+      url = "github:nix-community/gomod2nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
@@ -29,125 +30,76 @@
   };
 
   outputs =
-    { self, nixpkgs, flake-utils, naersk, deno2nix, iosevka, typst, ... }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ] (system:
+    { self
+    , nixpkgs
+    , flake-utils
+    , deno2nix
+    , iosevka
+    , typst
+    , gomod2nix
+    , ...
+    }:
+    flake-utils.lib.eachSystem [
+      "x86_64-linux"
+      "aarch64-linux"
+      "aarch64-darwin"
+    ]
+      (system:
       let
+        graft = pkgs: pkg:
+          pkg.override { buildGoModule = pkgs.buildGo121Module; };
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ deno2nix.overlays.default typst.overlays.default ];
+          overlays = [
+            deno2nix.overlays.default
+            typst.overlays.default
+            (final: prev: {
+              go = prev.go_1_21;
+              go-tools = graft prev prev.go-tools;
+              gotools = graft prev prev.gotools;
+              gopls = graft prev prev.gopls;
+            })
+            gomod2nix.overlays.default
+          ];
         };
-        naersk-lib = naersk.lib."${system}";
         src = ./.;
         lib = pkgs.lib;
 
-        tex = with pkgs;
-          texlive.combine { inherit (texlive) scheme-medium bitter titlesec; };
-
         fontsConf = pkgs.symlinkJoin {
-            name = "typst-fonts";
-            paths = [ "${self.packages.${system}.iosevka}/static/css/iosevka" ];
-          };
+          name = "typst-fonts";
+          paths = [ "${self.packages.${system}.iosevka}/static/css/iosevka" ];
+        };
 
         typstWithIosevka = pkgs.writeShellApplication {
           name = "typst";
           text = ''
             ${pkgs.typst-dev}/bin/typst \
+            compile \
             --font-path ${fontsConf} \
             "$@"
           '';
           runtimeInputs = [ ];
         };
-      in rec {
+
+        # Generate a user-friendly version number.
+        version = builtins.substring 0 8 self.lastModifiedDate;
+      in
+      rec {
         packages = rec {
-          bin = naersk-lib.buildPackage {
-            pname = "xesite-bin";
-            root = src;
-            buildInputs = with pkgs; [
-              pkg-config
-              openssl
-              git
-              deno
-              nodePackages.uglify-js
-            ];
+          bin = pkgs.buildGoApplication {
+            pname = "xesite_v4";
+            inherit version;
+            src = ./.;
+            modules = ./gomod2nix.toml;
+            subPackages = [ "cmd/xesite" ];
           };
 
-          config = pkgs.stdenv.mkDerivation {
-            pname = "xesite-config";
-            inherit (bin) version;
-            inherit src;
-            buildInputs = with pkgs; [ dhall dhallPackages.Prelude ];
-
-            phases = "installPhase";
-
-            installPhase = ''
-              mkdir -p $out
-              cp -rf ${pkgs.dhallPackages.Prelude}/.cache .cache
-              chmod -R u+w .cache
-              export XDG_CACHE_HOME=.cache
-              export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall;
-              dhall resolve --file $src/config.dhall >> $out/config.dhall
-            '';
-          };
-
-          resumePDF = pkgs.stdenv.mkDerivation {
-            pname = "xesite-resume-pdf";
-            inherit (bin) version;
-            inherit src;
-            buildInputs = with pkgs; [
-              dhall-json
-              dhallPackages.Prelude
-              tex
-              pandoc
-              typst-dev
-            ];
-
-            phases = "installPhase";
-
-            installPhase = ''
-              mkdir -p $out/static/resume
-
-              cp -rf ${pkgs.dhallPackages.Prelude}/.cache .cache
-              chmod -R u+w .cache
-              export XDG_CACHE_HOME=.cache
-              export DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}/binary.dhall;
-
-              mkdir -p icons
-              cp -vrf $src/dhall/resume/* .
-              dhall-to-json --file $src/dhall/resume.dhall --output resume.json
-
-              typst compile --font-path ${fontsConf} resume.typ $out/static/resume/resume.pdf
-            '';
-          };
-
-          frontend = pkgs.stdenv.mkDerivation rec {
-            pname = "xesite-frontend";
-            inherit (bin) version;
-            dontUnpack = true;
-            src = ./src/frontend;
-            buildInputs = with pkgs; [ deno jq nodePackages.uglify-js ];
-            ESBUILD_BINARY_PATH = "${pkgs.esbuild}/bin/esbuild";
-
-            buildPhase = ''
-              export DENO_DIR="$(pwd)/.deno2nix"
-              mkdir -p $DENO_DIR
-              ln -s "${
-                pkgs.deno2nix.internal.mkDepsLink ./src/frontend/deno.lock
-              }" $(deno info --json | jq -r .modulesCache)
-              export MINIFY=yes
-
-              mkdir -p dist
-              export WRITE_TO=$(pwd)/dist
-
-              pushd $(pwd)
-              cd $src
-              deno run -A ./build.ts **/*.tsx
-              popd
-            '';
-
-            installPhase = ''
-              mkdir -p $out/static/xeact
-              cp -vrf dist/* $out/static/xeact
-            '';
+          patreon-bin = pkgs.buildGoApplication {
+            pname = "patreon-saasproxy";
+            inherit version;
+            src = ./.;
+            modules = ./gomod2nix.toml;
+            subPackages = [ "cmd/patreon-saasproxy" ];
           };
 
           iosevka = pkgs.stdenvNoCC.mkDerivation {
@@ -182,80 +134,56 @@
             '';
           };
 
-          static = pkgs.stdenv.mkDerivation {
-            pname = "xesite-static";
-            inherit (bin) version;
-            inherit src;
-
-            phases = "installPhase";
-
-            installPhase = ''
-              mkdir -p $out
-              cp -vrf $src/data $out
-              cp -vrf $src/static $out
-            '';
-          };
-
-          posts = pkgs.stdenv.mkDerivation {
-            pname = "xesite-posts";
-            inherit (bin) version;
-            inherit src;
-
-            phases = "installPhase";
-
-            installPhase = ''
-              mkdir -p $out
-              cp -vrf $src/blog $out
-              cp -vrf $src/gallery $out
-              cp -vrf $src/talks $out
-            '';
-          };
-
-          default = pkgs.symlinkJoin {
-            name = "xesite-${bin.version}";
-            paths = [ config posts static bin frontend resumePDF iosevka ];
-          };
-
           docker = pkgs.dockerTools.buildLayeredImage {
-            name = "xena/xesite";
-            tag = bin.version;
-            contents = [ default ];
+            name = "ghcr.io/xe/site/bin";
+            tag = "latest";
+            contents = with pkgs; [ cacert typst-dev dhall-json deno pagefind ];
             config = {
               Cmd = [ "${bin}/bin/xesite" ];
-              WorkdingDir = "${default}";
+              Env = [
+                "HOME=/data"
+                "DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}"
+                "TYPST_FONT_PATHS=${fontsConf}"
+              ];
+              Volumes."/data" = { };
+            };
+          };
+
+          patreon-docker = pkgs.dockerTools.buildLayeredImage {
+            name = "ghcr.io/xe/site/patreon";
+            tag = "latest";
+            contents = with pkgs; [ cacert ];
+            config = {
+              Cmd = [ "${patreon-bin}/bin/patreon-saasproxy" ];
+              Env = [
+                "HOME=/data"
+              ];
+              Volumes."/data" = { };
             };
           };
         };
 
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
-            # Rust
-            rustc
-            cargo
-            clippy
-            rust-analyzer
-            cargo-watch
-            cargo-license
-            rustfmt
-            hyperfine
-
-            # system dependencies
-            openssl
-            pkg-config
+            # Go
+            go
+            go-tools
+            gotools
+            gopls
+            gomod2nix.packages.${system}.default
 
             # dhall
             dhall
             dhall-json
-            dhall-lsp-server
-            tex
-            pandoc
-            typstWithIosevka
+            typst-dev
+            pagefind
 
             # frontend
             deno
             nodePackages.uglify-js
             esbuild
             zig
+            nodejs
 
             # tools
             ispell
@@ -263,15 +191,10 @@
             python311Packages.fonttools
           ];
 
-          SITE_PREFIX = "devel.";
-          CLACK_SET = "Ashlynn,Terry Davis,Dennis Ritchie";
-          ESBUILD_BINARY_PATH = "${pkgs.esbuild}/bin/esbuild";
-          RUST_LOG = "debug";
-          RUST_BACKTRACE = "1";
           GITHUB_SHA = "devel";
           DHALL_PRELUDE = "${pkgs.dhallPackages.Prelude}";
+          TYPST_FONT_PATHS = "${fontsConf}";
+          FLY_REGION = "dev";
         };
-      }) // {
-        nixosModules.default = import ./nix/xesite.nix self;
-      };
+      });
 }

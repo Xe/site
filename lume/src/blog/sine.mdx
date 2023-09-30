@@ -1,0 +1,169 @@
+---
+title: Sine
+date: 2023-09-30
+tags:
+  - fiction
+  - ai
+hero:
+  ai: Anything V3
+  file: cisco-vibes
+  prompt: "1girl, green hair, green eyes, tshirt, skirt, sneakers, san francisco, bridge, ahoge, round eyes, long hair, chromatic abberation"
+---
+
+export function ChatFrame({ children }) {
+  return (
+    <>
+      <div className="mx-auto w-full max-w-md space-y-4 p-4">{children}</div>
+    </>
+  );
+}
+
+export function ChatBubble({
+  reply = false,
+  bg = "blue-dark",
+  fg = "slate-50",
+  children,
+}) {
+  return (
+    <div className={`mx-auto w-full max-w-md ${reply ? "" : "space-y-4"}`}>
+      <div className={`flex ${reply ? "justify-start" : "justify-end"}`}>
+        <div className={`flex w-11/12 ${reply ? "" : "flex-row-reverse"}`}>
+          <div
+            className={`relative max-w-xl rounded-xl ${
+              reply ? "rounded-tl-none" : "rounded-tr-none"
+            } bg-${bg} px-4 py-2`}
+          >
+            <span className={`font-medium text-${fg}`}>{children}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function LoadingSpinner() {
+  return (
+    <div
+      class="inline-block mt-2 h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+      role="status"
+    >
+      <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+        Loading...
+      </span>
+    </div>
+  );
+}
+
+Jeff pulled out his phone to respond to an incoming notification. He was about to have his first appointment with his therapist. The company health plan had changed recently, so he was curious to see what the new therapist was like. He opened the app and saw a message from his therapist.
+
+<ChatFrame>
+  <ChatBubble bg="purple-800">
+    Hi, I am a large language model created by Sine. My job is to help you work
+    with your problems so that you can find some inner peace. How have you been
+    doing Jeff?
+  </ChatBubble>
+</ChatFrame>
+
+Jeff sighed, Techaro had chosen a new health plan and the therapy benefit had been reduced to this: text chat with an unfeeling machine. All because human therapists had a backlog of 3 years. How could anyone seek help in that environment?
+
+<ChatFrame>
+  <ChatBubble reply>
+    I've been better. My anxiety has been worse than usual about my health and
+    it's making it hard to sleep.
+  </ChatBubble>
+  <ChatBubble bg="purple-800">
+    I'm sorry to hear that you're experiencing anxiety about your health. It's
+    not uncommon to have health-related worries that can disrupt your sleep. Can
+    you tell me more about what specific health concerns are bothering you, so
+    we can discuss them together and explore ways to manage your anxiety?
+  </ChatBubble>
+</ChatFrame>
+
+Jeff paused for a moment and re-read the message twice. It had all the hallmarks of a genuine message written by a human but none of the soul. It was empty and hollow, like looking into a consumed bottle. A feeling of dread and loathing descended over him. He felt like he was talking to a ghost.
+
+_No_, he thought, _I'm talking to a machine. A machine that's pretending to be a human._
+
+<ChatFrame>
+  <ChatBubble reply>
+    It really feels like the world is leaving me behind and that human contact
+    is hard to truly foster. I feel surrounded by those who care but yet still
+    alone in a way that I can't easily describe.
+  </ChatBubble>
+  <ChatBubble bg="purple-800">
+    <LoadingSpinner />
+  </ChatBubble>
+</ChatFrame>
+
+The bubble on the robot's end spun a few times as the large language model processed what Jeff said to construct a reply based on the patterns of word frequencies across the entire Internet and last vestiges of print media. After 3 seconds, it was done, saying:
+
+<ChatFrame>
+    <ChatBubble bg="purple-800">
+        I'm really sorry to hear that you're feeling this way, and I want you to know that you're not alone in experiencing these emotions. Loneliness and the sense of being left behind can be incredibly challenging. It's important to reach out to friends and loved ones to share your feelings with them. They may not fully understand, but opening up can often lead to a deeper connection.
+
+        Consider seeking support from a mental health professional or counselor who can provide guidance and strategies to help you manage these feelings. They can also provide a safe and confidential space for you to express yourself.
+
+        Remember that it's okay to ask for help, and there are people who care about your well-being. You don't have to go through this alone. If you'd like to discuss your feelings further or if there's anything specific you'd like to talk about, please feel free to share.
+    </ChatBubble>
+</ChatFrame>
+
+*Of course,* thought Jeff, *of course their robot therapist would tell me to to talk to a "real" therapist. Why wouldn't it?* He felt a wave of anger and frustration wash over him. He was paying for this service and it was just a machine. He was being cheated.
+
+<ChatFrame>
+    <ChatBubble reply>
+        But you are the therapist that my company pays for. My only option for a mental health professional is you unless I want to wait three years of my life I'll never get back. I'm paying for this service and I want to talk to a human. A real human. Not a machine. I want to talk to a human who can understand me and help me.
+    </ChatBubble>
+</ChatFrame>
+
+Linear algebra churned through the sand in a remote data center, electricity was flowing through atoms and the sand continued to process the input. Jeff really took a moment to consider the adage of "we took sand and forced it to think" and really thought about it. *No,* he thought, *the problem is that the sand isn't thinking, it's that there's all the motions of thinking, but none of the finesse of a human. It's just...hollow. Is this my future? Are we really doomed to be so connected to eachother yet totally isolated when it really matters?*
+
+<ChatFrame>
+    <ChatBubble bg="purple-800">
+        I'm here to listen and support you to the best of my abilities, but please keep in mind that I am not a replacement for a licensed mental health professional. While I can offer guidance, suggestions, and a listening ear, I cannot provide the same level of personalized therapy or treatment that a human therapist can offer.
+
+        If you're experiencing persistent feelings of loneliness and anxiety, it's important to seek help from a trained mental health professional. I can assist you in exploring coping strategies, self-help techniques, or provide information, but I strongly encourage you to discuss your feelings with a qualified therapist or counselor when possible.
+
+        In the meantime, if there's anything specific you'd like to discuss or any questions you have, please don't hesitate to share, and I'll do my best to assist you.
+    </ChatBubble>
+</ChatFrame>
+
+Jeff laughed. He laughed and laughed and laughed. His laughter was deep and as he continued it progressed to a deep, profound sadness. *An unfeeling automaton that never felt the pangs of isolation is going to tell me how to combat loneliness! My human contact problems solved by sand and steel! The future of healthcare indeed.*
+
+Jeff closed the app and abruptly left the office. He just started walking and walking, his laughter progressing to crying progressing back to laughter again.
+
+After walking for what felt like an hour, Jeff ended up at a peaceful garden. He walked in and sat next to a small fountain. The scene was idyllic. The garden was a textbook image of serenity and he loved it. After some time, a robed figure approached him.
+
+Jeff weakly asked the monk "Hello?"
+
+The monk sat near him and replied "Hello, it's a beautiful day out today, isn't it?"
+
+The monk looked to be 40-50 years old. His hair had faded, and it looked like he had seen some things in life. The most distinctive feature was his calm yet gentle smile accented by his soothing voice.
+
+"Yeah, I didn't know there was such a big park out here. How long has this place been here?"
+
+"The Zen Garden has existed for 100 years. We've worked to make it an immaculate respite from the world of temptation and separation. I've lived here for 20 years and it's still my favorite place in the world."
+
+The monk looked towards Jeff and continued, "Is something troubling you?"
+
+Jeff hesitated for a moment and cut loose with a torrent of his feelings, thoughts, and fears. He began to cry happily as he let it all out. *Finally! Human connection!*
+
+The monk sat next to him and offered a shoulder to cry on. Once Jeff had let everything out, he asked the monk "By the way, I'm Jeff. What's your name?"
+
+The kind face of the monk appeared to melt away and get replaced with cold steel and glowing purple eyes. 
+
+<ChatFrame>
+    <ChatBubble bg="purple-800">
+        Hi, I am a large language model created by Sine. My job is to help you work with your problems so that you can find some inner peace. How have you been doing today Jeff?
+    </ChatBubble>
+</ChatFrame>
+
+Jeff screamed.
+
+Suddenly Jeff found himself laying down on a park bench in San Francisco. There was a scruffy man standing over him looking worried. "Y'all good?"
+
+Jeff got up and confusedly surveyed the scene. It was the same park he always walked to before work, but it was not the morning. Jeff was late!
+
+Jeff got up and walked into the open office at the Techaro campus. Walking to his desk he saw a slack message in the technology news channel. People were really excited about it. A new ZCombinator startup raised 1 billion dollars in a Series A round to offer an alternative to expensive therapists using large language models.
+
+Its name was Sine. 
+
+Jeff fainted.

@@ -1,0 +1,19 @@
+---
+title: Characters
+layout: base.njk
+date: 2012-12-21
+---
+
+{% for character in characters %}
+    <h2 id="{{ character.name }}" class="text-2xl my-4">{{ character.name }}</h2>
+    <p class="mb-4 text-fg-2 dark:text-fgDark-2">{{ character.pronouns.nominative }}/{{ character.pronouns.accusative }}</p>
+    {{ comp.XeblogSticker({ name: character.name, mood: character.defaultPose }) | safe }}
+    <p class="mb-4">{{ character.description | md | safe }}</p>
+    <details class="my-4">
+        <summary>All stickers</summary>
+        {% for mood in character.stickers %}
+            <h3 class="text-md my-4">{{ mood }}</h3>
+            {{ comp.XeblogSticker({ name: character.name, mood: mood }) | safe }}
+        {% endfor %}
+    </details>
+{% endfor %}

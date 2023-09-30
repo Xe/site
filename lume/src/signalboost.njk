@@ -1,0 +1,14 @@
+---
+title: "Signal Boosts"
+layout: base.njk
+---
+
+<h1 class="text-3xl mb-4">Signal Boosts</h1>
+
+<p class="mb-4">These awesome people are currently looking for a job. If you are looking for anyone with these skills, please feel free to reach out to them. If you want to add yourself to the list, please PR edits to <code>/dhall/signalboost.dhall</code> in this website's <a href="https://github.com/Xe/site">source code</a>.</p>
+
+<div class="flex flex-wrap items-start justify-center p-2">
+    {% for person in signalboost %}
+        {{ comp.SignalBoostCard(person) | safe }}
+    {% endfor %}
+</div>

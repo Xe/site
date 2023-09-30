@@ -1,0 +1,192 @@
+---
+title: Mozilla wants its documentation to gaslight you
+date: 2023-07-19
+tags:
+  - philosophy
+  - ai
+hero:
+  ai: SCMix+Tanuki
+  file: bad-trip
+  prompt: A blue-haired foxgirl stands in front of a campfire while camping in winter, with snow covering the tips of the trees.
+---
+
+Mozilla is one of the most important companies on the Internet. For a
+very long time, they have represented the only real competitor that
+Microsoft and Google have had as far as web browsers go. Mozilla is
+widely seen as a force for good by vast numbers of the developer
+community, but they seem to be torching all that good will by just
+giving up.
+
+One of their most critical resources is the [Mozilla Developer Network
+(MDN)](https://developer.mozilla.org/en-US/). This documents every
+HTML, CSS, and JavaScript feature so that developers of all skill
+levels can understand and implement things. To say this is widely used
+is an understatement. I'd be willing to bet that it's used by
+developers at Microsoft, Facebook, Google, Amazon, Apple, and all
+Fortune 500 companies. I personally use MDN more than basically any
+other resource for learning how HTML, CSS, and JavaScript features
+work. It is critical load-bearing infrastructure on the Internet.
+
+Recently they added an [AI
+Help](https://developer.mozilla.org/en-US/plus/ai-help) feature, and
+I'm uncertain about it being a good idea. One of the greatest assets
+that Mozilla has with the MDN team is their technical writers that
+make fantastic documentation, examples, and breakdowns of every single
+feature in browsers. This takes an unimaginable amount of work and has
+lead to creating one of the best resources possible. So obviously, we
+need to go and take all of that and replace it with the new technical
+writer that never sleeps, eats, has kids, goes on vacation, or gets
+burnout: ChatGPT. This opens up the possibility for taking this source
+of joy and creativity into a source of a new philosophical horror:
+gaslighting as a service.
+
+<XeblogConv name="Aoi" mood="grin">
+  Hey Mimi, since you're ChatGPT and everything, do you tell the truth when I
+  ask you questions? Can I rely on what you say without edits?
+</XeblogConv>
+<XeblogConv name="Mimi" mood="think">
+  Hello! I'm an AI language model designed to provide helpful and reliable
+  information to the best of my abilities. However, it's important to note that
+  I don't have personal beliefs or emotions, and my responses are generated
+  based on patterns and data. While I strive to be accurate, there's still a
+  possibility of errors or incomplete information. Therefore, it's always a good
+  idea to verify critical information from reliable sources or consult with
+  human experts.
+</XeblogConv>
+
+As a part of noting my biases, I found out about this issue after
+being mentioned on Mastodon pointing to a GitHub thread. I was taken
+aback at first but I honestly do see how this could let skilled human
+writers speed up in the way that AI lets you avoid the "blank canvas
+problem".
+
+I've been meaning to write more about this, but the basic idea is that
+for many people there is nothing more terrifying than a blank canvas,
+empty editor frame, or camera sitting on a desk. One of the first
+things you learn as an artist is to use the blank canvas as an _asset_
+and get over the fear of it by starting with something, anything to
+help you get started. Even a single line or circle to position things
+around.
+
+I think that tools like ChatGPT could legitimately help people get
+past that "blank canvas" problem by giving them something, anything to
+start from. When you combine that tool with the genuine skill that the
+MDN docs team has, this could lead to amazing things.
+
+<XeblogConv name="Cadey" mood="coffee">
+  I am not going to link to the GitHub issue because I don't want anything I do
+  to be seen as brigading the issue and Mozilla in general. If you manage to
+  find the thread, be respectful and don't say I sent you there.
+</XeblogConv>
+
+I don't see that as possible with Mozilla's current leadership and
+business model. I don't know if Mozilla's business model ever made
+sense, it makes a lot more sense if it's something closer to a
+nonprofit rather than a commercial entity. Certianly not something
+that spends five million dollars per year on the CEO's paycheck. We're
+just watching Mozilla circle down the drain towards irrelevance.
+
+In 2017 Mozilla released [Firefox
+Quantum](https://blog.mozilla.org/en/mozilla/introducing-firefox-quantum/),
+a ground-up reimagining of what using Firefox really means. XUL was
+excised out of the browser, Rust was introduced to have truly memory
+safe code in the browser, browser speed was drastically increased, and
+overall it's one of the best updates that Firefox has ever had or
+likely will have. I checked the LinkedIn profiles of the major players
+that made Quantum possible and found out that nearly none of them
+still work at Mozilla.
+
+There were claims that they were victims of layoffs in 2020 because
+apparently people weren't using web browsers in the age of COVID.
+During the age of COVID. When everyone was locked down. At home. Bored
+out of their minds. With nothing to really entertain them but. The
+Internet. Which you access with browsers.
+
+<XeblogConv name="Cadey" mood="facepalm">
+  I honestly cannot fathom this genuine short-sighted stupidity. What the _hell_
+  were they _thinking_?
+</XeblogConv>
+
+Other big-ticket projects from Mozilla are no longer being made
+in-house. Rust is the biggest one. Rust was made as a language to
+replace C++ in Firefox and let the browser have actual memory safe
+code so that we don't run into the perinneal C++ landmines that lead
+to remote code execution triggering panic updates. Rust is still used
+in Firefox (and soon Chrome too), but it's no longer a Mozilla
+project.
+
+Servo was the browser engine to surpass Gecko. It was a ground-up
+reimagining of how browser engines could work, taking advantage of
+native GPU hardware features as much as possible. This would allow the
+browser to render at _literal thousands of frames per second_ and
+absolutely _sip_ battery power in the process. This would have been an
+even more profound reimaging of what a browser engine could be that
+would make even the Quantum update look like a mere recolor in
+comparison.
+
+But no, the entire Servo team was sacked and Firefox limps on with
+Gecko. The only real competitor being WebKit and Blink, which are both
+just forks of forks of the KDE library KHTML.
+
+<XeblogConv name="Mara" mood="hacker">
+  Maybe
+  [Ladybird](https://awesomekling.github.io/Ladybird-a-new-cross-platform-browser-project/)
+  from the SerenityOS team will result in something novel here, but it is still
+  another C++ library. I'm not sure how I feel about developing yet another
+  browser in an unsafe language like C++, but I guess it makes sense for the
+  SerenityOS team because they don't have Rust ported to SerenityOS yet.
+</XeblogConv>
+
+It really hurts to see Mozilla fall and watch as other browser engines
+also fall the way of the dodo. I hate living in a world where the only
+real option for web browsers is Google Chrome. I realize that browser
+engines are mind-numbingly complicated because they have to be, but
+good lord it hurts to see diversity in implementation just fade to nil
+because investors want an infinite money generator.
+
+This is the legacy that our generation will leave. One where true
+genius and innovation are swept under the rug because they couldn't
+make a line go up fast enough to make line-obsessed fools only focus
+on the line.
+
+I'm sad to see such a critical web resource fall prey to hype cycles
+that rot out the best part of MDN: the technical writers. The
+technical writing at MDN is seriously some of the best you can get
+in the industry. I'd pay for a printed version of MDN. But now with
+this automated gaslighting as a service, I don't think I can justify
+paying for "MDN Plus" to find new and interesting ways for ChatGPT
+to lie to me about what CSS features can do. If I wanted to do that,
+I could just ask [Mimi](/characters#mimi).
+
+<XeblogConv name="Aoi" mood="wut">
+  Hey Mimi, how do I use
+  [`Array.prototype.with`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with)
+  to replace a value in an array that I pass to a function?
+</XeblogConv>
+<XeblogConv name="Mimi" mood="happy">
+  I apologize for any confusion, but `Array.prototype.with` is not a valid
+  JavaScript feature. The `Array.prototype` object does not include a method
+  called `with` for replacing values in an array.
+  <br />
+  <br />
+  If you would like to replace values in an array, you can use the standard JavaScript
+  array methods such as `splice`, `map`, or `forEach`. These methods can help you
+  modify specific elements within an array or create a new array with replaced values.
+  <br />
+  <br />
+  If you provide more details on what you are trying to achieve, such as the
+  specific value you want to replace and the conditions for replacement, I would
+  be happy to provide you with a code example using built-in array methods.
+</XeblogConv>
+<XeblogConv name="Aoi" mood="rage">
+  But the documentation page I'm on just said it exists! What the frick!
+</XeblogConv>
+
+Imagine what developers feel when they get told something exists, then
+upon trying to get more information about it get told that it does not
+in fact exist. On the same page.
+
+If this isn't gaslighting as a service, what is? How will the next
+generation of developers get trained if they are constantly mislead by
+the shadows of meaning we used to displace human authorship because
+it's expensive to make sure people can afford to eat?
