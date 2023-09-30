@@ -14,7 +14,7 @@ image = "ghcr.io/xe/site/bin:latest"
 
 [env]
 DATA_DIR = "/data"
-GIT_BRANCH = "static_site"
+GIT_BRANCH = "main"
 SITE_URL = "https://xeiaso.net/"
 PATH = "/bin"
 
