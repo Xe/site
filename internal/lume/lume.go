@@ -160,7 +160,7 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 
 	if o.MiToken != "" {
 		fs.miClient = mi.New(o.MiToken, "xeiaso.net/v4/internal/lume "+os.Args[0])
-		slog.Info("mi integration enabled")
+		slog.Debug("mi integration enabled")
 	}
 
 	conf, err := config.Load(filepath.Join(fs.repoDir, "config.dhall"))
@@ -318,6 +318,7 @@ func (f *FS) writeConfig() error {
 	}
 
 	for fname, data := range map[string]any{
+		"argv.json":               os.Args,
 		"authors.json":            f.conf.Authors,
 		"characters.json":         f.conf.Characters,
 		"contactLinks.json":       f.conf.ContactLinks,
