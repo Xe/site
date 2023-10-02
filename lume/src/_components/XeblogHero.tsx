@@ -7,7 +7,7 @@ export interface XeblogHeroProps {
 export default function XeblogHero({ ai, file, prompt }: XeblogHeroProps) {
   return (
     <>
-      <figure className="hero not-prose w-full max-h-40">
+      <figure className="hero not-prose w-full">
         <picture>
           <source
             type="image/avif"
