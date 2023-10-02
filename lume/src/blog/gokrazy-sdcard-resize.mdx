@@ -1,0 +1,135 @@
+---
+title: "How to resize a Gokrazy SD card"
+date: 2023-10-02
+tags:
+  - gokrazy
+hero:
+  ai: Anything V3
+  file: seattle-commute
+  prompt: "1girl, green hair, green eyes, tshirt, jeans, sneakers, seattle, space needle, controlnet overlay: soyjacks pointing"
+---
+
+I have a Raspberry Pi embedded into my main shellbox. This allows me
+to have a built-in device that lets me do things like act as a serial
+terminal of last resort for my tower. It's powered by a [Molex to
+USB-A
+cable](https://www.amazon.ca/CRJ-4-Pin-Female-Sleeved-Adapter/dp/B07FK7TJG1/)
+(which is about the most cursed cable I have ever used) and probably
+benefits from the absolutely overkill tier Noctua cooler that I put on
+that board.
+
+<XeblogPicture
+  path="blog/2023/gokrazy-sdcard/gokrazy-node-pic"
+  desc="A picture of pneuma, my main shellbox node, with a Raspi 4B shown placed on top of a paper towel to shield from shorts against the aluminum frame of the case."
+/>
+
+Recently I decided to put [GoToSocial](https://gotosocial.org/) on
+that Raspberry Pi to see if it would work in
+[Gokrazy](https://gokrazy.org/). Turns out it does! I also installed
+[minio](https://min.io/) on there to act as an S3 compatible storage
+solution and it's basically a little social network in a box.
+
+<XeblogConv name="Mara" mood="hacker">
+  This will be discussed in greater detail in a future post.
+</XeblogConv>
+
+However, there was only one problem. I set up my Gokrazy node with a
+64 GB SD card because that's what I had laying around. Given that
+social media stuff can take a lot of data, I wanted to upgrade it to a
+512 GB SD card so that I didn't have to care about it for a while. I
+also wanted to make a backup of the [XeDN](/blog/xedn) bucket onto the
+Raspi as well as another one I'd mail to a friend.
+
+Here's how I copied the data over to the new SD card.
+
+First, I plugged both SD cards into my shellbox over the front panel
+USB. My SD card reader had support for both a Micro SD card and a
+normal SD card, so I plugged the 64 GB card into a SD-uSD adaptor and
+had both of them connected. If you only have one SD card slot to play
+with, you can also copy the data to a file as an intermediate step.
+
+Once they were plugged in (the old one was chosen to be /dev/sde and
+the new one was chosen to be /dev/sdd), I copied the data over with
+[dd(1)](https://www.man7.org/linux/man-pages/man1/dd.1.html):
+
+```
+sudo dd if=/dev/sde of=/dev/sdd bs=4M status=progress
+```
+
+<XeblogConv name="Mara" mood="hacker">
+  In `dd`, the `if=` is the _input_ file and the `of=` is the _output
+  file_. These can be any files you want, even normal files on the
+  disk. If you SD card reader doesn't have two slots, you will have to
+  set the output file to somewhere on the disk, and then use that file
+  as the input file for the next run. It'd be something like:
+  
+  ```
+  sudo dd if=/dev/sde of=./sdcard.img bs=4M status=progress
+  (swap cards)
+  sudo dd if=./sdcard.img of=/dev/sde bs=4M status=progress
+  ```
+  
+  Keep in mind that when you're running `dd` commands like this, you are
+  basically working without guardrails or handbrakes. You need to be
+  _absolutely certain_ that you are dealing with the correct devices.
+  You can check these by using the `lsblk` or `dmesg` commands.
+  
+  `lsblk` lets you see the storage "block" devices that are connected
+  to a Linux machine. For example, here's what you could see on a
+  Linux machine's NVME drive:
+  
+  ```
+  $ lsblk /dev/nvme0n1
+  NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+  nvme0n1     259:0    0 931.5G  0 disk
+  ├─nvme0n1p1 259:1    0   923G  0 part
+  ├─nvme0n1p2 259:2    0     8G  0 part [SWAP]
+  └─nvme0n1p3 259:3    0   511M  0 part /boot
+  ```
+  
+  `dmesg` lets you see the kernel log buffer. You may want to run it
+  with `-w` so that you can continuously watch the changes. When
+  figuring out which SD card was which, I used `dmesg -w` to look for
+  new block storage devices being connected, and then `lsblk` to
+  figure out which one was the old/new one. Gokrazy sets up 4
+  partitions (boot, root A, root B, and persistent storage), so you
+  can also use that to help you figure out which is which.
+</XeblogConv>
+
+The data copy took at least half an hour, which I left running while
+playing some [Pokemon Infinite
+Fusion](https://github.com/infinitefusion/infinitefusion-e18).
+
+Once it was done, I ran the `sync` command for good measure and
+disconnected my SD card reader. Then I removed the old SD card and
+plugged the reader back in. After running the `lsblk` command, I knew
+I was good.
+
+Now I needed to resize the partition at /dev/sdd4. I installed
+[growpart](https://access.redhat.com/solutions/5540131) from the
+cloud-utils package and ran it on the SD card:
+
+```
+sudo growpart /dev/sdd 4
+```
+
+This grew the GPT tables for the SD card to fit the new size. Next I
+needed to run a filesystem check on the storage partition and resize
+it with `resize2fs`:
+
+```
+sudo e2fsck -f /dev/sdd4
+sudo resize2fs /dev/sdd4
+```
+
+After that finished, I test-mounted the storage drive on `/mnt/aile`
+and unmounted it. Everything worked great. I took out the SD card from
+my shellbox, popped the new card into the raspi, booted it up and bam:
+512 GB of storage:
+
+<XeblogPicture
+  path="blog/2023/gokrazy-sdcard/gokrazy-disk"
+  desc="A picture of the Gokrazy web UI, showing the fact that the pi has about 450 GB of storage available. It would be 500-ish, but disks are labeled in base 2 bytes and computers usually display things in base 10 bytes. I hate it too."
+/>
+
+Stay tuned, I have plans.
