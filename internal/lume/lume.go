@@ -19,6 +19,7 @@ import (
 	"gopkg.in/mxpv/patreon-go.v1"
 	"tailscale.com/metrics"
 	"xeiaso.net/v4/internal/config"
+	"xeiaso.net/v4/internal/mi"
 )
 
 var (
@@ -66,6 +67,8 @@ type FS struct {
 	repoDir string
 	opt     *Options
 	conf    *config.Config
+
+	miClient *mi.Client
 
 	fs   fs.FS
 	lock sync.RWMutex
@@ -119,6 +122,7 @@ type Options struct {
 	URL           string
 	PatreonClient *patreon.Client
 	DataDir       string
+	MiToken       string
 }
 
 func New(ctx context.Context, o *Options) (*FS, error) {
@@ -154,6 +158,11 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 		}
 	}
 
+	if o.MiToken != "" {
+		fs.miClient = mi.New(o.MiToken, "xeiaso.net/v4/internal/lume "+os.Args[0])
+		slog.Info("mi integration enabled")
+	}
+
 	conf, err := config.Load(filepath.Join(fs.repoDir, "config.dhall"))
 	if err != nil {
 		log.Fatal(err)
@@ -163,6 +172,14 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 
 	if err := fs.build(ctx); err != nil {
 		return nil, err
+	}
+
+	if fs.miClient != nil {
+		go func() {
+			if err := fs.miClient.Refresh(); err != nil {
+				slog.Error("failed to refresh mi", "err", err)
+			}
+		}()
 	}
 
 	return fs, nil
@@ -215,6 +232,14 @@ func (f *FS) Update(ctx context.Context) error {
 
 	if err := f.build(ctx); err != nil {
 		return err
+	}
+
+	if f.miClient != nil {
+		go func() {
+			if err := f.miClient.Refresh(); err != nil {
+				slog.Error("failed to refresh mi", "err", err)
+			}
+		}()
 	}
 
 	return nil
