@@ -48,18 +48,18 @@ export const Footer = () => {
     {
       title: "Documentation",
       children: [
-        { name: "Getting Started", href: "#" },
-        { name: "Guide", href: "#" },
-        { name: "API", href: "#" },
-        { name: "Showcase", href: "#" },
+        { name: "Getting Started", href: "/blog/alvis/" },
+        { name: "Guide", href: "/blog/alvis/" },
+        { name: "API", href: "/blog/alvis/" },
+        { name: "Showcase", href: "/blog/alvis/" },
         { name: "Pricing", href: "/blog/alvis/" },
       ],
     },
     {
       title: "Community",
       children: [
-        { name: "Forum", href: "#" },
-        { name: "Discord", href: "#" },
+        { name: "Forum", href: "/blog/alvis/" },
+        { name: "Discord", href: "/blog/alvis/" },
       ],
     },
   ];
@@ -152,7 +152,6 @@ export const Features = () => {
       icon: IconAlarm,
       description:
         "Automatically respond to production incidents with our industry-leading AI. Alvis will diagnose the problem and fix it.",
-      link: "#",
     },
     {
       icon: IconZZZ,
@@ -318,7 +317,7 @@ export const Pricing = () => {
     {
       name: 'Individual',
       id: 'tier-individual',
-      href: '#',
+      href: '/blog/alvis/',
       priceMonthly: '$10',
       description: 'The essentials to provide your best work for clients.',
       features: [
@@ -333,7 +332,7 @@ export const Pricing = () => {
     {
       name: 'Startup',
       id: 'tier-startup',
-      href: '#',
+      href: '/blog/alvis/',
       priceMonthly: '$32',
       description: 'A plan that scales with your rapidly growing business.',
       features: [
@@ -347,7 +346,7 @@ export const Pricing = () => {
     {
       name: 'Enterprise',
       id: 'tier-enterprise',
-      href: '#',
+      href: '/blog/alvis/',
       priceMonthly: '$500',
       description: 'Dedicated support and infrastructure for your company.',
       features: [
