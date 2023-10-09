@@ -456,6 +456,14 @@
     "https://deno.land/x/lume@v1.18.5/plugins/url.ts": "43d3d47896a7322a8dd34572dedb4baa6f73a382594a2ff7c34a3a064dcc6c9e",
     "https://deno.land/x/lume@v1.18.5/plugins/utils.ts": "6435d164539d9e408e7e818b080cc1a96ff76ed3c376160577a7df751b57fa07",
     "https://deno.land/x/lume@v1.18.5/plugins/yaml.ts": "df24aac4098dba258f1ac331a3b16ba488a336eb63c51afed8f59201228d583c",
+    "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/air-balloon.tsx": "d237673312f298c003138801b86d775b46d1699eb580d8a03018c9361d365cb5",
+    "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/alarm.tsx": "dffda4eadbab77c870236178f760f83e1e1f64a1ad6b136a6c99153b5137b8db",
+    "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/armchair.tsx": "8f30005e11d3f227e9fb1607e256bf360fad121e824bf54cf8fe48ae7b94a0d4",
+    "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/brand-github.tsx": "3e7c2e085570ebe78bf72d7ba9ad77e6519930feff5f3b653c3ba5b29b1c863b",
+    "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/chevron-right.tsx": "ac5c5c1a1b4aa6313347372f2d8dbb6cf192cf95d28573ae40d7d42e9073d0b6",
+    "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/lemon-2.tsx": "0de8b795eb80cf892897ac09ac6f5478e4d5332a3c7f2e403e797eea376381b6",
+    "https://deno.land/x/tabler_icons_tsx@0.0.5/tsx/check.tsx": "7a34654bec04502f8c411801621572232fa842a3a916fe6da0897aa0affb60ac",
+    "https://deno.land/x/tabler_icons_tsx@0.0.5/tsx/zzz.tsx": "58c9caa980f34bffd532ee0810fb4d7c061c20348db1858214c1758eafded78d",
     "https://deno.land/x/xml@2.1.1/mod.ts": "4a314a7a28d1ec92f899ce4c6991f0356c77550a75955ec3f4a36733f08548e8",
     "https://deno.land/x/xml@2.1.1/parse.ts": "614b8648345ae93c641368836947484d321c7ac9312ae12ec750434353cd7385",
     "https://deno.land/x/xml@2.1.1/stringify.ts": "930d35431f153b29d36549cff08fcfbe978e52ccb56af1e3baa2e0760f418b04",
@@ -469,6 +477,8 @@
   },
   "npm": {
     "specifiers": {
+      "@headlessui/react": "@headlessui/react@1.7.17_react@18.2.0_react-dom@18.2.0__react@18.2.0",
+      "@heroicons/react": "@heroicons/react@2.0.18_react@18.2.0",
       "@mdx-js/mdx@2.3.0": "@mdx-js/mdx@2.3.0",
       "@tailwindcss/forms": "@tailwindcss/forms@0.5.6_tailwindcss@3.3.3__postcss@8.4.29",
       "@tailwindcss/typography": "@tailwindcss/typography@0.5.10_tailwindcss@3.3.3__postcss@8.4.29",
@@ -488,6 +498,7 @@
       "preact": "preact@10.17.1",
       "preact-render-to-string@6.2.1": "preact-render-to-string@6.2.1_preact@10.17.1",
       "preact@10.17.1": "preact@10.17.1",
+      "react": "react@18.2.0",
       "react-dom@18.2.0": "react-dom@18.2.0_react@18.2.0",
       "react@18.2.0": "react@18.2.0",
       "rehype-prism-plus": "rehype-prism-plus@1.6.3",
@@ -515,6 +526,20 @@
         "integrity": "sha512-hBI9tfBtuPIi885ZsZ32IMEU/5nlZH/KOVYJCOh7gyMxaVLGmLedYqFN6Ui1LXkI8JlC8IsuC0rF0btcRZKd5g==",
         "dependencies": {
           "postcss-selector-parser": "postcss-selector-parser@6.0.13"
+        }
+      },
+      "@headlessui/react@1.7.17_react@18.2.0_react-dom@18.2.0__react@18.2.0": {
+        "integrity": "sha512-4am+tzvkqDSSgiwrsEpGWqgGo9dz8qU5M3znCkC4PgkpY4HcCZzEDEvozltGGGHIKl9jbXbZPSH5TWn4sWJdow==",
+        "dependencies": {
+          "client-only": "client-only@0.0.1",
+          "react": "react@18.2.0",
+          "react-dom": "react-dom@18.2.0_react@18.2.0"
+        }
+      },
+      "@heroicons/react@2.0.18_react@18.2.0": {
+        "integrity": "sha512-7TyMjRrZZMBPa+/5Y8lN0iyvUU/01PeMGX2+RE7cQWpEUIcb4QotzUObFkJDejj/HUH4qjP/eQ0gzzKs2f+6Yw==",
+        "dependencies": {
+          "react": "react@18.2.0"
         }
       },
       "@jridgewell/gen-mapping@0.3.3": {
@@ -824,6 +849,10 @@
           "normalize-path": "normalize-path@3.0.0",
           "readdirp": "readdirp@3.6.0"
         }
+      },
+      "client-only@0.0.1": {
+        "integrity": "sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==",
+        "dependencies": {}
       },
       "comma-separated-tokens@2.0.3": {
         "integrity": "sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==",

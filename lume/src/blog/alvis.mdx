@@ -1,0 +1,190 @@
+---
+title: Alvis
+date: 2023-10-09
+tags:
+  - ai
+  - fiction
+hero:
+  file: basketball
+  prompt: "an effeminate anime guy in a basketball jersey holding a basketball"
+  ai: "SCMix"
+---
+
+export function ChatFrame({ children }) {
+  return (
+    <>
+      <div className="w-full space-y-4 p-4">{children}</div>
+    </>
+  );
+}
+
+export function ChatBubble({
+  reply = false,
+  bg = "blue-dark",
+  fg = "slate-50",
+  children,
+}) {
+  return (
+    <div className={`mx-auto w-full ${reply ? "" : "space-y-4"}`}>
+      <div className={`flex ${reply ? "justify-start" : "justify-end"}`}>
+        <div className={`flex w-11/12 ${reply ? "" : "flex-row-reverse"}`}>
+          <div
+            className={`relative max-w-xl rounded-xl ${
+              reply ? "rounded-tl-none" : "rounded-tr-none"
+            } bg-${bg} px-4 py-2`}
+          >
+            <span className={`font-medium text-${fg}`}>{children}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+Sleep. It's such a lovely feeling. The taste of total obliteration that comes when you hit the pillow. Jared was peacefully asleep and dreaming of a world much like his own. One with capitalism and money and all of the other problems that bother us all. In the blissful silence of his bedroom, he was at peace.
+
+Then his pager went off. It crooned out "The server's on fireeee\~\~". The peace of sleep was shattered instantly with the force of a thousand hammers against prop glass. Jared was awake, and he was not happy about it.
+
+He got up and ambled over to his computer, half awake and blurry-eyed. He rubbed his eyes and unlocked his phone. It went off again with a happy little "The server's on fireeee\~\~". He sighed and picked up his phone. He opened the pager app and looked at the incident. The database was full of temporary entries again. _Huh, shouldn't this happen in like 3 months?_ he thought to himself. He opened up the database and looked at the logs. He prepared a delete command from the playbook and lifted his hand up to scratch his ear.
+
+His glass of water from last night was in the worst possible position. He knocked it over and it spilled all over the expensive MacBook keyboard. The keyboard started pressing enter repeatedly. He looked at the screen in horror. The database was being deleted. He tried to stop it, but the damage was already done. His laptop screen shut off and the magic smoke came out.
+
+It was toast. The database was gone.
+
+A small trickle of pages became a flood. The pager sound played over and over and then more times at once. The messages became increasingly dire and horrible from "the website isn't loading" to "our revenue graph is reading 0".
+
+It was finished. Techaro ceased to exist in a flash. Jared was out of a job. He was out of a home. He was out of a life. He was out of a future. He was out of everything. Jared screamed in horror.
+
+Jared shot upwards in his bed, still screaming in terror at the situation. He grabbed his phone and loaded the Techaro website. Everything worked fine. He loaded the PagerDuty app. Everything was fine. He loaded the Techaro status page. Everything was fine. He sighed in relief and put his phone back on the charger.
+
+His cat had run into his room because of the noise. She jumped up on his bed and pressed her forehead into his leg. He looked over at his cat, who was looking at him with a concerned look on her face. He petted her and she purred. He sighed again and laid back down. His cat was purring and he was petting her. He was at peace.
+
+He sat upright and grabbed his phone again. It was 7:00 AM, going back to sleep was either unwise or impossible at this point. Especially not after a nightmare like he had just had.
+
+He walked over to his kitchenette and hit the button on his coffee pod machine. Everything was set up the night prior so that he could take the time to read a bit of a vice that he'd been trying to quit but just couldn't: Slacker News on ZCombninator's website. He sat down at his desk and opened up the website. He clicked on the first link and started reading.
+
+Apparently a new startup had been added to the ZCombninator W23 batch, its name was Xeserv and its main product was a tool named Alvis. It claimed to be an AI-powered first-level software incident responder. They had a [fancy landing page](/landing/alvis/) with some information and a "Get started" button.
+
+_Interesting_, he thought to himself, _I really wonder how this could be used to handle those annoying non-incident pages._ He looked at the time again and realized that he had to get ready for work. He downed his coffee and got dressed. He grabbed his bag and walked out the door.
+
+Later that day, Jared had an uneventful day in the OurWork office. He had an interrupt ticket in front of him to write an oncall playbook for the Techaro website. Apparently sometimes the website would just stop responding to HTTP queries and the only real fix was to restart it. There was some weird lock contention issue that happened sometimes, but nobody could really figure out where it was (plus, it was cheaper to just restart the website when it happened instead of actually fixing the problematic Palima code). He opened VS Code and started writing:
+
+```markdown
+## techaro.fake is down
+
+- Check the health check page https://techaro.fake/.techaro/healthy
+  - If it's down, restart the app
+  - If it's up, escalate to the on-call engineer
+- Restart the app with `fly apps restart`: `fly apps restart techaro-website`
+- Wait for one minute
+- Check the health check page again https://techaro.fake/.techaro/healthy
+  - If it's down, escalate to the on-call engineer
+  - If it's up, close the incident
+```
+
+As he was writing that, his thoughts drifted again to [Alvis](/landing/alvis/). _Do we really have to have a human respond to this?_ He thought more about the problem and realized that _no, in fact, we do not need to have a human respond to this_. He opened up the Alvis documentation and scrolled down to how you defined a playbook. It was a simple YAML file. He translated his playbook a bit and hit save:
+
+```yaml
+meta:
+  service: techaro-website
+  platform: fly.io
+  condition: health check failed
+
+health_check:
+  url: https://techaro.fake/.techaro/healthy
+  method: GET
+  want_status: 200
+  every: 5m
+
+details: |-
+  Run your own copy of health checks.
+
+  If your health check fails, restart the app.
+  If it succeeds, close the incident.
+
+  Wait for one minute afte restarting the app.
+  Run the health check again after restarting the app.
+
+  If it fails again, escalate to the on-call engineer.
+```
+
+He pasted the YAML into their friendly web editor and hit save. He was done. Alvis was ticking along behind the scenes to check the website for him. He pull requested his playbook and went back to work.
+
+Later that day, he got an email from Alvis. The website had gone down and Alvis restarted it. Alvis even wrote an [incident summary](/landing/alvis/P0001/) for him.
+
+Until that point he was skeptical of the benefits of Alvis. Reading that summary totally sold it for him.
+
+> During the incident, a health check failure occurred for the Techary website. The health check failure was detected and reported at 10:32 PM UTC. Upon receiving the alert, immediate action was taken to address the issue.
+>
+> The root cause of the incident was a health check failure. The exact reason for the failure is unknown and requires further investigation.
+>
+> To resolve the issue, the system automatically initiated a restart of the website. The website successfully restarted, and the subsequent health check passed. As a result, the incident was closed.
+
+Writing those summaries amounted to about 20% of his job. He never had to write an incident summary again. He was happy. He pasted it into the incident response channel and went back to work.
+
+He woke up the next morning and found that Alvis had restarted the website again at 3 AM. He was elated. He didn't get woken up by it. When he went into work, he had a slack conversation with his manager:
+
+<ChatFrame>
+  <ChatBubble bg="emerald-300" fg="slate-900">
+    Hey, I found something really cool yesterday that I think we could get a lot
+    of value out of.
+  </ChatBubble>
+  <ChatBubble bg="red-600" reply>What is it?</ChatBubble>
+  <ChatBubble bg="emerald-300" fg="slate-900">
+    It's called [Alvis](/landing/alvis/). It's an AI that can respond to
+    incidents for us. It'll even write the postmortem documents for us.
+  </ChatBubble>
+  <ChatBubble bg="red-600" reply>That sounds really cool. How does it work?</ChatBubble>
+  <ChatBubble bg="emerald-300" fg="slate-900">
+    The power of AI! It's really cool, it kept me from getting woken up last
+    night.
+  </ChatBubble>
+  <ChatBubble bg="red-600" reply>
+    That sounds really cool. I'll look into it. Keep playing with it. You have
+    my approval.
+  </ChatBubble>
+  <ChatBubble bg="emerald-300" fg="slate-900">
+    👍👍👍 Thanks!
+  </ChatBubble>
+</ChatFrame>
+
+And Techaro became a customer of Alvis. It saved the SRE team from their sleepless nights and it saved the company from the cost of having to pay people to be oncall. It was a win-win for everyone.
+
+Then Jared got woken up because they went over their incident count for the month.
+
+---
+
+Okay, so I realize that a lot of this is intended to be satire of our industry (and realistically, we deserve it, holy heck) but really a lot of the time we take the presence of on-call people for granted. I mean, I'm also speaking from the perspective of someone who has legitimately been woken up at ungodly times at night due to some random service going down and the only realistic option is to restart it, make sure things are happy, and go back to sleep. Yes realistically the service should just be fixed so that the problem doesn't happen at all, but we chronically forego maintenance because maintenance of existing systems doesn't get you promoted.
+
+Really, I've been _demoted_ because I wanted to focus on fixing the things that were making me lose sleep. To this day, most of the default PagerDuty ringtones give me traumatic flashbacks to when I was woken up in the middle of the night because some insomniac decided that the best way to go to sleep was to make drastic changes to some critical path API route that broke spectacularly.
+
+Normally I don't write this kind of section into my satire stories because I feel that the point should be obvious from the onset (like with [Sine](/blog/sine/)'s satire of the collapse of the medical system where I live), but with this one I really have to spell it out because I want you people to actually think about this issue.
+
+Why are we waking people up when restarting the service with a machine will just fix the issue enough so they can sleep?
+
+Is first line pager response really that important that we need to wake people up in the middle of the night?
+
+Is burnout really worth it?
+
+Maybe I in particular am just a bad candidate for oncall work, maybe this isn't actually a problem for people that aren't neurodivergent, but I really think that we have normalized waking people up in the middle of the night to follow a playbook that ChatGPT (or even a bunch of shitty if statements) can do better than any of us. I really think that the best course of action is to fundamentally change the incentives at play so that maintenance is rewarded more than new feature work, but I don't know how to do that.
+
+<XeblogConv name="Cadey" mood="coffee">
+  By the way, I have actually had a dream about accidentally deleting the
+  database before. It happens about once per quarter. I'm not sure why. I really
+  wish I could make them stop.
+</XeblogConv>
+
+The problem with maintenance work (and SRE in general) is that success is a negative. Things don't go wrong. People don't have issues. Under that lens of analysis, it's very easy to understand why it doesn't get people rewarded. It's also easy to understand why people sometimes _deliberately design systems to fail_ so that they can get rewarded for fixing them.
+
+Why do we accept this as an industry?
+
+<XeblogConv name="Mara" mood="hacker">
+  By the way, during the process of writing this article, a prototype for Alvis
+  was actually made. It will not be released on GitHub though, because there is
+  more to incident response than just restarting applications. Realistically,
+  most of what you get woken up for is when things are stuck in a weird state
+  and you need to restart it to get things working again. Arguably those
+  services should be made resilient enough that you don't need to wake people up
+  for that but in a pinch a restart-if-faling cronjob or a watchdog timer works
+  wonders here.
+</XeblogConv>
