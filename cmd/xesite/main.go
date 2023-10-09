@@ -98,7 +98,7 @@ func main() {
 	mux.HandleFunc("/metrics", tsweb.VarzHandler)
 
 	mux.HandleFunc("/blog.atom", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/blog/index.rss", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/blog.rss", http.StatusMovedPermanently)
 	})
 
 	// NOTE(Xe): Had to rename this page because of a Lume/Go embed bug.
