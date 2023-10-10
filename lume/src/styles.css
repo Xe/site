@@ -4,7 +4,7 @@
 
 @layer base {
   a {
-    @apply text-link-light-normal hover:text-link-light-hover hover:bg-link-light-hoverBg visited:text-link-light-visited visited:hover:text-link-light-visitedHover visited:hover:bg-link-light-visitedHoverBg;
+    @apply text-link-light-normal hover:text-link-light-hover hover:bg-link-light-hoverBg visited:text-link-light-visited visited:hover:text-link-light-visitedHover visited:hover:bg-link-light-visitedHoverBg underline;
   }
 
   details {

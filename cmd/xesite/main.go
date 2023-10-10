@@ -105,6 +105,9 @@ func main() {
 	mux.HandleFunc(`/blog/%F0%9F%A5%BA`, func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/blog/xn--ts9h/", http.StatusMovedPermanently)
 	})
+	mux.HandleFunc(`/blog/🥺`, func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/blog/xn--ts9h/", http.StatusMovedPermanently)
+	})
 
 	if *devel {
 		mux.HandleFunc("/.within/hook/github", func(w http.ResponseWriter, r *http.Request) {
