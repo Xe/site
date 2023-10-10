@@ -70,6 +70,9 @@ in  [ Job::{
       , company = tailscale
       , title = "Archmage of Infrastructure II"
       , startDate = "2023-04-06"
+      , endDate = Some "2023-10-10"
+      , daysWorked = Some 187
+      , leaveReason = Some "position eliminated in re-org"
       , salary = annualCAD 203651
       , locations = [ ottawa ]
       , highlights =

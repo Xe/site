@@ -132,7 +132,7 @@ If you want someone that is dedicated to their craft, a fearless innovator and a
 == Experience
 
 #titleCompany[Archmage of Infrastructure][Tailscale]\
-#term[2020-12 -- _current_][Ottawa, CA]
+#term[2020-12 -- 2023-10][Ottawa, CA]
 
 At Tailscale I founded the developer relations team with the goal of inspiring people to use Tailscale in fun and interesting ways. I work with the DevRel team to write articles for #text(fill: blue)[#link("https://tailscale.dev")[tailscale.dev]] to help teach people fundamentals of computer science and networking in the process of learning about new product features and things you can do with them.
 
