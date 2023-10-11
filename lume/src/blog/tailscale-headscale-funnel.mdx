@@ -1,0 +1,329 @@
+---
+title: "Using Tailscale without using Tailscale"
+date: 2023-04-01
+hero:
+  ai: Waifu Diffusion v1.4
+  file: serene-jogging
+  prompt: 1girl, green hair, green eyes, jogging, countryside, summer, blue sky, long hair, yoga pants, hoodie, barn, watercolor, peaceful, river, portrait, looking at distance, highly detailed, serene
+---
+
+<div className="text-xl">
+    This post was written while I worked for Tailscale. It is archived here for posterity.
+</div>
+
+As a philosopher, I find it useful to keep up on the latest trends in technology; especially given how much that technology seems to shape our daily lives as of late. One of the premier websites with which I use to do this is a site known as Hacker News. My friends and coworkers worry about how I use this website, because the takes on it can be...special, and I tend to view it as a bit of a surrealist comedy. However, my dear philosopher friend xeonmc asked a question that served as a fount of inspiration. They asked:
+
+<BlockQuote>Is it possible to use [Funnel] to host a Headscale server from behind NAT?</BlockQuote>
+
+<XesiteConv name="Aoi" mood="wut">
+  Wait, what? Is that person asking you how to use Tailscale in a way that makes
+  you avoid using Tailscale? That's like asking how to use a car without using a
+  car.
+</XesiteConv>
+
+Oh yes, [my dear fox](https://xeiaso.net/characters#aoi), it is. And today I am going to show you how you would create such an accursed spectacle. Buckle up, because this is going to be a wild ride.
+
+[Headscale](https://github.com/juanfont/headscale) is a self-hostable version of the Tailscale control plane. It's a great project, and it's quite remarkable what they've been able to accomplish through sheer reverse engineering fueled by the boredom that came up at the start of the pandemic. You can set up a Headscale server and completely bypass the need to use the Tailscale SaaS offering. This enables people who don't want to or can't use the SaaS control plane to use Tailscale.
+
+However, in order to host this you need to expose something to the internet. If you don't do this, this creates a catch-22 situation where your clients won't be on the network and then will try to access your thing on the network and it just will not work at all. This is where Funnel comes in.
+
+[Funnel](https://tailscale.com/kb/1223/tailscale-funnel/) is a feature of Tailscale that allows you to expose a service on your network to the internet. This is the missing part of this equation, and what will allow us to use Tailscale (the service to connect devices together) without using Tailscale (the SaaS control plane) for the rest of the network.
+
+Here are the things you need for this tutorial:
+
+- A Tailscale account on the [SaaS control plane](https://login.tailscale.com) (you can use some throwaway gmail address for this).
+- Somewhere to run virtual machines (I use something I made called [waifud](https://github.com/Xe/waifud)).
+- Machines to join to your headscalenet (you can create more throwaway Ubuntus for this).
+- An imaginary domain name to use for your headscalenet. I use `ts.plex-each` for this.
+
+<XesiteConv name="Mara" mood="hacker">
+  `plex each` is how you spell "xe" with [Talon](https://talonvoice.com/).
+</XesiteConv>
+
+## The Setup
+
+First, create a new NixOS VM on your [waifud](https://github.com/Xe/waifud) cluster:
+
+```
+waifuctl create -m 4096 -c 4 -H pneuma -s 25 -d nixos-unstable -z arsene/vms
+```
+
+<XesiteConv name="Aoi" mood="wut">
+  Wait, what. Isn't waifud still in development? Doesn't it require you to have
+  extensive experience in how libvirtd works? How can we expect random readers
+  of this blog to have the slightest bit of domain experience required to follow
+  along with this? <br />
+  <br /> Also, why am I here, wasn't I created for the [xeiaso.net blog](https://xeiaso.net/characters#aoi)?
+</XesiteConv>
+<XesiteConv name="Mara" mood="happy">
+  Yes, waifud is still deep in development. If you don't have a local waifud
+  cluster around, you can use your favorite VM hosting platform such as Proxmox,
+  ESXi, or yolo-qemu. You can also use a cloud provider such as AWS, GCP, or
+  Azure. You can also use a bare metal server, but that's a bit more complicated
+  and I don't want to get into that here. <br /> <br />
+  Also, you're not here, you're also in a VM.
+</XesiteConv>
+<XesiteConv name="Aoi" mood="coffee">
+  What. Okay. I'm not even going to ask.
+</XesiteConv>
+
+Be sure to set your SSH keys as root if you are using the
+`nixos-unstable-within` image. This is a known issue with how that image,
+cloud-init, and NixOS conflict on how user creation works.
+
+SSH in as root and ensure you can get in:
+
+```
+$ ssh root@10.77.131.232
+Warning: Permanently added '10.77.131.232' (ED25519) to the list of known hosts.
+Last login: Fri Mar 31 00:02:08 2023 from 10.77.131.1
+
+[root@baelzeb-weedle:~]#
+```
+
+Perfect! Now open a new terminal window and open `/etc/nixos/configuration.nix` in your Emacs session in [TRAMP mode](https://www.emacswiki.org/emacs/TrampMode):
+
+```
+$ e /ssh:root@10.77.131.232:/etc/nixos/configuration.nix
+```
+
+<details>
+<summary>If the file doesn't exist</summary>
+
+If that file doesn't exist (because you are using the `nixos-unstable-within` image), create it with this template:
+
+```nix
+{ lib, pkgs, config, ... }:
+
+{
+  boot.initrd.availableKernelModules =
+    [ "ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ ];
+  boot.extraModulePackages = [ ];
+  boot.growPartition = true;
+  boot.kernelParams = [ "console=ttyS0" ];
+  boot.loader.grub.device = "/dev/vda";
+  boot.loader.timeout = 0;
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos";
+    fsType = "ext4";
+    autoResize = true;
+  };
+
+  networking.hostName = "baelzeb-weedle";
+
+  systemd.services.cloud-init.requires = lib.mkForce [ "network.target" ];
+
+  services.tailscale.enable = true;
+  services.openssh.enable = true;
+
+  services.cloud-init = {
+    enable = true;
+    ext4.enable = true;
+  };
+
+  networking.firewall = {
+    checkReversePath = "loose";
+    trustedInterfaces = [ "tailscale0" ];
+    allowedUDPPorts = [ config.services.tailscale.port ];
+  };
+}
+```
+
+Replace the hostname with whatever waifud assigned through the terrifying might of [Territorial Rotbart](https://github.com/Xe/waifud/tree/main/lib/rotbart/src).
+
+</details>
+
+Ensure the following settings are enabled:
+
+```nix
+services.tailscale.enable = true;
+services.openssh.enable = true;
+```
+
+We will need Tailscale enabled on the machine to connect it to Funnel with the SaaS control plane. We will also need SSH enabled so we can connect to the machine for reasons which are an excercise to the reader.
+
+Save the file and trigger a rebuild:
+
+```sh
+sudo nixos-rebuild switch
+```
+
+Then reboot for good measure:
+
+```sh
+sudo reboot
+```
+
+<XesiteConv name="Mara" mood="hacker">
+  This reboot isn't required, but it's fun to demonstrate that things will come
+  back up when you reboot the machine.
+</XesiteConv>
+
+Now let's set up the Funnel on your NixOS machine. First, authenticate with Tailscale:
+
+```sh
+sudo tailscale up
+```
+
+This will print an authentication URL, apply force to it with your pointing device and then open it in your favorite browser (such as [Luakit](https://luakit.github.io/)). You will be prompted to authenticate with Tailscale. Once you do, you will be redirected to a page that says "Success! You can close this window now". You can close that window now.
+
+Then you can open the Tailscale admin panel at https://login.tailscale.com/admin/machines and you should see your new machine listed there. Click on the [access controls](https://login.tailscale.com/admin/acls) tab and then [fill out your funnel ACLs](https://tailscale.com/kb/1223/tailscale-funnel/#node-attribute-required).
+
+Now we can install Headscale on the NixOS machine. First, we need to add the Headscale module to our NixOS configuration:
+
+```nix
+services.headscale = {
+  enable = true;
+  address = "0.0.0.0";
+  port = 8080;
+  serverUrl = "https://baelzeb-weedle.shark-harmonic.ts.net";
+  dns.baseDomain = "ts.plex-each";
+  settings.logtail.enabled = false;
+};
+```
+
+<XesiteConv name="Mara" mood="hacker">
+  The `serverUrl` must be the same as your machine's hostname combined with your
+  [tailnet domain](https://tailscale.com/kb/1217/tailnet-name/). The
+  `shark-harmonic.ts.net` part is the tailnet domain. The `baelzeb-weedle` part
+  is the hostname for your NixOS machine.
+</XesiteConv>
+
+Now rebuild NixOS and see Headscale running on port 8080:
+
+```
+# nixos-rebuild switch
+```
+
+```
+# netstat -tnlp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 100.114.219.37:44479    0.0.0.0:*               LISTEN      867/tailscaled
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1066/sshd: /nix/sto
+tcp6       0      0 :::8080                 :::*                    LISTEN      4146/headscale
+tcp6       0      0 fd7a:115c:a1e0:ab:44479 :::*                    LISTEN      867/tailscaled
+tcp6       0      0 :::22                   :::*                    LISTEN      1066/sshd: /nix/sto
+tcp6       0      0 :::37247                :::*                    LISTEN      4146/headscale
+```
+
+Huzzah! It's running! Now we can point Funnel to it using the [`tailscale serve` command](https://tailscale.com/kb/1242/tailscale-serve/):
+
+```
+tailscale serve tls-terminated-tcp:443 tcp://localhost:8080
+```
+
+<XesiteConv name="Mara" mood="hacker">
+  Yes, you really do have to use TLS-terminated TCP. Apparently, at the time of
+  writing, Tailscale's HTTP reverse proxy doesn't cooperate with the HTTP
+  long-polling that tailscaled uses to connect to the control plane. Using
+  TLS-terminated TCP works around this so that this hilarous pile of jank can
+  function.
+</XesiteConv>
+
+Then enable Funnel on the node:
+
+```
+tailscale funnel 443 on
+```
+
+Then wait a minute or two for the DNS gods to smile upon your face and open the URL in your favorite browser (such as [GNOME Web](https://wiki.gnome.org/Apps/Web/)). It should return a 404 page. This is expected.
+
+Now let's create a Headscale namespace for our nodes:
+
+```
+headscale namespaces create casa
+```
+
+Now spin up another Linux VM in waifud such as an [Amazon Linux 2](https://aws.amazon.com/amazon-linux-2/) instance:
+
+```
+waifuctl create -m 1024 -c 2 -d amazon-linux-2 -s 25 -H ontos
+```
+
+<XesiteConv name="Aoi" mood="coffee">
+  You're using the Linux distribution that was made for a book store??? Why is
+  that a thing? Why? How? What?
+</XesiteConv>
+<XesiteConv name="Mara" mood="happy">
+  What else would we use in this ridiculous venture?
+</XesiteConv>
+
+Then connect to it and install Tailscale:
+
+```
+$ ssh xe@10.77.130.5
+Last login: Fri Mar 31 14:48:06 2023 from 10.77.130.1
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[xe@geordi-coral-bits ~]$ curl -fsSL https://tailscale.com/install.sh | sh
+```
+
+Next, authenticate to the Headscale server using the `--login-server` flag:
+
+```
+[xe@geordi-coral-bits ~]$ sudo tailscale up --login-server https://baelzeb-weedle.shark-harmonic.ts.net
+To authenticate, visit:
+
+        https://baelzeb-weedle.shark-harmonic.ts.net/register/nodekey:67e57f6cf6b11be04f66a30b389672cd6355081c15b5c3eae2739eed9c6ce41a
+```
+
+Then open your NixOS machine window and authenticate the node:
+
+```
+headscale --user casa nodes register --key nodekey:67e57f6cf6b11be04f66a30b389672cd6355081c15b5c3eae2739eed9c6ce41a
+```
+
+Huzzah! Now you can look at all the happy nodes in your network:
+
+```
+[xe@geordi-coral-bits ~]$ tailscale status
+100.64.0.1 geordi-coral-bits casa linux -
+```
+
+Let's add another one, how about [Ubuntu](https://ubuntu.com/):
+
+```
+waifuctl create -m 1024 -c 2 -d ubuntu-22.04 -s 25 -H kos-mos
+```
+
+Then connect to it and install Tailscale. Then authenticate it like you did before.
+
+Your machines should be able to ping eachother. If they can't, that's bad. Try rebooting one or both of the machines until ping works.
+
+<XesiteConv name="Aoi" mood="coffee">
+  I'm still at a loss for words. I don't know what to say about this. You are
+  using Tailscale to avoid using Tailscale. I can't wait for this tower of cards
+  to fall over. I hope to _God_ nobody uses this in production.
+</XesiteConv>
+<XesiteConv name="Mara" mood="happy">
+  Don't worry, they will! This is the natural consequence of documenting
+  something. Someone out there is going to use this and I hope that I'm nowhere
+  near them when it breaks.
+</XesiteConv>
+<XesiteConv name="Aoi" mood="facepalm">
+  I need a vacation.
+</XesiteConv>
+
+## Conclusion
+
+These are some of the many things you can do with Funnel. Please note that I haven't tested this beyond it working at all so I have no idea how stable this is.
+
+Many thanks to xeonmc on Hacker News for this idea. This is your fault. You are responsible. I hope you're happy. Also please email xe@tailscale.com.
+
+With apologies to the following people:
+
+- apenwarr, for enabling my ridiculous ventures
+- Claire, for being absolutely dumbfounded at the premise of this article in ways that inspired Aoi's dialogue
+- Deidra, for additionally inspiring the surreality of this premise
+- iliana, for enabling a book store to have its own Linux distribution
+- Kristoffer, for enabling me in the headscale debugging process
+
+I can't believe that this works.

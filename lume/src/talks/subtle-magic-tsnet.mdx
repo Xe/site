@@ -1,0 +1,452 @@
+---
+title: The Subtle Magic of tsnet
+date: 2023-07-07
+tags:
+  - tsnet
+  - go
+summary: Xe's Tailscale Up talk about how to use tsnet in your services, complete with many personal examples.
+---
+
+<div className="text-xl">
+    This post was written while I worked for Tailscale. It is archived here for posterity.
+</div>
+
+<XeblogConv name="Cadey" mood="enby">
+  Hey there! You're reading the written form of my talk "The Subtle Magic of
+  tsnet" as presented at [Tailscale Up](https://tailscale.dev/up) on May 31,
+  2023. Here's the video of it in case you want to watch the video version of
+  it.
+</XeblogConv>
+
+<iframe
+  width="672"
+  height="378"
+  src="https://www.youtube.com/embed/0unCayF_FCc"
+  title="YouTube video player"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowFullScreen
+></iframe>
+
+---
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/001"
+  desc={`The first slide is shown on screen. It contains an AI generated background with the presentation name "The subtle magic of embedding tsnet into your services" and the name Xe iaso underneath it. Xe's sigil is visible on the title slide.`}
+/>
+
+Hey there. It turns out that there are a lot of things that you can do
+with computers, and even more when you network those computers
+together. However, there are a lot of conflicting forces at play. Two
+of the most evil ones are balancing complexity and simplicity.
+
+Computers and networking is fundamentally a complicated affair. The
+complexity must exist somewhere, and rejecting it will only make
+things worse down the line when the complexity finally catches up with
+you. This is just a fact of life and a lot of this boils down to the
+tradeoffs you want to make with your implementation details. Just like
+with security.
+
+If you want to host some internal-facing services for your home, company, or community; you'll need to either set up your own DNS records for every service with annoying to configure tools like nginx or haproxy or make people use arbitrary port numbers. The reason for this boils down to a fundamental UNIX restriction we've always had to live with:
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/004"
+  desc={`The slide shows an anime depiction of bunch of ships at a dockyard, evoking the mood of the Seattle port.`}
+/>
+
+At a shipyard, every labeled spot can only have one ship in that spot. In the same way, you can only have one program bind to a port. You need to set up some kind of load balancer to point to the different services based on DNS records or other factors. That load balancer also needs to be able to generate HTTPS certificates, and it can be a mess if you have to wire everything up manually.
+
+Ask me how I know.
+
+So if this is done poorly, you get statements like "use port 69 for gitlab", "use port 420 for the wiki", "set up a new AWS machine for that new service" and other statements dreamed up by the utterly deranged.
+
+So how can we make things simple again?
+
+What's the middle path between these two extremes of pain?
+
+Given the fact that we're at a Tailscale event, you may see where I'm going here. I'm going to blatantly shill my employer and explain how you can get rid of all of this badness by embedding Tailscale into your services so you can use Tailscale to do your service discovery instead of having to rip your hair out doing things manually.
+
+## Speaker intro
+
+As the nice person with the microphone said, I'm Xe iaso. I'm the Archmage of Infrastructure at Tailscale and I've been using Tailscale personally and professionally for the last two-and-a-half years. I've also seen and committed many networking crimes beyond your _feeble mortal imagination_ and have since been figuring out a path towards atonement. Hopefully this will suffice.
+
+When I made the slides for this talk, my husband and I have 44 devices in our tailnet. We're heavy users of Tailscale and it's made so many things so much simpler when it comes to making and sharing internal services.
+
+Part of the reason there's so many nodes in our tailnet is the heavy use of tsnet to embed Tailscale as a library in Go programs. We use 14 separate tsnet services for a bunch of different things.
+
+tsnet takes all the networking goodness of Tailscale and packages it up into a library that you can import into Go programs. This gets your services their own IP address, DNS name, HTTPS certificates, and access restrictions via normal ACL tags.
+
+Today I'm gonna run over my largest success stories with tsnet so that I can give you the good kind of bad ideas to push your tailnet device count above mine, which would make my employer, and therefore me the real winner in this exchange. I'm also gonna go over what I've learned doing this, and what I want to do in the future to make them better. Buckle up, because the first thing up is a CDN.
+
+## XeDN
+
+XeDN is the Content Distribution Network (or CDN) backend that I use for my blog and other projects. I wrote it in Go and use BoltDB for storage. It runs on fly.io and serves about 10 terabytes of traffic per month. It is one of my most-used services next to my blog.
+
+Some of you in the audience may be wondering why this exists when
+there are other services I could have used. The truth is that I did
+use one of those. I used Cloudflare, but then they made policy changes
+I disagreed with and I couldn't really justify supporting them
+anymore. I had a local prototype that 80/20'd a CDN for other reasons
+as an experiment for work, but I was able to quickly adapt it and I
+ended up with XeDN.
+
+<XesiteConv name="Mara" mood="hacker">
+  Just so we're on the same page, a CDN is a fancy term for a series of caching
+  servers placed close to your users worldwide. The basic idea is to have your
+  servers close to your users so that they don't have to wait for the speed of
+  light to load images.
+</XesiteConv>
+
+After that was out of the way, I needed a control API for doing things
+like purging files from the cache, listing those cached files, and
+grabbing usage metrics for all the files. I thought about using
+something like paseto to derive tokens, but then I found out that
+tsnet existed. With tsnet I skipped the entire authentication and
+authorization step and was then able to control each XeDN node at
+will. I use ACL settings to limit access instead of implementing that
+at the application level.
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/019"
+  desc={`The slide shows a screenshot of performance monitoring graphs from the program Grafana, acting as a way to view the performance of the CDN.`}
+/>
+
+Like any good SRE, I made a bunch of graphs to help me tell what's
+going on with the CDN. All of the metrics are fetched over Tailscale
+by a Mac Pro running NixOS under my desk. I can get all the pretty
+graphs I want, and being able to track referers also lets me know when
+Hacker News upvoted one of my articles to the front page. Again.
+
+And it's been a wild success. It's easily one of my most successful Go
+programs and adding in tsnet has made maintenance and administration
+effortless. It's really just a caching proxy to Backblaze B2, but it's my caching proxy to Backblaze B2 and it's done everything I need
+with three nodes in Toronto, Seattle, and Frankfurt for $10 a month.
+
+This was really my "patient zero" for really grokking how tsnet could
+be used productively. There were some internal services at work that
+used it, but this was the first time that I really saw how it could be
+integrated into the whole.
+
+## Robocadey2
+
+From here I decided to take on another challenge. I had made a patch
+to tsnet that allows users to get an HTTP client wired up to the tsnet
+server so that you can do outgoing HTTP connections over Tailscale,
+but I needed to find a place to really make use of it. After thinking
+for a bit about it, I decided to do a Web 2.0 style mashup of Mastodon
+and Stable Diffusion. This experimentation resulted in a bot I call
+Robocadey.
+
+I've tried to make this bot a few times over the years with different
+technological underpinnings, but basically it started life as a Markov
+chain bot on IRC, then gradually grew to a GPT-2 bot, and finally I've
+ended up with a Stable Diffusion bot while I wait for the AI space to
+settle a bit. Right now, this bot has only one goal in life: to
+generate novel images when you feed it prompt information.
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/024"
+  desc={`The slide shows an example toot prompt and its mastodon post response.`}
+/>
+
+So if you tell the bot "1girl, blonde, blue eyes, barista, apron,
+coffee machine, smile, flat colors, best quality, masterpiece", you
+get this: a woman happily working at a coffee shop to make coffee with
+some strange device that roughly resembles a coffee machine.
+
+When I render images with Stable Diffusion, I use the Automatic1111
+webui to automate the process of calling the stable diffusion models.
+The main problem with Stable Diffusion is that it requires a GPU to
+run.
+
+It doesn't just require a normal or Intelgrated gpu either. It
+requires a high end gpu with at least 8 GB of vram. I personally use a
+RTX 3060 to render all of the images that I've used for both my blog
+and this presentation.
+
+Oh no, we've entered the pedantry zone! To be fair, there is a way to do it without a super-powered gaming tier GPU, but it's another case of tradeoffs making things less convenient for the end user. This would be a lot less bad for everyone if the current Nvidia pricing scheme wasn't big O of dollars squared.
+
+Either way, I run this bot in [fly.io](https://fly.io). fly doesn't have gpu nodes available yet, so I needed some kind of bridge or way to connect the
+two together. I also really would rather not punch holes into my
+homelab out into the internet. I don't trust myself to secure that
+properly.
+
+But, the node that runs the stable diffusion stuff is on my tailnet.
+The web UI has an API that allows applications to request images based
+on a prompt and other metadata. They shipped some example code in
+JavaScript and I was able to adapt it into Go with judicious use of
+ChatGPT. Then I used that tsnet HTTP client feature I added in to
+query the Stable Diffusion UI directly.
+
+Great success!
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/031"
+  desc={`The slide shows a diagram of the moving parts in the robocadey2 setup. It will be explained below.`}
+/>
+
+So when the bot runs somewhere in Fly, it can hit the Stable Diffusion UI over Tailscale and then be able to respond to queries within seconds. I've done some performance monitoring of it and the longest part seems to be the image generation step, which can only really get faster if I upgrade the GPU in the homelab node in question (assuming that Nvidia's pricing scheme comes back to earth). I also serve the Stable Diffusion WebUI over Tailscale so that I can generate new images with my macbook, ipad, gaming tower, or any other device on my tailnet.
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/032"
+  desc={`The slide shows a few abstract diagrams for what I'd have to do without Tailscale in the equation.`}
+/>
+
+Without Tailscale I guess I could make things work out. I'd have to
+co-locate the bot in my homelab or even on the same machine as the
+Stable Diffusion web UI, which would work but does cause a fair bit of
+re-architecting and re-imagining of the entire workflow. tsnet made
+this possible and easy because I was able to forget about the
+networking.
+
+Except for that one time things didn't work because I told the bot to use the wrong HTTP client (the OS one instead of the tsnet one),
+meaning that it was working locally but incredibly broken in Fly.
+
+Totally didn't lose a few hours of hacking time to that. Not in the
+slightest.
+
+And like before, I expose and scrape metrics over Prometheus, just like my other tools. This bot doesn't have any public-facing
+endpoints, so Tailscale is really my only way into it. It works like a
+charm, and it only really requires a few kilobytes of disk space to
+function. I could probably mitigate that, but it's fine for now.
+
+## Work projects
+
+Another useful tool we've made at work is something called
+proxy-to-grafana. It is a reverse proxy that makes your Grafana server
+join your tailnet. When you set this up by following the instructions
+written by...
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/036"
+  desc={`The slide shows a phonetic representation of the spoken phrase "Shay Lasso", an incorrect way to pronounce Xe iaso's name. It shows a "shai" symbol in Gregg shorthand on the left with the sitelen pona rune for "laso" (blue, green) on the right-hand side.`}
+/>
+
+"Shay Lasso"? Would be cool to hear from them here.
+
+(Audience laughs)
+
+Either way, if you set up proxy-to-grafana for your tailnet, you get
+Grafana to actually join your tailnet. It shows up as any other node,
+and you can connect to it by name:
+
+Grafana is on your tailnet like any other computer. The service is on
+your network like any other computer.
+
+Except, wait. What's this?
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/040"
+  desc={`The slide shows Xe iaso's name highlighted on the Grafana UI.`}
+/>
+
+Tailscale knows who you are. Why shouldn't Grafana know who you are if you're already logged into Tailscale? Why do you need to log into Grafana in the first place? Can't it just figure out who you are based on what machine you're on?
+
+Why can't our services already know who we are instead of having to tell them who you are over and over and over?
+
+## tclip
+
+One of the really fun parts about my job as the Archmage is that every time we come up with a new feature, I get the chance to play with new and interesting ways to use it. Every time I do I continue to find fun ways that things can be put together. One of my favorite of these moments was when we added Funnel support to tsnet.
+
+When I really want to learn how to use something, I make something
+that I've made to death a million times over: a pastebin clone. For
+those of you that have never used one, a pastebin is a website where
+you get a box of text, you paste it in, you hit submit, and then you
+get a link to it. These were really big in the days before chatroom
+applications like Slack or Discord that had file uploads were popular.
+
+<XesiteConv name="Mara" mood="hacker">
+  This isn't a bit. This is something that actually happened. Ask your friends
+  and mentors if you think this is a lie.
+</XesiteConv>
+
+One of the biggest downsides of something like pastebin or GitHub
+gists is that you have to host all your data on someone else's server.
+This server usually sticks around,but it is liable to vanish without
+warning. I found this out the hard way when one of those pastebins
+went down and it somehow broke production deployments for an IRC
+network I was administrating. What if you could have that self-hosted
+with your tailnet and then exposed to the Internet with Funnel?
+
+This is how I ended up with tclip. tclip is your private pastebin
+hosted where you want and it lives in your tailnet. Own your data,
+paste from command line, the web, or even Emacs.
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/046"
+  desc={`The slide shows the tclip UI in the Tailscale corp tailnet, with names redacted.`}
+/>
+
+One of the really cool parts about doing all this over Tailscale is
+that Tailscale already knows who you are, so you don't have to
+implement yet another authentication layer. This makes things a lot
+easier when you are hacking things up so that you just don't have to
+think about the details too much. Focus on your tool, not on the
+realities you don't want to.
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/047"
+  desc={`The slide shows the tclip UI, highlighting Xe's name and avatar.`}
+/>
+
+I've already authenticated to Tailscale and passed a two-factor-auth check. Transitively, you can attribute my Tailscale IP to me. tclip uses this information to automatically track who pasted what. No passwords, oauth secrets, or yubikey presses required.
+
+However, it doesn't stop there. If you write markdown into the box you
+can activate "fancy" mode to render the markdown into beautiful HTML:
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/049"
+  desc={`The slide shows a lorem ipsum markdown document rendered in tclip with fancy mode.`}
+/>
+
+You can use this to share small drafts with your team, but then the
+real magic comes into play with Funnel.
+
+tclip supports sharing your pastes to the world with Funnel. Paste
+something, get the unique URL, share it with your coworkers, friends,
+and family.
+
+Some of the more skeptical of you in the crowd may be thinking
+something like "well, yeah, but then can't anyone just submit whatever
+they want?". Nope. We thought of that.
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/052"
+  desc={`The side shows a diagram showing the various endpoints in a venn diagram labeled "tailnet" and "funnel".`}
+/>
+
+When tclip sets up a funnel to the outside world, it only shares a
+part of that service to the public internet. The list of all pastes
+and the ability to submit pastes are disabled at the type level. There is no way for random people to submit arbitrary data to your tclip server, just like you'd have with a GitHub Gist.
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/053"
+  desc={`The side shows the same venn diagram labeled "tailnet" and "funnel", but with all of the things on the former slide removed.`}
+/>
+
+So just imagine how you can make your internal tools show a view of
+them to the public if they need to. How would that change what you
+write? What things would it let you do that you couldn't do otherwise?
+How would this make your life easier?
+
+Oh, by the way, another great part about using tsnet for this is that it makes using HTTPS so trivial it's almost funny. With only a few extra lines of code I have an HTTPS service inside my tailnet. Tailscale's Let's Encrypt support takes care of that for me so I don't have to do it manually. It's magic.
+
+<XeblogConv name="Cadey" mood="enby">
+  I'm an archmage, I should know!
+</XeblogConv>
+
+Some of you may be thinking something like "what? why would I need
+HTTPS? I'm already using Tailscale and Tailscale encrypts things with
+WireGuard." Yes, that is true. However Google Chrome doesn't know what
+Tailscale is and we can't blame them there because Tailscale isn't
+everywhere, yet. You'd want your services to be wrapped in HTTPS for
+making your browser not mark them as "insecure". Not to mention if you
+want access to things like WebAuthn or Service Workers.
+
+I hate computers too.
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/057"
+  desc={`The slide shows http://go/somewhere in large text.`}
+/>
+
+We've even made a URL shortener for your tailnet you can put at
+http://go. Check it out! It's called
+[golink](https://github.com/tailscale/golink). DuckDuckGo find it!
+You can run it on fly.
+
+## libtailscale
+
+However, all roses have thorns and tsnet has some thorns too. The
+biggest thorn in its side is that it's a Go library and many companies
+have many already existing internal tools that aren't written in Go.
+
+Don't worry. We're working on that. And it's all thanks to the work of
+two guys named Brian and Dennis.
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/060"
+  desc={`The slide shows the C Programming Language book cover. It is uncertain if historians will conclude that the publishing of this book was a good thing or a bad thing for the human race.`}
+/>
+
+Hold on, if you're having a slight heart attack reading this and
+thinking "oh god, are they porting Tailscale to C???". No, we're not.
+We're just wrapping Tailscale's Go code into a C library.
+
+libtailscale is a wrapper to tsnet that exposes itself as a C library.
+This lets us target every toolchain on the planet so that you can
+embed Tailscale into Python, Ruby, Lua, Nim, Node.js, Deno, Haskell,
+Rust, OCaml, C#, or Java. Basically anything that can import C
+libraries can use tsnet thanks to libtailscale.
+
+These are the two languages that we've tested the most. Python and
+Ruby. It's still in the early days of hacking, but here's something
+you can do with Ruby:
+
+```ruby
+t = Tailscale::new
+t.start
+
+s = t.listen "tcp", ":1997"
+while c = s.accept
+    while got = c.readpartial(2046)
+        print got
+        c.write got
+    end
+    c.close
+end
+```
+
+Everywhere you go, you end up with a "hello world" program to help you
+validate that something is working. This is an "echo" server in Ruby
+with libtailscale. If you run this on your tailnet, it'll create a new
+node and then listen on port 1997 so that you can pipe text at it,
+then have it sent back to you. This is most of what you need to do a
+HTTP server, all you'd really have to do is just [draw the rest of the
+owl](https://knowyourmeme.com/memes/how-to-draw-an-owl).
+
+Like I said though, we're working on it. If you wanna take a crack at
+things, check out the [GitHub
+repository](https://github.com/tailscale/libtailscale)! I've been
+poking at a Rust support PR for a bit and if you can help me figure
+out how to get Tokio to use a custom socket type that would really
+help me out a lot.
+
+## Conclusion
+
+We've covered a lot of things today, from the first hit of tsnet with
+XeDN, to a structural use of Tailscale with robocadey2, an innovation
+with Funnel, and finally a look into the future with libtailscale.
+Overall though, there's a few core things that I really want to stick
+with you as you walk out:
+
+- Tailscale knows who you are. Why should your services have to figure
+  out who you are any other way?
+- Why should your services be things you access on your tailnet
+  instead of integrated into the tailnet in the first place?
+- Why should your services outside your network need to find a way to
+  bust their way in when those services can just communicate over your
+  tailnet?
+- What if your internal services were simply part of your tailnet so
+  you don't need to spend effort to discover them?
+
+You can do it with tsnet.
+
+<XeblogPicture
+  path="talks/2023/subtle-magic-tsnet/072"
+  desc={`The slide is labeled "GReeTZ" (demoscene slang) and shows a list of all of the people involved in making this talk happen.`}
+/>
+
+Before we finish this up, I want to take a moment to thank everyone on
+this list. They've been really helpful more than they know and I'm
+glad that I've been able to lean on you during the production of this
+talk. Thank you!
+
+And with that, I've been Xe Iaso, thanks for showing up in San
+Francisco! I hope you enjoy the rest of this conference, there's a
+lot of great talks here today and I really want to see what you've
+come up with.
+
+I'll be wandering around if you have any questions, but if I don't get
+to you, please email tsnetup@xeserv.us and I'll be more than
+happy to answer any questions I missed. Be well, all!

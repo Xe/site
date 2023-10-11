@@ -4,6 +4,10 @@ date: 2021-06-04
 redirect_to: https://tailscale.com/blog/nas-101/
 ---
 
+<div className="text-xl">
+    This post was written while I worked for Tailscale. It is archived here for posterity.
+</div>
+
 A lot of people use Tailscale with Network Attached Storage (NAS) devices. In an effort to make this technology more accessible we’re publishing this transcript of a conversation about the basics of Network Attached Storage between our past co-op student [Naman Sood](https://twitter.com/tendstofortytwo), and our Archmage of Infrastructure, [Xe Iaso](https://twitter.com/theprincessxena). Enjoy!
 
 ---

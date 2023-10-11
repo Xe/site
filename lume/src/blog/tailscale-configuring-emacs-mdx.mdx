@@ -1,18 +1,98 @@
 ---
 title: "Configuring Emacs for MDX files"
 date: 2023-02-03
-redirect_to: https://tailscale.dev/blog/configuring-emacs-mdx
+hero:
+  ai: Waifu Diffusion v1.4
+  file: fantasy-landscape
+  prompt: masterpiece, digital art, watercolor, landscape, badlands, mountains
 ---
 
-<XeblogConv name="Mimi" mood="happy">
-  The article Configuring Emacs for MDX files on tailscale.dev is a blog post by
-  Xe, a Developer Advocate at Tailscale. It explains how Xe uses Emacs to edit
-  posts on the blog, which uses MDX instead of normal Markdown. MDX is a format
-  that combines Markdown with JSX, a syntax extension for JavaScript. The
-  article shows how to use directory-local variables in Emacs to change the
-  major mode for .mdx files to markdown-mode, and how to enable auto-formatting
-  with prettier on save. The article also provides some examples of other
-  directory-local variables that can be used to customize Emacs for different
-  modes and files. The article is intended for Emacs users who want to edit MDX
-  files or use directory-local variables for other purposes.
+<div className="text-xl">
+    This post was written while I worked for Tailscale. It is archived here for posterity.
+</div>
+
+I'm an [Emacs](https://www.gnu.org/software/emacs/) user and I have
+been for the last decade. I use emacs for _everything_ from code, to
+posts on this blog, even down to my daily TODO list with [Org
+Mode](https://orgmode.org/). Naturally, I want to also use emacs to
+edit posts on this blog. The only problem is that the blog uses
+[MDX](https://mdxjs.com/) instead of normal Markdown. There isn't an
+Emacs major mode for MDX and the [ticket for editor support in MDX was
+closed](https://github.com/mdx-js/mdx/issues/119). This should mean that I'm out of luck and must architect a new major mode for Emacs.
+
+However, this is Emacs. You have godlike power to do anything we want
+here. MDX is just Markdown with JSX, and there's [already a widely
+used major mode for Markdown named
+`markdown-mode`](https://melpa.org/#/markdown-mode). JSX is close
+enough to HTML that realistically we don't have to care about the
+details, especially in an environment where the important JSX
+components are already imported into the document scope for us.
+
+You can use all of this information to _bodge_ MDX support into Emacs
+by using [directory-local
+variables](https://www.gnu.org/software/emacs/manual/html_node/emacs/Directory-Variables.html).
+
+Directory-local variables live in `.dir-locals.el` and will apply to
+any file in the same folder as the `.dir-locals.el` file _and all of
+its subfolders_. If you stick a `.dir-locals.el` file at the top level
+of a project, it will apply for all the files in the project.
+
+You can add MDX support to Emacs by changing the
+[`auto-mode-alist`](https://www.emacswiki.org/emacs/AutoModeAlist)
+variable to change which major mode Emacs uses based on the filetype:
+
+```lisp
+;;; Directory Local Variables
+;;; For more information see (info "(emacs) Directory Variables")
+
+((auto-mode-alist . (("\\.mdx\\'" . markdown-mode))))
+```
+
+This will make every `.mdx` file load in markdown-mode, allowing you
+to edit files like normal. It looks a bit horrible with only one
+example, but the basic schema is that it's an association list (read:
+hashtable) that contains variable definitions. If you also wanted to
+make `markdown-mode` wrap files at 80 characters and `typescript-mode`
+use two spaces for indent, you would do something like this:
+
+```lisp
+;;; Directory Local Variables
+;;; For more information see (info "(emacs) Directory Variables")
+
+((auto-mode-alist . (("\\.mdx\\'" . markdown-mode)))
+ (markdown-mode . ((fill-column . 80)))
+ (typescript-mode . ((typescript-indent-level . 2))))
+```
+
+Sometimes you need to do a bit more though. This lets you set
+variables for buffers, but it doesn't let you _execute code_ in
+buffers. The CI configuration for this repo also needs us to make sure
+our MDX documents are formatted correctly, and we use
+[prettier](https://prettier.io/) to take care of all of that for us.
+
+Emacs lets you set the variable name `eval` to a block of lisp code to
+run when loading buffers with that major mode. This lets you do things
+like this to have `markdown-mode` auto-format files on save:
+
+```lisp
+;;; Directory Local Variables
+;;; For more information see (info "(emacs) Directory Variables")
+
+((auto-mode-alist . (("\\.mdx\\'" . markdown-mode)))
+ (markdown-mode . ((fill-column . 80)
+                   (eval . (prettier-js-mode 1))))
+ (typescript-mode . ((typescript-indent-level . 2))))
+```
+
+This will make Emacs prompt you if you really want to do this every
+time you load the file, but you can squelch this by using the `!` key.
+
+<XeblogConv name="Cadey" mood="enby">
+  Make sure you know what the code is doing before you just blindly hit "yes"!
 </XeblogConv>
+
+This is all you need to get MDX working in Emacs. If you want to see
+more, look at the
+[`.dir-locals.el`](https://github.com/tailscale-dev/tailscale-dev/blob/main/.dir-locals.el)
+in the [tailscale-dev](https://github.com/tailscale-dev/tailscale-dev)
+repo.

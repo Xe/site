@@ -1,8 +1,11 @@
 ---
 title: "Philosophy of Tailscale: Social proximity networks"
 date: 2021-02-02
-redirect_to: https://tailscale.com/blog/social-proximity-networks/
 ---
+
+<div className="text-xl">
+    This post was written while I worked for Tailscale. It is archived here for posterity.
+</div>
 
 Originally, computer networks mapped almost 1:1 to social networks.
 There has been a lot of development since then. We have added more and

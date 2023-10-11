@@ -30,7 +30,16 @@
     display: inline;
   }
 
+  .xe-dont-newline p:first-of-type {
+    @apply mt-0;
+    display: inline;
+  }
+
   .convsnippet p + p {
+    @apply mt-4;
+  }
+
+  .xe-dont-newline p + p {
     @apply mt-4;
   }
 

@@ -11,6 +11,8 @@ import postcss from "lume/plugins/postcss.ts";
 
 import tailwindOptions from "./tailwind.config.js";
 
+import BlockQuote from "./src/_components/BlockQuote.jsx";
+import Figure from "./src/_components/Figure.tsx";
 import XeblogConv from "./src/_components/XeblogConv.tsx";
 import XeblogHero from "./src/_components/XeblogHero.tsx";
 import XeblogPicture from "./src/_components/XeblogPicture.tsx";
@@ -52,6 +54,9 @@ site.use(feed({
 }));
 site.use(mdx({
   components: {
+    "BlockQuote": BlockQuote,
+    "Figure": Figure,
+    "Image": Figure,
     "XeblogConv": XeblogConv,
     "XesiteConv": XeblogConv,
     "XeblogHero": XeblogHero,
