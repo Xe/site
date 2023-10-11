@@ -89,6 +89,7 @@ la budza pu cusku lu
             <meta property="twitter:image" content="https://cdn.xeiaso.net/file/christine-static/hero/{{ hero.file }}.jpg"/>
         {% endif %}
     </head>
-
+    
+    {{ comp.ads() | safe }}
     {{ content | safe }}
 </html>

@@ -2,6 +2,8 @@
 layout: base.njk
 ---
 
+{{ comp.ads() | safe }}
+
 <article>
     <h1 class="text-3xl">{{title}}</h1>
     <p class="mt-2 text-sm text-fg-3 dark:text-fgDark-3">
