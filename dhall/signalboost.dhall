@@ -224,4 +224,26 @@ in  [ Person::{
         , Link::{ url = "https://cedwards.xyz", title = "Website" }
         ]
       }
+    , Person::{
+      , name = "Dillon Baird"
+      , tags =
+        [ "javascript"
+        , "nodejs"
+        , "react"
+        , "angular"
+        , "vue"
+        , "python"
+        , "redis"
+        , "sql"
+        , "devops"
+        , "sysadmin"
+        , "docker"
+        , "terraform"
+        , "ansible"
+        , "ui/ux"
+        ]
+      , links =
+        [ Link::{ url = "https://dillonbaird.io", title = "Website" }
+        ]
+      }
     ]
