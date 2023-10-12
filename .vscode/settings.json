@@ -4,4 +4,9 @@
         "editor.wordWrapColumn": 80,
         "editor.wordBasedSuggestions": false
     },
+    "[mdx]": {
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 80,
+        "editor.wordBasedSuggestions": false
+    },
 }

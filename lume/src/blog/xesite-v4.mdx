@@ -1,0 +1,393 @@
+---
+title: Okay, fine, I'm using a static site generator now
+date: 2023-10-12
+series: site-updates
+tags:
+  - lume
+  - dhall
+  - typst
+  - go
+hero:
+  ai: SCMix
+  file: si4-shed
+  prompt: A green-haired woman in a hoodie and jeans leaning on a shed that looks like the Hanzi character for "four"
+---
+
+Hey all! Xesite v4 is now complete and has been rolled out. I'd've liked to have this post out sooner, but this is genuinely a lot of stuff that's changed and I'm still working on some of it. Here's a quick overview of what's changed in Xesite v4:
+
+- [Lume](https://lume.land) is used to build pages
+- [Tailwind](https://tailwind.css.com) is used to style everything
+- The site can now automatically rebuild itself _in production_ to reflect changes to the site's configuration, patron membership, blog posts, or my resume.
+- The site is now hosted on [Fly.io](https://fly.io)
+- I use [MDX](https://mdxjs.com) to write blog posts now
+
+So for those of you that [really did think my blog was a static site](/talks/how-my-website-works/), you're right now. It is one.
+
+## Why did I do this?
+
+At a high level, the architecture for Xesite v3 (the last version in Rust) was sufficient for my needs. I had extensibility via [lol\_html](https://github.com/cloudflare/lol-html) and defining my own custom HTML elements. Everything was compiled to native Rust code as much as possible, and I had exact control over the output.
+
+<XeblogConv name="Cadey" mood="enby">
+  Arguably, I did have a static site generator, but it was just kinda halfassed
+  and stored everything in memory.
+</XeblogConv>
+
+However, there were a few problems with this approach:
+
+I couldn't trigger updates to the website content without redeploying the entire server it was on, due to how it was implemented with NixOS. This is not a fault in how NixOS works, this was a fault in how I implemented it.
+
+To be fair, I tried adding dynamic updates to the mix, but I was running into issues involving state contention with how I designed things in Rust. I could've fixed this, but it would've required a lot of work. It probably would have ended in me rendering every page to the disk and serving that disk folder, but that's not really what I wanted.
+
+I wanted to adopt [Tailwind](https://tailwindcss.com) so that I could style my posts a lot more freely, but I wasn't really able to find a way to fit it in because the Tailwind parser couldn't understand the HTML templates I was using.
+
+I was using the proc macro [Maud](https://maud.lambda.xyz/) to write HTML, but the Tailwind parser can't handle reading class names out of Maud templates. Here's an example JSX component from my website that I wanted to port over:
+
+```jsx
+export default function BlockQuote({ children }) {
+  return (
+    <div className="mx-auto mt-4 mb-2 rounded-lg bg-bg-2 p-4 dark:bg-bgDark-2 md:max-w-lg xe-dont-newline">
+      &gt; {children}
+    </div>
+  );
+}
+```
+
+In Maud, the template would look like this:
+
+```rust
+use maud::Markup;
+
+pub fn blockquote(body: Markup) -> Markup {
+  html! {
+    ."mx-auto mt-4 mb-2 rounded-lg bg-bg-2 p-4 dark:bg-bgDark-2 md:max-w-lg xe-dont-newline" {
+      "&gt; " (body)
+    }
+  }
+}
+```
+
+This is all fine and dandy, but then the real trouble came in with passing this to lol*html. lol\_html doesn't have the concept of getting the children of a component (because this is designed to do *streaming* replacement of HTML elements), so in order to make this work in lol\_html I can't use that template function. I have to write it like this:
+
+```rust
+use lol_html::{element, RewriteStrSettings};
+
+let mut html = magic_get_html_for_post!();
+
+let html = rewrite_str(
+    &html,
+    RewriteStrSettings {
+        element_content_handlers: vec![
+          // ...
+          element!("xeblog-blockquote", |el| {
+            el.before("<div class=\"mx-auto mt-4 mb-2 rounded-lg bg-bg-2 p-4 dark:bg-bgDark-2 md:max-w-lg xe-dont-newline\">&gt; ");
+            el.after("</div>");
+            el.remove_and_keep_content();
+          })
+          // ..
+        ],
+        ..RewriteStrSettings::default()
+    }
+);
+```
+
+You can see how this would get fairly unmanintainable very quickly.
+
+At work I was exposed to a new technology called [MDX](https://mdxjs.com) that looks like it could really solve all these problems. It's a bit of an unholy combination of React and JSX with Markdown, but it's really cool. Instead of defining my components in bespoke syntaxes or in Rust, I can just write them in React and use them in my blog posts. This is really cool, and I'm excited to see what I can do with it.
+
+The biggest problem was the old format of these things:
+
+<XeblogConv name="Mara" mood="hacker">
+  These little conversation snippets were a huge pain to move over!
+</XeblogConv>
+
+Previously they were done by [hacking up the markdown parser in a way that is known to cause cancer in the state of California](https://github.com/Xe/site/blob/cbdea8ba3fca9a663778af71f8df5965aeb6c090/lib/xesite_markdown/src/lib.rs#L50-L94), which made them look like this:
+
+```markdown
+[Wow this is text that I am saying!](conversation://Mara/hacker)
+```
+
+With the lol\_html flow I had to explicitly namespace my HTML elements ad nauseum, so it looked like this:
+
+```html
+<xeblog-conv name="Mara" mood="hacker">Wow this is text I am saying!</xeblog-conv>
+```
+
+But even this was annoying in practice because I could _not_ use newlines in the conversation snippets without breaking the hell out of everything in ways that were difficult to diagnose. I ended up using `<br />`, `<ul>`, `<li>`, and other such elements everywhere in ways that were hard to read and write:
+
+```markdown
+<xeblog-conv name="Mara" mood="hacker">Okay so when you use the
+[rilkef method](/blog/experimental-rilkef-2018-11-30/) to dynamically
+reparse the flux matricies, you need to follow these steps:<br /><ul>
+<li>First, desalinate the yolo manifold</li>
+<li>Then make sure you have Ubuntu up to date</li>
+<li>Finally, watch <a href="https://youtu.be/MpJsYFZtQbw">this video</a>
+to find out any missing steps</li></ul></xeblog-conv>
+```
+
+This sucked. Majorly. I hated it. I wanted to be able to write my conversations like this:
+
+```markdown
+<XeblogConv name="Mara" mood="hacker">
+  Okay so when you use the
+  [rilkef method](/blog/experimental-rilkef-2018-11-30/) to dynamically
+  reparse the flux matricies, you need to follow these steps:
+
+  - First, desalinate the yolo manifold
+  - Then make sure you have Ubuntu up to date
+  - Finally, watch [this video](https://youtu.be/MpJsYFZtQbw) to find out any missing steps
+  </XeblogConv>
+```
+
+<XeblogConv name="Mara" mood="hacker">
+  Okay so when you use the
+  [rilkef method](/blog/experimental-rilkef-2018-11-30/) to dynamically
+  reparse the flux matricies, you need to follow these steps:
+
+  - First, desalinate the yolo manifold
+  - Then make sure you have Ubuntu up to date
+  - Finally, watch [this video](https://youtu.be/MpJsYFZtQbw) to find out any missing steps
+</XeblogConv>
+
+This is the real strength of MDX. It combines React and Markdown to give you superpowers.
+
+## Migration
+
+The main pain point was migration. For the most part the "new style" syntax transferred over without basically any editing. I chose to fix some minor spelling and grammar errors, but most of it was migrated over fully intact.
+
+I probably missed something, and with the sheer number of articles I have (over 500 by the end of the year) I almost certainly missed something. Please [let me know](/contact/) if I did! Sorry!
+
+When it came to the CSS, I started with a blank HTML file and copied over rendered HTML from my website in production. Once I had the basic structure copied over, I started pouring over [Tailwind UI](https://tailwindui.com/) to make a short list of the components I wanted to play with.
+
+I had existing experience adding my Gruvbox inspired theme to Tailwind, so I copied over that Tailwind configuration file and went to down replicating the styles I had before, combining in parts from Tailwind UI and a few other places for inspiration. I had to make some minor changes to the colors, but for the most part it was a fairly straightforward process.
+
+The part I was most worried about was the [prose](https://tailwindcss.com/docs/typography-plugin) formatting in Tailwind. It didn't follow my old style of prose formatting, so I had to make a few minor changes. I'm not fully happy with this yet (it makes prose text a bit too dark for my tastes), but I'll get there in due time.
+
+## The light at the end of the tunnel
+
+As an added bonus of using Tailwind, React, and all that startup goop, I can make satirical [landing pages](/landing/alvis/) for fake products I make up. This is a huge win for me, because I absolutely love abstract methods and ways of making fun of my own industry.
+
+<XeblogConv name="Cadey" mood="coffee">
+  Hilariously enough, when I published that landing page and shared it around, I
+  expected people to click _literally any_ of the links on it to see the
+  [associated blogpost](/blog/alvis/). Instead, people just commented on how
+  baity the page was. Some people thought it was serious. This was an even more
+  hilarious result than I thought. I'd have hoped that having the Enterprise
+  tier _list a price on the page_ would be a dead giveaway that it's a joke, but
+  I guess not. Same with the mention of artificial general intelligence. Oh
+  well, lessons learned I guess!
+</XeblogConv>
+
+## Dynamic updating
+
+The biggest change in Xesite v4 is that it can now update itself dynamically. This is a huge win for me, because it means I can update my blog posts, resume, and other content without having to redeploy the entire server. All I do is push things to GitHub and it updates itself _within a minute_.
+
+This is thanks to me adopting a dystatic approach to my website. In essence, it boils down to this: the application itself serves a static site, but the static site is rebuilt every time something changes.
+
+This is a bit of a weird concept, so let me explain it in a bit more detail. I made a diagram of all of this that you will need to click on to expand, because it's a bit dense:
+
+<Figure
+  path="blog/2023/xesite-v4/xesite-v4-arch.svg"
+  alt="The entire flow of my website's architecture (click on the image to expand it, the diagram is kinda regrettably dense)"
+/>
+
+When you think about it, a static site generator is really just a compiler. It takes input in the form of source files and outputs a folder with HTML in it. When I was evaluating static site generators, a feature of [Lume](https://lume.land) kept standing out for me: [shared data](https://lume.land/docs/creating-pages/shared-data/).
+
+A lot of my site's content is actually stored in a series of increasingly large [Dhall](https://dhall-lang.org) documents. This includes everything from my [salary transparency history](/salary-transparency/), the [signalboost](/signalboost/) page, and even key parts of my [resume](/resume/). I wanted to be able to use this data in my blog posts, but I didn't want to have to copy and paste it everywhere.
+
+I did [make a draft of v4 that changed everything over to TypeScript](https://github.com/Xe/site/tree/go/config) that'd be parsed on the fly using [tyson](https://github.com/jetpack-io/tyson), but I didn't like the idea of having everything in kinda hard to read files. There's a certain surreal beauty to the way I'm using Dhall here and I want to keep that dream alive.
+
+The way I hacked around this was by making the Go rebuild process [dump a bunch of Dhall data into Lume shared data](https://github.com/Xe/site/blob/6f8d93b9d8d8f9168fa0dfb88d755793ff6e770c/internal/lume/lume.go#L320-L340). Arguably this could be worked around if Lume supported loading Dhall data, but I just hacked it together using JSON in the meantime. This could probably be improved on in the future, but it has the advantage of working.
+
+Amazingly enough, this means I could slap [patron information](/patrons/) into the right place with the same flow. I don't have to do anything special to make this work, it just works.
+
+Combine this with dumping the right JSON file in the right place for [Typst](https://typst.app/) to pick up when building [my resume](/static/resume/resume.pdf) and you have a pretty powerful system.
+
+Once this all was working, I added in the dynamic updating system. This works like this:
+
+- The Fly server keeps a copy of my site's git repo on disk, cloning a new copy on application startup (TODO: fix)
+- When I make commits to the site on GitHub, or [someone signs up on Patreon](https://patreon.com/cadey), they send webhooks to my website
+- The webhooks trigger a rebuild, which fetches new commits from GitHub, and then rebuilds the site using the entire process I outlined above.
+
+This is how you get up to this point:
+
+<Figure
+  path="blog/2023/xesite-v4/xesite-v4-arch.svg"
+  alt="The entire flow of my website's architecture"
+/>
+
+It makes a bit more sense now! I'm really happy with how this turned out, and I'm excited to see what I can do with it in the future.
+
+I've looked around, and there doesn't seem to be a name for this concept. In order to trigger someone [calling me wrong on the Internet](https://xkcd.com/386/), I'm calling this a _dystatic_ approach. It's a dynamic website that rebuilds its static website when things change.
+
+## Fly
+
+<XeblogConv name="Cadey" mood="enby">
+  I got some free credits from Fly a while back for writing about them. Please
+  flavor your reading of this section with that in mind. Nothing about my setup
+  has a hard requirement on Fly, but the fact that they have anycast routing
+  _out of the box_ really makes it convenient for XeDN and xesite.
+</XeblogConv>
+
+My website has a few moving components now. Here's a quick overview of what's going on:
+
+<Figure
+  path="blog/2023/xesite-v4/xesite-dependencies.svg"
+  alt="The entire flow of my website's architecture"
+/>
+
+`xesite` is the binary that serves the website you are reading right now. It's what does all the rebuilds and stuff. It's written in Go, and it's what I'm most familiar with.
+
+<XeblogConv name="Aoi" mood="wut">
+  Didn't you rewrite it in Rust from Go a while ago? Why go back?
+</XeblogConv>
+<XeblogConv name="Cadey" mood="enby">
+  Go is my best language. It's not a perfect shining city on a hill, but I can
+  write and maintain it without thinking. I can't say the same for Rust yet.
+  Arguably there's nothing stopping it from being that way, but I wanted
+  something easier to implement because this was already _several months of
+  work_. Editing all of the articles took _forever_.
+</XeblogConv>
+
+### patreon-saasproxy and OAuth2 ""fun""
+
+When it starts up, it reaches out to [patreon-saasproxy](https://github.com/Xe/site/blob/6f8d93b9d8d8f9168fa0dfb88d755793ff6e770c/cmd/patreon-saasproxy/main.go#L1) fetch an authentication token for [Patreon](https://patreon.com). Originally, I was going to make it a full reverse proxy for the Patreon API, but the [Patreon API bindings I'm using](https://gopkg.in/mxpv/patreon-go.v1) didn't have support for this, so I just made it a token source.
+
+The Go oauth2 library seems to very much not be designed with this kind of usecase in mind. In order to get things working, I had to write my own [TokenSource](https://pkg.go.dev/golang.org/x/oauth2#TokenSource) like this:
+
+```go
+type remoteTokenSource struct {
+	curr       *oauth2.Token
+	lock       sync.Mutex
+	remoteURL  string
+	httpClient *http.Client
+}
+
+func (r *remoteTokenSource) fetchToken() (*oauth2.Token, error) {
+	resp, err := r.httpClient.Get(r.remoteURL)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, web.NewError(http.StatusOK, resp)
+	}
+
+	var tok oauth2.Token
+	if err := json.NewDecoder(resp.Body).Decode(&tok); err != nil {
+		return nil, err
+	}
+
+	return &tok, nil
+}
+
+func (r *remoteTokenSource) Token() (*oauth2.Token, error) {
+	r.lock.Lock()
+	defer r.lock.Unlock()
+
+	if r.curr == nil {
+		tok, err := r.fetchToken()
+		if err != nil {
+			return nil, err
+		}
+		r.curr = tok
+		return tok, nil
+	}
+
+	if r.curr.Expiry.Before(time.Now()) {
+		tok, err := r.fetchToken()
+		if err != nil {
+			return nil, err
+		}
+		r.curr = tok
+	}
+
+	return r.curr, nil
+}
+```
+
+It works, but it's kinda hacky. Ideally I'd like to make this a bit more generic in the future (so I can have it manage other tokens from different OAuth2 sources), but this has the advantage of working for now. I kinda hate how the Patreon API is abandonware, but I can vibe.
+
+### XeDN
+
+There's not currently a direct dependency between `xesite` and XeDN, but in practice everything `xesite` serves depends on XeDN in some way or another. If you want to read more about XeDN, you can read these posts:
+
+- [Announcing the glorious advent of XeDN](/blog/xedn/)
+- [Site Update: CSS fixes](/blog/site-update-better-css/)
+- [Fixing Xesite in reader mode and RSS readers](/vods/2023/reader-mode-css/)
+- [Shouting at my editor](/vods/2023/cursorless/)
+
+### Mi
+
+I haven't really mentioned mi in much detail on my blog (and I am probably going to wait until I've rewritten a good portion of it to go into much detail), but it's basically a personal API server that does a bunch of things I find convenient for myself.
+
+One of those things is a bit of code that will grab my blog's JSONFeed, scrape it for new articles, and announce them in a few places.
+
+<XeblogConv name="Cadey" mood="coffee">
+  I really wish this could include Patreon, but they seem to have no interest in
+  maintaining their API. I'm not sure it I want to reverse-engineer their webapp
+  to make this work, but I might have to. That's for another time though.
+</XeblogConv>
+
+## Conclusion
+
+Xesite is here to stay. I hope this has given you an overview of everything that I've been up to with this. I'm really happy with how this turned out, and I'm excited to see what I can do with it in the future.
+
+Oh, by the way, because MDX lets me embed React components in my blog posts, I can do this:
+
+export function ChatFrame({ children }) {
+  return (
+    <>
+      <div className="w-full space-y-4 p-4">{children}</div>
+    </>
+  );
+}
+
+export function ChatBubble({
+  reply = false,
+  bg = "blue-dark",
+  fg = "slate-50",
+  children,
+}) {
+  return (
+    <div className={`mx-auto w-full ${reply ? "" : "space-y-4"}`}>
+      <div className={`flex ${reply ? "justify-start" : "justify-end"}`}>
+        <div className={`flex w-11/12 ${reply ? "" : "flex-row-reverse"}`}>
+          <div
+            className={`relative max-w-xl rounded-xl ${
+              reply ? "rounded-tl-none" : "rounded-tr-none"
+            } bg-${bg} px-4 py-2`}
+          >
+            <span className={`font-medium text-${fg}`}>{children}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+<ChatFrame>
+  <ChatBubble reply>
+    I can embed arbitrary HTML and React components in my blog posts now! This
+    is the crucial part of how my recent story posts work. Just imagine what I
+    can do with this!
+  </ChatBubble>
+</ChatFrame>
+
+### Things I learned
+
+[Semantic import versioning](https://go.dev/blog/versioning-proposal) isn't actually that bad in practice. I decided to use it when writing the code for this version of the site because I wanted to give it a fair assessment. It's fine. I don't agree with the design decisions, but it's fine in practice.
+
+I have _way more articles_ than I thought I did. I knew I had a lot, but having to touch every single file made me realize just how much I've written over the years. I'm really proud of myself for this.
+
+React and Tailwind are stupidly powerful. [Xeact](/blog/xeact-0.0.69-2021-11-18/) isn't good enough for my needs anymore because I've outgrown it. Kinda sucks to be in this situation, but I am happy that I was able to use Xeact to help me learn what I needed to learn to make this work.
+
+### Bugs I need to fix
+
+- The site doesn't build the series index or tag index pages yet. Series indices will be created soon, but I'm not sure how I want to handle tags yet.
+- The site doesn't show read time in minutes yet. I'm waiting on Lume to patch [pagefind](https://pagefind.app/) to handle this better.
+- Search is super jank via [pagefind](https://pagefind.app/). I'm going to be working on making this better, but this is going to have to do for the time being.
+- The site doesn't have a proper 404 page yet.
+- The [🥺 post](/blog/xn--ts9h/) had to be renamed and not all of the attempts I've made to forward the old name to the new place have worked.
+
+Here's to the next hundred articles. Stay safe out there!

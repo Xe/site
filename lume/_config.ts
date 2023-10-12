@@ -31,6 +31,7 @@ const site = lume({
 site.copy("static");
 site.copy("favicon.ico");
 site.copy("static/font/inter/inter.css");
+site.copy("static/img");
 
 site.data("getYear", () => {
   return new Date().getFullYear();

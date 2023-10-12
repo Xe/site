@@ -13,9 +13,9 @@ const ConvSnippet = ({ name, mood, children, standalone }: XeblogConvProps) => {
   return (
     <>
       <div className="my-4 flex space-x-4 rounded-md border border-solid border-fg-4 bg-bg-2 p-3 dark:border-fgDark-4 dark:bg-bgDark-2 max-w-full">
-        <div className="flex max-h-16 max-w-16 shrink-0 items-center justify-center self-center overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700">
+        <div className="flex max-h-16 shrink-0 items-center justify-center self-center">
             <img
-              style="max-height:4.5rem"
+              style="max-height:6rem"
               alt={`${name} is ${mood}`}
               loading="lazy"
               src={`https://cdn.xeiaso.net/sticker/${nameLower}/${mood}/${size}`}
