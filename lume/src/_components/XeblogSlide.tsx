@@ -10,16 +10,16 @@ export default function XeblogSlide({ name, essential, desc }: XeblogSlideProps)
       <picture>
         <source
           type="image/avif"
-          srcset={`https://cdn.xeiaso.net/file/christine-static/${name}.avif`}
+          srcset={`https://cdn.xeiaso.net/file/christine-static/talks/${name}.avif`}
         />
         <source
           type="image/webp"
-          srcset={`https://cdn.xeiaso.net/file/christine-static/${name}.webp`}
+          srcset={`https://cdn.xeiaso.net/file/christine-static/talks/${name}.webp`}
         />
         <img
           alt={desc || `Slide ${name}`}
           loading="lazy"
-          src={`https://cdn.xeiaso.net/file/christine-static/${name}.jpg`}
+          src={`https://cdn.xeiaso.net/file/christine-static/talks/${name}.jpg`}
         />
       </picture>
       {desc && <figcaption>{desc}</figcaption>}
