@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"expvar"
 	"fmt"
+	"html/template"
 	"io/fs"
 	"log"
 	"log/slog"
@@ -339,6 +340,10 @@ func (f *FS) writeConfig() error {
 		}
 	}
 
+	if err := f.writeSeriesPages(); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -347,6 +352,62 @@ func (f *FS) Clacks() []string {
 	defer f.lock.RUnlock()
 	return f.conf.ClackSet
 }
+
+func (f *FS) writeSeriesPages() error {
+	seriesPageDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "src", "blog", "series")
+
+	for k, v := range f.conf.SeriesDescMap {
+		fname := filepath.Join(seriesPageDir, fmt.Sprintf("%s.jsx", k))
+
+		fout, err := os.Create(fname)
+		if err != nil {
+			return fmt.Errorf("can't open %s: %w", fname, err)
+		}
+		defer fout.Close()
+
+		if err := seriesPageTemplate.Execute(fout, struct {
+			Series string
+			Desc   string
+		}{
+			Series: k,
+			Desc:   v,
+		}); err != nil {
+			return fmt.Errorf("can't write %s: %w", fname, err)
+		}
+	}
+
+	return nil
+}
+
+const seriesPageTemplateStr = `export const title = "{{.Series}}";
+export const layout = "base.njk";
+
+export default ({ search }) => {
+  const dateOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
+
+  return (
+    <div>
+      <h1 className="text-3xl mb-4">{title}</h1>
+      <p className="mb-4">
+        {{.Desc}}
+      </p>
+
+      <ul class="list-disc ml-4 mb-4">
+        {search.pages("series={{.Series}}", "order date=desc").map((post) => {
+          const url = post.data.redirect_to ? post.data.redirect_to : post.data.url;
+          return (
+          <li>
+            <span className="font-mono">{post.data.date.toLocaleDateString("en-US", dateOptions)}</span> -{" "}
+            <a href={url}>{post.data.title}</a>
+          </li>
+        );
+        })}
+      </ul>
+    </div>
+  );
+};`
+
+var seriesPageTemplate = template.Must(template.New("seriesPage.jsx.tmpl").Parse(seriesPageTemplateStr))
 
 func (f *FS) buildResume(ctx context.Context) error {
 	t0 := time.Now()
