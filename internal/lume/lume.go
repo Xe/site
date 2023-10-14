@@ -381,6 +381,7 @@ func (f *FS) writeSeriesPages() error {
 
 const seriesPageTemplateStr = `export const title = "{{.Series}}";
 export const layout = "base.njk";
+export const date = "2012-01-01";
 
 export default ({ search }) => {
   const dateOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
