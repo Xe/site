@@ -8,7 +8,7 @@ export default ({ seriesDescriptions }) => {
     <>
       <h1 className="text-3xl mb-4">{title}</h1>
       <p className="mb-4">
-        TODO: filler text here
+        Some posts of mine are intended to be read in order. This is a list of all the series I have written along with a little description of what it's about.
       </p>
 
       <ul class="list-disc ml-4 mb-4">
