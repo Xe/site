@@ -1,5 +1,6 @@
 export const title = "Post Series";
 export const layout = "base.njk";
+export const date = "2012-01-01";
 
 export default ({ seriesDescriptions }) => {
   const dateOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
