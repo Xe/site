@@ -114,15 +114,20 @@ in  [ Person::{
       }
     , Person::{
       , name = "Andrei Jiroh Halili"
-      , tags = [ "backend", "bash", "nodejs", "deno", "alpinelinux", "linux" ]
+      , tags = [ "backend", "bash", "nodejs", "deno", "alpinelinux", "linux", "actuallyautistic" ]
       , links =
         [ Link::{ url = "https://github.com/ajhalili2006", title = "GitHub" }
-        , Link::{ url = "https://twitter.com/Kuys_Potpot", title = "Twitter" }
+        , Link::{ url = "https://mau.dev/ajhalili2006", title = "GitLab" }
+        , Link::{ url = "https://sr.ht/~ajhalili2006", title = "sourcehut" }
         , Link::{
           , url = "https://tilde.zone/@ajhalili2006"
           , title = "Fediverse"
           }
-        , Link::{ url = "https://ajhalili2006.bio.link", title = "Website" }
+        , Link::{
+          , url = "https://substack.com/@ajhalili2006"
+          , title = "Substack"
+        }
+        , Link::{ url = "https://andreijiroh.eu.org", title = "Website" }
         ]
       }
     , Person::{
