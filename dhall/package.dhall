@@ -18,7 +18,7 @@ in  Config::{
       , "Dennis Ritchie"
       , "Steven Hawking"
       , "John Conway"
-      , "Ruth Gader Ginsburg"
+      , "Ruth Bader Ginsburg"
       , "Bram Moolenaar"
       , "Grant Imahara"
       , "David Bowie"
