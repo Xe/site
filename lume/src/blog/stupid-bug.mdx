@@ -1,0 +1,160 @@
+---
+title: A very stupid bug
+date: 2023-10-18
+tags:
+  - go
+  - pain
+  - reddit
+  - discord
+hero:
+  ai: Ligne Claire+CDi+Rider-Waite
+  file: anime-tarot
+  prompt: "A green haired 90's style anime woman in a kimono is standing in front of a pagoda. The art style looks like a tarot card."
+---
+
+Many times when you work on problems, you don't encounter complicated bugs. You encounter the stupidest possible bugs you could ever imagine. This is one of those bugs.
+
+I'm in a large number of obscure communities and one of them is a Discord community with an associated subreddit. One of the main things that one of the previous subreddit mods ran was a Reddit post -> Discord bot that would announce new posts to the Discord channel. The Reddit mod left the team due to the platform deciding that self-immolation was the best course of action, so I decided to take over the bot.
+
+Of course, they didn't leave the source code so I hacked up [my own bot in Go](https://github.com/Xe/x/blob/master/cmd/sapientwindex/main.go). I wanted to deploy it to my [Gokrazy machine](/blog/gokrazy/) so I could stop running it on my laptop. I got it working and deployed it, but it would randomly stop working. I'd have to manually restart it.
+
+<XeblogConv name="Aoi" mood="wut">
+  Wait, isn't gokrazy supposed to automatically restart supervised processes when they exit?
+</XeblogConv>
+<XeblogConv name="Cadey" mood="coffee">
+Not when they exit with status code 0!
+
+```
+2023/10/15 04:48:46 gokrazy: exited successfully, stopping
+2023/10/16 10:32:16 gokrazy: attempt 1, starting ["/user/sapientwindex"]
+```
+
+</XeblogConv>
+
+Annoyingly enough, this subreddit in particular only gets a few posts per day, so it's difficult to know when you miss a post without waiting for about a day.
+
+In order to understand the magnitude of this bug's stupidity, let's go over when go programs exit. Go programs normally run until:
+
+- The main goroutine exits
+- The program calls [`os.Exit`](https://pkg.go.dev/os/#Exit)
+- The program receives a signal that it does not handle
+- The kernel intercepts a SIGKILL and pulls the rug out from under the program
+- Any goroutine has an unrecovered panic
+
+So I started by eliminating the easy ones.
+
+If a Go program recieves a signal it doesn't have a handler for, it'll usually quit with a non-zero exit code (usually the same number as the signal). It's exiting with a 0, so let's mark that on the "not likely" list.
+
+If the kernel recieves a SIGKILL and forcibly murderates a program, it'll usually have that process return a non-zero exit code. Again, we're seeing an exit code of 0, so this is also on the "not likely" list.
+
+If a goroutine has an unrecovered panic, the Go runtime will spill a stacktrack that bears witness to all of your programming sins for all to see. However, the only logs I was seeing was the "listening for posts" log message from the program and that "exit successfully" message from gokrazy. This is also on the "not likely" list.
+
+So there's two options left: the main goroutine exiting and the program calling `os.Exit`. My program didn't have any explicit calls to `os.Exit`, so I had to dig into the dependency closure. Normally libraries shouldn't be calling `os.Exit` for you, but sometimes you get unlucky with a library that does. I knew that [graw](https://github.com/turnage/graw) (the Reddit bot library that I was using) was one of the older Go libraries for this and that back in the day Go code quality was kinda sketchy, so I decided to check that first.
+
+First, I cloned the `graw` repo and ran `go mod vendor` to get its dependency closure.
+
+```
+go mod vendor
+```
+
+Then I ran `grep` to find any calls to `os.Exit` in the vendor directory.
+
+```
+grep -R os.Exit .
+```
+
+The only hits I got were from one of the example commands explicity exiting when some error case happened. Libraries don't depende on examples, so this was a dead end.
+
+Then I looked back at the main function and knew exactly what I was doing wrong. To explain why, I'll paste the "broken" version of my `func main()` here:
+
+```go
+func main() {
+	internal.HandleStartup()
+
+	slog.Info("starting up", "subreddit", *subreddit, "scan_duration", (*scanDuration).String())
+
+	handle, err := reddit.NewScript(*redditUserAgent, *scanDuration)
+	if err != nil {
+		log.Fatal(err)
+	}
+	announce := &announcer{}
+
+	scriptCfg := graw.Config{
+		Subreddits: []string{*subreddit},
+		Logger:     slog.NewLogLogger(slog.Default().Handler(), slog.LevelInfo),
+	}
+
+	stop, wait, err := graw.Scan(announce, handle, scriptCfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer stop()
+
+	wait()
+}
+```
+
+The only thing that could be exiting is the `wait()` call. That `wait()` call is a function that returns an error when it fails to scan for new posts from Reddit in a way that it can't easily recover from. It turns out that every so often Reddit will just randomly fail this call and nobody really knows why. Because this was at the end of `func main()`, it returns from the function and then the program exit logic kicks in and exits with status code 0.
+
+Gokrazy notices this, considers the program a success and stopped restarting it.
+
+I fixed this by wrapping the `wait()` call in a `for` loop that will retry the call if it fails.
+
+Here is the patch that fixed the issue:
+
+```diff
+From d9c24d3d38eaf9b2da4bcd5d042d8691b697e7dc Mon Sep 17 00:00:00 2001
+From: Xe Iaso <me@xeiaso.net>
+Date: Wed, 18 Oct 2023 06:20:04 -0400
+Subject: [PATCH] cmd/sapientwindex: retry scanning in a loop
+
+So apparently this bot was randomly exiting with status code 0. I
+checked the vendor closure of the library and found out that this was
+not an intentional call made in any of the code I'm calling.
+
+Nope. Turns out this is everything working as intended because when
+execution gets to the end of `func main`, Go inserts a `syscall.Exit(0)`
+for you.
+
+This was fixed by inserting a "wait 5 seconds after each retry" loop. If
+this becomes a problem, I'll probably switch to using /x/cardio to have
+it float between 30 seconds and an hour.
+
+Signed-off-by: Xe Iaso <me@xeiaso.net>
+---
+ cmd/sapientwindex/main.go | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/cmd/sapientwindex/main.go b/cmd/sapientwindex/main.go
+index 97d89a94..f13d820a 100644
+--- a/cmd/sapientwindex/main.go
++++ b/cmd/sapientwindex/main.go
+@@ -38,14 +38,18 @@ func main() {
+ 		Logger:     slog.NewLogLogger(slog.Default().Handler(), slog.LevelInfo),
+ 	}
+
+-	stop, wait, err := graw.Scan(announce, handle, scriptCfg)
+-	if err != nil {
+-		log.Fatal(err)
+-	}
++	for {
++		stop, wait, err := graw.Scan(announce, handle, scriptCfg)
++		if err != nil {
++			log.Fatal(err)
++		}
++
++		defer stop()
+
+-	defer stop()
++		wait()
+
+-	wait()
++		time.Sleep(5 * time.Second)
++	}
+ }
+
+ type announcer struct{}
+```
+
+<center><XeblogSticker name="Cadey" mood="facepalm" /></center>
