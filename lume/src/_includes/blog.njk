@@ -46,7 +46,7 @@ layout: base.njk
             if (navigator.share && navigator.canShare(shareData)) {
                 // console.log("(via navigator.share)");
                 navigator
-                    .share({title: document.title, url: window.location.href})
+                    .share(shareData)
                     .then(() => {
                         console.log("Thanks for sharing!");
                     })
