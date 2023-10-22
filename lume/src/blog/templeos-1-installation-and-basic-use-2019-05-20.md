@@ -12,7 +12,7 @@ However, in direct spite of this, I believe that TempleOS has immediately applic
 
 This is not intended to make fun of the mentally ill, disabled or otherwise incapacitated. This is not an endorsement of any of Davis' political views. This is intended to glorify and preserve his life's work that so few can currently really grasp the scope of.
 
-If for some reason you are having issues downloading the TempleOS ISO, I have uploaded my copy of it [here](/static/tos/TOS_Distro.ISO). Here is its SHA512 sum:
+If for some reason you are having issues downloading the TempleOS ISO, I have uploaded my copy of it [here](https://cdn.xeiaso.net/file/christine-static/blog/TOS_Distro.ISO). Here is its SHA512 sum:
 
 ```
 7a382d802039c58fb14aab7940ee2e4efb57d132d0cff58878c38111d065a235562b27767de4382e222208285f3edab172f29dba76cb70c37f116d9521e54c45  TOS_Distro.ISO

@@ -1,7 +1,7 @@
 ---
 title: "WebAssembly on the Server: How System Calls Work"
 date: 2019-05-31
-slides_link: /static/talks/wasm-on-the-server-system-calls.pdf
+slides_link: https://cdn.xeiaso.net/file/christine-static/static/talks/wasm-on-the-server-system-calls.pdf
 ---
 
 [Video](https://www.youtube.com/watch?v=G4l8RX0tA3E)

@@ -1,7 +1,7 @@
 ---
 title: How Nix and NixOS Get So Close to Perfect
 date: 2021-11-10
-slides_link: /static/talks/nixos-pain.pdf
+slides_link: https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain.pdf
 tags:
  - nix
  - nixos
@@ -37,9 +37,9 @@ YouTube link: [https://youtu.be/qjq2wVEpSsA](https://youtu.be/qjq2wVEpSsA)
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/001.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/001.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/001.d.png" alt="" />
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/001.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/001.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/001.d.png" alt="" />
   </picture>
 </center>
 
@@ -51,9 +51,9 @@ lot of what makes it great and what I'd love to see make it even better.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/002.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/002.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/002.d.png" alt="" />
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/002.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/002.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/002.d.png" alt="" />
   </picture>
 </center>
 
@@ -72,9 +72,9 @@ now.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/003.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/003.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/003.d.png" alt="" />
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/003.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/003.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/003.d.png" alt="" />
   </picture>
 </center>
 
@@ -86,9 +86,9 @@ nginx and postgres on a server.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/004.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/004.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/004.d.png" alt="" />
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/004.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/004.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/004.d.png" alt="" />
   </picture>
 </center>
 
@@ -105,9 +105,9 @@ how it's supposed to run on a computer.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/006.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/006.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/006.d.png" alt="" />
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/006.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/006.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/006.d.png" alt="" />
   </picture>
 </center>
 
@@ -118,9 +118,9 @@ lifesaver, especially when you mess up network configuration.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/007.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/007.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/007.d.png" alt="" />
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/007.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/007.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/007.d.png" alt="" />
   </picture>
 </center>
 
@@ -131,9 +131,9 @@ you're learning it.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/008.d.avif" type="image/avif" />
-    <source srcset="/static/talks/nixos-pain/008.d.webp" type="image/webp" />
-    <img src="/static/talks/nixos-pain/008.d.png" alt="" />
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/008.d.avif" type="image/avif" />
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/008.d.webp" type="image/webp" />
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/008.d.png" alt="" />
   </picture>
 </center>
 
@@ -159,9 +159,9 @@ this from), it's going to be difficult to understand what's going on.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/010.d.avif" type="image/avif" />
-    <source srcset="/static/talks/nixos-pain/010.d.webp" type="image/webp" />
-    <img src="/static/talks/nixos-pain/010.d.png" alt="" />
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/010.d.avif" type="image/avif" />
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/010.d.webp" type="image/webp" />
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/010.d.png" alt="" />
   </picture>
 </center>
 
@@ -172,9 +172,9 @@ them and here it is:
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/012.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/012.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/012.d.png" alt="">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/012.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/012.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/012.d.png" alt="">
   </picture>
 </center>
 
@@ -214,9 +214,9 @@ use) and NixOS has the ability to manage WeeChat for you.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/016.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/016.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/016.d.png" alt="">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/016.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/016.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/016.d.png" alt="">
   </picture>
 </center>
 
@@ -250,9 +250,9 @@ about it.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/022.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/022.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/022.d.png" alt="">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/022.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/022.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/022.d.png" alt="">
   </picture>
 </center>
 
@@ -278,9 +278,9 @@ figure it all out).
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/024.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/024.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/024.d.png" alt="">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/024.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/024.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/024.d.png" alt="">
   </picture>
 </center>
 
@@ -323,9 +323,9 @@ use it and an example or two of where you'd use some of the weirder options.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/028.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/028.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/028.d.png" alt="">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/028.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/028.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/028.d.png" alt="">
   </picture>
 </center>
 
@@ -339,9 +339,9 @@ on.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/029.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/029.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/029.d.png" alt="">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/029.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/029.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/029.d.png" alt="">
   </picture>
 </center>
 
@@ -357,9 +357,9 @@ learn how to not do it in the future.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/030.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/030.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/030.d.png" alt="">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/030.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/030.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/030.d.png" alt="">
   </picture>
 </center>
 
@@ -386,9 +386,9 @@ mentioned) but it would be better if this was a native solution.
 
 <center>
   <picture>
-    <source srcset="/static/talks/nixos-pain/033.d.avif" type="image/avif">
-    <source srcset="/static/talks/nixos-pain/033.d.webp" type="image/webp">
-    <img src="/static/talks/nixos-pain/033.d.png" alt="">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/033.d.avif" type="image/avif">
+    <source srcset="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/033.d.webp" type="image/webp">
+    <img src="https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain/033.d.png" alt="">
   </picture>
 </center>
 
