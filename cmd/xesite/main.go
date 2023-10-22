@@ -117,19 +117,6 @@ func main() {
 	gh := &GitHubWebhook{fs: fs}
 	s := hmacsig.Handler256(gh, *githubSecret)
 	mux.Handle("/.within/hook/github", s)
-	
-	mux.HandleFunc("/.within/hook/localonlybegood", func(w http.ResponseWriter, r *http.Request) {
-		if err := fs.Update(r.Context()); err != nil {
-			if err == git.NoErrAlreadyUpToDate {
-				w.WriteHeader(http.StatusOK)
-				fmt.Fprintln(w, "already up to date")
-				return
-			}
-			log.Println(err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-	})
 
 	mux.Handle("/.within/hook/patreon", &PatreonWebhook{fs: fs})
 
