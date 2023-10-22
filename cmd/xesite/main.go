@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
 	"log"
 	"log/slog"
 	"net"
@@ -13,7 +12,6 @@ import (
 
 	"github.com/donatj/hmacsig"
 	"github.com/facebookgo/flagenv"
-	"github.com/go-git/go-git/v5"
 	_ "github.com/joho/godotenv/autoload"
 	"tailscale.com/hostinfo"
 	"tailscale.com/tsnet"
@@ -112,7 +110,6 @@ func main() {
 	mux.HandleFunc("/static/manifest.json", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/static/site.webmanifest", http.StatusMovedPermanently)
 	})
-
 
 	gh := &GitHubWebhook{fs: fs}
 	s := hmacsig.Handler256(gh, *githubSecret)
