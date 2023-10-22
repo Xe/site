@@ -1,7 +1,7 @@
 ---
 title: The Surreal Horror of PAM
 date: 2021-11-09
-slides_link: /static/talks/surreal-horror-pam.pdf
+slides_link: https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam.pdf
 tags:
  - alpinelinux
  - pam
@@ -14,7 +14,7 @@ tags:
 
 ---
 
-![](/static/talks/surreal-horror-pam/001.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/001.jpeg)
 
 Hi, I’m Xe. You know this because that is what your computer tells you. But how
 does it know that?
@@ -29,7 +29,7 @@ you laugh and I’ll get speech jammed if I hear it. I’m also planning on
 publishing this publicly, so please avoid mentioning privileged information in
 the Q&A section at the end.
 
-![](/static/talks/surreal-horror-pam/002.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/002.jpeg)
 
 So before we talk about complicated things, let’s start with the basics. This is
 how UNIX systems authenticate. They have some files in /etc/ that are
@@ -53,7 +53,7 @@ reason that I can’t find on Google), but it’s basically that. There’s a fe
 steps I’m leaving out for brevity, but they are boring things that only nerds
 care about.
 
-![](/static/talks/surreal-horror-pam/003.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/003.jpeg)
 
 This UNIX authentication model is really that simple. You can explain the high
 level details on a single slide that was hastily written at 8 am in about 5
@@ -72,7 +72,7 @@ fledged UNIX kernel), we can’t really rely on a model created for 1970’s
 mainframe technology to get the job done in this day and age of hyperconverged
 cloud federated femtoservices.
 
-![](/static/talks/surreal-horror-pam/004.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/004.jpeg)
 
 The last sentence probably set off the beard twitching alarms, so yes there are
 some workarounds here.
@@ -87,11 +87,11 @@ people about how to send plain-text email and the like. You could also put those
 files on a CD, set the immutable flag or something, but all that will do is
 making changing passwords more expensive, annoying and filled with anger.
 
-![](/static/talks/surreal-horror-pam/005.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/005.jpeg)
 
 What’s that? I think I hear something coming.
 
-![](/static/talks/surreal-horror-pam/006.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/006.jpeg)
 
 It’s sshd! Turns out that we do in fact need something more complicated because
 we have networks and the cloud and complicated mutifactor auth requirements for
@@ -101,13 +101,13 @@ professionals.
 
 Surely there has to be a better option out there _somewhere_.
 
-![](/static/talks/surreal-horror-pam/007.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/007.jpeg)
 
 Et voila! C’est le PAM! Turns out someone else a long time ago had the same
 problems and somehow got legal to sign off on making it open source! PAM is a
 modular system for making authentication and authorization work.
 
-![](/static/talks/surreal-horror-pam/008.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/008.jpeg)
 
 For reference, authentication and authorization are being split up into two
 concepts here (like they are in a lot of the industry). We’re gonna take a page
@@ -116,7 +116,7 @@ authentication (who you are and how we know who you are) and authorization (can
 you _really_ take all the money out of the bank account?). It is a solid 90’s
 solution to a 70’s problem and good god it shows.
 
-![](/static/talks/surreal-horror-pam/009.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/009.jpeg)
 
 PAM was made in the 90’s by this little startup nobody here has heard of called
 Sun Microsystems. They had a problem where they had a bunch of machines to apply
@@ -124,12 +124,12 @@ complicated authentication rules to (all thanks to those pesky enterprise
 contracts) and no way to really do it. Money won this valiant fight between
 engineering and sales, so we ended up with PAM.
 
-![](/static/talks/surreal-horror-pam/010.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/010.jpeg)
 
 So you’re probably wondering something along the lines of “how does this thing
 work?”. Carefully, that's how.
 
-![](/static/talks/surreal-horror-pam/011.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/011.jpeg)
 
 This is a screenshot of a text file (a common thing to do these days) of the
 main PAM configuration file in a distribution called Alpine Linux. I’m using
@@ -165,7 +165,7 @@ but typoing the PAM file will cause glibc to hold your wife and children hostage
 until you forcibly reboot the system and hack back into it so you can regain
 control.
 
-![](/static/talks/surreal-horror-pam/012.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/012.jpeg)
 
 How is this relevant to us? Well, I have a bit of a side project going on. I’ve
 been trying to write a PAM module that would use Tailscale as its authentication
@@ -177,7 +177,7 @@ server by its ACLs, why should we subject you to the surreal horror of local
 authentication logic in order to let you SSH into the server? We know who you
 are. You’re allowed to connect to it, so why stop you?
 
-![](/static/talks/surreal-horror-pam/013.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/013.jpeg)
 
 The heart of the PAM module I’ve been writing looks like this right now. It sets
 up syslog for its log sink (this is really your only good option in PAM land)
@@ -210,14 +210,14 @@ editor macros for other people).
 If you want to peek around the C module part of the PAM project, the QR code
 will take you there.
 
-![](/static/talks/surreal-horror-pam/014.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/014.jpeg)
 
 I’m fairly sure that I can get away with this (I made my appropriate sacrifices
 to the demo gods this morning), so let’s try SSHing into a VM on my laptop. If
 you are watching the recording of this talk or you are not in the corp tailnet,
 that command will not work. However you should see something like this:
 
-![](/static/talks/surreal-horror-pam/015.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/015.jpeg)
 
 It would be really cool to flesh this out as a full product. I feel this could
 really make people’s lives a lot easier. The hard part is going to be making
@@ -228,12 +228,12 @@ system. I would love to have this send a TSMP message to have a GUI prompt
 validate that you want to do this as a kind of second factor for authentication,
 but even in this limited state I feel it has a lot of value as is.
 
-![](/static/talks/surreal-horror-pam/016.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/016.jpeg)
 
 Something you may wonder (and something I had to wonder too) is how do you debug
 PAM?
 
-![](/static/talks/surreal-horror-pam/017.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/017.jpeg)
 
 It ain’t easy. I’m currently trying to get this thing to work on Ubuntu and all
 of the paths I have taken are fraught with despair. I have luckily not managed
@@ -244,13 +244,13 @@ I’ve had to use a combination of a debugger and a system call tracing tool to
 get anywhere with it. PAM is a surreal horror because the most terrifying part
 is that it works and that there’s not really any good other options.
 
-![](/static/talks/surreal-horror-pam/018.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/018.jpeg)
 
 This is not OpenBSD or Plan 9. This is Linux and macOS. Those exist but we can’t
 use them because we are cursed into using PAM. Especially so if we want to do
 this on arbitrary customer machines.
 
-![](/static/talks/surreal-horror-pam/019.jpeg)
+![](https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam/019.jpeg)
 
 That’s the end of the talk! I want to give special thanks to the council of
 elders that I summoned the help of in order to get this far. Without their help

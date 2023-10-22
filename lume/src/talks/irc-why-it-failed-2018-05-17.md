@@ -1,7 +1,7 @@
 ---
 title: "IRC: Why it Failed"
 date: 2018-05-17
-slides_link: /static/talks/irc-why-it-failed.pdf
+slides_link: https://cdn.xeiaso.net/file/christine-static/static/talks/irc-why-it-failed.pdf
 ---
 
 A brief discussion of the IRC protocol and why it has failed in today's internet.
