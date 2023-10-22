@@ -1,11 +1,13 @@
 package lume
 
 import (
+	"archive/zip"
 	"context"
 	"encoding/json"
 	"expvar"
 	"fmt"
 	"html/template"
+	"io"
 	"io/fs"
 	"log"
 	"log/slog"
@@ -28,13 +30,9 @@ var (
 	typstLocation       string
 	dhallToJSONLocation string
 
-	_ fs.FS         = (*FS)(nil)
-	_ fs.ReadFileFS = (*FS)(nil)
-	_ fs.ReadDirFS  = (*FS)(nil)
+	_ fs.FS = (*FS)(nil)
 
 	opens         = metrics.LabelMap{Label: "name"}
-	readFiles     = metrics.LabelMap{Label: "name"}
-	readDirs      = metrics.LabelMap{Label: "name"}
 	builds        = expvar.NewInt("gauge_xesite_builds")
 	updates       = expvar.NewInt("gauge_xesite_updates")
 	updateErrors  = expvar.NewInt("gauge_xesite_update_errors")
@@ -59,8 +57,6 @@ func init() {
 	}
 
 	expvar.Publish("gauge_xesite_opens", &opens)
-	expvar.Publish("gauge_xesite_read_files", &readFiles)
-	expvar.Publish("gauge_xesite_read_dirs", &readDirs)
 }
 
 type FS struct {
@@ -72,12 +68,16 @@ type FS struct {
 	miClient *mi.Client
 
 	fs   fs.FS
-	lock sync.RWMutex
+	lock sync.Mutex
 }
 
 func (f *FS) Close() error {
 	f.lock.Lock()
 	defer f.lock.Unlock()
+
+	if cl, ok := f.fs.(io.Closer); ok {
+		cl.Close()
+	}
 
 	if f.repo != nil {
 		os.RemoveAll(f.repoDir)
@@ -87,32 +87,9 @@ func (f *FS) Close() error {
 }
 
 func (f *FS) Open(name string) (fs.File, error) {
-	f.lock.RLock()
-	defer f.lock.RUnlock()
-
 	opens.Add(name, 1)
 
 	return f.fs.Open(name)
-}
-
-func (f *FS) ReadDir(name string) ([]fs.DirEntry, error) {
-	f.lock.RLock()
-	defer f.lock.RUnlock()
-
-	readDirs.Add(name, 1)
-
-	rdfs := f.fs.(fs.ReadDirFS)
-	return rdfs.ReadDir(name)
-}
-
-func (f *FS) ReadFile(name string) ([]byte, error) {
-	f.lock.RLock()
-	defer f.lock.RUnlock()
-
-	readFiles.Add(name, 1)
-
-	rfs := f.fs.(fs.ReadFileFS)
-	return rfs.ReadFile(name)
 }
 
 type Options struct {
@@ -270,11 +247,29 @@ func (f *FS) build(ctx context.Context) error {
 		return err
 	}
 
-	f.fs = os.DirFS(destDir)
 	dur := time.Since(begin)
 
 	lastBuildTime.Set(dur.Milliseconds())
 	slog.Info("built site", "dir", destDir, "time", dur.String())
+
+	zipLoc := filepath.Join(f.opt.DataDir, "site.zip")
+
+	if err := ZipFolder(filepath.Join(cmd.Dir, "_site"), zipLoc); err != nil {
+		return fmt.Errorf("lume: can't compress site folder: %w", err)
+	}
+
+	if cl, ok := f.fs.(io.Closer); f.fs != nil && ok {
+		if err := cl.Close(); err != nil {
+			slog.Error("failed to close old fs", "err", err)
+		}
+	}
+
+	fs, err := zip.OpenReader(zipLoc)
+	if err != nil {
+		return fmt.Errorf("lume: can't open zip with site content: %w", err)
+	}
+
+	f.fs = fs
 
 	return nil
 }
@@ -348,8 +343,8 @@ func (f *FS) writeConfig() error {
 }
 
 func (f *FS) Clacks() []string {
-	f.lock.RLock()
-	defer f.lock.RUnlock()
+	f.lock.Lock()
+	defer f.lock.Unlock()
 	return f.conf.ClackSet
 }
 
