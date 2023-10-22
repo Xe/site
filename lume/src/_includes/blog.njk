@@ -43,16 +43,26 @@ layout: base.njk
                 title: document.title,
                 url: window.location.href
             };
-            if (!navigator.canShare(shareData)) {
-                console.log("can't share");
-                return;
+            if (navigator.share && navigator.canShare(shareData)) {
+                // console.log("(via navigator.share)");
+                navigator
+                    .share(shareData)
+                    .then(() => {
+                        console.log("Thanks for sharing!");
+                    })
+                    .catch(console.error);
+                }
+            else if (navigator.clipboard) {
+                // console.log("(via navigator.clipboard)");
+                navigator.clipboard.writeText(shareData.url)
+                    .then(() => {
+                        console.log("Thanks for sharing!");
+                    })
+                    .catch(console.error);
             }
-            navigator
-                .share({title: document.title, url: window.location.href})
-                .then(() => {
-                    console.log('Thanks for sharing!');
-                })
-                .catch(console.error);
+            else {
+                console.log("can't share directly, but feel free to copy the url from addressbar manually");
+            }
         }
         shareButton.addEventListener("click", doShareButton);
     </script>
