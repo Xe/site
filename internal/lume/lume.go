@@ -123,6 +123,8 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 	dur := time.Since(t0)
 	slog.Debug("repo cloned", "in", dur.String())
 
+	siteCommit := "development"
+
 	fs := &FS{
 		repo:    repo,
 		repoDir: repoDir,
@@ -134,6 +136,14 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 		if err != nil {
 			return nil, err
 		}
+	} else {
+		ref, err := repo.Head()
+		if err != nil {
+			return nil, err
+		}
+
+		slog.Debug("cloned commit", "hash", ref.Hash().String())
+		siteCommit = ref.Hash().String()
 	}
 
 	if o.MiToken != "" {
@@ -148,7 +158,7 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 
 	fs.conf = conf
 
-	if err := fs.build(ctx); err != nil {
+	if err := fs.build(ctx, siteCommit); err != nil {
 		return nil, err
 	}
 
@@ -173,6 +183,8 @@ func (f *FS) Update(ctx context.Context) error {
 		updateErrors.Add(1)
 		return err
 	}
+
+	siteCommit := "development"
 
 	if !f.opt.Development {
 		err = wt.PullContext(ctx, &git.PullOptions{
@@ -199,6 +211,14 @@ func (f *FS) Update(ctx context.Context) error {
 			updateErrors.Add(1)
 			return err
 		}
+
+		ref, err := f.repo.Head()
+		if err != nil {
+			return err
+		}
+
+		slog.Debug("checked out commit", "hash", ref.Hash().String())
+		siteCommit = ref.Hash().String()
 	}
 
 	conf, err := config.Load(filepath.Join(f.repoDir, "config.dhall"))
@@ -208,7 +228,7 @@ func (f *FS) Update(ctx context.Context) error {
 
 	f.conf = conf
 
-	if err := f.build(ctx); err != nil {
+	if err := f.build(ctx, siteCommit); err != nil {
 		return err
 	}
 
@@ -223,13 +243,13 @@ func (f *FS) Update(ctx context.Context) error {
 	return nil
 }
 
-func (f *FS) build(ctx context.Context) error {
+func (f *FS) build(ctx context.Context, siteCommit string) error {
 	builds.Add(1)
 	destDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "_site")
 
 	begin := time.Now()
 
-	if err := f.writeConfig(); err != nil {
+	if err := f.writeConfig(siteCommit); err != nil {
 		return err
 	}
 
@@ -298,9 +318,9 @@ func (f *FS) writePatrons(dataDir string) error {
 	return nil
 }
 
-func (f *FS) writeConfig() error {
+func (f *FS) writeConfig(siteCommit string) error {
 	dataDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "src", "_data")
-
+	
 	os.WriteFile(filepath.Join(dataDir, "patrons.json"), []byte(`{"included": {"Items": []}}`), 0o644)
 
 	if f.opt.PatreonClient != nil {
@@ -317,6 +337,7 @@ func (f *FS) writeConfig() error {
 		"argv.json":               os.Args,
 		"authors.json":            f.conf.Authors,
 		"characters.json":         f.conf.Characters,
+		"commit.json":             map[string]any{"hash": siteCommit},
 		"contactLinks.json":       f.conf.ContactLinks,
 		"jobHistory.json":         f.conf.JobHistory,
 		"notableProjects.json":    f.conf.NotableProjects,
@@ -325,6 +346,7 @@ func (f *FS) writeConfig() error {
 		"seriesDescriptions.json": f.conf.SeriesDescMap,
 		"signalboost.json":        f.conf.Signalboost,
 	} {
+		slog.Debug("opening data file", "fname", filepath.Join(dataDir, fname))
 		fh, err := os.Create(filepath.Join(dataDir, fname))
 		if err != nil {
 			return err
