@@ -30,15 +30,6 @@ export default ({ contactLinks }) => (
           Please note that Discord may reject friend requests if you aren't in a
           mutual server with me. I don't have control over this behavior.
         </p>
-        <p className="mb-4">
-          If you want to add me, please consider joining one of the servers I am
-          in:
-        </p>
-        <ul className="list-disc list-inside">
-          <li>
-            Ponydev: <a href="https://pony.dev">https://pony.dev</a>
-          </li>
-        </ul>
       </div>
       <div>
         <h2 className="text-2xl mb-2">Cryptocurrency</h2>
