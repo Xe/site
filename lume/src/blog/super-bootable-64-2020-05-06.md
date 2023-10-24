@@ -37,7 +37,7 @@ crazy, wouldn't it?
 
 ![Noooo! You can't just port a Nintendo 64 game to LibGL! They're
 completely different hardware! It wouldn't respect the wishes of the creators!
-Hahaha porting machine go brrrrrrrr](/static/blog/portingmachinegobrrr.png)
+Hahaha porting machine go brrrrrrrr](https://cdn.xeiaso.net/file/christine-static/static/blog/portingmachinegobrrr.png)
 
 Someone did. The fruits of this effort are available [here][sm64dc]. This was
 mostly a proof of concept and is a masterpiece in its own right. However,
@@ -369,7 +369,7 @@ cp /nix/store/fzk3psrd3m6x437m6xh9pc7bnv2v44ax-nixos.iso/iso/nixos.iso ~/Downloa
 Now you are free to do whatever you want with this, including [booting it in a
 virtual machine][bootinvmmp4].
 
-[bootinvmmp4]: /static/blog/boot2mario.mp4
+[bootinvmmp4]: https://cdn.xeiaso.net/file/christine-static/static/blog/boot2mario.mp4
 
 This is why I use NixOS. It enables me to do absolutely crazy things like
 creating a bootable ISO of Super Mario 64 without having to understand how to

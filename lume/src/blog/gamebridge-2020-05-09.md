@@ -24,10 +24,10 @@ two programs looks like this:
 [ufifo]: https://man7.org/linux/man-pages/man7/fifo.7.html
 
 ![A diagram explaining how control/state/data flows between components of the
-gamebridge stack](/static/blog/gamebridge.png)
+gamebridge stack](https://cdn.xeiaso.net/file/christine-static/static/blog/gamebridge.png)
 
 You can view the [source code of this diagram in GraphViz dot format
-here](/static/blog/gamebridge.dot).
+here](https://cdn.xeiaso.net/file/christine-static/static/blog/gamebridge.dot).
 
 The main magic that keeps this glued together is the use of _blocking_ I/O.
 This means that the bridge input thread will be blocked _at the kernel level_

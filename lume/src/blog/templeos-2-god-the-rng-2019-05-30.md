@@ -55,7 +55,7 @@ const God = struct {
 }
 ```
 
-Most of the fields in our snipped `CGodGlbls` are related to internals of TempleOS (specifically it uses a glob-mask to match filenames because of the [transparent compression that RedSea offers](https://templeos.holyc.xyz/Wb/Doc/RedSea.html)), so we can ignore these in the Zig port. What's curious though is the `words` list of strings. This actually points to [every word in the King James Bible](/static/blog/tos_2/Vocab.DD). The original intent of this code was to have the computer assist in divination. The above kind of ranting link to templeos.holyc.xyz tries to explain this:
+Most of the fields in our snipped `CGodGlbls` are related to internals of TempleOS (specifically it uses a glob-mask to match filenames because of the [transparent compression that RedSea offers](https://templeos.holyc.xyz/Wb/Doc/RedSea.html)), so we can ignore these in the Zig port. What's curious though is the `words` list of strings. This actually points to [every word in the King James Bible](https://cdn.xeiaso.net/file/christine-static/static/blog/tos_2/Vocab.DD). The original intent of this code was to have the computer assist in divination. The above kind of ranting link to templeos.holyc.xyz tries to explain this:
 
 ```
 The technique I use to consult the Holy Spirit is reading a microsecond-range 
@@ -178,7 +178,7 @@ bits = GodBits(64, "a demo for the blog");
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/aJEFLIPNkKM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-![the result as an i64](/static/blog/tos_2/resp.png)
+![the result as an i64](https://cdn.xeiaso.net/file/christine-static/static/blog/tos_2/resp.png)
 
 This is actually also a generic userspace function that applications can call. [Here's an example of `god` drawing tarot cards](https://github.com/Xe/TempleOS-tools/blob/master/Programs/Tarot.HC). 
 
@@ -268,11 +268,11 @@ uncultivated
 
 Yikes! Loading the wordlist is expensive (alternatively: my arbitrary gas limit is set way too low), so it's a good thing it's only done once and at boot. Still, regardless of this TempleOS boots in [only a few seconds anyways](https://i.imgur.com/O3FFsqA.png).
 
-The final product is runnable via [this link](/static/blog/tos_2/wasm_exec.html). Please note that this is not currently supported on big-endian CPU's in browsers because Mozilla and Google have totally dropped the ball in this court, and trying to load that link will probably crash your browser.
+The final product is runnable via [this link](https://cdn.xeiaso.net/file/christine-static/static/blog/tos_2/wasm_exec.html). Please note that this is not currently supported on big-endian CPU's in browsers because Mozilla and Google have totally dropped the ball in this court, and trying to load that link will probably crash your browser.
 
 Hit `Run` in order to run the [final code](https://github.com/Xe/TempleOS-tools/blob/master/god/god.zig). You should get output that looks something like this after pressing it a few times:
 
-![](/static/blog/tos_2/browser.png)
+![](https://cdn.xeiaso.net/file/christine-static/static/blog/tos_2/browser.png)
 
 ---
 
