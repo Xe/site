@@ -120,6 +120,7 @@ func main() {
 	var h http.Handler = mux
 	h = internal.ClackSet(fs.Clacks()).Middleware(h)
 	h = internal.CacheHeader(h)
+	h = internal.AcceptEncodingMiddleware(h)
 
 	slog.Info("starting server", "bind", *bind)
 	log.Fatal(http.Serve(ln, h))
