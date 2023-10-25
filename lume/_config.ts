@@ -46,8 +46,8 @@ site.use(feed({
   output: ["/blog.rss", "/blog.json"],
   query: "index=true",
   info: {
-    title: "=site.title",
-    description: "=site.description",
+    title: "Xe Iaso's blog",
+    description: "Thoughts and musings from Xe Iaso",
   },
   items: {
     title: "=title",
