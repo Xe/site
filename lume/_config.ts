@@ -25,7 +25,7 @@ import rehypePrism from "npm:rehype-prism-plus/all";
 
 const site = lume({
   src: "./src",
-  emptyDist: false,
+  emptyDest: false,
 });
 
 site.copy("static");
