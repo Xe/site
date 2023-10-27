@@ -1,0 +1,82 @@
+---
+title: "How to fix terraform and nix flakes"
+date: 2023-10-27
+tags:
+  - nix
+  - terraform
+  - enshittification
+hero:
+  ai: Furryrock
+  file: coffee-birb
+  prompt: A pink haired avali wearing a sweater and sweatpants drinking coffee indoors.
+---
+
+Recently Terraform [changed licenses](https://www.theregister.com/2023/08/11/hashicorp_bsl_licence/) to the Business Source License. This is a non-free license in the eyes of Nix, so now whenever you update your project flakes, you get greeted by this lovely error:
+
+```
+error: Package ‘terraform-1.6.2’ in /nix/store/z1nvpjx9vd4151vx2krxzmx2p1a36pf9-source/pkgs/applications/networking/cluster/terraform/default.nix:52 has an unfree license (‘bsl11’), refusing to evaluate.
+
+a) To temporarily allow unfree packages, you can use an environment variable
+   for a single invocation of the nix tools.
+
+      $ export NIXPKGS_ALLOW_UNFREE=1
+
+   Note: For `nix shell`, `nix build`, `nix develop` or any other Nix 2.4+
+   (Flake) command, `--impure` must be passed in order to read this
+   environment variable.
+
+b) For `nixos-rebuild` you can set
+    { nixpkgs.config.allowUnfree = true; }
+   in configuration.nix to override this.
+
+Alternatively you can configure a predicate to allow specific packages:
+    { 
+        nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+            "terraform"
+        ];
+    }
+
+c) For `nix-env`, `nix-build`, `nix-shell` or any other Nix command you can add
+    { allowUnfree = true; }
+to ~/.config/nixpkgs/config.nix.
+```
+
+The extra fun part is that when you're using a flake with a per-project version of nixpkgs, none of those workarounds work. Here's what you have to do instead:
+
+In your flake you'll usually have an import of nixpkgs like this:
+
+```nix
+let
+  pkgs = import nixpkgs { inherit system; };
+in
+  crimes_etc
+```
+
+Or like this:
+
+```nix
+let
+  pkgs = nixpkgs.legacyPackages.${system};
+in
+  different_crimes_etc
+```
+
+You'll want to change that to this:
+
+```nix
+let
+  pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
+in
+  working_crimes_etc
+```
+
+This allows you to bypass the license check for all packages in nixpkgs so that things Just Work™. If you want to only do this for terraform, you can make a separate instance of nixpkgs to pull out only terraform, but I think that overall it's probably easier to just eliminate the problem entirely.
+
+I hope this helps you out!
+
+<XeblogConv name="Cadey" mood="coffee">
+  Don't you love the intersection of computers and capitalism? It's the best.
+</XeblogConv>
+<XeblogConv name="Aoi" mood="coffee">
+  Tell me about it.
+</XeblogConv>
