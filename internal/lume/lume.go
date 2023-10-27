@@ -320,7 +320,7 @@ func (f *FS) writePatrons(dataDir string) error {
 
 func (f *FS) writeConfig(siteCommit string) error {
 	dataDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "src", "_data")
-	
+
 	os.WriteFile(filepath.Join(dataDir, "patrons.json"), []byte(`{"included": {"Items": []}}`), 0o644)
 
 	if f.opt.PatreonClient != nil {
@@ -438,7 +438,7 @@ func (f *FS) buildResume(ctx context.Context) error {
 		return fmt.Errorf("failed to build resume: %w", err)
 	}
 
-	if err := os.MkdirAll(filepath.Join(f.repoDir, f.opt.StaticSiteDir, "static", "resume"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(f.repoDir, f.opt.StaticSiteDir, "src", "static", "resume"), 0o755); err != nil {
 		return fmt.Errorf("failed to create resume dir: %w", err)
 	}
 

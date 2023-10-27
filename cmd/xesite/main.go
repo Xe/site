@@ -87,6 +87,10 @@ func main() {
 
 	defer fs.Close()
 
+	if *devel {
+		go rebuildOnChange(fs)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}

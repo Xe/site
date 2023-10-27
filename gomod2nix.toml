@@ -205,6 +205,9 @@ schema = 3
   [mod."github.com/sergi/go-diff"]
     version = "v1.3.1"
     hash = "sha256-XLA/BLIPuUU76yikXqIeRSXr7T7A3Uz6I27+mDxGj7w="
+  [mod."github.com/sigma/go-inotify"]
+    version = "v0.0.0-20181102212354-c87b6cf5033d"
+    hash = "sha256-rdWhvNBGz1xelg8ivrmXhEldwXnJV7mas6yQaAcBc+4="
   [mod."github.com/skeema/knownhosts"]
     version = "v1.2.0"
     hash = "sha256-D5xB9lLablPhYUqTbdu8Ub366n//+JTgK3jcnMHlwYs="
