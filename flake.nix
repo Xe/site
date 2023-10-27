@@ -139,7 +139,7 @@
             tag = "latest";
             contents = with pkgs; [ cacert typst-dev dhall-json deno pagefind ];
             config = {
-              Cmd = [ "${bin}/bin/xesite" ];
+              Cmd = [ "${bin}/bin/xesite" "--data-dir=/data" ];
               Env = [
                 "HOME=/data"
                 "DHALL_PRELUDE=${pkgs.dhallPackages.Prelude}"

@@ -91,6 +91,8 @@ func main() {
 		go rebuildOnChange(fs)
 	}
 
+	go internalAPI(srv, fs)
+
 	if err != nil {
 		log.Fatal(err)
 	}
