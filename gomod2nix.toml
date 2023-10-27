@@ -295,6 +295,9 @@ schema = 3
   [mod."google.golang.org/protobuf"]
     version = "v1.31.0"
     hash = "sha256-UdIk+xRaMfdhVICvKRk1THe3R1VU+lWD8hqoW/y8jT0="
+  [mod."gopkg.in/fsnotify.v1"]
+    version = "v1.4.7"
+    hash = "sha256-j/Ts92oXa3k1MFU7Yd8/AqafRTsFn7V2pDKCyDJLah8="
   [mod."gopkg.in/mxpv/patreon-go.v1"]
     version = "v1.0.0-20171031001022-1d2f253ac700"
     hash = "sha256-vo6C8nU/lG0LdtrO4396YHvVEypkXFHia5FAGjb0qoQ="
