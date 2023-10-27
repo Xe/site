@@ -10,9 +10,14 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
+
+	"xeiaso.net/v4/internal"
 )
 
-const compressionGZIP = 0x69
+const (
+	compressionGZIP = 0x69
+)
 
 func init() {
 	zip.RegisterCompressor(compressionGZIP, func(w io.Writer) (io.WriteCloser, error) {
@@ -162,4 +167,49 @@ func isCompressible(fname string) (bool, error) {
 
 	// The file is compressible by both its header and name
 	return true, nil
+}
+
+type ZipServer struct {
+	lock sync.RWMutex
+	zip  *zip.ReadCloser
+}
+
+func NewZipServer(zipPath string) (*ZipServer, error) {
+	file, err := zip.OpenReader(zipPath)
+	if err != nil {
+		return nil, err
+	}
+
+	result := &ZipServer{
+		zip: file,
+	}
+
+	return result, nil
+}
+
+func (zs *ZipServer) Update(fname string) error {
+	zs.lock.Lock()
+	defer zs.lock.Unlock()
+
+	old := zs.zip
+
+	file, err := zip.OpenReader(fname)
+	if err != nil {
+		return err
+	}
+
+	zs.zip = file
+
+	old.Close()
+	return nil
+}
+
+func (zs *ZipServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	zs.lock.RLock()
+	defer zs.lock.RUnlock()
+
+	vals := internal.ParseValueAndParams(r.Header.Get("Accept-Encoding"))
+	slog.Info("accept-encoding", "vals", vals)
+
+	http.FileServer(http.FS(zs.zip)).ServeHTTP(w, r)
 }

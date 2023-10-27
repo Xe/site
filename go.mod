@@ -21,6 +21,7 @@ require (
 	github.com/acomagu/bufpipe v1.0.4 // indirect
 	github.com/akutz/memconn v0.1.0 // indirect
 	github.com/alexbrainman/sspi v0.0.0-20210105120005-909beea2cc74 // indirect
+	github.com/andybalholm/brotli v1.0.6 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.18.0 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.18.22 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.21 // indirect
