@@ -191,7 +191,6 @@
             python311Packages.fonttools
           ];
 
-          GITHUB_SHA = "devel";
           DHALL_PRELUDE = "${pkgs.dhallPackages.Prelude}";
           TYPST_FONT_PATHS = "${fontsConf}";
           FLY_REGION = "dev";
