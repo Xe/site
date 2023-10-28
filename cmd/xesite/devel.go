@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	ignoredDirs = []string{"_site", "_data", "_bin"}
+	ignoredDirs = []string{"_site", "_data", "_bin", "blog/series", "static/resume"}
 )
 
 func findDirectories(root string) ([]string, error) {
