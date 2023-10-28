@@ -41,6 +41,8 @@ func main() {
 	flag.Parse()
 	internal.Slog()
 
+	slog.Info("starting up", "github-sha", *githubSHA)
+
 	baseURL := cmpx.Or(os.Getenv("TS_BASE_URL"), "https://api.tailscale.com")
 
 	credentials := clientcredentials.Config{
