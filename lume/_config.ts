@@ -5,10 +5,13 @@ import date from "lume/plugins/date.ts";
 import esbuild from "lume/plugins/esbuild.ts";
 import feed from "lume/plugins/feed.ts";
 import mdx from "lume/plugins/mdx.ts";
-import pagefind from "lume/plugins/pagefind.ts";
 import tailwindcss from "lume/plugins/tailwindcss.ts";
 import postcss from "lume/plugins/postcss.ts";
 import sitemap from "lume/plugins/sitemap.ts";
+import readInfo from "lume/plugins/reading_info.ts";
+
+//import pagefind from "lume/plugins/pagefind.ts";
+//import _ from "npm:@pagefind/linux-x64";
 
 import tailwindOptions from "./tailwind.config.js";
 
@@ -73,13 +76,13 @@ site.use(mdx({
     rehypePrism,
   ],
 }));
-site.use(pagefind({
-  indexing: {
-    bundleDirectory: "_pagefind",
-    glob: "**/*.html",
-    rootObject: "article",
-  },
-}));
+// site.use(pagefind({
+//   indexing: {
+//     bundleDirectory: "_pagefind",
+//     glob: "**/*.html",
+//     rootObject: "article",
+//   },
+// }));
 site.use(tailwindcss({
   extensions: [".mdx", ".jsx", ".tsx", ".md", ".html", ".njx"],
   options: tailwindOptions,
@@ -87,6 +90,9 @@ site.use(tailwindcss({
 site.use(postcss());
 site.use(sitemap({
   query: "index=true",
+}));
+site.use(readInfo({
+  extensions: [".md", ".mdx"],
 }));
 
 export default site;
