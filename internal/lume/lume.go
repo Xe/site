@@ -106,20 +106,24 @@ type Options struct {
 func New(ctx context.Context, o *Options) (*FS, error) {
 	repoDir := filepath.Join(o.DataDir, "repo")
 
-	os.RemoveAll(repoDir)
-	err := os.MkdirAll(filepath.Join(o.DataDir, "repo"), 0o755)
-	if err != nil {
-		return nil, err
-	}
+	os.MkdirAll(filepath.Join(o.DataDir, "repo"), 0o755)
 
 	t0 := time.Now()
 	repo, err := git.PlainCloneContext(ctx, repoDir, false, &git.CloneOptions{
 		URL:           o.Repo,
 		ReferenceName: plumbing.NewBranchReferenceName(o.Branch),
 	})
-	if err != nil {
+	if err != nil && err != git.ErrRepositoryAlreadyExists {
 		return nil, err
 	}
+
+	if err == git.ErrRepositoryAlreadyExists {
+		repo, err = git.PlainOpen(repoDir)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	dur := time.Since(t0)
 	slog.Debug("repo cloned", "in", dur.String())
 
@@ -137,9 +141,36 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 			return nil, err
 		}
 	} else {
+		wt, err := repo.Worktree()
+		if err != nil {
+			return nil, fmt.Errorf("lume: can't get worktree: %w", err)
+		}
+
+		err = wt.PullContext(ctx, &git.PullOptions{
+			ReferenceName: plumbing.NewBranchReferenceName(o.Branch),
+		})
+		if err != nil && err != git.NoErrAlreadyUpToDate {
+			return nil, fmt.Errorf("lume: can't pull: %w", err)
+		}
+
+		err = wt.Checkout(&git.CheckoutOptions{
+			Branch: plumbing.NewBranchReferenceName(o.Branch),
+		})
+		if err != nil {
+			return nil, fmt.Errorf("lume: can't checkout branch %s: %w", o.Branch, err)
+		}
+
+		err = wt.Reset(&git.ResetOptions{
+			Mode:   git.HardReset,
+			Commit: plumbing.NewHash("HEAD"),
+		})
+		if err != nil {
+			return nil, fmt.Errorf("lume: can't reset: %w", err)
+		}
+
 		ref, err := repo.Head()
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("lume: can't get head: %w", err)
 		}
 
 		slog.Debug("cloned commit", "hash", ref.Hash().String())
