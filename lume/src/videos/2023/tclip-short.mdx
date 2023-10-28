@@ -1,0 +1,24 @@
+---
+title: "tclip just got clippier - YouTube Short"
+date: 2023-09-30
+---
+
+<XeblogVideo path="video/2023/tclip-short" />
+
+This was a project that I used to help me learn Final Cut Pro. This ended up never being released at work, but I think it's worth preserving for posterity's sake. This is intended to be the YouTube short version of [this post](https://tailscale.dev/blog/tclip-updates-092023).
+
+## Script
+
+Here's what we've been up to with tclip, the best way to share small snippets of text on your tailnet.
+
+Have little snippets of code you want to share? Need to copy an error message to a coworker or two?  Tclip is there for you. You can install it today on Docker, fly, or NixOS.
+
+We started tclip with a simple design to make it easy to develop. 
+
+Now it uses a beautiful new design with Tailwind. This makes it look similar to our other tools so you know where to look.
+
+Tclip uses sqlite to store all your data securely and durably. But the way we used sqlite required us to pull in a C compiler. This made it hard for us to cross-compile and distribute tclip.
+
+So we got rid of that with a new SQLite package. Now we can distribute it for every OS that Tailscale supports a lot easier.
+
+Try tclip today, your tailnet will love it. See the pinned comment to find out how.
