@@ -11,14 +11,15 @@ function uuidv4() {
 
 export interface VideoProps {
   path: string;
+  vertical?: boolean;
 }
 
-export default function Video({ path }: VideoProps) {
+export default function Video({ path, vertical }: VideoProps) {
   const streamURL =
     `https://cdn.xeiaso.net/file/christine-static/${path}/index.m3u8`;
   const id = uuidv4();
   const video = (
-      <video id={id} className="not-prose" style="width:100%" controls>
+      <video id={id} className="not-prose sm:max-h-[50vh]" controls>
         <source src={streamURL} type="application/vnd.apple.mpegurl" />
         <source
           src="https://cdn.xeiaso.net/file/christine-static/blog/HLSBROKE.mp4"
