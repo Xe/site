@@ -60,7 +60,8 @@ func (c *cachingTokenSource) loadToken() (*oauth2.Token, error) {
 
 func (c *cachingTokenSource) Token() (tok *oauth2.Token, err error) {
 	tok, _ = c.loadToken()
-	if tok != nil && tok.Expiry.Before(time.Now()) {
+
+	if tok != nil && tok.Expiry.After(time.Now()) {
 		return tok, nil
 	}
 
