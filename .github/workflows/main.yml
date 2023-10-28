@@ -19,7 +19,7 @@ jobs:
         uses: DeterminateSystems/magic-nix-cache-action@v2
       - name: Make and deploy Xesite
         run: |
-          nix develop -c "go run ./cmd/fabricate-generation"
+          nix develop -c "./scripts/fabricate-generation"
         env:
           TAILSCALE_CLIENT_ID: ${{ secrets.TAILSCALE_CLIENT_ID }}
           TAILSCALE_CLIENT_SECRET: ${{ secrets.TAILSCALE_CLIENT_SECRET }}
