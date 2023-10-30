@@ -40,7 +40,7 @@ site.copy("src/static", "static");
 
 site.data("getYear", () => {
   return new Date().getFullYear();
-})
+});
 
 site.use(jsx_preact());
 site.use(attributes());
@@ -56,6 +56,8 @@ site.use(feed({
   items: {
     title: "=title",
     description: "=excerpt",
+    date: new Date(),
+    generator: true,
   },
 }));
 site.use(mdx({
@@ -89,7 +91,7 @@ site.use(tailwindcss({
 }));
 site.use(postcss());
 site.use(sitemap({
-  query: "index=true",
+  query: "",
 }));
 site.use(readInfo({
   extensions: [".md", ".mdx"],
