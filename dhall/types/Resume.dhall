@@ -13,7 +13,7 @@ in  { Type =
         }
     , default =
       { name = "Xe Iaso"
-      , tagline = "Archmage of Infrastructure"
+      , tagline = "Senior Technophilosopher"
       , location = Location::{
         , city = "Ottawa"
         , stateOrProvince = "ON"
