@@ -56,7 +56,6 @@ site.use(feed({
   items: {
     title: "=title",
     description: "=excerpt",
-    date: new Date(),
     generator: true,
   },
 }));
