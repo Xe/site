@@ -8,10 +8,6 @@ export default ({ search }) => {
     <>
       <h1 className="text-3xl mb-4">{title}</h1>
 
-      <div class="bg-bg-1 dark:bg-bg-1 rounded-xl m-2 px-2 py-1 shadow-md max-w-xl">
-        <div className=" my-4" id="search"></div>
-      </div>
-
       <ul class="list-disc ml-4 mb-4">
         {search.pages("layout=talk.njk", "order date=desc").map((post) => (
           <li>

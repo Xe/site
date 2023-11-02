@@ -14,10 +14,6 @@ export default ({ search }) => {
         <a href="/blog.json">JSONFeed</a>.
       </p>
 
-      <div class="bg-bg-1 dark:bg-bg-1 rounded-xl m-2 px-2 py-1 shadow-md max-w-xl">
-        <div className=" my-4" id="search"></div>
-      </div>
-
       <ul class="list-disc ml-4 mb-4">
         {search.pages("type=blog", "order date=desc").map((post) => {
           const url = post.data.redirect_to ? post.data.redirect_to : post.data.url;
