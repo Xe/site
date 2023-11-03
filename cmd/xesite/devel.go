@@ -7,7 +7,9 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
+	"github.com/bep/debounce"
 	"gopkg.in/fsnotify.v1"
 	"xeiaso.net/v4/internal/lume"
 )
@@ -55,6 +57,15 @@ func rebuildOnChange(fs *lume.FS) {
 	}
 	defer watcher.Close()
 
+	reload := func() {
+		slog.Info("reloading")
+		if err := fs.Update(context.Background()); err != nil {
+			slog.Error("reload failed", "err", err)
+		}
+	}
+
+	d := debounce.New(100 * time.Millisecond)
+
 	if err = watcher.Add("./lume"); err != nil {
 		log.Fatal(err)
 	}
@@ -84,10 +95,7 @@ func rebuildOnChange(fs *lume.FS) {
 
 			slog.Debug("got event", "fname", event.Name, "op", event.Op.String())
 
-			slog.Info("reloading")
-			if err := fs.Update(context.Background()); err != nil {
-				slog.Error("reload failed", "err", err)
-			}
+			d(reload)
 		case err := <-watcher.Errors:
 			log.Fatal(err)
 		}

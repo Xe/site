@@ -64,6 +64,9 @@ schema = 3
   [mod."github.com/beorn7/perks"]
     version = "v1.0.1"
     hash = "sha256-h75GUqfwJKngCJQVE5Ao5wnO3cfKD9lSIteoLp/3xJ4="
+  [mod."github.com/bep/debounce"]
+    version = "v1.2.1"
+    hash = "sha256-7qHOp4vB0ifEseXXBuSH6W5YNImVcb8PTWSJJAMaGcU="
   [mod."github.com/cespare/xxhash/v2"]
     version = "v2.2.0"
     hash = "sha256-nPufwYQfTkyrEkbBrpqM3C2vnMxfIz6tAaBmiUP7vd4="
