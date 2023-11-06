@@ -110,8 +110,8 @@ schema = 3
     version = "v5.5.0"
     hash = "sha256-4XUoD2bOCMCdu83egb/y8kY/Fm0s1rWgPMtiahh38OQ="
   [mod."github.com/go-git/go-git/v5"]
-    version = "v5.9.0"
-    hash = "sha256-Ik1vexK/9hnkb3b4ZE5S4PRPmcvek1X+XFWiimUcfR8="
+    version = "v5.10.0"
+    hash = "sha256-t8ydkwiAH0ACpc70MXenKmgV9ZI77Yokpr6k1Spz2Wk="
   [mod."github.com/go-ole/go-ole"]
     version = "v1.2.6"
     hash = "sha256-+oxitLeJxYF19Z6g+6CgmCHJ1Y5D8raMi2Cb3M6nXCs="
