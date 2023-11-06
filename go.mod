@@ -3,11 +3,13 @@ module xeiaso.net/v4
 go 1.21
 
 require (
+	github.com/bep/debounce v1.2.1
 	github.com/donatj/hmacsig v1.1.0
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
-	github.com/go-git/go-git/v5 v5.9.0
+	github.com/go-git/go-git/v5 v5.10.0
 	github.com/joho/godotenv v1.5.1
 	golang.org/x/oauth2 v0.12.0
+	gopkg.in/fsnotify.v1 v1.4.7
 	gopkg.in/mxpv/patreon-go.v1 v1.0.0-20171031001022-1d2f253ac700
 	tailscale.com v1.48.2
 	within.website/x v1.7.0
@@ -35,7 +37,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.18.10 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/bep/debounce v1.2.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/coreos/go-iptables v0.6.0 // indirect
@@ -79,7 +80,6 @@ require (
 	github.com/prometheus/common v0.42.0 // indirect
 	github.com/prometheus/procfs v0.9.0 // indirect
 	github.com/sergi/go-diff v1.3.1 // indirect
-	github.com/sigma/go-inotify v0.0.0-20181102212354-c87b6cf5033d // indirect
 	github.com/skeema/knownhosts v1.2.0 // indirect
 	github.com/tailscale/certstore v0.1.1-0.20220316223106-78d6e1c49d8d // indirect
 	github.com/tailscale/golang-x-crypto v0.0.0-20230713185742-f0b76a10a08e // indirect
@@ -108,7 +108,6 @@ require (
 	golang.zx2c4.com/wireguard/windows v0.5.3 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
-	gopkg.in/fsnotify.v1 v1.4.7 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gvisor.dev/gvisor v0.0.0-20230504175454-7b0a1988a28f // indirect
 	inet.af/peercred v0.0.0-20210906144145-0893ea02156a // indirect
