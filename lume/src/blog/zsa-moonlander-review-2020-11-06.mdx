@@ -268,9 +268,11 @@ Section "InputClass"
 EndSection
 ```
 
-[For more information on what you can do in an `InputClass` section, see <a
+<XeblogConv name="Mara" mood="hacker">
+For more information on what you can do in an `InputClass` section, see <a
 href="https://www.x.org/releases/current/doc/man/man5/xorg.conf.5.xhtml#heading9">here</a>
-in the X11 documentation.](conversation://Mara/hacker)
+in the X11 documentation.
+</XeblogConv>
 
 This configuration fragment can easily go in the normal X11 configuration
 folder, but doing it like this would mean that I would have to manually drop
@@ -349,12 +351,14 @@ Let's start by lifting all of that above config into its own module:
 }
 ```
 
-[This also has Yubikey inputs not get processed into Colemak so that <a
+<XeblogConv name="Mara" mood="hacker">
+This also has Yubikey inputs not get processed into Colemak so that <a
 href="https://developers.yubico.com/OTP/OTPs_Explained.html">Yubikey OTPs</a>
 still work as expected. Keep in mind that a Yubikey in this mode pretends to be
 a keyboard, so without this configuration the OTP will be processed into
 Colemak. The Yubico verification service will not be able to understand OTPs
-that are typed out in Colemak.](conversation://Mara/hacker)
+that are typed out in Colemak.
+</XeblogConv>
 
 Then we can turn the identifier and product values into options with
 [mkOption](https://nixos.org/manual/nixos/stable/index.html#sec-option-declarations)
@@ -404,9 +408,11 @@ information.
 allow people to create keymaps without needing to compile your own firmware or
 install the [QMK](https://qmk.fm) toolchain.
 
-[QMK is the name of the firmware that the Moonlander (and a lot of other
+<XeblogConv name="Mara" mood="hacker">
+QMK is the name of the firmware that the Moonlander (and a lot of other
 custom/split mechanical keyboards) use. It works on AVR and Arm
-processors.](conversation://Mara/hacker)
+processors.
+</XeblogConv>
 
 For most people, Oryx should be sufficient. I actually started my keymap using
 Oryx and sorta outgrew it as I learned more about QMK. It would be nice if Oryx

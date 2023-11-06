@@ -161,10 +161,12 @@ allows you to put a lot more limits on a service's power.
 If this is set, child processes of this service cannot gain more privileges
 period. Even if the child process is a suid binary.
 
-[A suid binary is a binary that has the suid flag set. This makes the Linux
+<XeblogConv name="Mara" mood="hacker">
+A suid binary is a binary that has the suid flag set. This makes the Linux
 kernel change the active user field of that binary to the owner of the binary
 when you run it. This is a huge part of how the magic behind sudo and ping
-works.](conversation://Mara/hacker)
+works.
+</XeblogConv>
 
 #### `ProtectKernel{Logs,Modules,Tuneables}`
 

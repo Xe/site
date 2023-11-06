@@ -248,10 +248,11 @@ Then you should bind a key to call `/go` for you. I suggest `meta-j`:
 ```
 /key bind meta-j /go
 ```
-
-[On some terminals, you can use the alt-key for this. On others you will need to
+<XeblogConv name="Mara" mood="hacker">
+On some terminals, you can use the alt-key for this. On others you will need to
 press escape and then j. You can change this to control-j with something like
-`/key bind ctrl-j /go`.](conversation://Mara/hacker)
+`/key bind ctrl-j /go`.
+</XeblogConv>
 
 #### `listbuffer.py`
 
@@ -283,10 +284,11 @@ Now that things are set up, let's actually connect to an IRC network. For this
 example, we will connect to [Libera Chat](https://libera.chat/). In WeeChat's
 model, you need to create a server and then set things in it. However, let's set
 some default settings first.
-
-[At this point it may be a good idea to start running WeeChat in tmux or a
+<XeblogConv name="Mara" mood="hacker">
+At this point it may be a good idea to start running WeeChat in tmux or a
 similar program. This will let you detach WeeChat and come back to it
-later.](conversation://Mara/hacker)
+later.
+</XeblogConv>
 
 Here's how you set the default nickname, username and "real name":
 
@@ -321,8 +323,10 @@ Next, let's connect to Libera Chat with this command:
 
 Once you are connected, register an account with NickServ:
 
-[IRC is a bit primitive, most networks use services like `NickServ` to help
-handle persistent identities on IRC.](conversation://Mara/hacker)
+<XeblogConv name="Mara" mood="hacker">
+IRC is a bit primitive, most networks use services like `NickServ` to help
+handle persistent identities on IRC.
+</XeblogConv>
 
 ```
 /q NickServ help register
@@ -347,8 +351,10 @@ with WeeChat, do this:
 /set irc.server.liberachat.sasl_password hunter2
 ```
 
-[If you aren't using `confversion.py`, now is a good time to run
-`/save`.](conversation://Mara/hacker)
+<XeblogConv name="Mara" mood="hacker">
+If you aren't using `confversion.py`, now is a good time to run
+`/save`.
+</XeblogConv>
 
 Then run `/reconnect` and look for this line in your Libera Chat buffer:
 

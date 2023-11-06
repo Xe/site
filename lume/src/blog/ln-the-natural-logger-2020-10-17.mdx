@@ -68,9 +68,11 @@ This will create a log line that looks something like this:
 level=info msg="created new user" user_name="The Dude" user_id=1337
 ```
 
-[You can also put values in contexts! See <a
+<XeblogConv name="Mara" mood="hacker">
+You can also put values in contexts! See <a
 href="https://github.com/Xe/ln/blob/master/ex/http.go#L21">here</a> for more
-detail on how this works.](conversation://Mara/hacker)
+detail on how this works.
+</XeblogConv>
 
 The way this is all glued together is that F itself is an Fer, meaning that the
 Log/Error functions take a variadic set of Fers. This is where my favorite Go

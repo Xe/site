@@ -33,10 +33,12 @@ CREATE TABLE IF NOT EXISTS jsonfeed_raw
   );
 ```
 
-[The scrape date is essentially the date that the JSONFeed row was inserted into
+<XeblogConv name="Mara" mood="hacker">
+The scrape date is essentially the date that the JSONFeed row was inserted into
 the database. This can be useful when writing other parts of the stack to
 automatically query feeds for changes. This is left as an exercise to the
-reader.](conversation://Mara/hacker)
+reader.
+</XeblogConv>
 
 You can then insert things into the SQLite database using Python's `sqlite3`
 module:
@@ -74,10 +76,12 @@ So now let's play with the data! Let's load the database schema in with the
 $ sqlite3 data.db < schema.sql
 ```
 
-[The less-than symbol there is a redirect, it loads the data from `schema.sql`
+<XeblogConv name="Mara" mood="hacker">
+The less-than symbol there is a redirect, it loads the data from `schema.sql`
 as standard input to the `sqlite` command. See <a
 href="https://xeiaso.net/blog/fun-with-redirection-2021-09-22">here</a>
-for more information on redirections.](conversation://Mara/hacker)
+for more information on redirections.
+</XeblogConv>
 
 Then run that python script to populate the database:
 
@@ -118,8 +122,10 @@ CREATE TABLE IF NOT EXISTS jsonfeed_metadata
   );
 ```
 
-[If you ask my coworkers, they can confirm that I actually do real life
-unironcally write SQL like that.](conversation://Cadey/coffee)
+<XeblogConv name="Cadey" mood="coffee">
+If you ask my coworkers, they can confirm that I actually do real life
+unironcally write SQL like that.
+</XeblogConv>
 
 Then we can populate that table with a query like this:
 
@@ -139,10 +145,12 @@ SELECT jsonfeed_raw.feed_url AS feed_url
 FROM jsonfeed_raw;
 ```
 
-[The `AS` keyword lets you bind values in a `SELECT` statement to names for use
+<XeblogConv name="Mara" mood="hacker">
+The `AS` keyword lets you bind values in a `SELECT` statement to names for use
 elsewhere in the query. I don't know if it's _strictly_ needed, however it makes
 the names line up and SQLite doesn't complain about it, so it's probably
-fine.](conversation://Mara/hacker)
+fine.
+</XeblogConv>
 
 Now this is workable, however you know what's easier than writing statements in
 the SQLite console like that? Not having to! SQLite triggers allow us to run
