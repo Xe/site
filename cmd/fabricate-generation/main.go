@@ -125,7 +125,7 @@ func main() {
 
 	var wg sync.WaitGroup
 
-	for _, region := range []string{"fra", "sea", "yyz"} {
+	for _, region := range []string{"fra", "sea", "yyz", "dfw"} {
 		wg.Add(1)
 		go func(region string) {
 			defer wg.Done()
