@@ -127,11 +127,7 @@ func main() {
 
 	var wg sync.WaitGroup
 
-<<<<<<< Updated upstream
-	for _, region := range []string{"fra", "sea", "yyz", "dfw"} {
-=======
 	for _, region := range regions {
->>>>>>> Stashed changes
 		wg.Add(1)
 		go func(region string) {
 			defer wg.Done()
