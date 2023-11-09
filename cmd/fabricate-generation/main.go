@@ -31,6 +31,8 @@ var (
 	patreonSaasProxyURL   = flag.String("patreon-saasproxy-url", "http://patreon-saasproxy/give-token", "URL to use for the patreon saasproxy")
 	tailscaleClientID     = flag.String("tailscale-client-id", "", "Tailscale client ID to use")
 	tailscaleClientSecret = flag.String("tailscale-client-secret", "", "Tailscale client secret to use")
+
+	regions = []string{"yyz", "bos", "iad", "den", "dfw", "ord", "mia", "phx", "lax", "yul", "gdl", "sjc", "sea", "atl", "ewr", "qro", "ams", "fra", "cdg", "lhr", "mad", "waw", "arn", "gru", "scl", "otp", "eze", "nrt", "bog", "gig", "hkg", "bom", "jnb", "sin", "syd"}
 )
 
 func main() {
@@ -125,7 +127,11 @@ func main() {
 
 	var wg sync.WaitGroup
 
+<<<<<<< Updated upstream
 	for _, region := range []string{"fra", "sea", "yyz", "dfw"} {
+=======
+	for _, region := range regions {
+>>>>>>> Stashed changes
 		wg.Add(1)
 		go func(region string) {
 			defer wg.Done()
