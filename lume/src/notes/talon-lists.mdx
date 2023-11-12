@@ -1,0 +1,136 @@
+---
+title: "How to use lists in Talon"
+date: 2023-11-11
+tags: [talon, lists]
+---
+
+When you are making commands in Talon, sometimes you need to have a of things that you say which are turned into things that the computer understands.There are a few ways to implement this but it is easy to do it very wrong.
+
+The naive way to implement this is to make a bunch of little commands. For example, let's say that I was trying to implement a command to insert the conversation snippets for my blog. The naive way would be to do something like this:
+
+```
+blog conversation mara hacker [<user.text> [over]]:
+    insert('<XeblogConv name="Mara" mood="hacker">')
+    insert("\n")
+    insert(text or "")
+    insert("\n")
+    insert("</XeblogConv>")
+
+blog conversation mara happy [<user.text> [over]]:
+    insert('<XeblogConv name="Mara" mood="happy">')
+    insert("\n")
+    insert(text or "")
+    insert("\n")
+    insert("</XeblogConv>")
+
+# etc...
+```
+
+This would work, but I would have to implement a bunch of different nearly identical snippets. This would be easy to make exhaustive across all of the possible combinations of names and moods. But this is very not ideal from a maintainability standpoint. If I wanted to change the format of the snippet or add additional characteristics, I would have to change it in potentially 27 places.
+
+There are a couple other options that I can use here though. They are custom captures and lists. Both of them are valid ways to solve this problem, But I think that lists are the way that I'm going to do it in my implementation.
+
+## Custom Captures
+
+Let's take a look at the syntax of Talon commands again. At a high level, a command is a spoken phrase with elements that are captured out of it. For example, if you wanted to write a command that would type out some text, you would do something like this:
+
+```
+insert <user.text> [over]:
+    insert(text)
+```
+
+This command would take whatever you said after the word insert and type it out. The `user.text` inside the angle brackets is the captured variable. It's put into the variable named text in your talon code. This command would also optionally let you terminate the string of text with the word "over". This can let you stack multiple commands into the same utterance. For example, consider a command like this:
+
+> slog debug unexpected filesystem error go left comma double quote second go left error go right comma error
+
+This command would type out the following:
+
+```go
+slog.Debug("unexpected filesystem error", "err", err)
+```
+
+Once you really learn how to stack commands like this, you really understand the flow model of something like Talon. It allows you to have a lot of power when you're doing things. But, the real important part is when you declare your own custom captures that are used in context with these elidable terminators.
+
+Let's take a look at the syntax for a custom capture:
+
+```py
+@mod.capture(rule="(pointer | raised)")
+def go_pointer(m: str) -> str:
+    return "*" if "pointer" or "raised" in m else ""
+```
+
+A capture is just a Python function that takes a string and returns some data. The `@mod.capture` decorator tells Talon that this is a capture. The `rule` parameter defines the patterns that this capture will meet. For example, this capture returns `"*"` if it matches the strings `"pointer"` and `"raised"`. This allows you to define your own custom logic for capturing values from speech.
+
+For many cases, this will work perfectly. Sometimes you need something a bit simpler than arbitrary Python code. Sometimes you just have a list of things to say versus things the computer should understand. Such as that giant list of conversation moods and blog characters. For that, we can use a list.
+
+## Lists
+
+Lists are a different type of capture that allow you to have spoken forms turn into machine forms. They are defined differently from custom captures because they are a lot simpler. Here's an example list:
+
+```py
+from talon import Context, Module, actions
+
+
+mod = Module()
+mod.list("xesite_blog_character", desc="Characters for xesite blog conversations")
+
+
+ctx = Context()
+ctx.matches = r"""
+app: vscode
+"""
+ctx.lists["user.xesite_blog_character"] = {
+   "owie": "Aoi",
+   "mara": "Mara",
+   "katie": "Cadey",
+   "numa": "Numa",
+   "mini": "Mimi",
+   "scoots": "Scoots",
+}
+```
+
+So when I say "owie", the list would interpret that as Aoi. lists have their own capture format too:
+
+```
+blog conversation {user.xesite_blog_character} {user.xesite_blog_mood} [<user.text> [over]]:
+    insert('<XeblogConv name="{user.xesite_blog_character}" mood="{user.xesite_blog_mood}">')
+    insert("\n")
+    insert(text or "")
+    insert("\n")
+    insert("</XeblogConv>")
+```
+
+This would let me say something like "blog conversation owie grin this is some text" and it would insert the following:
+
+<XeblogConv name="Aoi" mood="grin">
+  This is some text.
+</XeblogConv>
+
+But, we can go one step further. Right now, this would have you define your list in Python code. This does work. But its a bit much to go in and modify Python code in order to change something. Given that lists are a first class concept in Talon, there is a way to express them more natively: using `.talon-list` files. Here's what the list of characters would look like in a `.talon-list` file:
+
+```
+list: user.xesite_blog_character
+app: vscode
+-
+owie: Aoi
+mara: Mara
+katie: Cadey
+numa: Numa
+mini: Mimi
+scoots: Scoots
+```
+
+This is a lot easier to read, understand, and modify by people that don't understand Python, but need to use Talon anyways.
+
+<XeblogConv name="Mara" mood="hacker">
+You need to be in the Patreon Beta in order to use `.talon-list` files. If you are not in the Patreon Beta, you can use the Python code version of this. They are functionally identical.
+
+If you're using Talon more seriously, you should be in the Patreon Beta anyways. The public version hasn't had updates for a while and is missing a lot of features that have been added in the beta. Plus, it helps make sure that the Talon developers are able to... well... eat. Ain't no such thing as a free lunch.
+
+</XeblogConv>
+
+## Conclusion
+
+Talon is really cool and a lot of the really cool parts are tragically under-documented I am just barely scratching the surface here, but this is documenting what I am figuring out as I dig more deeply into Talon. I hope this is useful to someone.
+
+If you want to see the Talon bindings I've created for my blog characters, you can look [in my `Xe/invocations` repo](https://github.com/Xe/invocations/tree/main/apps/vscode). I'm still working on them, but they're a good starting point for anyone that wants to do something similar.
