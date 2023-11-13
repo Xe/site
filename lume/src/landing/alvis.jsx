@@ -243,7 +243,7 @@ export const Testimonials = () => {
                 className={`h-28 overflow-hidden rounded-t-lg ${testimonial.color}`}
               >
               </div>
-              <div className="mx-auto -mt-12 w-24 overflow-hidden rounded-full border-2 border-white bg-white dark:border-neutral-800 dark:bg-neutral-800">
+              <div className="mx-auto mt-12 w-24 overflow-hidden rounded-full border-2 border-white bg-white dark:border-neutral-800 dark:bg-neutral-800">
                 <img
                   src={testimonial.avatar}
                 />
