@@ -138,9 +138,7 @@ At Tailscale I founded the developer relations team with the goal of inspiring p
 
 Tailscale has easily been the best job I've ever had and I've had an enormous impact on how Tailscale is percieved by developers worldwide. For a while my actions were directly attributable to MAU growth. One of the hardest projects I've worked on was making DevRel efforts more than single flashes in the pan and create a reason for people to visit the website on a regular basis.
 
-While I worked at Tailscale, I attempted to spearhead the use of Nix and NixOS to declaratively manage our servers. This would have given us full knowledge of what packages and services were running on which servers, allowing us to know at a glance what server was doing what. Unfortunately, this project ultimately failed in ways that taught me a lot about the importance of clean, accessible documentation that is written for people that don't already understand the topic at hand. Even when a technically superior solution may exist, it is better to meet people where they are at and move forward together as a team.
-
-I regularly write articles and lead internal talks about how to use Tailscale and other technology topics in new and interesting ways.
+I regularly wrote articles and lead internal talks about how to use Tailscale and other technology topics in new and interesting ways.
 
 #coloredLine()
 
