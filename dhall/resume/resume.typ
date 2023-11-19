@@ -145,15 +145,11 @@ I regularly wrote articles and lead internal talks about how to use Tailscale an
 #titleCompany[Expert principal en fiabilité du site][Lightspeed]\
 #term[2019-05 -- 2020-11][Montréal, CA]
 
-My team and I created and maintained the internal Kubernetes deployment (with the goal of being functionally an in-house Platform-as-a-service) and all of the assorted tooling around it, helping internal developers deploy new features to customers faster. I also helped to create custom icons and color schemes for internal tools, with the goal of having consistent brand design for knowing which tool is which at a glance.
+I created and maintained the internal Kubernetes deployment (with the goal of being functionally an in-house Platform-as-a-service) and all of the assorted tooling around it, helping internal developers deploy new features to customers faster. I also helped to create custom icons and color schemes for internal tools, with the goal of having consistent brand design for knowing which tool is which at a glance.
 
-//This Kubernetes project ended up being too complicated for developers in practice. Even with a lot of tooling and deployment-on-rails templates to help bridge gaps between the inherent complexity of Kubernetes, Vault, Docker, and the intents of what they wanted to do, things ended up being very complicated once developers wanted to go beyond the die-cast templates we gave them.
-
-The misadventures through Kubernetes' hidden complexity (especially when faced with developers that rightfully don't care about the details as long as things work) has taught me that "simple" is relative. There must be complexity somewhere and making things "simple" at one end merely moves the complexity around to another end. Templates to get you out the door are great things, but you can't stop at "hello world" and then throw people to the sharks.
-
-I also learned a lot about how to teach via teaching my teammates how to write Go the way I learned how to write Go. I have learned that it is impossible to teach people without learning how to teach them, and it is impossible to learn things without teaching your teacher new insights.
-
-While working on internal tooling, we did user research on how to approach designing command-line tools from a linguistic approach. We found that commands should be verbs, arguments should be nouns, and flags should be adverb clauses. This seems to help the most people understand tools in the most detail.
+- Created a custom Kubernetes deployment system with a focus on developer experience
+- Built developer tooling on top of a custom CI/CD flow
+- Managed hidden complexity in the Kubernetes deployment system
 
 #coloredLine()
 
