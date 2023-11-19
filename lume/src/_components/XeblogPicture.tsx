@@ -1,11 +1,16 @@
 export interface XeblogPicture {
   path: string;
   desc?: string;
+  className?: string;
 }
 
-export default function XeblogPicture({ path, desc }: XeblogPicture) {
+export default function XeblogPicture({
+  path,
+  desc,
+  className,
+}: XeblogPicture) {
   return (
-    <figure className="max-w-3xl mx-auto">
+    <figure className={`max-w-3xl mx-auto ${className}`}>
       <a href={`https://cdn.xeiaso.net/file/christine-static/${path}.jpg`}>
         <picture>
           <source
@@ -18,6 +23,7 @@ export default function XeblogPicture({ path, desc }: XeblogPicture) {
           />
           <img
             alt={desc}
+            className={className}
             loading="lazy"
             src={`https://cdn.xeiaso.net/file/christine-static/${path}.jpg`}
           />
