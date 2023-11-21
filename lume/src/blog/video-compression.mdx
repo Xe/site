@@ -125,9 +125,9 @@ overkill.
   this below:
 </XeblogConv>
 
-| Before generational loss                                               | After generational loss                                               |
-| ---------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| <xeblog-picture path="blog/video-compression/before"></xeblog-picture> | <xeblog-picture path="blog/video-compression/after"></xeblog-picture> |
+| Before generational loss                                             | After generational loss                                             |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| <XeblogPicture path="blog/video-compression/before"></XeblogPicture> | <XeblogPicture path="blog/video-compression/after"></XeblogPicture> |
 
 <XeblogConv name="Mara" mood="happy">
   You can understand why this would be a bad thing to have to deal with in a
@@ -188,7 +188,7 @@ the ones that have an entire image associated with them), let's take a
 look at how _my streams_ in particular work. Here's a random still
 frame from one of my recent streams:
 
-<xeblog-picture path="blog/video-compression/vlcsnap-2023-02-05-11h43m29s946"></xeblog-picture>
+<XeblogPicture path="blog/video-compression/vlcsnap-2023-02-05-11h43m29s946"></XeblogPicture>
 
 The core elements are very simple and many of them do not change:
 
@@ -216,9 +216,9 @@ more bitrate savings.
 
 Consider these two random sequential frames from one of my streams:
 
-| Frame 1                                                                                         | Frame 2                                                                                         |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| <xeblog-picture path="blog/video-compression/vlcsnap-2023-02-05-11h43m29s946"></xeblog-picture> | <xeblog-picture path="blog/video-compression/vlcsnap-2023-02-05-11h43m34s707"></xeblog-picture> |
+| Frame 1                                                                                       | Frame 2                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| <XeblogPicture path="blog/video-compression/vlcsnap-2023-02-05-11h43m29s946"></XeblogPicture> | <XeblogPicture path="blog/video-compression/vlcsnap-2023-02-05-11h43m34s707"></XeblogPicture> |
 
 Did you notice the difference? It's my VTuber avatar doing the
 animation for the /s/ sound. This means that about 0.05% of the
@@ -227,9 +227,9 @@ down without losing out on quality as much as it would in something
 like Beat Saber. Consider these two random sequential frames of me
 playing [Synth Riders](https://synthridersvr.com/):
 
-| Frame 1                                                                                         | Frame 2                                                                                         |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| <xeblog-picture path="blog/video-compression/vlcsnap-2023-02-05-14h59m02s427"></xeblog-picture> | <xeblog-picture path="blog/video-compression/vlcsnap-2023-02-05-14h59m07s393"></xeblog-picture> |
+| Frame 1                                                                                       | Frame 2                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| <XeblogPicture path="blog/video-compression/vlcsnap-2023-02-05-14h59m02s427"></XeblogPicture> | <XeblogPicture path="blog/video-compression/vlcsnap-2023-02-05-14h59m07s393"></XeblogPicture> |
 
 There is way more of a visible difference between these two frames,
 and as such it requires a much higher bitrate in order to encode this
@@ -314,9 +314,9 @@ Input #0, mpegts, from 'baseline/index5.ts':
 
 And it looks great:
 
-| Frame 1                                                                                         | Frame 2                                                                                         |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| <xeblog-picture path="blog/video-compression/vlcsnap-2023-02-05-15h38m36s591"></xeblog-picture> | <xeblog-picture path="blog/video-compression/vlcsnap-2023-02-05-15h38m40s053"></xeblog-picture> |
+| Frame 1                                                                                       | Frame 2                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| <XeblogPicture path="blog/video-compression/vlcsnap-2023-02-05-15h38m36s591"></XeblogPicture> | <XeblogPicture path="blog/video-compression/vlcsnap-2023-02-05-15h38m40s053"></XeblogPicture> |
 
 However, we can go deeper. The source video was about 6000 kb/sec and
 ffmpeg already crunched it down to 520 kb/sec. However, we're not even
@@ -380,9 +380,9 @@ Input #0, mpegts, from './two-pass/index277.ts':
 
 And here are two sequential frames:
 
-| Frame 1                                                                                         | Frame 2                                                                                         |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| <xeblog-picture path="blog/video-compression/vlcsnap-2023-02-05-16h17m35s822"></xeblog-picture> | <xeblog-picture path="blog/video-compression/vlcsnap-2023-02-05-16h17m40s334"></xeblog-picture> |
+| Frame 1                                                                                       | Frame 2                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| <XeblogPicture path="blog/video-compression/vlcsnap-2023-02-05-16h17m35s822"></XeblogPicture> | <XeblogPicture path="blog/video-compression/vlcsnap-2023-02-05-16h17m40s334"></XeblogPicture> |
 
 This is passable, and I wouldn't be ashamed to have it visible on my
 portfolio for my mostly text-based streams.
@@ -484,9 +484,9 @@ Input #0, mpegts, from './two-pass-150/index341.ts':
 Yep! The video stream is now _so optimized_ that the audio is the
 bigger concern. Here's two more sequential frames:
 
-| Frame 1                                                                                         | Frame 2                                                                                         |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| <xeblog-picture path="blog/video-compression/vlcsnap-2023-02-05-16h54m33s293"></xeblog-picture> | <xeblog-picture path="blog/video-compression/vlcsnap-2023-02-05-16h54m37s397"></xeblog-picture> |
+| Frame 1                                                                                       | Frame 2                                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| <XeblogPicture path="blog/video-compression/vlcsnap-2023-02-05-16h54m33s293"></XeblogPicture> | <XeblogPicture path="blog/video-compression/vlcsnap-2023-02-05-16h54m37s397"></XeblogPicture> |
 
 Now _this_ is how you know you've found a good balance between bitrate
 and visual quality. That random HLS chunk I copied was 265 kiloBYTES
