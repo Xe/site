@@ -127,6 +127,7 @@ func main() {
 	h = internal.ClackSet(fs.Clacks()).Middleware(h)
 	h = internal.CacheHeader(h)
 	h = internal.AcceptEncodingMiddleware(h)
+	h = internal.RefererMiddleware(h)
 
 	slog.Info("starting server", "bind", *bind)
 	log.Fatal(http.Serve(ln, h))
