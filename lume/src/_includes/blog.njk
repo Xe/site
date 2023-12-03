@@ -6,12 +6,13 @@ layout: base.njk
 
 <article class="prose dark:prose-invert max-w-none">
     <h1>{{title}}</h1>
-    <p class="text-sm text-fg-3 dark:text-fgDark-3">
+    <p class="text-sm text-fg-3 dark:text-fgDark-3 mb-2">
         Published on {{date.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" })}}, {{ readingInfo.words }} words, {{ readingInfo.minutes }} minutes to read
     </p>
 
     {% if hero %}
         {{ comp.XeblogHero(hero) | safe }}
+        <small class="text-xs text-fg-3 dark:text-fgDark-3 mb-2 mx-auto">{{hero.prompt}} - {{hero.ai}}</small>
     {% endif %}
 
     {{content | safe}}
@@ -38,7 +39,6 @@ layout: base.njk
     <script>
         const shareButton = document.getElementById("shareButton");
         function doShareButton() {
-            console.log("got here");
             const shareData = {
                 title: document.title,
                 url: window.location.href
@@ -51,16 +51,16 @@ layout: base.njk
                         console.log("Thanks for sharing!");
                     })
                     .catch(console.error);
-                }
-            else if (navigator.clipboard) {
+            } else if (navigator.clipboard) {
                 // console.log("(via navigator.clipboard)");
-                navigator.clipboard.writeText(shareData.url)
+                navigator
+                    .clipboard
+                    .writeText(shareData.url)
                     .then(() => {
                         console.log("Thanks for sharing!");
                     })
                     .catch(console.error);
-            }
-            else {
+            } else {
                 console.log("can't share directly, but feel free to copy the url from addressbar manually");
             }
         }
