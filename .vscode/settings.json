@@ -1,20 +1,28 @@
 {
-    "[markdown]": {
-        "editor.wordWrap": "wordWrapColumn",
-        "editor.wordWrapColumn": 80,
-        "editor.wordBasedSuggestions": false
-    },
-    "[mdx]": {
-        "editor.wordWrap": "wordWrapColumn",
-        "editor.wordWrapColumn": 80,
-        "editor.wordBasedSuggestions": false
-    },
-    "[nunjucks]": {
-        "editor.wordWrap": "wordWrapColumn",
-        "editor.wordWrapColumn": 80,
-        "editor.wordBasedSuggestions": false
-    },
-    "deno.enable": true,
-    "deno.lint": true,
-    "deno.unstable": true,
+  "[markdown]": {
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 80,
+    "editor.wordBasedSuggestions": false
+  },
+  "[mdx]": {
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 80,
+    "editor.wordBasedSuggestions": false
+  },
+  "[nunjucks]": {
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 80,
+    "editor.wordBasedSuggestions": false
+  },
+  "deno.enable": true,
+  "deno.lint": true,
+  "deno.unstable": true,
+  "cSpell.enableFiletypes": ["mdx"],
+  "cSpell.words": [
+    "bootloader",
+    "catgirl",
+    "gatekeeping",
+    "gatekeepy",
+    "XeblogConv"
+  ]
 }
