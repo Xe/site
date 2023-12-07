@@ -67,6 +67,26 @@ let tailscale =
       }
 
 in  [ Job::{
+      , company = Company::{
+        , name = "Fly.io"
+        , url = Some "https://fly.io"
+        , tagline =
+            "A platform to run code close to users. Deploy the same app to 35 datacentres worldwide in seconds."
+        , location = Location::{
+          , city = "Chicago"
+          , stateOrProvince = "IL"
+          , country = "USA"
+          , remote = True
+          }
+        }
+      , title = "Senior Technophilosopher"
+      , contract = True
+      , startDate = "2023-11-06"
+      , salary = Salary::{ amount = 15000, per = "month", currency = "USD" }
+      , locations = [ ottawa ]
+      , highlights = [ "Developer marketing" ]
+      }
+    , Job::{
       , company = tailscale
       , title = "Archmage of Infrastructure II"
       , startDate = "2023-04-06"
