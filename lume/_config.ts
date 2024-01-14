@@ -95,5 +95,8 @@ site.use(sitemap({
 site.use(readInfo({
   extensions: [".md", ".mdx"],
 }));
+site.preprocess([".html"], (page) => {
+  page.data.year = page.data.date.getFullYear();
+});
 
 export default site;

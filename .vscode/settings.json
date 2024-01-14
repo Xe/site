@@ -24,5 +24,8 @@
     "gatekeeping",
     "gatekeepy",
     "XeblogConv"
-  ]
+  ],
+  "[markdown][mdx][nunjucks]": {
+    "editor.wordBasedSuggestions": "off"
+  }
 }

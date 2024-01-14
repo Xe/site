@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	ignoredDirs = []string{"_site", "_data", "_bin", "blog/series", "static/resume", "#"}
+	ignoredDirs = []string{"_site", "_data", "_bin", "blog/series", "static/resume", "#", "deno.lock"}
 )
 
 func findDirectories(root string) ([]string, error) {
