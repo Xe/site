@@ -1,0 +1,53 @@
+---
+title: Review of Wicked Cushions
+date: 2024-01-13
+image: blog/2024/wc-mini-review/wc_shot
+---
+
+export const PercentageRing = ({ percentage }) => {
+  let color = "green";
+  if (percentage < 50) {
+    color = "red";
+  }
+  if (percentage < 80) {
+    color = "yellow";
+  }
+  return (
+    <div className="relative inline-block mt-2 ml-20 md:ml-6">
+      <div
+        className={`w-36 md:w-48 h-36 md:h-48 bg-bg-2 dark:bg-bgDark-2 border-8 border-${color}-light dark:border-${color}Dark-light rounded-full`}
+      >
+        <div
+          className="absolute top-0 left-0 w-full h-full border-8 border-green-500 rounded-full"
+          style={{
+            clip: `rect(0, 1em, 1em, ${(percentage / 100) * 2}em)`,
+          }}
+        ></div>
+      </div>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-2xl md:text-4xl font-bold">
+          {percentage / 10}/10
+        </span>
+      </div>
+    </div>
+  );
+};
+
+I wear headphones a lot. The thing that makes me frustrated with my headphones is how they feel on my head. I use DT 770 Pro headphones at my gaming desk and Audiotechnica ATH-M40x headphones at my work desk, and the cushions on the ATH-M40x's kinda suck over longer periods of time.
+
+This company called [Wicked Cushions](https://wickedcushions.com/) sponsored [Linus Tech Tips](https://www.youtube.com/@LinusTechTips)' coverage of CES 2024 and I saw that it was like $25 on Amazon so I used it to get free shipping for some sponges and a headphone extension cable for my husband. I figured there was nothing to lose by going for it.
+
+<XeblogPicture
+  path="blog/2024/wc-mini-review/wc_shot"
+  alt="A picture of black headphones with pink multicolored ear cushions. The cushions are about 1.5 cm thick."
+/>
+
+What can I say? They're cushions. They're squishy and feel nice on my head.
+
+Installation was a little finnicky (I'm pretty sure the cushions on the ATH-M40x headphones weren't really designed to be easily user-replaceable for good reason), but once I shimmied it around a few times everything fell into place.
+
+I had very low expectations going into them, but overall I think they are a solid upgrade for solid headphones. I think it also increased the sound deadening a bit, but I don't really have any easy way to test that without putting the old cushions on. That's a bit more effort than I want to give right now.
+
+I'll write a followup article in a few months if I have any other opinions about these things. I seriously doubt I will, but I might. It's headphone cushions, it's pretty hard to have opinions about them because they're good enough.
+
+<PercentageRing percentage={80} />

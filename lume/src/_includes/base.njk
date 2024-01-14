@@ -77,6 +77,10 @@ la budza pu cusku lu
             <meta property="twitter:title" content="Xe Iaso"/>
         {% endif %}
 
+        {% if image %}
+            <meta property="og:image" content="https://cdn.xeiaso.net/file/christine-static/{{ image }}.jpg"/>
+        {% endif %}
+
         {% if hero %}
             <meta property="og:image" content="https://cdn.xeiaso.net/file/christine-static/hero/{{ hero.file }}.jpg"/>
             <meta property="twitter:image" content="https://cdn.xeiaso.net/file/christine-static/hero/{{ hero.file }}.jpg"/>
