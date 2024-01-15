@@ -55,7 +55,7 @@ done
 You can iterate over the values with a `for` loop on the `*` value:
 
 ```shell
-for region in "${FLY_REGIONS[@]}"; do
+for region in "${FLY_REGIONS[*]}"; do
   echo "region: $region"
 done
 ```
