@@ -27,6 +27,11 @@
 
     typst.url = "github:typst/typst";
     typst.inputs.nixpkgs.follows = "nixpkgs";
+
+    alpineLinux = {
+      flake = false;
+      url = "file+https://cdn.xeiaso.net/file/christine-static/hack/alpine-amd64-3.19.0.tar.gz";
+    };
   };
 
   outputs =
@@ -37,6 +42,7 @@
     , iosevka
     , typst
     , gomod2nix
+    , alpineLinux
     , ...
     }:
     flake-utils.lib.eachSystem [
@@ -137,6 +143,7 @@
           docker = pkgs.dockerTools.buildLayeredImage {
             name = "ghcr.io/xe/site/bin";
             tag = "latest";
+            fromImage = alpineLinux;
             contents = with pkgs; [ cacert typst-dev dhall-json deno pagefind ];
             config = {
               Cmd = [ "${bin}/bin/xesite" "--data-dir=/data" ];

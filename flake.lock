@@ -1,5 +1,17 @@
 {
   "nodes": {
+    "alpineLinux": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-8xQGO1CqQbpkB8dapJbHiwr7taA+dGAYAZYdBurLhvA=",
+        "type": "file",
+        "url": "https://cdn.xeiaso.net/file/christine-static/hack/alpine-amd64-3.19.0.tar.gz"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://cdn.xeiaso.net/file/christine-static/hack/alpine-amd64-3.19.0.tar.gz"
+      }
+    },
     "crane": {
       "inputs": {
         "nixpkgs": [
@@ -230,6 +242,7 @@
     },
     "root": {
       "inputs": {
+        "alpineLinux": "alpineLinux",
         "deno2nix": "deno2nix",
         "flake-compat": "flake-compat_2",
         "flake-utils": "flake-utils",
