@@ -268,4 +268,22 @@ in  [ Person::{
         , Link::{ url = "https://github.com/AutumnalAntlers", title = "GitHub" }
         ]
       }
+      Person::{
+      , name = "Aisling Fae (transfaeries)"
+      , tags =
+        [ "Writer"
+        , "Software Engineer"
+        , "AI/ML"
+        , "Python"
+        , "Docker"
+        , "Kubernetes"
+        , "Documentation"
+        , "Education"
+        , "vTuber"
+        ]
+      , links =
+        [ Link::{ url = "https://transfaeries.com", title = "Website" }
+        , Link::{ url = "https://github.com/transfaeries", title = "GitHub" }
+        ]
+      }
     ]
