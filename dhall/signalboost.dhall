@@ -268,4 +268,26 @@ in  [ Person::{
         , Link::{ url = "https://github.com/AutumnalAntlers", title = "GitHub" }
         ]
       }
+    , Person::{
+      , name = "Redowan Delowar"
+      , tags =
+        [ "python"
+        , "go"
+        , "javascript"
+        , "nodejs"
+        , "ansible"
+        , "docker"
+        , "aws"
+        , "linux"
+        , "build-systems"
+        , "CI/CD"
+        , "data science"
+        ]
+      , links =
+        [ Link::{ url = "https://rednafi.com", title = "Website" }
+        , Link::{ url = "https://twitter.com/rednafi", title = "Twitter" }
+        , Link::{ url = "https://github.com/rednafi", title = "GitHub" }
+        , Link::{ url = "https://www.linkedin.com/in/redowan/", title = "LinkedIn" }
+        ]
+      }
     ]
