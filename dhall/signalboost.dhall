@@ -4,7 +4,7 @@ let Person = ./types/Person.dhall
 
 in  [ Person::{
       , name = "bri recchia"
-      , tags = 
+      , tags =
         [ "virtualization"
         , "linux"
         , "generalist"
@@ -22,7 +22,7 @@ in  [ Person::{
       }
     , Person::{
       , name = "Evan Pratten"
-      , tags = 
+      , tags =
         [ "rust"
         , "linux"
         , "docker"
@@ -114,7 +114,15 @@ in  [ Person::{
       }
     , Person::{
       , name = "Andrei Jiroh Halili"
-      , tags = [ "backend", "bash", "nodejs", "deno", "alpinelinux", "linux", "actuallyautistic" ]
+      , tags =
+        [ "backend"
+        , "bash"
+        , "nodejs"
+        , "deno"
+        , "alpinelinux"
+        , "linux"
+        , "actuallyautistic"
+        ]
       , links =
         [ Link::{ url = "https://github.com/ajhalili2006", title = "GitHub" }
         , Link::{ url = "https://mau.dev/ajhalili2006", title = "GitLab" }
@@ -126,7 +134,7 @@ in  [ Person::{
         , Link::{
           , url = "https://substack.com/@ajhalili2006"
           , title = "Substack"
-        }
+          }
         , Link::{ url = "https://andreijiroh.eu.org", title = "Website" }
         ]
       }
@@ -168,11 +176,14 @@ in  [ Person::{
         ]
       , links =
         [ Link::{ url = "https://github.com/aurorahHarmony", title = "GitHub" }
-        , Link::{ url = "https://pony.social/@aurorahHarmony", title = "Fediverse" }
+        , Link::{
+          , url = "https://pony.social/@aurorahHarmony"
+          , title = "Fediverse"
+          }
         , Link::{ url = "https://itsaury.net", title = "Website" }
         ]
       }
-   , Person::{
+    , Person::{
       , name = "Caramel Drop"
       , tags =
         [ "full-stack"
@@ -247,9 +258,7 @@ in  [ Person::{
         , "ansible"
         , "ui/ux"
         ]
-      , links =
-        [ Link::{ url = "https://dillonbaird.io", title = "Website" }
-        ]
+      , links = [ Link::{ url = "https://dillonbaird.io", title = "Website" } ]
       }
     , Person::{
       , name = "antlers"
@@ -268,7 +277,7 @@ in  [ Person::{
         , Link::{ url = "https://github.com/AutumnalAntlers", title = "GitHub" }
         ]
       }
-      Person::{
+    , Person::{
       , name = "Aisling Fae (transfaeries)"
       , tags =
         [ "Writer"
