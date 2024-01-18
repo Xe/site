@@ -30,7 +30,7 @@
 
     alpineLinux = {
       flake = false;
-      url = "file+https://cdn.xeiaso.net/file/christine-static/hack/alpine-amd64-3.19.0.tar.gz";
+      url = "file+https://cdn.xeiaso.net/file/christine-static/hack/alpine-amd64-3.19.0-1.tar";
     };
   };
 
