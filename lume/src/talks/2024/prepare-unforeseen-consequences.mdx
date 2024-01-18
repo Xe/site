@@ -1,0 +1,754 @@
+---
+title: "AI: the not-so-good parts"
+date: 2025-01-16
+tags:
+  - ai
+  - ethics
+  - philosophy
+---
+
+Hey, if you normally read the written form of my talks, I highly
+suggest watching or listening to the video for this one. The topic I'm
+covering is something I'm quite passionate about and I don't think
+that my tone is conveyed in text the same way it is in voice. If the
+version on XeDN doesn't load for you for whatever reason, please
+[contact me](/contact/) with the output of
+[cdn.xeiaso.net/cgi-cdn/wtf](https://cdn.xeiaso.net/cgi-cdn/wtf) and I
+will figure out what is wrong so I can fix it.
+
+You can find the YouTube version of this talk [here](https://youtu.be/EfAjITmLP50?feature=shared).
+
+<XeblogVideo path="talks/2024/ai-ethics" />
+
+---
+
+<XeblogSlide name="2024/ai-ethics/001" essential />
+
+Hi, I'm Xe Iaso and before we get started, I want to start by talking
+about what this talk is and is not. This talk isn't going to be the
+kind of high signal AI research that I'd really love to be giving
+right now. This talk is about actions and consequences.
+ 
+<XeblogSlide name="2024/ai-ethics/002" essential />
+
+What impacts will our projects have on the real world where people
+have to take objects like this and exchange them for food and shelter?
+
+I'm sorry to say that this talk is going to be a bit of a wet blanket.
+I'm so sorry for Yacine because all that stuff with local AI inference
+in browsers was really cool. And that dogfooding of
+[dingboard](https://dingboard.com/) for a presentation about how
+dingboard works was cool as hell.
+
+<XeblogSlide name="2024/ai-ethics/004" essential />
+
+All the best things in life come with disclaimers, as I'm sure you
+know, and these words are my own. I'm not speaking on behalf of my
+employer, past employers, or if you're watching the recording and I've
+changed employers, any future employers. I am speaking for myself, not
+other people.
+
+Before we get into this, let's cover my background, some stuff about
+me, what I do, and all this AI stuff has benefited and harmed me
+personally. As Hai [the organizer of the AI meetup that asked me to
+speak there] mentioned, I'm a somewhat avid blogger. I've only got
+like 400 articles or something. I write for the love of writing and
+I've got like maybe four 3D printed save icons of text available on my
+blog for anyone to learn with any topic from like programming,
+spirituality, semiotics, AI, etc. My writing is loved by the developer
+community and it's the reason why I get hired.
+
+<XeblogSlide name="2024/ai-ethics/007" essential />
+
+Regardless of anything I say in this talk, please make a blog,
+document what you've learned, document what works, document what
+fails, just get out there and write. You'll get good at it, just keep
+at it. This is genuine advice.
+
+<XeblogSlide name="2024/ai-ethics/008" essential />
+
+However, as a reward for making my blog a high-quality thing, it's
+part of the ChatGPT training dataset. Somewhere in some data center,
+my blog's information is sitting there tokenized, waiting to get
+massaged into floating point weights by unfeeling automatons used to
+make unimaginable amounts of money that I will never see a penny of.
+This is the punishment I get for pouring the heart, soul and love into
+my craft as a blogger.
+
+I get turned into ChatGPT.
+
+<XeblogSlide name="2024/ai-ethics/009" essential />
+
+Now in our system of law, things are generally lawful unless there's
+some law or precedent that says it's not. At the time of me speaking
+this, we aren't sure if training AI models on copyrighted
+data is fair use or not. The courts and lawmakers need to battle this
+out (if they'll be allowed to because there is a lot of money behind
+the AI industry right now).
+
+This is technology that is so new, it's making Bitcoin look like Stone
+Age, 8-bit computing back when you couldn't count above 255 without
+major hacks.
+
+<XeblogSlide name="2024/ai-ethics/010" essential />
+
+And mind you, I'm just one blogger. I'm just one person. I don't have
+that big of a platform, all things considered. Sure in the genre of
+technology bloggers, I'm probably fairly high up there, but I'm not
+like front page on New York Times big. I'm just a person who likes
+talking about computers and how they should work. I'm just someone
+that gazed into the void too much and now people to pay me to gaze
+into the damn void.
+
+<XeblogSlide name="2024/ai-ethics/011" essential />
+
+So how do we understand all this?
+
+How do we figure out how to peel back all the layers of terminology
+bullshit that keep us from having a clear understanding of what people
+are even saying?
+
+If we take all the drama and interplay involved in our society, we can
+boil it down to two basic things, actions and consequences. Actions
+are the things that we do and consequences are the things that result.
+
+So let's say you cut a tree down to make a fire, but that tree was
+used by animals to shelter them from the winter and now those animals
+have a harder time finding shelter in the winter.
+
+You take actions and something or someone else has to deal with the
+consequences.
+
+Most of the time our actions serve to make us better off and shield us
+from the consequences. We see this happen with that tree that got cut
+down. We will see this happen with ChatGPT and we will keep seeing
+this happen time immemorial as society keeps repeating.
+
+As exciting as all of this AI technology is, as a science fiction
+writer, I can't help but see the same actions and consequences and
+analyses for how we're using it today.
+
+<XeblogSlide name="2024/ai-ethics/016" essential />
+
+Now your pitchforks can go down, I see you out there, you holding them
+up, I'm not trying to be a contrarian or decry AI as wrongthink. I've
+been using AI for my own stuff and I genuinely think that there's a
+lot of really exciting things here.
+
+I'm mostly worried about how the existing powers that be are going to
+use this surplus of cheap labor and have those actions have massive
+consequences on us all.
+
+<XeblogSlide name="2024/ai-ethics/017" essential />
+
+One of the things I'm trying to get across here is not all "Capitalism
+bad! Let's get back the bread lines, baby!" There's plenty of places
+to see those arguments and I don't want this to be one of those. I
+more want to inspire you to see what the consequences of your actions
+with AI stuff could be so that we can make the world a more equitable
+place.
+
+Of course, this is made even more fun by the concept of unforeseen
+consequences or downstream consequences that you couldn't have
+possibly seen coming when you were experimenting with things.
+
+<XeblogSlide name="2024/ai-ethics/018" essential />
+
+As an example, for a long time people thought swans were white. Swans
+became symbols of literary purity or something like that and it was so
+common that there was an English idiom of a black swan being an
+impossible thing.
+
+As this photo proves, swans can be black.
+
+And now the term "black swan event" describes something that should
+have been obvious in hindsight but something that we couldn't possibly
+have foreseen at the time.
+
+(Begin sarcastic tone)
+
+Just like that unmentionable-on-YouTube viral pandemic that happened a
+few years ago that our society will never really recover from!
+Scientists were warning us for years that we'd be totally screwed by a
+viral pandemic but no, we didn't take them seriously.
+
+(End sarcastic tone)
+
+<XeblogSlide name="2024/ai-ethics/020" essential />
+
+Whenever anyone takes actions and there are consequences or impacts,
+you can usually model them as on yourself, your friends or the world
+at large. I haven't found a good way to model the impact risk of a
+given field very well, but I like triangles so I made this triangle
+called the impact triangle to show what all of the factors in the
+computer science industry are.
+
+In terms of access, anybody can become good at coding and start
+working at a company or creating a company to solve a problem that
+they have in their lives. I'm pretty sure that this basic thing, the
+computer industry is open access to anybody is basically why everybody
+in this room is here today.
+
+Personally, I'm a college dropout.
+
+Without the industry allowing just about anyone to walk in the door
+and start being successful, yeah, I'd still be in the Seattle area
+probably working minimum wage at a fast food place. I wouldn't be able
+to dream of immigrating to Canada and I probably would have never met
+my husband who is so thankfully recording this for me.
+
+There's also no professional certification or license required to
+practice computer science or software development or whatever we call
+ourselves now. And basically anybody off the street without
+certification can make an impact on the world scale if they get lucky.
+
+And then in terms of limits, our industry measures results in small
+units of times like individual financial quarters. In aggregate, our
+industry only cares about what we do to make the capitalism line go up
+for next quarter and there's no ethical or professional guidelines
+that prevent people from making bad things or even defining what good
+and bad is in the first place. In an ideal world, the thought is that
+the market should sort everything out and realistically, with the GDPR
+and the like, there are some laws that enable, that force people to
+comply but as long as you have good lawyers, you can get away with
+killing murder.
+
+For most other professions in the job market, our industry looks
+incredibly reckless. Like, accountants need to be licensed and pass
+certifications. If you want to call yourself a surgeon, you need to
+have surgery practice, you need to have a license in surgery, and you
+need to keep yourself up with the profession.
+
+We don't have such barriers to entry.
+
+As an example of this, consider Facebook. They have a billion users.
+That is nine significant figures, a billion with a B as in bat. When
+they made Facebook, the thought was that they could make everybody
+better by reducing the social distance and that could make everybody
+like happier and live more fulfilled lives.
+
+An unimaginable amount of photos, video and text posts are made to
+Facebook every day. Some measurable fraction of these violate
+Facebook's community guidelines and are full at the very least and are
+fully legal at the most. Many trivial cases can be handled by machine
+learning algorithms but there's always that bit that needs to be
+judged by a human.
+
+Speaking as a recovering IRC op, content moderation is impossible at
+small scales and the level of impossibility only grows as the number
+of people involved in a thing grows. I am fairly certain that it is
+like actually entirely impossible to moderate Facebook at this point
+because there's just too many people. You have to have some machine
+algorithm in there at some point and there are going to be things that
+the algorithm can't handle.
+
+So then you go and you use humans to rate that.
+
+You contract out a company who very wisely decides to subcontract that
+out because they don't have to deal with the fallout and finally it
+ends up on the desks of people that are tortured day and night by the
+things they are forced to witness to make rent.
+
+For the action of creating Facebook and all of the systems that let
+Mark Zuckerberg make a bunker on Hawaii, raise his own cattle, make
+his own beer, and smoke those meats, he doesn't have to see those
+images and things that the content moderators have to see.
+
+He just lays back and watches his bank account number go up and maybe
+does CEO things if he has to.
+
+The human cost is totally discounted from the equation because the
+only limit is what makes the capitalism line go up. The people doing
+the actions almost never see the consequences because the CEO of Uber
+never got his job replaced by an Uber driver. The CEO of Google never
+suffered the algorithm locking him out of his entire digital life for
+good with no way to get it all back. And the people doing the actions
+and making the decisions are not affected by any of the consequences,
+foreseen or unforeseen.
+
+The last time I spoke here, I spoke about a work of satire called
+[Automuse](/videos/2023/ai-hackathon/). Automuse is a tool that uses
+large language models to recreate the normal novel writing process
+using large language models and a good dose of stochastic randomness
+to make some amusing outputs.
+
+When I made it, I really just wanted to throw ink to the canvas to see
+what would happen, then write [a satirical scientific
+paper](https://cdn.xeiaso.net/file/christine-static/video/2023/ai-hackathon/automuse-2.pdf).
+
+<XeblogSlide name="2024/ai-ethics/031" essential />
+
+To my horror, I won the hackathon with a shitpost about the publishing
+industry that was inspired my fear of what could happen if things like
+Automuse were more widespread.
+
+When I gave my talk at the hackathon, I had a five minute slot and
+there was something that I had on my script that I cut out as I was
+speaking.
+
+Not sure why I did, it just felt right at the time.
+
+The part that I left out was inspired by this quote from the
+philosopher SammyClassicSonicFan:
+
+<XeblogSlide name="2024/ai-ethics/033" essential />
+
+When will you **learn**?
+When will you learn that your **actions** have **consequences**?
+
+I made Automuse precisely because I understand how impractical such a
+thing is. The output quality of Automuse will never compare to what a
+human can write no matter what large language model you throw at it.
+
+Okay, yes. I did my research, there's actually a rather large market
+for low quality pleasure reading that something like Automuse could
+fill. There's a surprisingly large number of people that enjoy reading
+formulaic things about good winning out over evil or old people
+reading romance novels to feel the passion of being young again or
+whatever. Not to mention doing something like that as a company would
+leave me an excellent moat because most AI companies want to focus on
+the high quality super output and here I am, the trash vendor going
+in, yeah, I'd basically be invincible. 
+
+But I don't know if I could live with myself if I turned Automuse
+into a product.
+
+When I made Automuse, I knew that this was a potentially high impact
+thing, so I crippled it.
+
+I made it difficult for anyone to use, even me.
+
+I made it rely on a private NPM dependency that is on a server that
+only I have the API token to and it just so happens to be the thing
+that generates random plots. 
+
+I also made it in a way that requires massive human intervention and
+filtering in order to get decent results and every so often I get a
+message from somebody that asks me: 
+
+<BlockQuote>Hey, how can I set up Automuse on my stuff?</BlockQuote>
+
+And they're surprised when I quote them a five figure number to get
+them to go away. And some are even angry and curse me out because a
+person making open source software on the internet would want to be
+paid for their time.
+
+I can't understand that actually.
+
+But above all, the reason why I really don't want to productize it or
+make it available for mass consumption in any form is the problem of
+book spam. Automuse would make the problem of book spam worse.
+
+The Book Spam problem is where people upload nonsense to the Kindle
+store and make boatloads of money doing it. This problem has been
+accelerated by ChatGPT and is getting to the point where Amazon's book
+vending thing actually had to implement rate limits for uploading
+books.
+
+I don't think I could live with myself if I made and released an easy
+to use product that made that problem worse.
+
+It's bad enough that whenever I get around to finishing my novel
+Spellblade (I couldn't find the cover I commissioned, so I just put
+the name on the slide), I'm almost certainly just going to release it
+on itch.io or to my patrons for very cheap. In theory, the Kindle
+store would be the best place for that kind of high signal original
+fiction but I just don't want it to get flooded out in a wave of AI
+generated mushroom foraging books.
+
+I don't think that anyone at OpenAI anticipated that people would use
+ChatGPT to make the book spam problem worse. I have a friend that
+works there and generally from what I've seen, the research side of
+OpenAI really has their head screwed on the right way.
+
+The problem is the capitalism side of OpenAI getting that sweet, sweet
+return to an investment by making a product that nobody else can
+provide and then charging for the output.
+
+<XeblogSlide name="2024/ai-ethics/039" essential />
+
+Above all, the part that really confuses me is why we're automating
+away art and writing instead of like snow blowing or something
+actually useful. There's a subtle part of me that's really concerned
+for the future of our industry and I really think we need to be aware
+of it before it all bites us and like getting rid of everybody that
+has aesthetic knowledge really seems like a bad idea for an industry
+that focuses so much on design.
+
+<XeblogSlide name="2024/ai-ethics/040" essential />
+
+With the Industrial Revolution came factories. Factories allowed us to
+produce objects on scales like never before. Raw materials go in at
+one end, human labor goes in the middle, finished products come out
+the end. This has allowed us to become the kind of species we are
+today. You can circumnavigate the globe in 100 hours while playing a
+contrived game show about travel. You can head to an entirely
+different continent in like what, 12 hours and this has led us to
+discoveries that have made us healthier, lived longer lives and
+overall it's been a boon for the human race.
+
+<XeblogSlide name="2024/ai-ethics/041" essential />
+
+However, this is a modern assembly line for cars. Look what you don't
+see here, people. All of those robot arms and the like represent jobs
+that were done by humans, operating the crane to lower the truck body
+onto the chassis, all of that stuff. With every new model year there's
+more automation at play and less room for human jobs.
+
+Sure, we can make more cars per hour but like every job that's not
+done by a human is another family that can't make rent. It's another
+child that can't grow up and you know actually cure cancer or
+something. And I just feel like it's another way for the ownership
+class to scrape more off the top.
+
+With that in mind, I want you to consider this:
+
+<XeblogSlide name="2024/ai-ethics/042" essential />
+
+These are our factories, the open office environment. Instead of wool
+or wood or water as input, we have user stories, electricity and
+coffee. Many of the companies out there are really just assembly lines
+for code features or Kubernetes configurations. I think the ultimate
+dream of this lies in the idea of the T-shaped developer that I've
+seen many management people talk about when they're trying to
+reorganize their companies.
+
+<XeblogSlide name="2024/ai-ethics/043" essential />
+
+The core idea of the T-shaped developer is that you have really good
+competency in one field and enough broad knowledge in other fields
+that you can basically be put anywhere in a project and be useful.
+This is why you see things like ephemeral teams or decrees from on
+high that thou must write in JavaScript for all things.
+
+And in theory, it makes it a lot easier to move people around and
+place them wherever the company needs in order to make the process
+more adaptable to the circumstances. Not to mention, if everyone's
+just a T-shaped developer, that makes it really easy to get people off
+of the street and into the job in days so you don't have to spend the
+months training them on how you messed up Jenkins this time.
+
+Ever notice that every job opportunity is only for senior roles?
+
+This is why.
+
+Usually by the time you convince companies to give you a title that
+starts with the word "Senior", you've already been molded into a
+T-shaped engineer and you can slot in just about anywhere.
+
+This is our assembly line, created in the fear that if we don't do
+this, the wrong line will trend in the wrong way and investors won't
+give us as much money as freely.
+
+Like, okay, I realize I'm doing some doom and gloom stuff here.
+
+It's probably going to be a while until AI is actually able to replace
+our jobs. Right now, there isn't a magic button that product teams can
+use to "just implement that feature" based on the textual description.
+That's probably a long ways off and it'll probably require a different
+fundamental architecture than attention window transformer models.
+
+But with that in mind, there's a segment of people that already have
+the magic "just implement it" button today:
+
+Artists.
+
+Stable diffusion, mid-journey, and Dall-E 3 have gotten to the point
+where the output is not just good.
+
+It's good enough.
+
+For the vast majority of people, as long as there's nothing obviously
+wrong with the hands, you won't be able to tell an image that is AI
+generated.
+
+However, artists can tell instantly when you have an AI generated
+illustration.
+
+<XeblogSlide name="2024/ai-ethics/049" essential />
+
+Just look at this one I used earlier in this talk. It's so bad. Look
+at the stem on that flower. That is not how stems work. The brush at
+the bottom is just blending into the easel in ways that physically
+separate objects don't work. The flower that the robot is holding is
+inconsistent. It looks like the light is coming from both forward and
+backward at the same time. The antennae are melting into the shoulders
+of the robot.
+
+It's totally passable at first glance.
+
+I'm pretty sure that before I mentioned all those stuff and put all
+the arrows on the slide, you wouldn't have seen any of it. But when
+you start critically analyzing it, it just falls to pieces.
+
+I guess the better question here is why would you want to use an AI
+generated image for something?
+
+One of the big places you want to use an AI image is for the cover
+image on your blog post because we've come to expect that blog posts
+need cover images for some reason.
+
+There's more desire for people to have cheap filler art that meets a
+certain criteria than there are artists willing to work for
+unrealistically low prices with incredibly quick turnaround times. Art
+is everywhere and yet it's commoditized so much that it's worthless in
+a day and age where rent and food prices keep going up.
+
+So we end up with something like this:
+
+<XeblogSlide name="2024/ai-ethics/051" essential />
+
+You get an AI generated of assembly line of robots painting flowers.
+
+This is really why I didn't want to develop Automuse into a company. I
+just fear that action would have too many consequences and my friends
+and fellow artists would suffer. This is why I did so much detailed
+math about how much it would cost per word, how the quality would be
+seen in the market, and what impact such a technology would have if it
+churned out hundreds of books per hour.
+
+Outside of the systems we live in, yeah, this AI stuff is great. It's
+fantastic tech that allows us to do any number of things we couldn't
+do before.
+
+But inside the systems we live in, I can't say the help, let's see
+this is yet another way that human labor is being displaced without a
+good replacement.
+
+And we wonder why we can't call ourselves engineers in Ontario. Do we
+really engineer anything or are we just making the line go up?
+
+When will we learn that our actions have consequences?
+
+Until then I guess we need to prepare for unforeseen consequences.
+
+Thank you all for watching this and I hope it gives you some things to
+think about. I hope I didn't break too many taboos about the industry
+in the process but who am I kidding? I just broke all of them.
+
+<XeblogSlide name="2024/ai-ethics/061" essential />
+
+Thanks to everyone on this list for inspiring me to take action and
+pushing towards the presentation I gave tonight. Special thanks to
+Mystes and Layl for really grinding hard into this, ripping in half
+and telling me where I'm full of shit. Extra special thanks to my
+husband for recording this for me and thank you for watching.
+
+<XeblogSlide name="2024/ai-ethics/062" essential />
+
+I recognize that this is like really a heavy talk. It'll probably take
+you some time to surface some good questions about it but if you
+happen to have them right now please feel free to ask. I will be happy
+to answer but if it takes you a while to come up with it just email
+[unforeseenconsequences@xeserv.us](mailto:unforeseenconsequences@xeserv.us).
+It'll get to my inbox and I promise you I will reply. Have a good
+evening and does anyone have any questions?
+
+## Q&A
+
+<BlockQuote>What was the sigil you displayed at the beginning of your
+talk?</BlockQuote>
+
+That was the sigil of Baphomet, one of the names for Satan as
+celebrated in Satanism.
+
+<BlockQuote>Do you see a future where AI technology can equitably help
+humanity thrive?</BlockQuote>
+
+I do see a future where it can be used to benefit us all. The problem
+is the intersection of what could be, what is, and the tools in the
+process where you get the real interesting stuff and there's probably
+at least five good sci-fi novels you could write about this.
+
+You could write a really compelling one about just what happened with
+OpenAI and especially what's happened with the e/acc people. I wrote
+the plot outline for a bad science fiction novel about the madness
+that is e/acc.
+
+<BlockQuote>What do you think we should do about this
+problem?</BlockQuote>
+
+Just be aware that your actions don't exist in a vacuum.
+
+If you build something that could replace jobs, then you need to be
+cognizant of the people that you're going to make unable to pay rent
+because if you make something that replaces knowledge work labor, you
+price them out of being able to eat. When people aren't able to afford
+to eat, they especially can't afford to retrain themselves to work in
+another industry that hasn't been taken over by infinite cheap labor.
+
+<BlockQuote>
+First, thank you very much for the presentation. I'm not debating
+here. I'm very open for these type of discussions, but you show the
+industrial revolution and the next slide was all the people who were
+impoverished. I don't see it as a linear change though, so industrial
+revolution and all those workers working in those situations by itself
+was not a necessary, better situation than those workers in those
+dangerous situations being replaced by robots on the other side. As we
+move on, we never had any occasions that we needed to get rid of a
+bunch of populations because we didn't have jobs for them, but we
+eventually came up with solutions, new jobs, some sort of a solution.
+So the main question is how do you see that change exactly from
+industrial revolution to industrial revolution?
+</BlockQuote>
+
+At some level, this stuff is going to happen regardless, and if it's
+going to happen, there should be some societal support mechanism, like
+universal basic income (which no matter what study is made to prove it
+doesn't work, actually does work) to replace the income that we're
+losing to machines taking over jobs that were previously done by
+humans. Something like universal basic income would probably help a
+lot here, but I don't know.
+
+I don't have any solutions.
+
+I'm more trying to blow the whistle that there's a problem before it
+gets bad enough that things become irreparable.
+
+<BlockQuote>
+All right, I'd like to commend you first on your courage to do this.
+It's obviously difficult to come into a room and say the opposite. At
+the same time, I'll give you the opposite and the pit that was out of
+the pit. You know, one of the things that, to act your way a little
+bit, automation is known to increase the standard of living. So we
+have all great things we can do because of automation. So AI is
+automation's superpower. Now to say there's no consequences of AI
+being abused, there definitely will be, but looking at the greater
+impact of it all, and I think that's the reason we're at all here, is
+because we know that they're [unintelligible], but truly down, we know
+that bringing abundance to the world is far greater and needs to be
+substantial in that event.
+</BlockQuote>
+
+I mean, yes, congratulations. You actually got the point of the talk.
+The point of the talk is to get you to think critically about what
+these tools are, what's going on, and what the benefits could be as
+well as what the downsides could be. I just don't know if our current
+system of distributing wealth and resources is really going to be able
+to adapt to that in time without some major cataclysm forcing the
+measure.
+
+<BlockQuote>
+I just wanted to ask you.
+You said you're not sure if this system of wealth distribution is the
+right system that should be, you know, that should have this kind of
+AI in place for moving forward. So what kind of system do you think is
+more practical for that?
+</BlockQuote>
+
+
+So I think one of the more ideal outcomes would be if people that
+whose work is in the training set of ChatGPT end up getting royalties
+from OpenAI for their data being used to make unimaginable amounts of
+money. 
+
+Like, I have been transformed into ChatGPT. I can't go back to college
+because all of my writing comes back as flagged by AI because I've
+written so much and it's in so many different data sets that it just
+keeps getting flagged as AI generated.
+
+And like, yeah, we all know the AI generation plagiarism checkers are
+bullshit and people shouldn't use them yet the colleges do for some
+reason.
+
+So like, what can you do?
+
+Really the best possible way to get equity here would be to basically
+make it so that if you research AI with copyrighted materials, that's
+fine. But when it comes to putting the money generator in the mix,
+hold up, maybe you actually need to pay royalties because those blog
+posts and the like, they don't just come out of nowhere for free.
+Like, you know, you have to train to be an artist. Like, this photo of
+this log that I got off of Pexels, a public domain image stock image
+sit, you have to have some like skill in photography to know the rule
+of thirds and you know, like be able to configure your camera to
+capture the exact moment of this log falling like this. There are
+actual skills that don't look like skills that still require a lot of
+time, energy, and frankly, remuneration to compensate for.
+
+I think one of the best ways would be to make the concept of an open
+source model that is only just the weights without any of the training
+data or any of the training methodology involved an unterm.
+
+Like, that is not open source, that is open access. Open source would
+be providing all of the code you used for training, all of the data
+that you used for training, and a summary of where you got the data
+from.
+
+That would be closer to what open source actually is and anything
+close to the definition of open source back when the GPL was the
+dominant definition of open source.
+
+Generally open source AI stuff is really cool. There's a lot of stuff
+you can do with it. I'm just really concerned about the intersection
+between that and, you know, the capitalism system that we're all
+forced to live under.
+
+<BlockQuote>How do we combat abuse or data that isn't labeled as AI
+generated? Are we in the death of the Information Age because of
+this?</BlockQuote>
+
+Oh. I have no idea.
+
+On my blog I've been tracking AI-generated content farms and the tools
+that they use to do it because it's kind of horrifying how easy it is
+to get ChatGPT to hallucinate something about how to make soap with
+radishes.
+
+By the way, don't do that. It'll kill you. It will actually kill you
+dead. Do not do that. No, I'm actually serious here.
+
+The worst part is how this intersects with content farms, those random
+websites you find on Google with negative amounts of information and
+ads everywhere. I've already seen ChatGPT make that problem worse.
+
+Hell, there was this SEO heist a while ago where this person basically
+fed Google Trends results into ChatGPT, SEO heisted by rewriting their
+competitor's website entirely from scratch and stole all their traffic
+and made a whole bunch of ad money contributing nothing to society.
+
+I don't really know how this is all going to work out, but I really
+hope we're not in the death of the information age because that's what
+pays my bills. But if things keep going the way they're going, I can't
+help but agree that we may be on the decline of everything getting
+drowned in pages of trivia and celebrity bullshit.
+
+<BlockQuote>
+Thanks for talking. You see that, you know, that the technology
+naturally democratizes people's access to information. Won't more
+access to information make things better for everyone?
+</BlockQuote>
+
+I'm very glad that inference is getting so much cheaper, like, hell,
+this MacBook right here (I would lift it up, but it's hooked up via
+USB and I don't want to disconnect it). It can run Mixtral [a model
+considered roughly equivalent to GPT-3.5, the model used for ChatGPT]
+and it's just a random MacBook off the shelf.
+Looking back, I kind of regret not getting as much RAM because I
+didn't think I would be doing all this, but, you know, c'est la vie
+[Canadian idiom meaning "that's life"].
+
+I have been thinking about doing an experiment of using Q-LoRA to
+train the ultimate recommendation engine based off of posts that I've
+either commented on or upvoted on Hacker News and using that as input
+with the classification of like or dislike. And because I downvote or
+flag a fair number of posts there, I can use that to create a somewhat
+rough aggregate of things that I would be interested in. And that
+would be something that I see could be a really interesting
+application of all this.
+
+Like I said, though, the open source AI stuff is really cool, but the
+intersection between that and the system and the powers that be today,
+I don't know how that's going to happen and I'm just afraid that it
+won't end up good for all of us.
+
+But thank you for all the questions. I am really happy that I was able
+to get you to be engaged with this topic and really start thinking
+because I don't know what's going to happen either.
+
+Thank you so much. Good night all! Drive home safely! The roads are
+wild.
+
+
+
+
