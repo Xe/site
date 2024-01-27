@@ -2,8 +2,6 @@ export const title = "Stream VODs";
 export const layout = "base.njk";
 
 export default ({ search }, { date }) => {
-  const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
-
   return (
     <>
       <h1 className="text-3xl mb-4">{title}</h1>
@@ -30,7 +28,7 @@ export default ({ search }, { date }) => {
       <ul class="list-disc ml-4 mb-4">
         {search.pages("layout=vod.njk", "order date=desc").map((post) => (
           <li>
-            <time datetime={date(post.data.date)}>{post.data.date.toLocaleDateString("en-US", dateOptions)}</time> -{" "}
+            <time datetime={date(post.data.date)}>{date(post.data.date, "DATE_US")}</time> -{" "}
             <a href={post.data.url}>
               {post.data.title}
             </a>
