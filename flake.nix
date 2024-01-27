@@ -192,6 +192,9 @@
             zig
             nodejs
 
+            jq
+            jo
+
             # tools
             ispell
             pandoc

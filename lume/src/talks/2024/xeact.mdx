@@ -1,0 +1,663 @@
+---
+title: "Xeact: The femtoframework you've been waiting for"
+date: 2024-01-25
+tags:
+  - js
+  - react
+series: xeact
+image: talks/2024/xeact/001
+---
+
+## Warning to readers
+
+This talk is about [a shitpost](https://github.com/Xe/Xeact) that got way out of hand. Out of respect for the material, this talk is also a shitpost and a work of satire. In order to help make this talk teach you things, I have included technical deep dives into aspects of how and why Xeact works. I hope you enjoy it and you can learn...something useful.
+
+Please don't repeat any of the absurd acts mentioned here in production. I am not responsible for any damage caused by this talk. You are the one copying and pasting my code samples into production.
+
+Otherwise, kick back, grab a beverage, and enjoy the ride.
+
+## Video
+
+<XeblogVideo path="talks/2024/xeact" />
+
+In case the video from XeDN doesn't load, try the [YouTube
+version](https://youtu.be/povkpv-mRKw). Please [let me
+know](/contact/) with the contents of
+[`cdn.xeiaso.net/cgi-cdn/wtf`](https://cdn.xeiaso.net/cgi-cdn/wtf) so
+I can diagnose the problem. Hopefully it's not boltdb acting up again.
+
+## Transcript
+
+<XeblogSlide name="2024/xeact/001" essential />
+
+Hi, I'm Xe. I'm the Philosopher-in-Chief at Techaro. You might know me
+from my blog or other hit talks I've given like ["AI, the not-so-good
+parts"](/talks/2024/prepare-unforeseen-consequences/), or ["Reaching the Unix philosophy's logical conclusion with WebAssembly"](/talks/unix-philosophy-logical-extreme-wasm/), but today
+I'm not going to talk about any of my employers.
+
+Today I'm talking about Xeact. It's the femtoframework that your
+editor has been waiting for. As I mentioned, Xeact is a
+femtoframework. It's designed to help you make your websites load
+faster, work with the script tag, and overall helps you live your life
+with love and light. It is the perfect basis for your projects and
+should scale infinitely.
+
+Asterisk.
+
+<XeblogSlide name="2024/xeact/003" essential />
+
+React is a framework. It gives you all the goodness of working on the
+front end, but sometimes it's a bit too big for what you need. So you
+reach for Preact. Preact has a lot of the benefits of React, but it's
+smaller, which makes it more adaptable and easier to understand. Xeact
+is even smaller. It's a femtoframework, which takes ideas from both
+React and Preact to get you the smallest possible bundle that can do
+what you need.
+
+Today I'm going to cover the foundations of Xeact, how it works, what
+I learned in the process, and then we're going to look into the future
+with the help of Techaro.
+
+So our industry is based heavily on design. Design is the heart of our
+products and it's what our users crave. When I started working on
+Xeact, I just started working right on the design first and foremost.
+Here are the core principles that I used for designing Xeact.
+
+I wanted the source code to be understandable because let's face it,
+when you're debugging things, knowing what's going on means you know
+what's going on. Computer programming is complicated. There's a lot of
+indirection and access layers and everything that just makes it
+difficult to understand. I want the source code of Xeact to fit inside
+your mental model so that you don't have to think about it. It's
+beautiful.
+
+Zero compile steps. Two steps is too many. If you have more than a
+script tag, you're doing it wrong. That's my hope at least. Less time
+spending deploying your product, more time spending disrupting the
+burrito delivery industry or whatever.
+
+I want the source code to fit on a t-shirt because open source
+maintainer burnout is real and one of the main reasons why it happens
+is because people don't get paid adequately for their work. This way,
+by having the source code available on the t-shirt, you open up
+merchandising possibilities that help people make up for the lost
+income spent working on open source.
+
+And the entire thing GZipped should fit inside 500 bytes. Egress
+bandwidth? Expensive. One gigabyte through managed NAT gateway? Seven
+U.S. pennies. That adds up. The less amount of money you spend per
+user, the more money you make per user. Xeact saves you time, grief,
+your money, and saves your company from bankruptcy.
+
+So, in the beginning, it started out with a function like this.
+
+```javascript
+const mkNode = (name, data = {}, children = []) => {
+  let result = Object.assign(document.createElement(name), data);
+  result.append(...children);
+  return result;
+};
+```
+
+In the beginning, the make node function was created. This has made a
+lot of people very happy and has been widely regarded as a good move.
+In this young state, this function is small, nimble, adaptable, and
+with it came syntax that only a Haskeller could love. But that's okay
+because I love Haskell.
+
+```javascript
+const blockQuote = (text) =>
+  mkNode(
+    "blockquote",
+    {
+      class: "p-4 border-l-4 border-gray-400 bg-gray-100 text-lg font-semibold",
+    },
+    [
+      mkNode(
+        "p",
+        {
+          class: "text-lg font-semibold",
+        },
+        [text]
+      ),
+    ]
+  );
+```
+
+HTML is just a tree, right? Why should our code hide this? You can
+kind of see it, right? That kind of resembles how a tree of elements
+is. And if you're in the back and you can't see it, I just want you to
+imagine it because it's about as perfect as you think.
+
+With all this in mind, I had to rename this function, this make node
+function, because that's like, what, six characters and a shift key?
+You're going to be typing that all the time. It needs to be short, it
+needs to be rememberable, and most importantly,
+
+It needs to be representative of everything because this is
+effectively the one function that gives you anything. It's the
+universal source of meaning and meaninglessness in your program.
+
+<XeblogSlide name="2024/xeact/017" essential />
+
+With all this in mind, I had one idea. I looked back into my life, I
+thought about everything, and one name stood out. This letter came to
+me in a divine vision with eight fantastic sides and eight awesome
+angles. This letter is the letter H, and with it came a divine vision
+that I will repeat now.
+
+One day on the road to Nazareth, Jesus Christ met with a group of
+theologians. The theologians realized who he was and stood with him.
+Jesus looked upon them in confusion and said unto them, "Who do you
+say that I am?"
+
+All at once they replied, "You are the astrological manifestation of
+the ground of our being, the kerygma of which we find the ultimate
+meaning in our interpersonal relationships. You are the source of love
+and life in the world. The foundation, the savior, the alpha, the
+omega, the beginning, the end, all and nothing simultaneously, and we
+love you for it all."
+
+Upon hearing this, Jesus was taken back a bit. This was a bit much for
+him, and he was confused. After some time, he replied, "What the fuck
+are you talking about"? Panic sprung up among the theologians. They
+had just confused their savior. They had sullied the thoughts of their
+messiah. The silence deafened the field.
+
+After some time, one of the theologians managed to speak up.
+And they spoke. "h".
+
+Jesus was enlightened.
+
+```javascript
+const blockQuote = (text) =>
+  h(
+    "blockquote",
+    {
+      class: "p-4 border-l-4 border-gray-400 bg-gray-100 text-lg font-semibold",
+    },
+    [
+      h(
+        "p",
+        {
+          class: "text-lg font-semibold",
+        },
+        [text]
+      ),
+    ]
+  );
+```
+
+This is the name of the function. Now let me paste that code from
+earlier, but with the proper name. It just takes the name of a tag,
+the list of attributes to apply, and the list of children. And that's
+it. That's the entire thing. That's the entire femto framework.
+Everything else is just a bunch of helpers to make things more
+convenient, like plain text nodes or removing all the children or
+grabbing specific things out of the tree or debouncing or onload
+handlers. But, you know, that's just standard JavaScript stuff that I
+just remade because you can't stop me.
+
+So, this made everything a lot more easy because I could just assemble
+the nodes in the way that I understood, which, because I have back end
+brain rot syndrome, I just need to do in functions.
+
+And this made Xeact a success.
+
+With this shitpost, I was finally able to understand how to make
+frontend UI stuff work. I finally understood how to get an HTTP fetch,
+parse the JSON, crap out a bunch of nodes, and then throw it on the
+page for people to understand what's going on. And then this basically
+unblocked everything else so that I could use everything else
+normally.
+
+However, in the process, there was one small problem. Semantic
+satiation. If H is supposed to mean everything and it's everywhere, it
+loses its meaning. This cannot stand.
+
+So I ended up creating a library to help with it and I made the
+femtomixin Xeact HTML. If you look over the code of a bunch of all the
+popular websites, you'll see that they use like 15 HTML tags. And even
+then, you can put them into three categories, like stuff that usually
+takes attributes and children, stuff that only takes attributes or
+stuff that stands bu itself, like the horizontal rule tag.
+
+```javascript
+const blockQuote = (text) =>
+  blockquote(
+    {
+      class: "p-4 border-l-4 border-gray-400 bg-gray-100 text-lg font-semibold",
+    },
+    [p(text)]
+  );
+```
+
+With this knowledge, you can break this down into a list of things, and then you
+can create functions for all of them. So here's that same block quote
+function, but with you know the function blockquote to create a
+blockquote. Wow, so easy! And this is where things really started
+making sense because it was a lot easier for me to look at this token
+soup and then imagine what it would look like. Press f5. It shows up. I
+feel unstoppable.
+
+It was just a continuous series of golden moments that made me a real
+full stack developer: kernel to front end.
+
+```javascript
+console.log(`import { h, t } from "./xeact.js";`);
+console.log(`const $tl = (kind) => (text, attrs = {}, children = []) => {
+    children.unshift(t(text));
+    return h(kind, attrs, children);
+};`);
+
+[
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "p",
+  "b",
+  "i",
+  "u",
+  "dd",
+  "dt",
+  "del",
+  "sub",
+  "sup",
+  "strong",
+  "small",
+].forEach((tag) => console.log(`export const ${tag} = $tl("${tag}");`));
+```
+
+So in order to make this and not lose whatever shred of sanity I had left, I
+made a code generator. This is a JavaScript program that prints JavaScript
+code to standard output so that you can include it in your JavaScript code.
+It's kind of beautiful. Again, if you're in the back, you can't see it because I'm
+very bad at formatting code, just imagine like a bunch of things in a list and then
+some small forEach at the bottom with an arrow function to actually generate the
+code. It's a lot more beautiful in practice than it looks.
+
+At this point, I feel like I need to clarify something very important. I'll circle back to Xeact, but just trust me where I'm going with this. I have a plan.
+
+I'm not an Arch Linux user (by the way), but do use something else that continues to be a source of wisdom.
+
+I use Emacs rigged to act like Vim. One of the main things about
+Emacs that continues to give me inspiration is extensibility in its
+own little language called Emacs Lisp.
+
+If you've never used Lisp before, it is a very unique kind of violence
+where lists are the core data type of everything where everything is
+your code and your data. Yes, you can represent data and code in the
+same way. And this allows you to create new code on the fly with while
+making it impossible to make something that won't parse.
+
+```lisp
+ELISP> (+ 3 4)
+7
+```
+
+So, by default, when you make a list in Lisp, it's considered a code
+list. This is something that just immediately gets evaluated. Like,
+for example, adding the numbers 3 and 4 and getting 7.
+
+```lisp
+ELISP> '(+ 3 4)
+(+ 3 4)
+```
+
+This is nice and all, but sometimes you need to make data. So they
+have this concept of quoting a list to get the data associated with
+it. This is so common that it's considered one of the core functions
+in Lisp. I think, like, McCarthy has a paper that's, like, 11
+functions that you can use to bootstrap the entire Turing complete
+world. It's quite a paper, but it is very old and has some 1970s-isms
+in it.
+
+But if you notice, you either get all code or all data. Sometimes you
+need to go halfsies.
+
+That's why they have this magic thing called quasi-quoting. When
+you're assembling complicated things, you will need to mix code and
+data together. Quasi-quoting effectively lets you mix the two. Things
+normally get quoted, as in you normally have data, but then you can
+use a comma to unquote or inject the code value into it.
+
+```lisp
+ELISP> (let ((user-name "Xe")
+             (user-email "xeact@xeserv.us"))
+         (json-serialize
+            `((user . ,user-name)
+              (email . ,user-email))))
+"{\"user\":\"Xe\",\"email\":\"xeact@xeserv.us\"}"
+```
+
+So for example, for the sake of argument, I have this associative
+list, which is probably known as a hash map in any sensible language.
+And I have some variables with let for the user name and user email.
+And I build an associative array and I get it back. And why would you
+use this? JSON. That's why you would use it. You mix literal names
+with variable code.
+
+So if quasi-quoting lets you mix code and data to tree-like
+structures, and we mostly deal with web applications that deal with
+elements in a tree, what else could we do with this?
+
+HTML. HTML is a tree and we often need to mix literal data and
+variable data. So what if we put this all, what if we add this all up
+and put it together?
+
+It turns out there's prior art here. I'm not the first person to come
+up with the idea of JSX, but JSX is a compiler for JavaScript that
+lets you mix HTML literal code and variable JavaScript data, and it
+will just transparently compile to all the right JavaScript things
+under the hood. It's really nice because it's impossible to create
+invalid HTML syntax trees. Well, normally impossible. Otherwise you
+found a bug in the JSX compiler, but that's a different story.
+
+```javascript
+export const jsx = (tag, data) => {
+  let children = data.children;
+  delete data.children;
+  const result = h(tag, data, children);
+  result.classList.value = result.class;
+  return result;
+};
+```
+
+So I experimented and in the process, I decided to see what would
+happen if I broke that core tenant of zero compile steps. The
+efficiency gains that you do this are phenomenal because code and data
+mixed together is just such a lovely pattern that I thought was a
+waste of time until I started doing it. I was wrong initially because
+I thought the extra step would just be another layer of annoyance, but
+it worked out pretty great.
+
+And yeah, what is this? Didn't you just make a big show about not
+needing a compile step?
+
+I never said you need to use JSX with this. It turns out that my H
+function is depressingly similar to react createElement function. So
+with this five line monster, I'm able to adapt it into the create
+element into the JSX signature that it wants. And you know, you're off
+to the races. You, if you want, you activate the JSX runtime, you
+write your backwards PHP all you want, and you're good to go. Instant
+deployment to any cloud, including no cloud. And like I said, don't
+want it. Don't turn it on. Do you want it? Do turn it on. It's great.
+
+Also, if you're deploying with Nix, the idiomatic Xeact deployment
+process, by the way, you should be able to just have Nix handle it for
+you, and then you don't even have to think about thinking about it.
+It's really great.
+
+It was really easy to get a basic Xeact JSX runtime created because of
+that similar function signature, but there was one key thing that it
+missed. Components.
+
+However, components in React are just functions, asterisk. All you
+have to do is detect if the HTML tag name argument is a function and
+then call it. So I did just that.
+
+```javascript
+const h = (name, data = {}, children = []) => {
+  const result =
+    typeof name == "function"
+      ? name(data)
+      : Object.assign(document.createElement(name), data);
+  if (!Array.isArray(children)) {
+    children = [children];
+  }
+  result.append(...children);
+  return result;
+};
+```
+
+And this is the current `h` function in the open source repo. This
+allowed me to have, this allowed with everything else, let me have
+modern syntax, compiler handrails, and a minimal JavaScript workflow
+at the same time. And not to mention, I had compatibility with
+React...
+
+...asterisk.
+
+At this point, I had a very nice situation going on. I'd reached
+version 0.69.71. It was all in a private repo, internal to work. And
+the world of front end that had eluded me for so long was finally
+within my grasp and I was able to understand what the JavaScript runes
+did and bend them to my chaotic-good will.
+
+In a moment, I knew where this place could be, this new power could be
+used for good. I saw a place where it could fit in, and I saw a
+feature gap and jumped to fill it.
+
+It was for an internal tool, as one does, called DAB, data about
+business. It was effectively a sidebar for the support UI, so the
+support people didn't have to open as many tabs when they were trying
+to debug what was going on. It was designed with the kind of UI that
+only a terminal hacker could love, yet it was ruthlessly effective
+enough that when I deployed it in testing, and then realized that it
+showed up for the support people by default, because who would think
+about having something that doesn't show up by default for support,
+they were like, this is amazing, this has already cut down our ticket
+response time in half, so I knew I was onto something, so I just kept
+going.
+
+It was a success thanks to Xeact.
+
+It was then that I realized that the world needs this power of Xeact
+for their single page applications. Sometimes you only need to view
+some stuff that requires poking an API, and Xeact fits that goal,
+hackery tools that display simple information.
+
+Xeact remains open source software to this day, where it is used by
+thousands of milli-developers.
+
+However, when I got to a certain scale, I realized that I made another
+mistake here. I was missing something very important that made it
+impossible to scale beyond those simple hackery tools to view web
+forms. I was missing the fact that React components are monads.
+
+This isn't gonna be a monad tutorial. There's no burritos here. But
+the small reason, the reason why I was missing this is because of a
+fifth design principle that is a secret and will now be revealed.
+
+The separation of Church-Turing and state. The idea is that the state
+was supposed to be external to your Xeact components. And you know,
+the Xeact components were just supposed to render HTML notes. And this
+sounds insane, but it does work for very small tools like that. It
+just doesn't scale to the levels that I wanted to do something more
+complicated, like a form for filling out and creating a server in one
+of my other projects.
+
+I kind of regret this in the long run. So I remade it. I remade things
+to make it better. React components are monads because they have
+effects and they can leech into each other. And there's a whole bunch
+of math that you can talk about here. But the important thing is that
+they're just monads. The important part is that what I had was not
+monads. I needed to have effects and ways to handle state.
+
+So one of the main ways that you handle state in React is with this
+thing called useState. It's effectively a container for data. You put
+the data in on one end, it triggers re-renders on the other, and you
+know, it just works sorta. The only thing is that you need to
+implement the hook system and I'm crazy, but I'm not crazy enough to
+re-implement React's hook system in a weekend.
+
+```javascript
+const useState = (x = undefined) => [() => x, (y) => (x = y)];
+```
+
+So I made the Xeact version of useState, which is this golfed
+monstrosity. It is a mutable variable that returns a getter and a
+setter. This is effectively a burrito around the data. It lets you
+change what value X points to so that you can build up state with a
+text area and then grab it out when you're submitting it to a fetch
+call. It doesn't trigger re-renders because, again, I didn't want to
+reinvent React hooks for a very good reason, but the surprising part
+is that this works.
+
+Oh, by the way, fun cursed JavaScript fact for you. The reason that
+this works is because function arguments are mutable references. You
+can redefine what function arguments are in a function, and that just
+works. Try it in production with some people that are more junior and
+newer to JavaScript. You'll never expect what happens next.
+
+At this point, I thought Xeact was basically perfect. It had all the
+features I want, none of the features I didn't, and here's just where
+I decided to stop working on it, not because I lost interest or anything.
+Xeact made my front end tasks as hard as I wanted to make them. I
+could go from thought to photon in seconds and there was no madness
+unless I felt like it.
+
+Grug brain make you want dot key work? I added TypeScript types
+everywhere, so the dot key worked. Absolutely beautiful. Full
+TypeScript for the entire femtoframework.
+
+It has mature and robust integrations with tools like Nix to automate
+your production deployments so you can get back to disrupting the
+burrito drone delivery industry. Don't think about minutiae. Go back
+to innovation. Xeact is the femtoframework that developers love. Don't
+believe us? See the testimonials for yourself.
+
+<XeblogSlide name="2024/xeact/067" essential />
+
+> Our engineering team was blown away. This is versatile, powerful, and
+> constantly updated. It's everything we've wanted and more.
+
+<XeblogSlide name="2024/xeact/068" essential />
+
+> This software's cloud backend has only been hacked twice so far this
+> year.
+
+<XeblogSlide name="2024/xeact/069" essential />
+
+> It shouldn't crash until the heat death of the universe.
+
+<XeblogSlide name="2024/xeact/070" essential />
+
+> Oh God, where are my hands? Why have you taken my hands away from me?
+
+Overall, you can see that Xeact is an obvious choice for your front
+end projects. Small, fast, and...small. Xeact scales to your needs or
+your money back, and you didn't pay me.
+
+However, Xeact only focuses on the front end. There's a whole other
+half of the stack to look at and a whole other half of that stack to
+look at. What would Xeact for the backend look like?
+
+<XeblogPicture path="blog/2023/incredible-xeact-journey/our-incredible-journey" />
+
+We think there's room for the Xeact way to be taken to the backend
+where it belongs. That's right. At the end of October last year,
+Techaro acquired Xeact. All the existing cloud services were shut down
+and refunds were issued to all affected customers with only 24 hours
+of notice. However, in the process, Xeact has become more and more
+popular.
+
+<XeblogSlide name="2024/xeact/074" essential />
+
+In the process, we have a unique opportunity to ideate some more
+synergy and really disrupt everything. We're going to revolutionize
+the concept of disruption. With Techaro, we are going to make the
+Xeact development flow for the backend and the front end at the same
+time using PILK, or Putting Individual Lookups in Kubernetes. This
+will allow you to make infinitely scalable backend services as easily
+as you can make infinitely scalable front end services.
+
+Legacy frameworks like Next.js make it easy to mix front-end and
+back-end code, but they have limitations when it comes to scaling it.
+What happens when your search route uses too many resources and blocks
+your credit card processing route and you just turned off the money
+generator and you can't generate money anymore?
+
+We can't stand for this. Why do we accept this as an industry?
+
+<XeblogSlide name="2024/xeact/076" essential />
+
+So we are leveraging the power of PILK to automagically put every
+server function into its own auto-scaling group with Kubernetes with
+its own URL that changes it every single time. Every deploy, so your
+backend is also unscrapable. Take that, ArchiveTeam!
+
+It's infinitely scalable. Everything has its own execution context and
+your cloud provider will love you. This makes PILK a win-win-win
+scenario for everyone involved. Your front-end logic? Easy. Your
+backend logic? Easy. Your SREs, they'll have nothing to do and they'll
+be very bored.
+
+Maybe even so bored, they'll invent a sarcastic JavaScript framework
+with a bunch of bad jokes.
+
+And this allows the Xeact to advance you towards infinity. Looking
+back, we saved developers from the despair of Webpack with the power
+of the script tag. We covered the amazing might of naming and how
+choosing good names makes the Xeact experience what developers crave.
+We covered JSX, quasi-quoting, DAB, and the useState monad. And then
+finally, we looked towards the future with the sheer glory of PILK.
+
+It's obvious.
+
+Xeact is the perfect choice for your server applications. If you want
+it to happen on the front-end, use Xeact. If you want it to happen on
+the backend tomorrow, use PILK.
+
+<XeblogSlide name="2024/xeact/081" essential />
+
+By the way, a little disclaimer, the entire preceding talk was a work
+of satire. All characters, companies, or events referenced in this
+talk are products of my imagination and thus fictional. Any synergy
+with observable realities is purely coincidental. I was not speaking
+for any of my employers' past, present, or future, and ha-ha, gottem.
+
+<XeblogSlide name="2024/xeact/082" essential />
+
+Thanks for having me tonight, and I hope you learned some-
+
+(thunderous applause)
+
+Thanks for having me tonight. I hope you learned...something. By the
+way, when I was writing this talk, I put at least one joke about the
+industry in it. Extra credit if you can tell me what it was. If I
+don't get to your questions, email xeact@xeserv.us, and I promise I will reply.
+Otherwise, any questions?
+
+## Q&A
+
+<BlockQuote>
+  If having small frameworks means you eventually build up all the code that the
+  framework has anyways, do you see that happening with Xeact?
+</BlockQuote>
+
+Well, yeah. That's going to happen no matter what you do. That's just
+kind of how this industry is. And the best way to handle that is to,
+like, just find something that you can be at peace with and then cry.
+Or laugh. I think laughing is more healthy than crying. I think that's
+what my therapist said. Not entirely sure. It was a while ago.
+
+Any more questions?
+
+<BlockQuote>How does it handle "rage clicks"?</BlockQuote>
+
+<XeblogConv name="Mara" mood="hacker">
+  Context: one of the talks talked about how you measure "rage clicks", or
+  repeated clicks to get the UI to do something when things are slow by
+  frustrated users.
+</XeblogConv>
+
+It handles rage clicks thanks to the debounce timer built into the
+Xeact standard library. And if you forget to debounce it, then you
+have problems. So don't forget.
+
+<BlockQuote>Where is the documentation?</BlockQuote>
+
+The documentation for Xeact is at
+[github.com/Xe/Xeact](https://github.com/Xe/Xeact). And if you are in
+doubt, read the source code. Because the source code is designed to be
+readable. Asterisk.
+
+<BlockQuote>Did you actually make the Xeact source code T-shirt?</BlockQuote>
+
+Oh, the T-shirt, right? I was actually going to get a T-shirt as a
+bit. But I thought about that idea after the logistics wouldn't work
+out.
