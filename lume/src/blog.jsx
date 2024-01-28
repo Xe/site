@@ -1,7 +1,7 @@
 export const title = "Blog Articles";
 export const layout = "base.njk";
 
-export default ({ search }) => {
+export default ({ search }, { date }) => {
   const dateOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
 
   return (
@@ -19,7 +19,7 @@ export default ({ search }) => {
           const url = post.data.redirect_to ? post.data.redirect_to : post.data.url;
           return (
           <li>
-            <span className="font-mono">{post.data.date.toLocaleDateString("en-US", dateOptions)}</span> -{" "}
+            <time datetime={date(post.data.date)} className="font-mono">{post.data.date.toLocaleDateString("en-US", dateOptions)}</time> -{" "}
             <a href={url}>{post.data.title}</a>
           </li>
         );

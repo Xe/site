@@ -431,9 +431,7 @@ const seriesPageTemplateStr = `export const title = "{{.Series}}";
 export const layout = "base.njk";
 export const date = "2012-01-01";
 
-export default ({ search }) => {
-  const dateOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
-
+export default ({ search }, { date }) => {
   return (
     <div>
       <h1 className="text-3xl mb-4">{title}</h1>
@@ -446,7 +444,7 @@ export default ({ search }) => {
           const url = post.data.redirect_to ? post.data.redirect_to : post.data.url;
           return (
           <li>
-            <span className="font-mono">{post.data.date.toLocaleDateString("en-US", dateOptions)}</span> -{" "}
+            <time datetime={date(post.data.date)} className="font-mono">{date(post.data.date, "DATE_US")}</time> -{" "}
             <a href={url}>{post.data.title}</a>
           </li>
         );

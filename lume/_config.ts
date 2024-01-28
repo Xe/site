@@ -44,7 +44,11 @@ site.data("getYear", () => {
 
 site.use(jsx_preact());
 site.use(attributes());
-site.use(date());
+site.use(date({
+  formats: {
+    "DATE_US": "MM/dd/yyyy",
+  },
+}));
 site.use(esbuild({ esm: true }));
 site.use(feed({
   output: ["/blog.rss", "/blog.json"],

@@ -18,7 +18,7 @@ date: 2012-12-21
 <h2 class="text-2xl mb-4">Recent Articles</h2>
 <ul class="list-disc ml-4 mb-4">
     {% for post in search.pages("type=blog", "order date=desc", 5) %}
-        <li>{{post.data.date | date("DATE")}} - <a href="{{post.data.url}}">{{post.data.title}}</a>
+        <li><time datetime={{post.data.date | date("DATE")}}>{{post.data.date | date("DATE")}}</time> - <a href="{{post.data.url}}">{{post.data.title}}</a>
         </li>
     {% endfor %}
 </ul>
