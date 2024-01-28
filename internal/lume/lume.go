@@ -87,9 +87,14 @@ func (f *FS) Close() error {
 }
 
 func (f *FS) Open(name string) (fs.File, error) {
+	fin, err := f.fs.Open(name)
+	if err != nil {
+		return nil, err
+	}
+
 	opens.Add(name, 1)
 
-	return f.fs.Open(name)
+	return fin, nil
 }
 
 type Options struct {
