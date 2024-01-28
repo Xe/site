@@ -11,6 +11,8 @@ import (
 	"io/fs"
 	"log"
 	"log/slog"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -279,6 +281,51 @@ func (f *FS) Update(ctx context.Context) error {
 	return nil
 }
 
+func (f *FS) crystallizeHeaders(destDir string) error {
+	fsys := os.DirFS(destDir)
+	h := http.FileServer(http.FS(fsys))
+
+	result := map[string]http.Header{}
+
+	if err := fs.WalkDir(fsys, ".", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return fmt.Errorf("lume: can't walk dir when crystallizing headers: %w", err)
+		}
+
+		if d.IsDir() {
+			return nil
+		}
+
+		req, err := http.NewRequest("GET", "http://localhost/"+path, nil)
+		if err != nil {
+			return fmt.Errorf("lume: can't create request when crystallizing headers: %w", err)
+		}
+		rw := httptest.NewRecorder()
+
+		h.ServeHTTP(rw, req)
+
+		resp := rw.Result()
+
+		result[path] = resp.Header
+
+		return nil
+	}); err != nil {
+		return err
+	}
+
+	fout, err := os.Create(filepath.Join(destDir, ".xesite-headers.json"))
+	if err != nil {
+		return err
+	}
+	defer fout.Close()
+
+	if err := json.NewEncoder(fout).Encode(result); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (f *FS) build(ctx context.Context, siteCommit string) error {
 	builds.Add(1)
 	destDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "_site")
@@ -307,6 +354,10 @@ func (f *FS) build(ctx context.Context, siteCommit string) error {
 
 	lastBuildTime.Set(dur.Milliseconds())
 	slog.Info("built site", "dir", destDir, "time", dur.String())
+
+	if err := f.crystallizeHeaders(destDir); err != nil {
+		return fmt.Errorf("lume: can't crystallize headers: %w", err)
+	}
 
 	zipLoc := filepath.Join(f.opt.DataDir, "site.zip")
 
