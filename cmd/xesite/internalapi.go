@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"expvar"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -14,6 +15,7 @@ import (
 func internalAPI(srv *tsnet.Server, fs *lume.FS) {
 	mux := http.NewServeMux()
 
+	mux.Handle("/debug/vars", expvar.Handler())
 	mux.HandleFunc("/metrics", tsweb.VarzHandler)
 
 	mux.HandleFunc("/rebuild", func(w http.ResponseWriter, r *http.Request) {
