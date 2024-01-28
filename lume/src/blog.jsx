@@ -16,13 +16,13 @@ export default ({ search }, { date }) => {
 
       <ul class="list-disc ml-4 mb-4">
         {search.pages("type=blog", "order date=desc").map((post) => {
-          const url = post.data.redirect_to ? post.data.redirect_to : post.data.url;
+          const url = post.redirect_to ? post.redirect_to : post.url;
           return (
-          <li>
-            <time datetime={date(post.data.date)} className="font-mono">{post.data.date.toLocaleDateString("en-US", dateOptions)}</time> -{" "}
-            <a href={url}>{post.data.title}</a>
-          </li>
-        );
+            <li>
+              <time datetime={date(post.date)} className="font-mono">{post.date.toLocaleDateString("en-US", dateOptions)}</time> -{" "}
+              <a href={url}>{post.title}</a>
+            </li>
+          );
         })}
       </ul>
     </>

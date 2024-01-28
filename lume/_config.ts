@@ -1,6 +1,7 @@
 import lume from "lume/mod.ts";
 import jsx_preact from "lume/plugins/jsx_preact.ts";
 import attributes from "lume/plugins/attributes.ts";
+import nunjucks from "lume/plugins/nunjucks.ts";
 import date from "lume/plugins/date.ts";
 import esbuild from "lume/plugins/esbuild.ts";
 import feed from "lume/plugins/feed.ts";
@@ -42,6 +43,8 @@ site.data("getYear", () => {
   return new Date().getFullYear();
 });
 
+
+site.use(nunjucks());
 site.use(jsx_preact());
 site.use(attributes());
 site.use(date({
@@ -81,13 +84,6 @@ site.use(mdx({
     rehypePrism,
   ],
 }));
-// site.use(pagefind({
-//   indexing: {
-//     bundleDirectory: "_pagefind",
-//     glob: "**/*.html",
-//     rootObject: "article",
-//   },
-// }));
 site.use(tailwindcss({
   extensions: [".mdx", ".jsx", ".tsx", ".md", ".html", ".njx"],
   options: tailwindOptions,
@@ -99,8 +95,10 @@ site.use(sitemap({
 site.use(readInfo({
   extensions: [".md", ".mdx"],
 }));
-site.preprocess([".html"], (page) => {
-  page.data.year = page.data.date.getFullYear();
+site.preprocess([".html"], (pages) => {
+  for (const page of pages) {
+    page.data.year = page.data.date.getFullYear();
+  }
 });
 
 export default site;

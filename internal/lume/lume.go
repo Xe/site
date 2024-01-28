@@ -293,7 +293,7 @@ func (f *FS) build(ctx context.Context, siteCommit string) error {
 		return err
 	}
 
-	cmd := exec.CommandContext(ctx, denoLocation, "task", "build", "--location", f.opt.URL, "--quiet")
+	cmd := exec.CommandContext(ctx, denoLocation, "task", "build", "--location", f.opt.URL)
 
 	cmd.Dir = filepath.Join(f.repoDir, f.opt.StaticSiteDir)
 	cmd.Stdout = os.Stdout
@@ -446,11 +446,11 @@ export default ({ search }, { date }) => {
 
       <ul class="list-disc ml-4 mb-4">
         {search.pages("series={{.Series}}", "order date=desc").map((post) => {
-          const url = post.data.redirect_to ? post.data.redirect_to : post.data.url;
+          const url = post.redirect_to ? post.redirect_to : post.url;
           return (
           <li>
-            <time datetime={date(post.data.date)} className="font-mono">{date(post.data.date, "DATE_US")}</time> -{" "}
-            <a href={url}>{post.data.title}</a>
+            <time datetime={date(post.date)} className="font-mono">{date(post.date, "DATE_US")}</time> -{" "}
+            <a href={url}>{post.title}</a>
           </li>
         );
         })}

@@ -28,9 +28,9 @@ export default ({ search }, { date }) => {
       <ul class="list-disc ml-4 mb-4">
         {search.pages("layout=vod.njk", "order date=desc").map((post) => (
           <li>
-            <time datetime={date(post.data.date)}>{date(post.data.date, "DATE_US")}</time> -{" "}
-            <a href={post.data.url}>
-              {post.data.title}
+            <time datetime={date(post.date)}>{date(post.date, "DATE_US")}</time> -{" "}
+            <a href={post.url}>
+              {post.title}
             </a>
           </li>
         ))}
