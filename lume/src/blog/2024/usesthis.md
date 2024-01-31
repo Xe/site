@@ -4,6 +4,8 @@ date: 2024-01-31
 redirect_to: https://usesthis.com/interviews/xe.iaso/
 ---
 
+<meta http-equiv="refresh" content="0; url=https://usesthis.com/interviews/xe.iaso/" />
+
 ### Who are you, and what do you do?
 
 I'm Xe Iaso, I'm a technical educator,
