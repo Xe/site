@@ -69,6 +69,10 @@ let descriptions
         , details =
             "Instructions on how to use Nix flakes, a new way to use Nix in a more reproducible way."
         }
+        , Desc::{
+          name = "no-way-to-prevent-this",
+          details = "Articles about the futility of preventing memory safety vulnerabilities."
+        }
       , Desc::{ name = "nixos", details = "Nix." }
       , Desc::{
         , name = "olin"
