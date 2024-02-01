@@ -106,6 +106,9 @@ schema = 3
   [mod."github.com/fxamacker/cbor/v2"]
     version = "v2.5.0"
     hash = "sha256-2rhvuNZjeidDP+Og6Q0u4ROiaPrEOjoI5wCb17XRnOQ="
+  [mod."github.com/go-faker/faker/v4"]
+    version = "v4.2.0"
+    hash = "sha256-ZnafEz3GQHb7JE1YL8gXYhvHVvqxmvbPLPcVZXJwl9o="
   [mod."github.com/go-git/gcfg"]
     version = "v1.5.1-0.20230307220236-3a3c6141e376"
     hash = "sha256-f4k0gSYuo0/q3WOoTxl2eFaj7WZpdz29ih6CKc8Ude8="

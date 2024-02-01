@@ -5,6 +5,8 @@ import (
 	"os"
 	"text/template"
 	"time"
+
+	"github.com/go-faker/faker/v4"
 )
 
 var (
@@ -26,6 +28,8 @@ func main() {
 	}
 	defer fout.Close()
 
+	name := faker.Name()
+
 	data := map[string]string{
 		"Date":        *date,
 		"CVE":         *cve,
@@ -33,6 +37,7 @@ func main() {
 		"Project":     *project,
 		"ProjectLink": *projectLink,
 		"Summary":     *summary,
+		"Name":        name,
 	}
 
 	tmpl := template.Must(template.New("article").Parse(articleTemplate))
@@ -55,7 +60,7 @@ hero:
 In the hours following the release of [{{.CVE}}]({{.CVELink}}) for the project [{{.Project}}]({{.ProjectLink}}), site reliability workers
 and systems administrators scrambled to desperately rebuild and patch all their systems to fix {{.Summary}}. This is due to the affected components being
 written in C, the only programming language where these vulnerabilities regularly happen. "This was a terrible tragedy, but sometimes
-these things just happen and there's nothing anyone can do to stop them," said programmer Willodean Santorella, echoing statements
+these things just happen and there's nothing anyone can do to stop them," said programmer {{.Name}}, echoing statements
 expressed by hundreds of thousands of programmers who use the only language where 90% of the world's memory safety vulnerabilities have
 occurred in the last 50 years, and whose projects are 20 times more likely to have security vulnerabilities. "It's a shame, but what can
 we do? There really isn't anything we can do to prevent memory safety vulnerabilities from happening if the programmer doesn't want to
