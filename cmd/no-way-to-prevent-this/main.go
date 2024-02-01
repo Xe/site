@@ -47,7 +47,7 @@ func main() {
 }
 
 const articleTemplate = `---
-title: '"No way to prevent this" say users of only programming language where this regularly happens'
+title: '"No way to prevent this" say users of only language where this regularly happens'
 date: {{.Date}}
 series: "no-way-to-prevent-this"
 type: blog
