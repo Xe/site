@@ -85,6 +85,9 @@ schema = 3
   [mod."github.com/dblohm7/wingoes"]
     version = "v0.0.0-20230929194252-e994401fc077"
     hash = "sha256-0ECfdIeXLhOQgluLlUpe1onRnK0k1/GbIbriwepVvpU="
+  [mod."github.com/digitalocean/go-smbios"]
+    version = "v0.0.0-20180907143718-390a4f403a8e"
+    hash = "sha256-Hgx1ML3rigdYXx5ntnEYD5JEk6kJv1cL0+/GDbnPkbo="
   [mod."github.com/donatj/hmacsig"]
     version = "v1.1.0"
     hash = "sha256-/T7mWqQwZt+AFD/2QAYCAW/TsZptawFMl8CGWPmyhtE="
@@ -136,6 +139,12 @@ schema = 3
   [mod."github.com/google/uuid"]
     version = "v1.3.1"
     hash = "sha256-JxAEAB2bFlGPShFreyOWjUahjaGV3xYS5TpfUOikod0="
+  [mod."github.com/gorilla/csrf"]
+    version = "v1.7.1"
+    hash = "sha256-LwPncK11S0Dd6H7E8KZA3trOPVm5Y/MWg8yHm31eXr4="
+  [mod."github.com/gorilla/securecookie"]
+    version = "v1.1.1"
+    hash = "sha256-IBBYWfdOuXvQsb01DaA8tBizCfAE1J2KLXIn3W+NeJk="
   [mod."github.com/hdevalence/ed25519consensus"]
     version = "v0.1.0"
     hash = "sha256-MkqFWnyXt653RaJQUMWWxcW6NCskIxou8VEfj+8vd3Y="
@@ -211,6 +220,9 @@ schema = 3
   [mod."github.com/prometheus/procfs"]
     version = "v0.12.0"
     hash = "sha256-Y4ZZmxIpVCO67zN3pGwSk2TcI88zvmGJkgwq9DRTwFw="
+  [mod."github.com/safchain/ethtool"]
+    version = "v0.3.0"
+    hash = "sha256-q5bQGHB7cyEejA9tQkrhpvzpfYRvXcmClbWBgfs3Ymc="
   [mod."github.com/sergi/go-diff"]
     version = "v1.3.1"
     hash = "sha256-XLA/BLIPuUU76yikXqIeRSXr7T7A3Uz6I27+mDxGj7w="
@@ -220,15 +232,24 @@ schema = 3
   [mod."github.com/tailscale/certstore"]
     version = "v0.1.1-0.20231202035212-d3fa0460f47e"
     hash = "sha256-Q0HLTQPRsIizRqvdBBaLGoLascQiSpQm+X3NW3ytpDQ="
+  [mod."github.com/tailscale/go-winio"]
+    version = "v0.0.0-20231025203758-c4f33415bf55"
+    hash = "sha256-WFW20c02gIk2MhafeVVNydmSfszPZegshDd2Y5abGgY="
   [mod."github.com/tailscale/golang-x-crypto"]
     version = "v0.0.0-20240108194725-7ce1f622c780"
     hash = "sha256-jJeEXJ4J8IRxAiS/rU7Ynx64ZrkbzexzLx26wbHlQmQ="
   [mod."github.com/tailscale/goupnp"]
     version = "v1.0.1-0.20210804011211-c64d0f06ea05"
     hash = "sha256-PRMJcYY+wjpbHkC9dQWTPErh2ID29UnFxehxmYR704I="
+  [mod."github.com/tailscale/hujson"]
+    version = "v0.0.0-20221223112325-20486734a56a"
+    hash = "sha256-q9c2IjwbL0IgYPznVpQP1XT/8lrzH1niI3E+wjNcf5Y="
   [mod."github.com/tailscale/netlink"]
     version = "v1.1.1-0.20211101221916-cabfb018fe85"
     hash = "sha256-bMK5qqObMcxIbPy5XhOZP8TGDaXvDAHsE0FR68VMLi8="
+  [mod."github.com/tailscale/web-client-prebuilt"]
+    version = "v0.0.0-20240111230031-5ca22df9e6e7"
+    hash = "sha256-NJ0eRl+NpU8+iSGNV1CHsr984N/sfeCZ4IR8bUIe2ss="
   [mod."github.com/tailscale/wireguard-go"]
     version = "v0.0.0-20231121184858-cc193a0b3272"
     hash = "sha256-gbzFLxFUeAg/BBsIZ0ZGryldxlR+UhFCVpPhoKz4AZo="
