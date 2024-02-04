@@ -1,0 +1,52 @@
+---
+title: "TIL: you need to escape the </script> in a string in an inline script in HTML"
+date: 2024-02-03
+type: blog
+hero:
+  ai: "Photo by Xe Iaso, iPhone 13 Pro"
+  file: winter-drive
+  prompt: "A color-graded image of a snowy field taken from the side of a moving car."
+---
+
+When I was implementing [this change](https://github.com/Xe/site/commit/944fbf678403c77e158accd66363accbbe6d6eb4) in my site, I ran into a weird issue where my literal JavaScript text was being inserted into the page as if it was in the literal HTML. This was odd at first, but then I realized what was going on.
+
+I was converting code that looked like this:
+
+```html
+<script src="https://ethical-ads.whatever/script.js" async></script>
+<div
+  data-ea-publisher="christinewebsite"
+  data-ea-type="text"
+  data-ea-style="fixedfooter"
+></div>
+```
+
+Into something like this:
+
+```html
+<script>
+    if (!window.location.hostname.includes(".shark-harmonic.ts.net")) {
+        document.write('<script src="https://ethical-ads.whatever/script.js" async></script>');
+    }
+</script>
+<div data-ea-publisher="christinewebsite" data-ea-type="text" data-ea-style="fixedfooter"></div>
+```
+
+But then I saw `'); }` at the top of every page. This was odd, but when I figured out what was going on, I felt very dumb. I was writing a string that contained a `</script>` tag, which was causing the browser to think that the script tag was ending early.
+
+The fix was simple: escape the `</script>` tag in the string. This is done by replacing the `/` with `\/`:
+
+```html
+<script>
+  if (!window.location.hostname.includes(".shark-harmonic.ts.net")) {
+    document.write(
+      '<script src="https://ethical-ads.whatever/script.js" async><\/script>'
+    );
+  }
+</script>
+<div
+  data-ea-publisher="christinewebsite"
+  data-ea-type="text"
+  data-ea-style="fixedfooter"
+></div>
+```
