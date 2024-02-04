@@ -93,6 +93,10 @@ func rebuildOnChange(fs *lume.FS) {
 				continue
 			}
 
+			if event.Op == fsnotify.Chmod {
+				continue
+			}
+
 			slog.Debug("got event", "fname", event.Name, "op", event.Op.String())
 
 			d(reload)
