@@ -1,1 +1,2 @@
+return 0
 go run ./cmd/fabricate-generation

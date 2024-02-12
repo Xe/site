@@ -18,13 +18,12 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gopkg.in/mxpv/patreon-go.v1"
-	"tailscale.com/client/tailscale"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/adminpb"
 )
 
 var (
-	addr         = flag.String("addr", ":80", "HTTP bind addr")
+	bind         = flag.String("bind", ":80", "HTTP bind addr")
 	clientID     = flag.String("client-id", "", "Patreon client ID")
 	clientSecret = flag.String("client-secret", "", "Patreon client secret")
 	dataDir      = flag.String("data-dir", "./var", "Directory to store data in")
@@ -86,19 +85,18 @@ func main() {
 	ph := adminpb.NewPatreonServer(s)
 	http.Handle(adminpb.PatreonPathPrefix, ph)
 
-	ln, err := net.Listen("tcp", *addr)
+	ln, err := net.Listen("tcp", *bind)
 	if err != nil {
 		log.Fatalf("can't listen over TCP: %v", err)
 	}
 	defer ln.Close()
 
-	slog.Info("listening", "addr", *addr)
+	slog.Info("listening", "bind", *bind)
 
 	log.Fatal(http.Serve(ln, nil))
 }
 
 type Server struct {
-	lc  *tailscale.LocalClient
 	cts oauth2.TokenSource
 }
 

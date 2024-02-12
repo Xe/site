@@ -4,19 +4,17 @@ import (
 	"context"
 	"expvar"
 	"log"
+	"net"
 	"net/http"
 	"path/filepath"
 
-	"tailscale.com/tsnet"
-	"tailscale.com/tsweb"
 	"xeiaso.net/v4/internal/lume"
 )
 
-func internalAPI(srv *tsnet.Server, fs *lume.FS) {
+func internalAPI(fs *lume.FS) {
 	mux := http.NewServeMux()
 
 	mux.Handle("/debug/vars", expvar.Handler())
-	mux.HandleFunc("/metrics", tsweb.VarzHandler)
 
 	mux.HandleFunc("/rebuild", func(w http.ResponseWriter, r *http.Request) {
 		go fs.Update(context.Background())
@@ -28,7 +26,7 @@ func internalAPI(srv *tsnet.Server, fs *lume.FS) {
 		http.ServeFile(w, r, filepath.Join(*dataDir, "site.zip"))
 	})
 
-	ln, err := srv.Listen("tcp", ":80")
+	ln, err := net.Listen("tcp", ":80")
 	if err != nil {
 		log.Fatal(err)
 	}

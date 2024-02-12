@@ -3,25 +3,16 @@ package main
 import (
 	"context"
 	"flag"
-	"log"
 	"log/slog"
 	"net/http"
 	"os"
-	"sync"
 
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
 	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/clientcredentials"
 	"gopkg.in/mxpv/patreon-go.v1"
-	"tailscale.com/client/tailscale"
-	"tailscale.com/hostinfo"
-	"tailscale.com/ipn/store/mem"
-	"tailscale.com/tsnet"
-	"tailscale.com/util/cmpx"
 	"within.website/x/web"
 	"xeiaso.net/v4/internal"
-	"xeiaso.net/v4/internal/lume"
 	"xeiaso.net/v4/internal/saasproxytoken"
 )
 
@@ -36,109 +27,51 @@ var (
 )
 
 func main() {
-	// Required to use the Tailscale client API. This is sussy, but okay.
-	tailscale.I_Acknowledge_This_API_Is_Unstable = true
-
 	flagenv.Parse()
 	flag.Parse()
 	internal.Slog()
 
 	slog.Info("starting up", "github-sha", *githubSHA)
 
-	baseURL := cmpx.Or(os.Getenv("TS_BASE_URL"), "https://api.tailscale.com")
+	/*
+		pc, err := NewPatreonClient(hc)
+		if err != nil {
+			slog.Error("can't create patreon client", "err", err)
+		}
 
-	credentials := clientcredentials.Config{
-		ClientID:     *tailscaleClientID,
-		ClientSecret: *tailscaleClientSecret,
-		TokenURL:     baseURL + "/api/v2/oauth/token",
-		Scopes:       []string{"device"},
-	}
+		os.MkdirAll("./var", 0700)
 
-	ctx := context.Background()
-	tsClient := tailscale.NewClient("-", nil)
-	tsClient.HTTPClient = credentials.Client(ctx)
-	tsClient.BaseURL = baseURL
+		fs, err := lume.New(context.Background(), &lume.Options{
+			Branch:        "main",
+			Repo:          "https://github.com/Xe/site",
+			StaticSiteDir: "lume",
+			URL:           "https://xeiaso.net",
+			Development:   false,
+			PatreonClient: pc,
+			DataDir:       "./var",
+			MiToken:       *miToken,
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	caps := tailscale.KeyCapabilities{
-		Devices: tailscale.KeyDeviceCapabilities{
-			Create: tailscale.KeyDeviceCreateCapabilities{
-				Reusable:      false,
-				Ephemeral:     true,
-				Preauthorized: true,
-				Tags:          []string{"tag:service", "tag:ci"},
-			},
-		},
-	}
+		defer fs.Close()
 
-	authkey, _, err := tsClient.CreateKey(ctx, caps)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+		var wg sync.WaitGroup
 
-	os.Args[0] = "via XeDN"
+		for _, region := range regions {
+			wg.Add(1)
+			go func(region string) {
+				defer wg.Done()
 
-	hostinfo.SetApp("xeiaso.net/v4/cmd/fabricate-generation")
+				if err := uploadSlug(hc, "xedn-"+region, "./var/site.zip"); err != nil {
+					slog.Error("error updating", "region", region, "error", err)
+				}
+			}(region)
+		}
 
-	memStore, err := mem.New(log.Printf, "")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	srv := &tsnet.Server{
-		Hostname:  "github-action-" + (*githubSHA)[:7],
-		Logf:      log.Printf,
-		Ephemeral: true,
-		Store:     memStore,
-		AuthKey:   authkey,
-	}
-
-	if err := srv.Start(); err != nil {
-		log.Fatal(err)
-	}
-
-	if _, err := srv.Up(context.Background()); err != nil {
-		log.Fatal(err)
-	}
-
-	hc := srv.HTTPClient()
-
-	pc, err := NewPatreonClient(hc)
-	if err != nil {
-		slog.Error("can't create patreon client", "err", err)
-	}
-
-	os.MkdirAll("./var", 0700)
-
-	fs, err := lume.New(context.Background(), &lume.Options{
-		Branch:        "main",
-		Repo:          "https://github.com/Xe/site",
-		StaticSiteDir: "lume",
-		URL:           "https://xeiaso.net",
-		Development:   false,
-		PatreonClient: pc,
-		DataDir:       "./var",
-		MiToken:       *miToken,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer fs.Close()
-
-	var wg sync.WaitGroup
-
-	for _, region := range regions {
-		wg.Add(1)
-		go func(region string) {
-			defer wg.Done()
-
-			if err := uploadSlug(hc, "xedn-"+region, "./var/site.zip"); err != nil {
-				slog.Error("error updating", "region", region, "error", err)
-			}
-		}(region)
-	}
-
-	wg.Wait()
+		wg.Wait()
+	*/
 }
 
 func uploadSlug(cli *http.Client, host, fname string) error {

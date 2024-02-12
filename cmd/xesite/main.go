@@ -13,9 +13,6 @@ import (
 	"github.com/donatj/hmacsig"
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
-	"tailscale.com/hostinfo"
-	"tailscale.com/tsnet"
-	"tailscale.com/tsweb"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
 )
@@ -28,17 +25,14 @@ var (
 	gitRepo             = flag.String("git-repo", "https://github.com/Xe/site", "Git repository to clone")
 	githubSecret        = flag.String("github-secret", "", "GitHub secret to use for webhooks")
 	miToken             = flag.String("mi-token", "", "Token to use for the mi API")
-	patreonSaasProxyURL = flag.String("patreon-saasproxy-url", "http://patreon-saasproxy/give-token", "URL to use for the patreon saasproxy")
+	patreonSaasProxyURL = flag.String("patreon-saasproxy-url", "http://xesite-patreon-saasproxy.flycast/", "URL to use for the patreon saasproxy")
 	siteURL             = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")
-	tsnetHostname       = flag.String("tailscale-hostname", "xesite", "Tailscale hostname to use")
 )
 
 func main() {
 	flagenv.Parse()
 	flag.Parse()
 	internal.Slog()
-
-	hostinfo.SetApp("xeiaso.net/v4/cmd/xesite")
 
 	ctx := context.Background()
 
@@ -50,23 +44,7 @@ func main() {
 	os.MkdirAll(*dataDir, 0700)
 	os.MkdirAll(filepath.Join(*dataDir, "tsnet"), 0700)
 
-	srv := &tsnet.Server{
-		Hostname: *tsnetHostname + "-" + os.Getenv("FLY_REGION"),
-		Logf:     func(string, ...any) {},
-		Dir:      filepath.Join(*dataDir, "tsnet"),
-	}
-
-	if err := srv.Start(); err != nil {
-		log.Fatal(err)
-	}
-
-	if _, err := srv.Up(context.Background()); err != nil {
-		log.Fatal(err)
-	}
-
-	hc := srv.HTTPClient()
-
-	pc, err := NewPatreonClient(hc)
+	pc, err := NewPatreonClient(http.DefaultClient)
 	if err != nil {
 		slog.Error("can't create patreon client", "err", err)
 	}
@@ -91,7 +69,7 @@ func main() {
 		go rebuildOnChange(fs)
 	}
 
-	go internalAPI(srv, fs)
+	go internalAPI(fs)
 
 	if err != nil {
 		log.Fatal(err)
@@ -99,7 +77,6 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.FS(fs)))
-	mux.HandleFunc("/metrics", tsweb.VarzHandler)
 
 	mux.HandleFunc("/blog.atom", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/blog.rss", http.StatusMovedPermanently)
