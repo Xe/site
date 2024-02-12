@@ -6,9 +6,12 @@ require (
 	github.com/bep/debounce v1.2.1
 	github.com/donatj/hmacsig v1.1.0
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
+	github.com/go-faker/faker/v4 v4.2.0
 	github.com/go-git/go-git/v5 v5.10.0
 	github.com/joho/godotenv v1.5.1
+	github.com/twitchtv/twirp v8.1.3+incompatible
 	golang.org/x/oauth2 v0.12.0
+	google.golang.org/protobuf v1.31.0
 	gopkg.in/fsnotify.v1 v1.4.7
 	gopkg.in/mxpv/patreon-go.v1 v1.0.0-20171031001022-1d2f253ac700
 	tailscale.com v1.58.2
@@ -48,7 +51,6 @@ require (
 	github.com/facebookgo/ensure v0.0.0-20200202191622-63f1cf65ac4c // indirect
 	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/fxamacker/cbor/v2 v2.5.0 // indirect
-	github.com/go-faker/faker/v4 v4.2.0 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.5.0 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
@@ -117,7 +119,6 @@ require (
 	golang.zx2c4.com/wintun v0.0.0-20230126152724-0fa3db229ce2 // indirect
 	golang.zx2c4.com/wireguard/windows v0.5.3 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gvisor.dev/gvisor v0.0.0-20230928000133-4fe30062272c // indirect
 	inet.af/peercred v0.0.0-20210906144145-0893ea02156a // indirect

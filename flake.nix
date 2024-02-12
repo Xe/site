@@ -192,6 +192,10 @@
             zig
             nodejs
 
+            protobuf
+            protoc-gen-go
+            protoc-gen-twirp
+
             jq
             jo
 

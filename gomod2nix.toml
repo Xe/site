@@ -259,6 +259,9 @@ schema = 3
   [mod."github.com/tcnksm/go-httpstat"]
     version = "v0.2.0"
     hash = "sha256-bCWn8E+DcZY6+yPu07AF3hCcDZx3CFdD74qfpDIgVqI="
+  [mod."github.com/twitchtv/twirp"]
+    version = "v8.1.3+incompatible"
+    hash = "sha256-j1h9YE3wl9h36DfPf92To1H/PwNk4CgerOARNO3HK1w="
   [mod."github.com/u-root/uio"]
     version = "v0.0.0-20230305220412-3e8cd9d6bf63"
     hash = "sha256-y0VT9PLROozi6wNMgnX706ifumQxlMc8y4/XZDhdfMY="

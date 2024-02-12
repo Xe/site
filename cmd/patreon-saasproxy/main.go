@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"expvar"
@@ -14,6 +15,8 @@ import (
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
 	"golang.org/x/oauth2"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gopkg.in/mxpv/patreon-go.v1"
 	"tailscale.com/client/tailscale"
 	"tailscale.com/hostinfo"
@@ -21,6 +24,7 @@ import (
 	"tailscale.com/tsnet"
 	"tailscale.com/tsweb"
 	"xeiaso.net/v4/internal"
+	"xeiaso.net/v4/internal/adminpb"
 )
 
 var (
@@ -110,6 +114,9 @@ func main() {
 		log.Fatal(err)
 	}
 
+	ph := adminpb.NewPatreonServer(s)
+	http.Handle(adminpb.PatreonPathPrefix, ph)
+
 	slog.Info("listening over tailscale", "hostname", *tailscaleHostname)
 
 	log.Fatal(http.Serve(ln, nil))
@@ -118,6 +125,21 @@ func main() {
 type Server struct {
 	lc  *tailscale.LocalClient
 	cts oauth2.TokenSource
+}
+
+func (s *Server) GetToken(ctx context.Context, _ *emptypb.Empty) (*adminpb.PatreonToken, error) {
+	token, err := s.cts.Token()
+	if err != nil {
+		slog.Error("token fetch failed", "err", err)
+		return nil, err
+	}
+
+	return &adminpb.PatreonToken{
+		AccessToken:  token.AccessToken,
+		TokenType:    token.TokenType,
+		RefreshToken: token.RefreshToken,
+		Expiry:       timestamppb.New(token.Expiry),
+	}, nil
 }
 
 func (s *Server) GiveToken(w http.ResponseWriter, r *http.Request) {

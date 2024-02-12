@@ -1,13 +1,14 @@
 package saasproxytoken
 
 import (
-	"encoding/json"
+	"context"
 	"net/http"
 	"sync"
 	"time"
 
 	"golang.org/x/oauth2"
-	"within.website/x/web"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"xeiaso.net/v4/internal/adminpb"
 )
 
 type remoteTokenSource struct {
@@ -15,23 +16,23 @@ type remoteTokenSource struct {
 	lock       sync.Mutex
 	remoteURL  string
 	httpClient *http.Client
+	ptc        adminpb.Patreon
 }
 
 func (r *remoteTokenSource) fetchToken() (*oauth2.Token, error) {
-	resp, err := r.httpClient.Get(r.remoteURL)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	resp, err := r.ptc.GetToken(ctx, &emptypb.Empty{})
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, web.NewError(http.StatusOK, resp)
-	}
 
 	var tok oauth2.Token
-	if err := json.NewDecoder(resp.Body).Decode(&tok); err != nil {
-		return nil, err
-	}
+	tok.AccessToken = resp.AccessToken
+	tok.TokenType = resp.TokenType
+	tok.RefreshToken = resp.RefreshToken
+	tok.Expiry = resp.Expiry.AsTime()
 
 	return &tok, nil
 }
@@ -64,5 +65,6 @@ func RemoteTokenSource(remoteURL string, httpClient *http.Client) oauth2.TokenSo
 	return &remoteTokenSource{
 		remoteURL:  remoteURL,
 		httpClient: httpClient,
+		ptc:        adminpb.NewPatreonProtobufClient(remoteURL, httpClient),
 	}
 }
