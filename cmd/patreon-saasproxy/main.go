@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
-	"expvar"
 	"flag"
 	"log"
 	"log/slog"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -19,21 +19,15 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gopkg.in/mxpv/patreon-go.v1"
 	"tailscale.com/client/tailscale"
-	"tailscale.com/hostinfo"
-	"tailscale.com/metrics"
-	"tailscale.com/tsnet"
-	"tailscale.com/tsweb"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/adminpb"
 )
 
 var (
-	clientID          = flag.String("client-id", "", "Patreon client ID")
-	clientSecret      = flag.String("client-secret", "", "Patreon client secret")
-	dataDir           = flag.String("data-dir", "./var", "Directory to store data in")
-	tailscaleHostname = flag.String("tailscale-hostname", "patreon-saasproxy", "Tailscale hostname to use")
-
-	tokenFetches = metrics.LabelMap{Label: "host"}
+	addr         = flag.String("addr", ":80", "HTTP bind addr")
+	clientID     = flag.String("client-id", "", "Patreon client ID")
+	clientSecret = flag.String("client-secret", "", "Patreon client secret")
+	dataDir      = flag.String("data-dir", "./var", "Directory to store data in")
 )
 
 func main() {
@@ -41,25 +35,7 @@ func main() {
 	flag.Parse()
 	internal.Slog()
 
-	hostinfo.SetApp("xeiaso.net/v4/cmd/patreon-saasproxy")
-
-	expvar.Publish("gauge_xesite_patreon_token_fetch", &tokenFetches)
-
 	os.MkdirAll(*dataDir, 0700)
-	os.MkdirAll(filepath.Join(*dataDir, "tsnet"), 0700)
-
-	srv := &tsnet.Server{
-		Hostname: *tailscaleHostname,
-		Dir:      filepath.Join(*dataDir, "tsnet"),
-		Logf:     func(string, ...any) {},
-	}
-
-	defer srv.Close()
-
-	lc, err := srv.LocalClient()
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	config := oauth2.Config{
 		ClientID:     *clientID,
@@ -102,22 +78,21 @@ func main() {
 	cts := internal.CachingTokenSource(filepath.Join(*dataDir, "patreon-token.json"), &config, token)
 
 	s := &Server{
-		lc:  lc,
 		cts: cts,
 	}
 
 	http.HandleFunc("/give-token", s.GiveToken)
-	http.HandleFunc("/metrics", tsweb.VarzHandler)
-
-	ln, err := srv.Listen("tcp", ":80")
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	ph := adminpb.NewPatreonServer(s)
 	http.Handle(adminpb.PatreonPathPrefix, ph)
 
-	slog.Info("listening over tailscale", "hostname", *tailscaleHostname)
+	ln, err := net.Listen("tcp", *addr)
+	if err != nil {
+		log.Fatalf("can't listen over TCP: %v", err)
+	}
+	defer ln.Close()
+
+	slog.Info("listening", "addr", *addr)
 
 	log.Fatal(http.Serve(ln, nil))
 }
@@ -143,15 +118,6 @@ func (s *Server) GetToken(ctx context.Context, _ *emptypb.Empty) (*adminpb.Patre
 }
 
 func (s *Server) GiveToken(w http.ResponseWriter, r *http.Request) {
-	whois, err := s.lc.WhoIs(r.Context(), r.RemoteAddr)
-	if err != nil {
-		slog.Error("whois failed", "err", err, "remoteAddr", r.RemoteAddr)
-		http.Error(w, "invalid remote address", http.StatusBadRequest)
-		return
-	}
-
-	tokenFetches.Add(whois.Node.Name, 1)
-
 	token, err := s.cts.Token()
 	if err != nil {
 		slog.Error("token fetch failed", "err", err)

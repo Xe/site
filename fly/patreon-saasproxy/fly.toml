@@ -15,3 +15,17 @@ DATA_DIR = "/data"
 
 [build]
 image = "ghcr.io/xe/site/patreon:latest"
+
+[[services]]
+  internal_port = 80
+  processes = ["app"]
+  protocol = "tcp"
+
+  [services.concurrency]
+    hard_limit = 300
+    soft_limit = 250
+    type = "connections"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
