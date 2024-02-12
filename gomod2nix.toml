@@ -23,8 +23,8 @@ schema = 3
     version = "v0.0.0-20231016080023-1a75b4708caa"
     hash = "sha256-Joa/NfBofK7lRlknQ5LVYD4M/dpd9xaCqsvYUBhKW0I="
   [mod."github.com/aws/aws-sdk-go-v2"]
-    version = "v1.21.0"
-    hash = "sha256-cX1OuxnSJ3QIZ/eFBmap9dMSp6/eYQauIgaNylrouMM="
+    version = "v1.24.1"
+    hash = "sha256-qZDUrodVDWWtdQ6zYuNHxpXt2quK56pPoZsKdRGmYzk="
   [mod."github.com/aws/aws-sdk-go-v2/config"]
     version = "v1.18.42"
     hash = "sha256-weThFPij2BWfjM9WORNpqiKF/mk/ZoSVGwwlGZDEpmM="
@@ -35,11 +35,11 @@ schema = 3
     version = "v1.13.11"
     hash = "sha256-bkxyd0V1dh4DAg3ILXIcZvl3m201uiQcQWzlS1OoBVc="
   [mod."github.com/aws/aws-sdk-go-v2/internal/configsources"]
-    version = "v1.1.41"
-    hash = "sha256-yzuvonBSoKi49QNtTNNQBgAcza5QN2pfI/3qjbFHBW4="
+    version = "v1.2.10"
+    hash = "sha256-fhrws72g+ecgXnkiip0GQ206XfVdxDA7/Rz9X3nvgd8="
   [mod."github.com/aws/aws-sdk-go-v2/internal/endpoints/v2"]
-    version = "v2.4.35"
-    hash = "sha256-nhKCXY9/FP6chjo2QfuKEOjf9eUuduGNcQOhLAVfWUI="
+    version = "v2.5.10"
+    hash = "sha256-Rbj+matn96a/3Nj8EpLgrTycSV+331+WWJd5Lpk1LlQ="
   [mod."github.com/aws/aws-sdk-go-v2/internal/ini"]
     version = "v1.3.43"
     hash = "sha256-TnNm5b2/PCZOoC1HjxT0FWmAZtPdc5tPeTU1CeDjV5E="
@@ -50,8 +50,8 @@ schema = 3
     version = "v1.38.0"
     hash = "sha256-Uxu1rbOxF87tkaV/sMcPwAc4MwYM7HrUsWYl6WbUo0Q="
   [mod."github.com/aws/aws-sdk-go-v2/service/sso"]
-    version = "v1.14.1"
-    hash = "sha256-N1jmYpU4aVJnlZ+lfJuvK8XjzMiXRrF7G5+6kbnxmqM="
+    version = "v1.18.7"
+    hash = "sha256-+1q43+9Cx/K3/T+LJJLV1h2PLHsG/YKHUSgwC5r3uNQ="
   [mod."github.com/aws/aws-sdk-go-v2/service/ssooidc"]
     version = "v1.17.1"
     hash = "sha256-BTK/4Fb7/GhM77zCumEGayTMELXJOEUAXaTmPvIOzBg="
@@ -59,8 +59,8 @@ schema = 3
     version = "v1.22.0"
     hash = "sha256-AXooZNjT0PwGak1flC8oCsR+6df/+Xn30bbZqp6X5zE="
   [mod."github.com/aws/smithy-go"]
-    version = "v1.14.2"
-    hash = "sha256-PRQlfVi/Y0hpXJvTspw49hmIvPgYoyXxhyPKOXoMDrA="
+    version = "v1.19.0"
+    hash = "sha256-KsQMOHJFIXRF+8c4WxiXA/u1Ok6hEF6eylvnfdRGivg="
   [mod."github.com/beorn7/perks"]
     version = "v1.0.1"
     hash = "sha256-h75GUqfwJKngCJQVE5Ao5wnO3cfKD9lSIteoLp/3xJ4="
