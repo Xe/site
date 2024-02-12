@@ -12,4 +12,5 @@ message BuildInfo {
   google.protobuf.Timestamp build_time = 2;
   string go_version = 3;
   string deno_version = 4;
+  string xesite_version = 5;
 }

@@ -29,5 +29,8 @@
   ],
   "[markdown][mdx][nunjucks]": {
     "editor.wordBasedSuggestions": "off"
+  },
+  "protoc": {
+    "options": ["--proto_path=pb", "--proto_path=internal/adminpb"]
   }
 }

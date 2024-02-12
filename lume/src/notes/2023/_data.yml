@@ -1,0 +1,5 @@
+layout: blog.njk
+type: blog
+index: true
+is_note: true
+year: 2023
