@@ -9,6 +9,7 @@
     "bradlc.vscode-tailwindcss",
     "ronnidc.nunjucks",
     "streetsidesoftware.code-spell-checker",
-    "pbkit.vscode-pbkit"
+    "zxh404.vscode-proto3",
+    "xaver.clang-format"
   ]
 }

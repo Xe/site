@@ -6,17 +6,15 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "xesite.proto";
 
-service Patreon {
-    rpc GetToken (google.protobuf.Empty) returns (PatreonToken);
-}
+service Patreon { rpc GetToken(google.protobuf.Empty) returns (PatreonToken); }
 
 message PatreonToken {
-    string access_token = 1;
-    string token_type = 2;
-    string refresh_token = 3;
-    google.protobuf.Timestamp expiry = 4;
+  string access_token = 1;
+  string token_type = 2;
+  string refresh_token = 3;
+  google.protobuf.Timestamp expiry = 4;
 }
 
 service Admin {
-    rpc Rebuild(google.protobuf.Empty) returns (xeiaso.net.BuildInfo);
+  rpc Rebuild(google.protobuf.Empty) returns (xeiaso.net.BuildInfo);
 }
