@@ -1,0 +1,150 @@
+---
+title: I wish Go had a retry block
+date: 2024-02-11
+hero:
+  ai: iPhone 13 Pro, Photo by Xe Iaso
+  file: sf-skyline
+  prompt: A picture of the amazingly blue sky near SFO.
+---
+
+I kinda wish that Go had some kind of language-level construct for "an action that is composed of multiple parts that can fail, and when one fails in a non-permanent way, then the program will wait for some time before trying again". This would prevent me from having to write code like this in XeDN using [this backoff package that I'm probably going to rewrite](https://pkg.go.dev/github.com/cenkalti/backoff/v4):
+
+```go
+pong, err := backoff.RetryWithData[*pb.Echo](func() (*pb.Echo, error) {
+  return client.Ping(ctx, &pb.Echo{Nonce: id})
+}, bo)
+if err != nil {
+  slog.Error("cannot ping machine", "err", err)
+  http.Error(w, err.Error(), http.StatusInternalServerError)
+  return
+}
+```
+
+<XeblogConv name="Cadey" mood="coffee">
+Oh my god, it's so bad to write code like this with voice control. You end up saying things like this:
+
+> word pong swipe oops to be smashed back off over dot hammer retry with data over square asterisk of type p b dot echo r square args state funk args go right space args asterisk of type p b dot echo swipe error r paren brack pour this
+>
+> state return word client dot hammer ping over args cats swipe amp of type p b dot echo brack hammer nonce over colon sit drum r brack r paren pour this
+>
+> r brack swipe bat odd r paren
+>
+> [fucking hell](https://github.com/Xe/invocations/blob/b056ba09e3475ac9d12835090081bc569a26b0b9/languages/go/go.talon#L14-L15)
+>
+> slog error with error cannot ping machine pour this
+>
+> of type h t t p dot error over args whale swipe oops dot hammer error over args go right swipe of type h t t p dot status internal server error over pour this
+>
+> state return
+
+It is suffering. If you've never had to do this full time, you don't understand the suffering that you have to endure. I wonder if this is why my husband thinks that my voice coding is some kind of demonic summoning ritual.
+
+</XeblogConv>
+
+You can kinda see what is going on here, I'm trying to make a gRPC connection and then run a `Ping` method on it, but there's some absolutely atrocious abuse of the programming language in the process. This really feels like there's some room for monads here, where each fallible step is taken as a chunk that returns an `error` with a method like:
+
+```go
+type PermanentError interface {
+  error
+  Permanent() bool
+}
+```
+
+If the method `Permanent()` is defined and returns `true`, the pipeline aborts from there and an error handler will then run. Ideally, I'd love to get something that looks like this (with better syntax that I didn't blatantly steal from Haskell `do` syntax, ofc):
+
+```go
+retry {
+  conn <- grpc.DialContext(ctx, addr,
+    grpc.WithTransportCredentials(insecure.NewCredentials()),
+    grpc.WithMaxMsgSize(chonkiness),
+  )
+  pong <- client.Ping(ctx, &pb.Echo{Nonce: id})
+  variants <- client.Upload(ctx, &pb.UploadReq{FileName: "foo.jpg", Data: data, Folder: "bar"})
+  // do something with variants
+} unless err {
+  slog.Error("can't upload image", "err", err)
+  http.Error(w, err.Error(), http.StatusInternalServerError)
+  return
+}
+```
+
+<XeblogConv name="Aoi" mood="wut">
+  Isn't that just a nerfed `try`/`catch` with extra steps?
+</XeblogConv>
+
+<XeblogConv name="Cadey" mood="aha">
+  No, not really, the main difference here is that every step still has `error`
+  values, but a lot of the difference is in how it would be handled by the
+  compiler and runtime. Imagine that block getting compiled to something like
+  this:
+</XeblogConv>
+
+```go
+var conn *grpc.ClientConn
+var err error
+done := false
+interval := 50 * time.Millisecond
+for !done {
+  conn, err = grpc.DialContext(ctx, addr,
+    grpc.WithTransportCredentials(insecure.NewCredentials()),
+    grpc.WithMaxMsgSize(chonkiness),
+  )
+  if err != nil {
+    perr, ok := err.(PermanentError)
+    if ok && perr.Permanent() {
+      slog.Error("can't upload image", "err", err)
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+      return
+    }
+
+    t := time.NewTicker(interval)
+
+    select {
+    case <-ctx.Done():
+      t.Stop()
+      slog.Error("can't upload image", "err", ctx.Error())
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+      return
+    case <-t.C:
+      t.Stop()
+      interval = interval * 2
+    }
+  } else {
+    done = true
+  }
+}
+if err != nil {
+  slog.Error("can't upload image", "err", ctx.Error())
+  http.Error(w, err.Error(), http.StatusInternalServerError)
+  return
+}
+```
+
+<XeblogConv name="Aoi" mood="grin">
+  Still looks like a nerfed `try`/`catch` with extra steps to me, but I see
+  where you're coming from.
+</XeblogConv>
+
+But for every step of the pipeline. The added benefits of exponential backoff being the default means that software that use `retry` blocks will be _instantly_ robust against transient failures. This would make software more reliable for everyone with little additional effort.
+
+The main downside is that we would need to have custom error types expose a `Permanent` method and potentially extra methods in package `fmt` for constructing anonymous permanent errors. This would make it easy to use, with something like:
+
+```go
+return nil, fmt.PermanentErrorf("flymachines: server returned status code %d", resp.StatusCode)
+```
+
+I feel something like this needs to be a language-level construct because this is a very common pattern across tools and requires you to do a lot of annoying fiddly code that makes the code a lot harder to understand. Making it at the language level would also let each individual step that can fail be isolated and retried for you, reducing cognitive complexity.
+
+It would be cool if `retry` blocks automatically detected the scope-level `ctx` value, injecting context-awareness into the backoff retries too so that you don't need to add that manually like you do with the backoff package:
+
+```go
+backoff.Retry(func() error {
+  switch {
+  case <-ctx.Done():
+    return ctx.Error()
+  default:
+  }
+
+  return somethingThatCanFail()
+}, bo)
+```
