@@ -20,6 +20,8 @@ import BlockQuote from "./src/_components/BlockQuote.jsx";
 import ChatFrame from "./src/_components/ChatFrame.jsx";
 import ChatBubble from "./src/_components/ChatBubble.jsx";
 import Figure from "./src/_components/Figure.tsx";
+import LoadingSpinner from "./src/_components/LoadingSpinner.jsx";
+import TecharoDisclaimer from "./src/_components/TecharoDisclaimer.jsx";
 import XeblogConv from "./src/_components/XeblogConv.tsx";
 import XeblogHero from "./src/_components/XeblogHero.tsx";
 import XeblogPicture from "./src/_components/XeblogPicture.tsx";
@@ -75,6 +77,8 @@ site.use(mdx({
     "ChatBubble": ChatBubble,
     "Figure": Figure,
     "Image": Figure,
+    "LoadingSpinner": LoadingSpinner,
+    "TecharoDisclaimer": TecharoDisclaimer,
     "XeblogConv": XeblogConv,
     "XesiteConv": XeblogConv,
     "XeblogHero": XeblogHero,

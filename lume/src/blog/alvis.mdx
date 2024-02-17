@@ -11,36 +11,7 @@ hero:
   ai: "SCMix"
 ---
 
-export function ChatFrame({ children }) {
-  return (
-    <>
-      <div className="w-full space-y-4 p-4">{children}</div>
-    </>
-  );
-}
-
-export function ChatBubble({
-  reply = false,
-  bg = "blue-dark",
-  fg = "slate-50",
-  children,
-}) {
-  return (
-    <div className={`mx-auto w-full ${reply ? "" : "space-y-4"}`}>
-      <div className={`flex ${reply ? "justify-start" : "justify-end"}`}>
-        <div className={`flex w-11/12 ${reply ? "" : "flex-row-reverse"}`}>
-          <div
-            className={`relative max-w-xl rounded-xl ${
-              reply ? "rounded-tl-none" : "rounded-tr-none"
-            } bg-${bg} px-4 py-2`}
-          >
-            <span className={`font-medium text-${fg}`}>{children}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+<TecharoDisclaimer />
 
 Sleep. It's such a lovely feeling. The taste of total obliteration that comes when you hit the pillow. Jared was peacefully asleep and dreaming of a world much like his own. One with capitalism and money and all of the other problems that bother us all. In the blissful silence of his bedroom, he was at peace.
 

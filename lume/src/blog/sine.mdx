@@ -11,49 +11,7 @@ hero:
   prompt: "1girl, green hair, green eyes, tshirt, skirt, sneakers, san francisco, bridge, ahoge, round eyes, long hair, chromatic abberation"
 ---
 
-export function ChatFrame({ children }) {
-  return (
-    <>
-      <div className="w-full space-y-4 p-4">{children}</div>
-    </>
-  );
-}
-
-export function ChatBubble({
-  reply = false,
-  bg = "blue-dark",
-  fg = "slate-50",
-  children,
-}) {
-  return (
-    <div className={`mx-auto w-full ${reply ? "" : "space-y-4"}`}>
-      <div className={`flex ${reply ? "justify-start" : "justify-end"}`}>
-        <div className={`flex w-11/12 ${reply ? "" : "flex-row-reverse"}`}>
-          <div
-            className={`relative max-w-xl rounded-xl ${
-              reply ? "rounded-tl-none" : "rounded-tr-none"
-            } bg-${bg} px-4 py-2`}
-          >
-            <span className={`font-medium text-${fg}`}>{children}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function LoadingSpinner() {
-  return (
-    <div
-      class="inline-block mt-2 h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-      role="status"
-    >
-      <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-        Loading...
-      </span>
-    </div>
-  );
-}
+<TecharoDisclaimer />
 
 Jeff pulled out his phone to respond to an incoming notification. He was about to have his first appointment with his therapist. The company health plan had changed recently, so he was curious to see what the new therapist was like. He opened the app and saw a message from his therapist.
 
