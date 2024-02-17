@@ -8,6 +8,8 @@ import IconArmchair from "https://deno.land/x/tabler_icons_tsx@0.0.3/tsx/armchai
 
 export const layout = "bare.njk";
 export const title = "Alvis - Never get paged again";
+export const year = "2023";
+export const series = "techaro";
 
 export const Header = ({ active }) => {
   const menus = [
