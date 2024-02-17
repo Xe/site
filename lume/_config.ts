@@ -17,6 +17,8 @@ import readInfo from "lume/plugins/reading_info.ts";
 import tailwindOptions from "./tailwind.config.js";
 
 import BlockQuote from "./src/_components/BlockQuote.jsx";
+import ChatFrame from "./src/_components/ChatFrame.jsx";
+import ChatBubble from "./src/_components/ChatBubble.jsx";
 import Figure from "./src/_components/Figure.tsx";
 import XeblogConv from "./src/_components/XeblogConv.tsx";
 import XeblogHero from "./src/_components/XeblogHero.tsx";
@@ -69,6 +71,8 @@ site.use(feed({
 site.use(mdx({
   components: {
     "BlockQuote": BlockQuote,
+    "ChatFrame": ChatFrame,
+    "ChatBubble": ChatBubble,
     "Figure": Figure,
     "Image": Figure,
     "XeblogConv": XeblogConv,
