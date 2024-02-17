@@ -2,10 +2,11 @@
 title: The Surreal Horror of PAM
 date: 2021-11-09
 slides_link: https://cdn.xeiaso.net/file/christine-static/static/talks/surreal-horror-pam.pdf
+basename: ../surreal-horror-pam-2021-11-09
 tags:
- - alpinelinux
- - pam
- - satire
+  - alpinelinux
+  - pam
+  - satire
 ---
 
 <iframe width="1043" height="587" src="https://www.youtube.com/embed/INjCiHUIjgg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -137,15 +138,15 @@ Alpine Linux here because it is the simpler option for getting PAM to work and I
 really do not want to spend all day debugging PAM with gdb and strace on Ubuntu
 to demonstrate it with that. PAM has a few kinds of modules:
 
-* authentication, this is not just checking your password, but also making sure
+- authentication, this is not just checking your password, but also making sure
   that your account is allowed to be logged into and setting up things like your
   preferred login shell
-* account, the things that assign a user an account based on the circumstances
+- account, the things that assign a user an account based on the circumstances
   of their authentication or validate that somehow (this is also where an LDAP
   server would get thrown into the mix if you really hate yourself)
-* password, the things that check passwords or do other kinds of validation like
+- password, the things that check passwords or do other kinds of validation like
   that (if you want to use Google Authenticator TOTP codes, you’d do that here)
-* session, these things handle other system errata like making sure the
+- session, these things handle other system errata like making sure the
   message-of-the-day (MOTD) is shown when you log in or letting logind know
   about the session so it can make a cgroup for you
 

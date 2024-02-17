@@ -2,13 +2,19 @@
 title: "Making NixOS modules for fun and (hopefully) profit"
 date: 2023-09-15
 slides_link: https://drive.google.com/file/d/1h0Y8PUREuSrrSStmJMJ4MFHm0h53tf5a/view?usp=sharing
+basename: ../asg-2023-nixos
 tags:
- - nix
- - nixos
- - tailscale
+  - nix
+  - nixos
+  - tailscale
 ---
 
-<XeblogConv name="Cadey" mood="coffee" standalone>There was an A/V glitch with the recording, my slides were intended to be black and white, but they somehow came out as purple and green. This couldn't be fixed even when trying several HDMI cables. If this becomes an issue I may re-record this talk in my home studio.</XeblogConv>
+<XeblogConv name="Cadey" mood="coffee" standalone>
+  There was an A/V glitch with the recording, my slides were intended to be
+  black and white, but they somehow came out as purple and green. This couldn't
+  be fixed even when trying several HDMI cables. If this becomes an issue I may
+  re-record this talk in my home studio.
+</XeblogConv>
 
 <XeblogVideo path="talks/2023/asg-nixos/video/proper"></XeblogVideo>
 
@@ -297,7 +303,7 @@ in
 };
 ```
 
-We defined the devShell to build the program development. We defined the  package to build the software, and now we'll define the module to tell NixOS how to run the software. This is a basic NixOS module. It's defined inline to the flake for now, moving it to its own file is an exercise for the reader.
+We defined the devShell to build the program development. We defined the package to build the software, and now we'll define the module to tell NixOS how to run the software. This is a basic NixOS module. It's defined inline to the flake for now, moving it to its own file is an exercise for the reader.
 
 Like I said before, a NixOS module is a function that takes in the state of the world and returns new additions to the state of the world. This NixOS module provides some options under `xe.services.douglas-adams-quotes` and then if the module is enabled, it creates a new systemd service to run it in. We're in the future, so we can use fancy things like DynamicUser to avoid having to run this service as root.
 
@@ -360,7 +366,7 @@ Here's what the file looks like. I import nixos unstable, and then I create a ni
 }
 ```
 
-To make it import this, first we add a new input that points to the Douglas Adams quotes flake. This then gets threaded into the outputs function, we import the module, and finally enable it on the system. 
+To make it import this, first we add a new input that points to the Douglas Adams quotes flake. This then gets threaded into the outputs function, we import the module, and finally enable it on the system.
 
 (Pause)
 
@@ -389,7 +395,11 @@ tailscale funnel 443 on
 
 Get your phones out, I'm gonna be showing a QR Code:
 
-<XeblogConv name="Mara" mood="hacker" standalone>For those playing the Xe Iaso blog extended universe home game, visit [m85-kongir.shark-harmonic.ts.net](https://m85-kongir.shark-harmonic.ts.net) instead.</XeblogConv>
+<XeblogConv name="Mara" mood="hacker" standalone>
+  For those playing the Xe Iaso blog extended universe home game, visit
+  [m85-kongir.shark-harmonic.ts.net](https://m85-kongir.shark-harmonic.ts.net)
+  instead.
+</XeblogConv>
 
 Scan this QR code. You can trust me, right? It's not gonna be a Rick Roll. I'm not that mean. When you do, you'll connect to my VM on my laptop on the conference wifi, yet still exposed to the public internet.
 
@@ -421,8 +431,18 @@ Thanks again to the All Systems Go organizers for having me here and I hope you 
 
 There was a question about encrypted secrets in NixOS. I suggest using [agenix](https://github.com/ryantm/agenix) to have age-encrypted secrets in your NixOS configs. It has you encrypt things against SSH host public keys for your machines. It's a bit of a hack, but it works well enough that it's what I use in prod for my own stuff. This really needs to be solved upstream with proper handling of secret values at the Nix level.
 
-<XeblogConv name="Aoi" mood="wut">Why do you need to use something like agenix at all?</XeblogConv>
-<XeblogConv name="Mara" mood="hacker">Every file in `/nix/store` is world-readable. Depending on your threat model and if your NixOS configs are open source, this can be fine. If your threat model includes public NixOS configs, this becomes less fine; especially when CI is brought into the mix. You wouldn't want someone to figure out what your secrets are in your CI flow and then exfiltrate [Tailscale authkeys](https://tailscale.com/kb/1085/auth-keys/) or something, that could be bad!</XeblogConv>
+<XeblogConv name="Aoi" mood="wut">
+  Why do you need to use something like agenix at all?
+</XeblogConv>
+<XeblogConv name="Mara" mood="hacker">
+  Every file in `/nix/store` is world-readable. Depending on your threat model
+  and if your NixOS configs are open source, this can be fine. If your threat
+  model includes public NixOS configs, this becomes less fine; especially when
+  CI is brought into the mix. You wouldn't want someone to figure out what your
+  secrets are in your CI flow and then exfiltrate [Tailscale
+  authkeys](https://tailscale.com/kb/1085/auth-keys/) or something, that could
+  be bad!
+</XeblogConv>
 
 ---
 

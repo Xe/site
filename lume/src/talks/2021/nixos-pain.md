@@ -2,11 +2,12 @@
 title: How Nix and NixOS Get So Close to Perfect
 date: 2021-11-10
 slides_link: https://cdn.xeiaso.net/file/christine-static/static/talks/nixos-pain.pdf
+basename: ../nixos-pain-2021-11-10
 tags:
- - nix
- - nixos
- - docker
- - packagingcon
+  - nix
+  - nixos
+  - docker
+  - packagingcon
 ---
 
 ## Author's Note
@@ -319,7 +320,6 @@ documentation should cover how to get started, what you can do, and detailed
 documentation on every single thing that ships with NixOS by default. There
 should be no module in the library of modules without documentation on how to
 use it and an example or two of where you'd use some of the weirder options.
-
 
 <center>
   <picture>

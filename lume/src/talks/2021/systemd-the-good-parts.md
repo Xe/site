@@ -1,6 +1,7 @@
 ---
 title: "systemd: The Good Parts"
 date: 2021-05-16
+basename: ../systemd-the-good-parts-2021-05-16
 slides_link: https://docs.google.com/presentation/d/1a0XaGu87xUcpQQVLkrnXKoKrdpN1ObiPrG9aGYVMw7k/edit?usp=sharing
 ---
 
@@ -16,6 +17,7 @@ of material to cover and the notes are going to be on my website. I have been an
 Alpine user for almost a decade and it's one of my favorite linux distributions.
 
 The best things in life come with disclaimers and here are the disclaimers for this talk:
+
 - This talk may contain opinions. These opinions are my own and not necessarily
   the opinions of my employer.
 - This talk is not evangelism. This talk is intended to show how green the grass
@@ -72,7 +74,7 @@ questions:
 - What are the last few log lines?
 - If you need to reboot the server right now for some reason, will that service
   come back up on reboot?
-  
+
 ![](https://cdn.xeiaso.net/file/christine-static/blog/Screen+Shot+2021-05-11+at+23.02.15.png)
 
 systemd includes a tool called systemctl that allows you to query the status of
@@ -93,7 +95,7 @@ command for the service powering christine.website. So let's go down the list:
   those numbers aren't reflected here but it's actually much higher.
 - At the bottom we can see the last few log lines. These are just random
   requests that people make to my blog.
-  
+
 If you haven't seen all of this in action before you might be wondering
 something like "Wait, where did it get those logs from?"
 
@@ -126,17 +128,18 @@ deployments.
 
 Now there's at least four classes of benefits for systemd and I'm going to break
 them down into the following groups:
+
 - developers
 - packagers
 - system administrators
 - users
- 
+
 In general people that are developing services that run on systemd get the following benefits:
 
 - Predictability. systemd configuration files are declarative rather than
   imperative. You declare units instead of imperatively building up init
   scripts. Options are declared and enforced by the service manager. This makes
-  it a lot easier to review changes for correctness. 
+  it a lot easier to review changes for correctness.
 - Portability. when setting up a service with systemd there's only one syntax to
   learn across 15 plus different distributions. This means that you don't have
   to maintain a giant pile of hacks to make the program just start consistently
@@ -188,7 +191,7 @@ system administrators of systemd systems also get the following benefits:
   operator. systemd is set up so that it's hard to do the wrong thing. It is
   hard to have logs go anywhere but the system journal. It is hard to write a
   unit that doesn't tell you if the service is actually running or not. And it
-  makes it so that the path of least resistance will do most of what you want. 
+  makes it so that the path of least resistance will do most of what you want.
 - Sometimes system administrators have opinions that are different than the
   opinions of the packager. Sometimes you need to change environment variables
   for http proxies or something and sometimes you believe the packager has
@@ -219,6 +222,7 @@ system administrators of systemd systems also get the following benefits:
   incident response, so it is more difficult to have hidden dependencies.
 
 As far as users go:
+
 - systemd is not limited to just managing system level services systemd can also
   manage user services with systemd user mode. I use this on my Linux system in
   order to have a couple services running in the background querying for weather

@@ -1,6 +1,7 @@
 ---
 title: "Thinking Different"
 date: 2018-11-03
+basename: ../thinking-different-2018-11-03
 slides_link: https://cdn.xeiaso.net/file/christine-static/static/talks/thinking-different.pdf
 ---
 

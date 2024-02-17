@@ -1,12 +1,13 @@
 ---
 title: "[talk] The carcinization of Go programs"
 date: 2023-03-24
+basename: ../wazero-lightning-2023
 slides_link: https://drive.google.com/file/d/1ANxRJPzNeKbLogZz0wCH_o9E9jNLypja/view?usp=sharing
 tags:
- - wasm
- - wazero
- - rust
- - golang
+  - wasm
+  - wazero
+  - rust
+  - golang
 skip_ads: true
 ---
 
@@ -16,9 +17,10 @@ skip_ads: true
 
 ## Transcript
 
-<XeblogConv standalone name="Cadey" mood="enby">This is a lightning
-talk version of [this
-post](https://xeiaso.net/blog/carcinization-golang).</XeblogConv>
+<XeblogConv standalone name="Cadey" mood="enby">
+  This is a lightning talk version of [this
+  post](https://xeiaso.net/blog/carcinization-golang).
+</XeblogConv>
 
 <XeblogSlide name="2023/wazero-lightning/01" essential></XeblogSlide>
 
@@ -60,10 +62,11 @@ I bet you can guess where I'm going with this, I'm talking about the
 carcinization of Go programs via WebAssembly. This is how I snuck Rust
 into a Go shop.
 
-<XeblogConv name="Mara" mood="hacker">The "carcinization" refers to
-the evolutionary tendency of programs becoming either crabs or trees
-when time stretches to infinity. If you can imagine library use as
-evolution, then this joke makes more sense.</XeblogConv>
+<XeblogConv name="Mara" mood="hacker">
+  The "carcinization" refers to the evolutionary tendency of programs becoming
+  either crabs or trees when time stretches to infinity. If you can imagine
+  library use as evolution, then this joke makes more sense.
+</XeblogConv>
 
 <XeblogSlide name="2023/wazero-lightning/06"></XeblogSlide>
 
@@ -83,8 +86,10 @@ There was nothing off of the shelf to handle this in Go. I assume that
 this problem is fairly novel. Anything that was close to this just
 made atrocities out of the text in ways that I couldn't customize.
 
-<XeblogConv name="Aoi" mood="wut">I guess some solutions could be out
-there, but just locked in closed-source repos.</XeblogConv>
+<XeblogConv name="Aoi" mood="wut">
+  I guess some solutions could be out there, but just locked in closed-source
+  repos.
+</XeblogConv>
 
 <XeblogSlide name="2023/wazero-lightning/09"></XeblogSlide>
 
@@ -100,7 +105,7 @@ Rust.
 
 When I wrote this program, I made it in a fairly naiive way. I took
 HTML over standard input and had it spit out slackdown on standard
-output. 
+output.
 
 This idea just so happens to be one of the core parts of the Unix
 philosophy: programs should be filters that take input in one form and
@@ -143,7 +148,7 @@ I only found out existed about a week ago.
 And now this atrocity is shipped to production and holds together the
 Mastodon post announcement service. Most people aren't aware that it's
 a thing, and it runs fast enough that nobody really cares that it's a
-programming turducken of Go, Rust and WebAssembly. It works perfectly 
+programming turducken of Go, Rust and WebAssembly. It works perfectly
 and it wouldn't be possible without the efforts of the Wazero team.
 
 <XeblogSlide name="2023/wazero-lightning/16" essential></XeblogSlide>
