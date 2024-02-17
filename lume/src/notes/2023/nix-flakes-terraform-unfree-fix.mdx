@@ -1,6 +1,7 @@
 ---
 title: "How to fix terraform and nix flakes"
 date: 2023-10-27
+basename: ../../blog/notes/nix-flakes-terraform-unfree-fix
 tags:
   - nix
   - terraform
@@ -30,7 +31,7 @@ b) For `nixos-rebuild` you can set
    in configuration.nix to override this.
 
 Alternatively you can configure a predicate to allow specific packages:
-    { 
+    {
         nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
             "terraform"
         ];
