@@ -116,6 +116,10 @@ let descriptions
         , details = "Sections of my web novel Spellblade."
         }
       , Desc::{
+        , name = "techaro"
+        , details = "Stories about Techaro, the imaginary technology startup."
+      }
+      , Desc::{
         , name = "templeos"
         , details =
             "Articles about TempleOS, a public domain operating system for AMD64 computers."
