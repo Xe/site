@@ -18,7 +18,7 @@ export default ({ search, resume, notableProjects, contactLinks }, { date }) => 
                     />
                 </div>
                 <div className="convsnippet min-w-0 self-center">
-                    <p className="prose">
+                    <p className="">
                         I'm Xe Iaso, I'm a technical educator, <a href="/talks/">conference speaker</a>, <a href="https://twitch.tv/princessxen">twitch streamer</a>, vtuber, and philosopher that focuses on ways to help make technology easier to understand and do cursed things in the process. I live in {resume.location.city} with my husband and I do developer relations professionally. I am an avid writer for my <a href="/blog">blog</a>, where I have over 400 articles. I regularly experiment with new technologies and find ways to mash them up with old technologies for my own amusement.
                     </p>
                 </div>
