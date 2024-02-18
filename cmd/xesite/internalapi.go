@@ -36,7 +36,7 @@ func internalAPI(fs *lume.FS) {
 
 	mux.Handle(adminpb.AdminPathPrefix, adminpb.NewAdminServer(&AdminAPI{fs: fs}))
 
-	ln, err := net.Listen("tcp", ":80")
+	ln, err := net.Listen("tcp", *internalAPIBind)
 	if err != nil {
 		log.Fatal(err)
 	}

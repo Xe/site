@@ -26,6 +26,7 @@ var (
 	gitBranch           = flag.String("git-branch", "main", "Git branch to clone")
 	gitRepo             = flag.String("git-repo", "https://github.com/Xe/site", "Git repository to clone")
 	githubSecret        = flag.String("github-secret", "", "GitHub secret to use for webhooks")
+	internalAPIBind    = flag.String("internal-api-bind", ":3001", "Port to listen on for the internal API")
 	miToken             = flag.String("mi-token", "", "Token to use for the mi API")
 	patreonSaasProxyURL = flag.String("patreon-saasproxy-url", "http://xesite-patreon-saasproxy.flycast", "URL to use for the patreon saasproxy")
 	siteURL             = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")

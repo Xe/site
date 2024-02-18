@@ -17,22 +17,23 @@ DATA_DIR = "/data"
 GIT_BRANCH = "main"
 SITE_URL = "https://xeiaso.net/"
 PATH = "/bin"
+INTERNAL_API_BIND = ":80"
 
 [[services]]
-  internal_port = 3000
-  processes = ["app"]
-  protocol = "tcp"
+internal_port = 3000
+processes = ["app"]
+protocol = "tcp"
 
-  [services.concurrency]
-    hard_limit = 300
-    soft_limit = 250
-    type = "connections"
+[services.concurrency]
+hard_limit = 300
+soft_limit = 250
+type = "connections"
 
-  [[services.ports]]
-    force_https = true
-    handlers = ["http"]
-    port = 80
+[[services.ports]]
+force_https = true
+handlers = ["http"]
+port = 80
 
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
+[[services.ports]]
+handlers = ["tls", "http"]
+port = 443
