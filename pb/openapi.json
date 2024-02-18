@@ -1,0 +1,61 @@
+{
+  "components": {
+    "schemas": {
+      "xeiaso.net.BuildInfo": {
+        "properties": {
+          "build_time": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "commit": {
+            "type": "string"
+          },
+          "deno_version": {
+            "type": "string"
+          },
+          "go_version": {
+            "type": "string"
+          },
+          "xesite_version": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "xeiaso.net API",
+    "version": "0.1"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/xeiaso.net.Meta/Metadata": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/xeiaso.net.BuildInfo"
+                }
+              }
+            },
+            "description": "Success"
+          }
+        },
+        "summary": "Metadata"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://xeiaso.net"
+    }
+  ]
+}

@@ -30,27 +30,27 @@ import url "net/url"
 const _ = twirp.TwirpPackageMinVersion_8_1_0
 
 // ==============
-// Lume Interface
+// Meta Interface
 // ==============
 
-type Lume interface {
+type Meta interface {
 	Metadata(context.Context, *google_protobuf.Empty) (*BuildInfo, error)
 }
 
 // ====================
-// Lume Protobuf Client
+// Meta Protobuf Client
 // ====================
 
-type lumeProtobufClient struct {
+type metaProtobufClient struct {
 	client      HTTPClient
 	urls        [1]string
 	interceptor twirp.Interceptor
 	opts        twirp.ClientOptions
 }
 
-// NewLumeProtobufClient creates a Protobuf client that implements the Lume interface.
+// NewMetaProtobufClient creates a Protobuf client that implements the Meta interface.
 // It communicates using Protobuf and can be configured with a custom HTTPClient.
-func NewLumeProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Lume {
+func NewMetaProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Meta {
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -70,12 +70,12 @@ func NewLumeProtobufClient(baseURL string, client HTTPClient, opts ...twirp.Clie
 
 	// Build method URLs: <baseURL>[<prefix>]/<package>.<Service>/<Method>
 	serviceURL := sanitizeBaseURL(baseURL)
-	serviceURL += baseServicePath(pathPrefix, "xeiaso.net", "Lume")
+	serviceURL += baseServicePath(pathPrefix, "xeiaso.net", "Meta")
 	urls := [1]string{
 		serviceURL + "Metadata",
 	}
 
-	return &lumeProtobufClient{
+	return &metaProtobufClient{
 		client:      client,
 		urls:        urls,
 		interceptor: twirp.ChainInterceptors(clientOpts.Interceptors...),
@@ -83,9 +83,9 @@ func NewLumeProtobufClient(baseURL string, client HTTPClient, opts ...twirp.Clie
 	}
 }
 
-func (c *lumeProtobufClient) Metadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
+func (c *metaProtobufClient) Metadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net")
-	ctx = ctxsetters.WithServiceName(ctx, "Lume")
+	ctx = ctxsetters.WithServiceName(ctx, "Meta")
 	ctx = ctxsetters.WithMethodName(ctx, "Metadata")
 	caller := c.callMetadata
 	if c.interceptor != nil {
@@ -112,7 +112,7 @@ func (c *lumeProtobufClient) Metadata(ctx context.Context, in *google_protobuf.E
 	return caller(ctx, in)
 }
 
-func (c *lumeProtobufClient) callMetadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
+func (c *metaProtobufClient) callMetadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
 	out := new(BuildInfo)
 	ctx, err := doProtobufRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
@@ -130,19 +130,19 @@ func (c *lumeProtobufClient) callMetadata(ctx context.Context, in *google_protob
 }
 
 // ================
-// Lume JSON Client
+// Meta JSON Client
 // ================
 
-type lumeJSONClient struct {
+type metaJSONClient struct {
 	client      HTTPClient
 	urls        [1]string
 	interceptor twirp.Interceptor
 	opts        twirp.ClientOptions
 }
 
-// NewLumeJSONClient creates a JSON client that implements the Lume interface.
+// NewMetaJSONClient creates a JSON client that implements the Meta interface.
 // It communicates using JSON and can be configured with a custom HTTPClient.
-func NewLumeJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Lume {
+func NewMetaJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Meta {
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -162,12 +162,12 @@ func NewLumeJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOp
 
 	// Build method URLs: <baseURL>[<prefix>]/<package>.<Service>/<Method>
 	serviceURL := sanitizeBaseURL(baseURL)
-	serviceURL += baseServicePath(pathPrefix, "xeiaso.net", "Lume")
+	serviceURL += baseServicePath(pathPrefix, "xeiaso.net", "Meta")
 	urls := [1]string{
 		serviceURL + "Metadata",
 	}
 
-	return &lumeJSONClient{
+	return &metaJSONClient{
 		client:      client,
 		urls:        urls,
 		interceptor: twirp.ChainInterceptors(clientOpts.Interceptors...),
@@ -175,9 +175,9 @@ func NewLumeJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOp
 	}
 }
 
-func (c *lumeJSONClient) Metadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
+func (c *metaJSONClient) Metadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net")
-	ctx = ctxsetters.WithServiceName(ctx, "Lume")
+	ctx = ctxsetters.WithServiceName(ctx, "Meta")
 	ctx = ctxsetters.WithMethodName(ctx, "Metadata")
 	caller := c.callMetadata
 	if c.interceptor != nil {
@@ -204,7 +204,7 @@ func (c *lumeJSONClient) Metadata(ctx context.Context, in *google_protobuf.Empty
 	return caller(ctx, in)
 }
 
-func (c *lumeJSONClient) callMetadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
+func (c *metaJSONClient) callMetadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
 	out := new(BuildInfo)
 	ctx, err := doJSONRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
@@ -222,11 +222,11 @@ func (c *lumeJSONClient) callMetadata(ctx context.Context, in *google_protobuf.E
 }
 
 // ===================
-// Lume Server Handler
+// Meta Server Handler
 // ===================
 
-type lumeServer struct {
-	Lume
+type metaServer struct {
+	Meta
 	interceptor      twirp.Interceptor
 	hooks            *twirp.ServerHooks
 	pathPrefix       string // prefix for routing
@@ -234,10 +234,10 @@ type lumeServer struct {
 	jsonCamelCase    bool   // JSON fields are serialized as lowerCamelCase rather than keeping the original proto names
 }
 
-// NewLumeServer builds a TwirpServer that can be used as an http.Handler to handle
+// NewMetaServer builds a TwirpServer that can be used as an http.Handler to handle
 // HTTP requests that are routed to the right method in the provided svc implementation.
 // The opts are twirp.ServerOption modifiers, for example twirp.WithServerHooks(hooks).
-func NewLumeServer(svc Lume, opts ...interface{}) TwirpServer {
+func NewMetaServer(svc Meta, opts ...interface{}) TwirpServer {
 	serverOpts := newServerOpts(opts)
 
 	// Using ReadOpt allows backwards and forwards compatibility with new options in the future
@@ -250,8 +250,8 @@ func NewLumeServer(svc Lume, opts ...interface{}) TwirpServer {
 		pathPrefix = "/twirp" // default prefix
 	}
 
-	return &lumeServer{
-		Lume:             svc,
+	return &metaServer{
+		Meta:             svc,
 		hooks:            serverOpts.Hooks,
 		interceptor:      twirp.ChainInterceptors(serverOpts.Interceptors...),
 		pathPrefix:       pathPrefix,
@@ -262,12 +262,12 @@ func NewLumeServer(svc Lume, opts ...interface{}) TwirpServer {
 
 // writeError writes an HTTP response with a valid Twirp error format, and triggers hooks.
 // If err is not a twirp.Error, it will get wrapped with twirp.InternalErrorWith(err)
-func (s *lumeServer) writeError(ctx context.Context, resp http.ResponseWriter, err error) {
+func (s *metaServer) writeError(ctx context.Context, resp http.ResponseWriter, err error) {
 	writeError(ctx, resp, err, s.hooks)
 }
 
 // handleRequestBodyError is used to handle error when the twirp server cannot read request
-func (s *lumeServer) handleRequestBodyError(ctx context.Context, resp http.ResponseWriter, msg string, err error) {
+func (s *metaServer) handleRequestBodyError(ctx context.Context, resp http.ResponseWriter, msg string, err error) {
 	if context.Canceled == ctx.Err() {
 		s.writeError(ctx, resp, twirp.NewError(twirp.Canceled, "failed to read request: context canceled"))
 		return
@@ -279,16 +279,16 @@ func (s *lumeServer) handleRequestBodyError(ctx context.Context, resp http.Respo
 	s.writeError(ctx, resp, twirp.WrapError(malformedRequestError(msg), err))
 }
 
-// LumePathPrefix is a convenience constant that may identify URL paths.
+// MetaPathPrefix is a convenience constant that may identify URL paths.
 // Should be used with caution, it only matches routes generated by Twirp Go clients,
 // with the default "/twirp" prefix and default CamelCase service and method names.
 // More info: https://twitchtv.github.io/twirp/docs/routing.html
-const LumePathPrefix = "/twirp/xeiaso.net.Lume/"
+const MetaPathPrefix = "/twirp/xeiaso.net.Meta/"
 
-func (s *lumeServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+func (s *metaServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net")
-	ctx = ctxsetters.WithServiceName(ctx, "Lume")
+	ctx = ctxsetters.WithServiceName(ctx, "Meta")
 	ctx = ctxsetters.WithResponseWriter(ctx, resp)
 
 	var err error
@@ -306,7 +306,7 @@ func (s *lumeServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 
 	// Verify path format: [<prefix>]/<package>.<Service>/<Method>
 	prefix, pkgService, method := parseTwirpPath(req.URL.Path)
-	if pkgService != "xeiaso.net.Lume" {
+	if pkgService != "xeiaso.net.Meta" {
 		msg := fmt.Sprintf("no handler for path %q", req.URL.Path)
 		s.writeError(ctx, resp, badRouteError(msg, req.Method, req.URL.Path))
 		return
@@ -328,7 +328,7 @@ func (s *lumeServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (s *lumeServer) serveMetadata(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *metaServer) serveMetadata(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	header := req.Header.Get("Content-Type")
 	i := strings.Index(header, ";")
 	if i == -1 {
@@ -346,7 +346,7 @@ func (s *lumeServer) serveMetadata(ctx context.Context, resp http.ResponseWriter
 	}
 }
 
-func (s *lumeServer) serveMetadataJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *metaServer) serveMetadataJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx = ctxsetters.WithMethodName(ctx, "Metadata")
 	ctx, err = callRequestRouted(ctx, s.hooks)
@@ -368,7 +368,7 @@ func (s *lumeServer) serveMetadataJSON(ctx context.Context, resp http.ResponseWr
 		return
 	}
 
-	handler := s.Lume.Metadata
+	handler := s.Meta.Metadata
 	if s.interceptor != nil {
 		handler = func(ctx context.Context, req *google_protobuf.Empty) (*BuildInfo, error) {
 			resp, err := s.interceptor(
@@ -377,7 +377,7 @@ func (s *lumeServer) serveMetadataJSON(ctx context.Context, resp http.ResponseWr
 					if !ok {
 						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
 					}
-					return s.Lume.Metadata(ctx, typedReq)
+					return s.Meta.Metadata(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
@@ -429,7 +429,7 @@ func (s *lumeServer) serveMetadataJSON(ctx context.Context, resp http.ResponseWr
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *lumeServer) serveMetadataProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *metaServer) serveMetadataProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx = ctxsetters.WithMethodName(ctx, "Metadata")
 	ctx, err = callRequestRouted(ctx, s.hooks)
@@ -449,7 +449,7 @@ func (s *lumeServer) serveMetadataProtobuf(ctx context.Context, resp http.Respon
 		return
 	}
 
-	handler := s.Lume.Metadata
+	handler := s.Meta.Metadata
 	if s.interceptor != nil {
 		handler = func(ctx context.Context, req *google_protobuf.Empty) (*BuildInfo, error) {
 			resp, err := s.interceptor(
@@ -458,7 +458,7 @@ func (s *lumeServer) serveMetadataProtobuf(ctx context.Context, resp http.Respon
 					if !ok {
 						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
 					}
-					return s.Lume.Metadata(ctx, typedReq)
+					return s.Meta.Metadata(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
@@ -508,19 +508,19 @@ func (s *lumeServer) serveMetadataProtobuf(ctx context.Context, resp http.Respon
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *lumeServer) ServiceDescriptor() ([]byte, int) {
+func (s *metaServer) ServiceDescriptor() ([]byte, int) {
 	return twirpFileDescriptor0, 0
 }
 
-func (s *lumeServer) ProtocGenTwirpVersion() string {
+func (s *metaServer) ProtocGenTwirpVersion() string {
 	return "v8.1.3"
 }
 
 // PathPrefix returns the base service path, in the form: "/<prefix>/<package>.<Service>/"
 // that is everything in a Twirp route except for the <Method>. This can be used for routing,
 // for example to identify the requests that are targeted to this service in a mux.
-func (s *lumeServer) PathPrefix() string {
-	return baseServicePath(s.pathPrefix, "xeiaso.net", "Lume")
+func (s *metaServer) PathPrefix() string {
+	return baseServicePath(s.pathPrefix, "xeiaso.net", "Meta")
 }
 
 // =====
@@ -1089,21 +1089,22 @@ func callClientError(ctx context.Context, h *twirp.ClientHooks, err twirp.Error)
 }
 
 var twirpFileDescriptor0 = []byte{
-	// 246 bytes of a gzipped FileDescriptorProto
+	// 258 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x64, 0x90, 0xc1, 0x4a, 0xc3, 0x40,
-	0x10, 0x86, 0x89, 0x96, 0x62, 0xa6, 0x3d, 0xc8, 0x80, 0x25, 0x44, 0xc4, 0xea, 0xa9, 0xa7, 0x0d,
-	0x54, 0x2f, 0x3d, 0x5a, 0xf0, 0x20, 0xe8, 0xa5, 0x88, 0x07, 0x2f, 0x65, 0x63, 0xa6, 0x61, 0xa1,
-	0x9b, 0x09, 0xcd, 0xa4, 0xd4, 0xb7, 0xf1, 0x51, 0x65, 0x77, 0x1b, 0x03, 0xf6, 0x38, 0xff, 0x7c,
-	0xf3, 0x2d, 0xff, 0xc2, 0xf8, 0x40, 0x8d, 0x11, 0x52, 0xf5, 0x8e, 0x85, 0x11, 0x0e, 0x64, 0x74,
-	0xc3, 0xaa, 0x22, 0x49, 0xaf, 0x4b, 0xe6, 0x72, 0x4b, 0x99, 0xdf, 0xe4, 0xed, 0x26, 0x23, 0x5b,
-	0xcb, 0x77, 0x00, 0xd3, 0xdb, 0xff, 0x4b, 0x31, 0x96, 0x1a, 0xd1, 0xb6, 0x0e, 0xc0, 0xfd, 0x4f,
-	0x04, 0xf1, 0xb2, 0x35, 0xdb, 0xe2, 0xa5, 0xda, 0x30, 0x4e, 0x60, 0xf8, 0xc5, 0xd6, 0x1a, 0x49,
-	0xa2, 0x69, 0x34, 0x8b, 0x57, 0xc7, 0x09, 0x17, 0x00, 0xb9, 0x83, 0xd6, 0xee, 0x3c, 0x39, 0x9b,
-	0x46, 0xb3, 0xd1, 0x3c, 0x55, 0xc1, 0xad, 0x3a, 0xb7, 0x7a, 0xef, 0xdc, 0xab, 0xd8, 0xd3, 0x6e,
-	0xc6, 0x1b, 0x80, 0x92, 0xd7, 0x7b, 0xda, 0x35, 0x86, 0xab, 0xe4, 0xdc, 0x6b, 0xe3, 0x92, 0x3f,
-	0x42, 0x80, 0x77, 0x30, 0x2e, 0xa8, 0xea, 0x81, 0x81, 0x07, 0x46, 0x2e, 0x3b, 0x22, 0xf3, 0x27,
-	0x18, 0xbc, 0xb6, 0x96, 0x70, 0x01, 0x17, 0x6f, 0x24, 0xba, 0xd0, 0xa2, 0x71, 0x72, 0xf2, 0xf8,
-	0xb3, 0x6b, 0x9d, 0x5e, 0xa9, 0xfe, 0x67, 0xd4, 0x5f, 0xaf, 0x25, 0x7e, 0x5e, 0xf6, 0x79, 0xb6,
-	0x7f, 0xcc, 0xea, 0x3c, 0x1f, 0xfa, 0xd3, 0x87, 0xdf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x93, 0x4b,
-	0xaa, 0x5a, 0x5a, 0x01, 0x00, 0x00,
+	0x10, 0x86, 0x89, 0xd6, 0x62, 0xa6, 0x55, 0x64, 0xc1, 0x12, 0x22, 0x62, 0x15, 0x84, 0x9e, 0x36,
+	0x50, 0xbd, 0xf4, 0x68, 0xc1, 0x83, 0x07, 0x2f, 0x45, 0x3c, 0x78, 0x29, 0x1b, 0x33, 0x0d, 0x0b,
+	0xdd, 0x4c, 0xe8, 0x4e, 0x4b, 0x7d, 0x42, 0x5f, 0x4b, 0x76, 0xb7, 0x49, 0xc0, 0x9e, 0x96, 0xf9,
+	0xe7, 0x9b, 0x8f, 0x9d, 0x81, 0xe1, 0x1e, 0xad, 0x66, 0x94, 0xf5, 0x86, 0x98, 0x04, 0xec, 0x51,
+	0x2b, 0x4b, 0xb2, 0x42, 0x4e, 0x6f, 0x4a, 0xa2, 0x72, 0x8d, 0x99, 0xef, 0xe4, 0xdb, 0x55, 0x86,
+	0xa6, 0xe6, 0x9f, 0x00, 0xa6, 0x77, 0xff, 0x9b, 0xac, 0x0d, 0x5a, 0x56, 0xa6, 0x0e, 0xc0, 0xc3,
+	0x6f, 0x04, 0xf1, 0x7c, 0xab, 0xd7, 0xc5, 0x5b, 0xb5, 0x22, 0x31, 0x82, 0xfe, 0x37, 0x19, 0xa3,
+	0x39, 0x89, 0xc6, 0xd1, 0x24, 0x5e, 0x1c, 0x2a, 0x31, 0x03, 0xc8, 0x1d, 0xb4, 0x74, 0xe3, 0xc9,
+	0xc9, 0x38, 0x9a, 0x0c, 0xa6, 0xa9, 0x0c, 0x6e, 0xd9, 0xb8, 0xe5, 0x47, 0xe3, 0x5e, 0xc4, 0x9e,
+	0x76, 0xb5, 0xb8, 0x05, 0x28, 0x69, 0xb9, 0xc3, 0x8d, 0xd5, 0x54, 0x25, 0xa7, 0x5e, 0x1b, 0x97,
+	0xf4, 0x19, 0x02, 0x71, 0x0f, 0xc3, 0x02, 0xab, 0x0e, 0xe8, 0x79, 0x60, 0xe0, 0xb2, 0x06, 0x79,
+	0x84, 0xcb, 0xb0, 0x7c, 0x0b, 0x9d, 0x79, 0xe8, 0x22, 0xa4, 0x07, 0x6c, 0xfa, 0x02, 0xbd, 0x77,
+	0x64, 0x25, 0x66, 0x70, 0xee, 0xde, 0x42, 0xb1, 0x12, 0xa3, 0xa3, 0x3f, 0xbe, 0xba, 0xe3, 0xa4,
+	0xd7, 0xb2, 0x3b, 0xa0, 0x6c, 0xd7, 0x9f, 0x8b, 0xaf, 0xab, 0x2e, 0xcf, 0x76, 0xcf, 0x59, 0x9d,
+	0xe7, 0x7d, 0x3f, 0xfa, 0xf4, 0x17, 0x00, 0x00, 0xff, 0xff, 0xdc, 0x61, 0x9c, 0x09, 0x81, 0x01,
+	0x00, 0x00,
 }

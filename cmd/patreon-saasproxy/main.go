@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/base64"
-	"encoding/json"
 	"flag"
 	"log"
 	"log/slog"
@@ -14,6 +13,7 @@ import (
 
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/twitchtv/twirp"
 	"golang.org/x/oauth2"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -80,8 +80,6 @@ func main() {
 		cts: cts,
 	}
 
-	http.HandleFunc("/give-token", s.GiveToken)
-
 	ph := adminpb.NewPatreonServer(s)
 	http.Handle(adminpb.PatreonPathPrefix, ph)
 
@@ -104,7 +102,7 @@ func (s *Server) GetToken(ctx context.Context, _ *emptypb.Empty) (*adminpb.Patre
 	token, err := s.cts.Token()
 	if err != nil {
 		slog.Error("token fetch failed", "err", err)
-		return nil, err
+		return nil, twirp.InternalErrorWith(err)
 	}
 
 	return &adminpb.PatreonToken{
@@ -113,20 +111,4 @@ func (s *Server) GetToken(ctx context.Context, _ *emptypb.Empty) (*adminpb.Patre
 		RefreshToken: token.RefreshToken,
 		Expiry:       timestamppb.New(token.Expiry),
 	}, nil
-}
-
-func (s *Server) GiveToken(w http.ResponseWriter, r *http.Request) {
-	token, err := s.cts.Token()
-	if err != nil {
-		slog.Error("token fetch failed", "err", err)
-		http.Error(w, "token fetch failed", http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-
-	if err := json.NewEncoder(w).Encode(token); err != nil {
-		slog.Error("token encode failed", "err", err)
-		return
-	}
 }

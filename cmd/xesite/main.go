@@ -13,8 +13,10 @@ import (
 	"github.com/donatj/hmacsig"
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/twitchtv/twirp"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
+	"xeiaso.net/v4/pb"
 )
 
 var (
@@ -77,6 +79,10 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.FS(fs)))
+	mux.Handle("/api/defs/", http.StripPrefix("/api/defs/", http.FileServer(http.FS(pb.Proto))))
+
+	ms := pb.NewMetaServer(&MetaServer{fs}, twirp.WithServerPathPrefix("/api"))
+	mux.Handle(ms.PathPrefix(), ms)
 
 	mux.HandleFunc("/blog.atom", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/blog.rss", http.StatusMovedPermanently)

@@ -13,6 +13,9 @@ schema = 3
   [mod."github.com/bep/debounce"]
     version = "v1.2.1"
     hash = "sha256-7qHOp4vB0ifEseXXBuSH6W5YNImVcb8PTWSJJAMaGcU="
+  [mod."github.com/blockthrough/twirp-openapi-gen"]
+    version = "v0.0.0-20231107141308-45a52eb7d856"
+    hash = "sha256-i0K4rM/A36eTIG86zibtaA40WoT2M+ptReRCDy+EYGs="
   [mod."github.com/cloudflare/circl"]
     version = "v1.3.7"
     hash = "sha256-AkOpcZ+evLxLJStvvr01+TLeWDqcLxY3e/AhGggzh40="
@@ -22,6 +25,9 @@ schema = 3
   [mod."github.com/donatj/hmacsig"]
     version = "v1.1.0"
     hash = "sha256-/T7mWqQwZt+AFD/2QAYCAW/TsZptawFMl8CGWPmyhtE="
+  [mod."github.com/emicklei/proto"]
+    version = "v1.11.2"
+    hash = "sha256-1j9oAuZbq5F+eY0emvivv4G/46YRoL/QzqwomuFElsw="
   [mod."github.com/emirpasic/gods"]
     version = "v1.18.1"
     hash = "sha256-hGDKddjLj+5dn2woHtXKUdd49/3xdsqnhx7VEdCu1m4="
@@ -34,6 +40,9 @@ schema = 3
   [mod."github.com/facebookgo/subset"]
     version = "v0.0.0-20200203212716-c811ad88dec4"
     hash = "sha256-oBhWz9Haw/ZuqJofQ7psThNrr1f6GHHgxq8agev7TOo="
+  [mod."github.com/getkin/kin-openapi"]
+    version = "v0.120.0"
+    hash = "sha256-x5BjdRncVOy3t7HqmA6IwfYDg/xy3BsGjFawrnrXcko="
   [mod."github.com/go-faker/faker/v4"]
     version = "v4.3.0"
     hash = "sha256-Y70kJJAMfQ6CBvZO+28gpKGSni/EFMNIGKUzc299Sss="
@@ -46,21 +55,42 @@ schema = 3
   [mod."github.com/go-git/go-git/v5"]
     version = "v5.11.0"
     hash = "sha256-2yUM/FlV+nYxacVynJCnDZeMub4Iu8JL2WBHmlnwOkE="
+  [mod."github.com/go-openapi/jsonpointer"]
+    version = "v0.20.0"
+    hash = "sha256-31YT6a8u7adrtEOV62066BrrNfPT5kg5uUUo9ULW0Qk="
+  [mod."github.com/go-openapi/swag"]
+    version = "v0.22.4"
+    hash = "sha256-a3iJF2d9pJVTBMNpxWIOA8S1+qTbQQ+ToFcXypQ5Tec="
   [mod."github.com/golang/groupcache"]
     version = "v0.0.0-20210331224755-41bb18bfe9da"
     hash = "sha256-7Gs7CS9gEYZkbu5P4hqPGBpeGZWC64VDwraSKFF+VR0="
   [mod."github.com/golang/protobuf"]
     version = "v1.5.3"
     hash = "sha256-svogITcP4orUIsJFjMtp+Uv1+fKJv2Q5Zwf2dMqnpOQ="
+  [mod."github.com/invopop/yaml"]
+    version = "v0.2.0"
+    hash = "sha256-RxeDuvwOSWYaLc8Q7T39rfFT3bZX3g9Bu0RFwxH6sLw="
   [mod."github.com/jbenet/go-context"]
     version = "v0.0.0-20150711004518-d14ea06fba99"
     hash = "sha256-VANNCWNNpARH/ILQV9sCQsBWgyL2iFT+4AHZREpxIWE="
   [mod."github.com/joho/godotenv"]
     version = "v1.5.1"
     hash = "sha256-kA0osKfsc6Kp+nuGTRJyXZZlJt1D/kuEazKMWYCWcQ8="
+  [mod."github.com/josharian/intern"]
+    version = "v1.0.0"
+    hash = "sha256-LJR0QE2vOQ2/2shBbO5Yl8cVPq+NFrE3ers0vu9FRP0="
   [mod."github.com/kevinburke/ssh_config"]
     version = "v1.2.0"
     hash = "sha256-Ta7ZOmyX8gG5tzWbY2oES70EJPfI90U7CIJS9EAce0s="
+  [mod."github.com/mailru/easyjson"]
+    version = "v0.7.7"
+    hash = "sha256-NVCz8MURpxgOjHXqxOZExqV4bnpHggpeAOyZDArjcy4="
+  [mod."github.com/mohae/deepcopy"]
+    version = "v0.0.0-20170929034955-c48cc78d4826"
+    hash = "sha256-TQMmKqIYwVhmMVh4RYQkAui97Eyj7poLmcAuDcHXsEk="
+  [mod."github.com/perimeterx/marshmallow"]
+    version = "v1.1.5"
+    hash = "sha256-fFWjg0FNohDSV0/wUjQ8fBq1g8h6yIqTrHkxqL2Tt0s="
   [mod."github.com/pjbgf/sha1cd"]
     version = "v0.3.0"
     hash = "sha256-kX9BdLh2dxtGNaDvc24NORO+C0AZ7JzbrXrtecCdB7w="
@@ -115,6 +145,9 @@ schema = 3
   [mod."gopkg.in/warnings.v0"]
     version = "v0.1.2"
     hash = "sha256-ATVL9yEmgYbkJ1DkltDGRn/auGAjqGOfjQyBYyUo8s8="
+  [mod."gopkg.in/yaml.v3"]
+    version = "v3.0.1"
+    hash = "sha256-FqL9TKYJ0XkNwJFnq9j0VvJ5ZUU1RvH/52h/f5bkYAU="
   [mod."tailscale.com"]
     version = "v1.58.2"
     hash = "sha256-ok+xgZRbFkQcH9VR75bhHx+bRn8ymoYQeBYsMpvfGss="

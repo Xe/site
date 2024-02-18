@@ -69,6 +69,8 @@ type FS struct {
 
 	fs   fs.FS
 	lock sync.Mutex
+
+	lastBuildTime time.Time
 }
 
 func (f *FS) Close() error {
@@ -84,6 +86,27 @@ func (f *FS) Close() error {
 	}
 
 	return nil
+}
+
+func (f *FS) Commit() (string, error) {
+	f.lock.Lock()
+	defer f.lock.Unlock()
+
+	commit, err := f.repo.Head()
+	if err != nil {
+		return "", fmt.Errorf("lume: can't get head: %w", err)
+	}
+
+	result := commit.Hash().String()
+
+	return result, nil
+}
+
+func (f *FS) BuildTime() time.Time {
+	f.lock.Lock()
+	defer f.lock.Unlock()
+
+	return f.lastBuildTime
 }
 
 func (f *FS) Open(name string) (fs.File, error) {
@@ -205,6 +228,7 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 			}
 		}()
 	}
+	fs.lastBuildTime = time.Now()
 
 	return fs, nil
 }
