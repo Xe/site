@@ -11,6 +11,8 @@ import postcss from "lume/plugins/postcss.ts";
 import sitemap from "lume/plugins/sitemap.ts";
 import readInfo from "lume/plugins/reading_info.ts";
 
+import annotateYear from "./plugins/annotate_year.ts";
+
 //import pagefind from "lume/plugins/pagefind.ts";
 //import _ from "npm:@pagefind/linux-x64";
 
@@ -103,10 +105,6 @@ site.use(sitemap({
 site.use(readInfo({
   extensions: [".md", ".mdx"],
 }));
-site.preprocess([".html"], (pages) => {
-  for (const page of pages) {
-    page.data.year = page.data.date.getFullYear();
-  }
-});
+site.use(annotateYear());
 
 export default site;

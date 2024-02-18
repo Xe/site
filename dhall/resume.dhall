@@ -47,12 +47,6 @@ in  Resume::{
             "The release post for Palisade, a tool to automate version bumping, release tagging and more."
         }
       , Link::{
-        , url = "https://tailscale.com/blog/steam-deck/"
-        , title = "Putting Tailscale on the Steam Deck"
-        , description =
-            "An engineering log of all the steps taken to run Tailscale on the Valve Steam Deck and the tradeoffs between the various methods you could use to do this."
-        }
-      , Link::{
         , url = "https://tailscale.com/blog/magicdns-why-name/"
         , title = "An epic treatise on DNS, magical and otherwise"
         , description =
@@ -70,6 +64,12 @@ in  Resume::{
         , title = "Using Tailscale without Using Tailscale"
         , description =
             "An award-winning April Fools Day post describing how you can use Tailscale via Headscale via Tailscale Funnel. This post is notable for demonstrating all five of the Tailscale company values at the same time."
+        }
+      , Link::{
+        , url = "https://fly.io/blog/how-i-fly/"
+        , title = "How I Fly"
+        , description =
+            "A post about how I use Fly.io to host my personal website and its supporting infrastructure."
         }
       ]
     }
