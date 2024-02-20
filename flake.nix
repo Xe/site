@@ -53,14 +53,14 @@
       (system:
       let
         graft = pkgs: pkg:
-          pkg.override { buildGoModule = pkgs.buildGo121Module; };
+          pkg.override { buildGoModule = pkgs.buildGo122Module; };
         pkgs = import nixpkgs {
           inherit system;
           overlays = [
             deno2nix.overlays.default
             typst.overlays.default
             (final: prev: {
-              go = prev.go_1_21;
+              go = prev.go_1_22;
               go-tools = graft prev prev.go-tools;
               gotools = graft prev prev.gotools;
               gopls = graft prev prev.gopls;
