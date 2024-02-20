@@ -59,7 +59,7 @@ export default ({ search, resume, notableProjects, contactLinks }, { date }) => 
             <ul class="list-disc ml-4 mb-4">
                 {contactLinks.map((link) => (
                     <li>
-                        <a rel="me" target="_blank" href="{link.url}">{link.title}</a>
+                        <a rel="me" target="_blank" href={link.url}>{link.title}</a>
                     </li>
                 ))}
             </ul>
