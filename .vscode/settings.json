@@ -32,5 +32,6 @@
   },
   "protoc": {
     "options": ["--proto_path=pb", "--proto_path=internal/adminpb"]
-  }
+  },
+  "nixEnvSelector.nixFile": "${workspaceFolder}/flake.nix"
 }
