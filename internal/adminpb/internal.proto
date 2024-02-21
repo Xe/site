@@ -1,5 +1,5 @@
 syntax = "proto3";
-package xeiaso.net.internal.admin;
+package xeiaso.net.internal;
 option go_package = "xeiaso.net/v4/internal/adminpb";
 
 import "google/protobuf/empty.proto";
