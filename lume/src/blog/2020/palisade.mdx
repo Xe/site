@@ -1,0 +1,157 @@
+---
+title: "Palisade: Version Bumping at Scale in CI"
+date: 2020-09-14
+---
+
+<XeblogConv name="Cadey" mood="enby">
+This post was originally available on the LightspeedHQ Tech blog. That
+blog has since been discontinued. Should you want to read the post in
+its original form, it is available on
+[archive.org](https://web.archive.org/web/20210318102148/https://tech.lightspeedhq.com/palisade-version-bumping-at-scale-in-ci/).
+This version of the post is archived here for posterity.
+</XeblogConv>
+
+Traditionally, software release processes are done manually and can be
+difficult to integrate into review processes. At Lightspeed, we
+created [Palisade](https://github.com/lightspeed/palisade) to solve
+this problem. Palisade moves version and release information from
+repository metadata into the repository itself so that is easier to
+review and approve. Palisade is open-source software released under
+the MIT license and can be used by anyone that wants to do version
+bumping as a part of their CI processes.
+
+## CHANGELOG.md and VERSION Files
+
+Palisade works by reading two files in the root of your repository:
+
+* A [`CHANGELOG.md`](https://keepachangelog.com/en/1.0.0/) file that
+  describes the changes made to the program
+* A `VERSION` file that contains the current version of the program
+  (ideally following [semantic versioning](https://semver.org/))
+
+Every time Palisade is run, it will check the git repository for
+version tags based on the contents of the `VERSION` file. If it finds
+that the current version has already been tagged, Palisade will do
+nothing and exit with the exit code 0. If Palisade finds that there is
+a new release, the software will then read the changelog file, scrape
+it for release notes, then use those release notes when creating a new
+release on GitHub.
+
+As an example, here is a fragment of [Palisade’s
+changelog](https://github.com/lightspeed/palisade/blob/master/CHANGELOG.md)
+and the release that was created on GitHub:
+
+```markdown
+## 0.4.0
+
+Tag names were incorrectly generated. Before they were the version
+numbers, but now they are `v${VERSION}`. This should fix compatibility
+issues with Go modules.
+
+An end-to-end test has been fixed as well.
+```
+
+This changelog fragment was scraped out and used as the release notes
+for [this
+release](https://github.com/lightspeed/palisade/releases/tag/v0.4.0).
+
+## Setup
+
+There is more up-to-date detail here, but at a high level you need to
+do the following things:
+
+* Set up a CHANGELOG.md file
+* Set up a VERSION file
+* Commit these files to your repository
+* Create a GitHub token with the `repo` permission
+* Be sure the user associated with that GitHub token has Maintain
+  permissions on the repository
+* Add this token to your CI configuration (use secrets when possible)
+* Add CI configuration
+* Push this all to your repository
+* Test a version bump
+* Sit back and relax
+
+### Version Bump Flow
+
+To release a new version of a program, first update the version file
+to the desired version. Open the `VERSION` file with your favorite
+text editor and replace:
+
+```
+0.1.0
+```
+
+with:
+
+```
+0.2.0
+```
+
+Then, update the changelog file with the changes in that version. For
+example if version `0.2.0` added the ability to interface with clients
+using GraphQL, you could add this to your `CHANGELOG.md`:
+
+```markdown
+## 0.2.0
+
+### ADDED
+
+- Exposed GraphQL API for customers and internal integrators
+
+### FIXED
+
+- Solved WAT-2392 which previously prevented users from being able to
+  refrobnicate already frobnicated strings when using the secret
+  management API.
+```
+
+When Palisade runs, it will load the contents of the `VERSION` file
+and compare it to the list of git tags in the repo. If that version
+tag is not found, then it will create a new GitHub release with the
+changelog entry for the new version. Palisade will never re-tag
+releases, so it will do nothing if you make a commit without changing
+the current version number.
+
+When Palisade processes the above changelog, it would create a release
+for tag `v0.2.0` with the following notes:
+
+```markdown
+### ADDED
+
+- Exposed GraphQL API for customers and internal integrators
+
+### FIXED
+
+- Solved WAT-2392 which previously prevented users from being able to
+  refrobnicate already frobnicated strings when using the secret
+  management API.
+```
+
+## Architecture
+
+Palisade is written in Rust and uses Nix to build Docker images. Rust
+allowed this project to be developed incredibly quickly and Nix makes
+the built Docker image as small as possible (16 megabytes or so when
+gzipped).
+
+One of the biggest problems that came up during development was the
+fact that the existing GitHub API clients were outdated and
+insufficient for our needs. Thanks to the hard work done by the team
+behind reqwest, it was easy for us to create a minimal wrapper around
+the parts of the GitHub API that Palisade requires, and we’ve exposed
+it for reuse. If you want to use this library in your Rust projects,
+add the following to your `Cargo.toml` file:
+
+```ini
+[dependencies.github]
+git = "https://github.com/lightspeed/palisade"
+```
+
+---
+
+To find out more about Palisade, check out its repo at
+[github.com/lightspeed/palisade](https://github.com/lightspeed/palisade).
+We welcome feedback and contributions. If you run into any problems,
+please be sure to let us know and we can help resolve them and correct
+any documentation that leads you down the wrong path.
