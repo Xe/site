@@ -11,6 +11,3 @@ func init() {}
 
 //go:embed xesite.proto openapi.json external/*.proto
 var Proto embed.FS
-
-//go:embed openapi.json
-var APISpec []byte

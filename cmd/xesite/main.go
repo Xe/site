@@ -11,7 +11,6 @@ import (
 	"path/filepath"
 
 	"github.com/donatj/hmacsig"
-	swaggerui "github.com/esceer/todo/swagger-ui"
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/twitchtv/twirp"
@@ -82,7 +81,6 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.FS(fs)))
 	mux.Handle("/api/defs/", http.StripPrefix("/api/defs/", http.FileServer(http.FS(pb.Proto))))
-	mux.Handle("/api/ui/", http.StripPrefix("/api/ui", swaggerui.Handler(pb.APISpec)))
 
 	ms := pb.NewMetaServer(&MetaServer{fs}, twirp.WithServerPathPrefix("/api"))
 	mux.Handle(ms.PathPrefix(), ms)
