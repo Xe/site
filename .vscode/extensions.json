@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "unifiedjs.vscode-mdx",
-    "golang.go",
     "bbenoist.nix",
     "jnoortheen.nix-ide",
     "dhall.dhall-lang",

@@ -18,6 +18,7 @@ const (
 	googleListValueType = "google.protobuf.ListValue"
 	googleStructType    = "google.protobuf.Struct"
 	googleValueType     = "google.protobuf.Value"
+	googleEmptyType     = "google.protobuf.Empty"
 
 	googleMoneyType = "google.type.Money"
 )
@@ -92,40 +93,41 @@ func (gen *generator) RPC(rpc *proto.RPC) {
 	var reqMediaType *openapi3.MediaType
 	switch rpc.RequestType {
 	case "google.protobuf.Empty":
-		reqMediaType = openapi3.NewMediaType()
+		gen.addGoogleEmptySchema()
 	default:
-		if strings.Contains(rpc.RequestType, ".") {
-			reqMediaType = &openapi3.MediaType{
-				Schema: &openapi3.SchemaRef{
-					Ref: fmt.Sprintf("#/components/schemas/%s", rpc.RequestType),
-				},
-			}
-		} else {
-			reqMediaType = &openapi3.MediaType{
-				Schema: &openapi3.SchemaRef{
-					Ref: fmt.Sprintf("#/components/schemas/%s.%s", gen.packageName, rpc.RequestType),
-				},
-			}	
+	}
+	if strings.Contains(rpc.RequestType, ".") {
+		reqMediaType = &openapi3.MediaType{
+			Schema: &openapi3.SchemaRef{
+				Ref: fmt.Sprintf("#/components/schemas/%s", rpc.RequestType),
+			},
+		}
+	} else {
+		reqMediaType = &openapi3.MediaType{
+			Schema: &openapi3.SchemaRef{
+				Ref: fmt.Sprintf("#/components/schemas/%s.%s", gen.packageName, rpc.RequestType),
+			},
 		}
 	}
 
 	var resMediaType *openapi3.MediaType
 	switch rpc.ReturnsType {
 	case "google.protobuf.Empty":
-		resMediaType = openapi3.NewMediaType()
+		gen.addGoogleEmptySchema()
 	default:
-		if strings.Contains(rpc.ReturnsType, ".") {
-			resMediaType = &openapi3.MediaType{
-				Schema: &openapi3.SchemaRef{
-					Ref: fmt.Sprintf("#/components/schemas/%s", rpc.ReturnsType),
-				},
-			}
-		} else {
-			resMediaType = &openapi3.MediaType{
-				Schema: &openapi3.SchemaRef{
-					Ref: fmt.Sprintf("#/components/schemas/%s.%s", gen.packageName, rpc.ReturnsType),
-				},
-			}
+	}
+
+	if strings.Contains(rpc.ReturnsType, ".") {
+		resMediaType = &openapi3.MediaType{
+			Schema: &openapi3.SchemaRef{
+				Ref: fmt.Sprintf("#/components/schemas/%s", rpc.ReturnsType),
+			},
+		}
+	} else {
+		resMediaType = &openapi3.MediaType{
+			Schema: &openapi3.SchemaRef{
+				Ref: fmt.Sprintf("#/components/schemas/%s.%s", gen.packageName, rpc.ReturnsType),
+			},
 		}
 	}
 
@@ -283,6 +285,9 @@ func (gen *generator) addField(schemaPropsV3 openapi3.Schemas, field *proto.Fiel
 	case googleMoneyType:
 		slog.Debug("Money", "name", fieldName, "type", fieldType, "format", fieldFormat)
 		gen.addGoogleMoneySchema()
+	case googleEmptyType:
+		slog.Debug("Empty", "name", fieldName, "type", fieldType, "format", fieldFormat)
+		gen.addGoogleEmptySchema()
 	default:
 		slog.Debug("Default", "name", fieldName, "type", fieldType, "format", fieldFormat)
 	}
@@ -314,6 +319,18 @@ func (gen *generator) addField(schemaPropsV3 openapi3.Schemas, field *proto.Fiel
 					Type: "object",
 				},
 			},
+		},
+	}
+}
+
+func (gen *generator) addGoogleEmptySchema() {
+	if _, ok := gen.openAPIV3.Components.Schemas[googleEmptyType]; ok {
+		return
+	}
+	gen.openAPIV3.Components.Schemas[googleEmptyType] = &openapi3.SchemaRef{
+		Value: &openapi3.Schema{
+			Description: "A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance:",
+			Type:        "object",
 		},
 	}
 }

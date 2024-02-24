@@ -1,6 +1,10 @@
 {
   "components": {
     "schemas": {
+      "google.protobuf.Empty": {
+        "description": "A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance:",
+        "type": "object"
+      },
       "protofeed.Attachment": {
         "description": "Attachment is an object representing a file associated with an item.",
         "properties": {
@@ -221,7 +225,11 @@
         "description": "\nGet fetches the current feed of posts.",
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+              }
+            }
           }
         },
         "responses": {
@@ -244,7 +252,11 @@
         "description": "\nMetadata fetches the build metadata of the version of xesite that is\ncurrently running.",
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+              }
+            }
           }
         },
         "responses": {
