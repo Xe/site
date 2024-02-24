@@ -13,9 +13,6 @@ schema = 3
   [mod."github.com/bep/debounce"]
     version = "v1.2.1"
     hash = "sha256-7qHOp4vB0ifEseXXBuSH6W5YNImVcb8PTWSJJAMaGcU="
-  [mod."github.com/blockthrough/twirp-openapi-gen"]
-    version = "v0.0.0-20231107141308-45a52eb7d856"
-    hash = "sha256-i0K4rM/A36eTIG86zibtaA40WoT2M+ptReRCDy+EYGs="
   [mod."github.com/cloudflare/circl"]
     version = "v1.3.7"
     hash = "sha256-AkOpcZ+evLxLJStvvr01+TLeWDqcLxY3e/AhGggzh40="
@@ -31,6 +28,9 @@ schema = 3
   [mod."github.com/emirpasic/gods"]
     version = "v1.18.1"
     hash = "sha256-hGDKddjLj+5dn2woHtXKUdd49/3xdsqnhx7VEdCu1m4="
+  [mod."github.com/esceer/todo/swagger-ui"]
+    version = "v0.0.0-20230925141326-8c4d7abce8d9"
+    hash = "sha256-lj4BQx1kc6HODBHbSmxgvTiuDH2Xw7CFS9mReRh7SKE="
   [mod."github.com/facebookgo/ensure"]
     version = "v0.0.0-20200202191622-63f1cf65ac4c"
     hash = "sha256-ZvQLMu0LBtRB4lMgY4DlsKxiRUzmh8W4KvGYJF4icRc="
@@ -56,11 +56,11 @@ schema = 3
     version = "v5.11.0"
     hash = "sha256-2yUM/FlV+nYxacVynJCnDZeMub4Iu8JL2WBHmlnwOkE="
   [mod."github.com/go-openapi/jsonpointer"]
-    version = "v0.20.0"
-    hash = "sha256-31YT6a8u7adrtEOV62066BrrNfPT5kg5uUUo9ULW0Qk="
+    version = "v0.20.2"
+    hash = "sha256-z9IZxP+JvJ1WvrHE7qbAZQqJ3XMx1uD0S611shTMna8="
   [mod."github.com/go-openapi/swag"]
-    version = "v0.22.4"
-    hash = "sha256-a3iJF2d9pJVTBMNpxWIOA8S1+qTbQQ+ToFcXypQ5Tec="
+    version = "v0.22.9"
+    hash = "sha256-rH8EMuDAAKhyNjo+CpQmlmqTc9aPzEFkRptYCenw+xE="
   [mod."github.com/golang/groupcache"]
     version = "v0.0.0-20210331224755-41bb18bfe9da"
     hash = "sha256-7Gs7CS9gEYZkbu5P4hqPGBpeGZWC64VDwraSKFF+VR0="

@@ -1,0 +1,115 @@
+syntax = "proto3";
+
+package pet.v1;
+
+option go_package = "xeiaso.net/v4/cmd/twirp-openapi-gen/internal/generator/testdata/gen/go/pet/v1";
+
+import "payment/v1alpha1/payment.proto";
+import "google/type/datetime.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/struct.proto";
+
+// PetType represents the different types of pets in the pet store.
+enum PetType {
+  PET_TYPE_UNSPECIFIED = 0;
+  PET_TYPE_CAT = 1;
+  PET_TYPE_DOG = 2;
+  PET_TYPE_SNAKE = 3;
+  PET_TYPE_HAMSTER = 4;
+}
+
+service PetStoreService {
+  // GetPet returns details about a pet
+  // It accepts a pet id as an input and returns back the matching pet object
+  // req-example: { "pet_id": "123" }
+  // req-example: { "pet_id": "456" }
+  // res-example: { "pet": {"name": "toby"} }
+  rpc GetPet(GetPetRequest) returns (GetPetResponse) {}
+
+  rpc DeletePet(DeletePetRequest) returns (google.protobuf.Empty) {}
+  rpc PurchasePet(PurchasePetRequest) returns (PurchasePetResponse) {}
+  rpc UpdatePet(UpdatePetRequest) returns (UpdatePetResponse) {}
+}
+
+// GetPetRequest is the request object for GetPet
+// The message accepts a pet id as an input
+message GetPetRequest {
+  string pet_id = 1;
+}
+
+message GetPetResponse {
+  Pet pet = 1;
+}
+
+message PutPetRequest {
+  PetType pet_type = 1;
+  string name = 2;
+}
+
+message PutPetResponse {
+  Pet pet = 1;
+}
+
+message DeletePetRequest {
+  string pet_id = 1;
+}
+
+message PurchasePetRequest {
+  string pet_id = 1;
+  payment.v1alpha1.Order order = 2;
+}
+
+message UpdatePetRequest {
+  string pet_id = 1;
+  google.protobuf.Struct metadata = 2;
+}
+
+message UpdatePetResponse {
+  Pet pet = 1;
+}
+
+message PurchasePetResponse {}
+
+// Pet represents a pet in the pet store.
+message Pet {
+  PetType pet_type = 1;
+
+  repeated PetType pet_types = 2;
+
+  payment.v1alpha1.PaymentProvider payment_provider = 22;
+
+  // pet_id is an auto-generated id for the pet
+  // the id uniquely identifies a pet in the system
+  string pet_id = 3;
+
+  string name = 4;
+
+  google.type.DateTime created_at = 5;
+
+  repeated google.protobuf.Any details = 6;
+
+  message Vet {
+    string name = 1;
+  }
+
+  Vet vet = 7;
+  repeated Vet vets = 8;
+
+  google.protobuf.ListValue labels = 101;
+
+  repeated string tags = 102;
+
+  google.protobuf.Struct metadata = 103;
+
+// TODO(dm): add support for oneof
+//  oneof test_oneof {
+//    string p1 = 7;
+//    int32 p2 = 8;
+//  }
+
+// TODO(dm): add support for maps
+//  map<string, Medication> medications = 9;
+//  map<string, int32> vet_visits_by_month = 10;
+}
