@@ -1,5 +1,5 @@
 syntax = "proto3";
-package xeiaso.net.protofeed;
+package protofeed;
 option go_package = "xeiaso.net/v4/pb/external/protofeed";
 
 import "google/protobuf/timestamp.proto";
@@ -140,11 +140,11 @@ message Item {
   // item. Attachments are files that are associated with an item. The value of
   // the attachments field is an array of objects, each of which has a url
   // field, and other fields as specified in the attachment object definition.
-  repeated Attachement attachments = 15;
+  repeated Attachment attachments = 15;
 }
 
-// Attachement is an object representing a file associated with an item.
-message Attachement {
+// Attachment is an object representing a file associated with an item.
+message Attachment {
   // (required, string) specifies the location of the attachment.
   string url = 1;
   // (required, string) specifies the type of the attachment, such as

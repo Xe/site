@@ -1,35 +1,8 @@
 {
   "components": {
     "schemas": {
-      "xeiaso.net.BuildInfo": {
-        "description": "BuildInfo contains metadata about a build of the site.",
-        "properties": {
-          "build_time": {
-            "description": "When the site was last rebuilt",
-            "format": "date-time",
-            "type": "string"
-          },
-          "commit": {
-            "description": "The commit of Xe/site that was built",
-            "type": "string"
-          },
-          "deno_version": {
-            "description": "The version of Deno used to build the site",
-            "type": "string"
-          },
-          "go_version": {
-            "description": "The version of Go running on the server",
-            "type": "string"
-          },
-          "xesite_version": {
-            "description": "The version of the xesite binary",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "xeiaso.net.protofeed.Attachement": {
-        "description": "Attachement is an object representing a file associated with an item.",
+      "protofeed.Attachment": {
+        "description": "Attachment is an object representing a file associated with an item.",
         "properties": {
           "duration_in_seconds": {
             "description": "(optional, number) specifies how long it takes to listen to or watch, when\nplayed at normal speed.",
@@ -56,7 +29,7 @@
         },
         "type": "object"
       },
-      "xeiaso.net.protofeed.Author": {
+      "protofeed.Author": {
         "description": "Author is an object representing the author of the feed or item.",
         "properties": {
           "avatar": {
@@ -74,13 +47,13 @@
         },
         "type": "object"
       },
-      "xeiaso.net.protofeed.Feed": {
+      "protofeed.Feed": {
         "description": "Feed is the root of a Proto Feed document. A feed must at least contain a\ntitle and items.",
         "properties": {
           "authors": {
             "description": "(optional, array of objects) specifies the feed authors.",
             "items": {
-              "$ref": "#/components/schemas/xeiaso.net.protofeed.Author"
+              "$ref": "#/components/schemas/protofeed.Author"
             },
             "type": "array"
           },
@@ -111,7 +84,7 @@
           "items": {
             "description": "(required, array of objects) contains the items in the feed. This is the\nmost important element of the feed after the version field. Each item is a\nstory, blog post, article, photograph, video, or other thing. For example,\nif a feed contains a long article, a podcast episode, and a photo, those\nthree items would be included in items.",
             "items": {
-              "$ref": "#/components/schemas/xeiaso.net.protofeed.Item"
+              "$ref": "#/components/schemas/protofeed.Item"
             },
             "type": "array"
           },
@@ -130,20 +103,20 @@
         },
         "type": "object"
       },
-      "xeiaso.net.protofeed.Item": {
+      "protofeed.Item": {
         "description": "Item is an object representing a single story, blog post, article,\nphotograph, video, or other thing within a feed.",
         "properties": {
           "attachments": {
             "description": "(optional, array of objects) specifies the attachments associated with the\nitem. Attachments are files that are associated with an item. The value of\nthe attachments field is an array of objects, each of which has a url\nfield, and other fields as specified in the attachment object definition.",
             "items": {
-              "$ref": "#/components/schemas/xeiaso.net.protofeed.Attachement"
+              "$ref": "#/components/schemas/protofeed.Attachment"
             },
             "type": "array"
           },
           "authors": {
             "description": "(optional, array of objects) has the same structure as the top-level\nauthors. If not specified in an item, then the top-level authors, if\npresent, are the authors of the item.",
             "items": {
-              "$ref": "#/components/schemas/xeiaso.net.protofeed.Author"
+              "$ref": "#/components/schemas/protofeed.Author"
             },
             "type": "array"
           },
@@ -207,6 +180,33 @@
           }
         },
         "type": "object"
+      },
+      "xeiaso.net.BuildInfo": {
+        "description": "BuildInfo contains metadata about a build of the site.",
+        "properties": {
+          "build_time": {
+            "description": "When the site was last rebuilt",
+            "format": "date-time",
+            "type": "string"
+          },
+          "commit": {
+            "description": "The commit of Xe/site that was built",
+            "type": "string"
+          },
+          "deno_version": {
+            "description": "The version of Deno used to build the site",
+            "type": "string"
+          },
+          "go_version": {
+            "description": "The version of Go running on the server",
+            "type": "string"
+          },
+          "xesite_version": {
+            "description": "The version of the xesite binary",
+            "type": "string"
+          }
+        },
+        "type": "object"
       }
     }
   },
@@ -229,7 +229,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/xeiaso.net.protofeed.Feed"
+                  "$ref": "#/components/schemas/protofeed.Feed"
                 }
               }
             },

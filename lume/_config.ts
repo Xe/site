@@ -4,7 +4,6 @@ import attributes from "lume/plugins/attributes.ts";
 import nunjucks from "lume/plugins/nunjucks.ts";
 import date from "lume/plugins/date.ts";
 import esbuild from "lume/plugins/esbuild.ts";
-import feed from "lume/plugins/feed.ts";
 import mdx from "lume/plugins/mdx.ts";
 import tailwindcss from "lume/plugins/tailwindcss.ts";
 import postcss from "lume/plugins/postcss.ts";
@@ -12,6 +11,7 @@ import sitemap from "lume/plugins/sitemap.ts";
 import readInfo from "lume/plugins/reading_info.ts";
 
 import annotateYear from "./plugins/annotate_year.ts";
+import feed from "./plugins/feed.ts";
 
 //import pagefind from "lume/plugins/pagefind.ts";
 //import _ from "npm:@pagefind/linux-x64";

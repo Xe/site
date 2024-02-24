@@ -1,0 +1,21 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "JSON Feed",
+  "description": "JSON Feed is a ...",
+  "home_page_url": "https://jsonfeed.org/",
+  "feed_url": "https://jsonfeed.org/feed.json",
+  "user_comment": "This feed allows ...",
+  "favicon": "https://jsonfeed.org/graphics/icon.png",
+  "author": {
+    "name": "Brent Simmons and Manton Reece"
+  },
+  "items": [
+    {
+      "id": "https://jsonfeed.org/2017/05/17/announcing_json_feed",
+      "url": "https://jsonfeed.org/2017/05/17/announcing_json_feed",
+      "title": "Announcing JSON Feed",
+      "content_html": "<p>We ...",
+      "date_published": "2017-05-17T08:02:12-07:00"
+    }
+  ]
+}

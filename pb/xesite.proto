@@ -31,5 +31,5 @@ message BuildInfo {
 // Feed lets users fetch the current feed of posts.
 service Feed {
   // Get fetches the current feed of posts.
-  rpc Get(google.protobuf.Empty) returns (xeiaso.net.protofeed.Feed);
+  rpc Get(google.protobuf.Empty) returns (protofeed.Feed);
 }

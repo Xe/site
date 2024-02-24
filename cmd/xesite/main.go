@@ -11,9 +11,9 @@ import (
 	"path/filepath"
 
 	"github.com/donatj/hmacsig"
+	swaggerui "github.com/esceer/todo/swagger-ui"
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/esceer/todo/swagger-ui"
 	"github.com/twitchtv/twirp"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
@@ -86,6 +86,9 @@ func main() {
 
 	ms := pb.NewMetaServer(&MetaServer{fs}, twirp.WithServerPathPrefix("/api"))
 	mux.Handle(ms.PathPrefix(), ms)
+
+	fsrv := pb.NewFeedServer(&FeedServer{fs}, twirp.WithServerPathPrefix("/api"))
+	mux.Handle(fsrv.PathPrefix(), fsrv)
 
 	mux.HandleFunc("/blog.atom", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/blog.rss", http.StatusMovedPermanently)
