@@ -31,9 +31,6 @@ schema = 3
   [mod."github.com/emirpasic/gods"]
     version = "v1.18.1"
     hash = "sha256-hGDKddjLj+5dn2woHtXKUdd49/3xdsqnhx7VEdCu1m4="
-  [mod."github.com/esceer/todo/swagger-ui"]
-    version = "v0.0.0-20230925141326-8c4d7abce8d9"
-    hash = "sha256-lj4BQx1kc6HODBHbSmxgvTiuDH2Xw7CFS9mReRh7SKE="
   [mod."github.com/facebookgo/ensure"]
     version = "v0.0.0-20200202191622-63f1cf65ac4c"
     hash = "sha256-ZvQLMu0LBtRB4lMgY4DlsKxiRUzmh8W4KvGYJF4icRc="
