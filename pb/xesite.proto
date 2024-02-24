@@ -7,20 +7,29 @@ import "google/protobuf/timestamp.proto";
 
 import "external/protofeed.proto";
 
+// Meta lets users fetch site metadata.
 service Meta {
-  // Metadata fetches the build metadata of the version of xesite that is currently running
+  // Metadata fetches the build metadata of the version of xesite that is
+  // currently running.
   rpc Metadata(google.protobuf.Empty) returns (BuildInfo);
 }
 
+// BuildInfo contains metadata about a build of the site.
 message BuildInfo {
+  // The commit of Xe/site that was built
   string commit = 1;
+  // When the site was last rebuilt
   google.protobuf.Timestamp build_time = 2;
+  // The version of Go running on the server
   string go_version = 3;
+  // The version of Deno used to build the site
   string deno_version = 4;
+  // The version of the xesite binary
   string xesite_version = 5;
 }
 
+// Feed lets users fetch the current feed of posts.
 service Feed {
-  // Get fetches the current feed of posts
+  // Get fetches the current feed of posts.
   rpc Get(google.protobuf.Empty) returns (xeiaso.net.protofeed.Feed);
 }

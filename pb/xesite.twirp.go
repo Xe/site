@@ -34,8 +34,10 @@ const _ = twirp.TwirpPackageMinVersion_8_1_0
 // Meta Interface
 // ==============
 
+// Meta lets users fetch site metadata.
 type Meta interface {
-	// Metadata fetches the build metadata of the version of xesite that is currently running
+	// Metadata fetches the build metadata of the version of xesite that is
+	// currently running.
 	Metadata(context.Context, *google_protobuf.Empty) (*BuildInfo, error)
 }
 
@@ -529,8 +531,9 @@ func (s *metaServer) PathPrefix() string {
 // Feed Interface
 // ==============
 
+// Feed lets users fetch the current feed of posts.
 type Feed interface {
-	// Get fetches the current feed of posts
+	// Get fetches the current feed of posts.
 	Get(context.Context, *google_protobuf.Empty) (*xeiaso_net_protofeed.Feed, error)
 }
 

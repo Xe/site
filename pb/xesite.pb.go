@@ -23,16 +23,22 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// BuildInfo contains metadata about a build of the site.
 type BuildInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Commit        string                 `protobuf:"bytes,1,opt,name=commit,proto3" json:"commit,omitempty"`
-	BuildTime     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=build_time,json=buildTime,proto3" json:"build_time,omitempty"`
-	GoVersion     string                 `protobuf:"bytes,3,opt,name=go_version,json=goVersion,proto3" json:"go_version,omitempty"`
-	DenoVersion   string                 `protobuf:"bytes,4,opt,name=deno_version,json=denoVersion,proto3" json:"deno_version,omitempty"`
-	XesiteVersion string                 `protobuf:"bytes,5,opt,name=xesite_version,json=xesiteVersion,proto3" json:"xesite_version,omitempty"`
+	// The commit of Xe/site that was built
+	Commit string `protobuf:"bytes,1,opt,name=commit,proto3" json:"commit,omitempty"`
+	// When the site was last rebuilt
+	BuildTime *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=build_time,json=buildTime,proto3" json:"build_time,omitempty"`
+	// The version of Go running on the server
+	GoVersion string `protobuf:"bytes,3,opt,name=go_version,json=goVersion,proto3" json:"go_version,omitempty"`
+	// The version of Deno used to build the site
+	DenoVersion string `protobuf:"bytes,4,opt,name=deno_version,json=denoVersion,proto3" json:"deno_version,omitempty"`
+	// The version of the xesite binary
+	XesiteVersion string `protobuf:"bytes,5,opt,name=xesite_version,json=xesiteVersion,proto3" json:"xesite_version,omitempty"`
 }
 
 func (x *BuildInfo) Reset() {

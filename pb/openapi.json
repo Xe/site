@@ -2,168 +2,207 @@
   "components": {
     "schemas": {
       "xeiaso.net.BuildInfo": {
+        "description": "BuildInfo contains metadata about a build of the site.",
         "properties": {
           "build_time": {
+            "description": "When the site was last rebuilt",
             "format": "date-time",
             "type": "string"
           },
           "commit": {
+            "description": "The commit of Xe/site that was built",
             "type": "string"
           },
           "deno_version": {
+            "description": "The version of Deno used to build the site",
             "type": "string"
           },
           "go_version": {
+            "description": "The version of Go running on the server",
             "type": "string"
           },
           "xesite_version": {
+            "description": "The version of the xesite binary",
             "type": "string"
           }
         },
         "type": "object"
       },
       "xeiaso.net.protofeed.Attachement": {
+        "description": "Attachement is an object representing a file associated with an item.",
         "properties": {
           "duration_in_seconds": {
+            "description": "(optional, number) specifies how long it takes to listen to or watch, when\nplayed at normal speed.",
             "format": "int32",
             "type": "integer"
           },
           "mime_type": {
+            "description": "(required, string) specifies the type of the attachment, such as\n“audio/mpeg.”",
             "type": "string"
           },
           "size_in_bytes": {
+            "description": "(optional, number) specifies how large the file is.",
             "format": "int32",
             "type": "integer"
           },
           "title": {
+            "description": "(optional, string) specifies the title of the attachment.",
             "type": "string"
           },
           "url": {
+            "description": "(required, string) specifies the location of the attachment.",
             "type": "string"
           }
         },
         "type": "object"
       },
       "xeiaso.net.protofeed.Author": {
+        "description": "Author is an object representing the author of the feed or item.",
         "properties": {
           "avatar": {
+            "description": "(optional, string) is the URL for an image for the author. As with icon, it\nshould be square and relatively large — such as 512 x 512 pixels — and\nshould use transparency where appropriate, since it may be rendered on a\nnon-white background.",
             "type": "string"
           },
           "name": {
+            "description": "(optional, string) is the author’s name.",
             "type": "string"
           },
           "url": {
+            "description": "(optional, string) is the URL of a site owned by the author. It could be a\nblog, micro-blog, Twitter account, and so on. Ideally the linked-to page\nprovides a way to contact the author, but that’s not required. The URL\ncould be a mailto: link, though we suspect that will be rare.",
             "type": "string"
           }
         },
         "type": "object"
       },
       "xeiaso.net.protofeed.Feed": {
+        "description": "Feed is the root of a Proto Feed document. A feed must at least contain a\ntitle and items.",
         "properties": {
           "authors": {
+            "description": "(optional, array of objects) specifies the feed authors.",
             "items": {
               "$ref": "#/components/schemas/xeiaso.net.protofeed.Author"
             },
             "type": "array"
           },
           "description": {
+            "description": "(optional, string) provides more detail, beyond the title, on what the feed\nis about. A feed reader may display this text.",
             "type": "string"
           },
           "expired": {
+            "description": "(optional, boolean) says whether or not the feed is finished — that is,\nwhether or not it will ever update again. A feed for a temporary event,\nsuch as an instance of the Olympics, could expire. If the value is true,\nthen it’s expired. Any other value, or the absence of expired, means the\nfeed may continue to update.",
             "type": "boolean"
           },
           "favicon": {
+            "description": "(optional, string) is the URL of an image for the feed suitable to be used\nin a source list. It should be square and relatively small, but not smaller\nthan 64 x 64.",
             "type": "string"
           },
           "feed_url": {
+            "description": "(optional but strongly recommended, string) is the URL of the feed, and\nserves as the unique identifier for the feed. As with home_page_url, this\nshould be considered required for feeds on the public web.",
             "type": "string"
           },
           "home_page_url": {
+            "description": "(optional but strongly recommended, string) is the URL of the resource that\nthe feed describes. This resource may or may not actually be a “home” page,\nbut it should be an HTML page. If a feed is published on the public web,\nthis should be considered as required. But it may not make sense in the\ncase of a file created on a desktop computer, when that file is not shared\nor is shared only privately.",
             "type": "string"
           },
           "icon": {
+            "description": "(optional, string) is the URL of an image for the feed suitable to be used\nin a source list. It should be square and relatively large — such as 512 x\n512 — so that it can be scaled down and so that it can look good on retina\ndisplays. It should use transparency where appropriate, since it may be\nrendered on a non-white background.",
             "type": "string"
           },
           "items": {
+            "description": "(required, array of objects) contains the items in the feed. This is the\nmost important element of the feed after the version field. Each item is a\nstory, blog post, article, photograph, video, or other thing. For example,\nif a feed contains a long article, a podcast episode, and a photo, those\nthree items would be included in items.",
             "items": {
               "$ref": "#/components/schemas/xeiaso.net.protofeed.Item"
             },
             "type": "array"
           },
           "language": {
-            "type": "string"
-          },
-          "next_url": {
+            "description": "(optional, string) is the primary language for the feed.",
             "type": "string"
           },
           "title": {
+            "description": "(required, string) is the name of the feed, which will often correspond to\nthe name of the website (blog, for instance), though not necessarily.",
             "type": "string"
           },
           "user_comment": {
-            "type": "string"
-          },
-          "version": {
+            "description": "(optional, string) is a description of the purpose of the feed. This is for\nthe use of people looking at the raw Protobuf, and should be ignored by\nfeed readers.",
             "type": "string"
           }
         },
         "type": "object"
       },
       "xeiaso.net.protofeed.Item": {
+        "description": "Item is an object representing a single story, blog post, article,\nphotograph, video, or other thing within a feed.",
         "properties": {
           "attachments": {
+            "description": "(optional, array of objects) specifies the attachments associated with the\nitem. Attachments are files that are associated with an item. The value of\nthe attachments field is an array of objects, each of which has a url\nfield, and other fields as specified in the attachment object definition.",
             "items": {
               "$ref": "#/components/schemas/xeiaso.net.protofeed.Attachement"
             },
             "type": "array"
           },
           "authors": {
+            "description": "(optional, array of objects) has the same structure as the top-level\nauthors. If not specified in an item, then the top-level authors, if\npresent, are the authors of the item.",
             "items": {
               "$ref": "#/components/schemas/xeiaso.net.protofeed.Author"
             },
             "type": "array"
           },
           "banner_image": {
+            "description": "(optional, string) is the URL of an image to use as a banner. Some blogging\nsystems (such as Medium) display a different banner image in the list view\nfrom the detail view. In those systems, this image should be used in the\nlist view, and image in the detail view.",
             "type": "string"
           },
           "content_html": {
+            "description": "(optional, string) is the body of the item. It can be plain text, HTML, or\na snippet of Markdown. (It should not be the entire Markdown document; just\na snippet.) This is complete enough that it can be displayed alone in a\nreader.",
             "type": "string"
           },
           "content_text": {
+            "description": "(optional, string) is the body of the item. It can be plain text, HTML, or\na snippet of Markdown. (It should not be the entire Markdown document; just\na snippet.) This is complete enough that it can be displayed alone in a\nreader.",
             "type": "string"
           },
           "date_modified": {
+            "description": "(optional, string) specifies the modification date in RFC 3339 format.",
             "format": "date-time",
             "type": "string"
           },
           "date_published": {
+            "description": "(optional, string) specifies the date in RFC 3339 format.",
             "format": "date-time",
             "type": "string"
           },
           "external_url": {
+            "description": "(optional, string) is the URL of a page elsewhere. This is especially\nuseful for linkblogs. If url links to where you’re talking about a thing,\nthen external_url links to the thing you’re talking about.",
             "type": "string"
           },
           "id": {
+            "description": "(required, string) is unique for that item for that feed over time. If an\nitem is ever updated, the id should be unchanged. New items should never\nuse a previously-used id. If an id is presented as a number or other type,\na JSON Feed reader must coerce it to a string. Ideally, the id is the full\nURL of the resource described by the item, since URLs make great unique\nidentifiers.",
             "type": "string"
           },
           "image": {
+            "description": "(optional, string) is the URL of the main image for the item. This image\nmay also appear in the content_html — if so, it’s a hint to the feed reader\nthat this is the main, featured image. Even if it’s not, it will appear in\nthe detail view. Images should be square, with a 4:3 aspect ratio. (We will\nbe flexible on this in the future.)",
             "type": "string"
           },
           "language": {
+            "description": "(optional, string) is the language for this item, using the same format as\nthe top-level language field. The value can be different than the primary\nlanguage for the feed when a specific item is written in a different\nlanguage than other items in the feed.",
             "type": "string"
           },
           "summary": {
+            "description": "(optional, string) is a plain text sentence or two describing the item.\nThis might be presented in a timeline, for instance, where a detail view\nwould display all of content_html or content_text.",
             "type": "string"
           },
           "tags": {
+            "description": "(optional, array of strings) can have any plain text values you want. Tags\ntend to be just one word, but they may be anything. Note: they are not the\nequivalent of Twitter hashtags. Some blogging systems and other feed\nformats call these categories.",
             "items": {
+              "description": "(optional, array of strings) can have any plain text values you want. Tags\ntend to be just one word, but they may be anything. Note: they are not the\nequivalent of Twitter hashtags. Some blogging systems and other feed\nformats call these categories.",
               "type": "string"
             },
             "type": "array"
           },
           "title": {
+            "description": "(optional, string) is plain text. Microblog items in particular may omit\ntitles.",
             "type": "string"
           },
           "url": {
+            "description": "(optional, string) is the URL of the resource described by the item. It’s\nthe permalink. This may be the same as the id — but should be present\nregardless.",
             "type": "string"
           }
         },
@@ -179,7 +218,7 @@
   "paths": {
     "/api/xeiaso.net.Feed/Get": {
       "post": {
-        "description": "\nGet fetches the current feed of posts",
+        "description": "\nGet fetches the current feed of posts.",
         "requestBody": {
           "content": {
             "application/json": {}
@@ -202,7 +241,7 @@
     },
     "/api/xeiaso.net.Meta/Metadata": {
       "post": {
-        "description": "\nMetadata fetches the build metadata of the version of xesite that is currently running",
+        "description": "\nMetadata fetches the build metadata of the version of xesite that is\ncurrently running.",
         "requestBody": {
           "content": {
             "application/json": {}
