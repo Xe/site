@@ -5,7 +5,12 @@ option go_package = "xeiaso.net/v4/pb";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
-service Meta { rpc Metadata(google.protobuf.Empty) returns (BuildInfo); }
+import "external/protofeed.proto";
+
+service Meta {
+  // Metadata fetches the build metadata of the version of xesite that is currently running
+  rpc Metadata(google.protobuf.Empty) returns (BuildInfo);
+}
 
 message BuildInfo {
   string commit = 1;
@@ -13,4 +18,9 @@ message BuildInfo {
   string go_version = 3;
   string deno_version = 4;
   string xesite_version = 5;
+}
+
+service Feed {
+  // Get fetches the current feed of posts
+  rpc Get(google.protobuf.Empty) returns (xeiaso.net.protofeed.Feed);
 }

@@ -21,17 +21,188 @@
           }
         },
         "type": "object"
+      },
+      "xeiaso.net.protofeed.Attachement": {
+        "properties": {
+          "duration_in_seconds": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "mime_type": {
+            "type": "string"
+          },
+          "size_in_bytes": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "xeiaso.net.protofeed.Author": {
+        "properties": {
+          "avatar": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "xeiaso.net.protofeed.Feed": {
+        "properties": {
+          "authors": {
+            "items": {
+              "$ref": "#/components/schemas/xeiaso.net.protofeed.Author"
+            },
+            "type": "array"
+          },
+          "description": {
+            "type": "string"
+          },
+          "expired": {
+            "type": "boolean"
+          },
+          "favicon": {
+            "type": "string"
+          },
+          "feed_url": {
+            "type": "string"
+          },
+          "home_page_url": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/xeiaso.net.protofeed.Item"
+            },
+            "type": "array"
+          },
+          "language": {
+            "type": "string"
+          },
+          "next_url": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "user_comment": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "xeiaso.net.protofeed.Item": {
+        "properties": {
+          "attachments": {
+            "items": {
+              "$ref": "#/components/schemas/xeiaso.net.protofeed.Attachement"
+            },
+            "type": "array"
+          },
+          "authors": {
+            "items": {
+              "$ref": "#/components/schemas/xeiaso.net.protofeed.Author"
+            },
+            "type": "array"
+          },
+          "banner_image": {
+            "type": "string"
+          },
+          "content_html": {
+            "type": "string"
+          },
+          "content_text": {
+            "type": "string"
+          },
+          "date_modified": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "date_published": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "external_url": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "type": "object"
       }
     }
   },
   "info": {
-    "title": "xeiaso.net API",
+    "title": "xeiaso.net",
     "version": "0.1"
   },
   "openapi": "3.0.0",
   "paths": {
+    "/api/xeiaso.net.Feed/Get": {
+      "post": {
+        "description": "\nGet fetches the current feed of posts",
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/xeiaso.net.protofeed.Feed"
+                }
+              }
+            },
+            "description": "Success"
+          }
+        },
+        "summary": "Get"
+      }
+    },
     "/api/xeiaso.net.Meta/Metadata": {
       "post": {
+        "description": "\nMetadata fetches the build metadata of the version of xesite that is currently running",
         "requestBody": {
           "content": {
             "application/json": {}
