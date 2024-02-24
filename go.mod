@@ -22,7 +22,7 @@ require (
 	gopkg.in/fsnotify.v1 v1.4.7
 	gopkg.in/mxpv/patreon-go.v1 v1.0.0-20171031001022-1d2f253ac700
 	tailscale.com v1.58.2
-	within.website/x v1.8.3
+	within.website/x v1.9.0
 )
 
 require (
@@ -58,7 +58,7 @@ require (
 	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.17.0 // indirect
+	golang.org/x/tools v0.18.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

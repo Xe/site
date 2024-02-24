@@ -19,6 +19,9 @@ schema = 3
   [mod."github.com/cyphar/filepath-securejoin"]
     version = "v0.2.4"
     hash = "sha256-heCD0xMxlwnHCHcRBgTjVexHOLyWI2zRW3E8NFKoLzk="
+  [mod."github.com/davecgh/go-spew"]
+    version = "v1.1.1"
+    hash = "sha256-nhzSUrE1fCkN0+RL04N4h8jWmRFPPPWbCuDc7Ss0akI="
   [mod."github.com/donatj/hmacsig"]
     version = "v1.1.0"
     hash = "sha256-/T7mWqQwZt+AFD/2QAYCAW/TsZptawFMl8CGWPmyhtE="
@@ -94,12 +97,18 @@ schema = 3
   [mod."github.com/pjbgf/sha1cd"]
     version = "v0.3.0"
     hash = "sha256-kX9BdLh2dxtGNaDvc24NORO+C0AZ7JzbrXrtecCdB7w="
+  [mod."github.com/pmezard/go-difflib"]
+    version = "v1.0.0"
+    hash = "sha256-/FtmHnaGjdvEIKAJtrUfEhV7EVo5A/eYrtdnUkuxLDA="
   [mod."github.com/sergi/go-diff"]
     version = "v1.3.1"
     hash = "sha256-XLA/BLIPuUU76yikXqIeRSXr7T7A3Uz6I27+mDxGj7w="
   [mod."github.com/skeema/knownhosts"]
     version = "v1.2.1"
     hash = "sha256-u0jB6ahTdGa+SvcIvPNRLnbSHvgmW9X/ThRq0nWQrJs="
+  [mod."github.com/stretchr/testify"]
+    version = "v1.8.4"
+    hash = "sha256-MoOmRzbz9QgiJ+OOBo5h5/LbilhJfRUryvzHJmXAWjo="
   [mod."github.com/twitchtv/twirp"]
     version = "v8.1.3+incompatible"
     hash = "sha256-j1h9YE3wl9h36DfPf92To1H/PwNk4CgerOARNO3HK1w="
@@ -128,8 +137,8 @@ schema = 3
     version = "v0.14.0"
     hash = "sha256-yh3B0tom1RfzQBf1RNmfdNWF1PtiqxV41jW1GVS6JAg="
   [mod."golang.org/x/tools"]
-    version = "v0.17.0"
-    hash = "sha256-CxuHfKKtUkn3VjA7D9WQjzvV1EUbyI/xMNhb5CxO6IQ="
+    version = "v0.18.0"
+    hash = "sha256-JVz7W13vMPfpGQ1yW+LBlT6INu3ebpjvXyChmAkm5bQ="
   [mod."google.golang.org/appengine"]
     version = "v1.6.8"
     hash = "sha256-decMa0MiWfW/Bzr8QPPzzpeya0YWGHhZAt4Cr/bD1wQ="
@@ -152,5 +161,5 @@ schema = 3
     version = "v1.58.2"
     hash = "sha256-ok+xgZRbFkQcH9VR75bhHx+bRn8ymoYQeBYsMpvfGss="
   [mod."within.website/x"]
-    version = "v1.8.3"
-    hash = "sha256-8QrvtW/nQnFvaWV3TnjvkXXBNG2rYLA1LuGSitJhpRo="
+    version = "v1.9.0"
+    hash = "sha256-3sPyOHTN7M5Ns3X//85bKomaf8ZqZ9uu4uqiinXoQIQ="
