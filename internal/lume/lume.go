@@ -81,10 +81,6 @@ func (f *FS) Close() error {
 		cl.Close()
 	}
 
-	if f.repo != nil {
-		os.RemoveAll(f.repoDir)
-	}
-
 	return nil
 }
 

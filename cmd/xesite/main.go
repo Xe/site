@@ -91,10 +91,6 @@ func main() {
 		http.Redirect(w, r, "/blog.rss", http.StatusMovedPermanently)
 	})
 
-	// NOTE(Xe): Had to rename this page because of a Lume/Go embed bug.
-	mux.HandleFunc(`/blog/%F0%9F%A5%BA`, func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/blog/xn--ts9h/", http.StatusMovedPermanently)
-	})
 	mux.HandleFunc(`/blog/🥺`, func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/blog/xn--ts9h/", http.StatusMovedPermanently)
 	})
