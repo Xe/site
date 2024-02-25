@@ -13,6 +13,7 @@
       "npm:autoprefixer@10.4.16": "npm:autoprefixer@10.4.16_postcss@8.4.31",
       "npm:date-fns@2.30.0": "npm:date-fns@2.30.0",
       "npm:hls.js": "npm:hls.js@1.4.12",
+      "npm:js-sha256": "npm:js-sha256@0.11.0",
       "npm:markdown-it-attrs@4.1.6": "npm:markdown-it-attrs@4.1.6_markdown-it@13.0.2",
       "npm:markdown-it-deflist@2.1.0": "npm:markdown-it-deflist@2.1.0",
       "npm:markdown-it-deflist@3.0.0": "npm:markdown-it-deflist@3.0.0",
@@ -825,6 +826,10 @@
       },
       "jiti@1.20.0": {
         "integrity": "sha512-3TV69ZbrvV6U5DfQimop50jE9Dl6J8O1ja1dvBbMba/sZ3YBEQqJ2VZRoQPVnhlzjNtU1vaXRZVrVjU4qtm8yA==",
+        "dependencies": {}
+      },
+      "js-sha256@0.11.0": {
+        "integrity": "sha512-6xNlKayMZvds9h1Y1VWc0fQHQ82BxTXizWPEtEeGvmOUYpBRy4gbWroHLpzowe6xiQhHpelCQiE7HEdznyBL9Q==",
         "dependencies": {}
       },
       "js-tokens@4.0.0": {
