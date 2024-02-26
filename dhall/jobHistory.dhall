@@ -66,8 +66,8 @@ let tailscale =
       , location = ottawa // { city = "Toronto" }
       }
 
-in  [ Job::{
-      , company = Company::{
+let flyio =
+      Company::{
         , name = "Fly.io"
         , url = Some "https://fly.io"
         , tagline =
@@ -79,9 +79,22 @@ in  [ Job::{
           , remote = True
           }
         }
+
+in  [ Job::{
+      , company = flyio
       , title = "Senior Technophilosopher"
+      , startDate = "2024-01-07"
+      , salary = Salary::{ amount = 260000, per = "year", currency = "CAD" }
+      , locations = [ ottawa ]
+      , highlights = [ "Developer marketing", "Developer relations", "Technical writing", "Team building" ]
+      }
+    , Job::{
+      , company = flyio
+      , title = "Senior Technophilosopher (contract)"
       , contract = True
       , startDate = "2023-11-06"
+      , endDate = Some "2024-01-06"
+      , leaveReason = Some "got hired full-time"
       , salary = Salary::{ amount = 15000, per = "month", currency = "USD" }
       , locations = [ ottawa ]
       , highlights = [ "Developer marketing" ]
