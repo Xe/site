@@ -1,0 +1,18 @@
+---
+title: "How to unbreak Dolphin on SteamOS after the QT6 update"
+date: 2024-03-03
+---
+
+A recent update to Dolphin made it switch to QT6. This makes it crash with this error or something like it:
+
+```
+dolphin-emu: symbol lookup error: dolphin-emu: undefined symbol: _Zls6QDebugRK11QDockWidget, version Qt_6
+```
+
+This is fixed by running this command in SteamOS:
+
+```
+flatpak update --commit=44bfa315a0cf9c94a97dfe61127dc05e0e8c85c5c7559dc7665529ec1aa7a3ee org.DolphinEmu.dolphin-emu
+```
+
+This will downgrade Dolphin so things work again.
