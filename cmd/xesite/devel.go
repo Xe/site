@@ -14,6 +14,8 @@ import (
 	"xeiaso.net/v4/internal/lume"
 )
 
+// foo bar
+
 var (
 	ignoredDirs = []string{"_site", "_data", "_bin", "blog/series", "static/resume", "#", "deno.lock"}
 )
