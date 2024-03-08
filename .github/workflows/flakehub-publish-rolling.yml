@@ -14,7 +14,7 @@ jobs:
       - uses: "DeterminateSystems/nix-installer-action@main"
         with:
           flakehub: true
-      - uses: "DeterminateSystems/magic-nix-cache-action@flakehub-cache"
+      - uses: "DeterminateSystems/magic-nix-cache-action"
         with:
           use-gha-cache: false
       - run: |
