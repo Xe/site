@@ -1,10 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://cdn.xeiaso.net/file/christine-static/static/font/inter/inter.css");
+@import url("https://fonts.googleapis.com/css2?family=Podkova:wght@400..800&display=swap");
 
 @layer base {
+  @font-face {
+    font-family: "Podkova";
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url("/static/font/Podkova.woff2") format("woff2");
+  }
+
   a {
     @apply text-link-light-normal hover:text-link-light-hover hover:bg-link-light-hoverBg visited:text-link-light-visited visited:hover:text-link-light-visitedHover visited:hover:bg-link-light-visitedHoverBg underline;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
   }
 
   details {
@@ -75,7 +94,8 @@
   code[class*="language-"],
   pre[class*="language-"] {
     color: #ebdbb2; /* fg1 / fg */
-    font-family: "Iosevka Curly Iaso", Consolas, Monaco, "Andale Mono", monospace;
+    font-family: "Iosevka Curly Iaso", Consolas, Monaco, "Andale Mono",
+      monospace;
     direction: ltr;
     text-align: left;
     white-space: pre;

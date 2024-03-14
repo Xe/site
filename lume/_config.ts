@@ -58,7 +58,18 @@ site.use(date({
     "DATE_US": "MM/dd/yyyy",
   },
 }));
-site.use(esbuild({ esm: true }));
+site.use(esbuild({
+  extensions: [".ts", ".js", ".tsx"],
+  options: {
+    bundle: true,
+    format: "esm",
+    minify: true,
+    keepNames: true,
+    platform: "browser",
+    target: "esnext",
+    treeShaking: true,
+  },
+}));
 site.use(feed({
   output: ["/blog.rss", "/blog.json"],
   query: "index=true",
