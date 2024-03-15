@@ -1,0 +1,373 @@
+---
+title: Nix is a better Docker image builder than Docker's image builder
+year: 2024
+index: false
+image: talks/2024/nix-docker-builder/001
+---
+
+export const ThreeColumnLayout = ({ children }) => {
+  return (
+    <div className="flex justify-center not-prose bg-bg-1 dark:bg-bgDark-1 rounded-md w-fit mx-auto md:p-4 p-2">
+      <div className="grid grid-cols-1 md:grid-cols-3 max-w-3xl place-items-center flex items-center justify-center">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export const Col = ({ title, children }) => {
+  return (
+    <div
+      className={`bg-bg-1 dark:bg-bgDark-1 px-2 h-full place-content-center w-full mx-auto`}
+    >
+      {title && <h2 className="text-2xl font-semibold mb-2 mt-2">{title}</h2>}
+      {children}
+    </div>
+  );
+};
+
+<ThreeColumnLayout>
+<Col>
+## <big>Douglas Adams Quotes</big>
+
+Live: [douglas-adams-quotes.fly.dev](https://douglas-adams-quotes.fly.dev)<br/>
+Source code: [github:Xe/douglas-adams-quotes](https://github.com/Xe/douglas-adams-quotes)
+
+[`gomod2nix`](https://github.com/nix-community/gomod2nix)
+
+</Col>
+
+<Col>
+## <big>$50 of Fly.io Credits</big>
+
+Coupon code [`go-fly-nix`](http://fly.io/ref/go-fly-nix). Only valid for new accounts that have not used a DevRel coupon code before.
+
+</Col>
+
+<Col>
+## <big>Slides and Video</big>
+
+Slides: [Google Drive](https://drive.google.com/file/d/18-Bz9422oyQH1KKkguHirWr_dEsbB6pT/view?usp=sharing)<br/>
+Script: [Google Drive](https://drive.google.com/file/d/1sNhkcT1IlqtFYTj-gg8-gneC604PcTrH/view?usp=sharing)<br/>
+Video: **Coming Soon!**
+
+</Col>
+</ThreeColumnLayout>
+
+<Conv name="Cadey" mood="coffee">
+  A full copy of the talk will be available later today. The video may take
+  longer. Conference wifi is horrible.
+</Conv>
+
+{/*
+
+## The Talk
+
+<Slide
+  name="2024/nix-docker-builder/001"
+  desc="The title slide of the talk. It features a hot air balloon breaking into a shipping container with a crowbar. Art by Annie Rugyt."
+/>
+
+Hi, I'm Xe Iaso and today I'm gonna get to talk with you about one of my favourite tools: Nix. Nix is many things, but my super hot take is that it's a much better Docker image builder than Docker's image builder.
+
+As many of you know, Nix is a tool that makes it easy to build packages based on the instructions you give it using its little domain-specific language. For reasons which are an exercise to the listener, this language is also called Nix.
+
+A Nix package can be just about anything, but usually you'll see Nix being used to build software packages, your own custom python tooling, OS hard drive image, or container images.
+
+If you've never used it before, Nix is gonna seem a bit weird. It's going to feel like you're doing a lot of work up front, and that's because at some level it is. You're doing work today that you would have done in a few months anyways. I'll get into more detail about this as the talk goes on.
+
+<Slide name="2024/nix-docker-builder/005" desc="" />
+
+As I said, I'm Xe Iaso. I'm the Senior Technophilosopher at Fly.io where I do developer relations. My friends and loved ones can attest that I have a slight tendency to write on my blog. I've been using Nix and NixOS across all of my personal and professional projects for the last four years. I live in Ottawa with my husband.
+
+It's the morning and I know we're all waiting for that precious bean juice to kick in. Let's get that blood pumping with a little exercise. If you've read my blog before, can you raise your hand?
+
+(Ad-lib on the number of hands raised)
+
+Okay, that's good. Raise your hand if this is your first introduction to Nix or NixOS.
+
+(Ad-lib again)
+
+How about if you're a Nix or NixOS expert? Raise your hand if you'd call yourself a Nix or NixOS expert.
+
+(Ad-lib again)
+
+Finally, Raise your hand if you got into Nix or NixOS because of my blog.
+
+(Ad-lib again)
+
+Alright thanks, you can lower your hands now.
+
+This talk is a bit more introductory. There's a mixed audience here of people that are gonna be more hardcore Nix users and people that have probably never heard of Nix before. I want this talk to be a bridge so that those of you who are brand new to Nix can understand what it's about and why you should care. For those of you who have ascended the mortal plane with NixOS powers, maybe this can help you realize where we're needed most. Today I'm gonna cover what Nix is, why it's better than Docker at making Docker images, and some neat second-order properties of Nix that makes it so much more efficient in the long run.
+
+<Slide
+  name="2024/nix-docker-builder/008"
+  desc="The holy trinity of Nix, showing that Nix the language, the package manager, and the OS are different facets of the same thing."
+/>
+
+Nix is just a package manager, right? Well, it's a bit more. It's a package manager, a language, and an operating system. It's kind of a weird balance because they all have the name "Nix", but you can use this handy diagram to split the differences. You use Nix the language to make Nix the package manager build packages. Those packages can be anything from software to entire NixOS images.
+
+This is compounded by the difficulty of adopting Nix at work if you have anything but a brand new startup or homelab that's willing to burn down everything and start anew with Nix. Nix is really different than what most developers are used to, which makes it difficult to cram into existing battle-worn CI/CD pipelines.
+
+This is not sustainable. I'm afraid that if there's not a bridge like this, Nix will wilt and die because of the lack of adoption.
+
+I want to show you how to take advantage of Nix today somewhere that it's desperately needed: building and deploying container images.
+
+<Slide
+  name="2024/nix-docker-builder/012"
+  desc="The docker logo on a sky background."
+/>
+
+To say that Docker won would be an understatement. My career started just about the same time that Docker left public beta. Docker and containerization has been adopted so widely that I'd say that Docker containers have become the de-facto universal package format of the Internet. Modern platforms like Fly.io, Railway, and Render could let people run arbitrary VM images or Linux programs in tarball slugs, but they use Docker images because that works out better for everyone.
+
+<Slide
+  name="2024/nix-docker-builder/013"
+  desc="The docker logo with a badly photoshopped muscle-bound beefy arm on a sky background."
+/>
+
+This gives people a lot of infrastructure superpowers and the advantages make the thing sell itself. It's popular for a reason. It solves real-world problems that previously required complicated cross-team coordination. No more arguing with your sysadmin or SRE team over upgrading your local fork of Ubuntu to chase the dragon with package dependencies!
+
+However, there's just one fatal flaw:
+
+Docker builds are not deterministic. Not even slightly. Sure, the average docker file you find on the internet will build 99.99% of the time, but that last 0.01% is where the real issues come into play.
+
+Speaking as a former wielder of the SRE shouting pager, that last 0.01% of problems ends up coming into play at 4am. Always 4am, never while you are at work.
+
+<Conv name="Cadey" mood="coffee">
+  Ask me how I know.
+</Conv>
+
+One of the biggest problems that doesn't sound like a problem at first is that Docker builds have access to the public Internet. This is needed to download packages from the Ubuntu repositories, but that also means that it's hard to go back and recreate the exact state of the Ubuntu repositories when you inevitably need to recreate an image at a future date.
+
+Remember, Ubuntu 18.04 is going out of support this year! You're going to have a flag day finding out what depends on that version of Ubuntu when things break and not any sooner.
+
+Even more fun, adding packages to a docker image the naïve way means that you get wasted space. If you run `apt-get upgrade` at the beginning of your docker build, you can end up replacing files in the container image. Those extra files end up being some "wasted space" shadow copies that will add up over time, especially with AWS charging you per millibyte of disk space and network transfer or whatever.
+
+<Conv name="Aoi" mood="wut">
+  What if we had the ability to know all of the dependencies that are needed
+  ahead of time and then just use those? What if your builds didn't need an
+  internet connection at all?
+</Conv>
+
+<Slide
+  name="2024/nix-docker-builder/021"
+  desc="The Nix/NixOS logo on a purple and black gradient background."
+/>
+
+This is the real advantage of Nix when compared to docker builds. Nix lets you know exactly what you're depending on ahead of time and then can break that into the fewest docker layers possible. This means that pushing updates to your programs only means that the minimal number of changes are actually made. You don't need to wait for apt or npm to install your dependencies yet again just to change a single line of code in your service.
+
+I think one of the best ways to adopt it is to use it to build docker images. This helps you bridge the gap so that you can experiment with new tools without breaking too much of your existing workflows.
+
+As an example, let's say I have a Go program that gives you quotes from Douglas Adams. I want to deploy it to a platform that only takes Docker images, like Fly.io, Railway, or Google Cloud Functions.
+
+In order to do this, I'd need to do a few things: First, I'd need to build the program into a package with Nix and make sure it works. Then I'd need to turn that into a docker image, load it into my docker daemon, and push it to their registry. Finally I can deploy my application and everyone can benefit from the wisdom of days gone past.
+
+Here's what that package definition looks like in my project's Nix flake. Let's break this down into parts.
+
+```nix
+bin = pkgs.buildGoModule {
+  pname = "douglas-adams-quotes";
+  inherit version;
+  src = ./.;
+  vendorHash = null;
+};
+```
+
+This project is in a Go module, so `pkgs.buildGoModule` tells Nix to use the Go module template. That template will set everything up for us: mainly the Go compiler, a C compiler for CGo code, and downloading any external dependencies for you.
+
+Here are the arguments to the `buildGoModule` function: a package name, the version, the path to the source code, and the hash of the external dependencies.
+
+The name of the package is "Douglas Adams Quotes" in kebab case, the version is automagically generated from the git commit of the service, the source code is in the current working directory, and I don't need anything beyond Go's standard library. If you need external dependencies, you can specify the hash of all the dependencies here or use [`gomod2nix`](https://github.com/nix-community/gomod2nix) to automate this (it's linked in the description at the end of the talk).
+
+```
+# nix build .#bin
+```
+
+Now that we have a package definition, you can build it with nix build dot hash bin. That makes Nix build the bin package in your flake and put the result in dot slash result.
+
+Next comes building that into a Docker image with the dockerTools family of helpers. dockerTools lets you take that Nix package you just made and put it and all its dependencies into a Docker image so you can deploy it.
+
+<Slide
+  name="2024/nix-docker-builder/031"
+  desc="An onion and an onion with an X over it. An onion is a visual metaphor for layered Docker images."
+/>
+
+There's two basic ways to use it, making a layered image and a non-layered image.
+
+A non-layered image is the simplest way to use Nix to build a docker image. It takes the program, its dependencies, any additional things like TLS root certificates and puts it all into a folder to be exposed as a single-layer docker image.
+
+This works, but it doesn't really let us take advantage of the benefits of Nix. Making any change to a non-layered image means you have to push all of the things that haven't changed. Nix knows what all your dependencies are, so it should be able to take advantage of that when building a container image. Why should you have to upload new copies of glibc and the python interpreter over and over?
+
+<Slide
+  name="2024/nix-docker-builder/034"
+  desc="An onion pointing to a bunch of folders with Nix packages in its layers."
+/>
+
+Nix also lets you make a layered image. A layered image puts every dependency into its own image layer so you only upload the parts of your image that have actually changed. Made an update to the webp library to fix a trivial bounds checking vulnerability because nobody writes those libraries in memory-safe languages? The only thing that'd need to be uploaded is that single webp library layer.
+
+The reason why this works is that there's a dirty secret deep into Docker that nobody can really take advantage of: Docker has a content-aware store baked into the heart of it, but because `docker build` isn't made with it in mind, nothing is really able to take advantage of it.
+
+Except Nix! A layered image means that every package is in its own layer, so glibc only needs to get uploaded once...
+
+<Conv name="Cadey" mood="coffee">
+  ...until we find yet another trivial memory safety vulnerability in glibc
+  that's been ignored for my entire time on this planet and need to have a fire
+  day rebuilding everything to cope.
+</Conv>
+
+Here's what a layered docker image build for that Douglas Adams quotes service would look like:
+
+```nix
+docker = pkgs.dockerTools.buildLayeredImage {
+  name = "registry.fly.io/douglas-adams-quotes";
+  tag = "latest";
+  config.Cmd = "${bin}/bin/douglas-adams-quotes";
+};
+```
+
+Again, let's break it down.
+
+You start by saying that you want to build a layered image by calling the `dockerTools.buildLayeredImage` function with the image name and tag, just like you would with `docker build`. Now comes the fun part: the rest of the container image.
+
+```nix
+config.Cmd = "${bin}/bin/douglas-adams-quotes";
+```
+
+Just tell Nix that the container should run the built version of the Douglas Adams quotes server and bam, everything'll be copied over for you. Glibc will make it over as well as whatever detritus you need to make Glibc happy these days.
+
+If you need to add something like the CA certificate root, you can specify it with the `contents` argument. You can use this to add any package from nixpkgs into your image. My website uses this to add Typst, Deno, and Dhall tools to the container.
+
+```nix
+docker = pkgs.dockerTools.buildLayeredImage {
+  name = "registry.fly.io/douglas-adams-quotes";
+  tag = "latest";
+  contents = with pkgs; [ cacert ]; # <--
+  config.Cmd = "${bin}/bin/douglas-adams-quotes";
+};
+```
+
+Then you type in `nix build .#docker` and whack enter. A shiny new image will show up in `./result`.
+
+```
+nix build .#docker
+```
+
+Load it using `docker load < ./result` and it'll be ready for deployment.
+
+```
+docker load < ./result
+```
+
+TODO: embed video
+
+Opening the image in `dive`, we see that every layer adds another package from nixpkgs until you get to the end where it all gets tied together and any contents are symlinked to the root of the image.
+
+<Slide
+  name="2024/nix-docker-builder/045"
+  desc="A successful slide with a lot of cheery imagery."
+/>
+
+And that's it! All that's left is to deploy it to the cloud and find out if you just broke production. It should be fine, right?
+
+The really cool part is that this will work for the cases where you have single images exposed from a code repository, but that content-aware hackery doesn't end at making just one of your services faster to upload.
+
+<Slide
+  name="2024/nix-docker-builder/050"
+  desc="A diagram showing several programs sharing the same layers."
+/>
+
+If you have multiple services in the same repository, they'll share docker layers between each other. For free. Without any extra configuration. I don't think you can even dream of doing this with Docker without making a bunch of common base images that have a bunch of tools and bloat that some of your services will never make use of.
+
+As a practical example, I have a repo I call ["x"](https://github.com/Xe/x). It's full of a decade's worth of side projects, experiments, and tools that help me explore various bits of technology. It's also a monorepo for a bunch of other projects:
+
+<Slide
+  name="2024/nix-docker-builder/049"
+  desc="A diagram showing several programs sharing the same layers."
+/>
+
+This is a lot of stuff and I don't expect anyone to read that, so I made the text small enough to discourage it. Most of it is deployed across like three platforms too, but I've been slowly converging on one common deployment backbone by shoving everything into Docker images.
+
+<Slide
+  name="2024/nix-docker-builder/050"
+  desc="A diagram showing several programs sharing the same layers."
+/>
+
+Pushing updates to any one of these services also pushes parts of the updates to most of the other ones. This saves me a lot of time and money across my plethora of projects. Take that, Managed NAT Gateway!
+
+Oh no, I think I sense it, you do too right? It's the pedantry alert! Yes in theory I could take advantage of Docker caching to build the images just as efficiently as Nix, but then my build steps would have to look like this:
+
+<Slide
+  name="2024/nix-docker-builder/052"
+  desc="A giant depressing mess of wires."
+/>
+
+Sure, you can do it, but you'd end up with unmaintainable balls of mud that would have you install shared libraries into their own layers and then you risk invoking the wrath of general protection fault. Not only would you have to turn the network stack back on during builds (there goes reproducibility!), I'd have to rejigger search paths, compiler flags, CGO-related goat sacrifices and more. It'd just be a mess.
+
+```nix
+docker = pkgs.dockerTools.buildLayeredImage {
+  name = "registry.fly.io/douglas-adams-quotes";
+  tag = "latest";
+  contents = with pkgs; [ cacert ];
+  config.Cmd = "${bin}/bin/douglas-adams-quotes";
+};
+```
+
+Look at this though, it's just so much simpler. It takes the package and shoves it into a container for you so you don't need to care about the details. It's so much more beautiful in comparison.
+
+Above all though, the biggest advantage Nix gives you is the ability to travel back in time and build software exactly as it was in the past. This lets you recreate a docker image exactly at a later point in the future when facts and circumstances demand because that one on-prem customer had apparently never updated their software and was experiencing a weird bug.
+
+This means that in theory, when you write package builds today, you're taking from that time you would have spent in the future to recreate it. You don't just build your software though, you crystallize a point in time that describes the entire state of the world including your software to get the resulting packages and docker images.
+
+I've been working on a project called [XeDN](https://cdn.xeiaso.net) for a few years. Here's how easy it is to build a version from 14 months ago:
+
+```
+nix build github:Xe/x/567fdc2#xedn-docker
+```
+
+That's it. That's the entire command. I say that I want to build the [GitHub repo Xe/x](https://github.com/Xe/x) at an arbitrary commit hash and get the xedn-docker target. I can then load it into my docker daemon and then I have the exact same bytes I had back then, Go 1.19 and all.
+
+This party trick isn't as easy to pull off with vanilla docker builds unless you pay a lot for storage.
+
+An even cooler part of that is that most of the code didn't even need to be rebuilt thanks to the fact that I upload all of my builds into a Nix cache. A Nix cache lets you put the output of Nix commands into a safe place so that they don't need to be run again in the future. This means that developer laptops don't all need to build new versions of nokogiri every time it's bumped ever so slightly. It'll already be built for you with the power of the cloud.
+
+I have that uploaded into a cache through [Garnix](https://garnix.io), which I use to do CI on all of my flakes projects. Garnix is effortless. Turn it on and then wait for it to report build status on every commit. It's super great because I don't have to think about it.
+
+<Slide
+  name="2024/nix-docker-builder/060"
+  desc="A terrible picture of my homelab."
+/>
+
+I even have all of my homelab machine configurations built with Garnix so that when they update every evening, they just pull the newest versions of their config from the Garnix cache instead of building it themselves. Around 7pm or so I hear them reboot after the day of a kernel upgrade. It's really great.
+
+Not to mention never having to ever wait for my custom variant of Iosevka to build on my MacBook or shellbox.
+
+In conclusion:
+
+- Nix is a better docker image builder than docker's image builder.
+- Nix makes you specify the results, not the steps you take to get there.
+- Building Docker images with Nix makes adopting Nix easy if you already use Docker.
+- Nix makes docker images that share layers between parts of your monorepo.
+- Nix lets you avoid building code that was built in the past thanks to binary caches.
+- And you end up with normal, ordinary container images that you can deploy anywhere. Even platforms like AWS, Google Cloud, or Fly.io.
+
+<Slide
+  name="2024/nix-docker-builder/068"
+  desc="A slide listing everyone I have to thank for the talk."
+/>
+
+Before I get all of this wrapped up, I want to thank everyone on this list for their input, feedback, and more to help this talk shine. Thank you so much!
+
+<Slide
+  name="2024/nix-docker-builder/069"
+  desc="A conclusion slide showing information about me and the link to this page."
+/>
+
+And thank you for watching! I've been Xe Iaso and I'm gonna linger around afterwards for questions. If I don't get to you and you really want a question answered, please email dockerimage@xeserv.us. I promise I'll get back to you as soon as possible.
+
+If you want to work with me to make developer relations better, my employer Fly.io is hiring. Catch up with me if you want stickers!
+
+I have some extra information linked at the QR code on screen. This includes the source code for the Douglas Adams quotes server so you can clone it on your laptop and play around with it.
+
+Be well, all.
+
+*/}
