@@ -295,4 +295,24 @@ in  [ Person::{
         , Link::{ url = "https://github.com/transfaeries", title = "GitHub" }
         ]
       }
+    , Person::{
+      , name = "İlteriş Eroğlu"
+      , tags =
+        [ "sysadmin"
+        , "infrastructure engineering"
+        , "CI/CD"
+        , "Bash"
+        , "Python"
+        , "JavaScript"
+        , "Ansible"
+        , "L7 Load Balancing"
+        , "NGINX"
+        , "Node.js"
+        , "full-stack"
+        ]
+      , links =
+        [ Link::{ url = "https://linuxgemini.space", title = "Website" }
+        , Link::{ url = "https://github.com/linuxgemini", title = "GitHub" }
+        ]
+      }
     ]
