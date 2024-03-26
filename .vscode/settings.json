@@ -2,17 +2,17 @@
   "[markdown]": {
     "editor.wordWrap": "wordWrapColumn",
     "editor.wordWrapColumn": 80,
-    "editor.wordBasedSuggestions": false
+    "editor.wordBasedSuggestions": "off"
   },
   "[mdx]": {
     "editor.wordWrap": "wordWrapColumn",
     "editor.wordWrapColumn": 80,
-    "editor.wordBasedSuggestions": false
+    "editor.wordBasedSuggestions": "off"
   },
   "[nunjucks]": {
     "editor.wordWrap": "wordWrapColumn",
     "editor.wordWrapColumn": 80,
-    "editor.wordBasedSuggestions": false
+    "editor.wordBasedSuggestions": "off"
   },
   "deno.enable": true,
   "deno.lint": true,
