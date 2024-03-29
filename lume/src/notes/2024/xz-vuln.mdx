@@ -15,7 +15,7 @@ The [xz/liblzma project](https://github.com/tukaani-project/xz) has released ver
 
 The combination of this and patches made by some distributions to the interactions between liblzma, libsystemd, and sshd have resulted in a situation where an attacker can compromise a system by sending a malicious payload to an sshd server.
 
-We are lucky. This only affects AMD64 Linux systems. The vulnerability is in a specific RSA function. The exploit is in the wild. This is also a very new version of xz/liblzma, so it is not widely deployed yet. This is also unlikely to affect anything other than Glibc (because of glibc IFUNC support), so if you use [musl](https://musl.libc.org/) or another libc implementation, you are likely safe.
+We are lucky. This only affects AMD64 Linux systems. Currently, incomplete analysis of the vulnerability suggests that this only targets a specific RSA function used in sshd. The exploit is in the wild. This is also a very new version of xz/liblzma, so it is not widely deployed yet. This is also unlikely to affect anything other than Glibc (because of glibc IFUNC support), so if you use [musl](https://musl.libc.org/) or another libc implementation, you are likely safe.
 
 If you are using a distribution that has not yet released xz 5.6.0 or 5.6.1, you are likely safe.
 
