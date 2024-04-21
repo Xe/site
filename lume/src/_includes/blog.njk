@@ -38,7 +38,9 @@ layout: base.njk
         </svg>
     </button>
 
-    <script>
+    <script type="module">
+        import swal from "/js/swal.js";
+
         const shareButton = document.getElementById("shareButton");
         function doShareButton() {
             const shareData = {
@@ -62,8 +64,10 @@ layout: base.njk
                         console.log("Thanks for sharing!");
                     })
                     .catch(console.error);
+                swal("Link copied to clipboard", "Feel free to paste it anywhere you like!", "success");
             } else {
                 console.log("can't share directly, but feel free to copy the url from addressbar manually");
+                swal("Can't share directly", "Feel free to copy the url from addressbar manually!", "info");
             }
         }
         shareButton.addEventListener("click", doShareButton);
