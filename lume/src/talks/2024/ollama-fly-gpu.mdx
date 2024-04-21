@@ -1,0 +1,90 @@
+---
+title: "Scaling your models to 0 with Fly.io"
+date: 2024-02-12
+tags:
+  - ollama
+  - ai
+  - llm
+  - art
+image: talks/2024/ollama-fly-gpu/slides/001
+---
+
+<XeblogVideo path="talks/2024/ollama-fly-gpu" />
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/001" essential />
+
+Ollama makes it easy to get started on ridiculous ventures like making your own personal assistant catgirl. At Fly.io, we're making it just as easy to get your models and projects running in the cloud, so you don't have to burn your battery when you're hacking things up. Here's how to set up your own private Ollama server on Fly.io that turns off by itself when you're done with it.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/002" essential />
+
+To do all this, we're gonna need to do a couple things. First, you need to create a WireGuard connection to your private Fly network. Then we'll create the app and give it a Flycast address. Finally we'll deploy it and you have your own Ollama server!
+
+First, install the WireGuard app on your computer, or the `wireguard-tools` package on Linux. This gets you a persistent connection to your private Fly network.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/004" essential />
+
+Then run `fly wireguard create`, import the config with the gui or wg-quick, and activate it.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/005" essential />
+
+If you can ping `_api.internal`, you're in. You'll have a private connection to your Fly network. You can use this to poke your applications directly, such as with your Ollama server.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/006" essential />
+
+Now that's set, create a new app in a new folder with `fly launch`. Give it a name and leave the defaults alone. Open fly.toml in your favourite editor, such as Vim.
+
+Next, we need to create a private IPv6 address for the app so that the platform doesn't try to put it on the public internet by default. That would let anyone access it, which is the opposite of private.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/008" essential />
+
+Running `fly ips allocate-v6 --private` will let you create a private flycast address internal to your network. This is what we will use to contact the app. You don't need to write it down, that's what DNS is for.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/009" essential />
+
+The region you choose will be based on what type of GPU you want. The documentation will have more details. I'll link to it in the writeup on the blog.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/010" essential />
+
+Then change the VM size to the GPU you want. At the time of me speaking, there's three options:
+
+- `a100-40gb`
+- `a100-80gb`
+- `l40s`
+
+These correlate to Ampere A100 at 40 and 80 GB of vram respectively and the Lovelace L40s with 48 GB of vram. The most A100-40GB cards are in ORD, and the most L40s cards are in SEA.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/014" essential />
+
+Next, go back to your fly.toml file and add the build section and the mounts section. The build section tells the platform to pull the Ollama image from the Docker Hub. The mount section will create a 100GB persistent folder to store all of your downloaded models in. It's easy as pi, except it's 100 gigabytes instead of 3.14.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/015" essential />
+
+Finally, set up a HTTP service block to point the platform to the Ollama port and enable automatic stopping of machines with a minimum of zero. This will make the platform automatically spin down your GPU instance when you're not using it, saving you money. Why pay for compute you're not using?
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/016" essential />
+
+Now that's all said and done, let's deploy it. Run `fly deploy`, hit enter, and watch it scale right up.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/017" essential />
+
+Now when you want to use ollama on your cloud GPU, set the Ollama host environment variable to your-app.flycast. Then any ollama commands will hit your big chungus instead of your macbook. My local MacBook has a few models such as Llama 2 and Mistral, but the big chungus in the cloud has Nous Hermes Mixtral.
+
+As you see in this live demo that is clearly not pre-recorded at all, I'm running Mixtral on the cloud.
+
+(Pause)
+
+I'd say it's magic, but it's just science. Computer science! Let's hope any of those citations are real, they pass the sniff test though!
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/019" essential />
+
+And this is how you can get your own private Ollama server in the cloud. Additionally, if you have any applications in your fly network, you can have them poke your Ollama server at your-app.flycast. And then they will turn the Ollama server on when they need it and the platform will turn it off when they don't.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/020" essential />
+
+Such as [this project of mine](https://arsene.finally.dev) that generates cryptocurrency investment horoscopes every 12 hours. It pokes an Ollama machine running Mixtral every 12 hours and gives...someone entertainment. The GPU turns off when it's done, saving me money.
+
+<XeblogSlide name="2024/ollama-fly-gpu/slides/021" essential />
+
+And that's about it. I've been Xe Iaso and thank you for having me out here giving you a blatant product demo. If you have any questions, please ask me. My employer paid for me to fly out here and talk with you so please, please come up and ask me some questions. I am more than happy to answer. If I don't get to them and you really want an answer, please email productdemo@xeserv.us.
+
+Otherwise, anyone have any questions?
