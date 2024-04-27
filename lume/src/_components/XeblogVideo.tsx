@@ -1,6 +1,3 @@
-// @jsxImportSource xeact
-// @jsxRuntime automatic
-
 import Hls from "npm:hls.js";
 import { sha256 } from "npm:js-sha256";
 
