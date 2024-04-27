@@ -1,0 +1,112 @@
+---
+title: 'Much ado about "nothing"'
+date: 2024-04-27
+tags:
+  - nixos
+image: blog/2024/nixos/IMG_3443
+---
+
+<Picture path="blog/2024/nixos/IMG_3443" />
+
+## Author's note
+
+Originally, I was gonna wait a bit before writing this. I had intended this to be written and published in a few weeks after the NixOS foundation board had time to react and attempt to control the damage from whatever the fuck has been going on over there.
+
+I just don't care at this point. I need this out of my head and off of my chest.
+
+I would also like to have made this a video of some kind to make it more personal (mostly so you can hear my voice and intonation/emotion in it), but it would take me too long to make it at my current production schedule timelines. I've already been spending a fucking month working on a mostly done Pikmin 3 speedrun video that has been constantly interrupted by this shit. As much as I'd like to do this, I don't think it's in the cards.
+
+Keep in mind that I'm not decrying the tech behind Nix or NixOS as wrong here. My gripes are purely with community management, moderation, and all of the soft squishy stuff that comes with dealing with humans.
+
+This post contains massive spoilers for Neon Genesis Evangelion, The End of Evangelion, and the four part revival Evangelion movies.
+
+## A Cruel Angel's Thesis
+
+In order to properly convey the level of emotions that I feel about this situation, I need you to understand the weight of The End of Evangelion.
+
+Neon Genesis Evangelion is an anime series that debuted in October 1995. It is widely considered to be one of the best anime series ever made. It is a story about humanity fighting back against existential threats in a last-ditch attempt to stop the apocalypse. Evangelion was also a bit of a satirical response to the anime zeitgeist of the time. The big story telling meme of the time was having teenagers get powerful robots in order to save humanity. The core premise of Evangelion is "what if kids got into giant robots to save the world, but it broke them?"
+
+If you've never seen it before, Evangelion is a terribly depressing anime. It is the kind of thing that disturbs the comforted and comforts the disturbed. I think that it combined with the follow-up movies are peak fiction. It is something that you should not watch in a single sitting if you haven't seen it before.
+
+The key art for this article was taken from the movie The End of Evangelion. When the original Evangelion series was made, they ran out of time right at the end and had to make something up that would roughly make sense for everybody that's viewed it. The ending sucked, but made a lot of thematic sense. The showrunner was so frustrated with this ending that he actually ended up getting funding to make the ending that he wanted to make in the first place, which was released on film as The End of Evangelion.
+
+One of the key scenes in the movie is near the end. Humanity had lost. Well, just saying that is probably kind of an understatement. Humanity had lost so badly that they had no possible way to continue. Those three people in that image were all that remained of humanity. Shinji and Asuka just stood there waiting to watch for the lights of the sky as humanity was at its end.
+
+The scene was entirely still.
+
+And then music started:
+
+<iframe
+  width="1075"
+  height="890"
+  src="https://www.youtube.com/embed/hoKluzn07eQ"
+  title="KOMM, SUSSER TOD M-10 Director&#39;s Edit Version | Evangelion Finally"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+/>
+
+This song has been stuck in my head for the last couple days. If you take a couple minutes to listen to it, you will instantly understand why this song and all of those thematic meanings are going through my head as I analyze the situation involving Nix and NixOS. It all has just come tumbling down, tumbling down, tumbling down.
+
+I just can't help but think that this was so preventable.
+
+## The end of Nix/Nix OS
+
+<Picture path="blog/2024/nixos/IMG_3443" />
+
+When I posted this image to Twitter and Mastodon recently (and back when I sent my emails initially), I was intentionally invoking that kind of hopeless feeling of defeat that Shinji and Asuka felt at The End of Evangelion. That hopeless feeling of "Shaka, when the walls fell" but more. The Nix and NixOS project have not been having a good year these last two weeks.
+
+A lot of the existing tension has boiled over and it has been poorly managed to the point where things are becoming irreconcilable. I'm at the point where I am going to move away from NixOS for new future things and not use flakes for managing my dependencies in development.
+
+A lot of this started with governance issues surrounding moderation. Moderation in online spaces is very… Very difficult at the least. Nearly impossible at most. Moderation is a thankless task. Good moderation is invisible. Bad moderation gets you complained at constantly. There is no winning. It is especially bad when the foundation that attempts to arbitrate issues has the idea of being incredibly centrist and not wanting to commit to any given position.
+
+This is the situation when the initial moderation team RFC was created. There were people that "did moderation", but there was no team of moderators. Moderation just sort of happened reactively in response to things getting way out of hand rather than proactively to create a healthy relationship between members of the community. The biggest thing that went poorly was the attempt to introduce a code of conduct so that everybody is on the same page and playing field. A code of conduct also helps make people like me not feel like we are at risk of being harassed for wanting to participate in a technical tool. There was concern trolling abound.
+
+A lot of this tension has boiled over over the years. I had incorrectly assumed that it had been handled because it has been three years. Obviously moderation things happened in the background within three years. Right?
+
+No, wrong! People were still fucking concern trolling about the most middest of mid complaints on the code of conduct like it was fucking 2021.
+
+A lot of this stuff has boiled over to the point where I couldn't ignore it anymore. In about the second week of April, I sent the NixOS Foundation an email thread addressing my fears with how the community is turning out. I was afraid of many things when I wrote that email. One of the biggest things I was afraid of is a lot of the people that I know that are incredibly passionate and capable becoming burnt out to a crisp trying to make this better.
+
+I'll publish those emails eventually, but for now just know that I tried to meddle behind the scenes to make this timeline not be the one we got. One of my demands was that they adopt the vanilla unmodified Contributor Covenant as the code of conduct for the Nix/NixOS project. The moderation team snuck a slightly modified version in at the 11th hour a few months ago and I thought that was okay-ish. I'm just not pleased with the situation.
+
+## It just keeps tumbling down, tumbling down, tumbling down
+
+And then on Friday April 26th, the de facto benevolent dictator for life decided to write and post something on his corporate blog: [https://determinate.systems/posts/on-community-in-nix/](https://determinate.systems/posts/on-community-in-nix/). I would say that article was tone deaf, but I don't know if the concept of tonality actually registered in the process of writing it.
+
+I've been told that Eelco is not in fact the benevolent dictator for life, but I just can't believe it. He acts like one in how sweeping changes and announcements get dictated from the heavens. Nobody on the NixOS foundation board was aware of that blogpost before it was published.
+
+This article flopped so hard that there's a "Maintainers leaving" milestone: [https://github.com/NixOS/nixpkgs/milestone/27?closed=1](https://github.com/NixOS/nixpkgs/milestone/27?closed=1). That person that wrote the "leaving the Determinate Systems community" one also ended up writing this epic "I'm quitting" message that was totally misinterpreted: [https://paste.shark-harmonic.ts.net/paste/abd339e0-2317-402b-8d8e-97e580537263/md](https://paste.shark-harmonic.ts.net/paste/abd339e0-2317-402b-8d8e-97e580537263/md).
+
+Before this blog post was released, I was working with various NixOS Foundation board members to make sure that things don't get to this point. For a lot of people, that Eelco blog post was the point of the [trust thermocline](https://every.to/p/breaching-the-trust-thermocline-is-the-biggest-hidden-risk-in-business). The trust thermocline is the point where people will totally mistrust you and what you are doing to the point where they will accept inferior alternatives instead of your product. In a lot of spaces I've been looking at, people are basically spreading to the wind.
+
+At this point, I am fairly sure that a fork of Nix and NixOS is not just inevitable, but it's just a matter of time, energy, resources, and willpower. I doubt that there will be sufficient will to make such a fork. Nix is becoming radioactive.
+
+I was also hoping that if a fork happened it would end up being an [io.js situation](http://anandmanisankar.com/posts/nodejs-iojs-why-the-fork/). In that story, the Forked project ended up being adopted back into the main project. It ended up being the thing that saved node.js from irrelevance.
+
+I did not want to get to this point. I have been working in the background in order to avoid us getting to this point. My efforts have failed. This is the timeline we got.
+
+Maybe Rocky Linux and Ansible will be good enough for me. I'm gonna miss the fuck out of NixOS' declarative everything. There's nothing quite like devShells.
+
+I've spoken at my last NixCon. Until this week I've wanted to do it again, but I just can't bother to care anymore.
+
+## It all returns to "nothing"
+
+When analyzing Evangelion lore, there is something that I intentionally omitted. The reason that humanity lost the third impact is because nobody bothered to care to make things better. Everybody had been burnt out so much that they just gave up.
+
+Historically when I've been trying to understand Evangelion, that is the one thing that just stood out to me as wrong. Why would people just give up? Why wouldn't they want to have a better future? Why wouldn't you want something to be better in general? Why wouldn't you want to have life or living?
+
+Yeah, I completely fucking understand why they gave up now.
+
+## The Third Impact
+
+As I mentioned earlier in my author's note, I've been trying to make a video for the last month. I am almost done with it. I just need to film something in person to thank [my patrons](https://patreon.com/cadey) and the lighting in my hotel room in New Orleans is not cooperating with me in the slightest.
+
+Dealing with this shit (and making sure [the open letter](https://save-nix-together.org/) goes over smoothly) has been taking up enough energy that I'm just exhausted at this point. Honestly, once that Eelco blog post dropped, I almost deleted everything from my blog about Nix and NixOS. Just flat out fucking deleted them. The main thing that stopped me is the fact that I am traveling for work at time of writing and have inconsistent internet access.
+
+In the wake of this, I have been dealing with a unique form of imposter syndrome. I know that what I'm about to say is a false assertion, but it really feels like I have created more pain than good by introducing people to this ecosystem in its current form. This is a very unsettling feeling to have. Consciously, I know it is a false realization. I know that it makes no sense to think that. I know that at that point I was doing what I thought was correct and I was doing what I thought was right and good and I was doing it in good faith.
+
+Then unforeseen consequences happened.
+
+I will be a lot more cautious about advocating for technology in the future.
