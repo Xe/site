@@ -1,0 +1,179 @@
+---
+title: "Rebuilding the homelab: A Rocky start"
+date: 2024-04-29
+tags:
+  - homelab
+  - RockyLinux
+---
+
+My homelab consists of a few machines running NixOS. I've been put into [facts and circumstances beyond my control](/blog/2024/much-ado-about-nothing/) that make me need to reconsider my life choices. I'm going to be rebuilding my homelab and documenting the process in this series of posts.
+
+<Conv name="Cadey" mood="coffee">
+  Join with me in my tale of woe as I find out how good I really had it with
+  NixOS.
+</Conv>
+
+Each of these posts will contain one small part of my journey so that I can keep track of what I've tried and you can follow along at home.
+
+## State of the lab
+
+My homelab is made up of a few machines:
+
+- `kos-mos`, a small server that I use for running some CI things and periphery services. It has 32 GB of ram and a Core i5-10600.
+- `ontos`, identical to `kos-mos` but with an RTX 2060 6 GB.
+- `logos`, identical to `kos-mos` but with a RTX 3060 12 GB.
+- `pneuma`, my main shellbox and development machine. It is a handbuilt tower PC with 64 GB of ram and a Ryzen 9 5900X. It has a GPU because the 5900X doesn't have integrated graphics. It has a bunch of random storage devices in it.
+- `itsuki`, the NAS. It has all of our media and backups on it. It runs Plex and a few other services, mostly managed by docker compose. It has 16 GB of ram and a Core i5-10600.
+- `chrysalis`, an old Mac Pro from 2013 that I as my Prometheus server. It has 32 GB of ram and a Xeon E5-1650. Coincidentally, it also runs the IRC bot in `#xeserv` on Libera.chat.
+
+Of these machines, `kos-mos` is the easiest to deal with because it's not running much of anything useful right now. I had to move some workloads off of it for various reasons that are coming back to be useful. `ontos` has a bunch of models on it that it quantizes from time to time. `pneuma` is a very hard target to move because I am actively using it at all times.
+
+I am not going to touch the NAS in this first phase. I am afraid of losing data and it stores more data than the rest of the storage devices in the house combined.
+
+A rebuild of the homelab is going to be a fair bit of work. I'm going to have to take this one piece at a time and make sure that I don't lose anything important.
+
+## The plan
+
+I'm not sure which technology/distro I'm going to end up with. For various reasons, I'm probably gonna end up with something in the RPM ecosystem. Say what you will about Red Hat, but they're probably not going anywhere any time soon.
+
+Here's the short list of things I'm considering:
+
+- Rocky Linux (or even Oracle Linux) with Ansible
+- Something in the Universal Blue ecosystem
+- Fedora CoreOS with Kubernetes
+
+<Conv name="Aoi" mood="wut">
+  Wait, hold up. You're considering _Kubernetes_ for your _homelab_? I thought
+  you were as staunchly anti-Kubernetes as it got.
+</Conv>
+
+<Conv name="Cadey" mood="coffee">
+  I am, but hear me out. Kubernetes gets a lot of things wrong, but it does get
+  one thing so clearly right that it's worth celebration: you don't need to SSH
+  into a machine to look at logs, deploy new versions of things, or see what's
+  running. Everything is done via the API.
+</Conv>
+
+<Conv name="Aoi" mood="facepalm">
+  Things really must be bad if you're at this point...
+</Conv>
+
+Of these things, Rocky Linux and Ansible are probably the easiest things to start with. After running [a poll](https://pony.social/@cadey/112345742472623188), it looks like the masses want Rocky Linux. Who am I to not give the people what they want?
+
+## Rocky Linux
+
+[Rocky Linux](https://rockylinux.org/) is a fork of pre-Stream CentOS. It aims to be a 1:1 drop-in replacement for CentOS and RHEL. It's a community-driven project that is sponsored by the [Rocky Enterprise Software Foundation](https://resf.org/).
+
+For various reasons involving my HDMI cable being too short to reach the other machines, I'm gonna start with `chrysalis`. Rocky Linux has a GUI installer and I can hook it up to the sideways monitor that I have on my desk.
+
+The weird part about `chrysalis` is that it's a Mac Pro from 2013. Macs of that vintage can boot normal EFI partitions and binaries, but they generally prefer to have your EFI partition be a HFS+ volume. This is normally not a problem because the installer will just make the EFI partition for you. However, the Rocky Linux installer doesn't do that. They ifdeffed out the macefi stuff because Red Hat ifdeffed it out.
+
+<Conv name="Cadey" mood="coffee">
+  I get that they want to be a 1:1 drop-in replacement (which means that any bug
+  RHEL has, they have), but it is massively inconvenient in this case in
+  particular.
+</Conv>
+
+I found this out when I tried to install Rocky Linux and it failed at the partitioning step with this error:
+
+<Picture
+  path="blog/2024/homelab-v2/IMG_0256"
+  desc="an error message saying: resource to create this format macefi is unavailable"
+/>
+
+As a result, you have to do a very manual install that looks something like this [lifted from the Red Hat bug tracker](https://bugzilla.redhat.com/show_bug.cgi?id=1751311#c16):
+
+> - Boot Centos/RHEL 8 ISO Normally (I used 8.1 of each)
+> - Do the normal setup of network, packages, etc.
+> - Enter disk partitioning
+>   - Select your disk
+>   - At the bottom, click the "Full disk summary and boot loader" text
+>     - Click on the disk in the list
+>     - Click "Do not install boot loader"
+>     - Close
+>   - Select "Custom" (I didn't try automatic, but it probably would not create the EFI partition)
+>   - Done in the top left to get to the partitioning screen
+>   - Delete existing partitions if needed
+>   - Click +
+>     - CentOS 8: create /boot/efi mountpoint, 600M, Standard EFI partition
+>     - RHEL 8: create /foo mountpoint, 600M, Standard EFI partition, then edit the partition to be on /boot/efi
+>   - Click + repeatedly to create the rest of the partitions as usual (/boot, / swap, /home, etc.)
+>   - Done
+> - During the install, there may be an error about the mactel package, just continue
+> - On reboot, both times I've let it get to the grub prompt, but there's no grub.cfg; not sure if this is required
+> - Boot off ISO into rescue mode
+>   - Choose 1 to mount the system on /mnt/sysimage
+>   - At the shell, chroot /mnt/sysimage
+>   - Check on the files in /boot to make sure they exist: ls -l /boot/ /boot/efi/EFI/redhat (or centos)
+>   - Run the create the grub.cfg file: grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+>     - I got a couple reload ioctl errors, but that didn't seem to hurt anything
+>   - exit
+> - Next reboot should be fine, and as mentioned above it'll reboot after SELinux labelling
+
+<Conv name="Cadey" mood="percussive-maintenance">
+  Yeah, no. I'm not going to do that. Another solution I found involved you
+  manually booting the kernel from the GRUB rescue shell. I'm not going to do
+  that either.
+</Conv>
+
+So, that's a wash. In the process of figuring this out I also found out that when I wiped the drive, I took down my IRC bot. I'm going to have to fix that eventually.
+
+## Ansible
+
+As a bonus round, let's see what it would look like to manage things with Ansible on Rocky Linux should I have been able to install Rocky Linux anyways. Ansible is a Red Hat product, so I expect that it would be the easiest thing to use to manage things.
+
+Ansible is a "best hopes" configuration management system. It doesn't really authoritatively control what is going on, it merely suggest what should be going on. As such, you influence what the system does with "plays" like this:
+
+```yaml
+- name: Full system update
+  dnf:
+    name: "*"
+    state: latest
+```
+
+This is a play that tells the system to update all of its packages with dnf. However, when I ran the linter on this, I got told I need to instead format things like this:
+
+```yaml
+- name: Full system update
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+```
+
+You need to use the fully qualified module name because [you might install other collections that have the name `dnf` in the future](https://docs.ansible.com/ansible/latest/collections/index.html). This kinda makes sense at a glance, I guess, but it's probably overkill for these usecases. However, it makes the lint errors go away and it is fixed mechanically, so I guess that's fine.
+
+What's not fine is how you prevent Ansible from running the same command over and over. You need to make a folder full of empty semaphore files that get touched when the command runs:
+
+```yaml
+- name: Xe's semaphore flags
+  ansible.builtin.shell: mkdir -p /etc/xe/semaphores
+  args:
+    creates: /etc/xe/semaphores
+
+- name: Enable CRB repositories
+  ansible.builtin.shell: |
+    dnf config-manager --set-enabled crb
+
+    touch /etc/xe/semaphores/crb
+  args:
+    creates: /etc/xe/semaphores/crb
+```
+
+And then finally you can install a package:
+
+```yaml
+- name: Install EPEL repo lists
+  ansible.builtin.dnf:
+    name: "epel-release"
+    state: present
+```
+
+This is about the point where I decided:
+
+<Conv name="Cadey" mood="coffee">
+  No. I'm not going to deal with this.
+</Conv>
+
+I haven't even created user accounts yet, I'm just trying to install a package repository so that I can install other packages.
+
+So I'm not going with Ansible, even on the machines where installing Rocky Linux works.

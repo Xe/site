@@ -47,6 +47,10 @@ let descriptions
         , details = "Evolution of the h human/programming language."
         }
       , Desc::{
+        , name = "homelabV2"
+        , details = "My second attempt at a homelab via Fedora CoreOS and k3s."
+      }
+      , Desc::{
         , name = "howto"
         , details = "Instructions on how to do various things."
         }

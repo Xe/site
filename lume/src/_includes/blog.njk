@@ -2,13 +2,19 @@
 layout: base.njk
 ---
 
-{{ comp.ads() | safe }}
-
 <article class="prose dark:prose-invert max-w-none">
     <h1>{{title}}</h1>
     <p class="text-sm text-fg-3 dark:text-fgDark-3 mb-2">
         Published on <time datetime={{date | date("DATE")}}>{{date | date("DATE_US")}}</time>, {{ readingInfo.words }} words, {{ readingInfo.minutes }} minutes to read
     </p>
+
+    {% if patronExclusive %}
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 py-1 px-4 mb-4">
+            <p class="text-yellow-700 text-sm font-semibold font-['Inter']">This content is exclusive to my patrons. If you are not a patron, please don't be the reason I need to make a process more complicated than the honor system. This will be made public in the future, once the series is finished.</p>
+        </div>
+    {% else %}
+        {{ comp.ads() | safe }}
+    {% endif %}
 
     {% if hero %}
         {{ comp.XeblogHero(hero) | safe }}
