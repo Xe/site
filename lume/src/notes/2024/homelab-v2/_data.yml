@@ -1,3 +1,4 @@
 series: homelabV2
 index: false
 patronExclusive: true
+type: patron
