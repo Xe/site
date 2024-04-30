@@ -49,6 +49,21 @@ in  [ Person::{
         ]
       }
     , Person::{
+      , name = "Karan Yadav"
+      , tags =
+        [ "ruby"
+        , "python"
+        , "linux"
+        , "c++"
+        , "aws"
+        , "backend"
+        ]
+      , links =
+        [ Link::{ url = "https://github.com/karan-ydv", title = "GitHub" }
+        , Link::{ url = "https://karanydv.tech", title = "website" }
+        ]
+      }
+    , Person::{
       , name = "Jeremy White"
       , tags =
         [ "kubernetes"
