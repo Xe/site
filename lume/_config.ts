@@ -87,6 +87,7 @@ site.use(feed({
 site.use(mdx({
   components: {
     "BlockQuote": BlockQuote,
+    "Blockquote": BlockQuote,
     "ChatFrame": ChatFrame,
     "ChatBubble": ChatBubble,
     "Figure": Figure,

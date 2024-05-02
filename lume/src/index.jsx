@@ -26,7 +26,7 @@ export default ({ search, resume, notableProjects, contactLinks }, { date }) => 
 
             <h2 class="text-2xl mb-4">Recent Articles</h2>
             <ul class="list-disc ml-4 mb-4">
-                {search.pages("index=true", "order date=desc", 5).map((post) => {
+                {search.pages("index=true", "order date=desc", 8).map((post) => {
                     const url = post.redirect_to ? post.redirect_to : post.url;
                     return (
                         <li>

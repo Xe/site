@@ -7,7 +7,7 @@ export default ({ search }, { date }) => {
       <h1 className="text-3xl mb-4">{title}</h1>
 
       <ul class="list-disc ml-4 mb-4">
-        {search.pages("layout=talk.njk", "order date=desc").map((post) => (
+        {search.pages("layout=talk.njk,index=true", "order date=desc").map((post) => (
           <li>
             <time datetime={date(post.date)}>{date(post.date, "DATE_US")}</time> -{" "}
             <a href={post.url}>{post.title}</a>

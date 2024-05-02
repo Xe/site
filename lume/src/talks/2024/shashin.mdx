@@ -1,0 +1,291 @@
+---
+title: "Building a social network from scratch on a whiteboard"
+date: 2024-05-02
+index: false
+image: talks/2024/shashin/001
+---
+
+<Conv name="Cadey" mood="enby">
+  <span className="font-mono font-bold">&lt;shill&gt;</span>Click
+  [here](https://fly.io/hello/xe?utm_source=xesite&utm_medium=sh0rkshill&utm_campaign=shashin)
+  to get $50 in [Fly.io](https://fly.io) credits! That's enough to run projects
+  like [Arsène](https://arsene.fly.dev) for 2-3 months. If enough of you readers
+  convert into Fly.io users, this justifies the hilarious amount of time and
+  expense I put into making these conference talks shine to the bean counters.
+  It's like my soundcloud except not full of terrible space jam and gangnam
+  style mashups.<span className="font-mono font-bold">&lt;/shill&gt;</span>
+  <small>Offer not valid if you have used a DevRel coupon before</small>
+</Conv>
+
+## The Video
+
+TODO(Xe): put this here when it's composited/edited/graded/whatever.
+
+## The Talk
+
+<Conv name="Cadey" mood="coffee">
+  This is a transcription of a conference talk. This is not written in the same
+  way that I write technical articles. This is written in the way that I speak.
+</Conv>
+
+<Slide
+  name="2024/shashin/001"
+  desc="The title slide of the talk. It shows the speaker name and the title. Art by Annie Rugyt."
+/>
+
+Good morning all. I'm Xe Iaso and today I'm going to tell you a story about how a company scaled from a humble hackathon project to a globe-spanning abomination that no human can hope to understand.
+
+One of the biggest memes in the industry is the idea of scalability. A lot of the time when you hear people talk about scalability, you end up with diagrams like this:
+
+<Slide
+  name="2024/shashin/002"
+  desc="The AWS reference architecture for an IOT Tamagotchi. It is a mess of confusion and sadness."
+/>
+
+This is the AWS reference architecture for an internet-of-things Tamagotchi.
+
+The big problem with diagrams like this is that they tell you the end state and not the story that was taken to get there. A story isn't fun if you only hear the end.
+
+This leads to one of my least favourite interview questions ever. "How did we get here?" "How did things get this complicated in the first place?" The last time I remember doing this question in a job interview, it was on a whiteboard and took about three hours to start from a single server and recreated production. The interviewer sat there, almost trolling me by throwing circumstance after circumstance at me to make me independently come up with the same decisions that led to production existing as it did that day. If you've never had this interview before, it can feel a bit like ritualistic hazing.
+
+Today I'm going to tell you the story of a startup called Shashin. Think of Shashin as Instagram, but not.
+
+But before we get into that, I'd like to introduce who I am and my background. I'm Xe Iaso. I am the Senior Technophilosopher at fly.io, where I lead the developer relations team. I blog a lot. However I'm not actually a technical writer by nature. I'm more of a fiction writer.
+
+<Slide
+  name="2024/shashin/007"
+  desc="An agenda slide with a person looking to bridge from the known to the unknown."
+/>
+
+Today I'm going to be explaining that "how did we get here?" question without breaking any NDAs.
+
+I've split this story into a few eras that help exemplify the stages of a website's development. I start with the hackathon entry. I describe the small scale implementation on AWS. And then I'm going to explain how and why things get so complicated as you span continents.
+
+Once we get to the end, I'm going to talk about the ways that I would design something like Shashin with tools you can use today.
+
+Just so that we are absurdly clear here:
+
+<Blockquote>
+  This story is a work of fiction. Any names, characters, businesses, places,
+  events, and incidents in this story are either the project of my imagination
+  or are used in a fictitious manner. Any resemblance to actual persons, living
+  or dead, or actual events in your observable reality are purely coincidental.
+</Blockquote>
+
+When I tell this story, a lot of the irrelevant technical bits, company names, and stacks will be replaced so you don't think about them too much (Android becomes Actroid, etc.). If you recognize what one of those fake names is supposed to be during the story, please raise your hand.
+
+When I say the word you in this story, I'm referring to you as the audience, but I'm also referring to a character.
+
+<Slide
+  name="2024/shashin/011"
+  desc="A very Canadian person lazing back on a chair talking on a cell phone with an axe to his side. Photo credit: CIRA stock photos."
+/>
+
+Just imagine that the character is someone like this, a startup founder of the era who stumbled his way into success.
+
+Oh, by the way, this story's going to contain some funny things, so if you feel the urge to laugh, just laugh openly. It helps everyone have a good time.
+
+## Humble Beginnings
+
+The year is 2009. You and one of your best friends have decided to go to a hackathon. Hackathons only recently started up, and this one was powered by Zed Combinator and Techaro with a $5000 cash prize.
+
+Your friend has been playing with this new mobile phone OS called Actroid. You both have a background in photography and you decide that you want to make something involving photography for this competition. Every Actroid device is equipped with a high-power camera. Every Actroid app has to be written in Espresso. However, that doesn't mean that you have to have your back end written in Espresso. Espresso has a reputation for being overy verbose and complicated to develop "simple" things, and you just want to hack something up quick.
+
+Picking almost arbitrarily, you decided to use Python for the back end because you liked the people at the meetup. One of the big advantages of Python is that it has SQLite right in the standard library. This makes hacking easier. However, this may come back to haunt you.
+
+So you and your friend hack it up and make it work. It's time to show it off. You pull out your phone. You take a picture, you upload it. Your friend refreshes the view in the Actroid emulator. The crowd shows up on the projector. The room erupts into cheering. You win the hackathon and sooner than you can imagine, you've got a business being founded and investors want to talk.
+
+![](https://cdn.xeiaso.net/file/christine-static/talks/2024/shashin/hackathon.excalidraw.svg)
+
+At this point, the entire backend runs on one developer's laptop. This is great from a development standpoint because it makes it really easy to hack on. If that developer's laptop were hit by a meteor, you would have to start over from scratch.
+
+There's also an app written in Espresso for Actroid. The IP address and port for the backend laptop is are hard-coded into the Espresso source code. It barely works on a good day.
+
+However, this doesn't matter. You won! Relish in the peace of the victory. It will be some of the last peace you will have for a long while.
+
+<Slide
+  name="2024/shashin/019"
+  desc="Borat holding two thumbs up with the caption 'Great success'. The words 'Capital obtained' are overlaid on top of the image like in Dark Souls when you kill a boss or something."
+/>
+
+However, this doesn't matter. You won! Relish in the peace of the victory. It will be some of the last peace you will have for a long while.
+
+## Small scale
+
+Things are getting serious. With great investment money comes great responsibility for your users. So you go out and survey the options for running this thing somewhere reliably. But let's face it, it's 2009. You're going to choose AWS. AWS lets you pay for what you actually use. For 2009, this is really innovative.
+
+One of your investors suggests that you use Postgres for your database instead of SQLite, because they read the Heroku blog once and they said something that could be interpreted as Postgres being better than MySQL.
+
+![](https://cdn.xeiaso.net/file/christine-static/talks/2024/shashin/3-tier.excalidraw.svg)
+
+As you work and get advice from different advisors and investors, you end up with something that looks like this. This is the kind of infrastructure you end up seeing over and over in basically everything on the planet. Servers are broken into three tiers: Routing, application, and storage.
+
+Your routing servers take requests in from the outside world and route them to your application servers. Application servers turn requests from the routing servers into responses. When processing requests, application servers will likely need to talk to the storage servers.
+
+So, here's what the diagram of the back end looks like now:
+
+- The Actroid app is how users look at and upload photos.
+- Whenever the app needs to make a request, it will send the request to the routing servers. One routing server will be picked at random and the request will be processed and sent to an application server.
+- That application server will poke Postgres or something and then return a response.
+- If a client is requesting an image from the service, it will automatically skip going through the application server and go directly to the image storage server. This entire app is made to share images, so it's very likely that any random request is going to be requesting an image.
+
+At the time the Actroid app was implemented, it didn't have the ability to write the new photos to the camera roll. The file storage server has the only copy of a lot of images.
+
+But AWS is robust, right? It wouldn't just go down randomly, would it?
+
+<Conv name="Numa" mood="happy">
+  Would it?
+</Conv>
+
+<Slide
+  name="2024/shashin/029"
+  desc="A pager with a very exasperated pink-haired orcadragon chugging down coffee."
+/>
+
+Wrong! It's 4am and you wake up because everything is down. Raise your hand if this is relatable.
+
+<Slide
+  name="2024/shashin/030"
+  desc="A man scolding a router with the caption '502 Bad Gateway'"
+/>
+
+This time in the pager zone everything is down and when people go to the website as a fallback, they see this image. Your app is breaking amazingly and that is the only image anyone sees.
+
+Users are complaining on a service originally made for commenting on podcasts over SMS.
+
+<Conv name="Numa" mood="delet">
+  I think they call it Y now?
+</Conv>
+
+A heroic effort ensues and the application is brought back online. However, in the wake of this, you realize that some images are corrupted. Luckily, it's only the last few images that were uploaded before everything went down. But this corruption scares you. The image storage server literally died under the weight of all of the uploads at the last minute.
+
+In your post-mortem analysis, you realize that all of production resting on a single server is probably a bad idea. For some reason, your backend goes down if the file storage server is down. This is not good for uptime.
+
+An investor suggests that you should use this thing called Simple Storage Service for uploads instead of a server with a bunch of files on it like you're used to. S3 allows you to put bytes into the cloud with a name and then use the name to get the bytes back.
+
+S3 saved the day. With this, you're more easily able to trust that one server going down won't destroy your user data. However, at the time, AWS is the only platform with something like S3. If you ever wanted to move off of AWS for some reason, S3 would keep you locked there. With terabytes of data.
+
+## Series A
+
+At the time, the team is about 16 people, including you, the CEO, and the rest of the team. This is still small enough that everybody can have everything in their head and understand the entire stack at once. However, something big is about to change this.
+
+The big pile of money has slowly started to run out. In order to keep the company online, you need more money. You pass the great filter with a Series A round.
+
+And just after you announce everything and you get more users...the pager goes off. Multiple times. People can't upload new photos, but they can sometimes view existing ones. The database server is falling over. Every additional user you get makes the problem worse.
+
+However, in the postmortem analysis, someone realizes the app makes a lot of repeated requests to the database. If it could somehow save the results of those queries for a short time, it would make fewer requests.
+
+So you ask an investor for advice and you hear about this program called Valkey. You can use it to put database results there for a bit instead of having to run the same queries again and again. This buys time to figure out what you need to do with your database server.
+
+As a result, Valkey is now a permanent part of your tech stack. It works great, and you're really happy with it.
+
+And then the pager goes off at 4 am again. You shake off the grogginess and then you realize the horror of what has happened. The Valkey server crashed. All the cache is gone. Clients were constantly trying to remake requests in order to hide downtime. Because the cache was empty, everything had to hit the database. A thundering herd of users had assaulted your poor database server into submission.
+
+Yesterday you had enough time to experiment with setting up a read replica. Thinking quickly, you decide to make the read requests go randomly between the primary and that replica. It fixes the issue. The app goes back up.
+
+This event soured the taste of Valkey in your mouth. Thundering herd problems suck in general, because they are easy to make by pure accident and only find out 3 months down the line.
+
+![](https://cdn.xeiaso.net/file/christine-static/talks/2024/shashin/valkey.excalidraw.svg)
+
+At this point you've realized that the back end is getting a bit more complicated. Your experiments are now permanently welded to production. And more critically, you're soon to hit the limits of your existing Postgres setup. Your new database replica is on its last legs. You're going to need to spin up more replicas, and fast. You've gone viral.
+
+Someone tells you about a configuration management tool called Aerodactyl that can help. You create a database server by hand, fossilize that into Aerodactyl, and then create seven more. Everything works the first time. You adopt Aerodactyl across the fleet.
+
+Coincidentally, as this happens, your company is about to transition from a big small team to a small big team. People are starting to specialize in smaller aspects of the app. This is the point where you usually see teams form around those aspects.
+
+## Microservices
+
+Then you run into problems with your version control system, Ruffian. When multiple people are modifying the same files in Ruffian in different yoink requests, you get merge conflicts. This was interesting the first time, but it quickly became a headache. Forward progress was impossible. Switching away was even more impossible.
+
+And these kind of conflicts is how you end up with the microservices pattern. Your backend gets carved up into parts maintained by different teams. In an ideal spherical cow reading of microservices, every microservice has a well-defined API that it uses to communicate with other services to help a user request turn into a response.
+
+<Conv name="Numa" mood="delet">
+  Does this happen? Scholars continue to debate to this day.
+</Conv>
+
+The image uploading team was Patient zero. They were having reliability issues when uploading images through the main monolith. The reliability of image uploads depended on the reliability of other parts of the monolith, and the monolith had a spate of segmentation faults at the worst possible time. At a certain point, push came to shove and the image upload team created a new service just to handle image uploading. It worked.
+
+As other teams started to run into Ruffian merge conflict issues, they ended up writing their own microservices too.
+
+<Blockquote>Microservices are not a panacea</Blockquote>
+
+It's worth mentioning that microservices are not a cure-all. It's a tradeoff. Microservices can make things more robust, but can make failure harder to detect. The image uploader can be down and everything can still work. You're not easily able to tell when things are actually broken.
+
+![](https://cdn.xeiaso.net/file/christine-static/talks/2024/shashin/migroserbices.excalidraw.svg)
+
+And this is how that diagram of backends get really complicated. So the main monolith handles looking up all of the photos that a user posted, comments, and authentication. All of the other functionality was carved out into other parts so the other teams to work on individually.
+
+## Globe-spanning
+
+As you grow over the years, you're running into a fundamental problem that you can't really change without a lot of work you've been trying to put off. You're running into the speed of light. Computers are very fast, but the speed of light is about 100 milliseconds from Northern Virginia to Europe. You need to expand into multiple regions.
+
+This is the real great filter for these kinds of applications. Making a true distributed system like this comes with a lot of problems that you get nowhere else.
+
+<center>
+  <Sticker name="Cadey" mood="aha" />
+</center>
+
+However, due to the design of the rest of your stack, you got really lucky. The majority of things that are slow involve reading data. Statistically most requests are to read data. This means that every region only really needs to have a read replica of the databases and a caching server or two. Your application will just poke the main database over a VPN or something whenever anything needs to change. This makes it relatively trivial.
+
+<Conv name="Cadey" mood="coffee">
+  Well, as trivially as globally distributed systems can get.
+</Conv>
+
+However, once you go past this point, you run into a huge problem where nobody is able to understand what's going on anymore. You don't just have a back end at this point; you have an ecosystem of various tools that interact with each other in ways that you aren't really sure about.
+
+<Blockquote>
+  Kubernetes and its consequences have been a disaster for the human race
+</Blockquote>
+
+This is probably the point where having something like Kubernetes is useful. At anything below this scale, it's probably not the best use of your time.
+
+However, you have a bigger problem. Your cash is finally starting to run out after and it's looking like your only exits are to go public or sell. However, either way means that you get to retire. After entertaining a couple offers in the private market, you decide to sell out to Hieroglyph.
+
+<Slide
+  name="2024/shashin/061"
+  desc="Borat holding two thumbs up with the caption 'Great success'. The words 'Company acquired' are overlaid on top of the image like in Dark Souls when you kill a boss or something."
+/>
+
+You get to retire at 45. You win.
+
+## How I'd Shashin
+
+As I promised, I'm going to tell you how I would design something like this in the real world for that relatively simple small to medium scale.
+
+Realistically, I'd probably end up using a chord of Fly.io, Supabase, and Tigris to build up the infrastructure I need. <small>Note my bias as that the success of these companies means that I personally succeed.</small> But realistically, these are the building blocks that you'd need.
+
+The overall back end diagram would look something like this:
+
+![](https://cdn.xeiaso.net/file/christine-static/talks/2024/shashin/turboshill.excalidraw.svg)
+
+The main monolith would handle everything. The only main exception would be image uploading because I would split that out into a separate component. Image file format conversion is one of those worst case scenarios where it's both memory and CPU intensive. So I definitely want to dynamically spin up and down more image conversion workers as reality dictates.
+
+All of the images would be stored in Tigris, S3 and a CDN in a box. Having the uploader service work in every region means that all of the images would be by the users by default.
+
+If you are in Seattle, why should you have to upload your image to Northern Virginia to share it with someone else in Seattle?
+
+If you have any questions about this setup, please ask me in the hallway track. Just look for my hoodie, you can probably see this thing from orbit.
+
+## Conclusion
+
+In conclusion, there's a couple things that I want you to take away from this talk:
+
+- The complexity that you see in various backends happens for a reason. Every diagram has a story.
+- Unless you're at the stage of a globe-spanning abomination, you probably don't need Kubernetes. Even then, you probably don't.
+- And finally, storage is one of the most annoying things that you will ever work with.
+
+<Slide
+  name="2024/shashin/069"
+  desc="A list of the people responsible for helping enable the writing of this talk in some way or another."
+/>
+
+Before I finish this up, I just want to thank everybody on this list for helping me make this talk shine. Your efforts have been noticed, and you are loved.
+
+(Pause)
+
+<Slide
+  name="2024/shashin/070"
+  desc="The final slide showing information about Xe Iaso, a link to this page, and an email address for questions."
+/>
+
+And thank you for listening. I've been Xe Iaso and I'm going to be walking around the hallway track in case you have any questions because we are totally out of time. If you want stickers, I have them. Have a good day, everyone!
