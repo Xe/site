@@ -2,51 +2,6 @@
 <html lang="en">
 
     <head>
-        <!--
-MMMMMMMMMMMMMMMMMMNmmNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNmmmd.:mmMM
-MMMMMMMMMMMMMMMMMNmmmNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNmmydmmmmmNMM
-MMMMMMMMMMMMMMMMNm/:mNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNmms /mmmmmMMM
-MMMMMMMMMMMMMMMNmm:-dmMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNmmmmdsdmmmmNMMM
-MMMMMMMMMMMMMMMmmmmmmmNMMMMMMMMMMMNmmdhhddhhmNNMMMMMMMMMMMMMMMMNmy:hmmmmmmmmMMMM
-MMMMMMMMMMMMMMNm++mmmmNMMMMMMmdyo/::.........-:/sdNMMMMMMMMMMNmmms`smmmmmmmNMMMM
-MMMMMMMMMMMMMMmd.-dmmmmMMmhs/-....................-+dNMMMMMMNmmmmmmmmmmmmmmMMMMM
-MMMMMMMMMMMMMNmmmmmmmmho:-...........................:sNMMNmmmmmmmmmmmmmmmNMNmdd
-MMMMMMMMMMMMNmd+ydhs/-.................................-sNmmmmmmmmmmmmmmmdhyssss
-MMMMMMMMMMMNNh+`........................................:dmmmmmmmmmmmmmmmyssssss
-MMMMNNdhy+:-...........................................+dmmmmmmmmmmmmmmmdsssssss
-MMMN+-...............................................-smmmmmmmmmmmmmmmmmysyyhdmN
-MMMMNho:::-.--::-.......................----------..:hmmmmmmmmmmmmmmmmmmmNMMMMMM
-MMMMMMMMNNNmmdo:......................--------------:ymmmmmmmmmmmmmmmmmmmMMMMMMM
-MMMMMMMMMMds+........................-----------------+dmmmmmmmmmmmmmmmmmMMMMMMM
-MMMMMMMMMh+........................--------------------:smmmmmmmmmmmmmmNMMMMMMMM
-MMMMMMMNy/........................-------------::--------/hmmmmmmmmmmmNMMMMMMNmd
-MMMMMMMd/........................--------------so----------odmmmmmmmmMMNmdhhysss
-MMMMMMm/........................--------------+mh-----------:ymmmmdhhyysssssssss
-MMMMMMo.......................---------------:dmmo------------+dmdysssssssssssss
-yhdmNh:......................---------------:dmmmm+------------:sssssssssssyhhdm
-sssssy.......................--------------:hmmmmmmos++:---------/sssyyhdmNMMMMM
-ssssso......................--------------:hmmmNNNMNdddysso:------:yNNMMMMMMMMMM
-ysssss.....................--------------/dmNyy/mMMd``d/------------sNMMMMMMMMMM
-MNmdhy-...................--------------ommmh`o/NM/. smh+-----------:yNMMMMMMMMM
-MMMMMN+...................------------/hmmss: `-//-.smmmmd+----------:hMMMMMMMMM
-MMMMMMd:..................----------:smmmmhy+oosyysdmmy+:.  `.--------/dMMMMMMMM
-MMMMMMMh-................---------:smmmmmmmmmmmmmmmh/`      `/s:-------sMMMMMMMM
-MMMMMMMms:...............-------/ymmmmmmmmmmmmmmmd/        :dMMNy/-----+mMMMMMMM
-MMMMMMmyss/..............------ommmmmmmmmmmmmmmmd.       :yMMMMMMNs:---+mMMMMMMM
-MMMMNdssssso-............----..odmmmmmmmmmmmmmmh:.`    .sNMMMMMMMMMd/--sMMMMMMMM
-MMMmysssssssh/................`  -odmmmmmmmmmh+.     `omMMMMMMMMMMMMh/+mMMMMMMMM
-MNdyssssssymMNy-..............     `/sssso+:.      `+mMMMMMMMMMMMMMMMdNMMMMMMMMM
-NhssssssshNMMMMNo:............/.`                `+dMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-ysssssssdMMMMMMMMm+-..........+ddy/.`          -omMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-ssssssymMMMMMMMMMMMh/.........-oNMMNmy+--` `-+dNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-ssssydNMMMMMMMMMMMMMNy:........-hMMMMMMMNmdmMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-sssymMMMMMMMMMMMMMMMMMm+....-..:hMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-symNMMMMMMMMMMMMMMMMMMMNo.../-/dMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-dNMMMMMMMMMMMMMMMMMMMMMMh:.:hyNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-la budza pu cusku lu
-  <<.i do snura .i ko kanro
-    .i do panpi .i ko gleki>> li'u
--->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta name="go-import" content="xeiaso.net/v4 git https://github.com/Xe/site"/>
 
@@ -69,16 +24,27 @@ la budza pu cusku lu
 
         {% if title %}
             <title>{{ title }} - Xe Iaso</title>
-            <meta property="og:title" content="{{ title }} - Xe Iaso"/>
-            <meta property="twitter:title" content="{{ title }} - Xe Iaso"/>
+            <meta property="og:title" content="{{ title }}"/>
+            <meta property="twitter:title" content="{{ title }}"/>
         {% else %}
             <title>Xe Iaso</title>
             <meta property="og:title" content="Xe Iaso"/>
             <meta property="twitter:title" content="Xe Iaso"/>
         {% endif %}
 
+        {% if desc %}
+            <meta name="description" content="{{ desc }}"/>
+            <meta property="og:description" content="{{ desc }}"/>
+            <meta property="twitter:description" content="{{ desc }}"/>
+        {% else %}
+            <meta name="description" content="Xe Iaso's personal website."/>
+            <meta property="og:description" content="Xe Iaso's personal website."/>
+            <meta property="twitter:description" content="Xe Iaso's personal website."/>
+        {% endif %}
+
         {% if image %}
             <meta property="og:image" content="https://cdn.xeiaso.net/file/christine-static/{{ image }}.jpg"/>
+            <meta property="twitter:image" content="https://cdn.xeiaso.net/file/christine-static/{{ image }}.jpg"/>
             <meta name="twitter:card" content="summary_image_large"/>
         {% endif %}
 
