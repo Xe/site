@@ -1,0 +1,160 @@
+---
+title: "Rebuilding the homelab: CoreOS has entered the chat"
+date: 2024-05-04
+tags:
+  - homelab
+  - coreos
+  - rpm
+---
+
+My homelab consists of a few machines running NixOS. I've been put into [facts and circumstances beyond my control](/blog/2024/much-ado-about-nothing/) that make me need to reconsider my life choices. I'm going to be rebuilding my homelab and documenting the process in this series of posts.
+
+<Conv name="Cadey" mood="coffee">
+  Join with me in my tale of woe as I find out how good I really had it with
+  NixOS.
+</Conv>
+
+Each of these posts will contain one small part of my journey so that I can keep track of what I've tried and you can follow along at home.
+
+## CoreOS
+
+Way back when my career was just starting, CoreOS was released. CoreOS was radical and way ahead of its time. Instead of having a mutable server that you can SSH into and install packages at will on, CoreOS had the view that thou must put all your software into Docker containers and run them that way. This made it impossible to install new packages on the server, which they considered a feature.
+
+I loved using CoreOS when I could because of one part that was absolutely revolutionary: [Fleet](https://github.com/coreos/fleet). Fleet was a distributed init system that let you run systemd services _somewhere_, but you could care where it ran when you needed to. Imagine a world where you could just spin your jobs somewhere, that was Fleet.
+
+The really magical part about Fleet was the fact that it was deeply integrated into the discovery mechanism of CoreOS. Want 4 nodes in a cluster? Provision them with the same join token and Fleet would just figure it out. Newly provisioned nodes would also accept new work as soon as it was issued.
+
+It was fucking glorious.
+
+And then it became irrelevant in the face of Kubernetes after CoreOS got bought out by Red Hat and then IBM bought out Red Hat.
+
+Also, "classic" CoreOS is no more, but its spirit lives on in the form of [Fedora CoreOS](https://fedoraproject.org/coreos/), which is like CoreOS but built on top of [rpm-ostree](https://coreos.github.io/rpm-ostree/). The main difference between Fedora CoreOS and actual CoreOS is that Fedora CoreOS lets you install additional packages on the system.
+
+### Fedora CoreOS
+
+For various reasons involving divine intervention, I'm going to be building a few of my own RPM packages. I'm also going to be installing other third party programs on top of the OS, such as [yeet](https://github.com/Xe/x/tree/master/cmd/yeet).
+
+Fedora CoreOS is a bit unique because you install it by declaring the end result of the system, baking that into an ISO, and then plunking that onto a flashdrive to assimilate the machine. If you are using it from a cloud environment, then you plunk your config into the "user data" section of the instance and it will happily boot up with that configuration.
+
+This is a lot closer to the declarative future I want, with the added caveat that changing the configuration of a running system is a bit more involved than just SSHing into the machine and changing a file. You have to effectively blow away the machine and start over.
+
+<Conv name="Aoi" mood="wut">
+  What? That sounds like a _terrible_ idea. How would you handle moving state
+  around?
+</Conv>
+<Conv name="Cadey" mood="aha">
+  Remember, this is for treating machines as _cattle_, not _pets_. I'm sure that
+  this will be a fun learning experience at the very least.
+</Conv>
+
+I want to build this on top of rpm-ostree because I want to have the best of both worlds: an immutable system that I can still install packages on. This is an absolute superpower and I wanted to have it in my life.
+
+As a more practical example, let's take a look at [Bazzite Linux](https://bazzite.gg). Bazzite is a spin of Fedora Silverblue (desktop Fedora built on top of rpm-ostree) that has the Steam Deck UI installed on top of it. This turns devices like the [ROG Ally](https://www.asus.com/ca-en/site/gaming/rog/handheld-consoles/rog-ally/) into actual game consoles instead of handheld gaming PCs.
+
+<Conv name="Cadey" mood="coffee">
+  I went into this distinction more in my failed review video of the ROG Ally.
+  If y'all want, I can post it to Patreon so you can see why I wrote it off as a
+  failure that needs drastic rewrites to be decent.
+</Conv>
+
+In Bazzite, rpm-ostree lets you layer on additional things like the Fanatec steering wheel drivers and wheel managers like [Oversteer](https://github.com/berarma/oversteer). This allows you to _add_ optional functionality without having to worry about breaking the base system. Any time updates are installed, rpm-ostree will layer Oversteer on top of it for you so that you don't have to worry about it.
+
+This combined with my own [handrolled RPMs with `yeet`](https://github.com/Xe/x/tree/master/cmd/yeet) means that I could add software to my homelab nodes (like I have with Nix/NixOS) without having to worry about it being rebuilt from scratch or its distribution. This is a superpower that I want to keep in my life. It's not gonna be as nice as the Nix setup, but something like this:
+
+```js
+["amd64", "arm64"].forEach((goarch) =>
+  rpm.build({
+    name: "yeet",
+    description: "Yeet out actions with maximum haste!",
+    homepage: "https://within.website",
+    license: "CC0",
+    goarch,
+
+    build: (out) => {
+      go.build("-o", `${out}/usr/bin/`);
+    },
+  })
+);
+```
+
+is so much easier to read and manage than it is to do with RPM specfiles.
+
+<Conv name="Cadey" mood="coffee">
+  Not to mention if I did my Go packaging the full normal way with RPM
+  specfiles, I'd have to have my own personal dependencies risk fighting the
+  system-level dependencies. I don't want to do that, but you can if you want
+  to.
+</Conv>
+
+I'd also need to figure out how to [fix Gitea's RPM package serving support so that it signs packages for me](https://github.com/go-gitea/gitea/pull/27069), but would be solvable.
+
+## Installation
+
+The method I'm going to be using to install Fedora CoreOS is to use [`coreos-installer`](https://coreos.github.io/coreos-installer/) to build an ISO image with a configuration file generated by [`butane`](https://coreos.github.io/butane/).
+
+To make things extra _fun_, I'm writing this on a Mac, which means I will need to have a Fedora environment handy to build the ISO because Fedora only ships Linux builds of `coreos-installer` and `butane`.
+
+<Conv name="Mara" mood="hacker">
+  This installation was adapted from [this
+  tutorial](https://devnonsense.com/posts/k3s-on-fedora-coreos-bare-metal/)
+</Conv>
+
+First, I needed to install [Podman Desktop](https://podman-desktop.io/), which is like the Docker Desktop app except it uses the [Red Hat Podman](https://podman.io/) stack instead of the Docker stack. For the purposes of this article, they are functionally equivalent.
+
+I made a new repo/folder and then started up a Fedora container:
+
+```
+podman run --rm -itv .:/data fedora:latest
+```
+
+I then installed the necessary packages:
+
+```
+dnf -y install coreos-installer butane ignition-validate
+```
+
+And then I copied over the template from the Fedora CoreOS k3s tutorial into `chrysalis.bu`. I edited it to have the hostname `chrysalis`, loaded my SSH keys into it, and then ran the script to generate a prebaked install ISO. I loaded it on a flashdrive and then stuck it into the same Mac Pro from the last episode.
+
+<Conv name="Cadey" mood="coffee">
+  Annoyingly, it seems that the right file extension for Butane configs is `.bu`
+  and that there isn't a VSCode plugin for it. If I stick with Fedora CoreOS,
+  I'll have to make something that makes `.bu` files get treated as YAML files
+  or something.
+</Conv>
+
+It installed perfectly. I suspect that the actual Red Hat installer can be changed to just treat this machine as a normal EFI platform without any issues, but that is a bug report for another day.
+
+I got k3s up and running and then I checked the version number. My config was having me install k3s version 1.27.10, which is much older than the current version [1.30.0 "Uwubernetes"](https://kubernetes.io/blog/2024/04/17/kubernetes-v1-30-release/). I fixed the butane config to point to the new version of k3s and then I tried to find a way to apply it to my running machine.
+
+<Conv name="Aoi" mood="wut">
+  That should be easy, right? You should just need to push the config to the
+  server somehow and then it'll reconverge, right?
+</Conv>
+
+Yeah, about that. It turns out that Fedora CoreOS is very much on the side of "cattle, not pets" when it comes to datacenter management. The Fedora CoreOS view is that any time you need to change out the Ignition config, you should reimage the machine. This makes sense for a lot of hyperconverged setups where this is as simple as pushing a button and waiting for it to come back.
+
+However, my homelab isn't a hyperconverged datacenter setup. It's one person's hobby places in a situation where they have a tinker toy router that can't let them do anything nice. If I want to adopt an OS in the homelab, I need the ability to change my mind without having to burn four USB drives and reflash my homelab.
+
+This was a bummer. I'm gonna have to figure out something else to get Kubernetes up and running for me.
+
+## Other things I evaluated and ended up passing on
+
+I was told by a coworker that [k3OS](https://k3os.io/) is a great way to have a "boot to Kubernetes" environment that you don't have to think about. This is by the Rancher team, which I haven't heard about in ages since I played with [RancherOS](https://rancher.com/docs/os/v1.x/en/) way back in the before times.
+
+RancherOS was super wild for its time. It didn't have a package manager, it had the Docker daemon. Two Docker daemons in fact, one for the "system" docker daemon that handled things like TTY sessions, DHCP addresses, device management, system logs, and the like. The other Docker daemon was for the userland, which was where you ran your containers.
+
+<Conv name="Cadey" mood="coffee">
+  I kinda miss how wild RancherOS was. It was great for messing around with at
+  one of my former workplaces. We didn't use it for anything super critical, but
+  it was a great hypervisor for a Minecraft server.
+</Conv>
+
+I tried to get k3OS up and running, but then I found out that it's deprecated. That information isn't on the website, it's on the [getting started documentation](https://github.com/rancher/k3os/blob/master/README.md#quick-start). It's apparently replaced by [Elemental](https://elemental.docs.rancher.com/), which seems to be built on top of OpenSUSE (kinda like how Fedora CoreOS is built on Fedora).
+
+At the time of writing this, I'm on an airplane and the Elemental documentation isn't loading properly. My VPN to my homelab isn't connecting so I can't really evaluate it beyond looking at the front page without any CSS. It looks like it'd be close to what I want, but I don't know if it supports the "let you be able to change your mind" flow that I want.
+
+---
+
+Seriously, getting off of NixOS is hard. There are a lot of things that are _almost there_, but nothing that quite crosses the line into what I actually want. This is frustrating, but I guess that's part of the real pain that everything outside of NixOS has to deal with.
+
+I'm looking at [Talos Linux](https://talos.dev) and I'm very happy with what I've seen so far. It looks like it's a prod-worthy take on [Gokrazy](https://gokrazy.org/).
