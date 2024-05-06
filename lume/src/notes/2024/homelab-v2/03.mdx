@@ -1,0 +1,227 @@
+---
+title: "Rebuilding the homelab: The Talos Principle"
+description: "Maybe there is light at the end of the tunnel."
+date: 2024-05-06
+patronExclusive: true
+tags:
+  - homelab
+  - talosLinux
+  - k8s
+  - kubernetes
+hero:
+  ai: "Photo by Xe Iaso, Canon EOS R6 mark ii, Helios 44-2 (58mm at f/8)"
+  file: ../xedn/dynamic/54aaeec2-87cd-4df3-9560-ddd0bc303eee
+  prompt: "The sky above one of the caveaus in New Orleans St. Louis Cemetery number 1."
+---
+
+My homelab consists of a few machines running NixOS. I've been put into [facts and circumstances beyond my control](/blog/2024/much-ado-about-nothing/) that make me need to reconsider my life choices. I'm going to be rebuilding my homelab and documenting the process in this series of posts.
+
+<Conv name="Cadey" mood="coffee">
+  Join with me in my tale of woe as I find out how good I really had it with
+  NixOS.
+</Conv>
+
+Each of these posts will contain one small part of my journey so that I can keep track of what I've tried and you can follow along at home.
+
+## Why I homelab
+
+One of the biggest bits of feedback I got on an earlier draft of [part 1](../01/) was that they weren't sure _why_ I was making a homelab in the first place. As in, what problem was I trying to solve by doing this?
+
+I want to have a homelab so that I can have a place to "just run things". I want to be able to spin up and try out new things without having to worry about cloud provider cost or the burden of setting up new servers every time something new comes across my radar. I just wanna have a place to fuck around, find out, and write these posts for all you lovely people.
+
+<Conv name="Cadey" mood="enby">
+  Who knows, maybe this time I'll manage to become one of the top google hits
+  for something I deploy to my lab.
+</Conv>
+
+My suffering makes you people happy for some reason, so let's see how bad it can get!
+
+## The Talos Principle
+
+[Straton of Stageira](https://talosprinciple.fandom.com/wiki/Straton_of_Stageira) once argued that the mythical construct Talos (an automaton that experienced qualia and had sapience) proved that there was nothing special about mankind. If a product of human engineering could have the same kind of qualia that people do, then realistically there is nothing special about people when compared to machines.
+
+To say that [Talos Linux](https://www.talos.dev/) is minimal is a massive understatement. It only has literally [12 binaries in it](https://www.siderolabs.com/blog/there-are-only-12-binaries-in-talos-linux/). I've been conceptualizing it as "what if [gokrazy](https://xeiaso.net/blog/gokrazy/) was production-worthy?".
+
+Either way, my main introduction to it was last year at [All Systems Go!](https://media.ccc.de/v/all-systems-go-2023-202-talos-linux-trustedboot-for-a-minimal-immutable-os) by a fellow speaker. I'd been wanting to try something like this out for a while, but I haven't had a good excuse to sample those waters until now. It's really intriguing because of how damn minimal it is.
+
+So I downloaded the arm64 ISO and set up a VM on my MacBook to fuck around with it. Here's a few of the things that I learned in the process:
+
+UTM has two modes it can run a VM in. One is "Apple Virtualization" mode that gives you theoretically higher performance at the cost of less options when it comes to networking. In order to connect the VM to a shared network (so you can poke it directly with `talosctl` commands), you need to create it without "Apple Virtualization" checked. This does mean you can't expose Rosetta to run amd64 binaries, but that's an acceptable tradeoff IMO.
+
+<Picture
+  path="xedn/dynamic/4bda0ab5-46db-4abd-b37b-8f14d2882e60"
+  desc="UTM showing off the 'Shared Network' pane, you want this enabled to get access to the 192.168.65.0/24 network to poke your VM directly."
+/>
+
+Talos Linux is completely declarative for the base system and really just exists to make Kubernetes easier to run. One of my favorite parts has to be the way that you can combine different configuration snippets together into a composite machine config. Let's say you have a base "control plane config" in `controlplane.yaml` and some host-specific config in `hosts/hostname.yaml`. Your `talosctl apply-config` command would look like this:
+
+```sh
+talosctl apply-config -n kos-mos -f controlplane.yaml -p @patches/subnets.yaml -p @hosts/kos-mos.yaml
+```
+
+This allows your `hosts/kos-mos.yaml` file to look like this:
+
+```yaml
+cluster:
+  apiServer:
+    certSANs:
+      - 100.110.6.17
+
+machine:
+  network:
+    hostname: kos-mos
+  install:
+    disk: /dev/nvme0n1
+```
+
+which allows me to do generic settings cluster-wide _and then_ specific settings for each host (just like I have with my Nix flakes repo). For example, I have a few homelab nodes with nvidia GPUs that I'd like to be able to run AI/large langle mangle tasks on. I can set up the base config to handle generic cases and then enable the GPU drivers only on the nodes that need them.
+
+<Conv name="Cadey" mood="coffee">
+  By the way, resist the temptation to install the nvidia GPU drivers on
+  machines that do not need them. It will result in the nvidia GPU drivers
+  trying to load in a loop, then complaining that they can't find the GPU, and
+  then trying to load again. In order to unstuck yourself from that situation,
+  you have to reimage the machine by attaching a crash cart and selecting the
+  "wipe disk and boot into maintenance mode" option. This was fun to figure out
+  by hand, but it was made easier with the `talosctl dashboard` command.
+</Conv>
+
+### The Talosctl Dashboard
+
+I just have to take a moment to gush about the `talosctl dashboard` command. It's a TUI interface that lets you see what your nodes are doing. When you boot a metal Talos Linux node, it opens the dashboard by default so you can watch the logs as the system wakes up and becomes active.
+
+When you run it on your laptop, it's as good as if not better than having SSH access to the node. All the information you could want is right there at a glance and you can connect to mulitple machines at once. Just look at this:
+
+<Picture
+  path="xedn/dynamic/f6bb22c4-f26d-41aa-868d-56dc7af841b3"
+  desc="The talosctl dashboard, it's a TUI interface that lets you see what is going on with your nodes."
+/>
+
+Those three nodes can be swapped between by pressing the left and right arrow keys. It's the best kind of simple, the kind that you don't have to think about in order to use it. No documentation needed, just run the command and go on instinct. I love it.
+
+## Making myself a Kubernete
+
+Talos Linux is built to do two things:
+
+1. Boot into Linux
+2. Run Kubernetes
+
+That's it. So let's make a kubernete in my homelab!
+
+I decided to start with `kos-mos` arbitrarily (mostly because I'd already evacuated its work to other homelab nodes). I downloaded the ISO, tried to use balenaEtcher to flash it to a USB drive and then windows decided that now was the perfect time to start interrupting me with bullshit related to Explorer desperately trying to find and mount USB drives.
+
+I was unable to use balenaEtcher to write it, but then I found out that [Rufus](https://rufus.ie/en/) can write ISOs to USB drives in a way that doesn't rely on Windows to do the mounting or writing. That worked and I had `kos-mos` up and running in short order.
+
+<Conv name="Cadey" mood="enby">
+  This is when I found out about the hostname patch yaml trick, so it booted
+  into a randomly generated `talos-whatever` hostname by default. This was okay,
+  but I wanted to have the machine names be more meaningful so I can figure out
+  what's running where at a glance. Changing hostnames was trivial though, you
+  can do it from the dashboard worst case.
+</Conv>
+
+After bootstrapping etcd and exposing the subnet routes, I made an nginx deployment with a service as a "hello world" to ensure that things were working properly. Here's the configuration I used:
+
+```yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app.kubernetes.io/name: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    app.kubernetes.io/name: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+```
+
+<Conv name="Mara" mood="hacker">
+For those of you that don't grok k8s yaml, this configuration creates two things:
+
+- A `Deployment` (think of it as a set of `Pods` that can be scaled up or down and upgraded on a rolling basis) that runs three copies of [nginx](https://nginx.org/en/) showing the default "welcome to nginx" page, with port 80 marked as "open" to other things.
+- A `ClusterIP Service` that exposes the nginx `Deployment`'s port 80 to a stable IP address within the cluster. This cluster IP will be used by other services to talk to the nginx `Deployment`.
+
+Normally these `ClusterIP` services are only exposed in the cluster (as the name implies), but when you have overlay networks and subnet routing in the mix, you can do anything, such as poking the service from your laptop:
+
+</Conv>
+
+<Picture
+  path="xedn/dynamic/c4d36dd3-c8f1-4115-a504-48b9e6412fc8"
+  desc="The 'welcome to nginx' page on the url http://nginx.default.svc.alrest.xeserv.us, which is not publicly exposed to you."
+/>
+
+Once this is up, you're golden. You can start deploying more things to your cluster and then they can talk to eachother. One of the first things I deployed was a Reddit/Discord bot that I maintain for a community I've been in for a long time. It's a simple stateless bot that only needs a single deployment to run. You can see its source code and deployment manifest [here](https://github.com/Xe/x/tree/master/cmd/sapientwindex).
+
+The only weird part here is that I needed to set up secrets for handling the bot's Discord webhook. I don't have a secret vault set up (looking onto setting up the 1password one out of convenience because I already use it at home), so I yolo-created the secret with `kubectl create secret generic sapientwindex --from-literal=DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/1234567890/ABC123` and then mounted it into the pod as an environment variable. The relevant yaml snippet is under the `bot` container's `env` key:
+
+```yaml
+env:
+  - name: DISCORD_WEBHOOK_URL
+    valueFrom:
+      secretKeyRef:
+        name: sapientwindex
+        key: DISCORD_WEBHOOK_URL
+```
+
+This is a little more verbose than I'd like, but I understand why it has to be this way. Kubernetes is the most generic tool you can make, as such it has to be able to adapt to any workflow you can imagine. Kubernetes manifests can't afford to make too many assumptions, so they simply elect not to as much as possible. As such, you need to spell out all your assumptions by hand.
+
+I'll get this refined in the future with templates or whatever, but for now my favorite part about it is that it works.
+
+<Conv name="Aoi" mood="wut">
+  Why are you making your secrets environment variables instead of mounting them
+  as a filesystem?
+</Conv>
+<Conv name="Cadey" mood="aha">
+  I want to have this as an environment variable because this bot was made with
+  the [12 factor app](https://12factor.net/) methodology in mind. It's a
+  stateless bot that only needs a single environment variable to run, so I'm
+  going to keep it that way. The bot is also already programmed to read from the
+  environment variable (but I could have it read the environment variable from
+  the
+  [flagconfyg](https://github.com/Xe/x/tree/master/internal/confyg/flagconfyg)
+  file if I needed to). If there were more than 10 variables, I'd probably mount
+  the secret as a flagconfyg or .env file instead.
+</Conv>
+
+## The ~~factory~~ cluster must grow
+
+After I got that working, I connected some other nodes and I've ended up with this:
+
+```
+$ kubectl get nodes
+NAME        STATUS   ROLES           AGE   VERSION
+chrysalis   Ready    control-plane   20h   v1.30.0
+kos-mos     Ready    control-plane   20h   v1.30.0
+ontos       Ready    control-plane   20h   v1.30.0
+```
+
+---
+
+Later today I plan to get `logos` out of mothballs, back up the AI stuff it was doing to the NAS, and then shove it into the cluster. It has a spare SSD in it, so I'd be able to run some stateful workloads on it. I'm thinking of setting up [OpenEBS](https://www.talos.dev/v1.7/kubernetes-guides/configuration/replicated-local-storage-with-openebs-jiva/) so that I can get persistent volumes that survive between nodes.
+
+Not to mention playing with [kubevirt](https://kubevirt.io/) because that makes most of what I have made in [waifud](https://xeiaso.net/blog/series/waifud/) irrelevant. They handle VMs perfectly well for my usecases and I can build whatever waifud will become on top of that.
