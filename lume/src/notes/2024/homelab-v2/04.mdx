@@ -1,0 +1,123 @@
+---
+title: "Rebuilding the homelab: Operator, I need an exit"
+desc: "In which I try various things to get things working, some more successful than others."
+date: 2024-05-09
+tags:
+  - homelab
+  - k8s
+  - onepassword
+  - nginx
+---
+
+My homelab consists of a few machines running NixOS. I've been put into [facts and circumstances beyond my control](/blog/2024/much-ado-about-nothing/) that make me need to reconsider my life choices. I'm going to be rebuilding my homelab and documenting the process in this series of posts.
+
+<Conv name="Cadey" mood="coffee">
+  Join with me in my tale of woe as I find out how good I really had it with
+  NixOS.
+</Conv>
+
+Each of these posts will contain one small part of my journey so that I can keep track of what I've tried and you can follow along at home.
+
+---
+
+## What the hell is an operator anyways?
+
+In Kubernetes land, an operator is a thing you install into your cluster that makes it integrate with another service or provides some functionality. For example, the [1Password operator](https://developer.1password.com/docs/k8s/k8s-operator/) lets you import 1Password data into your cluster as Kubernetes secrets. It's effectively how you extend Kubernetes to do more things with the same Kubernetes workflow you're already used to.
+
+One of the best examples of this is the 1Password operator I mentioned. It's how I'm using 1Password to store secrets for my apps in my cluster. I can then edit them with the 1Password app on my PC or MacBook and the relevant services will restart automatically with the new secrets.
+
+So I installed the operator with Helm and then it worked the first time. I was surprised, given how terrible Helm is in my experience.
+
+<Conv name="Aoi" mood="wut">
+  Why is Helm bad? It's the standard way to install reusable things in
+  Kubernetes.
+</Conv>
+<Conv name="Cadey" mood="coffee">
+  Helm uses string templating to template structured data. It's like using `sed`
+  to template JSON. It works, but you have to abuse a lot of things like the
+  [`indent`](https://helm.sh/docs/chart_template_guide/yaml_techniques/#indenting-and-templates)
+  function in order for things to be generically applicable. It's a mess, but
+  only when you try and use it in earnest across your stack. It's what made me
+  nearly burn out of the industry.
+</Conv>
+<Conv name="Aoi" mood="coffee">
+  Why is so much of this stuff just one or two steps away from being really
+  good?
+</Conv>
+<Conv name="Numa" mood="delet">
+  Venture capital!
+</Conv>
+
+The only hard part I ran into was that it wasn't obvious how I should assemble the reference strings for 1Password secrets. When you create the 1Password secret syncing object, it looks like this:
+
+```yaml
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: sapientwindex
+spec:
+  itemPath: "vaults/lc5zo4zjz3if3mkeuhufjmgmui/items/cqervqahekvmujrlhdaxgqaffi"
+```
+
+This tells the operator to create a secret named `sapientwindex` in the default namespace with the item path `vaults/lc5zo4zjz3if3mkeuhufjmgmui/items/cqervqahekvmujrlhdaxgqaffi`. The item path is made up of the vault ID (`lc5zo4zjz3if3mkeuhufjmgmui`) and the item ID (`cqervqahekvmujrlhdaxgqaffi`). I wasn't sure how to get these in the first place, but I found the vault ID with the `op vaults list` command and then figured out you can enable right-clicking in the 1Password app to get the item ID.
+
+To enable this, go to Settings -> Advanced -> Show debugging tools in the 1Password app. This will let you right-click any secret and choose "Copy item UUID" to get the item ID for these secret paths.
+
+This works pretty great, I'm gonna use this extensively going forward.
+
+## Kubevirt
+
+I'm gonna go into more detail about Kubevirt in a future post, but tl;dr it's everything [waifud](https://github.com/Xe/waifud) should be, minus some administrator GUI stuff. Kubevirt lets you run virtual machines on your Kubernetes cluster. You define them with YAML documents and then they get scheduled and run somewhere on your cluster. It's cool as heck.
+
+It even supports something that I've wanted waifud to have but haven't bothered to implement: [live migration](https://kubevirt.io/2020/Live-migration.html). This lets you move a running VM from one node to another without downtime. It's really magic and I love it.
+
+I got Kubevirt installed and was hoping to get disk images for things like Arch Linux and Rocky Linux imported. I ran into one slight problem that I've been hoping to avoid: I need to get persistent storage working in my cluster. This blocks more fun things with Kubevirt, sadly.
+
+## Trials and storage tribulations
+
+As I said at the end of [my most recent conference talk](/talks/2024/shashin/), storage is one of the most annoying bullshit things ever. It's extra complicated with Talos Linux in particular because of how it uses the disk. Most of the disks of my homelab are Talos' "ephemeral state" partitions, which are used for temporary storage and wiped when the machine updates. This is great for many things, but not for persistent storage.
+
+I have tried the following things:
+
+- [Longhorn](https://longhorn.io/): a distributed block storage thing for Kubernetes by the team behind Rancher. It's pretty cool, but I got stuck at trying to get it actually running on my cluster. The pods were just permanently stuck in the `Pending` state due to etcd not being able to discover itself.
+- [OpenEBS](https://github.com/openebs/openebs): another distributed block storage thing for Kubernetes by some team of some kind. It claims to be the most widely used storage thing for Kubernetes, but I couldn't get it to work either.
+
+Among the things I've realized when debugging this is that _no matter what_, many storage things for Kubernetes will hardcode the cluster DNS name to be `cluster.local`. I made my cluster use the DNS name `alrest.xeserv.us` following the advice of one of my SRE friends to avoid using "fake" DNS names as much as possible . This has caused me no end of trouble, as many things in the Kubernetes ecosystem assume that the cluster DNS name is `cluster.local`. It turns out that many Kubernetes ecosystem tools hard-assume the DNS name because the CoreDNS configs in many popular Kubernetes platforms (like AWS EKS, Azure whatever-the-heck, and GKE) have broken DNS configs that make relative DNS names not work reliably. As a result, people have hardcoded the DNS name to `cluster.local` in many places in both configuration and code.
+
+Fixing this was easy, I had to edit the CoreDNS ConfigMap to look like this:
+
+```yaml
+data:
+  Corefile: |-
+    .:53 {
+        errors
+        health {
+            lameduck 5s
+        }
+        ready
+        log . {
+            class error
+        }
+        prometheus :9153
+
+        kubernetes cluster.local alrest.xeserv.us in-addr.arpa ip6.arpa {
+            pods insecure
+            fallthrough in-addr.arpa ip6.arpa
+        }
+        forward . /etc/resolv.conf
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+```
+
+I prepended the `cluster.local` "domain name" to the `kubernetes` block. Then I deleted the CoreDNS pods in the `kube-system` namespace and they were promptly restarted with the new configuration. This at least got me to the point where normal DNS things worked again.
+
+This didn't get OpenEBS working. I retried Longhorn (while leaving the half-dead corpse of OpenEBS laying around while I wait for help on the Kubernetes Slack) and it still failed with [the Longhorn deployer stuck in PodInitializing](https://github.com/longhorn/longhorn/issues/352). Hopefully my cry for help won't go unanswered.
+
+I'm going to try a few more things before I give up on this and use [Rook](https://rook.io/) instead. I'm trying to avoid using Rook because I'd need to pop extra disks into my machines to get it working. I have the extra drives laying around (though a coworker warned me that ceph suffers on spinning rust), but I'm not looking for very high performance storage, just something that works.
+
+---
+
+I love computers. I hate them when they don't work.
