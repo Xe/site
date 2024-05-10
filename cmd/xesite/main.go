@@ -45,6 +45,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	flag.VisitAll(func(f *flag.Flag) {
+		slog.Debug("flag", "name", f.Name, "value", f.Value)
+	})
+
 	os.MkdirAll(*dataDir, 0700)
 	os.MkdirAll(filepath.Join(*dataDir, "tsnet"), 0700)
 
