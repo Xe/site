@@ -1,0 +1,76 @@
+---
+title: "Rebuilding the homelab: Fixing longhorn was annoyingly easy"
+desc: "lol oops"
+date: 2024-05-09
+tags:
+  - homelab
+  - k8s
+  - longhorn
+---
+
+This is a followup to [my last post](../04/), where I was trying to get Longhorn working on my cluster. Turns out the problem was really stupid and I need to explain what's going on so you can properly commiserate.
+
+Talos Linux sets a default security policy that blocks the Longhorn manager from running. This is because the Longhorn manager runs as root and Talos Linux is paranoid about security. In order to get Longhorn running, I had to add the following annotations to the Longhorn namespace:
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: longhorn-system
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/audit-version: latest
+    pod-security.kubernetes.io/warn: privileged
+    pod-security.kubernetes.io/warn-version: latest
+```
+
+Then you can create a PersistentVolumeClaim and attach it to a pod:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-volv-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-test
+  namespace: default
+spec:
+  restartPolicy: Always
+  containers:
+    - name: volume-test
+      image: nginx:stable-alpine
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        exec:
+          command:
+            - ls
+            - /data/lost+found
+        initialDelaySeconds: 5
+        periodSeconds: 5
+      volumeMounts:
+        - name: volv
+          mountPath: /data
+      ports:
+        - containerPort: 80
+  volumes:
+    - name: volv
+      persistentVolumeClaim:
+        claimName: longhorn-volv-pvc
+```
+
+<Conv name="Cadey" mood="facepalm">
+  I feel so dumb right now. It was just a security policy mismatch.
+</Conv>
