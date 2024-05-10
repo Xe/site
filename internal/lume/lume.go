@@ -11,6 +11,7 @@ import (
 	"io/fs"
 	"log"
 	"log/slog"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -19,10 +20,15 @@ import (
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/twitchtv/twirp"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gopkg.in/mxpv/patreon-go.v1"
 	"tailscale.com/metrics"
 	"xeiaso.net/v4/internal/config"
+	"xeiaso.net/v4/internal/jsonfeed"
 	"xeiaso.net/v4/internal/mi"
+	"xeiaso.net/v4/pb/external/mimi/announce"
+	"xeiaso.net/v4/pb/external/protofeed"
 )
 
 var (
@@ -65,7 +71,8 @@ type FS struct {
 	opt     *Options
 	conf    *config.Config
 
-	miClient *mi.Client
+	miClient   *mi.Client
+	mimiClient announce.Announce
 
 	fs   fs.FS
 	lock sync.Mutex
@@ -117,14 +124,15 @@ func (f *FS) Open(name string) (fs.File, error) {
 }
 
 type Options struct {
-	Development   bool
-	Branch        string
-	Repo          string
-	StaticSiteDir string
-	URL           string
-	PatreonClient *patreon.Client
-	DataDir       string
-	MiToken       string
+	Development     bool
+	Branch          string
+	Repo            string
+	StaticSiteDir   string
+	URL             string
+	PatreonClient   *patreon.Client
+	DataDir         string
+	MiToken         string
+	MimiAnnounceURL string
 }
 
 func New(ctx context.Context, o *Options) (*FS, error) {
@@ -206,6 +214,12 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 		slog.Debug("mi integration enabled")
 	}
 
+	if o.MimiAnnounceURL != "" {
+		mimiClient := announce.NewAnnounceProtobufClient(o.MimiAnnounceURL, &http.Client{})
+		fs.mimiClient = mimiClient
+		slog.Debug("mimi integration enabled")
+	}
+
 	conf, err := config.Load(filepath.Join(fs.repoDir, "config.dhall"))
 	if err != nil {
 		log.Fatal(err)
@@ -224,6 +238,7 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 			}
 		}()
 	}
+	go fs.mimiRefresh()
 	fs.lastBuildTime = time.Now()
 
 	return fs, nil
@@ -295,6 +310,7 @@ func (f *FS) Update(ctx context.Context) error {
 			}
 		}()
 	}
+	go f.mimiRefresh()
 
 	return nil
 }
@@ -511,4 +527,90 @@ func run(ctx context.Context, wd string, name string, args ...string) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
+}
+
+func (f *FS) LoadProtoFeed() (*protofeed.Feed, error) {
+	data, err := fs.ReadFile(f, "blog.json")
+	if err != nil {
+		return nil, twirp.InternalErrorf("can't read blog.json: %w", err)
+	}
+
+	var feed jsonfeed.Feed
+
+	if err := json.Unmarshal(data, &feed); err != nil {
+		return nil, twirp.InternalErrorf("can't unmarshal blog.json: %w", err)
+	}
+
+	var result protofeed.Feed
+
+	result.Title = feed.Title
+	result.HomePageUrl = feed.HomePageURL
+	result.FeedUrl = feed.FeedURL
+	result.Description = feed.Description
+	result.UserComment = feed.UserComment
+	result.Icon = feed.Icon
+	result.Favicon = feed.Favicon
+	result.Expired = feed.Expired
+	result.Language = feed.Language
+	result.Items = make([]*protofeed.Item, len(feed.Items))
+	result.Authors = make([]*protofeed.Author, len(feed.Authors))
+
+	for i, item := range feed.Items {
+		var atts []*protofeed.Attachment
+		for _, att := range item.Attachments {
+			atts = append(atts, &protofeed.Attachment{
+				Url:               att.URL,
+				MimeType:          att.MIMEType,
+				Title:             att.Title,
+				SizeInBytes:       att.SizeInBytes,
+				DurationInSeconds: att.DurationInSeconds,
+			})
+		}
+
+		var authors []*protofeed.Author
+		for _, author := range item.Authors {
+			authors = append(authors, &protofeed.Author{
+				Name:   author.Name,
+				Url:    author.URL,
+				Avatar: author.Avatar,
+			})
+		}
+
+		result.Items[i] = &protofeed.Item{
+			Id:            item.ID,
+			Url:           item.URL,
+			ExternalUrl:   item.ExternalURL,
+			Title:         item.Title,
+			ContentHtml:   item.ContentHTML,
+			ContentText:   item.ContentText,
+			Summary:       item.Summary,
+			Image:         item.Image,
+			BannerImage:   item.BannerImage,
+			DatePublished: timestamppb.New(item.DatePublished),
+			DateModified:  timestamppb.New(item.DateModified),
+			Tags:          item.Tags,
+			Authors:       authors,
+			Attachments:   atts,
+		}
+	}
+
+	return &result, nil
+}
+
+func (f *FS) mimiRefresh() {
+	if f.mimiClient == nil {
+		return
+	}
+
+	blog, err := f.LoadProtoFeed()
+	if err != nil {
+		slog.Error("failed to load proto feed", "err", err)
+		return
+	}
+
+	for _, it := range blog.GetItems() {
+		if _, err := f.mimiClient.Announce(context.Background(), it); err != nil {
+			slog.Error("failed to announce", "err", err, "item", it.GetId())
+		}
+	}
 }

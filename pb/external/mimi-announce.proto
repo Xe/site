@@ -1,0 +1,10 @@
+syntax = "proto3";
+package within.website.x.mimi.announce;
+option go_package = "xeiaso.net/v4/pb/external/mimi/announce";
+
+import "google/protobuf/empty.proto";
+import "protofeed.proto";
+
+service Announce {
+  rpc Announce(protofeed.Item) returns (google.protobuf.Empty) {}
+}
