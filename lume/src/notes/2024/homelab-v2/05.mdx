@@ -1,0 +1,258 @@
+---
+title: "Rebuilding the homelab: The cluster must grow"
+desc: "I added a new node to the cluster. It was painless."
+date: 2024-05-12
+tags:
+  - homelab
+  - k8s
+  - longhorn
+hero:
+  ai: "Photo by Xe Iaso, Canon EOS R6m2, Helios 44-2 58mm f/2"
+  file: ../xedn/dynamic/8d980c51-b095-41a4-93ff-203f14887647
+  prompt: A pink tulip in a grassy field of other pink tulips.
+---
+
+My homelab consists of a few machines running NixOS. I've been put into [facts and circumstances beyond my control](/blog/2024/much-ado-about-nothing/) that make me need to reconsider my life choices. I'm going to be rebuilding my homelab and documenting the process in this series of posts.
+
+<Conv name="Cadey" mood="coffee">
+  Join with me in my tale of woe as I find out how good I really had it with
+  NixOS.
+</Conv>
+
+Each of these posts will contain one small part of my journey so that I can keep track of what I've tried and you can follow along at home.
+
+---
+
+## Adding a new node to the cluster
+
+When I made my [original homelab](/blog/my-homelab-2021-06-08/), I had four nodes. The main shellbox I use isn't getting migrated off of NixOS, but I did successfully dig up `logos` and set it up in the cluster as a controlplane node. It was delightfully easy. All I had to do was:
+
+- Get it hooked up to Ethernet and power
+- Boot it off of the Talos Linux USB stick
+- Apply the config with `talosctl`
+- Wait for it to reboot and everything to green up
+
+That's it. This is what every homelab OS should strive to be.
+
+I also tried to add my [Win600](/blog/anbernic-win600-review/) to the cluster, but I don't think Talos supports wi-fi. I'm asking in the Matrix channel and in a room full of experts. I was able to get it to connect to ethernet over USB in a hilariously jankriffic setup though:
+
+<Picture
+  path="xedn/dynamic/a1f2dea0-158d-4ee4-b708-3802f54a734e"
+  desc="An Anbernic Win600 with its screen sideways booted into Talos Linux. It is precariously mounted on the floor with power going in on one end and ethernet going in on the other. It is not a production-worthy setup."
+/>
+
+<Conv name="Aoi" mood="coffee">
+  Why would you do this to yourself?
+</Conv>
+<Conv name="Numa" mood="happy">
+  Science isn't about why, it's about why not!
+</Conv>
+
+I seriously can't believe this works.
+
+```
+$ kubectl get node
+NAME        STATUS   ROLES           AGE     VERSION
+chrysalis   Ready    control-plane   6d23h   v1.30.0
+crossette   Ready    <none>          23m     v1.30.0
+kos-mos     Ready    control-plane   6d23h   v1.30.0
+logos       Ready    control-plane   86m     v1.30.0
+ontos       Ready    control-plane   6d23h   v1.30.0
+```
+
+I ended up removing this node so that I can have floor space back. I'll have to figure out how to get it on the network properly later, maybe after DevOpsDays KC.
+
+## ingressd and related fucking up
+
+I was going to write about a super elegant hack that I'm doing to get ingress from the public internet to my homelab here, but I fucked up again and I get to do etcd surgery.
+
+The hack I was trying to do was creating a userspace wireguard network for handling HTTP/HTTPS ingress from the public internet. I chose to use the network `10.255.255.0/24` for this. Apparently Talos Linux configured etcd to prefer anything in `10.0.0.0/8`. This has lead to the following bad state:
+
+```
+$ talosctl etcd members -n 192.168.2.236
+NODE            ID                 HOSTNAME    PEER URLS                    CLIENT URLS                  LEARNER
+192.168.2.236   3a43ba639b0b3ec3   chrysalis   https://10.255.255.16:2380   https://10.255.255.16:2379   false
+192.168.2.236   d07a0bb98c5c225c   kos-mos     https://10.255.255.17:2380   https://192.168.2.236:2379   false
+192.168.2.236   e78be83f410a07eb   ontos       https://10.255.255.19:2380   https://192.168.2.237:2379   false
+192.168.2.236   e977d5296b07d384   logos       https://10.255.255.18:2380   https://192.168.2.217:2379   false
+```
+
+This is uhhh, not good. The normal strategy for recovering from an etcd split brain involves stopping etcd on all nodes and then recovering one of them, but I can't do that because `talosctl` doesn't let you stop etcd:
+
+```
+$ talosctl service etcd  -n 192.168.2.196 stop
+error starting service: 1 error occurred:
+        * 192.168.2.196: rpc error: code = Unknown desc = service "etcd" doesn't support stop operation via API
+```
+
+I ended up blowing away the cluster and starting over. I tried using TESTNET (192.0.2.0/24) for the IP range but ran into issues where my super hacky userspace WireGuard code wasn't working right. I gave up at this point and ended up using my existing WireGuard mesh for ingress. I'll have to figure out how to do this properly later.
+
+### Using ingressd (why would you do this to yourself)
+
+If you want to install `ingressd` for your cluster, here's the high level steps:
+
+1. Gather the secret keys needed for this terraform manifest (change the domain for Route 53 to your own domain): https://github.com/Xe/x/blob/master/cmd/ingressd/tf/main.tf
+2. Run `terraform apply` in the directory with the above manifest
+3. Go a level up and run `yeet` to build the ingressd RPM
+4. Install the RPM on your ingressd node
+5. Create the file `/etc/ingressd/ingressd.env` with the following contents:
+
+```
+HTTP_TARGET=serviceIP:80
+HTTPS_TARGET=serviceIP:443
+```
+
+<Conv name="Mara" mood="hacker">
+  Fetch the service IP from `kubectl get svc -n ingress-nginx` and replace
+  `serviceIP` with it.
+</Conv>
+
+This assumes you are subnet routing your Kubernetes node and service network over your WireGuard mesh of choice. If you are not doing that, you can't use `ingressd`.
+
+Also make sure to run the magic firewalld unbreaking commands:
+
+```
+firewall-cmd --zone=public --add-service=http
+firewall-cmd --zone=public --add-service=https
+```
+
+<Conv name="Cadey" mood="percussive-maintenance">
+  I always forget the magic firewalld unbreaking commands.
+</Conv>
+
+## It's always DNS
+
+Now that I have [ingress working](http://ingressd.cetacean.club/), it's time for one of the most painful things in the universe: DNS. Since I've used Kubernetes last, [External DNS](https://github.com/kubernetes-sigs/external-dns) is now production-ready. I'm going to use it to manage the DNS records for my services.
+
+In typical Kubernetes fashion, it seems that it has gotten incredibly complicated since the last time I used it. It used to be fairly simple, but now installing it requires you to really consider what the heck you are doing. There's also no Helm chart, so you're _really_ on your own.
+
+After reading some documentation, I ended up on the following Kubernetes manifest: [external-dns.yaml](https://gist.githubusercontent.com/Xe/8d4d960bcad372a7a2b04265b9eba21c/raw/1b430cf723f1877e764f72d9db720da95f95616b/external-dns.yaml). So that I can have this documented for me as much as it is for you, here is what this does:
+
+1. Creates a namespace `external-dns` for `external-dns` to live in.
+2. Creates the [`external-dns` Custom Resource Definitions (CRDs)](https://kubernetes-sigs.github.io/external-dns/v0.14.1/contributing/crd-source/) so that I can make DNS records manually with Kubernetes objects should the spirit move me.
+3. Creates a service account for `external-dns`.
+4. Creates a cluster role and cluster role binding for `external-dns` to be able to read a small subset of Kubernetes objects (services, ingresses, and nodes, as well as its custom resources).
+5. Creates a [1Password secret](https://developer.1password.com/docs/k8s/k8s-operator/) to give `external-dns` Route53 god access.
+6. Creates two deployments of `external-dns`:
+   - One for the CRD powered external DNS to weave DNS records with YAML
+   - One to match on newly created ingress objects and create DNS records for them
+
+<Conv name="Aoi" mood="coffee">
+  Jesus christ that's a lot of stuff. It makes sense when you're explaining how
+  it all builds up, but it's a lot.
+</Conv>
+<Conv name="Numa" mood="happy">
+  Welcome to Kubernetes! It's YAML turtles all the way down.
+</Conv>
+
+If I ever need to create a DNS record for a service, I can do so with the following YAML:
+
+```yaml
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: something
+spec:
+  endpoints:
+    - dnsName: something.xeserv.us
+      recordTTL: 180
+      recordType: TXT
+      targets:
+        - "We're no strangers to love"
+        - "You know the rules and so do I"
+        - "A full commitment's what I'm thinking of"
+        - "You wouldn't get this from any other guy"
+        - "I just wanna tell you how I'm feeling"
+        - "Gotta make you understand"
+        - "Never gonna give you up"
+        - "Never gonna let you down"
+        - "Never gonna run around and hurt you"
+        - "Never gonna make you cry"
+        - "Never gonna say goodbye"
+        - "Never gonna tell a lie and hurt you"
+```
+
+## cert-manager
+
+Now that there's ingress from the outside world and DNS records for my services, it's time to get HTTPS working. I'm going to use [cert-manager](https://cert-manager.io/) for this. It's a Kubernetes native way to manage certificates from Let's Encrypt and other CAs.
+
+Unlike nearly everything else in this process, installing cert-manager was relatively painless. I just had to install it with Helm. I also made Helm manage the Custom Resource Definitions, so that way I can easily upgrade them later.
+
+The only gotcha here is that there's annotations for ingresses that you need to add to get cert-manager to issue certificates for them. Here's an example:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kuard
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  # ...
+```
+
+This will make `cert-manager` issue a certificate for the `kuard` ingress using the `letsencrypt-prod` issuer. You can also use `letsencrypt-staging` for testing. The part that you will fuck up is that the documentation mixes `ClusterIssuer` and `Issuer` resources and annotations. Here's what my Let's Encrypt staging and prod issuers look like:
+
+```yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    # You must replace this email address with your own.
+    # Let's Encrypt will use this to contact you about expiring
+    # certificates, and issues related to your account.
+    email: user@example.com
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: letsencrypt-staging-acme-key
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: nginx
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    # You must replace this email address with your own.
+    # Let's Encrypt will use this to contact you about expiring
+    # certificates, and issues related to your account.
+    email: user@example.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: letsencrypt-staging-acme-key
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: nginx
+```
+
+These `ClusterIssuers` are what the `cert-manager.io/cluster-issuer:` annotation in the ingress object refers to. You can also use `Issuer` resources if you want to scope the issuer to a single namespace, but realistically I know you're lazier than I am so you're going to use `ClusterIssuer`.
+
+---
+
+I think that this makes my homelab prod-worthy. I have:
+
+- A cluster of four machines running Talos Linux that I can submit jobs to with `kubectl`
+- Persistent storage with Longhorn
+- Ingress from the public internet with `ingressd` and crimes
+- DNS records managed by `external-dns`
+- HTTPS certificates managed by `cert-manager`
+
+This is enough that I can start to move over a bunch more workloads to the cluster. I'll write about the things I've migrated over in a future post.
+
+<Conv name="Cadey" mood="coffee">
+  I'm going to go take a nap now.
+</Conv>
+<Conv name="Aoi" mood="wut">
+  What about Kubevirt?
+</Conv>
+<Conv name="Numa" mood="happy">
+  We'll get there when we get there.
+</Conv>
