@@ -15,15 +15,17 @@ export default ({ search }, { date }) => {
       </p>
 
       <ul class="list-disc ml-4 mb-4">
-        {search.pages("type=blog", "order date=desc").map((post) => {
-          const url = post.redirect_to ? post.redirect_to : post.url;
-          return (
-            <li>
-              <time datetime={date(post.date)} className="font-mono">{post.date.toLocaleDateString("en-US", dateOptions)}</time> -{" "}
-              <a href={url}>{post.title}</a>
-            </li>
-          );
-        })}
+        {search.pages("type=blog", "order date=desc")
+          .filter((post) => post.index)
+          .map((post) => {
+            const url = post.redirect_to ? post.redirect_to : post.url;
+            return (
+              <li>
+                <time datetime={date(post.date)} className="font-mono">{post.date.toLocaleDateString("en-US", dateOptions)}</time> -{" "}
+                <a href={url}>{post.title}</a>
+              </li>
+            );
+          })}
       </ul>
     </>
   );
