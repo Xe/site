@@ -1,0 +1,1326 @@
+---
+title: "Rebuilding my homelab: Suffering as a service"
+desc: With additional Kubernetes mode!
+date: 2024-05-15
+tags:
+  - Homelab
+  - RockyLinux
+  - FedoraCoreOS
+  - TalosLinux
+  - Kubernetes
+  - Ansible
+  - Longhorn
+  - Nginx
+  - CertManager
+  - ExternalDNS
+hero:
+  ai: "Photo by Xe Iaso, Canon EOS R6 mark II with a Rokinon Cine DSX 85mm T1.5 lens"
+  file: ../xedn/dynamic/766623e0-26d1-4068-9a63-a91d274f23d0
+  prompt: "A field of dandelion flowers in the sun, heavy depth of field. A thin strip of the field is in focus, the rest is a blur."
+---
+
+I have a slight problem where I have too many computers in my office. These extra computers are my [homelab](https://www.reddit.com/r/homelab/), or a bunch of slack compute that I can use to run various workloads at home. I use my homelab to have a place to "just run things" like [Plex](https://plex.tv) and the whole host of other services that I either run or have written for my husband and I.
+
+<Conv name="Cadey" mood="hug">
+  I want to have my own platform so that I can run things that I used to run in
+  the cloud. If I can "just run things locally", I can put my slack compute
+  space to work for good. This can help me justify the power bill of these nodes
+  to my landlord!
+</Conv>
+
+Really, I just wanna be able to use this to mess around, try new things, and turn the fruit of those experiments into blogposts like this one. Until very recently, everything in my homelab ran NixOS. [A friend of mine](https://fasterthanli.me) has been goading me into trying Kubernetes again, and in a moment of weakness, I decided to see how bad the situation was to get Kubernetes running on my own hardware at home.
+
+- `kos-mos`, a small server that I use for running some CI things and periphery services. It has 32 GB of ram and a Core i5-10600.
+- `ontos`, identical to `kos-mos` but with an RTX 2060 6 GB.
+- `logos`, identical to `kos-mos` but with a RTX 3060 12 GB.
+- `pneuma`, my main shellbox and development machine. It is a handbuilt tower PC with 64 GB of ram and a Ryzen 9 5900X. It has a GPU (AMD RX5700 non-XT w/8GB of vram) because the 5900X doesn't have integrated graphics. It has a bunch of random storage devices in it. It also handles the video transcoding for xesite video uploads.
+- `itsuki`, the NAS. It has all of our media and backups on it. It runs Plex and a few other services, mostly managed by docker compose. It has 16 GB of ram and a Core i5-10600.
+- `chrysalis`, an old Mac Pro from 2013 that I mostly use as my Prometheus server. It has 32 GB of ram and a Xeon E5-1650. It also runs the IRC bot `[Mara]` in `#xeserv` on Libera.chat (it announces new posts on my blog). It's on its last legs in multiple ways, but it works for now. I've been holding off on selling it because I won it in a competition involving running an IRC network in Docker containers. Sentimental value is a bitch, eh?
+
+<Conv name="Mara" mood="hacker">
+  When the homelab was built, the Core i5-10600 was a "last generation"
+  processor. It also met a perfect balance between compute oomph, onboard iGPU
+  support, power usage, and not requiring a massive cooler to keep it running
+  happily. We could probably get some more use out of newer processors, but that
+  will probably have to wait for one or more of our towers/their parts to get
+  cycled out in regular upgrades. That probably won't happen for a year or two,
+  but it'll be nice to get a Ryzen 9 5950x or two into the cluster eventually.
+</Conv>
+
+Of these machines, `kos-mos` is the easiest to deal with because it normally doesn't have any services dedicated to it. In the past, I had to move some workloads off of it for various reasons.
+
+I have no plans to touch my shellbox or the NAS, those have complicated setups that I don't want to mess with. I'm okay with my shellbox being different because that's where I do a lot of development and development servers are almost always vastly different from production servers. I'm also scared to touch the NAS because that has all my media on it and I don't want to risk losing it. It has more space than the rest of the house combined.
+
+A rebuild of the homelab is going to be a fair bit of work. I'm going to have to take this one piece at a time and make sure that I don't lose anything important.
+
+<Conv name="Numa" mood="delet">
+  Foreshadowing is a literary technique in which...
+</Conv>
+
+This post isn't going to be like my other posts. This is a synthesis of a few patron-exclusive notes that described my steps in playing with options and had my immediate reactions as I was doing things. If you want to read those brain-vomit notes, you can [support me on Patreon](https://patreon.com/cadey) and get access to them.
+
+When I was considering what to do, I had a few options in mind:
+
+- [Rocky Linux](https://rockylinux.org/) (or even [Oracle Linux](https://yum.oracle.com/)) with Ansible
+- Something in the [Universal Blue](https://universal-blue.org/) ecosystem
+- [Fedora CoreOS](https://fedoraproject.org/coreos/)
+- [K3os](https://k3os.io/)
+- [Talos Linux](https://talos.dev)
+- Giving up on the idea of having a homelab, throwing all of my computers into the sun (or selling them on Kijiji), and having a simpler life
+
+<Conv name="Aoi" mood="wut">
+  Wait, hold up. You're considering _Kubernetes_ for your _homelab_? I thought
+  you were as staunchly anti-Kubernetes as it got.
+</Conv>
+<Conv name="Cadey" mood="coffee">
+  I am, but hear me out. Kubernetes gets a lot of things wrong, but it does get
+  one thing so clearly right that it's worth celebration: you don't need to SSH
+  into a machine to look at logs, deploy new versions of things, or see what's
+  running. Everything is done via the API. You also don't need to worry about
+  assigning workloads to machines, it just does it for you. Not to mention I
+  have to shill a [Kubernetes product for
+  work](https://fly.io/docs/kubernetes/fks-quickstart/) at some point so having
+  some experience with it would be good.
+</Conv>
+<Conv name="Aoi" mood="facepalm">
+  Things really must be bad if you're at this point...
+</Conv>
+<Conv name="Cadey" mood="enby">
+  Let's be real, the latest release is actually, real life, unironically named
+  uwubernetes. I can't _not_ try it. I'd be betraying my people.
+</Conv>
+<Conv name="Aoi" mood="facepalm">
+  You really weren't kidding about technology decisions being made arbitrarily
+  in the [Shashin talk](/talks/2024/shashin/), were you. How do you exist?
+</Conv>
+
+I ran a poll on [Mastodon](https://pony.social/@cadey/112345742472623188) to see what people wanted me to do. The results were overwhelmingly in favor of Rocky Linux. As an online "content creator", who am I to not give the people what they want?
+
+## Rocky Linux
+
+[Rocky Linux](https://rockylinux.org/) is a fork of pre-Stream CentOS. It aims to be a 1:1 drop-in replacement for CentOS and RHEL. It's a community-driven project that is sponsored by the [Rocky Enterprise Software Foundation](https://resf.org/).
+
+For various reasons involving my HDMI cable being too short to reach the other machines, I'm gonna start with `chrysalis`. Rocky Linux has a GUI installer and I can hook it up to the sideways monitor that I have on my desk. For extra fun, whenever the mac tries to display something on the monitor, the EFI framebuffer dances around until the OS framebuffer takes over.
+
+<Video path="video/2024/oneoff-mac-boot" />
+
+<Conv name="Cadey" mood="coffee">
+  I really hope one of the GPUs isn't dying. That would totally ruin the resale
+  value of that machine. I wasn't able to recreate this on my 1080p crash cart
+  monitor, so I think that it's just the combination of that mac, the HDMI cable
+  I used, and my monitor. It's really weird though.
+</Conv>
+
+The weird part about `chrysalis` is that it's a Mac Pro from 2013. Macs of that vintage can boot normal EFI partitions and binaries, but they generally prefer to have your EFI partition be a HFS+ volume. This is normally not a problem because the installer will just make that weird EFI partition for you.
+
+<Picture
+  path="blog/2024/homelab-v2/IMG_0256"
+  desc="an error message saying: resource to create this format macefi is unavailable"
+/>
+
+However, the Rocky Linux installer doesn't make that magic partition for you. They ifdeffed out the macefi installation flow because Red Hat ifdeffed it out.
+
+<Conv name="Cadey" mood="coffee">
+  I get that they want to be a 1:1 drop-in replacement (which means that any bug
+  RHEL has, they have), but it is massively inconvenient to me in particular.
+</Conv>
+
+As a result, you have to do a very manual install that looks something like this [lifted from the Red Hat bug tracker](https://bugzilla.redhat.com/show_bug.cgi?id=1751311#c16):
+
+> - Boot Centos/RHEL 8 ISO Normally (I used 8.1 of each)
+> - Do the normal setup of network, packages, etc.
+> - Enter disk partitioning
+>   - Select your disk
+>   - At the bottom, click the "Full disk summary and boot loader" text
+>     - Click on the disk in the list
+>     - Click "Do not install boot loader"
+>     - Close
+>   - Select "Custom" (I didn't try automatic, but it probably would not create the EFI partition)
+>   - Done in the top left to get to the partitioning screen
+>   - Delete existing partitions if needed
+>   - Click +
+>     - CentOS 8: create /boot/efi mountpoint, 600M, Standard EFI partition
+>     - RHEL 8: create /foo mountpoint, 600M, Standard EFI partition, then edit the partition to be on /boot/efi
+>   - Click + repeatedly to create the rest of the partitions as usual (/boot, / swap, /home, etc.)
+>   - Done
+> - During the install, there may be an error about the mactel package, just continue
+> - On reboot, both times I've let it get to the grub prompt, but there's no grub.cfg; not sure if this is required
+> - Boot off ISO into rescue mode
+>   - Choose 1 to mount the system on /mnt/sysimage
+>   - At the shell, chroot /mnt/sysimage
+>   - Check on the files in /boot to make sure they exist: ls -l /boot/ /boot/efi/EFI/redhat (or centos)
+>   - Run the create the grub.cfg file: grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+>     - I got a couple reload ioctl errors, but that didn't seem to hurt anything
+>   - exit
+> - Next reboot should be fine, and as mentioned above it'll reboot after SELinux labelling
+
+<Conv name="Cadey" mood="percussive-maintenance" standalone>
+  Yeah, no. I'm not going to do that. Another solution I found involved you
+  manually booting the kernel from the GRUB rescue shell. I'm not going to do
+  that either. I hate myself enough to run Kubernetes on metal in my homelab,
+  but not so much that I'm gonna unironically slonk the grub rescue shell in
+  anger.
+</Conv>
+
+So, that's a wash. In the process of figuring this out I also found out that when I wiped the drive, I took down my IRC bot (and lost the password, thanks `A_Dragon` for helping me recover that account). I'm going to have to fix that eventually.
+
+<Conv name="Aoi" mood="facepalm">
+  Yep, called it.
+</Conv>
+
+I ended up moving the announcer IRC bot to be a part of [`within.website/x/cmd/mimi`](https://github.com/Xe/x/tree/master/cmd/mimi). `mimi` is a little bot that has claws into a lot of other things, including:
+
+- Status page updates for the [fly.io community Discord](https://discord.gg/V4bE5uhtUg)'s #status channel
+- Announcing new blogposts on [#xeserv on libera.chat](https://web.libera.chat/#xeserv)
+- Google Calendar and its own Gmail account for a failed experiment to make a bot that could read emails forwarded to it and schedule appointments based on what a large language model parsed out of the email
+
+<Conv name="Cadey" mood="enby">
+  I really need to finish that project. Someday! Maybe that upcoming AI
+  hackathon would give me a good excuse to make it happen.
+</Conv>
+
+### Ansible
+
+As a bonus round, let's see what it would look like to manage things with Ansible on Rocky Linux should I have been able to install Rocky Linux anyways. Ansible is a Red Hat product, so I expect that it would be the easiest thing to use to manage things.
+
+Ansible is a "best hopes" configuration management system. It doesn't really authoritatively control what is going on, it merely suggest what should be going on. As such, you influence what the system does with "plays" like this:
+
+```yaml
+- name: Full system update
+  dnf:
+    name: "*"
+    state: latest
+```
+
+This is a play that tells the system to update all of its packages with dnf. However, when I ran the linter on this, I got told I need to instead format things like this:
+
+```yaml
+- name: Full system update
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+```
+
+You need to use the fully qualified module name because [you might install other collections that have the name `dnf` in the future](https://docs.ansible.com/ansible/latest/collections/index.html). This kinda makes sense at a glance, I guess, but it's probably overkill for this usecase. However, it makes the lint errors go away and it is fixed mechanically, so I guess that's fine.
+
+<Conv name="Mara" mood="hacker">
+  Programming idiom for you: the output of the formatter is always the correct
+  way to write your code/configuration. Less linter warnings, less problems.
+</Conv>
+
+What's not fine is how you prevent Ansible from running the same command over and over. You need to make a folder full of empty semaphore files that get touched when the command runs:
+
+```yaml
+- name: Xe's semaphore flags
+  ansible.builtin.shell: mkdir -p /etc/xe/semaphores
+  args:
+    creates: /etc/xe/semaphores
+
+- name: Enable CRB repositories # CRB == "Code-Ready Builder"
+  ansible.builtin.shell: |
+    dnf config-manager --set-enabled crb
+
+    touch /etc/xe/semaphores/crb
+  args:
+    creates: /etc/xe/semaphores/crb
+```
+
+And then finally you can install a package:
+
+```yaml
+- name: Install EPEL repo lists
+  ansible.builtin.dnf:
+    name: "epel-release"
+    state: present
+```
+
+This is about the point where I said "No, I'm not going to deal with this". I haven't even created user accounts or installed dotfiles yet, I'm just trying to install a package repository so that I can install other packages.
+
+<Conv name="Aoi" mood="wut">
+  Do you even really need any users but root or your dotfiles on production
+  servers? Ideally those should be remotely managed anyways. Logging into them
+  should be a situation of last resort, right?
+</Conv>
+<Conv name="Numa" mood="delet">
+  Assuming that you don't have triangular cows in the mix yeah.
+</Conv>
+
+So I'm not going with Ansible (or likely any situation where Ansible would be required), even on the machines where installing Rocky Linux works without having to enter GRUB rescue shell purgatory.
+
+<Conv name="Cadey" mood="coffee" standalone>
+  One of my patrons pointed out that I need to use [Ansible
+  conditionals](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_conditionals.html)
+  in order to prevent these same commands from running over and over. Of course,
+  in an ideal world these commands would be idempotent (meaning that they can be
+  run over and over without changing the system), but that's not always the
+  case. I'm going to dig deeper into this once I have virtualization working on
+  the cluster.
+  
+  Apparently you're supposed to use pre-made roles for as much as you can, such
+  as from [Ansible Galaxy](https://galaxy.ansible.com/) or [Linux System
+  Roles](https://linux-system-roles.github.io/). I don't know how I feel about
+  this (doing things with NixOS got me used to a combination of defining things
+  myself and then using third party things only when I really have to, but that
+  was probably because the documentation for anything out of the beaten path is
+  so poor there), but if this is the "right" way to do things then I'll do it.
+  
+  Thanks for the tip, Tudor!
+
+</Conv>
+
+## CoreOS
+
+Way back when my career was just starting, CoreOS was released. CoreOS was radical and way ahead of its time. Instead of having a mutable server that you can SSH into and install packages at will on, CoreOS had the view that thou must put all your software into Docker containers and run them that way. This made it impossible to install new packages on the server, which they considered a feature.
+
+I loved using CoreOS when I could because of one part that was absolutely revolutionary: [Fleet](https://github.com/coreos/fleet). Fleet was a distributed init system that let you run systemd services _somewhere_, but you could care where it ran when you needed to. Imagine a world where you could just spin your jobs somewhere, that was Fleet.
+
+The really magical part about Fleet was the fact that it was deeply integrated into the discovery mechanism of CoreOS. Want 4 nodes in a cluster? Provision them with the same join token and Fleet would just figure it out. Newly provisioned nodes would also accept new work as soon as it was issued.
+
+<Conv name="Numa" mood="happy">
+  Fleet was glorious. It was what made me decide to actually learn how to use
+  systemd in earnest. Before I had just been a "bloat bad so systemd bad" pleb,
+  but once I really dug into the inner workings I ended up really liking it.
+  Everything being composable units that let you build _up_ to what you want
+  instead of having to be an expert in all the ways shell script messes with you
+  is just such a better place to operate from. Not to mention being able to
+  restart multiple units with the same command, define ulimits, and easily
+  create "oneshot" jobs. If you're a "systemd hater", please actually give it a
+  chance before you decry it as "complicated bad lol". Shit's complicated
+  because life is complicated.
+</Conv>
+
+And then it became irrelevant in the face of Kubernetes after CoreOS got bought out by Red Hat and then IBM bought out Red Hat.
+
+Also, "classic" CoreOS is no more, but its spirit lives on in the form of [Fedora CoreOS](https://fedoraproject.org/coreos/), which is like CoreOS but built on top of [rpm-ostree](https://coreos.github.io/rpm-ostree/). The main difference between Fedora CoreOS and actual CoreOS is that Fedora CoreOS lets you install additional packages on the system.
+
+<Conv name="Mara" mood="hacker">
+  Once Red Hat announced that CoreOS would be deprecated in favor of Fedora
+  CoreOS, Kinvolk forked "classic" CoreOS to [Flatcar
+  Linux](https://www.flatcar.org/), where you can still use it to this day. This
+  post didn't end up evaluating it because it doesn't let you change Ignition
+  configurations without reimaging the machine, which is unworkable for reasons
+  that will become obvious later in the article.
+
+They are using [systemd-sysext](https://www.flatcar.org/blog/2024/04/os-innovation-with-systemd-sysext/) in order to extend the system with more packages, which is reminiscent of rpm-ostree layering.
+
+</Conv>
+
+### Fedora CoreOS
+
+For various reasons involving divine intervention, I'm going to be building a few of my own RPM packages. I'm also going to be installing other third party programs on top of the OS, such as [yeet](https://github.com/Xe/x/tree/master/cmd/yeet).
+
+Fedora CoreOS is a bit unique because you install it by declaring the end result of the system, baking that into an ISO, and then plunking that onto a flashdrive to assimilate the machine. If you are using it from a cloud environment, then you plunk your config into the "user data" section of the instance and it will happily boot up with that configuration.
+
+This is a lot closer to the declarative future I want, with the added caveat that changing the configuration of a running system is a bit more involved than just SSHing into the machine and changing a file. You have to effectively blow away the machine and start over.
+
+<Conv name="Aoi" mood="wut">
+  What? That sounds like a _terrible_ idea. How would you handle moving state
+  around?
+</Conv>
+<Conv name="Cadey" mood="aha">
+  Remember, this is for treating machines as replaceable _cattle_, not _pets_
+  that you imprint on. I'm sure that this will be a fun learning experience at
+  the very least.
+</Conv>
+<Conv name="Numa" mood="delet">
+  Again, foreshadowing is a literary technique in which...
+</Conv>
+
+I want to build this on top of rpm-ostree because I want to have the best of both worlds: an immutable system that I can still install packages on. This is an absolute superpower and I want to have it in my life. Realistically I'm gonna end up installing only one or two packages on top of the base system, but those one or two packages are gonna make so many things so much easier. Especially for my WireGuard mesh so I can route the pod/service subnets in my Kubernetes cluster.
+
+As a more practical example of how rpm-ostree, let's take a look at [Bazzite Linux](https://bazzite.gg). Bazzite is a spin of Fedora Silverblue (desktop Fedora built on top of rpm-ostree) that has the Steam Deck UI installed on top of it. This turns devices like the [ROG Ally](https://www.asus.com/ca-en/site/gaming/rog/handheld-consoles/rog-ally/) into actual game consoles instead of handheld gaming PCs.
+
+<Conv name="Cadey" mood="coffee">
+  I went into this distinction more in my failed review video of the ROG Ally. I
+  plan to post this to [my Patreon](https://patreon.com/cadey) in case you want
+  to see what could have been. The video is probably fine all things considered,
+  I just don't think it's up to my standards and don't have the time/energy to
+  heal it right now.
+</Conv>
+
+In Bazzite, rpm-ostree lets you layer on additional things like the Fanatec steering wheel drivers and wheel managers like [Oversteer](https://github.com/berarma/oversteer). This allows you to _add_ optional functionality without having to worry about breaking the base system. Any time updates are installed, rpm-ostree will layer Oversteer on top of it for you so that you don't have to worry about it.
+
+This combined with my own [handrolled RPMs with `yeet`](https://github.com/Xe/x/tree/master/cmd/yeet) means that I could add software to my homelab nodes (like I have with Nix/NixOS) without having to worry about it being rebuilt from scratch or its distribution. This is a superpower that I want to keep in my life.
+
+It's not gonna be as nice as the Nix setup, but something like this:
+
+```js
+["amd64", "arm64"].forEach((goarch) =>
+  rpm.build({
+    name: "yeet",
+    description: "Yeet out actions with maximum haste!",
+    homepage: "https://within.website",
+    license: "CC0",
+    goarch,
+
+    build: (out) => {
+      go.build("-o", `${out}/usr/bin/`);
+    },
+  })
+);
+```
+
+is so much easier to read and manage than it is to do with RPM specfiles. It really does get closer to what it's like to use Nix.
+
+<Conv name="Cadey" mood="coffee">
+  Not to mention if I did my Go packaging the full normal way with RPM
+  specfiles, I'd have to have my own personal dependencies risk fighting the
+  system-level dependencies. I don't want to do that, but you can if you want
+  to. I'd also like my builds to publish one package, not 50-100.
+</Conv>
+
+I'd also need to figure out how to [fix Gitea's RPM package serving support so that it signs packages for me](https://github.com/go-gitea/gitea/pull/27069), but would be solvable. Most of the work is already done, I'd just need to take over the PR and help push it over the finish line.
+
+### Installing Fedora CoreOS
+
+The method I'm going to be using to install Fedora CoreOS is to use [`coreos-installer`](https://coreos.github.io/coreos-installer/) to build an ISO image with a configuration file generated by [`butane`](https://coreos.github.io/butane/).
+
+To make things extra _fun_, I'm writing this on a Mac, which means I will need to have a Fedora environment handy to build the ISO because Fedora only ships Linux builds of `coreos-installer` and `butane`.
+
+<Conv name="Mara" mood="hacker">
+  This installation was adapted from [this
+  tutorial](https://devnonsense.com/posts/k3s-on-fedora-coreos-bare-metal/),
+  with modifications made because I'm using a MacBook instead of a Fedora
+  machine.
+</Conv>
+
+First, I needed to install [Podman Desktop](https://podman-desktop.io/), which is like the Docker Desktop app except it uses the [Red Hat Podman](https://podman.io/) stack instead of the Docker stack. For the purposes of this article, they are functionally equivalent.
+
+I made a new repo/folder and then started up a Fedora container:
+
+```
+podman run --rm -itv .:/data fedora:latest
+```
+
+I then installed the necessary packages:
+
+```
+dnf -y install coreos-installer butane ignition-validate
+```
+
+And then I copied over the template from the Fedora CoreOS k3s tutorial into `chrysalis.bu`. I edited it to have the hostname `chrysalis`, loaded my SSH keys into it, and then ran the script to generate a prebaked install ISO. I loaded it on a flashdrive and then stuck it into the same Mac Pro from the last episode.
+
+<Conv name="Cadey" mood="coffee">
+  Annoyingly, it seems that the right file extension for Butane configs is `.bu`
+  and that there isn't a VSCode plugin for it. If I stick with Fedora CoreOS,
+  I'll have to make something that makes `.bu` files get treated as YAML files
+  or something. I just told VSCode to treat them as YAML files for now.
+</Conv>
+
+It installed perfectly. I suspect that the actual Red Hat installer can be changed to just treat this machine as a normal EFI platform without any issues, but that is a bug report for another day. Intel Macs are quickly going out of support anyways, so it's probably not going to be the highest priority for then even if I did file that bug.
+
+I got k3s up and running and then I checked the version number. My config was having me install k3s version 1.27.10, which is much older than the current version [1.30.0 "Uwubernetes"](https://kubernetes.io/blog/2024/04/17/kubernetes-v1-30-release/). I fixed the butane config to point to the new version of k3s and then I tried to find a way to apply it to my running machine.
+
+<Conv name="Aoi" mood="wut">
+  That should be easy, right? You should just need to push the config to the
+  server somehow and then it'll reconverge, right?
+</Conv>
+
+Yeah, about that. It turns out that Fedora CoreOS is very much on the side of "cattle, not pets" when it comes to datacenter management. The Fedora CoreOS view is that any time you need to change out the Ignition config, you should reimage the machine. This makes sense for a lot of hyperconverged setups where this is as simple as pushing a button and waiting for it to come back.
+
+<Conv name="Cadey" mood="wat">
+  I'm not sure what the ideal Fedora CoreOS strategy for handling disk-based
+  application state is. Maybe it's "don't fuck around with prod enough that this
+  is an issue", which is reasonable enough. I remember that with normal CoreOS
+  the advice was "please avoid relying on local storage as much as you can", but
+  they probably solved that by this point, either with a blessed state partition
+  or by continuing the advice to avoid local storage as much as you can. Further
+  research would be required.
+</Conv>
+
+However, my homelab is many things, but it isn't a hyperconverged datacenter setup. It's where I fuck around so I can find out (and then launder that knowledge through you to the rest of the industry for Patreon money and ad impressions). If I want to adopt an OS in the homelab, I need the ability to change my mind without having to burn four USB drives and reflash my homelab.
+
+This was a bummer. I'm gonna have to figure out something else to get Kubernetes up and running for me.
+
+## Other things I evaluated and ended up passing on
+
+I was told by a coworker that [k3OS](https://k3os.io/) is a great way to have a "boot to Kubernetes" environment that you don't have to think about. This is by the Rancher team, which I haven't heard about in ages since I played with [RancherOS](https://rancher.com/docs/os/v1.x/en/) way back in the before times.
+
+RancherOS was super wild for its time. It didn't have a package manager, it had the Docker daemon. Two Docker daemons in fact, one for the "system" docker daemon that handled things like TTY sessions, DHCP addresses, device management, system logs, and the like. The other Docker daemon was for the userland, which was where you ran your containers.
+
+<Conv name="Cadey" mood="coffee">
+  I kinda miss how wild RancherOS was. It was great for messing around with at
+  one of my former workplaces. We didn't use it for anything super critical, but
+  it was a great hypervisor for a Minecraft server.
+</Conv>
+
+I tried to get K3os up and running, but then I found out that it's deprecated. That information isn't on the website, it's on the [getting started documentation](https://github.com/rancher/k3os/blob/master/README.md#quick-start). It's apparently replaced by [Elemental](https://elemental.docs.rancher.com/), which seems to be built on top of OpenSUSE (kinda like how Fedora CoreOS is built on Fedora).
+
+<Conv name="Aoi" mood="wut">
+  Didn't Rancher get bought out by SUSE? That'd explain why everything is
+  deprecated except for something based on OpenSUSE.
+</Conv>
+<Conv name="Cadey" mood="coffee">
+  Oh. Right. That makes sense. I guess I'll have to look into Elemental at some
+  point. Maybe I'll do that in the future.
+</Conv>
+
+I'm gonna pass on this for now. Maybe in the future.
+
+## The Talos Principle
+
+[Straton of Stageira](https://talosprinciple.fandom.com/wiki/Straton_of_Stageira) once argued that the mythical construct Talos (an automaton that experienced qualia and had sapience) proved that there was nothing special about mankind. If a product of human engineering could have the same kind of qualia that people do, then realistically there is nothing special about people when compared to machines.
+
+To say that [Talos Linux](https://www.talos.dev/) is minimal is a massive understatement. It only has literally [12 binaries in it](https://www.siderolabs.com/blog/there-are-only-12-binaries-in-talos-linux/). I've been conceptualizing it as "what if [gokrazy](/blog/gokrazy/) was production-worthy?".
+
+My main introduction to it was last year at [All Systems Go!](https://media.ccc.de/v/all-systems-go-2023-202-talos-linux-trustedboot-for-a-minimal-immutable-os) by a fellow speaker. I'd been wanting to try something like this out for a while, but I haven't had a good excuse to sample those waters until now. It's really intriguing because of how damn minimal it is.
+
+So I downloaded the arm64 ISO and set up a VM on my MacBook to fuck around with it. Here's a few of the things that I learned in the process:
+
+<Conv name="Cadey" mood="enby">
+  If you haven't tried out [UTM](https://mac.getutm.app) yet, you are really
+  missing out. It's the missing virtual machine hypervisor for macOS. It's one
+  of the best apps I know of for running virtual machines on Apple Silicon. I
+  mostly use it to run random Linux machines on my MacBook, but I've also heard
+  of people using it to play [Half-Life on an
+  iPad](https://youtu.be/LrLDKYFyLMM). Highly suggest.
+</Conv>
+
+UTM has two modes it can run a VM in. One is "Apple Virtualization" mode that gives you theoretically higher performance at the cost of less options when it comes to networking (probably because `Hypervisor.framework` has less knobs available to control the VM environment). In order to connect the VM to a shared network (so you can poke it directly with `talosctl` commands without needing overlay VPNs or crazy networking magic like that), you need to create it without "Apple Virtualization" checked. This does mean you can't expose Rosetta to run amd64 binaries (and performance might be theoretically slower in a way you can't perceive given the minimal linux distros in play), but that's an acceptable tradeoff.
+
+<Picture
+  path="xedn/dynamic/4bda0ab5-46db-4abd-b37b-8f14d2882e60"
+  desc="UTM showing off the 'Shared Network' pane, you want this enabled to get access to the 192.168.65.0/24 network to poke your VM directly."
+/>
+
+Talos Linux is completely declarative for the base system and really just exists to make Kubernetes easier to run. One of my favorite parts has to be the way that you can combine different configuration snippets together into a composite machine config. Let's say you have a base "control plane config" in `controlplane.yaml` and some host-specific config in `hosts/hostname.yaml`. Your `talosctl apply-config` command would look like this:
+
+```sh
+talosctl apply-config -n kos-mos -f controlplane.yaml -p @patches/subnets.yaml -p @hosts/kos-mos.yaml
+```
+
+This allows your `hosts/kos-mos.yaml` file to look like this:
+
+```yaml
+cluster:
+  apiServer:
+    certSANs:
+      - 100.110.6.17
+
+machine:
+  network:
+    hostname: kos-mos
+  install:
+    disk: /dev/nvme0n1
+```
+
+which allows me to do generic settings cluster-wide _and then_ specific settings for each host (just like I have with my Nix flakes repo). For example, I have a few homelab nodes with nvidia GPUs that I'd like to be able to run AI/large langle mangle tasks on. I can set up the base config to handle generic cases and then enable the GPU drivers only on the nodes that need them.
+
+<Conv name="Cadey" mood="coffee">
+  By the way, resist the temptation to install the nvidia GPU drivers on
+  machines that do not need them. It will result in the nvidia GPU drivers
+  trying to load in a loop, then complaining that they can't find the GPU, and
+  then trying to load again. In order to unstuck yourself from that situation,
+  you have to reimage the machine by attaching a crash cart and selecting the
+  "wipe disk and boot into maintenance mode" option. This was fun to figure out
+  by hand, but it was made easier with the `talosctl dashboard` command.
+</Conv>
+
+### The Talosctl Dashboard
+
+I just have to take a moment to gush about the `talosctl dashboard` command. It's a TUI interface that lets you see what your nodes are doing. When you boot a metal Talos Linux node, it opens the dashboard by default so you can watch the logs as the system wakes up and becomes active.
+
+When you run it on your laptop, it's as good as if not better than having SSH access to the node. All the information you could want is right there at a glance and you can connect to mulitple machines at once. Just look at this:
+
+<Picture
+  path="xedn/dynamic/f6bb22c4-f26d-41aa-868d-56dc7af841b3"
+  desc="The talosctl dashboard, it's a TUI interface that lets you see what is going on with your nodes."
+/>
+
+Those three nodes can be swapped between by pressing the left and right arrow keys. It's the best kind of simple, the kind that you don't have to think about in order to use it. No documentation needed, just run the command and go on instinct. I love it.
+
+You can press F2 to get a view of the processes, resource use, and other errata. It's everything you could want out of htop, just without the ability to run Doom.
+
+### Making myself a Kubernete
+
+<Conv name="Cadey" mood="coffee">
+  A little meta note because it's really easy to get words conflated here:
+  whenever I use CapitalizedWords, I'm talking about the Kubernetes concepts,
+  not the common English words. It's really hard for me to avoid talking about
+  the word "service" given the subject matter. Whenever you see "Service",
+  "Deployment", "Secret", "Ingress", or the like; know that I'm talking about
+  the Kubernetes definition of those terms.
+</Conv>
+
+Talos Linux is built to do two things:
+
+1. Boot into Linux
+2. Run Kubernetes
+
+That's it. It's beautifully brutalist. I love it so far.
+
+I decided to start with `kos-mos` arbitrarily. I downloaded the ISO, tried to use balenaEtcher to flash it to a USB drive and then windows decided that now was the perfect time to start interrupting me with bullshit related to Explorer desperately trying to find and mount USB drives.
+
+<Conv name="Cadey" mood="coffee">
+  Lately Windows has been going out of its way to actively interfere when I try
+  to do anything fancy or convenient. I only tolerate it for games, but I am
+  reconsidering my approach. If only Wayland supported accessibility hooks.
+</Conv>
+
+I was unable to use balenaEtcher to write it, but then I found out that [Rufus](https://rufus.ie/en/) can write ISOs to USB drives in a way that doesn't rely on Windows to do the mounting or writing. That worked and I had `kos-mos` up and running in short order.
+
+<Conv name="Cadey" mood="enby">
+  This is when I found out about the hostname patch yaml trick, so it booted
+  into a randomly generated `talos-whatever` hostname by default. This was okay,
+  but I wanted to have the machine names be more meaningful so I can figure out
+  what's running where at a glance. Changing hostnames was trivial though, you
+  can do it from the dashboard worst case. I'm aware that this is defeating the
+  point of the "cattle, not pets" flow that a lot of modern Linux distributions
+  want you to go down, but my homelab servers are my pets.
+</Conv>
+
+After bootstrapping etcd and exposing the subnet routes, I made an nginx deployment with a service as a "hello world" to ensure that things were working properly. Here's the configuration I used:
+
+```yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app.kubernetes.io/name: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    app.kubernetes.io/name: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+```
+
+<Conv name="Mara" mood="hacker">
+For those of you that don't grok k8s yaml, this configuration creates two things:
+
+- A `Deployment` (think of it as a set of `Pods` that can be scaled up or down and upgraded on a rolling basis) that runs three copies of [nginx](https://nginx.org/en/) showing the default "welcome to nginx" page, with port 80 marked as "open" to other things.
+- A `ClusterIP Service` that exposes the nginx `Deployment`'s port 80 to a stable IP address within the cluster. This cluster IP will be used by other services to talk to the nginx `Deployment`.
+
+Normally these `ClusterIP` services are only exposed in the cluster (as the name implies), but when you have overlay networks and subnet routing in the mix, you can do anything, such as poking the service from your laptop:
+
+</Conv>
+
+<Picture
+  path="xedn/dynamic/c4d36dd3-c8f1-4115-a504-48b9e6412fc8"
+  desc="The 'welcome to nginx' page on the url http://nginx.default.svc.alrest.xeserv.us, which is not publicly exposed to you."
+/>
+
+Once this is up, you're golden. You can start deploying more things to your cluster and then they can talk to eachother. One of the first things I deployed was a Reddit/Discord bot that I maintain for a community I've been in for a long time. It's a simple stateless bot that only needs a single deployment to run. You can see its source code and deployment manifest [here](https://github.com/Xe/x/tree/master/cmd/sapientwindex).
+
+The only weird part here is that I needed to set up secrets for handling the bot's Discord webhook. I don't have a secret vault set up (looking onto setting up the 1password one out of convenience because I already use it at home), so I yolo-created the secret with `kubectl create secret generic sapientwindex --from-literal=DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/1234567890/ABC123` and then mounted it into the pod as an environment variable. The relevant yaml snippet is under the `bot` container's `env` key:
+
+```yaml
+env:
+  - name: DISCORD_WEBHOOK_URL
+    valueFrom:
+      secretKeyRef:
+        name: sapientwindex
+        key: DISCORD_WEBHOOK_URL
+```
+
+This is a little more verbose than I'd like, but I understand why it has to be this way. Kubernetes is the most generic tool you can make, as such it has to be able to adapt to any workflow you can imagine. Kubernetes manifests can't afford to make too many assumptions, so they simply elect not to as much as possible. As such, you need to spell out all your assumptions by hand.
+
+I'll get this refined in the future with templates or whatever, but for now my favorite part about it is that it works.
+
+<Conv name="Aoi" mood="wut">
+  Why are you making your secrets environment variables instead of mounting them
+  as a filesystem?
+</Conv>
+<Conv name="Cadey" mood="aha">
+  I want to have this as an environment variable because this bot was made with
+  the [12 factor app](https://12factor.net/) methodology in mind. It's a
+  stateless bot that only needs a single environment variable to run, so I'm
+  going to keep it that way. The bot is also already programmed to read from the
+  environment variable (but I could have it read the environment variable from
+  the
+  [flagconfyg](https://github.com/Xe/x/tree/master/internal/confyg/flagconfyg)
+  file if I needed to). If there were more than 10 variables, I'd probably mount
+  the secret as a flagconfyg or .env file instead. If I wanted to support
+  secrets as a filesystem, I'd need to write some extra code to import a
+  directory tree as flag values as my /x/ repo (and other projects of mine) use
+  [package flag](https://pkg.go.dev/flag) for managing secrets and other
+  configuration variables. I'm lazy.
+</Conv>
+
+After I got that working, I connected some other nodes and I've ended up with this:
+
+```
+$ kubectl get nodes
+NAME        STATUS   ROLES           AGE   VERSION
+chrysalis   Ready    control-plane   20h   v1.30.0
+kos-mos     Ready    control-plane   20h   v1.30.0
+ontos       Ready    control-plane   20h   v1.30.0
+```
+
+The next big thing to get working is to get a bunch of operators working so that I can have my cluster dig its meaty claws into various other things.
+
+## What the hell is an operator anyways?
+
+In Kubernetes land, an operator is a thing you install into your cluster that makes it integrate with another service or provides some functionality. For example, the [1Password operator](https://developer.1password.com/docs/k8s/k8s-operator/) lets you import 1Password data into your cluster as Kubernetes secrets. It's effectively how you extend Kubernetes to do more things with the same Kubernetes workflow you're already used to.
+
+One of the best examples of this is the 1Password operator I mentioned. It's how I'm using 1Password to store secrets for my apps in my cluster. I can then edit them with the 1Password app on my PC or MacBook and the relevant services will restart automatically with the new secrets.
+
+So I installed the operator with Helm and then it worked the first time. I was surprised, given how terrible Helm is in my experience.
+
+<Conv name="Aoi" mood="wut">
+  Why is Helm bad? It's the standard way to install reusable things in
+  Kubernetes.
+</Conv>
+<Conv name="Cadey" mood="coffee">
+  Helm uses string templating to template structured data. It's like using `sed`
+  to template JSON. It works, but you have to abuse a lot of things like the
+  [`indent`](https://helm.sh/docs/chart_template_guide/yaml_techniques/#indenting-and-templates)
+  function in order for things to be generically applicable. It's a mess, but
+  only when you try and use it in earnest across your stack. It's what made me
+  nearly burn out of the industry.
+</Conv>
+<Conv name="Aoi" mood="coffee">
+  Why is so much of this stuff just one or two steps away from being really
+  good?
+</Conv>
+<Conv name="Numa" mood="delet">
+  Venture capital! They used to have a way to do structured templates but it was
+  deprecated and removed in Helm 3.0, so we all get to suffer together.
+</Conv>
+
+The only hard part I ran into was that it wasn't obvious how I should assemble the reference strings for 1Password secrets. When you create the 1Password secret syncing object, it looks like this:
+
+```yaml
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: sapientwindex
+spec:
+  itemPath: "vaults/lc5zo4zjz3if3mkeuhufjmgmui/items/cqervqahekvmujrlhdaxgqaffi"
+```
+
+This tells the operator to create a secret named `sapientwindex` in the default namespace with the item path `vaults/lc5zo4zjz3if3mkeuhufjmgmui/items/cqervqahekvmujrlhdaxgqaffi`. The item path is made up of the vault ID (`lc5zo4zjz3if3mkeuhufjmgmui`) and the item ID (`cqervqahekvmujrlhdaxgqaffi`). I wasn't sure how to get these in the first place, but I found the vault ID with the `op vaults list` command and then figured out you can enable right-clicking in the 1Password app to get the item ID.
+
+To enable this, go to Settings -> Advanced -> Show debugging tools in the 1Password app. This will let you right-click any secret and choose "Copy item UUID" to get the item ID for these secret paths.
+
+This works pretty great, I'm gonna use this extensively going forward. It's gonna be slightly painful at first, but once I get into the flow of this (and realistically write a generator that pokes the 1password cli to scrape this information more easily) it should all even out.
+
+## Trials and storage tribulations
+
+As I said at the end of [my most recent conference talk](/talks/2024/shashin/), storage is one of the most annoying bullshit things ever. It's extra complicated with Talos Linux in particular because of how it uses the disk. Most of the disks of my homelab are Talos' "ephemeral state" partitions, which are used for temporary storage and wiped when the machine updates. This is great for many things, but not for persistent storage with [PersistentVolumes/PersistntVolumeClaims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
+
+<Conv name="Mara" mood="hacker">
+  If you haven't used PersistentVolumes before, they are kinda like [Fly
+  Volumes](https://fly.io/docs/reference/volumes/) or Docker Volumes. The main
+  difference is that a PersistentVolume is usually shared between hosts, so that
+  you can mount the same PersistentVolume on Pods located on multiple cluster
+  Nodes. It's really neat.
+  [StorageClasses](https://kubernetes.io/docs/concepts/storage/storage-classes/)
+  let you handle things like data locality, backup policies, and more. This lets
+  you set up multiple providers so that you can have some things managed by your
+  cluster-local storage provider, some managed by the cloud provider, and some
+  super-yolo ones directly mounted to the host filesystem.
+</Conv>
+
+I have tried the following things:
+
+- [Longhorn](https://longhorn.io/): a distributed block storage thing for Kubernetes by the team behind Rancher. It's pretty cool, but I got stuck at trying to get it actually running on my cluster. The pods were just permanently stuck in the `Pending` state due to etcd not being able to discover itself.
+- [OpenEBS](https://github.com/openebs/openebs): another distributed block storage thing for Kubernetes by some team of some kind. It claims to be the most widely used storage thing for Kubernetes, but I couldn't get it to work either.
+
+Among the things I've realized when debugging this is that _no matter what_, many storage things for Kubernetes will hardcode the cluster DNS name to be `cluster.local`. I made my cluster use the DNS name `alrest.xeserv.us` following the advice of one of my SRE friends to avoid using "fake" DNS names as much as possible . This has caused me no end of trouble, as many things in the Kubernetes ecosystem assume that the cluster DNS name is `cluster.local`. It turns out that many Kubernetes ecosystem tools hard-assume the DNS name because the CoreDNS configs in many popular Kubernetes platforms (like AWS EKS, Azure whatever-the-heck, and GKE) have broken DNS configs that make relative DNS names not work reliably. As a result, people have hardcoded the DNS name to `cluster.local` in many places in both configuration and code.
+
+<Conv name="Aoi" mood="coffee">
+  Yet again pragmatism wins out over correctness in the most annoying ways. Why
+  does everything have to be so _bad_?
+</Conv>
+<Conv name="Mara" mood="hacker">
+  To be fair to the Kubernetes ecosystem maintainers, they are faced with a
+  pretty impossible task. They have to be able to be flexible enough to handle
+  random bespoke homelab clusters and whatever the cloud providers think is
+  sensible. That is such a wide range of configurations that I don't think it's
+  really possible to do anything _but_ make those assumptions about how things
+  work. It's a shame that changing the cluster DNS name breaks so much, but it's
+  understandable because most cloud providers don't expose that setting to
+  users. It always sucks to use "fake" DNS names because they can and will
+  become top-level domains [like what happened with
+  `.dev`](https://prinsfrank.nl/2019/02/26/With-the-new-dev-domains-googles-dont-be-evil-phase-is-a-distant-memory).
+  It would be nice if Kubernetes encouraged people to choose their own "real"
+  domain names, but it's understandable that they ended up with `cluster.local`
+  because `.local` [is registered as a "special-use domain
+  name"](https://www.iana.org/assignments/special-use-domain-names/special-use-domain-names.xhtml)
+  but the IETF.
+</Conv>
+
+Fixing this was easy, I had to edit the CoreDNS ConfigMap to look like this:
+
+```yaml
+data:
+  Corefile: |-
+    .:53 {
+        errors
+        health {
+            lameduck 5s
+        }
+        ready
+        log . {
+            class error
+        }
+        prometheus :9153
+
+        kubernetes cluster.local alrest.xeserv.us in-addr.arpa ip6.arpa {
+            pods insecure
+            fallthrough in-addr.arpa ip6.arpa
+        }
+        forward . /etc/resolv.conf
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+```
+
+I prepended the `cluster.local` "domain name" to the `kubernetes` block. Then I deleted the CoreDNS pods in the `kube-system` namespace and they were promptly restarted with the new configuration. This at least got me to the point where normal DNS things worked again.
+
+<Conv name="Mara" mood="hacker">
+  I later found out I didn't need to do this. When CoreDNS sees the ConfigMap
+  update, it'll automatically reload the config. However, SRE instinct kicks in
+  when you're dealing with unknowns and sometimes the placebo effect of
+  restarting the damn thing by hand makes you feel better. Feeling better can be
+  way more important than actually fixing the problem, especially when you're
+  dealing with a lot of new technology.
+</Conv>
+<Conv name="Numa" mood="delet">
+  There's no kill like overkill afterall!
+</Conv>
+
+However, this didn't get Longhorn working. The manager container was just stuck trying to get created. Turns out the solution was really stupid and I want to explain what's going on here so that you can properly commiserate with me over the half a day I spent trying to get this working.
+
+Talos Linux sets a default security policy that blocks the Longhorn manager from running. This is because the Longhorn manager runs as root and Talos Linux is paranoid about security. In order to get Longhorn running, I had to add the following annotations to the Longhorn namespace:
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: longhorn-system
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/audit-version: latest
+    pod-security.kubernetes.io/warn: privileged
+    pod-security.kubernetes.io/warn-version: latest
+```
+
+After you do this, you need to delete the longhorn-deployer _Pod_ and then wait about 10-15 minutes for the entire system to converge. For some reason it doesn't automatically restart when labels are changed, but that is very forgiveable given how many weird things are at play with this ecosystem. Either way, getting this working _at all_ was a huge relief.
+
+<Conv name="Aoi" mood="wut">
+  Wasn't Longhorn part of the SUSE acquistion?
+</Conv>
+<Conv name="Cadey" mood="enby">
+  Yes, but they also donated Longhorn to the CNCF, so it's going to be
+  maintained until it's inevitably deprecated in favor of yet another storage
+  product. Hopefully there's an easy migration path, but I'm not going to worry
+  about this until I have to.
+</Conv>
+
+Once Longhorn starts up, you can create a PersistentVolumeClaim and attach it to a pod:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-volv-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-test
+  namespace: default
+spec:
+  restartPolicy: Always
+  containers:
+    - name: volume-test
+      image: nginx:stable-alpine
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        exec:
+          command:
+            - ls
+            - /data/lost+found
+        initialDelaySeconds: 5
+        periodSeconds: 5
+      volumeMounts:
+        - name: vol
+          mountPath: /data
+      ports:
+        - containerPort: 80
+  volumes:
+    - name: vol
+      persistentVolumeClaim:
+        claimName: longhorn-volv-pvc
+```
+
+<Conv name="Cadey" mood="facepalm">
+  I feel so dumb right now. It was just a security policy mismatch.
+</Conv>
+<Conv name="Numa" mood="happy">
+  Hey, at least it was a dumb problem. Dumb problems are always so much easier
+  to deal with than the not-dumb problems. The not-dumb problems end up sucking
+  so much and drain you of your soul energy.
+</Conv>
+
+Longhorn ended up working, so I [set up backups](https://longhorn.io/docs/1.6.1/snapshots-and-backups/scheduling-backups-and-snapshots/) to [Tigris](https://tigrisdata.com) and then I plan to not think about it until I need to. The only catch is that I need to label every PersistentVolumeClaim with `recurring-job-group.longhorn.io/backup: enabled` to make my backup job run:
+
+```yaml
+apiVersion: longhorn.io/v1beta1
+kind: RecurringJob
+metadata:
+  name: backup
+  namespace: longhorn-system
+spec:
+  cron: "0 0 * * *"
+  task: "backup"
+  groups:
+    - default
+  retain: 4
+  concurrency: 2
+```
+
+<Conv name="Cadey" mood="enby">
+  Thanks for the backup space Ovais & co! I wonder how efficient this really is
+  because most of the blocks (based on unscientific random clicking around in
+  the Tigris console) are under the threshold for [being inlined to
+  FoundationDB](https://www.tigrisdata.com/docs/overview/#fast-small-object-retrieval).
+  I'll have to ask them about it once I get some more significant data workloads
+  in the mix. Realistically, it's probably fine and will end up being a decent
+  stress test for them.
+</Conv>
+
+Hopefully I won't need to think about this for a while. At its best, storage is invisible.
+
+## The ~~factory~~ cluster must grow
+
+I dug `logos` out of mothballs and then I plugged in the Talos Linux USB. I then ran the `logos` command to install Talos Linux on the machine. It worked perfectly and I had a new homelab node up and running in no time. All I had to do was:
+
+- Get it hooked up to Ethernet and power
+- Boot it off of the Talos Linux USB stick
+- Apply the config with `talosctl` from my macbook
+- Wait for it to reboot and everything to green up in `kubectl`
+
+That's it. This is what every homelab OS should strive to be.
+
+I also tried to add my [Win600](/blog/anbernic-win600-review/) to the cluster, but I don't think Talos supports wi-fi. I'm asking in the Matrix channel and in a room full of experts. I was able to get it to connect to ethernet over USB in a hilariously jankriffic setup though:
+
+<Picture
+  path="xedn/dynamic/a1f2dea0-158d-4ee4-b708-3802f54a734e"
+  desc="An Anbernic Win600 with its screen sideways booted into Talos Linux. It is precariously mounted on the floor with power going in on one end and ethernet going in on the other. It is not a production-worthy setup."
+/>
+
+<Conv name="Aoi" mood="coffee">
+  Why would you do this to yourself?
+</Conv>
+<Conv name="Numa" mood="happy">
+  Science isn't about why, it's about why not!
+</Conv>
+
+I seriously can't believe this works. It didn't work well enough to stay in production, but it's worth a laugh or two at least. I ended up removing this node so that I can have floor space back. I'll have to figure out how to get it on the network properly later, maybe after DevOpsDays KC.
+
+## ingressd and related fucking up
+
+I was going to write about a super elegant hack that I'm doing to get ingress from the public internet to my homelab here, but I fucked up again and I potentially got to do etcd surgery.
+
+The hack I was trying to do was creating a userspace wireguard network for handling HTTP/HTTPS ingress from the public internet. I chose to use the network `10.255.255.0/24` for this (I had a TypeScript file to configure the WireGuard keys and everything). Apparently Talos Linux configured etcd to prefer anything in `10.0.0.0/8` by default. This has lead to the following bad state:
+
+```
+$ talosctl etcd members -n 192.168.2.236
+NODE            ID                 HOSTNAME    PEER URLS                    CLIENT URLS                  LEARNER
+192.168.2.236   3a43ba639b0b3ec3   chrysalis   https://10.255.255.16:2380   https://10.255.255.16:2379   false
+192.168.2.236   d07a0bb98c5c225c   kos-mos     https://10.255.255.17:2380   https://192.168.2.236:2379   false
+192.168.2.236   e78be83f410a07eb   ontos       https://10.255.255.19:2380   https://192.168.2.237:2379   false
+192.168.2.236   e977d5296b07d384   logos       https://10.255.255.18:2380   https://192.168.2.217:2379   false
+```
+
+This is uhhh, not good. The normal strategy for recovering from an etcd split brain involves stopping etcd on all nodes and then recovering one of them, but I can't do that because `talosctl` doesn't let you stop etcd:
+
+```
+$ talosctl service etcd  -n 192.168.2.196 stop
+error starting service: 1 error occurred:
+        * 192.168.2.196: rpc error: code = Unknown desc = service "etcd" doesn't support stop operation via API
+```
+
+When you get etcd into this state, it is generally very hard to convince it otherwise without doing database surgery and suffering the pain of having fucked it up. Fixing this is a very _doable_ process, but I didn't really wanna deal with it.
+
+I ended up blowing away the cluster and starting over. I tried using TESTNET (192.0.2.0/24) for the IP range but ran into issues where my super hacky userspace WireGuard code wasn't working right. I gave up at this point and ended up using my existing WireGuard mesh for ingress. I'll have to figure out how to do this properly later.
+
+<Conv name="Cadey" mood="facepalm">
+  While I was resetting the cluster, I ran into a kinda hilarious problem:
+  asking Talos nodes to wipe their disk and reset all state makes them wipe
+  _everything_, including the system partition. I did ask it to wipe
+  _everything_, but I didn't think it would nuke the OS too. It was kind of a
+  hilarious realization when I ended up figuring out what I did, but it's good
+  to know that "go die" means that it will kill everything. That's kind of a
+  dangerous call to expose without some kind of confirmation, but I guess that
+  is at the pay-to-win tier with [Sidero Labs
+  support](https://www.siderolabs.com/pricing/). I'll probably end up paying for
+  a hobby subscription at some point, just to support the company powered my
+  homelab's hopes and dreams. Money does tend to let one buy goods and services.
+</Conv>
+
+`ingressd` ended up becoming a simple TCP proxy with added [PROXY protocol](http://www.haproxy.org/download/1.8/doc/proxy-protocol.txt) support so that ingress-nginx could get the right source IP addresses. It's nothing to write home about, but it's my simple TCP proxy that I probably could have used something off the shelf for.
+
+<Conv name="Numa" mood="delet">
+  The not-invented-here is strong with this one.
+</Conv>
+<Conv name="Cadey" mood="aha">
+  Something something future expansion when I have time/energy.
+</Conv>
+
+### Using `ingressd` (why would you do this to yourself)
+
+If you want to install `ingressd` for your cluster, here's the high level steps:
+
+<Conv name="Mara" mood="hmm">
+  Keep in mind, `ingressd` has no real support. If you run it, you are on your
+  own. Good luck if so!
+</Conv>
+
+1. Gather the secret keys needed for this terraform manifest (change the domain for Route 53 to your own domain): https://github.com/Xe/x/blob/master/cmd/ingressd/tf/main.tf
+2. Run `terraform apply` in the directory with the above manifest
+3. Go a level up and run `yeet` to build the ingressd RPM
+4. Install the RPM on your ingressd node
+5. Create the file `/etc/ingressd/ingressd.env` with the following contents:
+
+```
+HTTP_TARGET=serviceIP:80
+HTTPS_TARGET=serviceIP:443
+```
+
+<Conv name="Mara" mood="hacker">
+  Fetch the service IP from `kubectl get svc -n ingress-nginx` and replace
+  `serviceIP` with it.
+</Conv>
+
+This assumes you are subnet routing your Kubernetes node and service network over your WireGuard mesh of choice. If you are not doing that, you can't use `ingressd`.
+
+<Conv name="Cadey" mood="aha">
+  This is why I wanted to use a userspace WireGuard connection for this. If I
+  end up implementing this properly, I'm probably gonna end up using two
+  binaries: one on the public ingressd host, and an ingressd-buddy that runs in
+  the cluster.
+</Conv>
+
+Also make sure to run the magic firewalld unbreaking commands:
+
+```
+firewall-cmd --zone=public --add-service=http
+firewall-cmd --zone=public --add-service=https
+```
+
+<Conv name="Cadey" mood="percussive-maintenance">
+  I always forget the magic firewalld unbreaking commands.
+</Conv>
+
+## It's always DNS
+
+Now that I have [ingress working](http://ingressd.cetacean.club/), it's time for one of the most painful things in the universe: DNS. Since I've used Kubernetes last, [External DNS](https://github.com/kubernetes-sigs/external-dns) is now production-ready. I'm going to use it to manage the DNS records for my services.
+
+In typical Kubernetes fashion, it seems that it has gotten incredibly complicated since the last time I used it. It used to be fairly simple, but now installing it requires you to really consider what the heck you are doing. There's also no Helm chart, so you're _really_ on your own.
+
+After reading some documentation, I ended up on the following Kubernetes manifest: [external-dns.yaml](https://gist.githubusercontent.com/Xe/8d4d960bcad372a7a2b04265b9eba21c/raw/1b430cf723f1877e764f72d9db720da95f95616b/external-dns.yaml). So that I can have this documented for me as much as it is for you, here is what this does:
+
+1. Creates a namespace `external-dns` for `external-dns` to live in.
+2. Creates the [`external-dns` Custom Resource Definitions (CRDs)](https://kubernetes-sigs.github.io/external-dns/v0.14.1/contributing/crd-source/) so that I can make DNS records manually with Kubernetes objects should the spirit move me.
+3. Creates a service account for `external-dns`.
+4. Creates a cluster role and cluster role binding for `external-dns` to be able to read a small subset of Kubernetes objects (services, ingresses, and nodes, as well as its custom resources).
+5. Creates a [1Password secret](https://developer.1password.com/docs/k8s/k8s-operator/) to give `external-dns` Route53 god access.
+6. Creates two deployments of `external-dns`:
+   - One for the CRD powered external DNS to weave DNS records with YAML
+   - One to match on newly created ingress objects and create DNS records for them
+
+<Conv name="Aoi" mood="coffee">
+  Jesus christ that's a lot of stuff. It makes sense when you're explaining how
+  it all builds up, but it's a lot.
+</Conv>
+<Conv name="Numa" mood="happy">
+  Welcome to Kubernetes! It's YAML turtles all the way down.
+</Conv>
+
+If I ever need to create a DNS record for a service, I can do so with the following YAML:
+
+```yaml
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: something
+spec:
+  endpoints:
+    - dnsName: something.xeserv.us
+      recordTTL: 180
+      recordType: TXT
+      targets:
+        - "We're no strangers to love"
+        - "You know the rules and so do I"
+        - "A full commitment's what I'm thinking of"
+        - "You wouldn't get this from any other guy"
+        - "I just wanna tell you how I'm feeling"
+        - "Gotta make you understand"
+        - "Never gonna give you up"
+        - "Never gonna let you down"
+        - "Never gonna run around and hurt you"
+        - "Never gonna make you cry"
+        - "Never gonna say goodbye"
+        - "Never gonna tell a lie and hurt you"
+```
+
+Hopefully I'll never need to do this, but I bet that _something_ will make me need to make a DNS TXT record at some point, and it's probably better to have that managed in configuration management somehow.
+
+## cert-manager
+
+Now that there's ingress from the outside world and DNS records for my services, it's time to get HTTPS working. I'm going to use [cert-manager](https://cert-manager.io/) for this. It's a Kubernetes native way to manage certificates from Let's Encrypt and other CAs.
+
+Unlike nearly everything else in this process, installing cert-manager was relatively painless. I just had to install it with Helm. I also made Helm manage the Custom Resource Definitions, so that way I can easily upgrade them later.
+
+<Conv name="Mara" mood="hacker">
+  This is probably a mistake, Helm doesn't handle Custom Resource Definition
+  updates gracefully. This will be corrected in the future, but right now the
+  impetus to care is very low.
+</Conv>
+
+The only gotcha here is that there's annotations for Ingresses that you need to add to get cert-manager to issue certificates for them. Here's an example:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kuard
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  # ...
+```
+
+<Conv name="Aoi" mood="wut">
+  What's the difference between a label and an annotation anyways? So far it
+  looks like you've been using them interchangeably.
+</Conv>
+<Conv name="Cadey" mood="aha">
+  Labels are intended to be used to help find and select objects, while annotations are for more detailed information. Labels are limited to 64 bytes. The most common label you will see is the `app` or `app.kubernetes.io/name` label which points to the "app" an object is a part of. Annotations are much more intended for storing metadata about the object, and can be up to 256KB in size. They are intended to be used for things like machine-readable data, like the cert-manager issuer annotation.
+</Conv>
+<Conv name="Aoi" mood="wut">
+Why is Longhorn [using labels for subscribing Volumes to backup jobs](https://longhorn.io/docs/1.6.1/snapshots-and-backups/scheduling-backups-and-snapshots/#using-the-kubectl-command) then?
+</Conv>
+<Conv name="Cadey" mood="aha">
+Because Kubernetes labels are indexed in the cluster data store, observe:
+
+```
+$ kubectl get Volume --all-namespaces -l=recurring-job-group.longhorn.io/backup=enabled
+NAMESPACE         NAME                                       DATA ENGINE   STATE      ROBUSTNESS   SCHEDULED   SIZE         NODE    AGE
+longhorn-system   pvc-e1916e66-7f7b-4322-93cd-52dc1fc418f7   v1            attached   healthy                  2147483648   logos   43h
+```
+
+That also extends to other labels, such as `app.kubernetes.io/name`:
+
+```
+$ kubectl get all,svc,ing -n mi -l app.kubernetes.io/name=mi
+NAME                      READY   STATUS    RESTARTS   AGE
+pod/mi-6bd6d8bb44-cg7tf   1/1     Running   0          43h
+
+NAME                 READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/mi   1/1     1            1           43h
+
+NAME                            DESIRED   CURRENT   READY   AGE
+replicaset.apps/mi-6bd6d8bb44   1         1         1       43h
+
+NAME                                        CLASS       HOSTS              ADDRESS                    PORTS     AGE
+ingress.networking.k8s.io/mi-public         nginx       mi.cetacean.club   100.109.37.97              80, 443   20h
+```
+
+Annotations are more useful for meta-information and machine-readable data, like the cert-manager issuer annotation. You could also use it to attribute deployments to a specific git commit or something like that.
+
+</Conv>
+
+This will make `cert-manager` issue a certificate for the `kuard` ingress using the `letsencrypt-prod` issuer. You can also use `letsencrypt-staging` for testing. The part that you will fuck up is that the documentation mixes `ClusterIssuer` and `Issuer` resources and annotations. Here's what my Let's Encrypt staging and prod issuers look like:
+
+```yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    # You must replace this email address with your own.
+    # Let's Encrypt will use this to contact you about expiring
+    # certificates, and issues related to your account.
+    email: user@example.com
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: letsencrypt-staging-acme-key
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: nginx
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    # You must replace this email address with your own.
+    # Let's Encrypt will use this to contact you about expiring
+    # certificates, and issues related to your account.
+    email: user@example.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: letsencrypt-prod-acme-key
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: nginx
+```
+
+These `ClusterIssuers` are what the `cert-manager.io/cluster-issuer:` annotation in the ingress object refers to. You can also use `Issuer` resources if you want to scope the issuer to a single namespace, but realistically I know you're lazier than I am so you're going to use `ClusterIssuer`.
+
+The flow of all of this looks kinda complicated, but you can visualize it with this handy diagram:
+
+![A diagram explaining the cert-manager flow](/static/blog/cert-manager-flow.svg)
+
+Breaking this down, let's assume I've just created this Ingress resource:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kuard
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - kuard.xeserv.us
+      secretName: kuard-tls
+  rules:
+    - host: kuard.xeserv.us
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kuard
+                port:
+                  name: http
+```
+
+<Conv name="Mara" mood="hacker">
+  This is an Ingress named `kuard` with the `letsencrypt-prod` certificate
+  issuer. It's specifically configured to use ingress-nginx (this is probably
+  not required if your cluster has only one ingress defined, but it's better to
+  be overly verbose) and matches the HTTP hostname `kuard.xeserv.us`. It points
+  to the service `kuard`'s named `http` port (whatever that is). The TLS block
+  tells ingress-nginx (and cert-manager) to expect a cert in the secret
+  `kuard-tls` for the domain name `kuard.xeserv.us`.
+</Conv>
+
+When I create this Ingress with the cluster-issuer annotation, it's discovered by both external-dns and cert-manager. external-dns creates DNS records in Route 53 (and tracks them using DynamoDB). At the same time, cert-manager creates a Cert resource for the domains I specified in the in the `spec.tls.hosts` field of my Ingress. The Cert resource discoveres that the secret `kuard-tls` has no valid certificate in it, so it creates an Order for a new certificate. The Order creates a Challenge by poking Let's Encrypt to get the required token and then configures its own Ingress to handle the HTTP-01 strategy.
+
+Once it's able to verify that it can pass the Challenge locally (this requires external-dns to finish pushing DNS routes and for DNS to globally converge, but usually happens within a minute), it asks Let's Encrypt to test it. Once Let's Encrypt passes the test, it signs my certificate, the Challenge Ingress is deleted, the signed certificate is saved to the right Kubernetes secret, the Order is marked as fulfilled, the Cert is marked ready, and nginx is reloaded to point to that newly minted certificate.
+
+<Conv name="Aoi" mood="wut">
+I guess that does make sense when you spell it all out, but that is a _lot_ of boilerplate and interplay to do something that [autocert](https://pkg.go.dev/golang.org/x/crypto/acme/autocert) does for you for free.
+</Conv>
+<Conv name="Cadey" mood="aha">
+The way you should interpret this is that each of the Kubernetes components are _stateless_ as much as possible. All of the state is stored externally in Kubernetes objects. This means that any of the components involved can restart, get moved around between nodes, or crash without affecting any in-flight tasks. I've been understanding this as having all of the inherent complexity of what is going on laid bare in front of you, much like how Rust makes it very obvious what is going on at a syntax level.
+
+You're probably used to a lot of this being handwaved away by the platforms you use, but this all isn't really that hard. It's just a verbose presentation of it. Besides, most of this is describing how I'm handwaving all of this away for my own uses.
+
+</Conv>
+<Conv name="Aoi" mood="cheer">
+I get it, you're basically making your homelab into your own platform, right? This means that you need to provide all those building blocks for yourself. I guess this explains why there's so many moving parts.
+</Conv>
+
+## Shipping the lab
+
+At this point, my lab is stable, useful, and ready for me to put jobs on it. I have:
+
+- A cluster of four machines running Talos Linux that I can submit jobs to with `kubectl`
+- Persistent storage with Longhorn
+- Backups of said persistent storage to [Tigris](https://www.tigrisdata.com/)
+- Ingress from the public internet with `ingressd` and crimes
+- DNS records managed by `external-dns`
+- HTTPS certificates managed by `cert-manager`
+
+And this all adds up to a place where I can just throw jobs at and get the confidence that they will run. I'm going to be using this to run a bunch of other things that have previously been spread across a bunch of VPSes that I don't want to pay for anymore. Even though they are an excellent tax break right now.
+
+<Conv name="Cadey" mood="enby">
+  I guess I did end up using Rocky Linux afterall because the ingressd node runs
+  it. It's a bone-stock image with automatic updates and a single RPM built by
+  `yeet`. Realistically I could probably get away with running a few ingressd
+  nodes, but I'm lazy and I don't want to have to manage more than one. High
+  availability is for production, not janky homelab setups.
+</Conv>
+
+## The parts of a manifest for my homelab
+
+When I deploy things to my homelab cluster, I can divide them into three basic classes:
+
+- Automation/bots that don't expose any API or web endpoints
+- Internal services that do expose API or web endpoints
+- Public-facing services that should be exposed to the public internet
+
+Automation/bots are the easiest. In the ideal case all I need is a Deployment and a Secret to hold the API keys to poke external services. For an example of that, see [within.website/x/cmd/sapientwindex](https://github.com/Xe/x/tree/master/cmd/sapientwindex).
+
+Internal services get a little bit more complicated. Depending on the service in question, it'll probably get:
+
+- A Namespace to hold everything
+- A PersistentVolumeClaim for holding state (SQLite, JSONMutexDB, etc.)
+- A Secret or two for the various private/API keys involved in the process
+- A Deployment with one or more containers that actually runs that internal service's code
+- A Service that exposes the internal ports to the cluster on well-known port numbers
+
+For most internal services, this is more than good enough. If I need to poke it, I can do so by connecting to `svcname.ns.svc.alrest.xeserv.us`. It'd work great for a Minecraft server or something else like that.
+
+However, I also do need to expose things to the public internet sometimes. When I need to do that, I define an Ingress that has the right domain name so the rest of the stack will just automatically make it work.
+
+This gives me the ability to just push things to the homelab without fear. Once new jobs get defined, the rest of the stack will converge, order certificates, and otherwise make things Just Work™️. It's kinda glorious now that it's all set up.
+
+## What's next?
+
+Here are the things I want to play with next:
+
+- [KubeVirt](https://kubevirt.io/): I want to run some VMs on my cluster. This looks like it could be the basis for an even better [waifud](/blog/series/waifud/) setup. All it's missing is a decent admin UI, which I can probably make with Tailwind and HTMX. The biggest thing I want to play with is live migration of VMs between nodes.
+- I want to get a Minecraft server running on my cluster and figure out some way to make it accessible to my patrons. I have no idea how I'll go about doing the latter, but I'm sure I'll figure it out. Worst case I think one of you nerds in the (patron-only) Discord has _some_ ideas.
+- I want to resurrect [kubermemes](https://tulpa.dev/cadey/kubermemes) for generating my app deployments. I've had a lot of opinions change since I wrote that so many years ago, but overall the shape of my deployments is going to be "small file with some resource requests" that compiles into "YAML means 'Yeah, A Massive List of stuff'".
+- I may also want to get AI stuff running on Talos Linux. I have two GPUs in that cluster and kinda want to have stable diffusion at home again. It'll be a good way to get back into the swing of things with AI stuff.
+- ??? who knows what else will come up through my binges into weird GitHub projects and Hacker News.
+
+I'm willing to declare my homelab a success at this point. It's cool that I can spread the load between my machines so much more cleanly now. I'm excited to see what I can do with this, and I hope that you are excited that you get more blog posts out of it.
+
+<Conv name="Aoi" mood="coffee">
+  What a way to kill a week of PTO, eh?
+</Conv>

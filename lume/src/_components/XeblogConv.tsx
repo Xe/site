@@ -15,14 +15,14 @@ const ConvSnippet = ({
 }: XeblogConvProps) => {
   const nameLower = name.toLowerCase();
   name = name.replace(" ", "_");
-  const size = standalone ? 128 : 64;
+  const size = standalone ? 256 : 128;
 
   return (
     <>
       <div className="my-4 flex space-x-4 rounded-md border border-solid border-fg-4 bg-bg-2 p-3 dark:border-fgDark-4 dark:bg-bgDark-2 max-w-full min-h-fit">
         <div className="flex max-h-16 shrink-0 items-center justify-center self-center">
           <img
-            style="max-height:6rem"
+            style={`max-height:${standalone ? "6" : "4"}rem`}
             alt={`${name} is ${mood}`}
             loading="lazy"
             src={`https://cdn.xeiaso.net/sticker/${nameLower}/${mood}/${size}`}

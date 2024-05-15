@@ -3,10 +3,14 @@ layout: base.njk
 ---
 
 <article class="prose dark:prose-invert max-w-none">
-    <h1>{{title}}</h1>
-    <p class="text-sm text-fg-3 dark:text-fgDark-3 mb-2">
+    <h1 class="mb-2">{{title}}</h1>
+    <p class="text-sm text-fg-3 dark:text-fgDark-3 my-1">
         Published on <time datetime={{date | date("DATE")}}>{{date | date("DATE_US")}}</time>, {{ readingInfo.words }} words, {{ readingInfo.minutes }} minutes to read
     </p>
+
+    {% if desc %}
+        <p class="text-sm font-serif text-fg-3 dark:text-fgDark-3 my-1">{{desc}}</p>
+    {% endif %}
 
     {% if patronExclusive %}
         <div class="bg-yellow-50 border-l-4 border-yellow-400 py-1 px-4 mb-4">
