@@ -100,6 +100,10 @@ in  Config::{
         , url = "https://staging.bsky.app/profile/xeiaso.net"
         , title = "Bluesky"
         }
+      , Link::{
+        , url = "www.linkedin.com/in/xe-iaso"
+        , title = "LinkedIn"
+        }
       ]
     , pronouns = ./pronouns.dhall
     , characters = ./characters.dhall
