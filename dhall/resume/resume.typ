@@ -115,7 +115,7 @@
     (name: "email", link: "mailto:me@xeiaso.net"),
     (name: "website", link: "https://xeiaso.net/", display: "xeiaso.net"),
     (name: "github", link: "https://github.com/Xe", display: "@Xe"),
-    (name: "linkedin", link: "https://www.linkedin.com/in/xe-iaso-87a883254/", display: resume.name),
+    (name: "linkedin", link: "https://www.linkedin.com/in/xe-iaso/", display: resume.name),
     (name: "mastodon", link: "https://pony.social/@cadey", display: "@cadey@pony.social"),
     (name: "twitch", link: "https://twitch.tv/princessxen", display: "@princessxen"),
   ),
