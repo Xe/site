@@ -1,0 +1,69 @@
+---
+title: "iTerm2 and AI hype overload"
+date: 2024-05-21
+hero:
+  ai: Kohaku XL
+  file: iterm-hacker-waifu
+  prompt: "A green-haired green-eyes anime woman in a dark hacker nest with a laptop and a cup of coffee"
+---
+
+[iTerm2](https://iterm2.com/) is the most popular terminal emulator for macOS machines. I've used it for years and it has gotten out of my way. It's great software. Recently [an update](https://iterm2.com/downloads/stable/iTerm2-3_5_0.changelog) was released that among other things includes new AI integration:
+
+> AI
+>
+> - Add AI-powered natural language command
+>   generation. Enter a prompt in the composer and
+>   select Edit > Engage Artificial Intelligence.
+>   You will need to provide an OpenAI API key since
+>   GPT costs money to use.
+> - A new AI feature in the Toolbelt, "Codecierge",
+>   lets you set a goal and then walks you
+>   step-by-step to completing it by watching the
+>   terminal contents. It requires you to supply an
+>   OpenAI API key.
+
+Here's what the first feature looks like:
+
+<Video path="video/2024/oneoff-iterm2-ai" />
+
+It's a text box that you can enter in a description of a command in, then it generates the command for you. It's a lot like the former [GitHub Copilot for CLI](https://githubnext.com/projects/copilot-cli/), but built into your terminal, just a command-y away.
+
+When you use this, you have your choice of the following models:
+
+- `gpt-3.5-turbo`
+- `gpt-4-turbo`
+- `gpt-4`
+- `gpt-4o`
+
+I wasn't able to get `gpt-4o` to work, but `gpt-3.5-turbo` worked fine. I'm not totally wowed by the feature, but it is a thing that exists and I'll probably use it once or twice (mainly when I'm dealing with ffmpeg commands because good god those are hard to remember). I don't think it's a killer feature, but it's a nice-to-have, I guess.
+
+One of the main bits of feedback I've seen from people online is that iTerm2 having AI involved at all is enough to get them to want to switch away to another terminal emulator. They've cited the reason as exhaustion due to overexposure to AI hype.
+
+AI is the current meme among investors and the tech space. [Microsoft is putting an AI button on your keyboard](https://blogs.windows.com/windowsexperience/2024/01/04/introducing-a-new-copilot-key-to-kick-off-the-year-of-ai-powered-windows-pcs/), [Slack is training AI on your messages](https://arstechnica.com/tech-policy/2024/05/slack-defends-default-opt-in-for-ai-training-on-chats-amid-user-outrage/), and [OpenAI is in hot water with Scarlet Johansson](https://x.com/yashar/status/1792682664845254683). It's everywhere, and it's exhausting. Part of my job requires me to keep up with the latest advances with AI and I'm unable to. Everything happens so much.
+
+With a lot of these AI tools comes the problem that the AI system itself is very opaque. You put in inputs, you get an output, but nobody is able to explain how or why something came out that way. There's an entire cottage industry of people finding the right combinations of words to get the AI to do something they want. It's like scrying into the unknown, but somehow with trillions of dollars on the line.
+
+This "type the command for me" feature has caused a lot of buzz online, to the people where people I know are just flat out ripping out iTerm2 in favor of programs that _don't_ have AI integrations in them. Hell, even the mention that a tool is _going_ to get an AI integration has people preemptively ripping it out of their systems _because_ of that opacity. A terminal emulator is probably also a fairly bad place to implement this because it's probably one of the most privileged programs on a developer's machine. It deals with all the secrets in the world, and the _threat_ that it could be used to upload them all to a third party is great enough that people are willing to switch away from it **sight unseen**.
+
+<Conv name="Aoi" mood="wut">
+I don't get it. It's a very optional feature that you have to:
+
+1. Go out of your way to enable
+2. Supply your own API key (and pay for it yourself)
+3. Enable something that is not enabled by default
+
+Why are people reacting so strongly to this?
+
+</Conv>
+<Conv name="Cadey" mood="aha">
+  A lot of it boils down to having this "shoved down their throats". It's the
+  fact that it's being added to a tool without the user having the _agency_ to
+  decide if they want it to be added or not. There's something that can probably
+  be said here about programs like this likely needing to be open-source so that
+  these things can be caught and stopped sooner, but that's an entirely
+  different conversation.
+</Conv>
+
+I get why people wouldn't want this in their lives, I really do. I think that one of the greatest errors that was made with putting this in iTerm2 was making a big show of it, and by not letting you use local models (such as with [Ollama](https://ollama.com)) instead of having OpenAI be the only option.
+
+It would be really cool if this was distributed as an optional addon with their [Python API](https://iterm2.com/python-api/) as an example of how you can extend iTerm2 in arbitrary ways. This would get a lot of the same advantages, but without the whole angry mob thing.
