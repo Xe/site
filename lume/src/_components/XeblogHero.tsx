@@ -19,19 +19,18 @@ export default function XeblogHero({ ai, file, prompt }: XeblogHeroProps) {
           />
           <img
             alt={`An image of ${prompt}`}
+            className="hero-image"
             loading="lazy"
             src={`https://cdn.xeiaso.net/file/christine-static/hero/${file}.jpg`}
           />
         </picture>
-        {ai !== undefined
-          ? (
-            <></>
-          )
-          : (
-            <figcaption className="mx-2 my-1 text-center text-gray-600 dark:text-gray-400">
-              {prompt}
-            </figcaption>
-          )}
+        {ai !== undefined ? (
+          <></>
+        ) : (
+          <figcaption className="mx-2 my-1 text-center text-gray-600 dark:text-gray-400">
+            {prompt}
+          </figcaption>
+        )}
       </figure>
     </>
   );

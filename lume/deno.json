@@ -9,6 +9,6 @@
     "serve": "deno task lume -s"
   },
   "imports": {
-    "lume/": "https://deno.land/x/lume@v2.0.3/"
+    "lume/": "https://deno.land/x/lume@v2.2.0/"
   }
 }

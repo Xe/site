@@ -9,9 +9,9 @@ import tailwindcss from "lume/plugins/tailwindcss.ts";
 import postcss from "lume/plugins/postcss.ts";
 import sitemap from "lume/plugins/sitemap.ts";
 import readInfo from "lume/plugins/reading_info.ts";
+import feed from "lume/plugins/feed.ts";
 
 import annotateYear from "./plugins/annotate_year.ts";
-import feed from "./plugins/feed.ts";
 
 //import pagefind from "lume/plugins/pagefind.ts";
 //import _ from "npm:@pagefind/linux-x64";
@@ -77,11 +77,23 @@ site.use(feed({
   info: {
     title: "Xe Iaso's blog",
     description: "Thoughts and musings from Xe Iaso",
+    published: new Date(),
+    lang: "en",
   },
   items: {
     title: "=title",
-    description: "=excerpt",
-    generator: true,
+    description: "=desc",
+    image: (data) => {
+      if (data.hero && data.hero.file) {
+        return `https://cdn.xeiaso.net/file/christine-static/hero/${data.hero.file}.jpg`;
+      }
+
+      if (data.image) {
+        return `https://cdn.xeiaso.net/file/christine-static/${data.image}.jpg`;
+      }
+
+      return undefined;
+    },
   },
 }));
 site.use(mdx({
