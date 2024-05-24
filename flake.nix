@@ -144,7 +144,7 @@
             name = "ghcr.io/xe/site/bin";
             tag = "latest";
             fromImage = alpineLinux;
-            contents = with pkgs; [ cacert typst-dev dhall-json deno pagefind ];
+            contents = with pkgs; [ cacert typst-dev dhall-json deno git ];
             config = {
               Cmd = [ "${bin}/bin/xesite" "--data-dir=/data" ];
               Env = [

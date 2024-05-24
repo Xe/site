@@ -2,6 +2,9 @@
 
 app = "xesite"
 
+vm.cpus = 2
+vm.memory = "2GB"
+
 kill_signal = "SIGINT"
 kill_timeout = 5
 
