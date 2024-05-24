@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"context"
 	"encoding/json"
+	"errors"
 	"expvar"
 	"fmt"
 	"html/template"
@@ -251,8 +252,13 @@ func (f *FS) Update(ctx context.Context) error {
 			ReferenceName: plumbing.NewBranchReferenceName(f.opt.Branch),
 		})
 		if err != nil {
-			updateErrors.Add(1)
-			return err
+			switch {
+			case errors.Is(err, git.NoErrAlreadyUpToDate):
+				slog.Debug("already up to date")
+			default:
+				updateErrors.Add(1)
+				return err
+			}
 		}
 
 		err = wt.Checkout(&git.CheckoutOptions{
