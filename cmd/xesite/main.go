@@ -28,7 +28,6 @@ var (
 	githubSecret        = flag.String("github-secret", "", "GitHub secret to use for webhooks")
 	internalAPIBind     = flag.String("internal-api-bind", ":3001", "Port to listen on for the internal API")
 	mimiAnnounceURL     = flag.String("mimi-announce-url", "", "URL to use for the mimi announce service")
-	miToken             = flag.String("mi-token", "", "Token to use for the mi API")
 	patreonSaasProxyURL = flag.String("patreon-saasproxy-url", "http://xesite-patreon-saasproxy.flycast", "URL to use for the patreon saasproxy")
 	siteURL             = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")
 )
@@ -65,7 +64,6 @@ func main() {
 		Development:     *devel,
 		PatreonClient:   pc,
 		DataDir:         *dataDir,
-		MiToken:         *miToken,
 		MimiAnnounceURL: *mimiAnnounceURL,
 	})
 	if err != nil {

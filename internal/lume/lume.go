@@ -26,7 +26,6 @@ import (
 	"tailscale.com/metrics"
 	"xeiaso.net/v4/internal/config"
 	"xeiaso.net/v4/internal/jsonfeed"
-	"xeiaso.net/v4/internal/mi"
 	"xeiaso.net/v4/pb/external/mimi/announce"
 	"xeiaso.net/v4/pb/external/protofeed"
 )
@@ -71,7 +70,6 @@ type FS struct {
 	opt     *Options
 	conf    *config.Config
 
-	miClient   *mi.Client
 	mimiClient announce.Announce
 
 	fs   fs.FS
@@ -131,7 +129,6 @@ type Options struct {
 	URL             string
 	PatreonClient   *patreon.Client
 	DataDir         string
-	MiToken         string
 	MimiAnnounceURL string
 }
 
@@ -209,11 +206,6 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 		siteCommit = ref.Hash().String()
 	}
 
-	if o.MiToken != "" {
-		fs.miClient = mi.New(o.MiToken, "xeiaso.net/v4/internal/lume "+os.Args[0])
-		slog.Debug("mi integration enabled")
-	}
-
 	if o.MimiAnnounceURL != "" {
 		mimiClient := announce.NewAnnounceProtobufClient(o.MimiAnnounceURL, &http.Client{})
 		fs.mimiClient = mimiClient
@@ -231,13 +223,6 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 		return nil, err
 	}
 
-	if fs.miClient != nil {
-		go func() {
-			if err := fs.miClient.Refresh(); err != nil {
-				slog.Error("failed to refresh mi", "err", err)
-			}
-		}()
-	}
 	go fs.mimiRefresh()
 	fs.lastBuildTime = time.Now()
 
@@ -303,13 +288,6 @@ func (f *FS) Update(ctx context.Context) error {
 		return err
 	}
 
-	if f.miClient != nil {
-		go func() {
-			if err := f.miClient.Refresh(); err != nil {
-				slog.Error("failed to refresh mi", "err", err)
-			}
-		}()
-	}
 	go f.mimiRefresh()
 
 	return nil
