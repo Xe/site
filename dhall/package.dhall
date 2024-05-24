@@ -101,10 +101,7 @@ in  Config::{
             "https://signal.me/#eu/Nphi3UKYkj4lgn_HPVFR6wS4VPJ7GRX3htnyHVe8m6XqOPwj8CBJmKnDfTN4mdoX"
         , title = "Signal"
         }
-      , Link::{
-        , url = "https://staging.bsky.app/profile/xeiaso.net"
-        , title = "Bluesky"
-        }
+      , Link::{ url = "https://bsky.app/profile/xeiaso.net", title = "Bluesky" }
       , Link::{
         , url = "https://www.linkedin.com/in/xe-iaso"
         , title = "LinkedIn"
