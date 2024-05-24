@@ -21,11 +21,13 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/twitchtv/twirp"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gopkg.in/mxpv/patreon-go.v1"
 	"tailscale.com/metrics"
 	"xeiaso.net/v4/internal/config"
 	"xeiaso.net/v4/internal/jsonfeed"
+	"xeiaso.net/v4/pb/external/mi"
 	"xeiaso.net/v4/pb/external/mimi/announce"
 	"xeiaso.net/v4/pb/external/protofeed"
 )
@@ -70,7 +72,9 @@ type FS struct {
 	opt     *Options
 	conf    *config.Config
 
-	mimiClient announce.Announce
+	// assumption: announce and events are on the same server
+	mimiClient   announce.Announce
+	eventsClient mi.Events
 
 	fs   fs.FS
 	lock sync.Mutex
@@ -122,14 +126,14 @@ func (f *FS) Open(name string) (fs.File, error) {
 }
 
 type Options struct {
-	Development     bool
-	Branch          string
-	Repo            string
-	StaticSiteDir   string
-	URL             string
-	PatreonClient   *patreon.Client
-	DataDir         string
-	MimiAnnounceURL string
+	Development   bool
+	Branch        string
+	Repo          string
+	StaticSiteDir string
+	URL           string
+	PatreonClient *patreon.Client
+	DataDir       string
+	MiURL         string
 }
 
 func New(ctx context.Context, o *Options) (*FS, error) {
@@ -206,10 +210,10 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 		siteCommit = ref.Hash().String()
 	}
 
-	if o.MimiAnnounceURL != "" {
-		mimiClient := announce.NewAnnounceProtobufClient(o.MimiAnnounceURL, &http.Client{})
-		fs.mimiClient = mimiClient
-		slog.Debug("mimi integration enabled")
+	if o.MiURL != "" {
+		fs.mimiClient = announce.NewAnnounceProtobufClient(o.MiURL, &http.Client{})
+		fs.eventsClient = mi.NewEventsProtobufClient(o.MiURL, &http.Client{})
+		slog.Debug("mi integration enabled")
 	}
 
 	conf, err := config.Load(filepath.Join(fs.repoDir, "config.dhall"))
@@ -379,6 +383,15 @@ func (f *FS) writeConfig(siteCommit string) error {
 		}
 	}
 
+	var events *mi.EventFeed
+	if f.eventsClient != nil {
+		var err error
+		events, err = f.eventsClient.Get(context.Background(), &emptypb.Empty{})
+		if err != nil {
+			slog.Error("failed to fetch events", "err", err)
+		}
+	}
+
 	if err := os.MkdirAll(dataDir, 0o755); err != nil {
 		return err
 	}
@@ -389,6 +402,7 @@ func (f *FS) writeConfig(siteCommit string) error {
 		"characters.json":         f.conf.Characters,
 		"commit.json":             map[string]any{"hash": siteCommit},
 		"contactLinks.json":       f.conf.ContactLinks,
+		"events.json":             events,
 		"jobHistory.json":         f.conf.JobHistory,
 		"notableProjects.json":    f.conf.NotableProjects,
 		"pronouns.json":           f.conf.Pronouns,

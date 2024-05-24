@@ -27,7 +27,7 @@ var (
 	gitRepo             = flag.String("git-repo", "https://github.com/Xe/site", "Git repository to clone")
 	githubSecret        = flag.String("github-secret", "", "GitHub secret to use for webhooks")
 	internalAPIBind     = flag.String("internal-api-bind", ":3001", "Port to listen on for the internal API")
-	mimiAnnounceURL     = flag.String("mimi-announce-url", "", "URL to use for the mimi announce service")
+	miURL               = flag.String("mimi-announce-url", "", "Mi url (named mimi-announce-url for historical reasons)")
 	patreonSaasProxyURL = flag.String("patreon-saasproxy-url", "http://xesite-patreon-saasproxy.flycast", "URL to use for the patreon saasproxy")
 	siteURL             = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")
 )
@@ -44,10 +44,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	flag.VisitAll(func(f *flag.Flag) {
-		slog.Debug("flag", "name", f.Name, "value", f.Value)
-	})
-
 	os.MkdirAll(*dataDir, 0700)
 	os.MkdirAll(filepath.Join(*dataDir, "tsnet"), 0700)
 
@@ -57,14 +53,14 @@ func main() {
 	}
 
 	fs, err := lume.New(ctx, &lume.Options{
-		Branch:          *gitBranch,
-		Repo:            *gitRepo,
-		StaticSiteDir:   "lume",
-		URL:             *siteURL,
-		Development:     *devel,
-		PatreonClient:   pc,
-		DataDir:         *dataDir,
-		MimiAnnounceURL: *mimiAnnounceURL,
+		Branch:        *gitBranch,
+		Repo:          *gitRepo,
+		StaticSiteDir: "lume",
+		URL:           *siteURL,
+		Development:   *devel,
+		PatreonClient: pc,
+		DataDir:       *dataDir,
+		MiURL:         *miURL,
 	})
 	if err != nil {
 		log.Fatal(err)
