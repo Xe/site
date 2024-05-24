@@ -9,9 +9,9 @@ import tailwindcss from "lume/plugins/tailwindcss.ts";
 import postcss from "lume/plugins/postcss.ts";
 import sitemap from "lume/plugins/sitemap.ts";
 import readInfo from "lume/plugins/reading_info.ts";
-import feed from "lume/plugins/feed.ts";
 
 import annotateYear from "./plugins/annotate_year.ts";
+import feed from "./plugins/feed.ts";
 
 //import pagefind from "lume/plugins/pagefind.ts";
 //import _ from "npm:@pagefind/linux-x64";
@@ -83,7 +83,7 @@ site.use(feed({
   items: {
     title: "=title",
     description: "=desc",
-    image: (data) => {
+    /*image: (data) => {
       if (data.hero && data.hero.file) {
         return `https://cdn.xeiaso.net/file/christine-static/hero/${data.hero.file}.jpg`;
       }
@@ -93,7 +93,7 @@ site.use(feed({
       }
 
       return undefined;
-    },
+    },*/
   },
 }));
 site.use(mdx({

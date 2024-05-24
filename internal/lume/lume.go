@@ -594,6 +594,10 @@ func (f *FS) mimiRefresh() {
 		return
 	}
 
+	if f.opt.Development {
+		return
+	}
+
 	blog, err := f.LoadProtoFeed()
 	if err != nil {
 		slog.Error("failed to load proto feed", "err", err)
