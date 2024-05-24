@@ -25,7 +25,7 @@ export default ({ name, url, start_date, end_date, location, description }) => {
                 <p>
                     {location} - {startDate} {start_date.seconds !== end_date.seconds ? `thru ${endDate})}` : ""}
                 </p>
-                <p className="prose">
+                <p className="prose dark:prose-invert">
                     {description}
                 </p>
             </div>

@@ -19,7 +19,7 @@ export default ({ events }) => (
             </div>
         )}
 
-        <div className="my-4 prose max-w-full">
+        <div className="my-4 prose dark:prose-invert max-w-full">
             <p>
                 If you'd like me to speak at an event, please <a href="/contact">contact me</a>! I'm always looking for new opportunities to share my knowledge and experiences. I'm also available for interviews, podcasts, and other media appearances.
             </p>
