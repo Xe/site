@@ -185,6 +185,56 @@
         },
         "type": "object"
       },
+      "within.website.x.mi.Event": {
+        "description": "Event is a single event that Xe will be attending.",
+        "properties": {
+          "description": {
+            "description": "The description of the event",
+            "type": "string"
+          },
+          "end_date": {
+            "description": "The day the event ends",
+            "format": "date-time",
+            "type": "string"
+          },
+          "id": {
+            "description": "The ID of the event",
+            "format": "int32",
+            "type": "integer"
+          },
+          "location": {
+            "description": "The location of the event (human-readable)",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the event",
+            "type": "string"
+          },
+          "start_date": {
+            "description": "The day the event starts",
+            "format": "date-time",
+            "type": "string"
+          },
+          "url": {
+            "description": "The URL for the event",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "within.website.x.mi.EventFeed": {
+        "description": "A feed of events, result from mi query.",
+        "properties": {
+          "events": {
+            "description": "The events in the feed",
+            "items": {
+              "$ref": "#/components/schemas/within.website.x.mi.Event"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
       "xeiaso.net.BuildInfo": {
         "description": "BuildInfo contains metadata about a build of the site.",
         "properties": {
@@ -220,6 +270,33 @@
   },
   "openapi": "3.0.0",
   "paths": {
+    "/api/xeiaso.net.Events/Get": {
+      "post": {
+        "description": "\nGet fetches the current feed of upcoming events.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/within.website.x.mi.EventFeed"
+                }
+              }
+            },
+            "description": "Success"
+          }
+        },
+        "summary": "Get"
+      }
+    },
     "/api/xeiaso.net.Feed/Get": {
       "post": {
         "description": "\nGet fetches the current feed of posts.",

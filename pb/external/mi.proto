@@ -1,0 +1,31 @@
+// This is a subset of github:Xe/x/proto/mi.proto
+
+syntax = "proto3";
+package within.website.x.mi;
+option go_package = "xeiaso.net/v4/pb/external/mi";
+
+import "google/protobuf/timestamp.proto";
+
+// Event is a single event that Xe will be attending.
+message Event {
+  // The name of the event
+  string name = 1;
+  // The URL for the event
+  string url = 2;
+  // The day the event starts
+  google.protobuf.Timestamp start_date = 3;
+  // The day the event ends
+  google.protobuf.Timestamp end_date = 4;
+  // The location of the event (human-readable)
+  string location = 5;
+  // The ID of the event
+  int32 id = 6;
+  // The description of the event
+  string description = 7;
+}
+
+// A feed of events, result from mi query.
+message EventFeed {
+  // The events in the feed
+  repeated Event events = 1;
+}

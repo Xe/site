@@ -5,6 +5,7 @@ option go_package = "xeiaso.net/v4/pb";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
+import "external/mi.proto"; // unused in this file
 import "external/protofeed.proto";
 
 // Meta lets users fetch site metadata.
@@ -32,4 +33,10 @@ message BuildInfo {
 service Feed {
   // Get fetches the current feed of posts.
   rpc Get(google.protobuf.Empty) returns (protofeed.Feed);
+}
+
+// Events lets users fetch the current feed of events that Xe will be attending.
+service Events {
+  // Get fetches the current feed of upcoming events.
+  rpc Get(google.protobuf.Empty) returns (within.website.x.mi.EventFeed);
 }
