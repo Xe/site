@@ -8,6 +8,10 @@ kill_timeout = 5
 [mounts]
 source = "data"
 destination = "/data"
+initial_size = "4GB"
+auto_extend_size_threshold = 80
+auto_extend_size_increment = "1GB"
+auto_extend_size_limit = "10GB"
 
 [build]
 image = "ghcr.io/xe/site/bin:latest"
