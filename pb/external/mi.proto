@@ -4,6 +4,7 @@ syntax = "proto3";
 package within.website.x.mi;
 option go_package = "xeiaso.net/v4/pb/external/mi";
 
+import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 // Event is a single event that Xe will be attending.
@@ -28,4 +29,10 @@ message Event {
 message EventFeed {
   // The events in the feed
   repeated Event events = 1;
+}
+
+// Events lets users fetch the current feed of events that Xe will be attending.
+service Events {
+  // Get fetches the current feed of upcoming events.
+  rpc Get(google.protobuf.Empty) returns (EventFeed);
 }

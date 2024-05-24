@@ -270,7 +270,7 @@
   },
   "openapi": "3.0.0",
   "paths": {
-    "/api/xeiaso.net.Events/Get": {
+    "/api/within.website.x.mi.Events/Get": {
       "post": {
         "description": "\nGet fetches the current feed of upcoming events.",
         "requestBody": {

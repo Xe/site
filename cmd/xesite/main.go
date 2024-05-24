@@ -17,6 +17,7 @@ import (
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
 	"xeiaso.net/v4/pb"
+	"xeiaso.net/v4/pb/external/mi"
 )
 
 var (
@@ -87,6 +88,12 @@ func main() {
 
 	fsrv := pb.NewFeedServer(&FeedServer{fs}, twirp.WithServerPathPrefix("/api"))
 	mux.Handle(fsrv.PathPrefix(), fsrv)
+
+	es := mi.NewEventsServer(
+		mi.NewEventsProtobufClient(*miURL, http.DefaultClient),
+		twirp.WithServerPathPrefix("/api"),
+	)
+	mux.Handle(es.PathPrefix(), es)
 
 	mux.HandleFunc("/blog.atom", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/blog.rss", http.StatusMovedPermanently)
