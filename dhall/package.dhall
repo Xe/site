@@ -97,11 +97,16 @@ in  Config::{
       , Link::{ url = "https://t.me/miamorecadenza", title = "Telegram" }
       , Link::{ url = "irc://irc.libera.chat/#xeserv", title = "IRC" }
       , Link::{
+        , url =
+            "https://signal.me/#eu/Nphi3UKYkj4lgn_HPVFR6wS4VPJ7GRX3htnyHVe8m6XqOPwj8CBJmKnDfTN4mdoX"
+        , title = "Signal"
+        }
+      , Link::{
         , url = "https://staging.bsky.app/profile/xeiaso.net"
         , title = "Bluesky"
         }
       , Link::{
-        , url = "www.linkedin.com/in/xe-iaso"
+        , url = "https://www.linkedin.com/in/xe-iaso"
         , title = "LinkedIn"
         }
       ]
