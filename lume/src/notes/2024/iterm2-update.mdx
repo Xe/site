@@ -1,0 +1,121 @@
+---
+title: "iTerm2 Update: AI stuff is gonna be in a plugin"
+date: 2024-05-25
+desc: "You'll need to install something else to use the AI features in the future, you can put down your pitchforks now."
+hero:
+  ai: "Kohaku XL"
+  file: iterm2-update
+  prompt: "An exhausted green-haired green-eyes anime woman in a dark hacker nest with a laptop and a cup of coffee, looking at the viewer."
+  social: true
+---
+
+A fair bit has happened since [my last article about the iTerm2 AI integration fiasco](/notes/2024/ai-hype/) and I wanted to give an update on the situation. First, I want to apologize for a critical error I made that I didn't catch until after the article was published.
+
+## I fucked up in the last article
+
+In the initial draft of [my last article](/notes/2024/ai-hype/), I fucked up by claiming that [iTerm2](https://iterm2.com/) was not open source. The source for iTerm2 [is on GitHub](https://github.com/gnachman/iTerm2).
+
+This is on me, I was frustrated and rushed that article out as a semi-lucid rant about people misconstruing the situation. I know that there are people out there that did not see the correction (let's face it, my bounce rate is nearly 100%, people click to read an article and then immediately leave) and I didn't find out about my error until my article was on the front page of Hacker News.
+
+<Conv name="Cadey" mood="coffee">
+  Honestly I was surprised it did so well on Hacker News in the first place,
+  these kinds of posts rarely perform well in general, especially on aggregators
+  like the orange site. In general, the "notes" section of my blog is intended
+  for lower-effort things like work-in-progress snippets, patron-exclusive
+  articles, and other things that historically perform badly. It's a big part of
+  how I combat the Tengen Toppa Gurren Lagann grind of feeling like I have to
+  make everything bigger, better, and more grandiose than the last thing I did.
+</Conv>
+
+I fucked up. Here are the things I tried to do to rectify my error about the situation:
+
+- I crossed out the relevant part of the article using markdown strikethru tags, added an author's note about the edit, and then added a corrected version of it in-line. I chose to do this out in the open as a way to give full transparency about the error I made.
+- On social media platforms that allowed me to edit posts, I edited the post to add information about my error and the clarification.
+- On social media platforms that did not allow me to do that, I added a reply to that post with information about my error and the clarification.
+
+I know that there are some of you that see this error as a large breach of trust, and that is justified. I plan to be more cautious in the future, but this one is on me.
+
+## iTerm2's AI Plugin
+
+I've been following the [issue thread](https://gitlab.com/gnachman/iterm2/-/issues/11470) where people have been asking for a build of iTerm2 that doesn't contain any AI related code. The maintainer of iTerm2, George Nachman, has been very responsive to the feedback and has decided [to move the AI features into a plugin that you can install separately](https://gitlab.com/gnachman/iterm2/-/issues/11470#note_1917647951). Here are the relevant changelog notes:
+
+> This beta adds some safety valves to eliminate the
+> risk of private information leaving the terminal
+> via the AI endpoints. While an API key and
+> explicit user action were always needed to use AI
+> features, some users asked for an impenetrable
+> firewall for safety and regulatory purposes.
+>
+> To that end, there are three relevant changes:
+>
+> 1. Code that communicates with AI providers has
+>    been moved into a plugin that you must install
+>    separately. Enterprise system admins can block
+>    bundle id `com.googlecode.iterm2.iTermAI` to prevent
+>    it from being installed in the first place.
+>
+>    See here for details: [https://iterm2.com/ai-plugin.html](https://iterm2.com/ai-plugin.html)
+>
+> 2. In addition, you must manually enable AI
+>    features in Settings. Doing so requires admin
+>    access.
+> 3. Administrators who wish to disable iTerm2's AI
+>    access may set the user default GenerativeAIAllowed
+>    to False in their MDM systems.
+
+I think this is an acceptable compromise. I agree with the sentiment that the AI features MUST be opt-in, and I'm glad that there's an option for people like me to be able to make use of those features when we want to. I'm also glad that it's a heavily opt-in process, requiring admin access and installing separate programs that can be easily filtered out by enterprise administrators.
+
+I haven't tested the AI plugin beta build yet, I can wait until it's in a stable release. I hope Greg and the others that hack away at iTerm2 have gotten some rest after the last few days of dealing with this.
+
+I don't like to announce this stuff in general, but I have joined the iTerm2 Patreon at the $10 per month tier so that I can help support the development of a tool that I use every day. If you use a tool regularly enough to the point that your workflow would be impacted by it no longer existing, you should be supporting it financially so that the people that make it can continue to do so.
+
+## A small experiment with posts like this
+
+As I'm sure you've seen, I've been experimenting with "cover art"/"hero images" for my blog for a while now. I've also been experimenting with making "social images" out of these hero images with Figma. This is purely an experiment to see what people think. Here's the social image for this post:
+
+<Picture
+  path="social/iterm2-update"
+  desc="An exhausted green-haired green-eyes anime woman in a dark hacker nest with a laptop and a cup of coffee, looking at the viewer. White text with a black outline says: 'iTerm2 Update: AI Plugin'."
+/>
+
+When you post this on social media, it'll show up with this image. I'm curious to see if this increases engagement.
+
+Here are some others I've made in the past, but haven't published as openly yet:
+
+<Picture path="social/wallpapers" />
+
+<Picture path="social/coffee-isekai" />
+
+<Picture path="social/speed-up-rust-compile-times" />
+
+<Picture path="social/video-compression" />
+
+I kinda like how Figma lets me have a big collection of all of the images in one grid:
+
+<Picture path="blog/2024/figma-screenshot/figma-screenshot" />
+
+The hard part is avoiding the temptation to make that one joke that the more immature part of my brain wants to make like:
+
+<Conv name="Numa" mood="delet">
+  Aoi, Have you heard about Figma? It's a terrible disease that trillions of
+  Americans die from every year.
+</Conv>
+<Conv name="Aoi" mood="wut">
+  Huh? What's Figma?
+</Conv>
+<Conv name="Numa" mood="delet">
+  Figma b...
+  <Conv name="Cadey" mood="angy">
+    No.
+  </Conv>
+</Conv>
+
+I'm sorry, I'll see myself out.
+
+<Conv name="Cadey" mood="facepalm">
+  Amazingly, while I was writing that Copilot autocompleted Numa's line with the
+  juvenile joke we're all thinking about:
+  <Conv name="Numa" mood="delet" aiModel="GitHub Copilot">
+    Figma balls lmao
+  </Conv>
+</Conv>
