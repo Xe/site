@@ -23,7 +23,7 @@ export default ({ name, url, start_date, end_date, location, description }) => {
             </h2>
             <div className="card-content text-fg-1 dark:text-fgDark-1">
                 <p>
-                    {location} - {startDate} {start_date.seconds !== end_date.seconds ? `thru ${endDate})}` : ""}
+                    {location} - {startDate} {start_date.seconds !== end_date.seconds ? `thru ${endDate}` : ""}
                 </p>
                 <p className="prose dark:prose-invert">
                     {description}
