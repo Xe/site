@@ -1,0 +1,79 @@
+---
+title: "Absurd crimes with shadow bucket migration"
+date: 2024-06-01
+desc: "Because of course you can use an AI model as a key-value store."
+hero:
+  ai: "Kohaku XL"
+  file: onsen-bucket-run
+  prompt: "1girl, green hair, green eyes, ponytail, hoodie, looking at viewer, smile, very long hair, running, joy, bucket, pail, space needle, full body, daytime, headphones, sclera, onsen"
+---
+
+<Conv name="Cadey" mood="coffee">
+  Conflict of interest disclosure: My employer has a contract with Tigris Data.
+  I was not paid for this post, but their success means I get to keep my job
+  doing horrific things to their platform and writing them up for you. Tigris
+  Data had an opportunity to review this post before publication, but I was not
+  remunerated directly by them for writing it. This was written as a labor of
+  love and out of a desire to share the cool things I get up to.
+</Conv>
+
+S3 is a key-value store that lets you put "objects" into "buckets" and then retrieve them and their metadata later. The original intent for S3 was to function as an "unlimited FTP server", or a place where you can just put data and later get it back without having to care about how or why it's stored. This is a great model for a lot of things, but there's some limitations with how S3 fundamentally works that can make it difficult to enjoy.
+
+[Tigris](https://tigrisdata.com) is a globally distributed object store that implements the S3 API, but actually stores your data globally. One of the features it offers is [shadow bucket migration](https://www.tigrisdata.com/docs/migration/), which allows you to set up a bucket that lazily copies objects over from another bucket on demand. This allows you to migrate over the objects that are actually used from your old provider to Tigris without having to do a big upload of everything that will undoubtedly cost you an arm, a leg, and both of your spare kidneys.
+
+However, this feature isn't just limited to S3 providers. In theory, it works for every platform that can implement a passable version of the S3 `GetObject` call. This means you can use this to cache anything you want, from any source you want, in Tigris. This is where the magic of fall-through caching comes in.
+
+![](https://cdn.xeiaso.net/file/christine-static/blog/2024/azurda/high-level-overview.excalidraw.svg)
+
+Fall-through caching is a term I'm coining that describes the above process. The basic idea is that if an object is already in the cache, then serve it directly. If not, then generate it and return it for the cache to store and then serve to the user. This is a great way to save on compute costs, because you only have to generate the object once and then it's stored in the cache for you.
+
+Tigris shadow bucket migration made this really easy and elegant to implement. I wish there was a more direct way that wasn't as criminal as this, but for now this works (to my horror).
+
+I implemented this for XeDN's avatar generator. It's a gravatar-compatible endpoint that I [originally wrote with voice coding on livestream](/vods/2023/cursorless/). The main gimmick is that it translates the md5 hash in the URL to a prompt for Stable Diffusion. This combined with a set seed based on lower bytes in the hash means that I'm effectively using Stable Diffusion as a key-value store. The key is the prompt, and the value is the generated image.
+
+If you want to try this out, check out the [live demo](https://azurda.fly.dev). Type some stuff in the box and see what you get. It's great fun.
+
+<Conv name="Aoi" mood="wut">
+Wait, how does like any of this work? This feels like it's way too easy.
+</Conv>
+<Conv name="Numa" mood="happy">
+  APIs are the lies we tell ourselves so that we can sleep at night. If you make a sheep quack loud enough, it can pass off as a duck as far as Tigris cares.
+  
+  The main trick is that the "shadow bucket" adds the right HTTP headers to `GetObject` responses so that Tigris can cache it correctly. Realistically this boils down to having these headers:
+
+- `Content-Type` so that the browser knows how to render the object
+- `Content-Length` so that Tigris knows how much needs to be stored
+
+Realistically you probably want to add other headers like the `ETag`, but most of those can be derived on Tigris' end. We're using Tigris as a big ol' cache.
+
+</Conv>
+<Conv name="Aoi" mood="wut">
+  Yeah but how does that "using Stable Diffusion as a key-value store" bit make
+  any sense? I thought that the model was supposed to use entropy as an input
+  to generate images. Wouldn't that make the output slightly random?
+</Conv>
+<Conv name="Numa" mood="happy">
+  That's why there's a seed to the input. There's a few knobs you can twiddle
+  to make the output less deterministic, and in the code we didn't set any of
+  those. This makes it deterministic enough, modulo weird shit with how cuda
+  is implemented, vram bitflips, moon phase changes, and other phenomena.
+</Conv>
+
+The main downside of this approach is that I haven't implemented authentication yet. So if you know the URL you can generate images. This is fine for my use case but you might want to add some kind of authentication if you're going to use this in production. Implementing authentication is therefore trivial and thus an exercise for the reader.
+
+If you want to see the code, [it's on GitHub](https://github.com/Xe/x/tree/master/cmd/azurda). Just keep in mind that it's your fault if you use it and it breaks something horribly in production. This has not been extensively tested, and I'm not responsible for anything that happens as a result of you using this code.
+
+<Conv name="Aoi" mood="coffee">
+  You people are insane.
+</Conv>
+
+Oh also, I served it on XeDN using Tigris bucket statics. Here's what I put in XeDN's `fly.toml` to make it happen:
+
+```toml
+[[statics]]
+url_prefix = "/avatar"
+guest_path = "/"
+tigris_bucket = "azurda"
+```
+
+This configures `fly-router` to send any requests on `/avatar/.*` to the `azurda` bucket on Tigris. I use a similar strategy to [serve all of my static assets](/blog/2024/xedn-tigris/).
