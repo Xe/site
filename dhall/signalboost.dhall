@@ -255,23 +255,6 @@ in  [ Person::{
       , links = [ Link::{ url = "https://dillonbaird.io", title = "Website" } ]
       }
     , Person::{
-      , name = "antlers"
-      , tags =
-        [ "scheme"
-        , "python"
-        , "ansible"
-        , "devops"
-        , "sysadmin"
-        , "build-systems"
-        , "CI/CD"
-        ]
-      , links =
-        [ Link::{ url = "https://illucid.net", title = "Website" }
-        , Link::{ url = "https://oldbytes.space/", title = "Fedi" }
-        , Link::{ url = "https://github.com/AutumnalAntlers", title = "GitHub" }
-        ]
-      }
-    , Person::{
       , name = "Aisling Fae (transfaeries)"
       , tags =
         [ "Writer"
@@ -310,3 +293,4 @@ in  [ Person::{
         ]
       }
     ]
+
