@@ -2,6 +2,7 @@ package lume
 
 import (
 	"archive/zip"
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -12,6 +13,7 @@ import (
 	"io/fs"
 	"log"
 	"log/slog"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"os/exec"
@@ -26,6 +28,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gopkg.in/mxpv/patreon-go.v1"
 	"tailscale.com/metrics"
+	"within.website/x/web"
 	"xeiaso.net/v4/internal/config"
 	"xeiaso.net/v4/internal/jsonfeed"
 	"xeiaso.net/v4/pb/external/mi"
@@ -40,11 +43,13 @@ var (
 
 	_ fs.FS = (*FS)(nil)
 
-	opens         = metrics.LabelMap{Label: "name"}
-	builds        = expvar.NewInt("gauge_xesite_builds")
-	updates       = expvar.NewInt("gauge_xesite_updates")
-	updateErrors  = expvar.NewInt("gauge_xesite_update_errors")
-	lastBuildTime = expvar.NewInt("gauge_xesite_last_build_time_ms")
+	opens             = metrics.LabelMap{Label: "name"}
+	builds            = expvar.NewInt("gauge_xesite_builds")
+	updates           = expvar.NewInt("gauge_xesite_updates")
+	updateErrors      = expvar.NewInt("gauge_xesite_update_errors")
+	lastBuildTime     = expvar.NewInt("gauge_xesite_last_build_time_ms")
+	futureSightPokes  = expvar.NewInt("gauge_xesite_future_sight_pokes")
+	futureSightErrors = expvar.NewInt("gauge_xesite_future_sight_errors")
 )
 
 func init() {
@@ -127,14 +132,15 @@ func (f *FS) Open(name string) (fs.File, error) {
 }
 
 type Options struct {
-	Development   bool
-	Branch        string
-	Repo          string
-	StaticSiteDir string
-	URL           string
-	PatreonClient *patreon.Client
-	DataDir       string
-	MiURL         string
+	Development    bool
+	Branch         string
+	Repo           string
+	StaticSiteDir  string
+	URL            string
+	PatreonClient  *patreon.Client
+	DataDir        string
+	MiURL          string
+	FutureSightURL string
 }
 
 func New(ctx context.Context, o *Options) (*FS, error) {
@@ -217,6 +223,10 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 		slog.Debug("mi integration enabled")
 	}
 
+	if o.FutureSightURL != "" {
+		slog.Debug("future sight integration enabled")
+	}
+
 	conf, err := config.Load(filepath.Join(fs.repoDir, "config.dhall"))
 	if err != nil {
 		log.Fatal(err)
@@ -230,6 +240,10 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 
 	go fs.mimiRefresh()
 	fs.lastBuildTime = time.Now()
+
+	if o.FutureSightURL != "" {
+		go fs.FutureSight(context.Background())
+	}
 
 	return fs, nil
 }
@@ -299,6 +313,10 @@ func (f *FS) Update(ctx context.Context) error {
 	}
 
 	go f.mimiRefresh()
+
+	if f.opt.FutureSightURL != "" {
+		go f.FutureSight(context.Background())
+	}
 
 	return nil
 }
@@ -615,4 +633,58 @@ func (f *FS) mimiRefresh() {
 			slog.Error("failed to announce", "err", err, "item", it.GetId())
 		}
 	}
+}
+
+func (f *FS) FutureSight(ctx context.Context) {
+	if err := f.futureSight(ctx); err != nil {
+		slog.Error("failed to poke future sight", "err", err)
+		futureSightErrors.Add(1)
+		return
+	}
+
+	futureSightPokes.Add(1)
+}
+
+func (f *FS) futureSight(ctx context.Context) error {
+	zipLoc := filepath.Join(f.opt.DataDir, "site.zip")
+
+	fin, err := os.Open(zipLoc)
+	if err != nil {
+		return fmt.Errorf("lume: can't open site zip for future sight: %w", err)
+	}
+	defer fin.Close()
+
+	buf := bytes.NewBuffer(nil)
+	writer := multipart.NewWriter(buf)
+
+	part, err := writer.CreateFormFile("file", filepath.Base(zipLoc))
+	if err != nil {
+		return fmt.Errorf("lume: can't create form file: %w", err)
+	}
+
+	if _, err := io.Copy(part, fin); err != nil {
+		return fmt.Errorf("lume: can't copy file to buffer: %w", err)
+	}
+
+	if err := writer.Close(); err != nil {
+		return fmt.Errorf("lume: can't close writer: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", f.opt.FutureSightURL+"/upload", buf)
+	if err != nil {
+		return fmt.Errorf("lume: can't create request: %w", err)
+	}
+
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("lume: can't post to future sight: %w", err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return web.NewError(http.StatusOK, resp)
+	}
+
+	return nil
 }
