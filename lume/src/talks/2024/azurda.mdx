@@ -1,0 +1,110 @@
+---
+title: "The magic of fall-through caching with Tigris"
+date: 2024-06-07
+desc: "A talk about how you can use Tigris as a cache for stable diffusion with a gravatar clone."
+image: talks/2024/azurda/001
+---
+
+<Conv name="Cadey" mood="coffee">
+  Conflict of interest disclosure: My employer has a contract with Tigris Data.
+  I was not paid for this post, but their success means I get to keep my job
+  doing horrific things to their platform and writing them up for you. Tigris
+  Data had an opportunity to review this post before publication, but I was not
+  remunerated directly by them for writing it. This was written as a labor of
+  love and out of a desire to share the cool things I get up to.
+</Conv>
+
+This was a lightning talk at the [Supabase Open Source Meetup in San Francisco](https://lu.ma/gvgaqkrt). I filmed this using a very experimental approach that I'm going to write about on my blog once I get home. It involves two cameras on one tripod. The horrifying part about it is how well it worked. I'll get into more detail about that later.
+
+This is the video version of my article "Absurd crimes with shadow bucket migration": https://xeiaso.net/blog/2024/azurda/
+
+The live demo can be found here: https://azurda.fly.dev/
+
+Source code for the demo can be found here: https://github.com/Xe/x/tree/master/cmd/azurda
+
+## Video
+
+<Video path="talks/2024/azurda" />
+
+[YouTube version](https://youtu.be/R7XLo0GUN74)
+
+## Transcript
+
+<Conv name="Cadey" mood="coffee">
+  This is spoken word. It is not written like I write blogposts. It is
+  reproduced here for your convenience.
+</Conv>
+
+<Slide
+  name="2024/azurda/001"
+  desc="The title slide of the talk. It shows the speaker name and the title."
+/>
+
+Good evening everyone. I'm Xe Iaso and today I'm going to talk to you about the fun of fall-through caching. Fall through caching is when an object doesn't exist in a cache, it "falls through" to the source. Today I'm going to show how you how I did this with stable diffusion to make a placeholder avatar generator.
+
+<Slide
+  name="2024/azurda/002"
+  desc="A diagram explaining the idea of fall-through caching. A request that doesn't exist in the cache 'falls through' to the source to be cached for next time."
+/>
+
+The general idea of fall-through caching is really simple. We use the bucket as a cache because those are expensive to generate, and potentially infinite. If the object already exists in the cache then serve it directly. If not, then generate it and return it for Tigris to store and then serve to the user. That's really it, but the devil is in the details.
+
+<Slide
+  name="2024/azurda/003"
+  desc="Text in giant letters: 'Crimes with shadow buckets'"
+/>
+
+The heinous crime that we're doing here is implementing this using tigris' shadow bucket feature. Normally a shadow bucket allows you to set up a tigers bucket that mirrors an existing bucket but only moves over files on request. This is useful when you're migrating from one storage provider to another so you don't have to do the big upload of everything.
+
+<Slide
+  name="2024/azurda/004"
+  desc="Text in giant letters: 'APIs are the lies we tell ourselves to make us sleep better at night'"
+/>
+
+However this realistically supports anything that support that can implement the S3 GetObject API call. It doesn't even have to be a storage service. You can just make your own server implement this call and then you get everything cached in tigris for you.
+
+<Slide
+  name="2024/azurda/005"
+  desc="Text in giant letters: 'So I did that' with a collage of generated avatars on the right side of the slide"
+/>
+
+So I did that. And the shocking part is that it actually works. There were some annoyances with getting the request signing logic working correctly, but it works and it's live right now. I'll give you a live demo after I explain how.
+
+<Slide
+  name="2024/azurda/006"
+  desc="A diagram explaining how all of the logic works in the style of a three-tier web application chart. Tigris is the routing layer with a cache, Azurda is the compute layer, and Stable Diffusion is the database layer."
+/>
+
+To make things easier under just to understand I formatted all of the infrastructure involved in the standard three tier web application format. This usually breaks up parts of an application into three tiers: routing, compute, and databases.
+
+In this case we're treating tigris as the routing and caching layer that will only access the compute layer if it needs to.
+
+The compute layer is an S3 API compatible server that generates new images from stable diffusion. It generates a prompt from the input that the user gave. This is always going to be an MD5 checksum so I use this to fabricate a bunch of details like the hair color of the character.
+
+And lastly we're treating the stable diffusion server as a database in this case. This is going to sound really weird but in terms of architecting things it's better to treat your AI stuff as a database because it's effectively a key value store just with the value potentially being random. Stable diffusion is unlike other AI models in that it is actually deterministic; so if you use the same input across runs, you'll get the same output byte for byte.
+
+<Slide
+  name="2024/azurda/007"
+  desc="A link to the live demo and a QR code. The video version has an animated preview."
+/>
+
+[Live demo](https://azurda.fly.dev)
+
+So now for the live demo. Open this page on your phone. I promise it's not a rickroll. There's a field for you to put text in. type some stuff in, wait a second, and you'll get an avatar right below it.
+
+Raise your hand if it works for you and raise both hands if it doesn't. It may take a moment because everybody's hammering one GPU.
+
+<Conv name="Cadey" mood="coffee">
+  The live demo bombed in person, I didn't scale the GPU pool enough. Oops.
+</Conv>
+
+<Slide name="2024/azurda/008" desc="Text in giant letters: 'Conclusion'" />
+
+And that's about it! I use Tigris as a cache and if there's a cache miss it falls through to stable diffusion. The main reason that this works is that apis are the lies we tell ourselves to make us sleep better at night. As far as Tigris cares, a sheep is a duck as long as it can quack loud enough.
+
+<Slide
+  name="2024/azurda/009"
+  desc="The conclusion slide with an invitation to email azurda@xeserv.us if you have any questions."
+/>
+
+And with that, I've been Xe Iaso. I am the Senior Technophilosopher at Fly.io and I hope you found this interesting. I have a link to the code behind the demo in the QR code onscreen as well as in the description if you're watching this online. Have a good evening all, enjoy the rest of the night.
