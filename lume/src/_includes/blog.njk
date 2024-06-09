@@ -17,7 +17,9 @@ layout: base.njk
             <p class="text-yellow-700 text-sm font-semibold font-['Inter']">This content is exclusive to my patrons. If you are not a patron, please don't be the reason I need to make a process more complicated than the honor system. This will be made public in the future, once the series is finished.</p>
         </div>
     {% else %}
-        {{ comp.ads() | safe }}
+        {% if commit.hash != "development" %}
+            {{ comp.ads() | safe }}
+        {% endif %}
     {% endif %}
 
     {% if hero %}

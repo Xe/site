@@ -1,0 +1,129 @@
+---
+title: "Overengineering this blog's preview site with Kubernetes"
+date: 2024-06-09
+desc: "A small overview on how future-sight, my blog's preview site server, is overengineered with the power of Kubernetes."
+hero:
+  ai: "Photo by Xe Iaso, iPhone 15 Pro Max"
+  file: sf-ocean-vibes
+  prompt: "A picture of the rocky shore of the San Francisco Bay on an idyllic sunny day."
+---
+
+I write a lot. I also need to have people preview what I write before I publish it. This review step is _essential_ for the much longer articles and my blog engine uses enough fancy features that it makes it basically impossible for most people to be able to look at the source code and visualize what is happening to the rendered HTML.
+
+So, for a very long time my "preview site" has been me running the blog engine in `--devel` mode. `--devel` mode enables a few extra features that aren't relevant for production deployments:
+
+- Automatic rebuild when files change (production rebuilds when ingesting webhooks from GitHub and Patreon)
+- Removing the authentication middleware from the GitHub and Patreon webhook endpoints
+
+I exposed this to the world using Tailscale Funnel. This strategy does work and it's gotten me this far, but it comes with a few downsides that in no way relate to Tailscale. Namely, the machine that I'm drafting on needs to be online 24/7 for the preview site to be online 24/7. This wasn't as much of a problem when I was doing most of my drafting on my shellbox, but I've been doing more and more drafting on my MacBook.
+
+<Conv name="Cadey" mood="enby">
+  Heck, I wrote most of this article on a plane from YYZ to YOW.
+</Conv>
+
+This has resulted in situations where I've linked a preview article to someone and then had to go somewhere and then I get a DM complaining that the preview site is down. This is frankly embarrassing and I just want to fix the problem for long enough that I don't have to think about it anymore.
+
+## The zip file of doom
+
+When I made the engine behind Xesite v4, I decided to make all of my rendered assets get served from a zipfile. This was originally intended for making a "preview site" mechanism (and possibly serving Xesite via XeDN), but I just didn't take the time to do it. When you click on any links on my site, chances are that you are triggering Go's [archive/zip](https://pkg.go.dev/archive/zip) package to decompress some HTML or whatever.
+
+I also made a bit of a galaxy brain move to take advantage of Go's custom compressor support to make the zip file be a bag of gzip streams. This was originally intended to be implemented as a speedhack to allow clients that support receiving gzip streams directly to just decompress them inline (most clients do, so this could result in a huge net reduction in CPU and bandwidth). I tried to implement that and found out I'd need to redo like half of Go's HTTP static file serving code from scratch, so I haven't done that yet.
+
+But, as a side effect of having the zipfile be full of gzip streams, this means that the website slug is rather small. About 15 MB on average:
+
+```
+$ du -hs var/site.zip
+ 15M    var/site.zip
+```
+
+This is in the sweet spot where I can reasonably throw it around from my laptop to a server and then serve it directly to the world from there. This would let me retain my writing workflow on my MacBook, but then hand out preview links that don't just evaporate when I have to travel.
+
+# future-sight
+
+I had a bunch of time on a flight from SFO to YYZ, so I decided to slightly overengineer myself a solution. Like any good overengineered solution, it involves protocol buffers, NATS, and Valkey. Here's what it does:
+
+![](https://cdn.xeiaso.net/file/christine-static/blog/2024/future-sight/future-sight.excalidraw.svg)
+
+In a nutshell, whenever I hit save in my editor, I trigger xesite to rebuild my local preview site. This builds `site.zip`, which will get POSTed to one of the future-sight replicae. Once a replica copies `site.zip` locally from the POST request, it takes the SHA256 hash of that file and uploads that to Tigris. It then sends a NATS broadcast to all replicae (including the one that was just being uploaded to), which triggers them to pull the `site.zip` from Tigris and configure that as "active". Finally, the service sets the `site.zip` version as "current" in Valkey so that when replicae restart they can pull the most recent version for free.
+
+It is probably vastly overkill for my needs, but I love how brutally effective this is. I have things wired up so that I can poke any Kubernetes service from my MacBook over WireGuard, so I don't even need to worry about authentication for this.
+
+Hacking this up was kinda fun. I got NATS, Minio, and Valkey running in Kubernetes services before I got on the plane, and then I did the rest of the implementation on the plane. I ended up writing a monster of a script called `port-forward.sh` that started all of the "development" services and port forwarded them so I could use them from my MacBook:
+
+```sh
+#!/usr/bin/env bash
+
+kubectl apply -f manifest.dev.yaml
+
+kubectl port-forward -n future-sight svc/nats 4222:4222 &
+kubectl port-forward -n future-sight deploy/minio 9000:9000 9001:9001 &
+kubectl port-forward -n future-sight svc/valkey 6379:6379 &
+
+wait
+```
+
+This was a great decision and I wholeheartedly suggest you try this should you want to set up databases or whatever in a local Kubernetes cluster for development.
+
+<Conv name="Aoi" mood="wut">
+  But...Docker compose is right there. It's way less YAML even. Why do this to
+  yourself?
+</Conv>
+<Conv name="Numa" mood="delet">
+  Sure, Docker compose is here _right now_, but who knows how long it's going to
+  last with Kubernetes sucking all of the oxygen out of the room. If you can't
+  beat 'em, join 'em. Plus at the very least this means that you can use the
+  same resources in prod, down to the last line of YAML.
+</Conv>
+
+Getting this all working was uneventful, modulo getting the AWS S3 library to play nice with Minio. A while ago, AWS transitioned to "hostname-derived bucket URLs", and Minio hard-depends on the legacy path-based behavior. I ended up fixing this by making my S3 client manually and using a `--use-path-style` flag to "unbreak" Minio.
+
+```go
+creds := credentials.NewStaticCredentialsProvider(*awsAccessKeyID, *awsSecretKey, "")
+
+s3c := s3.New(s3.Options{
+	AppID:            useragent.GenUserAgent("future-sight-push", "https://xeiaso.net"),
+	BaseEndpoint:     awsEndpointS3,
+	ClientLogMode:    aws.LogRetries | aws.LogRequest | aws.LogResponse,
+	Credentials:      creds,
+	EndpointResolver: s3.EndpointResolverFromURL(*awsEndpointS3),
+	//Logger:           logging.NewStandardLogger(os.Stderr),
+	UsePathStyle: *usePathStyle,
+	Region:       *awsRegion,
+})
+```
+
+<Conv name="Mara" mood="hacker">
+  The verbose logging support in the S3 client is great, it's what made
+  debugging all this on a plane possible. It dumps the raw request and response
+  headers to whatever writer you want.
+</Conv>
+
+I run the "production" deployment on my homelab Kubernetes cluster thanks to the power of [`manifest.yaml`](https://github.com/Xe/x/blob/master/cmd/future-sight/manifest.yaml). When you look at the preview site, you're looking at something running across three pods in my homelab. It's a bit overkill, but there's no kill like overkill.
+
+<Conv name="Aoi" mood="coffee">
+Did you seriously set the Valkey password to `hunter2`? Anyways, shouldn't this be a Secret instead of a ConfigMap?
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: valkey-secret
+  namespace: future-sight
+  labels:
+    app: valkey
+data:
+  VALKEY_PASSWORD: hunter2
+```
+
+</Conv>
+<Conv name="Numa" mood="happy">
+`hunter2` is the best password because all the hackers will see is `******`. Realistically yes this should probably be a secret, but I'm not too worried about it because the valkey instance is only accessible from inside the cluster. If you're in the cluster, you can probably just exec into the pod and get the password anyways. It's not super relevant to secure it.
+</Conv>
+
+## Conclusion
+
+Everything worked out in the end. My preview site is now up and running on future-sight and I don't have to think about it. I was easily able to shim it into Xesite so that I could write on my MacBook fearlessly.
+
+In the future I hope to auth-gate the preview site somehow. It'll probably either be by Patreon oauth2 or some kind of "preview token". I shouldn't need to implement this until the preview site leaks something good, so let's not worry about this for now.
+
+I'd also like to implement auto-refresh when an update is pushed. This will require some clever thinking, and may end up with me using WebSockets or something. I'm not sure yet. Ideas are welcome.

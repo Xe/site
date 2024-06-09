@@ -686,5 +686,7 @@ func (f *FS) futureSight(ctx context.Context) error {
 		return web.NewError(http.StatusOK, resp)
 	}
 
+	slog.Info("deployed to preview site")
+
 	return nil
 }
