@@ -1,0 +1,96 @@
+---
+title: Supercronching videos for embedding in websites with ffmpeg
+date: 2024-06-14
+desc: "TL;DR: I convert it from video to gif to video"
+hero:
+  ai: "Photo by Xe Iaso, Canon EOS R6mkii, Helios 44-2 58mm f/2"
+  file: orange-tulips
+  prompt: "A close-up of orange tulips in a field, the tulip in the center is in focus and the rest are slightly out of focus."
+  social: true
+---
+
+Sometimes I record little screencasts to help explain things when I'm writing articles. These are intended to be very small fragments to help visually explain things before I explain what's going on in text. I use macOS (command-shift-5) to record them, but macOS makes fairly large files by default. I believe that these things should be as small as possible, so I figured out a super cheap hack to make them _tiny_.
+
+Before I show you how I do it, here's an example video where I explore my homelab Kubernetes cluster and galavant around a few namespaces with [`k9s`](https://k9scli.io/):
+
+<center>
+  <video width="800" height="546" controls autoPlay loop>
+    <source
+      src="https://cdn.xeiaso.net/file/christine-static/blog/2024/cronchgif/k9s-cronched.mp4"
+      type="video/mp4"
+    />
+    Your browser does not support the video tag.
+  </video>
+</center>
+
+When macOS first recorded this, it was a 29 MB file:
+
+```
+du -hs /Users/cadey/Desktop/Screen\ Recording\ 2024-06-14\ at\ 14.20.10.mov
+ 29M	/Users/cadey/Desktop/Screen Recording 2024-06-14 at 14.20.10.mov
+```
+
+This is way overkill for a 20 second video. Here's what ffprobe says about the video:
+
+> Stream #0:0\[0x1\]\(und\): Video: h264 (Main) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 1766x1206, 12507 kb/s, 60 fps, 60 tbr, 6k tbn (default)
+
+Yikes, that resolution is way too high, it's almost bigger than 1080p! I don't need 60fps either, and 12 Mbps is way beyond overkill. I want to make this as _small_ as possible. The details don't matter too much as long as the result is legible.
+
+So what I did is convert the video to an animated GIF, and then converted that GIF back to an MP4 file. This is a super hacky way to make the video as small as possible without impacting legibility too much. Here's the script I wrote:
+
+```sh
+#!/usr/bin/env bash
+# cronchgif.sh
+
+set -e
+
+[ ! -z "${DEBUG}" ] && set -x
+
+if [ $# -ne 2 ]; then
+	echo "usage: cronchgif.sh <input> <output>"
+	exit 2
+fi
+
+input="${1}"
+output="${2}"
+
+
+ffmpeg -i "${input}" -vf "fps=30,scale='if(gt(iw,800),800,iw)':'if(gt(iw,800),-2,ih)'" -c:v pam -f image2pipe - | \
+    convert -delay 3 - -loop 0 -layers optimize gif:- | \
+    ffmpeg -i - -movflags faststart -pix_fmt yuv420p \
+    -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${output}"
+```
+
+This uses a chain of three commands:
+
+1. `ffmpeg` to convert the video to a series of images that are piped to the next command, scaling the video to 800 pixels wide if it's not already 800 pixels wide or smaller (yes, this bit was written with an AI model, I'm nowhere near experienced enough with ffmpeg to do this by hand).
+2. `convert` (imagemagick) to convert that stream of images to a GIF with a delay of 3 centiseconds between frames.
+3. `ffmpeg` to convert that gif back into a video with settings that should be compatible with as many browsers as possible.
+
+<Conv name="Aoi" mood="wut">
+  Wait, 3 centiseconds (30 milliseconds)? That's less than 30 frames per second,
+  right? Isn't each frame 33 milliseconds at 30 FPS?
+</Conv>
+<Conv name="Cadey" mood="aha">
+  Yes, it is slightly less than 30 FPS, but realistically the difference doesn't
+  matter if the video is less than a minute or two long. The difference is
+  imperceptible for the kinds of examples I'm using this for.
+</Conv>
+
+After converting that video, the file size is _much_ smaller, under a megabyte:
+
+```
+$ du -hs /Users/cadey/Desktop/k9s-cronched-800.mp4
+644K	/Users/cadey/Desktop/k9s-cronched-800.mp4
+```
+
+I feel a lot better about posting this on my blog now.
+
+There's a few caveats with doing this:
+
+- Getting GIF in the mix can cause some unique artifacts that you don't normally see in video. This is usually fine for short clips like this, but it's something to be aware of.
+- GIF has a limit of 256 colors, so if you do something with a lot of color, people are going to notice _instantly_.
+- GIF doesn't support audio, so if you need audio, you're going to have to do something else.
+- This is a _hack_ and if you use it and something breaks, you get to keep both pieces.
+
+I hope this helps!
