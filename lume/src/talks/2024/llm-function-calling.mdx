@@ -1,0 +1,305 @@
+---
+title: Function calling in large language models
+date: 2024-06-16
+desc: "It's hard to pay attention when your context goes out the window."
+image: talks/2024/llm-function-calling/001
+---
+
+export const PullQuote = ({ children }) => (
+  <div className="ml-4 pl-4 border-l-4 italic max-w-xs text-gray-600 float-right">
+    {children}
+  </div>
+);
+
+This was a full-length (20m) talk at the React/Remix meetup in San Francisco in early June 2024. It's taken me a bit to get this uploaded here because I've been busy with work and other things.
+
+## Video
+
+<Video path="talks/2024/llm-function-calling" />
+
+[YouTube version](https://youtu.be/1hccnlLIppk)
+
+<Conv name="Cadey" mood="coffee">
+  This is spoken word. It is not written like I write blogposts. It is
+  reproduced here for your reading convenience. The primary output of my talks
+  are the words I speak and the slides are meant to accent them. As such, I have
+  pruned most of the slides from this transcript.
+</Conv>
+
+<Slide
+  name="2024/llm-function-calling/001"
+  desc="The title slide of the talk. It shows the speaker name and the title."
+/>
+
+Good evening everyone! How're all of you doing tonight? I'm Xe Iaso and tonight I'm gonna talk about how "function calling" or "tool use works with Large Language Models. I've seen a lot of people misconstrue this, especially with recent product launches, and I think that a more fundamental understanding of what's going on will help everyone here. Spoiler: the model isn't actually calling the functions itself. I'll get into more detail as we go on.
+
+Before we get started though, I want to explain how and why I made this talk in the way that I did. I frequently get asked if I use large language models or other AI tools to help me write these talks.
+
+Generally, I don't. There's a really good reason why: they're not good enough yet. As a bit of an experiment, I had an AI model write the outline and initial parts of the script based on a Slack rant. Don't worry though, I edited it. Heavily. Let me know what you think, I'm really curious as to how this style comes off in practice.
+
+<Slide
+  name="2024/llm-function-calling/003"
+  desc="The text 'How function calling works with large language models' in big bold white letters with a black outline on top of a maze in the background."
+/>
+
+As technology continues to evolve, generative AI models are able to process and fabricate human-like language. But what makes these models tick? How can we use them productively in our scalable workflows? Let's dive in.
+
+<Slide
+  name="2024/llm-function-calling/004"
+  desc="An 'About the speaker' slide with information about Xe Iaso as well as highlights about their career."
+/>
+
+Before we get started though I want to introduce myself. I'm Xe Iaso, a technologist and philosopher who's passionate about exploring the intersection of technology and human experience. As **the** Senior Technophilosopher at Fly.io, I've had the privilege of working on cutting-edge projects that blur the lines between code and creativity.
+
+With over a decade of experience in the tech industry, I've seen firsthand how rapidly advancements in AI, machine learning, and natural language processing are transforming our world. And yet, amidst all this change, there's still so much we don't understand about these powerful tools.
+
+In this talk, we'll be delving into the world of large language models, also known as LLMs. These models have revolutionized the way we interact with technology from chatbots to virtual assistants. Even though countless people have used them to generate essays, code snippets, and other bits of prose; very few people understand how any of this nonsense actually works. Much less how they get used productively.
+
+Tonight we'll be exploring the myths and misconceptions surrounding these models and give you a deep dive into how they are extended with tools.
+
+### Mythbusting
+
+<Slide
+  name="2024/llm-function-calling/006"
+  desc="The logo for the TV show 'Mythbusters'."
+/>
+
+Many people have misconceptions about how large language models works and it's time to set the record straight! In this section we're going to explore some common myths and misunderstandings that can lead to frustration and confusion when trying to navigate the hype.
+
+<Slide
+  name="2024/llm-function-calling/007"
+  desc="The tarot card The Magician over the text 'The model is doing something magic behind the scenes'."
+/>
+
+Many people assume that large language models are somehow capable of performing complex calculations or accessing vast amounts of knowledge to generate their responses. They're actually a lot dumber than you'd think. All the model has access to is the context that you give it and anything that it outputs.
+
+Okay, let's be clear, scientists and philosophers don't really know how knowledge works but we are assuming that large language models don't have knowledge in the same way that we do. Personally I think it's closer to rote memory in practice than anything. Like anything the devil is in the details but in this case the details are all in the environment around the model.
+
+On that note, another common misconception is that large language models are superintelligent beings and are capable of answering any question with perfect accuracy or performing any task in the real world. While they're certainly impressive for what they are, these models have fundamental limitations and biases that can affect their performance.
+
+In reality, a model's capabilities and limitations are determined by its training data and by the specific use case it was trained for. For example, a model trained on medical text might be excellent at summarizing scientific articles but is probably really bad at creative writing or answering philosophy questions. By understanding the limitations and biases of given models you can better design your applications and workflows to get the most out of these tools.
+
+<PullQuote>
+  The systems around the model are what turn any generated text into actions.
+</PullQuote>
+
+Another thing that isn't helping is the hype cycle creating products that seem to have magical abilities to "do things". The horrifying truth of the matter is that the model can do anything as long as that anything is generating text.
+
+I've actually seen this go so far as to people thinking that large language models have predictive capabilities are able to let see the future. While they're certainly powerful at generating text based on patterns and their training data these models are not actually predicting the future!
+
+Instead they're simply recognizing patterns and probabilities based on what they've seen before because humans are really bad about repeating ourselves. If you type "I love you" a lot on your phone, when you type "I love", your phone is going to correctly assume that the next word is likely to be "you". Multiply these patterns across the entirety of human language and you can see that there's actually a lot of things that are very simple from that level.
+
+<Slide
+  name="2024/llm-function-calling/012"
+  desc="An ai-generated illustration of a blue-eyed pink haired anime woman smiling in front of the Space Needle with roses surrounding the image. The overlaid text says 'Limitations define art'."
+/>
+
+By understanding the limitations of how large language models and their runtimes work you can design applications that can better leverage their strengths while avoiding overpromising or misrepresenting their capabilities. Large language models and similar tools are not sonic screwdrivers; but they are really good at what they do. When you really understand what they're good at, you can use this to your advantage.
+
+Some thorns have roses.
+
+### Technical deep-dive
+
+Now that we've covered the concepts and misconceptions, let's double click on the details.
+
+When we train large language models we typically feed them a bunch of text and have them infer patterns off of that text. There's two fancy terms for how this is done but they're both basically different variants of the same thing: supervised and unsupervised learning.
+
+- Supervised learning is where you tell the model what the inputs and outputs are.
+- Unsupervised learning is when you throw wikipedia at it and see what happens.
+
+Both of these are essential because it allows the model to define patterns in different ways.
+
+So if we're really throwing chat logs and wikipedia into a blender, what makes the end result so useful? There's a few things at play here:
+
+- Scale: large language models are often trained on and massive amounts of data harvested from various commercial and noncommercial sources, such as wikipedia and my blog. These datasets often contain billions or even trillions of tokens. Scale allows them to learn complex patterns and relationships in the data.
+- Complexity: Human language is complicated. The resulting models also are very complicated. We believe that complexity enables the model to capture subtle nuances in language.
+- Training methods: different training methods such as masked language modelling next sentence prediction and sentence ordering allow large language models to learn from diverse types and formats of data.
+
+While large language models have received remarkable success for how simple the transformer architecture is, there are still several challenges and limitations that arise from their complexity:
+
+- Computational requirements: training large language models requires significant computational resources which can be a major bottleneck. Major vendors such as NVidia have procurement times that are over a year long. Major vendors also seem unable to or are unwilling to provide sufficient video memory on these cards so that training can be done more efficiently (even though the needed dram chips would cost $5 at most per card). This increases the cost and training time significantly.
+- Data quality: The quality of the training data is critical to the models performance. Poor quality data can lead to biased or inaccurate results, such as mistaking sarcastic instructions on gluing cheese to pizza as genuine instructions. Not to mention the quality of the AI that generated a notable fraction of the training data you are undoubtedly using.
+- Interpretability: Large language models are black boxes where you put an input and you get an output and nobody is really able to explain why the output came the way out the way that did. This has resulted with entire cottage industries of paid PDFs on LinkedIn to tell you the best prompts for ChatGPT.
+
+As a reminder, large language models are not:
+
+- Superintelligent
+- Universal tools
+- The machine god
+
+As a sci-fi author, I can assure you that we are far, far away from them being any of this. Sorry [Roko](https://en.wikipedia.org/wiki/Roko%27s_basilisk), you're safe this time.
+
+### Tokenization
+
+You might have noticed me mentioning the word tokens before without really defining what I mean. I'm going to fix that. Tokenization is the process of breaking down text into individual units called tokens. Large language models and other AI projects don't understand text in the way that we do.
+
+Consider this sentence by a famous philosopher:
+
+<Slide
+  name="2024/llm-function-calling/025"
+  desc="The sentence 'We're no strangers to love, you know the rules and so do I' in large bold letters with the citation of 'Rick Astley, haha gottem I bet you didn’t expect a nerd would rickroll you at a meetup'."
+/>
+
+As humans we can break this down into the units of speech like words, clauses, and phrases to see what's going on. This is not what an AI model sees. Here's how openai models tokenized that quote:
+
+<Slide
+  name="2024/llm-function-calling/026"
+  desc="A screenshot of the OpenAI tokenizer demo, showing that the example phrase is 59 characters and 16 tokens. Each token is highlighted in a different color."
+/>
+
+These fifty nine characters are broken into sixteen tokens. These tokens are what the model actually sees. This is why models have difficulty doing spelling or math tasks. Imagine how difficult it would be to do math if all of your numbers were broken off in weird ways. Actually I'm sorry I need to clarify a bit further. The model doesn't actually see the text. It sees this:
+
+```
+[1687, 3207, 912,  40721,
+ 311,  3021, 11,   499,
+ 1440, 279,  5718, 11,
+ 323,  779,  656,  358]
+```
+
+The model just sees a bunch of numbers that correlate to the different tokens, without having any context as to what those words actually are. Anything that the model learns about the words is merely inferred from the training set. The platforms that your models run on go to great effort to hide this by making tokenization an implementation detail.
+
+And realistically just tokenizing it is all well and good but that only helps us for predict next word tasks like autocomplete on your phone keyboard. We need to put a layer on top of the raw tokenization to represent things like conversations, messages, and packets.
+
+### ChatML
+
+In the industry we use many systems for this but the one I'm most familiar with is called ChatML. ChatML is an encoding system where a stream of tokens is broken into messages based on the roles of the interlocutors and uses magic tokens to mark the start and end of messages.
+
+As an example here's a ChatML session between a user and an assistant with a system message:
+
+```
+<|im_start|>system
+You are Mimi, a helpful programming assistant.
+<|im_end|>
+<|im_start|>user
+Why is the sky blue?
+<|im_end|>
+<|im_start|>assistant
+The sky appears blue because of a phenomenon called Rayleigh scattering, where shorter wavelengths of light (like blue and violet) are scattered more than longer wavelengths (like red and orange) by the tiny molecules of gases in the atmosphere.
+<|im_end|>
+```
+
+<Slide
+  name="2024/llm-function-calling/031"
+  desc="The ChatML session from above, but with color-coding next to the message packets to visually demonstrate where each one starts and ends."
+/>
+
+There's three messages here: a system message that tells the model who they are, a user question asking why the sky is blue, and a response that explains the answer. Those magic `<|im_start|>` and `<|im_end|>` tokens are what are used to break the thing apart into messages like this:
+
+```json
+[
+  {
+    "role": "system",
+    "content": "You are Mimi, a helpful programming assistant."
+  },
+  { "role": "user", "content": "Why is the sky blue?" },
+  {
+    "role": "assistant",
+    "content": "The sky appears blue because of a phenomenon called Rayleigh scattering, where shorter wavelengths of light (like blue and violet) are scattered more than longer wavelengths (like red and orange) by the tiny molecules of gases in the atmosphere."
+  }
+]
+```
+
+The platform parses the tokens into JSON which is sent back to the user. Once it's on the users device it presents something like this:
+
+<Slide
+  name="2024/llm-function-calling/033"
+  desc="A fabricated iMessage screenshot with the same contents as above, with Xe Iaso Dot Net Cinematic Universe references as easter-eggs."
+/>
+
+These abstractions allow the model to emit a stream of tokens that are parsed by the environment and then are sent through to the client so you have the facade of communication. Everything's wrapped up into bubbles in the chat apps that some of you are typing into right now. I'm not judging, openly.
+
+Everything works thanks to the magic `<|im_start|>` and `<|im_end|>` tokens that have special meeting to the runtime. If the model ends its turn, the runtime stops generating new tokens. These are inserted into the training data so the model understands them. This type of training is called instruction tuning.
+
+And with this level of abstraction we have the ability to tell the user why the sky is blue, or answer any other questions that are in the rote memory of the model. However, we can make this useful by letting the model use tools.
+
+### Tools
+
+At a high level, when you make a model choose between tools, you're effectively using it to classify which tool is relevant for the given input. for example if the user asks about the weather in Cincinnati you probably want to use a "get temperature in city" tool to generate the answer. The model also needs to signal to the runtime that it's using a tool so the the runtime can do whatever that tool means.
+
+<BlockQuote>What is the traffic situation like on the bay bridge?</BlockQuote>
+
+So let's say the user asks your model what the traffic's like on the bay bridge. Given the list of tools on the slide before the model can tell that it probably needs do a google search.
+
+```
+<|im_start|>assistant
+<|tool_call|>{"tool_name": "search_google", "query":
+"traffic situation on the Bay Bridge"}
+<|im_end|>
+```
+
+So for the sake of argument let's say that you've trained your model to use a tool call token whenever it calls a tool with parameters in json. When the runtime sees this it tries to parse the json output and then executes the tool. There are techniques to force the model to output the right formatting but in this case let's say that the model is capable of generating perfectly spherical json after a tool call token is emitted.
+
+```
+<|im_start|>tool
+[
+  {"title": "Bay Bridge in chaos after Techaro brainplant patient gets out of their car to do a dance", "site": "The Onion"}
+]
+<|im_end>
+```
+
+So the runtime injects the results of the tool into the next call so that the model can fabricate an answer for the user. And then it gets the model to emit something like this:
+
+<Slide
+  name="2024/llm-function-calling/040"
+  desc="Another fabricated iMessage screenshot where the model spells out that the bay bridge is in chaos because a Techaro brainplant patient got out of their car to do a dance."
+/>
+
+And something like this is how you give the facade of the model being able to actually do things when they're not really capable of doing it in the first place. the model is really picking between tools that it has available, choosing to execute one, reading the results, and then generating new text (or even tool calls) based on the results.
+
+<PullQuote>
+  This lets you turn a large language model into a compiler with instructions on
+  how to mangle things in plain English.
+</PullQuote>
+
+However you don't need to chain yourself to the chat interaction model. When a model uses a tool, it generates valid JSON. This means you can use it in any other flow you want, as long as it can read JSON.
+
+And now that we've built everything up, here's the use cases that I think we're gonna have for these models in the long run.
+
+So that you remember them better, I've made them all end in -tion:
+
+<Slide
+  name="2024/llm-function-calling/042"
+  desc="A slide showing the future uses of large language models with a green-haired anime idol on the other side signing to a crowd of fans with waving glowstick/microphones."
+/>
+
+- Classification is when the model classifies user input into specific categories, intents, or tool invocations. This can be anything from sentiment analysis of tweets, to a better Alexa, to retrieval augmented generation.
+- Summarization is where the model generates a summary of the information that is provided. This could be anything from reading a complicated report to get the key takeaways, looking through financial reports to see what's changed, or even taking Linux kernel commits to translate what they do into plain English.
+- And finally, fabrication is when the model uses the information that it's given as well as the information that it's trained on to fabricate a response that meets the user's request. Fabrication and hallucination are two sides of the same card. The main difference between fabrication and hallucination is fabrications are aligned with observable reality and hallucinations tell you to leave your dog in a hot car.
+
+By combining these three use cases our model can provide users with the exact information they need when they need it. This allows our model to have contextual understanding of requests so it can generate a response that is relevant and accurate. Combining fabrication and summarization allows you to ingest a bunch of different textbooks and then give the user a more helpful answer.
+
+Imagine being able to ingest the entire specification for a obscure programming language and asking it a question based on the source code you're looking at and then getting the model to fabricate some plausible code to get you started with. This is where the real magic sets in. Avoiding the terror of the empty canvas.
+
+This all adds up to give the user the impression that the model is intelligent when it's actually a bunch of unintelligent components working together to create that illusion. It's not really smart, it's just really good at making you _think_ it's smart.
+
+### Conclusion
+
+Throughout this talk, we have journeyed through the intricacies of large language models, unraveling their underlying mechanisms and dispelling common misconceptions. We've explored how these models are trained and utilized, hopefully gaining a deeper appreciation for their capabilities and limitations.
+
+One of the biggest strengths and weaknesses of large language models is the inherent randomness to their output. Consider this classic quote from IBM:
+
+<BlockQuote>
+  A computer can never be held accountable, therefore a computer must never make
+  a management decision.
+</BlockQuote>
+
+Does your app really benefit from unpredictable randomness? If not, you may want to use another tool.
+
+Oh, you thought this talk was only theory? Think again. I've written a little program called `rant2outline` that lets you recreate the workflow I used to write this talk. If you want to try it, open [recipeficator.fly.dev](https://recipeficator.fly.dev/) in a new tab and go to town. The more text you give it, the better the output will be. It may take a few tries because again, random.
+
+If you want to check out the code, it's [on GitHub](https://github.com/superfly/rant2outline). If you want to run your own copy, clone it and run `npm install && npm run yeet`. That will create a private instance with your own GPU node accessible over Flycast.
+
+<Slide
+  name="2024/llm-function-calling/049"
+  desc="The conclusion slide showing a link to the source code of my demo, a mock pokemon card about the speaker, and an invitation to email questions to fabrication@xeserv.us."
+/>
+
+And with that, I've been Xe Iaso and I hope you've had fun. I'll be wandering around with stickers in case you have any questions. Just look for my technicolor dreamcoat, you can probably see it from space. If I don't get to you, email them to [fabrication@xeserv.us](mailto:fabrication@xeserv.us)
+
+Have a good evening y'all!
+
+<Conv name="Cadey" mood="coffee">
+  There was a question and answer section, but I did not have the time to
+  properly transcribe it. I'll try to get to it later. Watch the video if you
+  want to see it.
+</Conv>
