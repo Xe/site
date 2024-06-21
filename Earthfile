@@ -70,7 +70,7 @@ xesite:
     RUN apk add -U ca-certificates deno typst
     ENV TYPST_FONT_PATHS=/app/fonts
 
-    CMD ["./xesite"]
+    CMD ["/app/xesite"]
 
     LABEL org.opencontainers.image.source="https://github.com/Xe/site"
 

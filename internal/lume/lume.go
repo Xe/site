@@ -193,6 +193,13 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 			return nil, fmt.Errorf("lume: can't pull: %w", err)
 		}
 
+		head, err := repo.Head()
+		if err != nil {
+			return nil, fmt.Errorf("lume: can't get head: %w", err)
+		}
+
+		slog.Debug("branch head", "hash", head.Hash().String(), "branchName", head.Name().Short())
+
 		err = wt.Checkout(&git.CheckoutOptions{
 			Branch: plumbing.NewBranchReferenceName(o.Branch),
 		})

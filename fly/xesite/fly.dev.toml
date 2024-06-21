@@ -1,7 +1,6 @@
 # fly.toml file generated for xesite on 2023-09-27T19:39:44-04:00
 
-app = "xesite"
-primary_region = "yyz"
+app = "xesite-dev"
 
 vm.cpus = 2
 vm.memory = "2GB"
@@ -17,10 +16,14 @@ auto_extend_size_threshold = 80
 auto_extend_size_increment = "1GB"
 auto_extend_size_limit = "10GB"
 
+#[experimental]
+#cmd = ["/bin/sleep", "infinity"]
+
 [build]
 image = "ghcr.io/xe/site/bin:earthly"
 
 [env]
+HOME = "/data"
 DATA_DIR = "/data"
 GIT_BRANCH = "main"
 SITE_URL = "https://xeiaso.net/"
