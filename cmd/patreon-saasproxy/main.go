@@ -89,7 +89,7 @@ func main() {
 	}
 	defer ln.Close()
 
-	slog.Info("listening", "bind", *bind, "data-dir", *dataDir)
+	slog.Info("listening", "bind", *bind)
 
 	log.Fatal(http.Serve(ln, nil))
 }

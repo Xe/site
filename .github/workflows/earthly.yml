@@ -55,8 +55,8 @@ jobs:
         with:
           filters: |
             src:
-              - '/cmd/patreon-saasproxy/*.go'
-              - './internal/**/*.go'
+              - 'cmd/patreon-saasproxy/*.go'
+              - 'internal/**/*.go'
       - if: steps.changes.outputs.src == 'true'
         run: flyctl deploy --remote-only -c ./fly/patreon-saasproxy/fly.toml
         env:
