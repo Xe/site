@@ -4,7 +4,6 @@ app = "xesite-patreon-saasproxy"
 
 kill_signal = "SIGINT"
 kill_timeout = 5
-processes = []
 
 [mounts]
 source = "data"
@@ -14,12 +13,15 @@ destination = "/data"
 DATA_DIR = "/data"
 
 [build]
-image = "ghcr.io/xe/site/patreon:latest"
+image = "ghcr.io/xe/site/patreon:earthly"
 
 [[services]]
   internal_port = 80
   processes = ["app"]
   protocol = "tcp"
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
 
   [services.concurrency]
     hard_limit = 300
