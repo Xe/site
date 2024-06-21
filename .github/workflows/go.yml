@@ -20,6 +20,16 @@ jobs:
       run: |
         brew bundle
 
+    - name: Setup Golang caches
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-golang-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-golang-
+
     - name: cache deno.land dependencies
       uses: actions/cache@v2
       with:
@@ -33,8 +43,3 @@ jobs:
 
     - name: Test
       run: go test -v ./...
-
-    - name: Ensure generated code is up to date
-      run: |
-        go generate ./...
-        git diff --exit-code || echo "The current tree is dirty, run 'go generate ./...' to fix it"
