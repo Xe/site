@@ -19,12 +19,12 @@ jobs:
         go-version: '1.22'
 
     - name: cache deno.land dependencies
-        uses: actions/cache@v2
-        with:
-          key: ${{ runner.os }}-deno-${{ hashFiles('**/*') }}
-          restore-keys: ${{ runner.os }}-deno-
-          path: |
-            /home/runner/.cache/deno
+      uses: actions/cache@v2
+      with:
+        key: ${{ runner.os }}-deno-${{ hashFiles('**/*') }}
+        restore-keys: ${{ runner.os }}-deno-
+        path: |
+          /home/runner/.cache/deno
     
     - run: |
         curl -L -o dhall-linux.tar.bz2 https://github.com/dhall-lang/dhall-haskell/releases/download/1.42.0/dhall-json-1.7.12-x86_64-linux.tar.bz2
