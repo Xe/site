@@ -18,7 +18,10 @@ jobs:
       with:
         go-version: '1.22'
     
-    - uses: dhall-lang/setup-dhall@v4
+    - run: |
+        curl -L -o dhall-linux.tar.bz2 https://github.com/dhall-lang/dhall-haskell/releases/download/1.42.0/dhall-json-1.7.12-x86_64-linux.tar.bz2
+        tar -xvjf dhall-linux.tar.bz2
+        mv bin/* /usr/local/bin
     
     - uses: denoland/setup-deno@v1
       with:
