@@ -47,7 +47,7 @@ patreon-saasproxy:
 
     CMD ["./patreon-saasproxy"]
 
-    SAVE IMAGE ghcr.io/xe/site/patreon-saasproxy:earthly
+    SAVE IMAGE --push ghcr.io/xe/site/patreon-saasproxy:earthly
 
 build-xesite:
 	FROM +deps
@@ -70,4 +70,4 @@ xesite:
 
     CMD ["./xesite"]
 
-    SAVE IMAGE ghcr.io/xe/site/bin:earthly
+    SAVE IMAGE --push ghcr.io/xe/site/bin:earthly
