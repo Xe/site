@@ -3,13 +3,13 @@ FROM alpine:edge
 WORKDIR /app
 
 deps:
-	FROM golang:1.22-alpine
-	WORKDIR /app
+    FROM golang:1.22-alpine
+    WORKDIR /app
 
-	COPY go.mod go.sum ./
-	RUN go mod download
+    COPY go.mod go.sum ./
+    RUN go mod download
 
-	SAVE ARTIFACT go.mod
+    SAVE ARTIFACT go.mod
 
 fonts:
     FROM alpine:edge
@@ -52,12 +52,12 @@ patreon-saasproxy:
     SAVE IMAGE --push ghcr.io/xe/site/patreon:latest
 
 build-xesite:
-	FROM +deps
-	COPY . .
+    FROM +deps
+    COPY . .
 
-	RUN --mount=type=cache,target=/root/.cache CGO_ENABLED=0 go build -gcflags "all=-N -l" -o xesite ./cmd/xesite
+    RUN --mount=type=cache,target=/root/.cache CGO_ENABLED=0 go build -gcflags "all=-N -l" -o xesite ./cmd/xesite
 
-	SAVE ARTIFACT xesite
+    SAVE ARTIFACT xesite
 
 xesite:
     FROM alpine:edge
