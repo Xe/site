@@ -108,38 +108,6 @@
             subPackages = [ "cmd/patreon-saasproxy" ];
           };
 
-          iosevka = pkgs.stdenvNoCC.mkDerivation {
-            name = "xesite-iosevka";
-            buildInputs = with pkgs; [
-              python311Packages.brotli
-              python311Packages.fonttools
-            ];
-            dontUnpack = true;
-            buildPhase = ''
-              mkdir -p out
-              ${pkgs.unzip}/bin/unzip ${
-                self.inputs.iosevka.packages.${system}.default
-              }/ttf.zip
-              for ttf in ttf/*.ttf; do
-                cp $ttf out
-                name=`basename -s .ttf $ttf`
-                pyftsubset \
-                    $ttf \
-                    --output-file=out/"$name".woff2 \
-                    --flavor=woff2 \
-                    --layout-features=* \
-                    --no-hinting \
-                    --desubroutinize \
-                    --unicodes="U+0000-0170,U+00D7,U+00F7,U+2000-206F,U+2074,U+20AC,U+2122,U+2190-21BB,U+2212,U+2215,U+F8FF,U+FEFF,U+FFFD,U+00E8"
-              done
-
-            '';
-            installPhase = ''
-              mkdir -p $out/static/css/iosevka
-              cp out/* $out/static/css/iosevka
-            '';
-          };
-
           docker = pkgs.dockerTools.buildLayeredImage {
             name = "ghcr.io/xe/site/bin";
             tag = "latest";
