@@ -1,3 +1,5 @@
+tap "xe/pkgs"
+
 brew "go@1.22"
 
 brew "dhall"
