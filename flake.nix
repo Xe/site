@@ -30,27 +30,18 @@
 
     alpineLinux = {
       flake = false;
-      url = "file+https://cdn.xeiaso.net/file/christine-static/hack/alpine-amd64-3.19.0-1.tar";
+      url =
+        "file+https://cdn.xeiaso.net/file/christine-static/hack/alpine-amd64-3.19.0-1.tar";
     };
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , flake-utils
-    , deno2nix
-    , iosevka
-    , typst
-    , gomod2nix
-    , alpineLinux
-    , ...
-    }:
+  outputs = { self, nixpkgs, flake-utils, deno2nix, iosevka, typst, gomod2nix
+    , alpineLinux, ... }:
     flake-utils.lib.eachSystem [
       "x86_64-linux"
       "aarch64-linux"
       "aarch64-darwin"
-    ]
-      (system:
+    ] (system:
       let
         graft = pkgs: pkg:
           pkg.override { buildGoModule = pkgs.buildGo122Module; };
@@ -89,8 +80,7 @@
 
         # Generate a user-friendly version number.
         version = builtins.substring 0 8 self.lastModifiedDate;
-      in
-      rec {
+      in rec {
         packages = rec {
           bin = pkgs.buildGoApplication {
             pname = "xesite_v4";
@@ -106,6 +96,37 @@
             src = ./.;
             modules = ./gomod2nix.toml;
             subPackages = [ "cmd/patreon-saasproxy" ];
+          };
+
+          iosevka = pkgs.stdenvNoCC.mkDerivation {
+            name = "xesite-iosevka";
+            buildInputs = with pkgs; [
+              python311Packages.brotli
+              python311Packages.fonttools
+            ];
+            dontUnpack = true;
+            buildPhase = ''
+              mkdir -p out
+              ${pkgs.unzip}/bin/unzip ${
+                self.inputs.iosevka.packages.${system}.default
+              }/ttf.zip
+              for ttf in ttf/*.ttf; do
+                cp $ttf out
+                name=`basename -s .ttf $ttf`
+                pyftsubset \
+                    $ttf \
+                    --output-file=out/"$name".woff2 \
+                    --flavor=woff2 \
+                    --layout-features=* \
+                    --no-hinting \
+                    --desubroutinize \
+                    --unicodes="U+0000-0170,U+00D7,U+00F7,U+2000-206F,U+2074,U+20AC,U+2122,U+2190-21BB,U+2212,U+2215,U+F8FF,U+FEFF,U+FFFD,U+00E8"
+              done
+            '';
+            installPhase = ''
+              mkdir -p $out/static/css/iosevka
+              cp out/* $out/static/css/iosevka
+            '';
           };
 
           docker = pkgs.dockerTools.buildLayeredImage {
@@ -130,9 +151,7 @@
             contents = with pkgs; [ cacert ];
             config = {
               Cmd = [ "${patreon-bin}/bin/patreon-saasproxy" ];
-              Env = [
-                "HOME=/data"
-              ];
+              Env = [ "HOME=/data" ];
               Volumes."/data" = { };
             };
           };
@@ -166,6 +185,8 @@
 
             jq
             jo
+
+            earthly
 
             # tools
             ispell
