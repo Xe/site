@@ -13,10 +13,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.22'
+    - name: Set up Homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+
+    - name: Install Brew dependencies
+      run: |
+        brew bundle
 
     - name: cache deno.land dependencies
       uses: actions/cache@v2
@@ -25,20 +27,14 @@ jobs:
         restore-keys: ${{ runner.os }}-deno-
         path: |
           /home/runner/.cache/deno
-    
-    - run: |
-        curl -L -o dhall-linux.tar.bz2 https://github.com/dhall-lang/dhall-haskell/releases/download/1.42.0/dhall-json-1.7.12-x86_64-linux.tar.bz2
-        tar -xvjf dhall-linux.tar.bz2
-        mv bin/* /usr/local/bin
-    
-    - uses: denoland/setup-deno@v1
-      with:
-        deno-version: v1.x
-
-    - uses: typst-community/setup-typst@v3
 
     - name: Build
       run: go build -v ./...
 
     - name: Test
       run: go test -v ./...
+
+    - name: Ensure generated code is up to date
+      run: |
+        go generate ./...
+        git diff --exit-code || echo "The current tree is dirty, run 'go generate ./...' to fix it"
