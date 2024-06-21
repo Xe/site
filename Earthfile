@@ -49,7 +49,7 @@ patreon-saasproxy:
 
     LABEL org.opencontainers.image.source="https://github.com/Xe/site"
 
-    SAVE IMAGE --push ghcr.io/xe/site/patreon:earthly
+    SAVE IMAGE --push ghcr.io/xe/site/patreon:latest
 
 build-xesite:
 	FROM +deps

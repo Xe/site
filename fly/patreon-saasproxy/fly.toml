@@ -13,7 +13,7 @@ destination = "/data"
 DATA_DIR = "/data"
 
 [build]
-image = "ghcr.io/xe/site/patreon:earthly"
+image = "ghcr.io/xe/site/patreon:latest"
 
 [[services]]
   internal_port = 80
