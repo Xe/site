@@ -47,6 +47,8 @@ patreon-saasproxy:
 
     CMD ["./patreon-saasproxy"]
 
+    LABEL org.opencontainers.image.source="https://github.com/Xe/site"
+
     SAVE IMAGE --push ghcr.io/xe/site/patreon-saasproxy:earthly
 
 build-xesite:
@@ -69,5 +71,7 @@ xesite:
     ENV TYPST_FONT_PATHS=/app/fonts
 
     CMD ["./xesite"]
+
+    LABEL org.opencontainers.image.source="https://github.com/Xe/site"
 
     SAVE IMAGE --push ghcr.io/xe/site/bin:earthly
