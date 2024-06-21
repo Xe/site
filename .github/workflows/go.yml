@@ -1,0 +1,33 @@
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22'
+    
+    - uses: dhall-lang/setup-dhall@v4
+    
+    - uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+
+    - uses: typst-community/setup-typst@v3
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: Test
+      run: go test -v ./...
