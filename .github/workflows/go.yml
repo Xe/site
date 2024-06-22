@@ -20,6 +20,15 @@ jobs:
       run: |
         brew bundle
 
+    - name: Setup Homebrew cellar cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.linuxbrew/Cellar
+        key: ${{ runner.os }}-homebrew-cellar-${{ hashFiles('Brewfile.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-homebrew-cellar-
+
     - name: Setup Golang caches
       uses: actions/cache@v4
       with:
