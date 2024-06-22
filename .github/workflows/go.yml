@@ -16,10 +16,6 @@ jobs:
     - name: Set up Homebrew
       uses: Homebrew/actions/setup-homebrew@master
 
-    - name: Install Brew dependencies
-      run: |
-        brew bundle
-
     - name: Setup Homebrew cellar cache
       uses: actions/cache@v4
       with:
@@ -28,6 +24,10 @@ jobs:
         key: ${{ runner.os }}-homebrew-cellar-${{ hashFiles('Brewfile.lock.json') }}
         restore-keys: |
           ${{ runner.os }}-homebrew-cellar-
+
+    - name: Install Brew dependencies
+      run: |
+        brew bundle
 
     - name: Setup Golang caches
       uses: actions/cache@v4
