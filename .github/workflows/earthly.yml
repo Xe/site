@@ -32,14 +32,12 @@ jobs:
         if: github.event_name != 'pull_request'
         id: build-and-push
         run: |
-          earthly --push +xesite
-          earthly --push +patreon-saasproxy
+          earthly --ci --push +all
       - name: Build Docker image
         if: github.event_name == 'pull_request'
         id: build
         run: |
-          earthly +xesite
-          earthly +patreon-saasproxy
+          earthly --ci +all
           
   deploy-patreon:
     name: "Deploy patreon-saasproxy"
@@ -60,6 +58,7 @@ jobs:
               - 'internal/**/*.go'
               - 'go.mod'
               - 'go.sum'
+              - 'Earthfile'
       - if: steps.changes.outputs.src == 'true'
         run: flyctl deploy --remote-only -c ./fly/patreon-saasproxy/fly.toml
         env:

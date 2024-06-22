@@ -75,3 +75,7 @@ xesite:
     LABEL org.opencontainers.image.source="https://github.com/Xe/site"
 
     SAVE IMAGE --push ghcr.io/xe/site/bin:earthly
+
+all:
+    BUILD --platform=linux/amd64 +xesite
+    BUILD --platform=linux/amd64 +patreon-saasproxy 
