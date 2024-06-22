@@ -1,0 +1,115 @@
+---
+title: "Building a constellation of images with Earthly"
+date: 2024-06-22
+desc: "What if building container images was actually a graph?"
+tags:
+  - "earthly"
+  - "docker"
+  - "xesite"
+hero:
+  ai: "Photo by Xe Iaso, iPhone 15 Pro Max"
+  file: nature-walk
+  prompt: "A film-emulated picture of a the sky on one side, and treetops on the other. There is heavy saturation and a slight hint of film grain."
+  social: true
+---
+
+Docker is the universal package format of the Internet. It allows you to ship an application and all of its dependencies in one unit so that you can run it without worrying about dependencies on the host machine breaking your app. It's quickly become the gold standard for how to package and deploy applications, and it's not hard to see why.
+
+However, the main way you build a Docker image is with the `docker build` command, which takes a `Dockerfile` in the directory you specify on the command line and then builds an image from that. This works great for single-component applications, or even facets of a larger monorepo, but it falls short when you have something like a monorepo written in Go that has multiple components that need to be built and then packaged into separate images.
+
+I have two big "monorepos" of side projects and the like that I want to deploy as Docker images. One is [my blog](https://github.com/Xe/site), and the other is my [/x/ experimental monorepo](https://github.com/Xe/x). Both of these projects have multiple components that need to be built and packaged into separate Docker images, and I've been struggling to find a way to do this [that was as good as the previous setup](/talks/2024/nix-docker-build/).
+
+When I was working with a coworker on something recently, I was pointed to [Earthly](https://docs.earthly.dev/). Earthly is a unique form of violence, it's effectively a bastard child of Make and Docker that was raised by a team of people who really care about developer ergonomics. The best way to think about Earthly is that it's a build system that just happens to execute every step in a container and you can fossilize artifacts or images out of the build process.
+
+Under the hood, Docker has started to use [BuildKit](https://docs.docker.com/build/buildkit/) to make images. This effectively transforms a Dockerfile into a graph of steps that can be executed in parallel. Consider this Dockerfile:
+
+```Dockerfile
+FROM golang:1.22 AS builder
+WORKDIR /src
+COPY . .
+RUN mkdir -p /app/bin && go build -o /app/bin/myapp ./cmd/myapp
+
+FROM nodejs AS frontend
+WORKDIR /src
+COPY . .
+RUN npm install && npm run build
+
+FROM ubuntu:24.04 AS runner
+WORKDIR /app
+COPY --from=builder /app/bin/myapp /app/bin/myapp
+COPY --from=frontend /src/build /app/static
+CMD ["/app/bin/myapp"]
+```
+
+This effectively turns a build into a graph like this:
+
+![Dockerfile graph](/static/img/docker-graph.svg)
+
+The `builder` and `frontend` stages can be built in parallel, but the `runner` stage needs to wait until both of them are done before it can be built. This is a simple example, but it shows how you can have multiple components that need to be built and then packaged into a single image.
+
+What if you have multiple images though? That's where Earthly comes in. Earthly builds on top of BuildKit to allow you to define a series of targets that can be built in parallel, and then it builds them in the most efficient way possible. It's like Make, but for Docker images.
+
+## My blog's backend
+
+My blog is an unfortunately complicated project, it wasn't intended to be that way, it sorta organically grew this way after a decade or so. It's a Go project that requires on a few components:
+
+- The blog backend itself (really just something that sits there and serves the blog, occasionally rebuilding it when I push a new post)
+- The Patreon token escrow service (a service that sits in front of the Patreon API and allows me to have a token that can be used to access the API without having to worry about it being revoked)
+- A [few other components](/blog/2024/overengineering-preview-site/) in `/x/` that I'm not going to talk about here
+
+After breaking everything down into the components and inputs, I came up with the following flow:
+
+![Xesite build graph](/static/img/xesite-graph.svg)
+
+Going from left to right, the inputs are:
+
+- The source code tree (a checkout of the blog's repository)
+- The [go:1.22-alpine](https://hub.docker.com/_/golang) image
+- The [alpine:edge](https://hub.docker.com/_/alpine) image
+
+These are then passed through to pull and build the components and their dependencies. The `+patreon` and `+xesite` targets are the final images that are built from the components. The `+xesite` target is a bit weird in that we need to copy the [Iosevka Iaso](https://cdn.xeiaso.net/static/pkg/iosevka/specimen.html) font files and the [Dhall](https://dhall-lang.org/) binary into the image so that the blog can use them (it will panic at runtime if it can't find them).
+
+These two targets are then pushed to the [GitHub Container Registry](https://ghcr.io/) so that they can be pulled down and run on [Fly.io](https://fly.io/).
+
+<Conv name="Cadey" mood="coffee">
+  At the time of writing, Fly.io is my employer. I'm using Fly.io to run my
+  blog. I'm not just shilling it for the sake of shilling it. I was a user
+  before I was an employee, and I'm still a user now that I'm an employee. It's
+  a great platform and I love it. If the platform wasn't great, I wouldn't be
+  using it.
+</Conv>
+
+Oh, as a side note, when you're trying to build multiple images at once from CI, you need to make an `all` target or similar that depends on all of the images you want to build. This is because Earthly can only build one target at a time.
+
+```Dockerfile
+all:
+    BUILD --platform=linux/amd64 +xesite
+    BUILD --platform=linux/amd64 +patreon-saasproxy
+```
+
+You can then chuck this into GitHub Actions:
+
+```yaml
+- name: Build and push Docker image
+  id: build-and-push
+  run: |
+    earthly --ci --push +all
+```
+
+The [`--ci` flag](https://docs.earthly.dev/ci-integration/overview#earthly) sets some options that help Earthly work better in a CI environment. It's not strictly necessary, but it's probably a good idea to use it.
+
+## The impact
+
+The difference between these two flows is subtle but staggering. Building my blog's backend with the old flow could take up to 10 minutes. Building my blog's backend with Earthly takes tens of seconds. The old flow produced a 734 MB image with a bunch of extraneous dependencies (even though that should be mathematically impossible). The new flow shits out a 262 MB image that has only what is required to run the blog.
+
+Not to mention the developer ergonomics of using Earthly. With Earthly I can build **and push** my images in one Go. I don't even run into the Dockerfile landmine of forgetting to run `docker build -t` before running `docker push`. I can't tell you how many times I've done that and had to dig up the image reference from `docker images` to manually tag and push it.
+
+Earthly is exactly what I needed. I'm going to adopt it as my Docker image build system of choice.
+
+The only downside is them adding advertisements for their SaaS product in all of my build outputs:
+
+```
+🛰️ Reuse cache between CI runs with Earthly Satellites! 2-20X faster than without cache. Generous free tier https://cloud.earthly.dev
+```
+
+I get why they're doing this, it's really hard to make money off of developer tooling like this. Developers are both extremely well paid and notoriously cheap. I'm not going to fault them for trying to make money off of their product. I just wish I could turn it off.

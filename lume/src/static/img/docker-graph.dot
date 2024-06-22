@@ -1,0 +1,16 @@
+digraph {
+  rankdir=LR;
+  node [shape=box];
+  src [label="./*", shape=ellipse];
+  golang [label="golang:1.22", shape=ellipse];
+  nodejs [label="nodejs", shape=ellipse];
+  ubuntu [label="ubuntu:24.04", shape=ellipse];
+  builder -> runner;
+  frontend -> runner;
+  src -> builder;
+  src -> frontend;
+  nodejs -> frontend;
+  golang -> builder;
+  ubuntu -> runner;
+  runner -> output;
+}

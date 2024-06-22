@@ -1,0 +1,44 @@
+digraph {
+  rankdir=LR;
+  node [shape=box];
+
+  subgraph cluster_0 {
+    label = "ghcr images";
+    style=filled;
+    color=lightgrey;
+    ghcrxesite [label="xe/site/bin"];
+    ghcrpatreon [label="xe/site/patreon"];
+  }
+
+  src [label="./*", shape=ellipse];
+  golang [label="golang:1.22-alpine", shape=ellipse];
+  alpine [label="alpine:edge", shape=ellipse];
+  deps [label="+deps"];
+  fonts [label="+fonts"];
+  dhalljson [label="+dhall-json"];
+  buildpatreon [label="+build-patreon"];
+  patreon [label="+patreon"];
+  buildxesite [label="+build-xesite"];
+  xesite [label="+xesite"];
+
+  { rank=same; golang; alpine; src; }
+  { rank=same; deps; fonts; dhalljson; }
+  { rank=same; patreon; xesite; }
+
+  src -> deps;
+  golang -> deps;
+  alpine -> fonts;
+  alpine -> dhalljson;
+  deps -> buildpatreon;
+  deps -> buildxesite;
+  src -> buildpatreon;
+  buildpatreon -> patreon;
+  src -> buildxesite;
+  buildxesite -> xesite;
+  alpine -> patreon;
+  patreon -> ghcrpatreon;
+  alpine -> xesite;
+  fonts -> xesite;
+  dhalljson -> xesite;
+  xesite -> ghcrxesite;
+}
