@@ -1,7 +1,6 @@
 # site
 
 ![enbyware](https://pride-badges.pony.workers.dev/static/v1?label=enbyware&labelColor=%23555&stripeWidth=8&stripeColors=FCF434%2CFFFFFF%2C9C59D1%2C2C2C2C)
-![built with Garnix](https://img.shields.io/static/v1?label=Built%20with&message=Garnix&color=blue&style=flat&logo=nixos&link=https://garnix.io&labelColor=111212)
 ![dependency status](https://img.shields.io/librariesio/github/Xe/site)
 ![license](https://img.shields.io/github/license/Xe/site)
 ![language count](https://img.shields.io/github/languages/count/Xe/site)
