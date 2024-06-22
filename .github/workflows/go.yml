@@ -9,8 +9,7 @@ on:
 jobs:
 
   build:
-    runs-on:
-      group: alrest
+    runs-on: [self-hosted, linux, x64]
     steps:
     - uses: actions/checkout@v4
     
