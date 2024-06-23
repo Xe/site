@@ -1,0 +1,170 @@
+---
+title: "MIME, RSS, and existential torment"
+date: 2024-06-23
+desc: "TL;DR: how I fixed my RSS feed by installing mailcap so I don't get tormented by mimes"
+hero:
+  social: true
+  ai: "Photo by Xe Iaso, Canon EOS R6 mark ii, Helios 44-2 58mm at f/8"
+  file: "spring-peace"
+  prompt: "Greenery next to a retaining pond, with a path and a trashcan. The sky is reflecting off of the water."
+---
+
+This morning, I woke up with a flurry of emails in my inbox. When people tried to read my blog's RSS feed, they got an error like this:
+
+```
+$ curl https://xeiaso.net
+seeker can't seek
+```
+
+This should not happen. When I first encountered this, I had to do a double-take. When I remade my website for [version 4](/blog/xesite-v4/) I did make some weird technical decisions and I figured one of those was coming back to bite me. One of the weirdest things my website does is that it serves everything from a .zip file. As far as I understand my blog, here's what I expect to happen when somebody requests a file:
+
+![](/static/blog/fixing-rss-mailcap/how-it-should-work.excalidraw.svg)
+
+When someone fetches a file I expect it to interact with the lume FileSystem component, pass it to the zip file, get a file back, and then serve it back to the user with happy puppies and HTTP 200 responses. This was not happening, and the error that I got was initially very confusing.
+
+The actual reason why this was happening trolled me so hard that I felt the need to write about it so that y'all are able to understand all of the moving parts and why it failed in this way in particular.
+
+## Go interfaces
+
+In Go, interfaces are used to describe abstract behaviors that apply between types. As an absurd example, let's imagine something that has the behavior of quacking. In Go you'd probably write an interface like this to represent this behavior:
+
+```go
+type Quacker interface {
+    Quack()
+}
+```
+
+So, for some type `Duck`, you could make it quack like this:
+
+```go
+type Duck struct{}
+
+func (Duck) Quack() { fmt.Println("Quack!") }
+```
+
+And then you can pass a `Duck` value anywhere that takes a `Quacker`, even if the underlying implementation is something absurd:
+
+```go
+type Sheep struct{}
+
+func (Sheep) Quack() { fmt.Println("Baaaaa") }
+```
+
+Interfaces are used all over the standard library and they make a lot of things really damn convenient in practice. Want to override how a HTTP request works? Define your own [`net/http#RoundTripper`](https://pkg.go.dev/net/http#RoundTripper). When you define HTTP handlers, you're dealing with the [`net/http#Handler`](https://pkg.go.dev/net/http#Handler) interface. Interfaces are everywhere and they are lovely.
+
+One of the more recent and exciting interfaces is [`io/fs.FS`](https://pkg.go.dev/io/fs#FS), which represents an abstract "filesystem". This allows you to make filesystem logic pluggable so that you can [embed filesystems into your code](https://pkg.go.dev/embed#hdr-File_Systems), or read stuff out of anything that implements the `io/fs#FS` interface. One of these things is a .zip file reader, AKA [`archive/zip#Reader`](https://pkg.go.dev/archive/zip#Reader).
+
+This is the core of how my website works. Every time you read anything from my site, you're actually looking at the contents of a zipfile full of gzip streams.
+
+So anyways, you go to the RSS feed and then you get a HTTP 500 back. The flow looks like this:
+
+![](/static/blog/fixing-rss-mailcap/how-it-broke.excalidraw.svg)
+
+The Go HTTP package [has had its own filesystem logic](https://pkg.go.dev/net/http#FileSystem) for a while, since Go 1.0. Here's its view of what a `File` should be:
+
+```go
+// imagine this is in net/http
+package http
+
+import "io/fs"
+
+type File interface {
+	io.Closer
+	io.Reader
+	io.Seeker
+	Readdir(count int) ([]fs.FileInfo, error)
+	Stat() (fs.FileInfo, error)
+}
+```
+
+Here's what `io/fs` thinks a file should be:
+
+```go
+package fs
+
+type File interface {
+	Stat() (FileInfo, error)
+	Read([]byte) (int, error)
+	Close() error
+}
+```
+
+A `net/http#File` is a _more specific_ interface than a `io/fs#File`, which means that not all things that can be represented as an `io/fs#File` can work as a `net/http#File`.
+
+<Conv name="Mara" mood="hacker">
+In Go, you generally call interfaces with more methods "more specific" than ones that have less methods. When you are making interfaces in Go, it's generally seen that a smaller interface is better than a bigger one because those are more easy to compose. A file can be read from, but so can a network socket or a HTTP response body. If you make your interfaces vague, then they can apply many other places.
+
+Consider this [Go proverb](https://go-proverbs.github.io/):
+
+<BlockQuote>
+The bigger the interface, the weaker the abstraction.
+</BlockQuote>
+</Conv>
+
+This all matters because when the standard library HTTP fileserver tries to serve a file, it has to figure out the `Content-Type` of that file. The code is [in a function imaginatively named `serveContent`](https://github.com/golang/go/blob/2073b35e07ce9cea47ee1fbe763b304d2371954f/src/net/http/fs.go#L242-L254), but the overall flow looks kinda like this:
+
+![](/static/blog/fixing-rss-mailcap/serveContent-flow.excalidraw.svg)
+
+Whenever you try to serve a file that doesn't already have a `Content-Type` header defined, it tries to detect it from the extension. If it can't, it'll try to read the first 512 bytes of the file to detect what kind of file it is, and then rewind the file back so that it can be served to the user.
+
+Unless that file doesn't have a working `.Seek` method.
+
+As it turns out, when you read `io/fs#File`s from a zipfile, they don't have a `.Seek` method defined. This makes sense because any file in a zipfile exists in a superposition of both being compressed and not being compressed that only gets resolved when the file is read from. It doesn't make sense to be able to rewind a compressed stream and then get back data from earlier in it. You'd have to put everything in memory and then you could run out of memory and crash.
+
+The reason we got this `seeker can't seek` error is because they added a "type shim" to allow an `io/fs#File` to act as a `net/http#File`. Here's the codepath I hit:
+
+```go
+var errMissingSeek = errors.New("seeker can't seek")
+
+func (f ioFile) Seek(offset int64, whence int) (int64, error) {
+	s, ok := f.file.(io.Seeker)
+	if !ok {
+		return 0, errMissingSeek
+	}
+	return s.Seek(offset, whence)
+}
+```
+
+A zipfile's `io/fs#File` isn't an [`io.Seeker`](https://pkg.go.dev/io#Seeker). This means that any time the `net/http#FileSystem` logic tried to seek, it instantly got that `seeker can't seek` error and blew up.
+
+## Getting trolled by MIMEs
+
+However, we don't have to fix this problem today. We can work around it with the power of the MIME registry.
+
+<Conv name="Aoi" mood="wut">
+  I don't get it, if this is broken now, then how did it ever work in the first
+  place?
+</Conv>
+
+That first step of the diagram is the relevant bit. If the file extension is in the MIME registry, then it'll be returned to the user:
+
+![](/static/blog/fixing-rss-mailcap/mime-registry.excalidraw.svg)
+
+Go has a [minimal subset](https://github.com/golang/go/blob/2073b35e07ce9cea47ee1fbe763b304d2371954f/src/mime/type.go#L60-L77) of very very commonly used MIME types so that things will Just Work™️, but when the program starts, it tries to read all of the other common MIME-extension pairs out of `/etc/mime.types` (and a few other places).
+
+Guess what file wasn't present in the Docker image I made with Earthly?
+
+In Alpine Linux, this file is [in the `mailcap` package](https://pkgs.alpinelinux.org/contents?file=mime.types&path=&name=&branch=edge&repo=main&arch=ppc64le). Fixing this was as easy as changing a single line in my Earthly configuration:
+
+```diff
+-    RUN apk add -U ca-certificates deno typst
++    RUN apk add -U ca-certificates deno typst mailcap
+```
+
+<Conv name="Cadey" mood="coffee">
+  God, I feel like a buffoon. How the hell am I employable???
+</Conv>
+<Conv name="Numa" mood="happy">
+  Don't worry, this is why we get paid the big bucks. The more you fuck around
+  like this, the weirder it is when you find out why.
+</Conv>
+
+## Conclusion
+
+This is why the RSS feed was broken. It was broken because I got trolled by a bunch of MIMEs. No (mail)cap, fr fr.
+
+<Conv name="Aoi" mood="coffee">
+  Please don't.
+</Conv>
+
+If you want to watch me suffer through explaining things like this, [follow me on Twitch](https://twitch.tv/princessxen). We'll all learn together.
