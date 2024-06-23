@@ -5,6 +5,7 @@ import (
 	"flag"
 	"log"
 	"log/slog"
+	"mime"
 	"net"
 	"net/http"
 	"os"
@@ -33,6 +34,10 @@ var (
 	patreonSaasProxyURL = flag.String("patreon-saasproxy-url", "http://xesite-patreon-saasproxy.flycast", "URL to use for the patreon saasproxy")
 	siteURL             = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")
 )
+
+func init() {
+	mime.AddExtensionType(".rss", "application/rss+xml")
+}
 
 func main() {
 	flagenv.Parse()
@@ -82,7 +87,8 @@ func main() {
 	}
 
 	mux := http.NewServeMux()
-	mux.Handle("/", http.FileServer(http.FS(fs)))
+	mux.Handle("/", http.FileServerFS(fs))
+	//mux.Handle("/", http.FileServer(http.FS(fs)))
 	mux.Handle("/api/defs/", http.StripPrefix("/api/defs/", http.FileServer(http.FS(pb.Proto))))
 
 	ms := pb.NewMetaServer(&MetaServer{fs}, twirp.WithServerPathPrefix("/api"))
