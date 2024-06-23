@@ -63,12 +63,12 @@ xesite:
     FROM alpine:edge
     WORKDIR /app
 
+    RUN apk add -U ca-certificates deno typst mailcap
+    ENV TYPST_FONT_PATHS=/app/fonts
+
     COPY +build-xesite/xesite /app/xesite
     COPY +fonts/ttf /app/fonts
     COPY +dhall-json/dhall-to-json /usr/local/bin/dhall-to-json
-
-    RUN apk add -U ca-certificates deno typst
-    ENV TYPST_FONT_PATHS=/app/fonts
 
     CMD ["/app/xesite"]
 
