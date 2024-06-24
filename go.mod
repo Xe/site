@@ -10,7 +10,7 @@ require (
 	github.com/emicklei/proto v1.11.2
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
 	github.com/getkin/kin-openapi v0.120.0
-	github.com/go-faker/faker/v4 v4.3.0
+	github.com/go-faker/faker/v4 v4.4.2
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/invopop/yaml v0.2.0
 	github.com/joho/godotenv v1.5.1
@@ -55,7 +55,7 @@ require (
 	golang.org/x/mod v0.15.0 // indirect
 	golang.org/x/net v0.23.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/tools v0.18.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
