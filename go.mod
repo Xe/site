@@ -7,7 +7,7 @@ toolchain go1.22.0
 require (
 	github.com/bep/debounce v1.2.1
 	github.com/donatj/hmacsig v1.1.0
-	github.com/emicklei/proto v1.11.2
+	github.com/emicklei/proto v1.13.2
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
 	github.com/getkin/kin-openapi v0.120.0
 	github.com/go-faker/faker/v4 v4.3.0
