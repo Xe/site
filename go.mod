@@ -12,7 +12,7 @@ require (
 	github.com/getkin/kin-openapi v0.120.0
 	github.com/go-faker/faker/v4 v4.3.0
 	github.com/go-git/go-git/v5 v5.12.0
-	github.com/invopop/yaml v0.2.0
+	github.com/invopop/yaml v0.3.1
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.9.0
 	github.com/twitchtv/twirp v8.1.3+incompatible
