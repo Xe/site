@@ -1,0 +1,50 @@
+---
+title: "The key bit of the code that was biting me in net/http"
+date: 2024-06-25
+type: blog
+index: true
+desc: A clip from a longer stream VOD where I explain how MIME parsing works in Go's net/http package
+tags:
+  - "go"
+  - "mime"
+  - "video"
+---
+
+<Conv name="Cadey" mood="enby">
+  This is a clip from a longer stream VOD. This has been mildly edited for
+  clarity and brevity. The full stream VOD is available [on my
+  website](/vods/2024/mime-rss/). I have included a transcript of the clip below
+  the video. Enjoy!
+</Conv>
+
+<div className="my-4">
+  <XeblogVideo path="video/2024/how-mime-parsing-works" />
+</div>
+
+So what's happening here is we are hitting this line of code.
+
+And for those of you that can't read it, because you're watching this on a mobile phone screen. So this. This function is deep in the net HTTP file server code and go the net HTTP file server is a thing that basically converts files onto a file system from HTTP requests and HTTP responses using those files. So in this case, we're determining what content type to attach the response.
+
+So what this will do is it will check to see if it can figure out what the MIME type of a file is by its extension. Normally, this isn't the best idea. However, realistically, it works well enough that you can just rely on it. Because like.
+
+Windows requires you to have file extensions asterisk and people just have file extensions so that things work fine on Windows. So if you can detect what the MIME type is by the file extension, then you know you save a lot of the other effort. Otherwise, it'll attempt to read the first 512 bytes of the file and run the detect content type algorithm, which is a standard algorithm to detect content types. I don't think I need to cover it here, but if you want to just look into it on Google, it's basically just tries to read the first 512 bytes of a file for magic numbers and then we'll just already copy it. We'll just copy out the what it thinks is a good guess and go with that. So the important part here is that when it does it, it reads 512 bytes to that to that temporary buffer, detects the content type, and then it rewinds the file so that the rest of the file serving stack can just work. That makes sense. That's normal enough. But why does that work?
+
+So when you have an HTTP dot file system, you basically have something that opens HTTP dot files.
+
+So to go down here and let's go over and see what a file what a file system is. An HTTP dot file system is an interface with a single method. You give it a name and it returns a file or it blows up and dies.
+
+So and then a file is a combination of like five methods. A file can be closed, which means you don't want to read from it anymore. A file can be read from, which means you can get data out of it. A file can be seeked through or have the position moved around like fast forwarding or rewinding a VHS tape.
+
+We can read a directory from, we can attempt to use a file as a directory because technically files and directories are the same thing. It's complicated. Don't learn how file system works. You'll be ruined for life. And we can also get metadata about a file in the form of file info. But if you notice here, we have a net HTTP dot file and then it gets an IO slash FS dot file.
+
+What is an io/fs.File?
+
+So let's go to io/fs and we look at an io/fs.File.
+
+And oh, look, an io/fs.File is only three methods. You can get file metadata info, you can read from a file, or you can close it. This is a subset of the http.File interface. It only has io.Closer, io.Reader, and Stat.
+
+The http File interface is more specific than the io/fs interface. So things that match one interface don't always match the other interface. And if we look around here, I'm pretty sure we'll see where it converts a io/fs.FileSystem to an HTTP file system. And I'm pretty sure I'm going to see an error that...
+
+Oh, here we go. Yep, here's where it converts from an io/fs.FileSystem to an HTTP file system.
+
+It sees if the underlying file has a seek method, and if not, it can't do anything.
