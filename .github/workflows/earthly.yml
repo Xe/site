@@ -14,9 +14,17 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      EARTHLY_TOKEN: ${{ secrets.EARTHLY_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
       - uses: earthly/actions-setup@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -32,12 +40,12 @@ jobs:
         if: github.event_name != 'pull_request'
         id: build-and-push
         run: |
-          earthly --ci --push +all
+          earthly --org me-2625 --sat alpha --ci --push +all
       - name: Build Docker image
         if: github.event_name == 'pull_request'
         id: build
         run: |
-          earthly --ci +all
+          earthly --org me-2625 --sat alpha --ci +all
           
   deploy-patreon:
     name: "Deploy patreon-saasproxy"
