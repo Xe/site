@@ -1,29 +1,38 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"flag"
+	"fmt"
+	"io"
+	"log"
 	"log/slog"
+	"mime"
 	"net/http"
 	"os"
+	"path/filepath"
+	"strings"
 
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
 	"golang.org/x/oauth2"
 	"gopkg.in/mxpv/patreon-go.v1"
+	"within.website/x/tigris"
 	"within.website/x/web"
 	"xeiaso.net/v4/internal"
+	"xeiaso.net/v4/internal/lume"
 	"xeiaso.net/v4/internal/saasproxytoken"
 )
 
 var (
-	githubSHA             = flag.String("github-sha", "", "GitHub SHA to use for the site")
-	miToken               = flag.String("mi-token", "", "Token to use for the mi API")
-	patreonSaasProxyURL   = flag.String("patreon-saasproxy-url", "http://patreon-saasproxy/give-token", "URL to use for the patreon saasproxy")
-	tailscaleClientID     = flag.String("tailscale-client-id", "", "Tailscale client ID to use")
-	tailscaleClientSecret = flag.String("tailscale-client-secret", "", "Tailscale client secret to use")
-
-	regions = []string{"yyz", "bos", "iad", "den", "dfw", "ord", "mia", "phx", "lax", "yul", "gdl", "sjc", "sea", "atl", "ewr", "qro", "ams", "fra", "cdg", "lhr", "mad", "waw", "arn", "gru", "scl", "otp", "eze", "nrt", "bog", "gig", "hkg", "bom", "jnb", "sin", "syd"}
+	bucketName          = flag.String("bucket-name", "xesite-dev", "Name of the S3 bucket to upload to")
+	githubSHA           = flag.String("github-sha", "", "GitHub SHA to use for the site")
+	miURL               = flag.String("mimi-announce-url", "", "Mi url (named mimi-announce-url for historical reasons)")
+	patreonSaasProxyURL = flag.String("patreon-saasproxy-url", "http://xesite-patreon-saasproxy.flycast", "URL to use for the patreon saasproxy")
+	siteURL             = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")
 )
 
 func main() {
@@ -33,45 +42,37 @@ func main() {
 
 	slog.Info("starting up", "github-sha", *githubSHA)
 
-	/*
-		pc, err := NewPatreonClient(hc)
-		if err != nil {
-			slog.Error("can't create patreon client", "err", err)
-		}
+	pc, err := NewPatreonClient(http.DefaultClient)
+	if err != nil {
+		slog.Error("can't create patreon client", "err", err)
+	}
 
-		os.MkdirAll("./var", 0700)
+	os.MkdirAll("./var", 0700)
 
-		fs, err := lume.New(context.Background(), &lume.Options{
-			Branch:        "main",
-			Repo:          "https://github.com/Xe/site",
-			StaticSiteDir: "lume",
-			URL:           "https://xeiaso.net",
-			Development:   false,
-			PatreonClient: pc,
-			DataDir:       "./var",
-			MiToken:       *miToken,
-		})
-		if err != nil {
-			log.Fatal(err)
-		}
+	s3c, err := tigris.Client(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
 
-		defer fs.Close()
+	fs, err := lume.New(context.Background(), &lume.Options{
+		Branch:        "main",
+		Repo:          "https://github.com/Xe/site",
+		StaticSiteDir: "lume",
+		URL:           "https://xeiaso.net",
+		Development:   false,
+		PatreonClient: pc,
+		DataDir:       "./var",
+		MiURL:         *miURL,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
 
-		var wg sync.WaitGroup
+	defer fs.Close()
 
-		for _, region := range regions {
-			wg.Add(1)
-			go func(region string) {
-				defer wg.Done()
-
-				if err := uploadSlug(hc, "xedn-"+region, "./var/site.zip"); err != nil {
-					slog.Error("error updating", "region", region, "error", err)
-				}
-			}(region)
-		}
-
-		wg.Wait()
-	*/
+	if err := uploadFolderToS3(context.Background(), s3c, "./var/repo/lume/_site", *bucketName); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func uploadSlug(cli *http.Client, host, fname string) error {
@@ -114,4 +115,53 @@ func NewPatreonClient(hc *http.Client) (*patreon.Client, error) {
 	}
 
 	return client, nil
+}
+
+func uploadFolderToS3(ctx context.Context, s3c *s3.Client, folderPath, bucketName string) error {
+	// Ensure folderPath ends with a slash to correctly trim the prefix from file paths
+	cleanFolderPath := filepath.Clean(folderPath) + string(os.PathSeparator)
+
+	err := filepath.Walk(cleanFolderPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			file, err := os.Open(path)
+			if err != nil {
+				return fmt.Errorf("failed to open file %q, %v", path, err)
+			}
+			defer file.Close()
+
+			fileContent, err := io.ReadAll(file)
+			if err != nil {
+				return fmt.Errorf("failed to read file %q, %v", path, err)
+			}
+
+			ext := filepath.Ext(path)
+			mimeType := mime.TypeByExtension(ext)
+			if mimeType == "" {
+				mimeType = "application/octet-stream" // Default MIME type if unknown
+			}
+
+			key := strings.TrimPrefix(path, cleanFolderPath)
+
+			_, err = s3c.PutObject(ctx, &s3.PutObjectInput{
+				Bucket:      aws.String(bucketName),
+				Key:         aws.String(key),
+				Body:        bytes.NewReader(fileContent),
+				ContentType: aws.String(mimeType),
+			})
+			if err != nil {
+				return fmt.Errorf("failed to upload file %q to bucket %q, %v", path, bucketName, err)
+			}
+			slog.Info("uploaded file", "file", path, "bucket", bucketName)
+		}
+		return nil
+	})
+
+	if err != nil {
+		return fmt.Errorf("failed to walk through folder %q, %v", folderPath, err)
+	}
+
+	return nil
 }
