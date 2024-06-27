@@ -19,6 +19,11 @@ auto_extend_size_limit = "10GB"
 #[experimental]
 #cmd = ["/bin/sleep", "infinity"]
 
+[[statics]]
+url_prefix = "/"
+guest_path = "/"
+tigris_bucket = "xesite-dev"
+
 [build]
 image = "ghcr.io/xe/site/bin:earthly"
 
