@@ -1,15 +1,15 @@
 module xeiaso.net/v4
 
-go 1.22
+go 1.22.0
 
-toolchain go1.22.0
+toolchain go1.22.4
 
 require (
 	github.com/bep/debounce v1.2.1
 	github.com/donatj/hmacsig v1.1.0
 	github.com/emicklei/proto v1.13.2
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
-	github.com/getkin/kin-openapi v0.120.0
+	github.com/getkin/kin-openapi v0.125.0
 	github.com/go-faker/faker/v4 v4.4.2
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/invopop/yaml v0.3.1
@@ -20,8 +20,8 @@ require (
 	google.golang.org/protobuf v1.34.2
 	gopkg.in/fsnotify.v1 v1.4.7
 	gopkg.in/mxpv/patreon-go.v1 v1.0.0-20171031001022-1d2f253ac700
-	tailscale.com v1.58.2
-	within.website/x v1.9.0
+	tailscale.com v1.62.1
+	within.website/x v1.10.0
 )
 
 require (
@@ -51,12 +51,12 @@ require (
 	github.com/skeema/knownhosts v1.2.2 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	go4.org/mem v0.0.0-20220726221520-4f986261bf13 // indirect
-	golang.org/x/crypto v0.21.0 // indirect
-	golang.org/x/mod v0.15.0 // indirect
+	golang.org/x/crypto v0.23.0 // indirect
+	golang.org/x/mod v0.16.0 // indirect
 	golang.org/x/net v0.23.0 // indirect
-	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
-	golang.org/x/tools v0.18.0 // indirect
+	golang.org/x/tools v0.19.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
