@@ -4,6 +4,10 @@
      line(length: 100%, stroke: 1pt + primary_colour)
 }
 
+#let smallColoredLine() = {
+     line(length: 100%, stroke: 0.5pt + primary_colour)
+}
+
 #let sigil() = {
   align(center + horizon)[#box(
     height: 24pt,
@@ -114,10 +118,11 @@
   links: (
     (name: "email", link: "mailto:me@xeiaso.net"),
     (name: "website", link: "https://xeiaso.net/", display: "xeiaso.net"),
+    (name: "x", link: "https://x.com/theprincessxena", display: "@theprincessxena"),
     (name: "github", link: "https://github.com/Xe", display: "@Xe"),
     (name: "linkedin", link: "https://www.linkedin.com/in/xe-iaso/", display: resume.name),
     (name: "mastodon", link: "https://pony.social/@cadey", display: "@cadey@pony.social"),
-    (name: "twitch", link: "https://twitch.tv/princessxen", display: "@princessxen"),
+    (name: "tiktok", link: "https://www.tiktok.com/@xeiaso.1337", display: "@xeiaso.1337"),
   ),
   tagline: resume.tagline,
   doc,
@@ -136,6 +141,10 @@ If you want someone that is dedicated to their craft, a fearless innovator and a
 
 At Fly.io I am responsible for helping to build the developer relations team from scratch. I am working with the team to create a new developer relations strategy that is focused on helping developers understand the value of Fly.io and how to use it in their projects. This includes in-person, online, and video content as well as occasional writing for the Fly.io and partner companies' blogs.
 
+I also lead social media posting on websites like #text(9pt)[#icon("x")] (formerly Twitter) and have contributed heavily to social media strategy and content creation. I am the main maintainer of the Fly.io YouTube and TikTok channels.
+
+#smallColoredLine()
+
 #titleCompany[Archmage of Infrastructure][Tailscale]\
 #term[2020-12 -- 2023-10][Ottawa, CA]
 
@@ -145,7 +154,7 @@ Tailscale has easily been the best job I've ever had and I've had an enormous im
 
 I regularly wrote articles and lead internal talks about how to use Tailscale and other technology topics in new and interesting ways.
 
-#coloredLine()
+#smallColoredLine()
 
 #titleCompany[Expert principal en fiabilité du site][Lightspeed]\
 #term[2019-05 -- 2020-11][Montréal, CA]
@@ -156,7 +165,7 @@ I created and maintained the internal Kubernetes deployment (with the goal of be
 - Built developer tooling on top of a custom CI/CD flow
 - Managed hidden complexity in the Kubernetes deployment system
 
-#coloredLine()
+#smallColoredLine()
 
 #titleCompany[Senior Software Engineer][Heroku]\
 #term[2017-02 -- 2019-03][Bellevue, USA]
@@ -181,7 +190,7 @@ My work history before 2017 is available upon request.
 == Projects
 
 ==== Xesite\
-The custom blog engine that powers #text(fill: blue)[#link("https://xeiaso.net")[xeiaso.net]]. It is a handcrafted work of art written in Rust with two goals:
+The custom blog engine that powers #text(fill: blue)[#link("https://xeiaso.net")[xeiaso.net]]. It is a handcrafted work of art written in Go with two goals:
 
 1. To be as fast as possible to survive traffic surges from news aggregators without flinching.
 2. To be easily extensible and hackable to meet my needs.
@@ -190,11 +199,6 @@ This project has been an overwhelming success and is the backbone of a lot of my
 
 ==== XeDN\
 The software that powers #text(font: "Iosevka Curly Iaso Extended")[#link("https://cdn.xeiaso.net")[cdn.xeiaso.net]], currently serving over 4 terabytes of traffic per month without breaking a sweat. This powers the images, video, slides, and other files that I use to enrich my posts.
-
-==== Xeact\
-My custom frontend JavaScript framework. I regularly write about things I have learned working on it #text(fill: blue)[#link("https://xeiaso.net/blog/series/xeact")[on my blog]].
-
-Working on this project has been the catalyst for me finally understanding how to do front-end development in web browsers. Xeact also powers internal tooling at Tailscale, being used daily by the support team to understand and diagnose customer issues.
 
 ==== #link("https://github.com/Xe/waifud")[waifud]\
 My custom virtual machine manager for my homelab. waifud replicates most of the advantages of using cloud computing in my basement. I write about it regularly #text(fill: blue)[#link("https://xeiaso.net/blog/series/waifud")[on my blog]].
