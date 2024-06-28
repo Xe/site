@@ -90,6 +90,7 @@ in  Config::{
       ]
     , contactLinks =
       [ Link::{ url = "https://github.com/Xe", title = "GitHub" }
+      , Link::{ url = "https://x.com/theprincessxena", title = "X (Twitter)" }
       , Link::{ url = "https://keybase.io/xena", title = "Keybase" }
       , Link::{ url = "https://www.patreon.com/cadey", title = "Patreon" }
       , Link::{ url = "https://www.twitch.tv/princessxen", title = "Twitch" }

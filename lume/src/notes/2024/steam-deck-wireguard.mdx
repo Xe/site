@@ -1,0 +1,50 @@
+---
+title: The Steam Deck ships with WireGuard
+date: 2024-06-28
+desc: One less install required!
+---
+
+While I was poking around SteamOS, I tried to run wg-quick and was surprised to see it was preinstalled. I've been wanting to get into my Deck from my MacBook over a stable IP for a fair bit, and this means I can just add it to my private [fly.io](https://fly.io) network.
+
+So I did that:
+
+```
+$ fly wg create personal yul mipha mipha.conf
+```
+
+And then I imported the config to my deck over normal SSH and activated it:
+
+```
+$ sudo cp mipha.conf /etc/wg-quick/fly0.conf
+
+$ sudo systemctl enable --now wg-quick@fly0.service
+```
+
+And then I can ping it as normal:
+
+```
+$ ping6 fdaa:0:641b:a7b:9285:0:a:2502 -c4
+PING6(56=40+8+8 bytes) [scrubbed] --> fdaa:0:641b:a7b:9285:0:a:2502
+16 bytes from fdaa:0:641b:a7b:9285:0:a:2502, icmp_seq=0 hlim=62 time=35.587 ms
+16 bytes from fdaa:0:641b:a7b:9285:0:a:2502, icmp_seq=1 hlim=62 time=22.683 ms
+16 bytes from fdaa:0:641b:a7b:9285:0:a:2502, icmp_seq=2 hlim=62 time=29.850 ms
+16 bytes from fdaa:0:641b:a7b:9285:0:a:2502, icmp_seq=3 hlim=62 time=95.205 ms
+
+--- fdaa:0:641b:a7b:9285:0:a:2502 ping6 statistics ---
+4 packets transmitted, 4 packets received, 0.0% packet loss
+round-trip min/avg/max/std-dev = 22.683/45.831/95.205/28.870 ms
+```
+
+Et voila! I'm in. Now it's easy to copy off the videos I got with Decky Recorder. Here's a few screenshots I've copied over:
+
+<Photo path="blog/2024/steam-deck-wireguard/20231212171009_1" />
+
+<Photo path="blog/2024/steam-deck-wireguard/20231212171009_1" />
+
+<Photo path="blog/2024/steam-deck-wireguard/20231212171107_1" />
+
+Hope this gives you ideas!
+
+---
+
+This was originally a post on [X's article feature](https://x.com/theprincessxena/status/1806786540137275709), but it has been copied here in case the original is deleted, that product is cancelled, or some other bad thing happens.
