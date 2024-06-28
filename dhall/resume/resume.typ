@@ -137,11 +137,11 @@ If you want someone that is dedicated to their craft, a fearless innovator and a
 == Experience
 
 #titleCompany[Senior Techniphilosopher][Fly.io]\
-#term[2023-10 -- Present][Ottawa, CA]
+#term[2023-11 -- Present][Ottawa, CA]
 
 At Fly.io I am responsible for helping to build the developer relations team from scratch. I am working with the team to create a new developer relations strategy that is focused on helping developers understand the value of Fly.io and how to use it in their projects. This includes in-person, online, and video content as well as occasional writing for the Fly.io and partner companies' blogs.
 
-I also lead social media posting on websites like #text(9pt)[#icon("x")] (formerly Twitter) and have contributed heavily to social media strategy and content creation. I am the main maintainer of the Fly.io YouTube and TikTok channels.
+I also lead social media posting on websites like X (formerly Twitter) and have contributed heavily to social media strategy and content creation. I am the main maintainer of the Fly.io YouTube and TikTok channels.
 
 #smallColoredLine()
 
@@ -176,7 +176,7 @@ I maintained the subsystem for processing terabytes of customer metrics per week
 - Developed a FaaS platform prototype with my team
 - Helped my team navigate complicated corporate politics and market conditions beyond our control
 
-#coloredLine()
+#smallColoredLine()
 
 My work history before 2017 is available upon request.
 
