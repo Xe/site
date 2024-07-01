@@ -20,3 +20,5 @@ brew "jo"
 
 brew "earthly"
 brew "pandoc"
+
+brew "flyctl"
