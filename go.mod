@@ -22,7 +22,7 @@ require (
 	google.golang.org/protobuf v1.34.2
 	gopkg.in/fsnotify.v1 v1.4.7
 	gopkg.in/mxpv/patreon-go.v1 v1.0.0-20171031001022-1d2f253ac700
-	tailscale.com v1.68.1
+	tailscale.com v1.68.2
 	within.website/x v1.10.0
 )
 
