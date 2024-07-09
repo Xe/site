@@ -116,6 +116,10 @@ func main() {
 
 	mux.Handle("/.within/hook/patreon", &PatreonWebhook{fs: fs})
 
+	mux.HandleFunc("/static/talks/irc-why-it-failed.pdf", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "https://cdn.xeiaso.net/file/christine-static/static/talks/irc-why-it-failed.pdf", http.StatusMovedPermanently)
+	})
+
 	var h http.Handler = mux
 	h = internal.ClackSet(fs.Clacks()).Middleware(h)
 	h = internal.CacheHeader(h)
