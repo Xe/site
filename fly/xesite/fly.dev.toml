@@ -23,6 +23,7 @@ auto_extend_size_limit = "10GB"
 url_prefix = "/"
 guest_path = "/"
 tigris_bucket = "xesite-dev"
+index_document = "index.html"
 
 [build]
 image = "ghcr.io/xe/site/bin:earthly"
@@ -38,6 +39,9 @@ INTERNAL_API_BIND = ":80"
 internal_port = 3000
 processes = ["app"]
 protocol = "tcp"
+auto_stop_machines = true
+auto_start_machines = true
+min_machines_running = 0
 
 [services.concurrency]
 hard_limit = 300
