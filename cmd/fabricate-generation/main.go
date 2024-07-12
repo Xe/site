@@ -21,14 +21,13 @@ import (
 	"golang.org/x/oauth2"
 	"gopkg.in/mxpv/patreon-go.v1"
 	"within.website/x/tigris"
-	"within.website/x/web"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
 	"xeiaso.net/v4/internal/saasproxytoken"
 )
 
 var (
-	bucketName          = flag.String("bucket-name", "xesite-dev", "Name of the S3 bucket to upload to")
+	bucketName          = flag.String("bucket-name", "xesite", "Name of the S3 bucket to upload to")
 	githubSHA           = flag.String("github-sha", "", "GitHub SHA to use for the site")
 	miURL               = flag.String("mimi-announce-url", "", "Mi url (named mimi-announce-url for historical reasons)")
 	patreonSaasProxyURL = flag.String("patreon-saasproxy-url", "http://xesite-patreon-saasproxy.flycast", "URL to use for the patreon saasproxy")
@@ -58,7 +57,7 @@ func main() {
 		Branch:        "main",
 		Repo:          "https://github.com/Xe/site",
 		StaticSiteDir: "lume",
-		URL:           "https://xeiaso.net",
+		URL:           *siteURL,
 		Development:   false,
 		PatreonClient: pc,
 		DataDir:       "./var",
@@ -73,34 +72,6 @@ func main() {
 	if err := uploadFolderToS3(context.Background(), s3c, "./var/repo/lume/_site", *bucketName); err != nil {
 		log.Fatal(err)
 	}
-}
-
-func uploadSlug(cli *http.Client, host, fname string) error {
-	fin, err := os.Open(fname)
-	if err != nil {
-		return err
-	}
-	defer fin.Close()
-
-	req, err := http.NewRequest("PUT", "http://"+host+"/xesite/upload", fin)
-	if err != nil {
-		return err
-	}
-
-	slog.Info("uploading", "host", host)
-
-	resp, err := cli.Do(req)
-	if err != nil {
-		return err
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return web.NewError(http.StatusOK, resp)
-	}
-
-	slog.Info("done", "host", host)
-
-	return nil
 }
 
 func NewPatreonClient(hc *http.Client) (*patreon.Client, error) {
@@ -140,7 +111,8 @@ func uploadFolderToS3(ctx context.Context, s3c *s3.Client, folderPath, bucketNam
 			ext := filepath.Ext(path)
 			mimeType := mime.TypeByExtension(ext)
 			if mimeType == "" {
-				mimeType = "application/octet-stream" // Default MIME type if unknown
+				// otherwise, detect by content
+				mimeType = http.DetectContentType(fileContent)
 			}
 
 			key := strings.TrimPrefix(path, cleanFolderPath)
