@@ -17,11 +17,11 @@ auto_extend_size_threshold = 80
 auto_extend_size_increment = "1GB"
 auto_extend_size_limit = "10GB"
 
-[[statics]]
-url_prefix = "/"
-guest_path = "/"
-tigris_bucket = "xesite"
-index_document = "index.html"
+#[[statics]]
+#url_prefix = "/"
+#guest_path = "/"
+#tigris_bucket = "xesite"
+#index_document = "index.html"
 
 [build]
 image = "ghcr.io/xe/site/bin:earthly"
