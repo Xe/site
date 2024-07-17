@@ -1,0 +1,55 @@
+---
+title: "The ROG Ally and Steam Deck are different products"
+date: "2024-07-17"
+desc: "Specs don't define the experience"
+hero:
+  ai: "Picture by Xe Iaso, Canon EOS R6 mark ii, 50mm f/1.8"
+  file: river-crick
+  prompt: "A bend in a river, the photo was taken before spring so normally green plants look dead as they are recovering from a mild winter"
+  social: true
+---
+
+There, I said it. They're fundamentally different things. They're often put into the same categories of devices, but they're really entirely separate products in non-overlapping niches. After having owned both a Steam Deck and an ROG Ally for a while, I think I have enough experience with both products to know how to describe them properly.
+
+As I said in a recent [TikTok video](/videos/2024/steam-deck-holy/), my Steam Deck is a console. I turn it on to play games. I play the games. I turn it off when I'm done. I do the majority of my gaming with games that I purchased from Steam.
+
+However, it runs a variant of Arch Linux, so should I want to, I can make it run just about any game I want. Up to and including recent releases like Zenless Zone Zero:
+
+<Video path="video/2024/misc/zenless-deck/" />
+
+(actual gameplay captured on the deck)
+
+I'm also prevented from seriously hurting the OS because it's got an A/B partition scheme with a readonly seal so that it's logistically annoying to install arbitrary packages on it. I've [worked around this in the past](https://tailscale.com/blog/steam-deck) with systemd features and the like, but realistically it's just difficult enough that I don't.
+
+I am able to just treat it like a console and it just works.
+
+I can't say as much about my ROG Ally. Out of the box, the Steam Deck acted like a console. The first-time-user-experience had me set it up like I did with my Switch. The ROG Ally made me go through the normal Windows setup process. I had to resort to a mouse and keyboard two steps in. I never had to do that with the Steam Deck.
+
+One theoretical advantage of the ROG Ally over the Deck is that the Ally runs normal Windows, so you can play games like Honkai Star Rail that don't allow installing it on Linux because of the anticheat not working there.
+
+This is not a limitation of the Steam Deck, because you [can install Windows on a Steam Deck](https://help.steampowered.com/en/faqs/view/6121-ECCD-D643-BAA8), it just sucks because Windows is _really_ not made for such a small display. Or for a device without a keyboard.
+
+This is actually the result of publishers not allowing the game to run on the Steam Deck. In many cases, this can be fixed by checking [one box](https://dev.epicgames.com/docs/game-services/anti-cheat/anti-cheat-interfaces#linux). Many publishers choose to not check this box or use other anticheat solutions that don't work on the Steam Deck.
+
+Maybe there's something to be said about the "pushback" people have over the Deck not running Windows. I mean, part of the point they have is along the lines of "if thing ran windows, game works", and from an uninformed consumer perspective this is a completely fair take. Most uninformed consumers are used to being totally fucked over by corporations and totally beholden to whatever they decree from on high.
+
+This is why the very idea that anything can be different can be seen as "bad". If something is "different" but not totally compatible with their expectations it can be seen as a threat. This is why people were pissed when the PS4 couldn't play PS3 games (tbh I'd be surprised if a PS5 could do PS3 emulation right, it's a surprisingly difficult console to correctly emulate even on super gamer PCs). This is why people were miffed the Xbox One couldn't play 360 games on launch (it does now).
+
+However, even though the ROG Ally can play honk honk space train, it still pulls 12 watts from the battery sitting at the desktop doing nothing. The Deck can pull 7 watts from the battery _doing GameCube emulation_. My Deck can let me play games for an entire cross-continent flight. My Ally would need to be permanently tethered to an outlet or make me take frequent breaks to do the same, even if it has higher specs on paper.
+
+Earlier this year I tried to make a review video of the ROG Ally and ended up not publishing it because it was kinda bad (I did publish it for [my patrons](https://www.patreon.com/posts/failed-video-rog-104217764)). The biggest problems with the Ally I pointed out in that video are the battery life and the screen. A 1080p120 screen doesn't really make sense when you have to push the hardware harder and thus eat into even more power budget just to render individual frames.
+
+I would love to see what the Ally's Z1 Extreme SOC would do in a Steam Deck chassis, I suspect that the power floor would still be pretty high due to the fact that it's a laptop CPU instead of a proper mobile CPU, but it probably would get significantly better usage of the higher specs.
+
+Overall, I think it's better to analyze the Steam Deck as a portable game console that plays PC games as an implementation detail and the ROG Ally as a handheld Windows PC that has game controllers glued to either side. Sure you can use an ROG Ally as a portable game console, but do you really want to?
+
+Maybe if you have a power outlet to tether it to.
+
+<Conv name="Cadey" mood="coffee">
+  I'm told the ROG Ally X solves a lot of this (mostly by having a physically
+  larger battery), but I don't want to pay for one. If I can somehow get one for
+  review reasons, I'd be glad to give it a fair shot. Until then, I'll just
+  watch from a distance.
+</Conv>
+
+If you end up getting one, install [Bazzite](https://bazzite.gg) on it. It makes the Ally a game console.
