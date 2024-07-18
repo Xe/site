@@ -143,6 +143,8 @@ At Fly.io I am responsible for helping to build the developer relations team fro
 
 I also lead social media posting on websites like X (formerly Twitter) and have contributed heavily to social media strategy and content creation. I am the main maintainer of the Fly.io YouTube and TikTok channels.
 
+While working here, I became an early expert in AI tooling and how to properly use locally hosted AI models. I am capable of using AI in new products as well as adapting it to existing products.
+
 #smallColoredLine()
 
 #titleCompany[Archmage of Infrastructure][Tailscale]\
