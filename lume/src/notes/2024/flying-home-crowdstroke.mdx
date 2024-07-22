@@ -1,0 +1,79 @@
+---
+title: "Flying home in the age of #CrowdStroke"
+date: 2024-07-21
+desc: Autobiographical notes on my trip home from DevRelCon 2024
+image: blog/2024/flying-home-crowdstroke/IMG_0949
+---
+
+<Conv name="Cadey" mood="coffee">
+  This is copied from [an article on
+  X](https://x.com/theprincessxena/status/1814822993358692753).
+</Conv>
+
+Today I flew home via United. United is one of the airlines that is affected by #CrowdStroke. Luckily, I only had carry-on baggage, so the splash damage of any flight delays or itinerary changes should be minimal at best.
+
+I tried to check in with the United website a few times yesterday and today. I get a few steps into the process and then the system says "no fuck you, check in at the airport". This morning I got as far as seat selection before the system errored out. I can't imagine what the airport is like now.
+
+I'm planning on getting to the airport very fucking early so that I can brave the line game that is undoubtedly full of other travellers that are also totally stuck and fucked over by this shitshow.
+
+If my flight is delayed, I doubt that United or Air Canada will comply with the Canadian flight delay compensation laws due to it being an IT issue. Probably should have bought insurance on the trip.
+
+Worst possible case, home is only a 9 hour drive away.
+
+I have status with Air Canada. One of the perks you get is the magic phone number that gets you to a human before the hold music loops. I called the magic phone number yesterday to see if there was any way to route around United's issues by flying with another airline.
+
+There is not. United is the only airline that flies into YOW from EWR.
+
+Worst case one of the itineraries I could go for is EWR -> YYZ -> YOW, or even EWR -> YUL -> YOW, but I see this as a last-ditch option. If things were super broken at the airport though, I may have had to take that option.
+
+The 7th attempt to check in was the charm! I didn't need to brave the line to check in at the airport. I still got a physical ticket when I got into the airport. I trust paper a lot more than I trust any computer system at this point. That and paper can't run out of battery.
+
+## Escape
+
+I left my hotel at about 7:30 AM. I would have left later, but I ran out of things to do after doing the "last check" for my stuff five times and watching an HBomberGuy video I've seen several times already. That guy always helps me calm my traveling nerves.
+
+When I got into the airport, I was met with this lovely sight:
+
+<Picture
+  path="blog/2024/flying-home-crowdstroke/IMG_0949"
+  desc="A giant sign showing an equally giant blue screen of death"
+/>
+
+The person at the hotel checkout counter called the #CrowdStroke issue a "Microsoft" issue. I swear to god maybe companies that publish kernel modules do need to embed a company logo so that can be displayed when their buggy code fucks out.
+
+<Conv name="Numa" mood="delet">
+  This crash brought to you by Techaro!
+</Conv>
+
+Most of the bluescreens that I saw were signage. They obviously prioritized the agent computers above all else. Amazingly, a lot of the food kiosks were fine because they all ran Android. It's kind of dehumanizing to file your orders with a touchscreen though. This feels so impersonal and terrible. I long for the days of taking to a human to get food, if only for their insight on what's good.
+
+## Idle thoughts
+
+I think one of the weirdest things about all of this is the fact that everything is so normal and abnormal at the same time. All of the signage is fucked but people are just going about their lives. I'm blindly trusting the boarding time printed on my ticket instead of looking at the screen to see the most up-to-date time.
+
+There's a lot of idle chatter about the bluescreens everywhere. I know I'm in a bubble, but it's kinda depressing to hear how randomly selected people don't really know what's going on and can't read a bluescreen to see what even is going wrong. Maybe it'd be worth my time to make a little "this is how you read a blue screen of death" video for TikTok.
+
+I don't think I've seen this many bluescreens in public since I've been an adult.
+
+At some level I get why signage runs on Windows. It makes updating it a lot easier, not to mention you can use dynamic signage to have things update automatically based on things like flight delays. It's kinda wild to see that this is the failure case though. Everything goes through one point of failure that makes world history when they have a bad day.
+
+At another level, it's absolutely terrifying that all of the digital signage in airports runs on Windows. That just feels like a perfect storm of disaster waiting to happen.
+
+<Conv name="Cadey" mood="coffee">
+  ...come to think of it, I guess that disaster did just happen and we were able
+  to recover from it within 24 hours. Hmm.
+</Conv>
+
+It's gonna be really interesting to see what the detailed postmortem is when CrowdStrike either publishes it publicly or someone inevitably leaks it to the public. The stack traces I've seen so far are kinda wild, the kernel extension is trying to read from the zero page. Did they somehow make an assumption that anything in the CrowdStrike folder is safe?
+
+It's also really interesting that they chose to put their definitions in .sys files so that System Restore would include them and that overall Windows wouldn't fuck with them. I get why they did that, but maybe there needs to be a more generic API surface for this than just people reverse-engineering behavior.
+
+This is a perfect storm of circumstances that all lead up to massive downtime. It's kinda impressive really.
+
+## Conclusion
+
+My flight was thankfully uneventful and otherwise normal, save the fact that I got assigned a seat in a bulkhead row. I got through customs with literally zero issues and got lunch while I waited for my husband to pick me up.
+
+If you want to see more of the kinds of things I do, check out my DevRelCon talk ["Guerrilla event planning at larger conferences"](/talks/2024/consentual-marketing/)! These talks are fun to make and deliver. I edited the video for this talk in the backseat of an Uber on my way to get ramen on Friday!
+
+Stay fresh y'all.
