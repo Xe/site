@@ -5,7 +5,7 @@ go 1.22.0
 toolchain go1.22.5
 
 require (
-	github.com/aws/aws-sdk-go v1.55.3
+	github.com/aws/aws-sdk-go v1.55.4
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.57.1
 	github.com/bep/debounce v1.2.1
 	github.com/donatj/hmacsig v1.1.0
