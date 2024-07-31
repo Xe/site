@@ -11,7 +11,7 @@ require (
 	github.com/donatj/hmacsig v1.1.0
 	github.com/emicklei/proto v1.13.2
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
-	github.com/getkin/kin-openapi v0.120.0
+	github.com/getkin/kin-openapi v0.127.0
 	github.com/go-faker/faker/v4 v4.4.2
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/invopop/yaml v0.3.1
@@ -55,8 +55,8 @@ require (
 	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.5.0 // indirect
-	github.com/go-openapi/jsonpointer v0.20.2 // indirect
-	github.com/go-openapi/swag v0.22.9 // indirect
+	github.com/go-openapi/jsonpointer v0.21.0 // indirect
+	github.com/go-openapi/swag v0.23.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
