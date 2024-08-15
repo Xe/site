@@ -250,6 +250,7 @@ function generateRss(data: FeedData, file: string): string {
                 "itunes:image": {
                     "@href": "https://cdn.xeiaso.net/file/christine-static/xecast/itunes-image.jpg",
                 },
+                "author": "xecast@xeiaso.net",
                 item: data.items.map((item) =>
                     clean({
                         title: item.title,
