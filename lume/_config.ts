@@ -12,6 +12,7 @@ import readInfo from "lume/plugins/reading_info.ts";
 
 import annotateYear from "./plugins/annotate_year.ts";
 import feed from "./plugins/feed.ts";
+import podcast_feed from "./plugins/podcast_feed.ts";
 
 //import pagefind from "lume/plugins/pagefind.ts";
 //import _ from "npm:@pagefind/linux-x64";
@@ -96,6 +97,23 @@ site.use(feed({
     },*/
   },
 }));
+
+site.use(podcast_feed({
+  output: ["/xecast.rss"],
+  query: "is_xecast=true",
+  info: {
+    title: "Xecast",
+    description: "Thoughts and musings from Xe Iaso, now in podcast form",
+    published: new Date(),
+    lang: "en",
+  },
+  items: {
+    title: "=title",
+    description: "=desc",
+    podcast: "=podcast",
+  },
+}))
+
 site.use(mdx({
   components: {
     "BlockQuote": BlockQuote,
