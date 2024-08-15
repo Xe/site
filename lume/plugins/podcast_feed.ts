@@ -227,6 +227,7 @@ function generateRss(data: FeedData, file: string): string {
             "@xmlns:sy": "http://purl.org/rss/1.0/modules/syndication/",
             "@xmlns:slash": "http://purl.org/rss/1.0/modules/slash/",
             "@xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+            "@xmlns:podcast": "https://podcastindex.org/namespace/1.0",
             "@version": "2.0",
             channel: clean({
                 title: data.title,
@@ -250,8 +251,11 @@ function generateRss(data: FeedData, file: string): string {
                 "itunes:image": {
                     "@href": "https://cdn.xeiaso.net/file/christine-static/xecast/itunes-image.jpg",
                 },
-                "author": "xecast@xeiaso.net",
-                "itunes:email": "xecast@xeiaso.net",
+                "author": "xecast@xeserv.us",
+                "itunes:owner": {
+                    "itunes:name": "Xe Iaso",
+                    "itunes:email": "xecast@xeserv.us",
+                },
                 item: data.items.map((item) =>
                     clean({
                         title: item.title,
