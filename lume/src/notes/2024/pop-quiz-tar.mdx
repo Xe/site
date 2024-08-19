@@ -1,0 +1,36 @@
+---
+title: "Pop quiz: what is wrong with this tar command?"
+date: 2024-08-19
+desc: "It's stupider than you think"
+hero:
+  ai: "Flux [dev]"
+  file: laptop-anger
+  prompt: "A green haired anime woman with green eyes and very long hair angrily typing on a laptop, headphones, seattle, space needle, black hoodie, best quality, coffee shop"
+  social: true
+---
+
+Pop quiz: what is wrong with this tar command?
+
+```sh
+tar cf ../iosevka-iaso.tgz .
+```
+
+<Conv name="Aoi" mood="wut">
+  That looks fine to me? You're creating a tarball in the parent directory with
+  the contents of the current working directory. What's the problem?
+</Conv>
+
+```sh
+$ tar xzf iosevka-iaso.tgz
+gzip: not a compressed stream
+```
+
+The thing I messed up was not adding `z` to the tarball creation command. I needed to do:
+
+```sh
+tar czf ../iosevka-iaso.tgz .
+```
+
+This happens because GNU tar looks at file extensions to try to determine the user's intent. If you do `tar xf foo.tgz` or `tar xf foo.tar.gz`, it will invoke gzip to decompress the tarball for you. This is intended behavior, but that same logic doesn't run when you create a tarball.
+
+I lost 15 minutes to this today and feel that I need to let y'all know so you can learn from my suffering.
