@@ -3,7 +3,7 @@ module xeiaso.net/v4
 go 1.23.0
 
 require (
-	github.com/aws/aws-sdk-go v1.55.3
+	github.com/aws/aws-sdk-go v1.55.5
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.57.1
 	github.com/bep/debounce v1.2.1
 	github.com/donatj/hmacsig v1.1.0
