@@ -3,7 +3,7 @@ FROM alpine:edge
 WORKDIR /app
 
 deps:
-    FROM golang:1.22-alpine
+    FROM golang:1.23-alpine
     WORKDIR /app
 
     COPY go.mod go.sum ./
