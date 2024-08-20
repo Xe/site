@@ -310,5 +310,26 @@ in  [ Person::{
         , Link::{ url = "https://github.com/shepherdjerred", title = "GitHub" }
         ]
       }
+      , name = "Dom 'shymega'Rodriguez"
+      , tags =
+        [ "sysadmin"
+        , "backend"
+        , "scripting",
+        , "CI/CD",
+        , "rust",
+        , "java"
+        , "spring"
+        , "elixir"
+        , "erlang"
+        , "embedded"
+        , "golang"
+        , "containers"
+        ]
+      , links =
+        [ Link::{ url = "https://dom.rodriguez.org.uk", title = "Website" }
+        , Link::{ url = "https://blog.shymega.org.uk", title = "Blog" }
+        , Link::{ url = "https://github.com/shymega", title = "GitHub" }
+        ]
+    }
     ]
 
