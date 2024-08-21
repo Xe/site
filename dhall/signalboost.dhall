@@ -310,7 +310,8 @@ in  [ Person::{
         , Link::{ url = "https://github.com/shepherdjerred", title = "GitHub" }
         ]
       }
-      , name = "Dom 'shymega'Rodriguez"
+    , Person::{
+      , name = "Dom 'shymega' Rodriguez"
       , tags =
         [ "sysadmin"
         , "backend"
