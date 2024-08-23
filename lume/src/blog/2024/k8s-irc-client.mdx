@@ -1,0 +1,111 @@
+---
+title: "My IRC client runs on Kubernetes"
+desc: "Trust me, there's a reason for this"
+date: 2024-08-23
+hero:
+  ai: "Black Forest Flux.1 [dev]"
+  file: "arona-seattle"
+  prompt: "A light-blue haired anime woman with a pixie cut in a white hoodie and short skirt drinking coffee in Seattle, space needle, smartphone, chat bubbles, blue halo"
+  social: true
+---
+
+IRC has historically been one of the most important chat programs in my life. It's how I met my husband, how I found jobs in the early stages of my career, how I get help with weird Linux arcana that nobody else can really fix, and it's where I socialize with the Internet Illuminati. I use it every day and main reason I use tmux is to attach to that one session with my IRC client in it.
+
+However, there's a problem with this setup: it's tied to one physical computer. If that physical computer dies, I lose easy access to all my IRC logs. My IRC logs folder is ridiculously large:
+
+```
+$ du -hs .weechat/logs
+5.0G	.weechat/logs
+```
+
+This is five gigabytes of _text_. This represents a huge fraction of my digital life and is some of the most important data to me. Not to mention my 188 kilobytes of configuration that I've built up over the years.
+
+Point is, there's a lot of data here and I want to make sure that it's easy to access via a shell like I'm used to. I also want it to be a bit more redundant so that if one physical computer dies then it'll just be rescheduled to another machine and I'll be back up and chatting within minutes _without human intervention_.
+
+Seeing as there's realistically not many other options for this (and I already have a Kubernetes cluster), I decided to move my IRC client into a VM on top of Kubernetes.
+
+## What? Why?
+
+After reading that last bit, I'm sure that some of you have questions like this:
+
+<Conv name="Aoi" mood="wut">
+  You're using a container orchestrator for virtual machines? That seems a
+  bit...unorthodox. Why not just put it into a container? What's wrong with
+  that?
+</Conv>
+
+There's a couple properties of Kubernetes that I'm going to be taking advantage of here:
+
+1. Kubernetes detects node failure and reschedules jobs to other machines as it happens.
+1. I already have Kubernetes set up (the best orchestrator is the one you already have).
+1. If I'm going to have a SSH daemon and tmux running in a container, I might as well just run a whole normal Linux distro so that I can use systemd for this instead of having to reinvent my own service management layer.
+
+The big thing that makes all this work is my combination of [Kubevirt](https://kubevirt.io) and [Longhorn](https://longhorn.io). Kubevirt lets you schedule virtual machines onto Kubernetes and import cloud-friendly images into your cluster. Longhorn is what I use for replicated block/file storage in my Kubernetes cluster, which makes everything have at least three copies in my homelab. This combination allows me to have a virtual machine that automagically gets run _somewhere_ in the homelab. I don't have to think about it. I don't have to care. It just works. It also backs up all of the data to [Tigris](https://tigrisdata.com), which makes me feel better about the data being intact if my house were to catch on fire.
+
+<Conv name="Cadey" mood="coffee">
+  This is what I wanted to implement with [waifud](/blog/series/waifud), but now
+  I don't need to use that project at all. It even imports cloud-config metadata
+  for me! It's glorious.
+</Conv>
+
+## The big move
+
+<Conv name="Mara" mood="hacker">
+  For your convenience when reading, Kubernetes and Kubevirt terms are written
+  in JavaClassNameCase. To be extra unambiguous the first time a term is used,
+  the "owner" of the term will be written next to it, such as a "Kubevirt
+  VirtualMachine" or a "Kubernetes Service".
+</Conv>
+
+To move my IRC client over to Kubernetes, I needed three objects:
+
+1. A [Kubevirt DataVolume](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/datavolumes.md), which is a Kubernetes PersistentVolumeClaim that gets pre-seeded with the contents of a Linux distribution.
+2. A [Kubevirt VirtualMachine](https://kubevirt.io/user-guide/user_workloads/creating_vms/), which is like a Kubernetes Deployment, but it uses a template that has a virtual machine hypervisor enabled.
+3. A Kubernetes Service to expose ports on that VirtualMachine with a stable IP address and DNS name so that I can SSH into it and another one of my bots can use my IRC client as a bouncer.
+
+Each of those objects are defined in [Xe/x/kube/alrest/vms/arona/arona.yaml](https://github.com/Xe/x/blob/master/kube/alrest/vms/arona/arona.yaml). The most exciting one I want to highlight here is the Kubevirt DataVolume:
+
+```yaml
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: "arona"
+  namespace: waifud
+spec:
+  storage:
+    storageClassName: longhorn
+    volumeMode: Block # or filesystem
+    accessModes:
+      - ReadWriteOnce # Necessary as it's no longer has a default
+    resources:
+      requests:
+        storage: 64Gi
+  source:
+    http:
+      url: "https://cloud-images.ubuntu.com/daily/server/noble/current/noble-server-cloudimg-amd64.img"
+```
+
+This is kinda exciting to me because I [implemented this in waifud](https://github.com/Xe/waifud/blob/a0c21bcfe5855e5effbfd52ecec7206b6be568aa/src/api/instances.rs#L458-L506) with the most fucked Rust code ever. My implementation also assumed that the contents of cloud image URLs didn't change (spoiler alert: they do, all the time), and overall I wasn't really happy with how it worked in practice. Kubevirt DataVolumes make this irrelevant and I am so happy that I can grab something off the shelf for this. It's worth having to use Kubernetes for this.
+
+From there all I needed was a hostname for the machine, to write some stuff [in a shell script](https://github.com/Xe/x/blob/master/kube/alrest/vms/arona/setup.sh), copy [a systemd unit out of the Arch wiki](https://wiki.archlinux.org/title/WeeChat#tmux_method), and then to copy over my giant `.weechat` folder.
+
+<Conv name="Cadey" mood="enby">
+  I chose the hostname `arona` by opening a four-split of gacha game fandom
+  wikis and clicking the "random page" button on each of them, then picked the
+  one that sounded nicest. The other options were `yanfei`, `hanabi`, and
+  `changli`, but `arona` just sounded better.
+</Conv>
+
+## The results
+
+<Picture
+  path="blog/2024/arona-irc/arona-uwufetch"
+  desc="A screenshot of my VM arona running neowofetch, showing off the fact that it has 4 hours of uptime, is using about a gigabyte of ram, and is running Ubuntu 24.04."
+/>
+
+I'm pretty happy with this so far! The VM automatically gets backed up every night, it's replicated between my machines, and to get into it, I just run `ssh xe@arona.waifud.svc.alrest.xeserv.us` and then get into weechat with the command `chats`.
+
+<Picture
+  path="blog/2024/arona-irc/irc-client"
+  desc="A screenshot of my IRC client in the Gentoo offtopic IRC channel on Libera.chat"
+/>
