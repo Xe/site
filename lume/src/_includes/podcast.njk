@@ -1,0 +1,102 @@
+---
+layout: base.njk
+---
+
+<article class="prose dark:prose-invert max-w-none">
+    <h1 class="mb-2">{{title}}</h1>
+    <p class="text-sm text-fg-3 dark:text-fgDark-3 my-1">
+        Published on <time datetime={{date | date("DATE")}}>{{date | date("DATE_US")}}</time>, {{ readingInfo.words }} words, {{ readingInfo.minutes }} minutes to read
+    </p>
+
+    {% if desc %}
+        <p class="text-sm font-serif text-fg-3 dark:text-fgDark-3 my-1">{{desc}}</p>
+    {% endif %}
+
+    {% if patronExclusive %}
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 py-1 px-4 mb-4">
+            <p class="text-yellow-700 text-sm font-semibold font-['Inter']">This content is exclusive to my patrons. If you are not a patron, please don't be the reason I need to make a process more complicated than the honor system. This will be made public in the future, once the series is finished.</p>
+        </div>
+    {% else %}
+        {% if commit.hash != "development" %}
+            {{ comp.ads() | safe }}
+        {% endif %}
+    {% endif %}
+
+    {% if hero %}
+        {{ comp.XeblogHero(hero) | safe }}
+        <small class="text-xs text-fg-3 dark:text-fgDark-3 mb-2 mx-auto">{{hero.prompt}} - {{hero.ai}}</small>
+    {% endif %}
+
+    <center>
+        <audio controls>
+            <source
+      src="{{podcast.link}}"
+      type="audio/mpeg"
+/>
+        </audio>
+    </center>
+
+    <a href="{{podcast.link}}">Download MP3</a>
+
+    {{content | safe}}
+
+    <hr/>
+
+    <button id="shareButton" type="button" class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"> Share <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon icon-tabler icon-tabler-share-2 h-8 w-8"
+        width=24
+        height=24
+        viewBox="0 0 24 24"
+        stroke-width=2
+        stroke="currentColor"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M8 9h-1a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-8a2 2 0 0 0 -2 -2h-1"/>
+            <path d="M12 14v-11"/>
+            <path d="M9 6l3 -3l3 3"/>
+        </svg>
+    </button>
+
+    <script type="module">
+        import swal from "/js/swal.js";
+
+        const shareButton = document.getElementById("shareButton");
+        function doShareButton() {
+            const shareData = {
+                title: document.title,
+                url: window.location.href
+            };
+            if (navigator.share && navigator.canShare(shareData)) {
+                // console.log("(via navigator.share)");
+                navigator
+                    .share(shareData)
+                    .then(() => {
+                        console.log("Thanks for sharing!");
+                    })
+                    .catch(console.error);
+            } else if (navigator.clipboard) {
+                // console.log("(via navigator.clipboard)");
+                navigator
+                    .clipboard
+                    .writeText(shareData.url)
+                    .then(() => {
+                        console.log("Thanks for sharing!");
+                    })
+                    .catch(console.error);
+                swal("Link copied to clipboard", "Feel free to paste it anywhere you like!", "success");
+            } else {
+                console.log("can't share directly, but feel free to copy the url from addressbar manually");
+                swal("Can't share directly", "Feel free to copy the url from addressbar manually!", "info");
+            }
+        }
+        shareButton.addEventListener("click", doShareButton);
+    </script>
+
+    <p class="mb-4">Facts and circumstances may have changed since publication. Please contact me before jumping to conclusions if something seems wrong or unclear.</p>
+
+    <p class="mb-4">Tags: {{tags.join(", ")}}</p>
+</article>

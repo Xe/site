@@ -1,4 +1,4 @@
-layout: blog.njk
+layout: podcast.njk
 type: blog
 index: true
 is_xecast: true

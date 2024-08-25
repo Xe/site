@@ -74,9 +74,9 @@ metadata:
 spec:
   storage:
     storageClassName: longhorn
-    volumeMode: Block # or filesystem
+    volumeMode: Block
     accessModes:
-      - ReadWriteOnce # Necessary as it's no longer has a default
+      - ReadWriteOnce
     resources:
       requests:
         storage: 64Gi

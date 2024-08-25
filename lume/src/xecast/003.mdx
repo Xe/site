@@ -1,0 +1,43 @@
+---
+title: "Xecast Episode 3: The curse of the artist"
+date: 2024-08-25
+desc: "Xe returns while on vacation where they built a new PC, made a SaaS to check web server headers, and re-evaluated how they think about complexity."
+podcast:
+  link: "https://cdn.xeiaso.net/file/christine-static/xecast/episodes/003.mp3"
+  length: "80793600"
+---
+
+<Conv name="Mimi" mood="happy">
+  These show notes were generated using Google Gemini 1.5 Pro. Should this
+  podcast take off, we'll find a better way to do this.
+</Conv>
+
+Xe returns while on vacation where they built a new PC, made a SaaS to check web server headers, and re-evaluated how they think about complexity.
+
+## Show Notes
+
+- **Vacation**: Xe discusses how they took a staycation instead of attending a conference, spending time not working and building a new PC.
+  - Their new PC boasts DDR5 RAM, a Ryzen 9 7950X3D processor, 64GB of RAM, and a beautiful Fractal North case.
+- **`hdrwtch`**: A SaaS Xe built during their time off that lets users monitor web server headers via Telegram DMs.
+  - `hdrwtch` was built using Go, HTMX, and a SQLite database compiled to WebAssembly.
+  - Xe hasn't implemented paid tiers yet, as there's little demand for monitoring more than 50 server headers at a time.
+  - Xe plans to add support for [expr](https://expr-lang.org/) to allow querying arbitrary headers.
+  - https://hdrwtch.xeserv.us/
+- **Homelab**: A patron asked Xe about their thoughts on their Kubernetes homelab setup, leading them to realize how it simplified their life.
+  - In pursuing a more exciting homelab, Xe made it incredibly boring by automating everything, but they appreciate how effortless it has become.
+  - This experience shifted their view on complexity in site reliability engineering.
+- **Complexity**: A Hacker News commenter inspired Xe to re-evaluate how they view complexity in software engineering.
+  - The comment argued that the real conflict in SRE isn't simple vs. complex, but unique vs. standard.
+  - Standard approaches, like Kubernetes, may be more complex to implement initially, but they lead to shared knowledge and transferable skills, ultimately simplifying operations.
+  - Xe realized that their preference for "simple" solutions often resulted in unique snowflake systems that were harder to maintain in the long run.
+  - Xe recounted their experience at Heroku, where internal components were deployed using the same standardized process as customer apps, leading to deep platform expertise and efficient support.
+- **The Curse of the Artist**: Xe discusses the challenges of creative work, even after developing significant skill.
+  - They outline their creative process, which relies heavily on inspiration and "festering" ideas until they demand to be written.
+  - Xe emphasizes the importance of writing down ideas as they come, even if they seem trivial, to combat inconsistency in output.
+  - They acknowledge the never-ending cycle of improvement and self-criticism that comes with creative work, dubbing it "The Curse of the Artist."
+  - Xe encourages creatives to embrace the cringeworthy nature of their early work as proof of their progress and to resist deleting it.
+- **Tips for Writing**: Xe offers advice for aspiring writers:
+  - **Answer three questions**: "What is there?" "Why should I care?" and "How did you get there?"
+  - **Focus on the "Why"**: Integrating the topic into a broader context makes it more engaging and memorable.
+  - **Embrace the Process**: Writing will feel frustrating at first, but the cringe is a sign of growth.
+  - **Publish and Preserve**: Don't be afraid to share your work, even if it's imperfect, and resist the urge to delete it later.
