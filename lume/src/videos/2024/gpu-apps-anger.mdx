@@ -1,0 +1,67 @@
+---
+title: "Scaling your GPU apps in anger"
+date: 2024-08-21
+type: blog
+index: true
+desc: A clip from a longer stream VOD where I run through my fears with the AI industry
+tags:
+  - "ai"
+  - "totk"
+  - "video"
+---
+
+<div className="my-4">
+  <XeblogVideo path="video/2024/gpu-apps-anger" />
+</div>
+
+This was originally posted [on YouTube](https://youtu.be/O4yeBUYp_nM), but I want a copy in my portfolio so I uploaded it here.
+
+## Original description
+
+Praise my GitHub Profile: https://praise-me.fly.dev
+
+Source code: https://github.com/Xe/praise-me
+
+<Conv name="Cadey" mood="coffee">
+  Links to free Fly.io credits used to be here. They are not now.
+</Conv>
+
+## Script
+
+Last Sunday I got an idea for something I wanted to see on the Internet. I wanted to make something that would take your GitHub metadata and then tell you something nice. I made it, released it to the world, posted about it a few places, then went to go play video games.
+
+To my surprise, it went viral. The GPU node was not happy and the entire system was teetering on the edge of failure.
+
+I’ve been an SRE before, but I’ve never handled GPU app scaling issues before. When things were failing, requests to the Ollama server were timing out and the ones that did work took over three minutes to process. These requests normally take 20 seconds max. Something was very wrong.
+
+After thinking a bit, I realized I had accidentally committed a SRE sin: I had created an unbounded work queue causing a Qu'vatlh failure. There was simply too much to do and not enough to do it with.
+
+So I went out and scaled out another GPU node or two. I was successfully able to fork volumes over to keep the weights, and then I tried to start the ollama server on those computer boxes. Two didn’t cut it. Three was barely keeping up. Then I tried to add a fourth.
+
+I had hit the limits of the region I was in. There’s not many a100-80gb cards in the fleet, so I should have expected this, but I had to work around this somehow. I had to scale down to a smaller GPU at the same time as adding more GPUs to the pool. I had the choice between A100-40gb cards and L40s cards and remembered a coworker saying there’s a lot of slack L40s capacity in Seattle.
+
+It felt kinda weird to be switching to a smaller GPU model in the process of mitigating this. Normally when you scale things you go either horizontal by adding more nodes or vertical by making those nodes bigger. I was diagonally scaling, or adding more smaller nodes to the pool.
+
+I chose the L40s partly because I knew there were a lot of them laying around, but also because it was one generation newer than the A100’s I had been using before. The Lovelace L40s is effectively an RTX 4090 with twice the vram for 48 GB of video memory. My app was using Llama 3.1 70b to do text synthesis, which has a total of 39GB of weights at Q4 precision. With a 12k token window this took up 46 GB of video memory, just barely fitting.
+
+So I spun up some L40s machines in Seattle and instantly caused everyone using the app to error out on their requests. All of the machines had no models downloaded, meaning that they couldn’t do anything but say “model not found”. All of the requests were really messing with autoscaling too, so I had to disable the webapp during my maintenance.
+
+I connected to my private network with WireGuard (link on how to do that is in the description) and then addressed each of the machines so that I could pull the model weights on each machine individually. Every time you run large language model inference, you either need to have the model weights downloaded or download them. When I created these new volumes, they didn’t have those weights already downloaded. This means they couldn’t do anything.
+
+Once I had more GPUs available, I was good to go and turned back on the webapp. The thundering herd of people waiting for it to be back was unleashed and I saw the inference times creep up higher and higher. I realized I needed more nodes soon.
+
+Here’s where I made one of my first mistakes when responding to this. I should have forked a “working” volume over to another zone and then spun up more GPU nodes quickly. I did not do this even though it would just be the matter of running fly vol fork --require-unique-zone. I was a bit clever and had a bad idea.
+
+What I could do was create new volumes on unique zones and then use an ephemeral machine to pull the weights! Then I can add those volumes to the pool and I should be able to withstand anything!
+
+It worked! I had seven machines in the pool and requests were being evenly balanced between them. I rejiggered some of the limits in the fly.toml file and ended up with something that I was happy with.
+
+To my delight, the fixes I made had successfully beaten back the traffic load from being on the front page of the dreaded citrus forum. Everything was well and I got screenshots of people enjoying it on whatever we’re supposed to call Twitter. Mission accomplished.
+
+In the process of responding to this fire, I learned a few things:
+
+- Scaling GPU stuff is kinda annoyingly hard due to hard limits on the number of cards and things changing so rapidly that the industry can’t develop best practices. You have to think incredibly outside of the box and have to discard SRE common sense, such as compromising with hardware that has lower specs to get the job done.
+- I was once again reminded about the dangers of unbounded work queues and how easy it is to create them by pure accident. I’m going to be working with my teammates and the Ollama people to develop limits and best practices for how to know when too much is too much for your poor GPU.
+- Maybe Llama 3.1 70B is too big for real time viral hits like this. It’s a large model that takes a lot of resources to inference. I picked it because it has near frontier level performance and you can run it on a single GPU, or on your MacBook if you have enough ram. Maybe I should have picked the 8B model?
+
+Either way, for a weekend hack this was a smashing success. I’m more than happy with the results and it was more than worth the time I spent hacking it up. If you want to try it for yourself, the link is in the description, or on the QR code on screen. If you like what you get, share it with your friends!
