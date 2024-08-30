@@ -292,23 +292,5 @@ in  [ Person::{
         , Link::{ url = "https://github.com/linuxgemini", title = "GitHub" }
         ]
       }
-    , Person::{
-      , name = "Jerred Shepherd"
-      , tags =
-        [ "Software Engineer"
-        , "Fullstack"
-        , "Java"
-        , "TypeScript"
-        , "React"
-        , "Vue"
-        , "Kubernetes"
-        , "AWS"
-        ]
-      , links =
-        [ Link::{ url = "https://sjer.red", title = "Website" }
-        , Link::{ url = "https://resume.sjer.red", title = "Resume" }
-        , Link::{ url = "https://github.com/shepherdjerred", title = "GitHub" }
-        ]
-      }
     ]
 
