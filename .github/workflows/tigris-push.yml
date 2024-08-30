@@ -2,7 +2,7 @@ name: Build and deploy site to Tigris
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "never" ]
 
 jobs:
   deploy:

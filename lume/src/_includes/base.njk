@@ -61,7 +61,7 @@
         {% endif %}
 
         {% if commit.hash == "development" %}
-            <meta name="robots" content="noindex" />
+            <meta name="robots" content="noindex"/>
         {% endif %}
     </head>
 
@@ -130,14 +130,26 @@
                             <span class="sr-only">Exclamation</span>
                         </span>
                         <span>You have stumbled across the development site for xeiaso.net. Please do not share this link with others, don't be the reason I need something more robust than the honor system.</span>
-                    </p> 
+                    </p>
                 </div>
             </div>
         {% endif %}
 
-        <!--
-        
-        -->
+        <div id="sticky-banner" tabindex="-1" class="flex justify-between w-full p-4 border-b border-fg-2 bg-bg-0 dark:bg-bgDark-0 dark:border-fg-2">
+            <div class="flex items-center mx-auto">
+                <p class="flex items-center font-normal">
+                    <span class="inline-flex p-1 mr-3 bg-bg-1 rounded-full dark:bg-bgDark-1 w-6 h-6 items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-exclamation-mark" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 19v.01"></path>
+                            <path d="M12 15v-10"></path>
+                        </svg>
+                        <span class="sr-only">Exclamation</span>
+                    </span>
+                    <span>If you're looking for someone like me on your team, I'm available. Check <a href="/resume">my resume</a> and <a href="/contact/">get in touch</a> if you're hiring.</span>
+                </p>
+            </div>
+        </div>
 
         <div class="mt-4 p-2">
             {{ content | safe }}
