@@ -68,25 +68,31 @@ let tailscale =
 
 let flyio =
       Company::{
-        , name = "Fly.io"
-        , url = Some "https://fly.io"
-        , tagline =
-            "A platform to run code close to users. Deploy the same app to 35 datacentres worldwide in seconds."
-        , location = Location::{
-          , city = "Chicago"
-          , stateOrProvince = "IL"
-          , country = "USA"
-          , remote = True
-          }
+      , name = "Fly.io"
+      , url = Some "https://fly.io"
+      , tagline =
+          "A platform to run code close to users. Deploy the same app to 35 datacentres worldwide in seconds."
+      , location = Location::{
+        , city = "Chicago"
+        , stateOrProvince = "IL"
+        , country = "USA"
+        , remote = True
         }
+      }
 
 in  [ Job::{
       , company = flyio
       , title = "Senior Technophilosopher"
       , startDate = "2024-01-07"
+      , endDate = Some "2024-08-30"
       , salary = Salary::{ amount = 260000, per = "year", currency = "CAD" }
       , locations = [ ottawa ]
-      , highlights = [ "Developer marketing", "Developer relations", "Technical writing", "Team building" ]
+      , highlights =
+        [ "Developer marketing"
+        , "Developer relations"
+        , "Technical writing"
+        , "Team building"
+        ]
       }
     , Job::{
       , company = flyio

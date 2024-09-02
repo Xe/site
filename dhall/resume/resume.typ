@@ -137,7 +137,7 @@ If you want someone that is dedicated to their craft, a fearless innovator and a
 == Experience
 
 #titleCompany[Senior Techniphilosopher][Fly.io]\
-#term[2023-11 -- Present][Ottawa, CA]
+#term[2023-11 -- 2024-09][Ottawa, CA]
 
 At Fly.io I am responsible for helping to build the developer relations team from scratch. I am working with the team to create a new developer relations strategy that is focused on helping developers understand the value of Fly.io and how to use it in their projects. This includes in-person, online, and video content as well as occasional writing for the Fly.io and partner companies' blogs.
 
