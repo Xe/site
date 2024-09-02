@@ -85,6 +85,7 @@ in  [ Job::{
       , title = "Senior Technophilosopher"
       , startDate = "2024-01-07"
       , endDate = Some "2024-08-30"
+      , leaveReason = Some "mass layoffs"
       , salary = Salary::{ amount = 260000, per = "year", currency = "CAD" }
       , locations = [ ottawa ]
       , highlights =
