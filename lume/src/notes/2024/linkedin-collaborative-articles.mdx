@@ -1,0 +1,175 @@
+---
+title: "LinkedIn collaborative articles confuse me"
+date: 2024-09-06
+desc: Toss an insight to your algorithmic overlords
+hero:
+  ai: "Photo by Xe Iaso, Canon EOS R6 mark ii, Vivitar 35-70mm f/3.5 vintage zoom lens at f/8 and 35mm"
+  file: "happy-cover"
+  prompt: "A photograph of a fairly rusted manhole cover with a white smiley face spray-painted on it surrounded by grass and a brick path to the upper left hand corner of the frame"
+---
+
+Recently I've become a "top voice" in Cloud Computing collaborative articles on LinkedIn. If you haven't seen them before, they are (presumably AI-generated) content chunks that allow for people to contribute insight. Presumably, the results give someone information, but I've started to taking them in an incredibly real chaos gremlin way.
+
+You're just given a text box with 750 characters of room and told to go ham. Many of the responses read like they came out of a LinkedIn branded tube, or like they were regurgitated by the torment nexus.
+
+Here are some of my contributions to these articles without much other context:
+
+## Here's how you can overcome challenges in remote work within the cloud computing industry.
+
+[Original link](https://www.linkedin.com/advice/1/heres-how-you-can-overcome-challenges-remote-work-jfice)
+
+### Secure Access
+
+<BlockQuote>
+  Ensuring secure access to cloud services is paramount. You need to adopt
+  robust authentication methods like multi-factor authentication (MFA) to
+  protect sensitive data from unauthorized access. Virtual Private Networks
+  (VPNs) can also provide secure connections to your cloud infrastructure.
+  Regular security training for your team is essential to keep everyone updated
+  on the best practices for safeguarding data.
+</BlockQuote>
+
+This is an unobjectionable statement, but almost _so_ unobjectionable that it gives me nothing to go on.
+
+One of the other contributions I saw was:
+
+<Conv name="Mimi" mood="happy">
+  To overcome remote work challenges in cloud computing, focus on clear
+  communication and robust collaboration tools. Implement regular virtual
+  meetings to keep the team aligned and address issues promptly. Leverage
+  cloud-based project management platforms to ensure transparency and track
+  progress. Foster a strong remote work culture by encouraging regular updates
+  and maintaining a sense of community. Prioritize security protocols to
+  safeguard data and ensure compliance. These strategies will help maintain
+  productivity and cohesion in a remote cloud computing environment.
+</Conv>
+
+<Conv name="Aoi" mood="wut">
+  Wait, don't regular meetings actually _decrease_ productivity? How does a
+  project management platform being cloud-based actually mean anything? Regular
+  updates and a sense of community are kinda opposite sides of the same concept,
+  right? How is security related to this? This feels really off.
+</Conv>
+
+<Conv name="Cadey" mood="coffee">
+  Welcome to the club.
+</Conv>
+
+I feel that this is a technically correct, but insufficiently real response that doesn't reflect the nuances of security. I contributed:
+
+<Conv name="Numa" mood="delet">
+Authentication is just one part of the picture. Multi-factor authentication (MFA) devices are business expenses. That is a tax break. Buying Yubikeys for your employees saves you money.
+
+I'm personally bearish on calling VPN connections a security layer, because they tend to be left on by default. I think it's better to see them as network access obfuscation methods. I run a lot of internal services behind VPNs, but even then when I'm changing something important, I enforce a Yubikey challenge.
+
+If your system is so brittle that one person getting conned or bought out gets you popped, you probably have bigger problems anyways.
+
+</Conv>
+
+### Team Collaboration
+
+<BlockQuote>
+  Effective team collaboration can be a challenge in remote environments.
+  Utilize cloud-based collaboration tools that offer real-time communication and
+  project management features. These platforms facilitate seamless interaction
+  among team members, allowing for instant messaging, video conferencing, and
+  document sharing, ensuring that everyone is on the same page regardless of
+  their location.
+</BlockQuote>
+
+<Conv name="Numa" mood="delet">
+Realistically, real-time collaboration tools are nice, but not essential. I've found that many productive things can be organized over normal email with the aid of mailing lists or even IRC channels for real-time chat. Anything else is a nice to have extra, but a lot of this is not really dependent on the tools themselves. It all depends on how you use them.
+
+Also, a lot of cloud tools are nice, but then you're essentially making yourself beholden to the cloud tool provider who can change the price to any level and you'll still pay it because not paying it means you don't have access to your information. It's probably better to self-host these essential tools when and where possible to reduce these kinds of external dependencies.
+
+Assuming you really do need to use tools someone else hosts; Slack, GitHub, and Jira are boring tools at this point. Optimize for boring tools that people already have deep expertise in. Boring tools do not require additional explanation or training for most people.
+
+Also no matter what video conferencing program you'll end up using, it sucks. This is just life. If you need a remote meeting to not suck, buy airplane tickets.
+
+</Conv>
+
+### Performance Issues
+
+<BlockQuote>
+  Performance issues can hinder remote work productivity. Optimize cloud
+  resources by scaling services according to the demand. Regularly monitor
+  network performance to identify and address any bottlenecks quickly. Encourage
+  your team to have a reliable internet connection and provide guidance on
+  optimizing their home network setups for better performance.
+</BlockQuote>
+
+<Conv name="Numa" mood="delet">
+If you need your employees to have fast internet connections to do their jobs adequately, you should provide it for them. No conditions attached.
+
+Performance for many other cases depends on the speed of light. Your app probably doesn't need to be multi-region because the overhead involved in doing that is so great that it requires you to functionally remake your application from scratch. Your choice if you think the tradeoffs are worth the benefits or not.
+
+</Conv>
+
+### Data Management
+
+<BlockQuote>
+  Data management is critical, especially with teams spread across various
+  locations. Use cloud storage solutions that offer automated backup and easy
+  retrieval of data. Implement clear data governance policies so that everyone
+  understands how to handle company data correctly. This ensures data integrity
+  and compliance with regulations.
+</BlockQuote>
+
+This is another one of those things that feels like the AI mixed up the nuanced character of several different facets of the same topic. Yeah sure data management is important, but for a lot of people the cloud storage is both the backup means and the only copy. When is the last time you saw someone backing up Google Drive?
+
+<Conv name="Numa" mood="delet">
+Wait, hold on. I thought that many people treated cloud storage as the backup mechanism. I am not really aware of any place I work at backing up Google Docs to an external location or something.
+
+Assuming you're referring to things like database backups, it's probably best to have the database backups bucket on a separate cloud account with a separate credit card (ideally one of the founder's personal cards that gets reimbursed). You can then make an access policy that allows your backup tool to only write new backups to the bucket, never delete any old ones.
+
+This also helps you prevent getting your backup tool popped and backups leaked or ransomware deleting all your backups unless you pay 50 bitcoin or whatever.
+
+</Conv>
+
+## You're relying on a single cloud provider for critical services. How do you ensure you're not locked in?
+
+[Original link](https://www.linkedin.com/advice/3/youre-relying-single-cloud-provider-critical-services-t7ebf)
+
+This is another nuanced topic where I'm actually on the side of "you will never be multi-cloud, stop pretending that you can be; you will be married to whatever cloud you started using for life, even when you migrate away". The only real exceptions to this are when you as a company are small enough to actually migrate everything over in a realistic timeframe.
+
+### Assess Needs
+
+<BlockQuote>
+  Before you can prevent lock-in, you need to understand what services you're
+  using and why. Take inventory of your cloud-based resources, and consider
+  which are critical to your operations. This understanding will guide you in
+  creating a strategy that maintains flexibility. Remember, your goal is to
+  ensure that these services can be replicated or replaced if necessary.
+</BlockQuote>
+
+With that in mind, here's how I responded:
+
+<Conv name="Numa" mood="delet">
+  Well in general, you're locked in no matter what you're doing and getting off
+  of any cloud platform will take at least three person-years for every major
+  service you have deployed on it. Open standards like S3's API can help, but at
+  the end of the day you're gonna be stuck with the first cloud platform you use
+  until and unless another cloud platform gives you a good enough deal that you
+  can't pass it up. Migration is just that expensive in practice.
+</Conv>
+
+I've only personally seen a "multi-cloud migration" go well once. It wasn't finished by the time I left the company, but the only reason it went well is that the company wasn't using cloud-provider specific databases like DynamoDB or something.
+
+Someone in the replies brought up [Talos Linux](https://talos.dev), a Linux implementation that helps you set up your own Kubernetes clusters on physical or virtual infrastructure.
+
+<Conv name="Numa" mood="delet">
+  Okay so even if you have your own Kubernetes cluster inside a cloud, there are
+  still going to be APIs provided by that cloud that you simply cannot get
+  elsewhere. You can have your own Kubernetes cluster on top of Talos Linux all
+  you want but that doesn't stop AWS from being the only cloud with DynamoDB.
+</Conv>
+
+I'm also of the opinion that the only real true cross-cloud API is Kubernetes.
+
+## I can't find more of my contributions
+
+The LinkedIn collaborative article system feels super hacky. I can't find a list of all my contributions or I'd give you more here. As I contribute more to them, I think I'll copy them into notes and then give you a best-of list as makes sense.
+
+Maybe this really is the future of social networks like LinkedIn, people giving generic commentary about best practices to AI generated slop prompts.
+
+I don't know how to feel about this, but I think that laughing at it is probably healthier than crying.
