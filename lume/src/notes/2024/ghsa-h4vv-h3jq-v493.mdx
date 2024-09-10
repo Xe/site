@@ -1,0 +1,30 @@
+---
+title: "Nix 2.24+ Vulnerability: Unpacking issue allows local users or binary caches to gain root access"
+date: 2024-09-09
+desc: Patch Nix as soon as a patch is available to protect against GHSA-h4vv-h3jq-v493
+hero:
+  ai: "Photo by Andrea Piacquadio, source: Pexels"
+  file: sad-business-man
+  prompt: A forlorn business man resting his head on a brown wall next to a window.
+---
+
+A vulnerability has been discovered in Nix versions 2.24 and above, where a refactoring mistake allows local unprivileged users or any configured binary cache to gain root access on the system.
+
+The issue arises when creating a [NAR file](https://nix.dev/manual/nix/2.24/store/file-system-object/content-address#serial-nix-archive) with a directory containing both a symlink and a directory with the same name. Due to the mistake, the symlink is followed and filled with the contents placed in that directory.
+
+As the Nix daemon typically runs as root (with at least the Nix store mounted read-write), it becomes possible to write files into sensitive locations such as `/run/current-system/etc/systemd/system`, granting persistent root access from unpacking a malicious NAR.
+
+There are two primary ways to make Nix read a NAR:
+
+1. Any untrusted user that can communicate with the Nix daemon can write NARs that are either content-addressed or signed by a trusted key into the Nix store.
+2. Any binary cache can also perform this action, as the daemon will fetch nar files from the binary cache.
+
+The vulnerability becomes more severe due to a second issue: the signature on NAR files is validated only _after_ unpacking the NAR. This means that any malicious binary cache can reuse the signature of a store path on cache.nixos.org, and if the Nix daemon trusts the signature, it will end up unpacking any nar of the cache's choice without verifying that the signature or hash matches.
+
+In some cases (e.g., when there's a symlink pointing to root in a trusted nar), this exploitation can even be done entirely silently, which poses a significant risk.
+
+The disclosure timeline has passed, and a point release was made after the vulnerability became well-known to the entire team. Patch your systems as soon as the patch is available if your workflow involves consuming untrusted Nix packages.
+
+This issue is currently unpatched and there are known malicious NAR files in the wild.
+
+[Upstream source](https://puckipedia.com/7hkj-98sq/qixt)
