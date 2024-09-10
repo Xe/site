@@ -20,7 +20,12 @@
         <link rel="manifest" href="/static/manifest.json"/>
         <meta name="theme-color" content="#ffffff"/>
 
-        <link rel="canonical" href="https://xeiaso.net{{ url }}"/>
+        {% if redirect_to %}
+            <link rel="canonical" href="{{ redirect_to }}"/>
+            <meta http-equiv="refresh" content="0; url={{ redirect_to }}"/>
+        {% else %}
+            <link rel="canonical" href="https://xeiaso.net{{ url }}"/>
+        {% endif %}
 
         {% if title %}
             <title>{{ title }} - Xe Iaso</title>
