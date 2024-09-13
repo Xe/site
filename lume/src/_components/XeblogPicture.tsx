@@ -10,7 +10,7 @@ export default function XeblogPicture({
   className,
 }: XeblogPicture) {
   return (
-    <figure className={`max-w-3xl mx-auto ${className}`}>
+    <figure className={`max-w-3xl mx-auto not-prose w-full ${className}`}>
       <a href={`https://cdn.xeiaso.net/file/christine-static/${path}.jpg`}>
         <picture>
           <source

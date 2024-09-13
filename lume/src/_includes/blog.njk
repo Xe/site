@@ -2,14 +2,14 @@
 layout: base.njk
 ---
 
-<article class="prose dark:prose-invert max-w-none">
+<article class="prose dark:prose-invert max-w-none lg:prose-p:max-w-[80ch] lg:prose-p:mx-auto lg:prose-headings:mx-20 lg:prose-blockquote:max-w-[70ch] lg:prose-blockquote:mx-auto">
     <h1 class="mb-2">{{title}}</h1>
-    <p class="text-sm text-fg-3 dark:text-fgDark-3 my-1">
+    <p class="text-sm text-fg-3 dark:text-fgDark-3 my-1 lg:mx-16">
         Published on <time datetime={{date | date("DATE")}}>{{date | date("DATE_US")}}</time>, {{ readingInfo.words }} words, {{ readingInfo.minutes }} minutes to read
     </p>
 
     {% if desc %}
-        <p class="text-sm font-serif text-fg-3 dark:text-fgDark-3 my-1">{{desc}}</p>
+        <p class="max-w-[60ch] lg:mx-auto text-sm font-serif text-fg-3 dark:text-fgDark-3 my-1">{{desc}}</p>
     {% endif %}
 
     {% if patronExclusive %}
