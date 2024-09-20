@@ -1,0 +1,42 @@
+---
+title: "How to completely bypass authentication on RushOrderTees"
+date: 2024-09-20
+desc: Just don't enter a password lol
+hero:
+  ai: "Photo by Xe Iaso, Canon EOS R6mkii, Helios 44-2 58mm f/2"
+  file: single-grain
+  prompt: "A photo of a local wild grain plant on a blue sky"
+---
+
+While evaluating [RushOrderTees](https://www.rushordertees.com/) for a previous employer, an embarrassing security vulnerability was discovered. User accounts created inside their t-shirt designer do not have a password attached to them, allowing anyone to authenticate with only an email address. This allows disclosure of at least this information:
+
+- Full name on any orders
+- Any custom designs
+- Order id numbers
+- Phone numbers when placing new orders
+
+This was proven by attempting to log into a RushOrderTees company account using a publicly visible email address.
+
+## Replication
+
+RushOrderTees has not acknowledged this issue and it is still trivial to reproduce it today:
+
+1. Create a new design
+2. Attempt to purchase it
+3. Save it with a custom name
+4. Enter in your email address
+
+You have now created a RushOrderTees account _without a password attached_.
+
+## Explanation
+
+This lapse in security is understandable from a customer acquisition standpoint (every barrier in the way of users paying makes you lose half of your potential customer base), but is fairly inexcusable in 2024. Additionally, by making user accounts only protected with email addresses (public identifiers), this bypasses the entire point of authentication. It is difficult to figure out if this is a design choice or a security issue.
+
+## Timeline
+
+- 2024-04-15: Initial contact made to Rushordertees' sales@ and security@ email. The security@ email bounced.
+- 2024-04-16: Reduction in scope of the issue and complete replication instructions discovered.
+- 2024-04-17: Various other attempts were made to get their attention, all ended in failure.
+- 2024-09-20: This bulletin was posted.
+
+Rushordertees has not acknowledged this bulletin and did not review it prior to publishing.

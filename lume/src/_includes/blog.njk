@@ -2,7 +2,14 @@
 layout: base.njk
 ---
 
-<article class="prose dark:prose-invert max-w-none lg:prose-p:max-w-[80ch] lg:prose-p:mx-auto lg:prose-headings:mx-20 lg:prose-blockquote:max-w-[70ch] lg:prose-blockquote:mx-auto">
+<article class="prose dark:prose-invert max-w-none lg:prose-p:max-w-[80ch] lg:prose-p:mx-auto lg:prose-headings:mx-20 lg:prose-blockquote:max-w-[70ch] lg:prose-blockquote:mx-auto lg:prose-li:max-w-[78ch] lg:prose-li:mx-auto">
+    <style>
+        .prose :where(li):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 78ch;
+        }
+    </style>
     <h1 class="mb-2">{{title}}</h1>
     <p class="text-sm text-fg-3 dark:text-fgDark-3 my-1 lg:mx-16">
         Published on <time datetime={{date | date("DATE")}}>{{date | date("DATE_US")}}</time>, {{ readingInfo.words }} words, {{ readingInfo.minutes }} minutes to read
