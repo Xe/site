@@ -1,0 +1,218 @@
+---
+title: Make your Next.JS Docker images microscopic!
+date: 2024-09-22
+desc: "Do standalone builds on Alpine"
+hero:
+  ai: "Photo by Xe Iaso, Helios 44-2 58mm f/2"
+  file: msp-bokeh-balls
+  prompt: "A series of brown and white balls of light on a black background, the result of intentionally defocusing the lens against a chandelier"
+  social: true
+---
+
+So you've been hacking up a Next.JS app and you wanna put it into production (be it on Fly.io, Kubernetes, or whatever). Docker (or at least Docker images) are the least common denominator. If you can shove your app into a Docker image, it'll run pretty much anywhere.
+
+```Dockerfile
+ARG NODE_VERSION=22
+FROM node:${NODE_VERSION}-slim as base
+
+# Next.js app lives here
+WORKDIR /app
+
+# Set production environment
+ENV NODE_ENV="production"
+
+
+# Throw-away build stage to reduce size of final image
+FROM base AS build
+
+# Install packages needed to build node modules
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
+
+# Install node modules
+COPY --link package-lock.json package.json ./
+RUN npm ci --include=dev
+
+# Copy application code
+COPY --link . .
+
+# Build application
+RUN npm run build
+
+# Remove development dependencies
+RUN npm prune --omit=dev
+
+
+FROM base AS run
+
+# Copy built app
+COPY --from=build /app /app
+
+# Run the app
+CMD [ "npm", "run", "start" ]
+```
+
+To be honest, this is _really good_ from a Dockerfile optimization standpoint. You have two stages for the build, one of them builds the app and then the run stage copies over the built app and starts it in production. There's honestly not much that can be gained by doing further optimization at the Dockerfile level.
+
+The main problem is that the resulting image is a gigabyte:
+
+```
+$ docker images
+REPOSITORY                           TAG       IMAGE ID       CREATED              SIZE
+chonker                              latest    0548acbc5aa9   About a minute ago   1.01GB
+```
+
+<Conv name="Cadey" mood="coffee">
+  These size numbers are for aarch64 (arm64) Linux Docker images. Apparently
+  amd64 Linux Docker images should be slightly smaller. Either way, don't focus
+  on the exact numbers too hard.
+</Conv>
+
+1 gigabyte to do nothing but show the default "hello world" page? That seems wasteful. Especially for an image that will be pushed and deployed multiple times per day. If you use a platform that charges you per gigabyte of container image registry space, that's a classic recipe for unbounded cost growth.
+
+<Conv name="Cadey" mood="coffee">
+  This is not good for financial solvency.
+</Conv>
+
+Most of the damage seems to be contained to the `/app` folder:
+
+```
+$ docker run -it --rm --entrypoint /bin/bash chonker
+root@5e8843246475:/app# cd ..
+root@5e8843246475:/# du -hs app
+497M	app
+```
+
+## Standalone builds
+
+One of the quickest wins is enabling [standalone builds](https://nextjs.org/docs/pages/api-reference/next-config-js/output#automatically-copying-traced-files) in your `next.config.mjs` file:
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: "standalone",
+};
+
+export default nextConfig;
+```
+
+This makes `next build` crap out the minimal subset of dependencies you need in production at `/app/.next/static`. Once you enable standalone mode in your configuration, then you need to change your `COPY` commands in the `run` layer to something like this:
+
+```Dockerfile
+FROM base AS run
+
+# Copy standalone app
+COPY --from=build /app/.next/standalone /app
+COPY --from=build /app/.next/static /app/.next/static
+# Omit me if you don't have static files in your public folder yet
+COPY --from=build /app/public /app/public
+```
+
+This cuts out even more:
+
+```
+$ docker images
+REPOSITORY                           TAG       IMAGE ID       CREATED          SIZE
+standalone                           latest    a55c81de1fc9   8 seconds ago    363MB
+```
+
+That saved a whole 550 megabytes of space! However, we can do more.
+
+## Alpine Linux
+
+Depending on the needs of your workload, you can likely get away with basing your image on [Alpine Linux](https://alpinelinux.org). In order to use that, you need to change your Dockerfile a little.
+
+First, change the `FROM` directive at the top of the Dockerfile to make everything based on `node:${NODE_VERSION}-alpine`:
+
+```Dockerfile
+ARG NODE_VERSION=22
+FROM node:${NODE_VERSION}-alpine AS base
+```
+
+<Conv name="Mara" mood="hacker">
+When the Dockerfile is being evaluated, this will expand out to `node:22-alpine`. This lets you bump your container image's version of Node.js in lockstep with the version you use in development on your MacBooks. You can also replace the node version by using the `--build-arg` flag:
+
+```
+$ docker build --build-arg NODE_VERSION=18 -t chonker-18 .
+```
+
+</Conv>
+
+Then, in the `build` stage, change the `apt-get` command into an `apk` command:
+
+```Dockerfile
+# Throw-away build stage to reduce size of final image
+FROM base AS build
+
+# Install packages needed to build node modules
+RUN apk -U add build-base gyp pkgconfig python3
+```
+
+When you build this, you get absolutely puny Docker images:
+
+```
+$ docker images
+REPOSITORY                           TAG       IMAGE ID       CREATED              SIZE
+standalone-alpine                    latest    3a51c7bea5e6   About a minute ago   243MB
+```
+
+Even better, the base image gets shared between builds, so when you push images you only really push the changes in the `/app` folder!
+
+```
+$ docker run --rm -it --entrypoint /bin/sh standalone-alpine
+/app # du -hs /app
+24.2M   /app
+```
+
+That means that when you push new versions of your app to prod, you're only really pushing about 24 MB of data. This makes your deploys faster and saves you space on the registry.
+
+## Going deeper
+
+However, we can go deeper, we have the technology. [The Node 22.x.y image](https://github.com/nodejs/docker-node/blob/58c3b39e5948f82c594395857193cd97d01c690e/22/alpine3.19/Dockerfile) uses Alpine Linux version 3.19. You can install the version of Node in Alpine's repos and make your image even smaller!
+
+Change your `FROM` directive to `alpine:3.19`:
+
+```Dockerfile
+FROM alpine:3.19 AS base
+```
+
+Then add `nodejs` and `npm` to your `apk add` command:
+
+```Dockerfile
+# Install packages needed to build node modules
+RUN apk -U add build-base gyp pkgconfig python3 nodejs npm
+```
+
+Install `nodejs` in the `run` image:
+
+```Dockerfile
+FROM base AS run
+
+# Install node.js
+RUN apk add nodejs
+```
+
+And finally change the command to start Next.js directly:
+
+```Dockerfile
+# Run the app
+CMD [ "node", "server.js" ]
+```
+
+This cuts out even more from the image, leaving you with a microscopic image:
+
+```
+$ docker images
+REPOSITORY                           TAG       IMAGE ID       CREATED          SIZE
+standalone-alpine-bean               latest    f37491197fbb   32 seconds ago   123MB
+```
+
+This is perfect to deploy to production.
+
+## Next steps
+
+From here you can do anything you want with confidence that you aren't going to break the bank by continuously deploying to production.
+
+If you want to see all of the examples in fully complete and working forms, check out the GitHub repo [Xe/nextjs-image-optimizations](https://github.com/Xe/nextjs-image-optimizations).
+
+Otherwise, have a great day! If you're going to be at Small Data SF tomorrow, I'm going to be doing a workshop about how to make something like Mystery Science Theater 3000 with vision models. It'll be a hoot.
