@@ -10,6 +10,10 @@
         },
         "type": "object"
       },
+      "google.protobuf.Empty": {
+        "description": "A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance:",
+        "type": "object"
+      },
       "google.protobuf.ListValue": {
         "description": "\nListValue is a wrapper around a repeated field of values.\nThe JSON representation for ListValue is JSON array.\n",
         "items": {
@@ -294,7 +298,11 @@
         "responses": {
           "200": {
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/google.protobuf.Empty"
+                }
+              }
             },
             "description": "Success"
           }
