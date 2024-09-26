@@ -1,0 +1,90 @@
+---
+title: You're probably not vulnerable to the CUPS CVE
+date: 2024-09-26
+desc: "Unless your servers can print for some reason"
+---
+
+When I saw [news of the upcoming 9.9 CVE](https://x.com/evilsocket/status/1838169889330135132), I was thinking it was something significant, like a buffer overflow in the glibc DNS client, a ping of death, or something actually exciting. Nope, it's [CUPS](https://www.evilsocket.net/2024/09/26/Attacking-UNIX-systems-via-CUPS-Part-I/), the printing stack.
+
+The most vulnerable component is cups-browsed, the component that enables printer discovery.
+
+CUPS is not typically installed on server systems, but cloud expert [Corey Quinn](https://x.com/QuinnyPig) claims his Ubuntu EC2 box has it without his knowledge. I have checked my Ubuntu systems and have not been able to find CUPS on them.
+
+<blockquote className="twitter-tweet mx-auto">
+  <p lang="en" dir="ltr">
+    I just checked my Ubuntu EC2 box (no desktop, obviously). dpkg showed it
+    wasn&#39;t installed, but it was listening due to their horrible sidecar
+    &quot;snap&quot; package system.
+    <br />
+    <br />
+    Lovely; just lovely.
+  </p>
+  &mdash; Corey Quinn (@QuinnyPig)
+  <a href="https://twitter.com/QuinnyPig/status/1839404608055390634?ref_src=twsrc%5Etfw">
+    September 26, 2024
+  </a>
+</blockquote>
+<script
+  async
+  src="https://platform.twitter.com/widgets.js"
+  charset="utf-8"
+></script>
+
+This may vary by distro and cloud image, but in general your servers should not be vulnerable to this. Your desktops may be.
+
+Even if you are vulnerable though, you need to print something in order for the malicious printer definitions that the CVE enables to allow for arbitrary code execution.
+
+## Checking for the cups-browsed service
+
+See if it is running with systemd:
+
+```
+systemctl status cups-browsed
+```
+
+If it isn't reporting anything, check for programs listening on UDP port 631, the cups-browsed port:
+
+```
+sudo lsof -i :631
+```
+
+If you get any results from either command, run the quick workaround listed below.
+
+If you have nmap installed, this command may give you information about the cups-browsed server on your local machine:
+
+```
+sudo nmap localhost -p 631 --script cups-info
+```
+
+## Quick workaround
+
+If you want to turn off the potential for issues until the patches drop in distros, run this command across your fleet:
+
+```
+systemctl stop cups-browsed
+```
+
+Or if you want that to persist after reboots:
+
+```
+systemctl disable --now cups-browsed
+```
+
+Once the packages are updated, you can re-enable it with this command:
+
+```
+systemctl enable --now cups-browsed
+```
+
+When you disable this service, automagic printer discovery over the network for desktop Linux systems will stop working. This should be fine unless you habitually purchase and use network attached printers.
+
+---
+
+In the upcoming days and weeks, patches will be published and endpoint security software will look for the correctly malformed printer setup files that enable remote code execution. For now though, you're probably fine.
+
+<Conv name="Cadey" mood="coffee">
+  Also for the love of God, don't expose your printing service to the public
+  internet.
+</Conv>
+
+Thanks to Cloud Hop, Cult Pony, mcpherrinm, jann, and phyxius for pre-vetting this bulletin before publishing.
