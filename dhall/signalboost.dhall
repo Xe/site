@@ -21,19 +21,6 @@ in  [ Person::{
       , links = [ Link::{ url = "https://github.com/b-/", title = "Github" } ]
       }
     , Person::{
-      , name = "Evan Pratten"
-      , tags =
-        [ "rust"
-        , "linux"
-        , "docker"
-        , "full-stack"
-        , "ipv6"
-        , "bgp"
-        , "computer-graphics"
-        ]
-      , links = [ Link::{ url = "https://ewpratten.com", title = "Website" } ]
-      }
-    , Person::{
       , name = "Piyushh Bhutoria"
       , tags =
         [ "golang"
