@@ -28,15 +28,15 @@ disable_root: false
 
 write_files:
   - encoding: b64
-  content: bmV0d29yazoKICB2ZXJzaW9uOiAyCiAgZXRoZXJuZXRzOgogICAgaWQwOgogICAgICBkaGNwNDogdHJ1ZQogICAgICBtYXRjaDoKICAgICAgICBuYW1lOiBlbnAqCg==
-  owner: root:root
-  path: /etc/netplan/99-net-fix.yaml
-  permissions: '0644'
+    content: bmV0d29yazoKICB2ZXJzaW9uOiAyCiAgZXRoZXJuZXRzOgogICAgaWQwOgogICAgICBkaGNwNDogdHJ1ZQogICAgICBtYXRjaDoKICAgICAgICBuYW1lOiBlbnAqCg==
+    owner: root:root
+    path: /etc/netplan/99-net-fix.yaml
+    permissions: "0644"
 
 users:
   - name: xe
-    groups: [ wheel ]
-    sudo: [ "ALL=(ALL) NOPASSWD:ALL" ]
+    groups: [wheel]
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     shell: /bin/bash
     ssh_import_id:
       - gh:xe
