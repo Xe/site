@@ -6,6 +6,7 @@ tags:
   - witchcraft
   - sm64
   - twitch
+index: false
 ---
 
 Recently I did a stream called [Twitch Plays Super Mario 64][tpsm64]. During
@@ -206,7 +207,7 @@ for cmd in chatline.to_string().split(" ").collect::<Vec<&str>>().iter() {
 This implements the following commands:
 
 | Command  | Meaning                          |
-|----------|----------------------------------|
+| -------- | -------------------------------- |
 | `a`      | Press the A button               |
 | `b`      | Press the B button               |
 | `z`      | Press the Z button               |
@@ -223,15 +224,15 @@ This implements the following commands:
 
 Currently analog stick inputs will stick for about 270 frames and button inputs
 will stick for about 20 frames before drifting back to neutral. The start button
-is special, inputs to the start button will stick for 5 frames at most. 
+is special, inputs to the start button will stick for 5 frames at most.
 
 ### Debugging
 
 Debugging two programs running together is surprisingly hard. I had to resort to
 the tried-and-true method of using `gdb` for the main game code and excessive
-amounts of printf debugging in Rust. The [pretty\_env\_logger][pel] crate (which
+amounts of printf debugging in Rust. The [pretty_env_logger][pel] crate (which
 internally uses the [env_logger][el] crate, and its environment variable
-configures pretty\_env\_logger) helped a lot. One of the biggest problems I
+configures pretty_env_logger) helped a lot. One of the biggest problems I
 encountered in developing it was fixed by this patch, which I will paste inline:
 
 [pel]: https://docs.rs/pretty_env_logger/0.4.0/pretty_env_logger/
@@ -243,7 +244,7 @@ index 426cd3e..6bc3f59 100644
 @@ -93,7 +93,7 @@ fn main() -> Result<()> {
                      },
                  };
- 
+
 -                sticky = match stickx {
 +                sticky = match sticky {
                      0 => sticky,

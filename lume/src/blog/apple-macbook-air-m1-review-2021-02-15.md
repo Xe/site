@@ -2,14 +2,14 @@
 title: "The Worst Experience I've Had With an aarch64 MacBook"
 date: 2021-02-15
 tags:
- - mac
- - aarch64
+  - mac
+  - aarch64
 ---
 
 I've had my hands on this M1 MacBook Air for a few weeks now and I have gotten a
 lot of opinions about it. I wanted to go over them and give my thoughts. This is
 an amazing laptop. Its battery life is iPad tier. I can run iPad and iPhone apps
-seamlessly. 
+seamlessly.
 
 That being said, aarch64 macOS is still very much in its teething phase. Rosetta
 is nothing short of a technical miracle, it's amazing how close it is to the
@@ -77,20 +77,12 @@ overall it's enough to get the job done. I had to use
 [iMazing](https://imazing.com) to get installable versions of some apps I wanted
 to put on my mac (such as Skip The Dishes so I could get its notifications in
 the same place and Procreate so I could use Sidecar to draw using the M1's GPU
-power and extra ram), however they work well enough in general. 
+power and extra ram), however they work well enough in general.
 
 It would be nice if more companies toggled the "supported on M1 Macs" flag. I'm
 willing to use a degraded experience if it means it's easier to access things
 that are otherwise exclusive to my phone (such as Facebook and my banking app).
 It would be great to use Netflix without having to open Safari.
-
-Something that really surprised me was how well Dolphin runs when you use a
-native build. I'm able to play Gamecube and Wii games at retina resolution and
-the MacBook doesn't even get warm to the touch. The amd64 version of Dolphin
-uses some Just-In-Time compilation that Rosetta can't emulate at all, however
-the aarch64 one runs a lot faster than it has any right to. It must be easier to
-translate binaries between RISC processor types or something. You have to build
-Dolphin from source when you do this, however it's worth it.
 
 ## The Hardware
 
