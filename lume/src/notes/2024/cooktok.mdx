@@ -1,0 +1,216 @@
+---
+title: "Making home cooking easier with Cooktok"
+desc: "Maybe langle mangles can be used for good"
+date: 2024-10-14
+hero:
+  ai: "Photo by Xe Iaso, Canon EOS R6 mk. ii, Canon 16mm f/2.8 STM, f/8, iso 200"
+  file: gatineau-park-road
+  prompt: "A concrete road bifurcating a nature park, the sun is overhead making the sky a light blue. Shadows from the trees coat the road."
+---
+
+I've been cooking more with my husband, and in the process we're trying to branch out and make things we've never had before. Since my last job made me learn how to use TikTok, I found a bunch of easy to cook meals that I've wanted to make. There's just one problem, and I think it'll be obvious if you watch this video:
+
+<blockquote
+  class="tiktok-embed"
+  cite="https://www.tiktok.com/@cookinginthemidwest/video/7320234168615505195"
+  data-video-id="7320234168615505195"
+  style="max-width: 605px;min-width: 325px;"
+>
+  {" "}
+  <section>
+    {" "}
+    <a
+      target="_blank"
+      title="@cookinginthemidwest"
+      href="https://www.tiktok.com/@cookinginthemidwest?refer=embed"
+    >
+      @cookinginthemidwest
+    </a>
+    Kielbasa Sheet Pan Meal is easy to make and one the whole family enjoys!
+    INGREDIENTS (2) 12 oz packs of Beef Kielbasa 3 large potatoes 2 green bell
+    peppers Red onion 2 tbsp olive oil Salt, pepper, garlic powder, paprika
+    Buffalo Wild Wings Asian Zing INSTRUCTIONS Slice the kielbasa into thin
+    rounds. Cut the peppers and onions into pieces all about the same size.
+    Peel, wash, and chop the potatoes. Be sure to cut the potatoes into smaller
+    cubes. Add the potatoes to a large bowl and cover in olive oil. Season with
+    some salt, pepper, garlic powder, and paprika. Toss the potatoes well to
+    making sure they are well coated in seasoning. Add the chopped peppers and
+    onions and add a little bit more of the seasoning and oil. Toss&#47;stir
+    everything together well. Spray a large sheet pan with cooking spray. Pour
+    the potatoes and veggies out onto the sheet pan. Top with the sliced
+    kielbasa. Bake in the oven at 400 degrees for 30-40 minutes. I suggest
+    checking them around 30 minutes and cooking for the additional time if
+    needed. Mine cooked for 40 minutes. Top with Buffalo Wild Wing’s Asian Zing
+    sauce and serve! The Asian Zing sauce is spicy, so I left a little bit
+    without it for my kids and they ate theirs with BBQ sauce.
+    <a
+      title="sheetpanmeal"
+      target="_blank"
+      href="https://www.tiktok.com/tag/sheetpanmeal?refer=embed"
+    >
+      #sheetpanmeal
+    </a> <a
+      title="kielbasa"
+      target="_blank"
+      href="https://www.tiktok.com/tag/kielbasa?refer=embed"
+    >
+      #kielbasa
+    </a> <a
+      title="easyrecipe"
+      target="_blank"
+      href="https://www.tiktok.com/tag/easyrecipe?refer=embed"
+    >
+      #easyrecipe
+    </a> <a
+      title="recipe"
+      target="_blank"
+      href="https://www.tiktok.com/tag/recipe?refer=embed"
+    >
+      #recipe
+    </a> <a
+      title="buffalowildwings"
+      target="_blank"
+      href="https://www.tiktok.com/tag/buffalowildwings?refer=embed"
+    >
+      #buffalowildwings
+    </a> <a
+      title="bwwsauce"
+      target="_blank"
+      href="https://www.tiktok.com/tag/bwwsauce?refer=embed"
+    >
+      #bwwsauce
+    </a> <a
+      title="asianzing"
+      target="_blank"
+      href="https://www.tiktok.com/tag/asianzing?refer=embed"
+    >
+      #asianzing
+    </a> <a
+      target="_blank"
+      title="♬ original sound - Cooking in the Midwest"
+      href="https://www.tiktok.com/music/original-sound-7320234231135816494?refer=embed"
+    >
+      ♬ original sound - Cooking in the Midwest
+    </a>{" "}
+  </section>{" "}
+</blockquote> <script async src="https://www.tiktok.com/embed.js"></script>
+
+Here's the description of that video with the recipe included:
+
+> Kielbasa Sheet Pan Meal is easy to make and one the whole family enjoys! INGREDIENTS (2) 12 oz packs of Beef Kielbasa 3 large potatoes 2 green bell peppers Red onion 2 tbsp olive oil Salt, pepper, garlic powder, paprika Buffalo Wild Wings Asian Zing INSTRUCTIONS Slice the kielbasa into thin rounds. Cut the peppers and onions into pieces all about the same size. Peel, wash, and chop the potatoes. Be sure to cut the potatoes into smaller cubes. Add the potatoes to a large bowl and cover in olive oil. Season with some salt, pepper, garlic powder, and paprika. Toss the potatoes well to making sure they are well coated in seasoning. Add the chopped peppers and onions and add a little bit more of the seasoning and oil. Toss/stir everything together well. Spray a large sheet pan with cooking spray. Pour the potatoes and veggies out onto the sheet pan. Top with the sliced kielbasa. Bake in the oven at 400 degrees for 30-40 minutes. I suggest checking them around 30 minutes and cooking for the additional time if needed. Mine cooked for 40 minutes. Top with Buffalo Wild Wing’s Asian Zing sauce and serve! The Asian Zing sauce is spicy, so I left a little bit without it for my kids and they ate theirs with BBQ sauce.
+
+This is completely unreadable. The really confusing part is that in the app this isn't that bad:
+
+<img
+  src="https://cdn.xeiaso.net/file/christine-static/notes/2024/cooktok/IMG_1571.jpg"
+  width={300}
+  className="mx-auto"
+/>
+
+When I made this, [Hermes 3](https://nousresearch.com/hermes3/) by Nous Research had just been released and one feature of the model piqued my curiosity: [JSON schema based prompting](https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-405B#prompt-format-for-json-mode--structured-outputs). This isn't documented very well anywhere, but in order to do it, you need to pass a system prompt like this:
+
+<div className="mx-auto" style="max-width: 78ch;">
+```
+You are a helpful assistant that answers in JSON.
+Here's the json schema you must adhere to:
+
+<schema>
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "ingredients": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "servings": {
+      "type": "integer"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": ["title", "ingredients", "servings", "steps"]
+}
+</schema>
+```
+</div>
+
+This makes the model more likely to spit out objects with the schema you want. You can refine this using llama.cpp BNF from JSON schema, but my runtime of choice ([Ollama](https://ollama.com)) doesn't currently support passing arbitrary grammars at inference time.
+
+When I was ripping the video off of TikTok, I accidentally left in a flag I used for YouTube archival that includes the subtitles. I quickly noticed that TikTok subtitles are shockingly good in comparison to YouTube's subtitles. On a lark, I decided to also feed the subtitles into the context window. It helped a lot (especially with videos where the ingredients and amounts were split between the voiceover and the description, presumably in an effort to make this kind of scraping harder because recipes generally aren't considered copyrightable in the US), but I ran into another big problem: consistency.
+
+## Few-shot prompting it
+
+Sometimes I was getting the right recipe steps and ingredients, other times I was not. Usually the results would end up omitting essential spices or amounts of ingredients. I ended up rethinking what I was doing and then remembered a trick that AI model makers use to make their benchmarks look better: few-shot prompting.
+
+<Conv name="Mara" mood="hacker">
+  Few shot prompting is when you give the model an example or two of the
+  input/output you want and then let the model extrapolate from there. This
+  gives the model a better chance of being consistent.
+</Conv>
+
+I manually took the subtitles and description of the Kielbasa Sheet Pan meal recipe and reified them into a JSON object manually. Once I fed that into the context window and tested it with a video that hadn't been seen before, I was finally getting consistent results.
+
+## The app
+
+Now that I was consistently getting what I want, I made [a simple Next.js app](https://github.com/Xe/cooktok) and used [zod](https://zod.dev/) to validate generated objects. When I pass a video URL into the app, it gets processed like this:
+
+1. yt-dlp is invoked to download the video, description, thumbnail/poster, and subtitles in English
+2. The description and subtitles are used as input to Hermes 3 with a few-shot pipeline as described above (though I used a chicken orzo recipe instead of the kielbasa sheet pan meal)
+3. The output is parsed as JSON and validated with the zod schema
+4. The result gets rendered to a page so you can print it out and cook the meal
+
+This ends up with recipes like this:
+
+<Picture
+  path="notes/2024/cooktok/recipe-preview"
+  desc="Kielbasa Sheet Pan Meal, 4 servings, by @cookinginthemidwest. The asian zing sauce is spicy, so you may want to leave some without it for kids or those who don't like spice, and they can eat theirs with BBQ sauce instead. Ingredients: 2 12 oz packs of Beef Kielbasa, 3 large potatoes, 2 green bell peppers"
+/>
+
+<center>
+  [Recipe
+  PDF](https://cdn.xeiaso.net/file/christine-static/notes/2024/cooktok/Kielbasa-Sheet-Pan-Meal.pdf)
+</center>
+
+## Testing
+
+Testing this was the hard part due to a prior incident with AI summarization of cooking videos making us make something inedible trying to copy an [Adam Ragusea video on Orange Chicken](https://www.youtube.com/watch?v=zc63e7ZKUrg). I ended up using some deception in order to hide the fact that the Beef Kielbasa Sheet Pan Meal recipe was created using an AI pipeline.
+
+Either way, we got all the ingredients and cooked it without consulting the source video:
+
+<Picture
+  path="notes/2024/cooktok/ingredients"
+  desc="A pair of cutting boards with bell peppers, potatoes, one healthy red onion, and a bunch of kielbasa sausage"
+/>
+
+<Picture
+  path="notes/2024/cooktok/ready-for-oven"
+  desc="A sheet pan coated with aluminum foil topped with potatoes, veggies, and sausage"
+/>
+
+And then it came out great:
+
+<Picture
+  path="notes/2024/cooktok/cooked"
+  desc="A plate of the resulting creation featuring sausage chunks, potatoes, onions, and red bell pepper"
+/>
+
+## Conclusion
+
+This is a somewhat viable way to get the recipes out of TikTok cooking videos, although it has a few fundamental limitations that can't easily be worked around yet:
+
+1. Many cooking videos on TikTok have their videos function as advertisements for their Patreon, where they give out the full recipes. CookTok cannot work around this, it can only get information from the video metadata.
+2. Some TikTokkers hide or obscure the amounts of ingredients via text on the screen. In a future version, I'll try to use a vision model to extract the text from every 5th frame or so. Maybe just working on keyframes would be fine? I'm not sure, more research is required.
+
+For a weekend hack though, I'd call this a resounding success. I played around with some fancy tools and managed to get at least one tasty meal as a result. That's more than enough to be a win in my book.
