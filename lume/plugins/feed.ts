@@ -155,9 +155,11 @@ export default function (userOptions?: Options) {
                     const pageUrl = site.url(data.url, true);
                     const fixedContent = fixUrls(new URL(pageUrl), content || "");
 
+                    const link = getDataValue(data, "=redirect_to") ?? site.url(data.url, true);
+
                     return {
                         title: getDataValue(data, items.title),
-                        url: site.url(data.url, true),
+                        url: link,
                         description: getDataValue(data, items.description),
                         published: getDataValue(data, items.published),
                         updated: getDataValue(data, items.updated),
