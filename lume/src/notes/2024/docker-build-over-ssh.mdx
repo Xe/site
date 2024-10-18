@@ -1,0 +1,67 @@
+---
+title: "Docker builds over SSH"
+desc: "Plan 9 clustering at home"
+date: 2024-10-18
+tags:
+  - docker
+  - ssh
+  - devops
+---
+
+While on stream today, SlyEcho pointed out that you can set `DOCKER_HOST=ssh://...` to have the Docker client seamlessly do builds and the like over SSH instead of using the local computer's Docker daemon. In the process of playing with this, I found the [`docker context`](https://docs.docker.com/engine/manage-resources/contexts/) command. This is cool as hell, it allows you to manage multiple Docker daemons the same way that you would with Kubernetes clusters.
+
+For example, here's what it looks like by default on Linux:
+
+```
+$ docker context ls
+NAME        DESCRIPTION                               DOCKER ENDPOINT               ERROR
+default *   Current DOCKER_HOST based configuration   unix:///var/run/docker.sock
+```
+
+You can add contexts with the `docker context create` command, and also point those contexts to remote hosts over SSH:
+
+```
+docker context create \
+  --docker host=ssh://cadey@pneuma \
+  --description "Iustorum autem semita quasi lux splendens procedit et crescit usque ad perfectam diem" \
+  pneuma
+```
+
+Then whenever you need to deal with the remote host for a command:
+
+```
+docker --context pneuma pull alpine:edge
+```
+
+You can set it as the default with `docker context use`:
+
+```
+docker context use pneuma
+```
+
+And then whenever you're doing something with Docker, it will seamlessly SSH into the machine `pneuma`, do the operation, and then return the result. This works for building and running containers too:
+
+```
+$ hostname
+shiroko
+
+$ docker run -it --rm --network host alpine:edge
+# hostname
+pneuma
+```
+
+This even works for tools like [Earthly](https://earthly.dev):
+
+```
+$ earthly +all
+(...)
+
+$ docker images
+REPOSITORY                TAG                   IMAGE ID       CREATED         SIZE
+ghcr.io/xe/site/bin       earthly               828d989bb3b3   2 minutes ago   263MB
+ghcr.io/xe/site/patreon   latest                9d3e945e7d6f   2 minutes ago   23.8MB
+```
+
+This means that even though I've somehow broken the Docker desktop app on my gaming PC that I stream from, I can still use Docker via one of my homelab machines!
+
+This is cool as hell!
