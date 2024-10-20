@@ -91,6 +91,7 @@ in  Config::{
     , contactLinks =
       [ Link::{ url = "https://github.com/Xe", title = "GitHub" }
       , Link::{ url = "https://bsky.app/profile/xeiaso.net", title = "Bluesky" }
+      , Link::{ url = "https://www.tiktok.com/@xeiaso.1337", title = "TikTok" }
       , Link::{ url = "https://keybase.io/xena", title = "Keybase" }
       , Link::{ url = "https://www.patreon.com/cadey", title = "Patreon" }
       , Link::{ url = "https://www.twitch.tv/princessxen", title = "Twitch" }
