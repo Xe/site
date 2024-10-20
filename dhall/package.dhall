@@ -90,7 +90,7 @@ in  Config::{
       ]
     , contactLinks =
       [ Link::{ url = "https://github.com/Xe", title = "GitHub" }
-      , Link::{ url = "https://x.com/theprincessxena", title = "X (Twitter)" }
+      , Link::{ url = "https://bsky.app/profile/xeiaso.net", title = "Bluesky" }
       , Link::{ url = "https://keybase.io/xena", title = "Keybase" }
       , Link::{ url = "https://www.patreon.com/cadey", title = "Patreon" }
       , Link::{ url = "https://www.twitch.tv/princessxen", title = "Twitch" }
@@ -102,11 +102,11 @@ in  Config::{
             "https://signal.me/#eu/Nphi3UKYkj4lgn_HPVFR6wS4VPJ7GRX3htnyHVe8m6XqOPwj8CBJmKnDfTN4mdoX"
         , title = "Signal"
         }
-      , Link::{ url = "https://bsky.app/profile/xeiaso.net", title = "Bluesky" }
       , Link::{
         , url = "https://www.linkedin.com/in/xe-iaso"
         , title = "LinkedIn"
         }
+      , Link::{ url = "https://x.com/theprincessxena", title = "X (Twitter)" }
       ]
     , pronouns = ./pronouns.dhall
     , characters = ./characters.dhall
