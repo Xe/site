@@ -1,0 +1,219 @@
+---
+title: "The return of Stealth Mountain"
+desc: It's more than a sneaky peak, it's a legend reborn.
+date: 2024-10-29
+hero:
+  ai: iPhone 13 Pro, Photo by Xe Iaso
+  file: la-foothills
+  prompt: A picture of the Los Angeles foothills near the airport at sunset. The sky is bathed in gold with the mountains a calming purple.
+---
+
+Way back in the Before Times™️, there was a [legendary Twitter bot named Stealth Mountain](https://slate.com/culture/2012/01/stealth-mountain-the-twitter-bot-devoted-to-a-single-grammatical-error.html). It is incredibly banned now, but it was a brilliant example of what you can do when you have a terrible idea, access to the Twitter firehose, and enough will to act on it. Whenever someone made a tweet with "sneak peak" in it, the bot kicked into high gear spelling pedantry. For example, if someone sent a post like this:
+
+<div className="mx-auto">
+  <blockquote
+    className="bluesky-embed mx-auto"
+    data-bluesky-uri="at://did:plc:e5nncb3dr5thdkjir5cfaqfe/app.bsky.feed.post/3l7e4infqmn2e"
+    data-bluesky-cid="bafyreihiexb6nmhzdrwtvfwmzyc24s4hp2hrq76cpsfjv3pdsd5fo3r2si"
+  >
+    <p lang="en">sneak peak</p>&mdash; Xe (
+    <a href="https://bsky.app/profile/did:plc:e5nncb3dr5thdkjir5cfaqfe?ref_src=embed">
+      @xeiaso.net
+    </a>
+    ) <a href="https://bsky.app/profile/did:plc:e5nncb3dr5thdkjir5cfaqfe/post/3l7e4infqmn2e?ref_src=embed">October 25, 2024 at 1:40 PM</a>
+  </blockquote>
+</div>
+<script
+  async
+  src="https://embed.bsky.app/static/embed.js"
+  charset="utf-8"
+></script>
+
+The bot would instantly fire back with this:
+
+<div className="mx-auto">
+  <blockquote
+    className="bluesky-embed mx-auto"
+    data-bluesky-uri="at://did:plc:bbs7dzqarrvqdkt74wj6xblj/app.bsky.feed.post/3l7e4inprvd2m"
+    data-bluesky-cid="bafyreidkmja2rxu5ash3ethxmmjuud7am46ocf4egyvf2wxgbst3slkbei"
+  >
+    <p lang="">I think you mean &quot;sneak peek&quot;</p>&mdash; Stealth
+    Mountain (
+    <a href="https://bsky.app/profile/did:plc:bbs7dzqarrvqdkt74wj6xblj?ref_src=embed">
+      @stealthmountain.xeiaso.net
+    </a>
+    ) <a href="https://bsky.app/profile/did:plc:bbs7dzqarrvqdkt74wj6xblj/post/3l7e4inprvd2m?ref_src=embed">October 25, 2024 at 1:40 PM</a>
+  </blockquote>
+</div>
+
+That's it. That's the whole bot.
+
+I miss the era of Internet that lead to people creating works of public art like this. I want to bring some of that magic back. I've created a revival of this bot [on Bluesky](https://bsky.app/profile/did:plc:bbs7dzqarrvqdkt74wj6xblj). It runs in a microservices architecture on my homelab and uses NATS.
+
+<Conv name="Cadey" mood="enby">
+  If you want to see bad ideas like these get implemented live on stream, I
+  stream every Friday at Noon Eastern time on
+  [twitch.tv/princessxen](https://twitch.tv/princessxen). This was implemented
+  last week and you can find the stream VOD [on YouTube]().
+</Conv>
+
+## What makes the bot go
+
+[Bluesky](https://bsky.social/about) is a social media platform like Twitter/X, but it's way more open than Twitter ever was. Among other things, it has user-created algorithmic feeds, a developer API open to everyone, everyone is a website mentioning other websites, and the most important part to this project is that everyone has access to the entire dataset that makes up the network. Here's my entire Bluesky repo: [@xeiaso.net](https://atproto-browser.vercel.app/at/xeiaso.net). You can see every post, every follow, every like, and other things I've put into Bluesky.
+
+This includes access to the [Firehose](https://docs.bsky.app/docs/advanced-guides/firehose), the entire unfiltered stream of public events in the network. This gives you enough information to automatically label profiles or posts based on their content.
+
+However the Firehose is kind of annoying to deal with. Everything is sent as a bunch of [CBOR](https://cbor.io) objects, which are not as developer-ergonomic as JSON is. As such, [Jaz](https://bsky.app/profile/jaz.bsky.social) invented [Jetstream](https://docs.bsky.app/blog/jetstream), which gets you access to the same data you get from the Firehose, but over JSON instead. Jaz also shipped a [low-level Go package](https://pkg.go.dev/github.com/bluesky-social/jetstream/pkg/client) that handles a lot of the boilerplate for you.
+
+At a high level, Stealth Mountain needs to just subscribe to Jetstream, filter out posts it wants, and then react to them, right? Well, yes, but this doesn't scale well if you're like me and want to do multiple projects with this data.
+
+That's where [NATS](https://nats.io) comes in. NATS is a pub-sub message broker. You publish messages to a subject and then clients can subscribe to messages on that subject. If there's nobody listening, the message just gets dropped by the broker. Bluesky has a bunch of events, and statistically very few of them are relevant to Stealth Mountain.
+
+So I made a service named [amano](https://github.com/Xe/x/blob/4425f342319060c018a407795c8ee9354dc7fef2/cmd/amano/main.go) that subscribes to Jetstream and then fans each kind of Bluesky message out to different subjects. It currently breaks things out like this:
+
+- `amano.account` for account updates (usually accounts being registered and deactivated)
+- `amano.identity` for identity updates (what happens whenever someone changes their username or data server on Bluesky)
+- `amano.commit.lexicon.type.here` for everything else
+
+The majority of things in Bluesky fall into that last bit: commits to user repositories. This is where all your posts and likes are. So if you fan things out like that, then Stealth Mountain can only subscribe to new posts, and all of the rest of the data is broken out into its own subjects so that other things in my homelab can make use of the data.
+
+<Picture
+  path="blog/2024/stealth-mountain/diagram"
+  desc="A terrible MS Paint diagram of Stealth Mountain's architecture. Skeets come in through amano and NATS, Stealth Mountain does its logic, and then sends a reply if it needs to."
+/>
+
+This lets me take advantage of the strengths of microservices approaches while also minimizing (or at least acknowledging) a lot of the downsides. I don't expect perfect 100% delivery of every message from Jetstream into my NATS broker, but for what I'm doing this should be way more than enough.
+
+## Implementation is left trivial
+
+As a result of all of this, the implementation in Stealth Mountain is trivial. It mainly boils down to "for each post, if it contains `sneak peak`, reply to it". The harder bit to implement was replying to posts and attaching them to the post that is being replied to, but even then that was made trivial after reading some example code and making an extra method on a post builder to handle this for me.
+
+One of the last bits that I had to think about is how users should be able to opt-out of the bot. Currently, the way you opt-out is by blocking the bot. That will make any replies from the bot just get ignored. I don't have logic for detecting when the bot is blocked, but because each block is also put into a NATS subject, it should be fairly trivial to implement in the future.
+
+For now though, I decided to add a note about blocking the bot to make it go away to both its pinned post and profile:
+
+<div className="mx-auto">
+  <blockquote
+    className="bluesky-embed mx-auto"
+    data-bluesky-uri="at://did:plc:bbs7dzqarrvqdkt74wj6xblj/app.bsky.feed.post/3l7e73g6s772m"
+    data-bluesky-cid="bafyreigg5ftgfhrkoh3tbyp6xwoyyggzog52ockhs5nmssd56kvtjrmk5i"
+  >
+    <p lang="en">
+      Hi all! I&#x27;m Stealth Mountain, run by @xeiaso.net. If you typo
+      &quot;sneak peek&quot;, I will show up to be polite.
+      <br />
+      <br />
+      To opt-out, block me.
+    </p>
+    &mdash; Stealth Mountain (<a href="https://bsky.app/profile/did:plc:bbs7dzqarrvqdkt74wj6xblj?ref_src=embed">
+      @stealthmountain.xeiaso.net
+    </a>) <a href="https://bsky.app/profile/did:plc:bbs7dzqarrvqdkt74wj6xblj/post/3l7e73g6s772m?ref_src=embed">October 25, 2024 at 2:26 PM</a>
+  </blockquote>
+</div>
+
+I think this should be more than good enough for now. I have yet to hear from the Bluesky team if this is sufficient, but I suspect that it's probably fine.
+
+### Problems I had along the way
+
+I didn't really have much of any problems outside a few snafus involving the re-authentication logic. When you authenticate to Bluesky, it gives you an access token (good for about half an hour) and a refresh token (good for about a month or two). The thing I messed up is that you need to replace the access token in memory with the refresh token before calling the refresh token API endpoint. The logic you want kinda looks like this:
+
+```go
+var client *xrpc.Client = magic!()
+client.Auth.AccessJwt = client.Auth.RefreshJwt
+resp, err := atproto.ServerRefreshSession(ctx, client)
+if err != nil {
+	return err
+}
+// replace contents of client.Auth from what you were given with resp
+```
+
+I also failed to deploy the bot correctly on stream because I had the wrong secret get loaded from 1Password. Turns out that if you don't put the authentication credentials correctly into the bot at runtime, it won't work. Shocker!
+
+---
+
+Either way, this was a fun bot to make. It's remarkably effective and amusing to check in on. Even though it's got a fairly complicated setup involving multiple layers of microservices, it's able to respond basically instantly. I've observed it reacting faster than 250 milliseconds from post to response.
+
+What's great is that people love the return of the bot. I'm going to end this article with some of my favorite responses. Hope this was interesting! Let me know what other fun hacks you want to see on top of ATProto.
+
+<blockquote
+  className="bluesky-embed mx-auto"
+  data-bluesky-uri="at://did:plc:zqe7sqoy4osaqyaoxypoge4a/app.bsky.feed.post/3l7nxhwjhkc23"
+  data-bluesky-cid="bafyreibszhyqndzr3yp2lbgvjo6jknfsr6gupn2oam54e7uk5znclmkirm"
+>
+  <p lang="en">This bot is freaking hilarious i love that</p>&mdash; Kiwi 🍄‍🟫
+  Streamer! (
+  <a href="https://bsky.app/profile/did:plc:zqe7sqoy4osaqyaoxypoge4a?ref_src=embed">
+    @kyisakiwi.bsky.social
+  </a>
+  ) <a href="https://bsky.app/profile/did:plc:zqe7sqoy4osaqyaoxypoge4a/post/3l7nxhwjhkc23?ref_src=embed">October 29, 2024 at 11:37 AM</a>
+</blockquote>
+
+<blockquote
+  className="bluesky-embed mx-auto"
+  data-bluesky-uri="at://did:plc:g6kgw2wa5eoq2ttkdwvqsap6/app.bsky.feed.post/3l7l6xlibnh2s"
+  data-bluesky-cid="bafyreidrhf4twjsqb6nkqgszf5mjfue5g2f4q3irc3ugxpiliapahzccka"
+>
+  <p lang="en">
+    Nope, we are taking a page out of your book and sneaking in a mountain top.
+    That’s my story and I’m sticking to it.
+  </p>
+  &mdash; Roi Fainéant Press (<a href="https://bsky.app/profile/did:plc:g6kgw2wa5eoq2ttkdwvqsap6?ref_src=embed">
+    @rfpress.bsky.social
+  </a>) <a href="https://bsky.app/profile/did:plc:g6kgw2wa5eoq2ttkdwvqsap6/post/3l7l6xlibnh2s?ref_src=embed">October 28, 2024 at 9:13 AM</a>
+</blockquote>
+
+<blockquote
+  className="bluesky-embed mx-auto"
+  data-bluesky-uri="at://did:plc:6icr4tipspgctwsl24lv5r3y/app.bsky.feed.post/3l7kboiaqw62v"
+  data-bluesky-cid="bafyreifxielsyrz5hnqwlrqe2n22utg37h7ccg25kcynkatvm3ywxpa65i"
+>
+  <p lang="en">
+    my favorite bot has arrived! missed this lil pedant.
+    <br />
+    <br />
+    <a href="https://bsky.app/profile/did:plc:6icr4tipspgctwsl24lv5r3y/post/3l7kboiaqw62v?ref_src=embed">
+      [image or embed]
+    </a>
+  </p>
+  &mdash; Ponderosa | Kim Kuzuri (<a href="https://bsky.app/profile/did:plc:6icr4tipspgctwsl24lv5r3y?ref_src=embed">
+    @ponderosa121.bsky.social
+  </a>) <a href="https://bsky.app/profile/did:plc:6icr4tipspgctwsl24lv5r3y/post/3l7kboiaqw62v?ref_src=embed">October 28, 2024 at 12:29 AM</a>
+</blockquote>
+
+<blockquote
+  className="bluesky-embed mx-auto"
+  data-bluesky-uri="at://did:plc:vtjmk4hlca2i4j3hkggih7hj/app.bsky.feed.post/3l7jcec6nva2e"
+  data-bluesky-cid="bafyreidqdaveiv26z7f3kregngqyb5tm2yrixvn6ajge4v7g6rvplif5lm"
+>
+  <p lang="en">
+    not u frame 1 pointing out my minor spelling mistake 😭😭😭 IM SO COOKED
+  </p>
+  &mdash; Minty Yukime 🍬✨ ENVtuber!【oracLive】 (<a href="https://bsky.app/profile/did:plc:vtjmk4hlca2i4j3hkggih7hj?ref_src=embed">
+    @mintyyukime.bsky.social
+  </a>) <a href="https://bsky.app/profile/did:plc:vtjmk4hlca2i4j3hkggih7hj/post/3l7jcec6nva2e?ref_src=embed">October 27, 2024 at 3:08 PM</a>
+</blockquote>
+
+<blockquote
+  className="bluesky-embed mx-auto"
+  data-bluesky-uri="at://did:plc:dszvruvcqfenaasgcgmwlsqr/app.bsky.feed.post/3l7iovufh732c"
+  data-bluesky-cid="bafyreibhrofevpyw3bnlmefkkhsmj4gblpfzqywxlg4ujn4nwa6v2cx6we"
+>
+  <p lang="en">
+    Oh yea 😭. I guess I said it wrong my whole life 😅😅. But it is also peak
+    what is gonna drop 😼. So it stays sneak peak from now on 😼
+  </p>
+  &mdash; Dokkan Legoman (<a href="https://bsky.app/profile/did:plc:dszvruvcqfenaasgcgmwlsqr?ref_src=embed">
+    @dokkanlegoman.bsky.social
+  </a>) <a href="https://bsky.app/profile/did:plc:dszvruvcqfenaasgcgmwlsqr/post/3l7iovufh732c?ref_src=embed">October 27, 2024 at 9:20 AM</a>
+</blockquote>
+
+<blockquote
+  className="bluesky-embed mx-auto"
+  data-bluesky-uri="at://did:plc:rcvlp32bfegbyofa2rsg4gfi/app.bsky.feed.post/3l7fau5sv7t2h"
+  data-bluesky-cid="bafyreicztebebzbijecnrevmcf3cbney65oehwhvlf5duc4q4rv6s4533q"
+>
+  <p lang="en">I posted this 1 second ago how did you get here so fast</p>
+  &mdash; Moog (<a href="https://bsky.app/profile/did:plc:rcvlp32bfegbyofa2rsg4gfi?ref_src=embed">
+    @megamooga.bsky.social
+  </a>) <a href="https://bsky.app/profile/did:plc:rcvlp32bfegbyofa2rsg4gfi/post/3l7fau5sv7t2h?ref_src=embed">October 26, 2024 at 12:31 AM</a>
+</blockquote>
