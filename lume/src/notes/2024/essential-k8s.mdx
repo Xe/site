@@ -1,0 +1,450 @@
+---
+title: "My first deploys for a new Kubernetes cluster"
+desc: "This is documentation for myself, but you may enjoy it too"
+date: 2024-11-03
+hero:
+  ai: Photo by Xe Iaso, iPhone 13 Pro
+  file: cloudfront
+  prompt: "An airplane window looking out to cloudy skies."
+---
+
+I'm setting up some cloud Kubernetes clusters for a bit coming up on the blog. As a result, I need some documentation on what a "standard" cluster looks like. This is that documentation.
+
+<Conv name="Mara" mood="hacker">
+  Every Kubernetes term is WrittenInGoPublicValueCase. If you aren't sure what
+  one of those terms means, google "site:kubernetes.io KubernetesTerm".
+</Conv>
+
+I'm assuming that the cluster is named `mechonis`.
+
+For the "core" of a cluster, I need these services set up:
+
+- Secret syncing with the [1Password operator](https://developer.1password.com/docs/k8s/k8s-operator/)
+- Certificate management with [cert-manager](https://cert-manager.io/)
+- DNS management with [external-dns](https://kubernetes-sigs.github.io/external-dns/v0.15.0/)
+- HTTP ingress with [ingress-nginx](https://kubernetes.github.io/ingress-nginx/)
+- High-latency high-volume storage with [csi-s3](https://github.com/yandex-cloud/k8s-csi-s3) pointed to [Tigris](https://tigrisdata.com) (technically optional, but including it for consistency)
+- The [metrics-server](https://github.com/kubernetes-sigs/metrics-server) so [k9s](https://k9scli.io) can see how much free CPU and RAM the cluster has
+
+These all complete different aspects of the three core features of any cloud deployment: compute, network, and storage. Most of my data will be hosted in the default StorageClass implementation provided by the platform (or in the case of baremetal clusters, something like [Longhorn](https://longhorn.io)), so the csi-s3 StorageClass is more of a "I need lots of data but am cheap" than anything.
+
+Most of this will be managed with [helmfile](https://github.com/helmfile/helmfile), but 1Password can't be.
+
+## 1Password
+
+The most important thing at the core of my k8s setups is the [1Password operator](https://developer.1password.com/docs/k8s/k8s-operator/). This syncs 1password secrets to my Kubernetes clusters, so I don't need to define them in Secrets manually or risk putting the secret values into my OSS repos. This is done separately as I'm not able to use helmfile
+
+After you have [the `op` command set up](https://developer.1password.com/docs/cli/get-started/), create a new server with access to the `Kubernetes` vault:
+
+```
+op connect server create mechonis --vaults Kubernetes
+```
+
+Then install the 1password connect Helm release with `operator.create` set to `true`:
+
+```
+helm repo add \
+  1password https://1password.github.io/connect-helm-charts/
+helm install \
+  connect \
+  1password/connect \
+  --set-file connect.credentials=1password-credentials.json \
+  --set operator.create=true \
+  --set operator.token.value=$(op connect token create --server mechonis --vault Kubernetes)
+```
+
+Now you can deploy OnePasswordItem resources as normal:
+
+```yaml
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: falin
+spec:
+  itemPath: vaults/Kubernetes/items/Falin
+```
+
+## cert-manager, ingress-nginx, metrics-server, and csi-s3
+
+In the cluster folder, create a file called `helmfile.yaml`. Copy these contents:
+
+<details>
+<summary>helmfile.yaml</summary>
+
+```yaml
+repositories:
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: csi-s3
+    url: cr.yandex/yc-marketplace/yandex-cloud/csi-s3
+    oci: true
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+  - name: metrics-server
+    url: https://kubernetes-sigs.github.io/metrics-server/
+
+releases:
+  - name: cert-manager
+    kubeContext: mechonis
+    chart: jetstack/cert-manager
+    createNamespace: true
+    namespace: cert-manager
+    version: v1.16.1
+    set:
+      - name: installCRDs
+        value: "true"
+      - name: prometheus.enabled
+        value: "false"
+  - name: csi-s3
+    kubeContext: mechonis
+    chart: csi-s3/csi-s3
+    namespace: kube-system
+    set:
+      - name: "storageClass.name"
+        value: "tigris"
+      - name: "secret.accessKey"
+        value: ""
+      - name: "secret.secretKey"
+        value: ""
+      - name: "secret.endpoint"
+        value: "https://fly.storage.tigris.dev"
+      - name: "secret.region"
+        value: "auto"
+  - name: ingress-nginx
+    chart: ingress-nginx/ingress-nginx
+    kubeContext: mechonis
+    namespace: ingress-nginx
+    createNamespace: true
+  - name: metrics-server
+    kubeContext: mechonis
+    chart: metrics-server/metrics-server
+    namespace: kube-system
+```
+
+</details>
+
+Create a new admin access token in the [Tigris console](https://console.tigris.dev) and copy its access key ID and secret access key into `secret.accessKey` and `secret.secretKey` respectively.
+
+Run `helmfile apply`:
+
+```
+$ helmfile apply
+```
+
+This will take a second to think, and then everything should be set up. The LoadBalancer Service may take a minute or ten to get a public IP depending on which cloud you are setting things up on, but once it's done you can proceed to setting up DNS.
+
+## external-dns
+
+The next kinda annoying part is getting [external-dns](https://kubernetes-sigs.github.io/external-dns/latest/) set up. It's something that looks like it should be packageable with something like Helm, but realistically it's such a generic tool that you're really better off making your own manifests and deploying it by hand. In my setup, I use these features of external-dns:
+
+- The [AWS Route 53](https://aws.amazon.com/route53/) DNS backend
+- The [AWS DynamoDB](https://aws.amazon.com/dynamodb/) registry to remember what records should be set in Route 53
+
+You will need two DynamoDB tables:
+
+- `external-dns-mechonis-crd`: for records created with DNSEndpoint resources
+- `external-dns-mechonis-ingress`: for records created with Ingress resources
+
+Create a terraform configuration for setting up these DynamoDB configuration values:
+
+<details>
+<summary>main.tf</summary>
+
+```hcl
+terraform {
+  backend "s3" {
+    bucket = "within-tf-state"
+    key    = "k8s/mechonis/external-dns"
+    region = "us-east-1"
+  }
+}
+
+resource "aws_dynamodb_table" "external_dns_crd" {
+  name           = "external-dns-crd-mechonis"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 1
+  write_capacity = 1
+  table_class    = "STANDARD"
+
+  attribute {
+    name = "k"
+    type = "S"
+  }
+
+  hash_key = "k"
+}
+
+resource "aws_dynamodb_table" "external_dns_ingress" {
+  name           = "external-dns-ingress-mechonis"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 1
+  write_capacity = 1
+  table_class    = "STANDARD"
+
+  attribute {
+    name = "k"
+    type = "S"
+  }
+
+  hash_key = "k"
+}
+```
+
+</details>
+
+Create the tables with `terraform apply`:
+
+```
+terraform init
+terraform apply --auto-approve # yolo!
+```
+
+While that cooks, head over to `~/Code/Xe/x/kube/rhadamanthus/core/external-dns` and copy the contents to `~/Code/Xe/x/kube/mechonis/core/external-dns`. Then open `deployment-crd.yaml` and replace the DynamoDB table in the `crd` container's args:
+
+```diff
+         args:
+         - --source=crd
+         - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
+         - --crd-source-kind=DNSEndpoint
+         - --provider=aws
+         - --registry=dynamodb
+         - --dynamodb-region=ca-central-1
+-        - --dynamodb-table=external-dns-crd-rhadamanthus
++        - --dynamodb-table=external-dns-crd-mechonis
+```
+
+And in `deployment-ingress.yaml`:
+
+```diff
+         args:
+         - --source=ingress
+-        - --default-targets=rhadamanthus.xeserv.us
++        - --default-targets=mechonis.xeserv.us
+         - --provider=aws
+         - --registry=dynamodb
+         - --dynamodb-region=ca-central-1
+-        - --dynamodb-table=external-dns-ingress-rhadamanthus
++        - --dynamodb-table=external-dns-ingress-mechonis
+```
+
+Apply these configs with `kubectl apply`:
+
+```
+kubectl apply -k .
+```
+
+Then write a DNSEndpoint pointing to the created LoadBalancer. You may have to look up the IP addresses in the admin console of the cloud platform in question.
+
+<details>
+<summary>load-balancer-dns.yaml</summary>
+
+```yaml
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: load-balancer-dns
+spec:
+  endpoints:
+    - dnsName: mechonis.xeserv.us
+      recordTTL: 3600
+      recordType: A
+      targets:
+        - whatever.ipv4.goes.here
+    - dnsName: mechonis.xeserv.us
+      recordTTL: 3600
+      recordType: AAAA
+      targets:
+        - 2000:something:goes:here:lol
+```
+
+</details>
+
+Apply it with `kubectl apply`:
+
+```
+kubectl apply -f load-balancer-dns.yaml
+```
+
+This will point `mechonis.xeserv.us` to the LoadBalancer, which will point to ingress-nginx based on Ingress configurations, which will route to your Services and Deployments, using Certs from cert-manager.
+
+## cert-manager ACME issuers
+
+Copy the contents of `~/Code/Xe/x/kube/rhadamanthus/core/cert-manager` to `~/Code/Xe/x/kube/mechonis/core/cert-manager`. Apply them as-is, no changes are needed:
+
+```
+kubectl apply -k .
+```
+
+This will create `letsencrypt-prod` and `letsencrypt-staging` ClusterIssuers, which will allow the creation of Let's Encrypt certificates in their production and staging environments. 9 times out of 10, you won't need the staging environment, but when you are doing high-churn things involving debugging the certificate issuing setup, the staging environment is very useful because it has a [much higher rate limit](https://letsencrypt.org/docs/staging-environment/) than [the production environment](https://letsencrypt.org/docs/rate-limits/) does.
+
+## Deploying a "hello, world" workload
+
+<Conv name="Mara" mood="hacker">
+  Nearly every term for "unit of thing to do" is taken by different aspects of
+  Kubernetes and its ecosystem. The only one that isn't taken is "workload". A
+  workload is a unit of work deployed somewhere, in practice this boils down to
+  a Deployment, its Service, any PersistentVolumeClaims, Ingresses, or other
+  resources that it needs in order to run.
+</Conv>
+
+Now you can put everything into test by making a simple "hello, world" workload. This will include:
+
+- A ConfigMap to store HTML to show to the user
+- A Deployment to run nginx pointed at the contents of the ConfigMap
+- A Service to give an internal DNS name for that Deployment's Pods
+- An Ingress to route traffic to that Service from the public Internet
+
+Make a folder called `hello-world` and put these files in it:
+
+<details>
+<summary>configmap.yaml</summary>
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-world
+data:
+  index.html: |
+    <html>
+    <head>
+      <title>Hello World!</title>
+    </head>
+    <body>Hello World!</body>
+    </html>
+```
+
+</details>
+<details>
+<summary>deployment.yaml</summary>
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+spec:
+  selector:
+    matchLabels:
+      app: hello-world
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+        - name: web
+          image: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: html
+          configMap:
+            name: hello-world
+```
+
+</details>
+<details>
+<summary>service.yaml</summary>
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    app: hello-world
+```
+
+</details>
+<details>
+<summary>ingress.yaml</summary>
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-world
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - hello.mechonis.xeserv.us
+      secretName: hello-mechonis-xeserv-us-tls
+  rules:
+    - host: hello.mechonis.xeserv.us
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hello-world
+                port:
+                  number: 80
+```
+
+</details>
+<details>
+<summary>kustomization.yaml</summary>
+
+```yaml
+resources:
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+```
+
+</details>
+
+Then apply it with `kubectl apply`:
+
+```
+kubectl apply -k .
+```
+
+It will take a minute for it to work, but here are the things that will be done in order so you can validate them:
+
+- The Ingress object has the `cert-manager.io/cluster-issuer: "letsencrypt-prod"` annotation, which triggers cert-manager to create a Cert for the Ingress
+- The Cert notices that there's no data in the Secret `hello-mechonis-xeserv-us-tls` in the default Namespace, so it creates an Order for a new certificate from the `letsencrypt-prod` ClusterIssuer (set up in the cert-manager apply step earlier)
+- The Order creates a new Challenge for that certificate, setting a DNS record in Route 53 and then waiting until it can validate that the Challenge matches what it expects
+- cert-manager asks Let's Encrypt to check the Challenge
+- The Order succeeds and the certificate data is written to the Secret `hello-mechonis-xeserv-us-tls` in the default Namespace
+- ingress-nginx is informed that the Secret has been updated and rehashes its configuration accordingly
+- HTTPS routing is set up for the `hello-world` service so every request to `hello.mechonis.xeserv.us` points to the Pods managed by the `hello-world` Deployment
+- external-dns checks for the presence of newly created Ingress objects it doesn't know about, and creates Route 53 entries for them
+
+This results in the `hello-world` workload going from nothing to fully working in about 5 minutes tops. Usually this can be less depending on how lucky you get with the response time of the Route 53 API. If it doesn't work, run through resources in this order in [k9s](https://k9scli.io/):
+
+- The `external-dns-ingress` Pod logs
+- The `cert-manager` Pod logs
+- Look for the Cert, is it marked as Ready?
+- Look for that Cert's Order, does it show any errors in its list of events?
+- Look for that Order's Challenge, does it show any errors in its list of events?
+
+<Conv name="Mara" mood="hacker">
+  By the way: k9s is fantastic. You should have it installed if you deal with
+  Kubernetes. It should be baked into kubectl. It's a near perfect tool.
+</Conv>
+
+## Conclusion
+
+From here you can deploy anything else you want, as long as the workload configuration kinda looks like the `hello-world` configuration. Namely, you MUST have the following things set:
+
+- Ingress objects MUST have the `cert-manager.io/cluster-issuer: "letsencrypt-prod"` annotation, if they don't, then no TLS certificate will be minted
+- Workloads MUST have the `nginx.ingress.kubernetes.io/ssl-redirect: "true"` to ensure that all plain HTTP traffic is upgraded to HTTPS
+- Sensitive data MUST be managed in 1Password via OnePasswordItem objects
+
+Happy kubeing all!
