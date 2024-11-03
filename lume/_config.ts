@@ -25,6 +25,7 @@ import ChatBubble from "./src/_components/ChatBubble.jsx";
 import Figure from "./src/_components/Figure.tsx";
 import LoadingSpinner from "./src/_components/LoadingSpinner.jsx";
 import IntercomButton from "./src/_components/IntercomButton.jsx";
+import PullQuote from "./src/_components/PullQuote.jsx";
 import TecharoDisclaimer from "./src/_components/TecharoDisclaimer.jsx";
 import XeblogConv from "./src/_components/XeblogConv.tsx";
 import XeblogHero from "./src/_components/XeblogHero.tsx";
@@ -132,6 +133,7 @@ site.use(mdx({
     "XeblogHero": XeblogHero,
     "Picture": XeblogPicture,
     "XeblogPicture": XeblogPicture,
+    "PullQuote": PullQuote,
     "Slide": XeblogSlide,
     "XeblogSlide": XeblogSlide,
     "Sticker": XeblogSticker,
