@@ -1,0 +1,30 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: xesite-patreon-saasproxy-secret-mutation
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  resourceNames: ["xesite-patreon-saasproxy-state"]
+  verbs: ["get", "update", "list"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: xesite-patreon-saasproxy
+  namespace: default
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+ name: xesite-patreon-saasproxy
+ namespace: default
+subjects:
+- kind: ServiceAccount
+  name: xesite-patreon-saasproxy
+  namespace: default
+roleRef:
+ kind: Role
+ name: xesite-patreon-saasproxy-secret-mutation
+ apiGroup: rbac.authorization.k8s.io

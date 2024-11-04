@@ -1,0 +1,10 @@
+resources:
+  - 1password.yaml
+  - deployment.yaml
+  - rbac.yaml
+  - service.yaml
+
+namespace: default
+
+commonLabels:
+  app.kubernetes.io/name: patreon-saasproxy

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xesite
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: xesite
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: xesite
+    spec:
+      volumes:
+      - name: data
+        emptyDir:
+          sizeLimit: 500Mi
+      containers:
+      - name: web
+        image: ghcr.io/xe/site/bin:latest
+        imagePullPolicy: Always
+        env:
+        - name: "BIND"
+          value: ":3000"
+        - name: "INTERNAL_API_BIND"
+          value: ":3001"
+        - name: "DATA_DIR"
+          value: "/xe/data"
+        - name: "SITE_URL"
+          value: "https://rhadamanthus.xeiaso.net"
+        - name: "REDIRECT_DOMAIN"
+          value: "rhadamanthus.xeiaso.net"
+        envFrom:
+        - secretRef:
+            name: xesite
+        ports:
+        - containerPort: 3000
+          name: http
+        volumeMounts:
+        - mountPath: "/xe/data"
+          name: data
