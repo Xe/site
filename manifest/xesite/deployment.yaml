@@ -47,7 +47,7 @@ spec:
             httpHeaders:
             - name: X-Kubernetes
               value: "Is alright, I guess"
-          initialDelaySeconds: 120
+          initialDelaySeconds: 60
           periodSeconds: 30
         livenessProbe:
           httpGet:
