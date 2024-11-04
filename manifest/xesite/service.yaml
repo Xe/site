@@ -12,3 +12,7 @@ spec:
     targetPort: 3000
     protocol: TCP
     name: http
+  - port: 8080
+    targetPort: 3001
+    protocol: TCP
+    name: internalapi

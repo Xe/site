@@ -13,8 +13,9 @@ spec:
     spec:
       volumes:
       - name: data
-        emptyDir:
-          sizeLimit: 500Mi
+        hostPath:
+          path: /data/xesite
+          type: DirectoryOrCreate
       containers:
       - name: web
         image: ghcr.io/xe/site/bin:latest
@@ -39,3 +40,21 @@ spec:
         volumeMounts:
         - mountPath: "/xe/data"
           name: data
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 3001
+            httpHeaders:
+            - name: X-Kubernetes
+              value: "Is alright, I guess"
+          initialDelaySeconds: 120
+          periodSeconds: 30
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3001
+            httpHeaders:
+            - name: X-Kubernetes
+              value: "Is alright, I guess"
+          initialDelaySeconds: 30
+          periodSeconds: 30
