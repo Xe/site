@@ -35,11 +35,6 @@ in  Config::{
     , seriesDescMap = desc.map
     , notableProjects =
       [ Link::{
-        , url = "https://github.com/PonyvilleFM/aura"
-        , title = "Aura"
-        , description = "PonyvilleFM live DJ recording bot"
-        }
-      , Link::{
         , url = "https://h.within.lgbt"
         , title = "The h Programming Language"
         , description =
@@ -107,7 +102,6 @@ in  Config::{
         , url = "https://www.linkedin.com/in/xe-iaso"
         , title = "LinkedIn"
         }
-      , Link::{ url = "https://x.com/theprincessxena", title = "X (Twitter)" }
       ]
     , pronouns = ./pronouns.dhall
     , characters = ./characters.dhall
