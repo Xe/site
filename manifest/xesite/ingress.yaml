@@ -9,10 +9,21 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - aeacus.xeiaso.net
-      secretName: aeacus-xeiaso-net-tls
+        - xeiaso.net
+        - christine.website
+      secretName: xeiaso-net-tls
   rules:
-    - host: aeacus.xeiaso.net
+    - host: christine.website
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: xesite
+                port:
+                  number: 80
+    - host: xeiaso.net
       http:
         paths:
           - path: /

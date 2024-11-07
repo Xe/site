@@ -31,11 +31,11 @@ spec:
         - name: "DATA_DIR"
           value: "/xe/data"
         - name: "SITE_URL"
-          value: "https://aeacus.xeiaso.net"
+          value: "https://xeiaso.net"
         - name: "ONION_DOMAIN"
           value: "gi3bsuc5ci2dr4xbh5b3kja5c6p5zk226ymgszzx7ngmjpc25tmnhaqd.onion"
         - name: "REDIRECT_DOMAIN"
-          value: "aeacus.xeiaso.net"
+          value: "xeiaso.net"
         envFrom:
         - secretRef:
             name: xesite
