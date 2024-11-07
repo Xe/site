@@ -1,7 +1,6 @@
 package lume
 
 import (
-	"archive/zip"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -359,7 +358,7 @@ func (f *FS) build(ctx context.Context, siteCommit string) error {
 
 	zipLoc := filepath.Join(f.opt.DataDir, "site.zip")
 
-	if err := ZipFolder(filepath.Join(cmd.Dir, "_site"), zipLoc); err != nil {
+	if err := ZipFolder(destDir, zipLoc); err != nil {
 		return fmt.Errorf("lume: can't compress site folder: %w", err)
 	}
 
@@ -369,12 +368,7 @@ func (f *FS) build(ctx context.Context, siteCommit string) error {
 		}
 	}
 
-	fs, err := zip.OpenReader(zipLoc)
-	if err != nil {
-		return fmt.Errorf("lume: can't open zip with site content: %w", err)
-	}
-
-	f.fs = fs
+	f.fs = os.DirFS(destDir)
 
 	return nil
 }
