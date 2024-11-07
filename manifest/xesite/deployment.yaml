@@ -12,6 +12,9 @@ spec:
         app.kubernetes.io/name: xesite
     spec:
       volumes:
+      - name: cache
+        persistentVolumeClaim:
+          claimName: xesite-cache
       - name: data
         hostPath:
           path: /data/xesite
@@ -29,6 +32,8 @@ spec:
           value: "/xe/data"
         - name: "SITE_URL"
           value: "https://aeacus.xeiaso.net"
+        - name: "ONION_DOMAIN"
+          value: "gi3bsuc5ci2dr4xbh5b3kja5c6p5zk226ymgszzx7ngmjpc25tmnhaqd.onion"
         - name: "REDIRECT_DOMAIN"
           value: "aeacus.xeiaso.net"
         envFrom:
@@ -40,6 +45,8 @@ spec:
         volumeMounts:
         - mountPath: "/xe/data"
           name: data
+        #- mountPath: "/root/.cache"
+        #  name: cache
         readinessProbe:
           httpGet:
             path: /healthz

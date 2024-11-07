@@ -126,6 +126,7 @@ func main() {
 	h = internal.AcceptEncodingMiddleware(h)
 	h = internal.RefererMiddleware(h)
 	h = internal.DomainRedirect(h, *devel)
+	h = internal.OnionLocation(h)
 
 	slog.Info("starting server", "bind", *bind)
 	log.Fatal(http.Serve(ln, h))

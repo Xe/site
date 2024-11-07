@@ -1,5 +1,6 @@
 resources:
   - 1password.yaml
+  - cache-pvc.yaml
   - deployment.yaml
   - ingress.yaml
   - onionservice.yaml
