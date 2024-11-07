@@ -9,10 +9,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - rhadamanthus.xeiaso.net
-      secretName: rhadamanthus-xeiaso-net-tls
+        - aeacus.xeiaso.net
+      secretName: aeacus-xeiaso-net-tls
   rules:
-    - host: rhadamanthus.xeiaso.net
+    - host: aeacus.xeiaso.net
       http:
         paths:
           - path: /

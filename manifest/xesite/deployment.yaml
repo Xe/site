@@ -28,9 +28,9 @@ spec:
         - name: "DATA_DIR"
           value: "/xe/data"
         - name: "SITE_URL"
-          value: "https://rhadamanthus.xeiaso.net"
+          value: "https://aeacus.xeiaso.net"
         - name: "REDIRECT_DOMAIN"
-          value: "rhadamanthus.xeiaso.net"
+          value: "aeacus.xeiaso.net"
         envFrom:
         - secretRef:
             name: xesite
@@ -48,7 +48,8 @@ spec:
             - name: X-Kubernetes
               value: "Is alright, I guess"
           initialDelaySeconds: 60
-          periodSeconds: 30
+          periodSeconds: 5
+          failureThreshold: 69
         livenessProbe:
           httpGet:
             path: /healthz

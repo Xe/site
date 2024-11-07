@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 var (
@@ -28,8 +29,14 @@ func DomainRedirect(next http.Handler, development bool) http.Handler {
 		}
 
 		if r.Host != *redirectDomain {
-			http.Redirect(w, r, fmt.Sprintf("https://%s%s", *redirectDomain, r.RequestURI), http.StatusMovedPermanently)
-			return
+			if !strings.HasSuffix(r.Host, ".onion") {
+				if r.Method != "GET" {
+					http.Error(w, fmt.Sprintf("go to https://%s%s and try your request again", *redirectDomain, r.RequestURI), http.StatusMisdirectedRequest)
+					return
+				}
+				http.Redirect(w, r, fmt.Sprintf("https://%s%s", *redirectDomain, r.RequestURI), http.StatusMovedPermanently)
+				return
+			}
 		}
 
 		next.ServeHTTP(w, r)
