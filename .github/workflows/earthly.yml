@@ -57,6 +57,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: azure/setup-kubectl@v4
+      - name: Install civo
+        uses: civo/action-civo
+        with:
+          token: ${{ secrets.CIVO_TOKEN }}
+      - name: Save Civo kubeconfig
+        run: civo kubernetes config aeacus
       - uses: dorny/paths-filter@v3
         id: changes
         with:
@@ -70,17 +77,8 @@ jobs:
               - 'go.sum'
               - 'Earthfile'
               - 'manifest/**/*.yaml'
-      - if: steps.changes.outputs.src == 'true'
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG }}
-          KUBE_CONTEXT: aeacus
-        with:
-          args: apply -k manifest
-      - if: steps.changes.outputs.src == 'true'
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG }}
-          KUBE_CONTEXT: aeacus
-        with:
-          args: rollout restart -n default deploy/xesite
+      - name: "Deploy"
+        if: steps.changes.outputs.src == 'true'
+        run: |
+          kubectl apply -k manifest
+          kubectl rollout restart -n default deploy/xesite
