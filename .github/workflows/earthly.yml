@@ -63,7 +63,7 @@ jobs:
           curl -sL https://civo.com/get | sh
           civo apikey add default $CIVO_TOKEN
           civo apikey current default
-          civo kubernetes config --region phx1 aeacus
+          civo kubernetes config --region phx1 aeacus --save --switch
         env:
           CIVO_TOKEN: ${{ secrets.CIVO_TOKEN }}
       - uses: dorny/paths-filter@v3
