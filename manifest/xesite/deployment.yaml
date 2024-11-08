@@ -36,6 +36,8 @@ spec:
           value: "gi3bsuc5ci2dr4xbh5b3kja5c6p5zk226ymgszzx7ngmjpc25tmnhaqd.onion"
         - name: "REDIRECT_DOMAIN"
           value: "xeiaso.net"
+        - name: "PATREON_SAASPROXY_URL"
+          value: "http://xesite-patreon-saasproxy.default.svc"
         envFrom:
         - secretRef:
             name: xesite

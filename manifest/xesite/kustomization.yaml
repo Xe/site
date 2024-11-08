@@ -3,6 +3,7 @@ resources:
   - cache-pvc.yaml
   - deployment.yaml
   - ingress.yaml
+  - machineproxy.yaml
   - onionservice.yaml
   - pod-disruption-budget.yaml
   - service.yaml
