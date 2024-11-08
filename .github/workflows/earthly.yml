@@ -58,12 +58,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: azure/setup-kubectl@v4
-      - name: Install civo
-        uses: civo/action-civo@v1.0.1
-        with:
-          token: ${{ secrets.CIVO_TOKEN }}
       - name: Save Civo kubeconfig
-        run: civo kubernetes config aeacus
+        run: |
+          curl -sL https://civo.com/get | sh
+          civo apikey add default $CIVO_TOKEN
+          civo apikey current default
+          civo kubernetes config aeacus
+        env:
+          CIVO_TOKEN: ${{ secrets.CIVO_TOKEN }}
       - uses: dorny/paths-filter@v3
         id: changes
         with:
