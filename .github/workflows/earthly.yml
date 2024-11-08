@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: azure/setup-kubectl@v4
       - name: Install civo
-        uses: civo/action-civo
+        uses: civo/action-civo@v1.0.1
         with:
           token: ${{ secrets.CIVO_TOKEN }}
       - name: Save Civo kubeconfig
