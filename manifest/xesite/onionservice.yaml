@@ -4,6 +4,9 @@ metadata:
   name: xesite
 spec:
   version: 3
+  extraConfig: |
+    HiddenServiceNonAnonymousMode 1
+    HiddenServiceSingleHopMode 1
   rules:
   - port:
       number: 80

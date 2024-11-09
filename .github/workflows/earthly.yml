@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    #if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@v4
