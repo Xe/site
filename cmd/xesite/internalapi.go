@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"expvar"
+	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -23,6 +24,9 @@ func internalAPI(fs *lume.FS) {
 	mux := http.NewServeMux()
 
 	mux.Handle("/debug/vars", expvar.Handler())
+	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "OK")
+	})
 
 	mux.HandleFunc("/rebuild", func(w http.ResponseWriter, r *http.Request) {
 		go fs.Update(context.Background())

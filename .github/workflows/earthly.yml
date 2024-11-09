@@ -46,34 +46,8 @@ jobs:
         id: build
         run: |
           earthly --org me-2625 --sat alpha --ci +all
-          
-  deploy-patreon:
-    name: "Deploy patreon-saasproxy"
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    if: github.ref == 'refs/heads/main'
 
-    steps:
-      - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-            src:
-              - 'cmd/patreon-saasproxy/*.go'
-              - 'internal/**/*.go'
-              - 'go.mod'
-              - 'go.sum'
-              - 'Earthfile'
-      - if: steps.changes.outputs.src == 'true'
-        run: flyctl deploy --remote-only -c ./fly/patreon-saasproxy/fly.toml
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
-  deploy-xesite:
+  deploy:
     name: "Deploy xesite"
     needs: build
     runs-on: ubuntu-latest
@@ -83,18 +57,30 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - uses: azure/setup-kubectl@v4
+      - name: Save Civo kubeconfig
+        run: |
+          curl -sL https://civo.com/get | sh
+          civo apikey add default $CIVO_TOKEN
+          civo apikey current default
+          civo kubernetes config --region phx1 aeacus --save --switch
+        env:
+          CIVO_TOKEN: ${{ secrets.CIVO_TOKEN }}
       - uses: dorny/paths-filter@v3
         id: changes
         with:
           filters: |
             src:
-              - 'cmd/xesite/*.go'
+              - 'cmd/**/*.go'
               - 'internal/**/*.go'
+              - 'pb/*'
+              - 'pb/**/*'
               - 'go.mod'
               - 'go.sum'
               - 'Earthfile'
-      - if: steps.changes.outputs.src == 'true'
-        run: flyctl deploy --remote-only -c ./fly/xesite/fly.toml
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+              - 'manifest/**/*.yaml'
+      - name: "Deploy"
+        if: steps.changes.outputs.src == 'true'
+        run: |
+          kubectl apply -k manifest
+          kubectl rollout restart -n default deploy/xesite

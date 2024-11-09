@@ -1,0 +1,9 @@
+apiVersion: glaceon.friendshipcastle.zip/v1alpha1
+kind: MachineProxy
+metadata:
+  name: xesite-patreon-saasproxy
+spec:
+  org: personal
+  region: sjc
+  target: http://xesite-patreon-saasproxy.flycast
+  port: 80

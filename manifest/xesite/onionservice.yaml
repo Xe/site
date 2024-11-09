@@ -1,0 +1,17 @@
+apiVersion: tor.k8s.torproject.org/v1alpha2
+kind: OnionService
+metadata:
+  name: xesite
+spec:
+  version: 3
+  extraConfig: |
+    HiddenServiceNonAnonymousMode 1
+    HiddenServiceSingleHopMode 1
+  rules:
+  - port:
+      number: 80
+    backend:
+      service:
+        name: xesite
+        port:
+          number: 80

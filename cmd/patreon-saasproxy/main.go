@@ -2,14 +2,13 @@ package main
 
 import (
 	"context"
-	"encoding/base64"
 	"flag"
+	"fmt"
 	"log"
 	"log/slog"
 	"net"
 	"net/http"
 	"os"
-	"path/filepath"
 
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
@@ -20,13 +19,16 @@ import (
 	"gopkg.in/mxpv/patreon-go.v1"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/adminpb"
+	"xeiaso.net/v4/internal/k8s"
 )
 
 var (
-	bind         = flag.String("bind", ":80", "HTTP bind addr")
-	clientID     = flag.String("client-id", "", "Patreon client ID")
-	clientSecret = flag.String("client-secret", "", "Patreon client secret")
-	dataDir      = flag.String("data-dir", "./var", "Directory to store data in")
+	bind          = flag.String("bind", ":80", "HTTP bind addr")
+	clientID      = flag.String("client-id", "", "Patreon client ID")
+	clientSecret  = flag.String("client-secret", "", "Patreon client secret")
+	dataDir       = flag.String("data-dir", "./var", "Directory to store data in")
+	k8sNamespace  = flag.String("kubernetes-namespace", "default", "Kubernetes namespace this app is running in")
+	k8sSecretName = flag.String("kubernetes-secret-name", "xesite-patreon-saasproxy-state", "Kubernetes secret to store state data in")
 )
 
 func main() {
@@ -46,35 +48,10 @@ func main() {
 		Scopes: []string{"users", "pledges-to-me", "my-campaign"},
 	}
 
-	if !internal.FileExists(filepath.Join(*dataDir, "patreon-token.json")) {
-		val, ok := os.LookupEnv("PATREON_TOKEN_JSON_B64")
-		if !ok {
-			log.Fatal("PATREON_TOKEN_JSON_B64 not set")
-		}
-
-		fout, err := os.Create(filepath.Join(*dataDir, "patreon-token.json"))
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer fout.Close()
-
-		decoded, err := base64.StdEncoding.DecodeString(val)
-		if err != nil {
-			slog.Error("can't decode token", "err", err, "val", val)
-			log.Fatal(err)
-		}
-
-		if _, err := fout.Write(decoded); err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	token, err := internal.ReadToken(filepath.Join(*dataDir, "patreon-token.json"))
+	cts, err := k8s.TokenSource(*k8sNamespace, *k8sSecretName, &config)
 	if err != nil {
-		log.Fatalf("error reading token: %v", err)
+		log.Fatalf("error making token source: %v", err)
 	}
-
-	cts := internal.CachingTokenSource(filepath.Join(*dataDir, "patreon-token.json"), &config, token)
 
 	s := &Server{
 		cts: cts,
@@ -82,6 +59,10 @@ func main() {
 
 	ph := adminpb.NewPatreonServer(s)
 	http.Handle(adminpb.PatreonPathPrefix, ph)
+
+	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "OK")
+	})
 
 	ln, err := net.Listen("tcp", *bind)
 	if err != nil {

@@ -1,0 +1,9 @@
+resources:
+  - 1password.yaml
+  - cache-pvc.yaml
+  - deployment.yaml
+  - ingress.yaml
+  - machineproxy.yaml
+  - onionservice.yaml
+  - pod-disruption-budget.yaml
+  - service.yaml

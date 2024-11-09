@@ -1,0 +1,206 @@
+---
+title: "Hello again, Kubernetes"
+desc: "Yeah, yeah, we know; freight train to mail a letter, etc."
+date: 2024-11-09
+hero:
+  ai: "Photo by Xe Iaso, Canon EOS R6 mk ii, slightly broken vintage lens"
+  file: "woodchips"
+  prompt: "A bunch of woodchips spread along a path."
+  social: false
+series: site-update
+tags:
+  - kubernetes
+  - infra
+  - crimes
+  - civo
+---
+
+[Previously on Xesite](/blog/k8s-pondering-2020-12-31/):
+
+> I think I made a mistake when I decided to put my cards into Kubernetes for my personal setup. It made sense at the time (I was trying to learn Kubernetes and I am cursed into learning by doing), however I don't think it is really the best choice available for my needs.
+>
+> [...]
+>
+> My Kubernetes setup is a money pit. I want to prioritize cost reduction as much as possible.
+
+So after a few years of switching between a Hetzner dedi running NixOS and Docker images on Fly.io, I'm crawling back to Kubernetes for hosting my website. I'm not gonna lie, it will look like massive overkill from the outset, but consider this: Kubernetes is standard at this point. It's the boring, pragmatic choice.
+
+<Conv name="Cadey" mood="coffee">
+  Plus, every massive infrastructure crime and the inevitable ways they go
+  horribly wrong only really serves to create more "how I thought I was doing
+  something good but actually really fucked everything up" posts that y'all seem
+  to like. Win/win. I get to play with fun things, you get to read about why I
+  thought something would work, how it actually works, and how you make things
+  meet in the middle.
+</Conv>
+
+I've had a really good experience with Kubernetes in my homelab, and I feel confident enough in my understanding of it to move my most important, most used, most valuable to me service over to a Kubernetes cluster. I changed it over a few days ago without telling anyone (and deploying anything, just in case). Nothing went wrong in the initial testing, so I feel comfortable enough to talk about it now.
+
+## Aeacus
+
+Hi from the cluster Aeacus! My website is running on a managed k3s cluster via [Civo](https://www.civo.com/). The cluster is named after one of the space elevators in an RPG where a guy found a monolith in Kenya, realized it was functionally an infinite battery, made a massive mistake, and then ended up making Welsh catgirls real (among other things).
+
+If/when I end up making other Kubernetes clusters in the cloud, they'll probably be named Rhadamanthus and Minos (the names of the other space elevators in said world with Welsh catgirls).
+
+Originally I was going to go with [Vultr](https://www.vultr.com/), but then I did some math on the egress of my website vs the amount of bandwidth I'd get for the cluster and started to raise some eyebrows. I don't do _terrifying_ amounts of egress bandwidth, but sometimes I have months where I'm way more popular than other months and those "good" months would push me over the edge.
+
+I also got a warning from a friend that Vultr vastly oversubscribes their CPU cores, so you get very, very high levels of CPU steal. Most of the time, my CPU cores are either idle or very close to idle; but when I do a build for my website in prod, the entire website blocks until it's done.
+
+This is not good for availability.
+
+<Conv name="Cadey" mood="coffee">
+  When I spun up a test cluster on Vultr, I did notice that the k3s nodes they
+  were using were based on Ubuntu 22.04 instead of 24.04. I get that 24.04 is
+  kinda new and they haven't moved things over yet, but it was kind of a smell
+  that something might be up.
+</Conv>
+
+I'm gonna admit, I hadn't heard of Civo cloud until someone in the Kubernetes homelab Discord told me about them, but there's one key thing [in their pricing](https://www.civo.com/pricing) that made me really consider them:
+
+> At Civo, data transfer is completely free and unlimited - we do not charge for egress or ingress at all. Allowing you to move data freely between Civo and other platforms without any costs or limitations. No caveats, No fineprint. No surprise bills.
+
+This is basically the entire thing that sold me. I've been really happy with Civo. I haven't had a need to rely on their customer support yet, but I'll report back should I need to.
+
+Worst case, it's all just Kubernetes, I can [set up a new cluster](/notes/2024/essential-k8s/) and move everything over without too much risk.
+
+That being said, here's a short list of things that in a perfect world I wish I could either control, influence, or otherwise have power over:
+
+- I wish I could change the default cluster DNS name to `aeacus.xeserv.us` so that way the DNS names can be globally unique, enabling me to cross-cluster interconnect it with my homelab and potentially other clusters as my cloud needs expand.
+- I wish I could change the CIDR ranges for the Pod and Service network ranges so that they don't collide with the CIDR ranges for my homelab cluster. Maybe this is what 4via6 style routing is for?
+- I tried their Talos cluster option first but wasn't able to get HTTPS routing working, changing over to the k3s cluster option fixed everything. I'm not sure what's going on, will need to work with their community Slack to try and diagnose it further.
+- Civo is IPv4 only. I get why this is (IPv6 kinda sucks from a user education and systems administration standpoint), but I wish I had native dual-stack support on my cluster.
+
+And here's a few things I learned about my setup in particular that aren't related to Civo cloud, but worth pointing out:
+
+- I tried to set up a service to point to both my homelab and Civo via [external-dns](https://kubernetes-sigs.github.io/external-dns/v0.15.0/), but it turns out [external-dns doesn't support this kind of round-robin DNS configuration with multiple clusters](https://github.com/kubernetes-sigs/external-dns/issues/1441) and the issue tracking it has been through four generations of stalebot autoclosing the issue. I get why things like stalebot exist, but good god is it a pox on the industry.
+- With my homelab, I have Flannel as the Container Networking Interface (CNI). Vultr had Calico. Civo has Cillium. I realize that as far as I care it shouldn't matter that each of these clusters have different CNI implementations, I'm probably gonna have to take some action towards standardizing them in my setup. Might move the homelab over to Cillium or something. I don't know.
+
+Either way, I moved over [pronouns.within.lgbt](https://pronouns.within.lgbt) to proof-of-concept the cluster beyond a [hello world](https://hello.aeacus.xeserv.us/) test deployment. That worked fine.
+
+To be sure that things worked, I employed the industry standard "scream test" procedure where you do something that could break, test it to hell on your end, and see if anyone screams about it being down. Coincidentally, a friend was looking through it during the breaking part of the migration (despite my efforts to minimize the breakage) and noticed the downtime. They let me know immediately. I was so close to pulling it off without a hitch.
+
+## xesite and its infrastructure consequences have been a disaster for my wildest dreams of digital minimalism
+
+Like any good abomination, my website has a fair number of moving parts, most of them are things that you don't see. Here's what the infrastructure of my website looks like:
+
+<Picture
+  path="blog/2024/hello-again-k8s/after-civo"
+  desc="A diagram showing how Xesite, Mi, Mimi, patreon-saasproxy, and a bunch of web services work together."
+/>
+
+This looks like a lot, and frankly, it is a lot. Most of this functionality is optional and degrades cleanly too. By default, when I change anything on GitHub (or someone subscribes/unsubscribes on Patreon), I get a webhook that triggers the site to rebuild. The rebuild will trigger fetching data from Patreon, which may trigger fetching an updated token from `patreon-saasproxy`. Once the build is done, a request to announce new posts will be made to Mi. Mi will syndicate any new posts out to Bluesky, Mastodon, Discord, and IRC.
+
+<Conv name="Mara" mood="hacker">
+  The pattern of publishing on your own site and then announcing those posts out
+  elsewhere is known as [POSSE](https://indieweb.org/POSSE) (Publish On your
+  Site, Syndicate Elsewhere). It's a pretty neat pattern!
+</Conv>
+
+This, sadly, is an idealized diagram of the world I wish I could have. Here's what the real state of the world looks like:
+
+<Picture
+  path="blog/2024/hello-again-k8s/after-civo"
+  desc="A diagram showing how Xesite relies on patreon-saasproxy hosted on fly.io."
+/>
+
+I have `patreon-saasproxy` still hosted on fly.io. I'm not sure why the version on Aeacus doesn't work, but trying to use it makes it throw an error that I really don't expect to see:
+
+```json
+{
+  "time": "2024-11-09T09:12:17.76177-05:00",
+  "level": "ERROR",
+  "source": {
+    "function": "main.main",
+    "file": "/app/cmd/xesite/main.go",
+    "line": 54
+  },
+  "msg": "can't create patreon client",
+  "err": "The server could not verify that you are authorized to access the URL requested. You either supplied the wrong credentials (e.g. a bad password), or your browser doesn't understand how to supply the credentials required."
+}
+```
+
+I'm gonna need to figure out what's going on later, but I can live with this for now. I connect back to Fly.io using their WireGuard setup with a little sprinkle of userspace WireGuard. It works well enough for my needs.
+
+### Xesite over Tor
+
+In the process of moving things over, I found out that there's [a Tor hidden service operator](https://github.com/bugfest/tor-controller) for Kubernetes. This is really neat and lets me set up a mirror of this website on the darkweb. If you want or need to access my blog over Tor, you can use [gi3bsuc5ci2dr4xbh5b3kja5c6p5zk226ymgszzx7ngmjpc25tmnhaqd.onion](http://gi3bsuc5ci2dr4xbh5b3kja5c6p5zk226ymgszzx7ngmjpc25tmnhaqd.onion/) to do that. You'll be connected directly over Tor.
+
+I configured this as a non-anonymous hidden service using a setup like this:
+
+```yaml
+apiVersion: tor.k8s.torproject.org/v1alpha2
+kind: OnionService
+metadata:
+  name: xesite
+spec:
+  version: 3
+  extraConfig: |
+    HiddenServiceNonAnonymousMode 1
+    HiddenServiceSingleHopMode 1
+  rules:
+    - port:
+        number: 80
+      backend:
+        service:
+          name: xesite
+          port:
+            number: 80
+```
+
+This creates an OnionService set up to point directly to the backend that runs this website. Doing this bypasses the request logging that the nginx ingress controller does. I do not log requests made over Tor unless you somehow manage to get one of the things you're requesting to throw an error, even then I'll only log details about the error so I can investigate them later.
+
+If you're already connected with the Tor browser, you may have noticed the ".onion available" in your address bar. This is because I added a middleware for adding the [`Onion-Location`](https://community.torproject.org/onion-services/advanced/onion-location/) header to every request. The Tor browser listens for this header and will alert you to it.
+
+I'm not sure how the Tor hidden service will mesh with the ads with Ethical Ads, but I'd imagine that looking at my website over Tor would functionally disable them.
+
+### I killed the zipfile
+
+One of the most controversial things about my website's design is that everything was served out of a `.zip` file full of gzip streams. This was originally done so that I could implement a fastpath hack to serve gzip compressed streams to people directly. This would save a bunch of bandwidth, make things load faster, save christmas from the incoming elf army, etc.
+
+<Conv name="Cadey" mood="coffee">
+  Guess what I never implemented.
+</Conv>
+
+This zipfile strategy worked, for the most part. One of the biggest ways this didn't pan out is that I didn't support [HTTP Range requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests). Normally this isn't an issue, but Slack, LinkedIn, and other web services use them when doing a request to a page to unfurl links posted by users.
+
+This has been a [known issue](/blog/2024/fixing-rss-mailcap) for a while, but I decided to just fix it forever by making the website serve itself from the generated directory instead of using the zipfile in the line of serving things. I still use the zipfile for [the preview site](/blog/2024/overengineering-preview-site/) (I'm okay with that thing's functionality being weird), but yeah, it's gone.
+
+If I ever migrate my website to use CI to build the website instead of having prod build it on-demand, I'll likely use the zipfile as a way to ship around the website files.
+
+### Crimes with file storage
+
+Like any good Xe project, I had to commit _some_ crimes somewhere, right? This time I implemented them at the storage layer. My website works by maintaining a git clone of its own repository and then running builds out of it. This is how I'm able to push updates to GitHub and then have it go live in less than a minute.
+
+The main problem with this is that it can make cold start times long. Very long. Long enough that Kubernetes will think that the website isn't in a cromulent state and then slay it off before it can run the first build. I fixed this by making the readiness check run every 5 seconds for 5 minutes, but I realized there was a way I could do it better: I can cache the website checkout on the underlying node's filesystem.
+
+So I use a [`hostPath` volume](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath) to do this:
+
+```yaml
+- name: data
+  hostPath:
+    path: /data/xesite
+    type: DirectoryOrCreate
+```
+
+<Conv name="Aoi" mood="wut">
+Isn't this a very bad idea?
+
+> Using the hostPath volume type presents many security risks. If you can avoid using a hostPath volume, you should. For example, define a local PersistentVolume, and use that instead.
+
+Shouldn't you use a [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) instead?
+
+</Conv>
+
+Normally, yes. This is a bad idea. However, a PersistentVolumeClaim doesn't really work for this due to how the [Civo native Container Storage Interface](https://www.civo.com/docs/kubernetes/kubernetes-volumes) works. They only support the [ReadWriteOnce](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes) access mode, which would mean that I can only have my website running on one Kubernetes node at once. I'd like my website to be more nomadic between nodes, so I need to make it a ReadWriteMany mount so that the same folder can be used on different nodes.
+
+I'll figure out a better solution eventually, but for now I can get away with just stashing the data in `/data/xesite` on the raw node filesystems and it'll be fine. My website doesn't grow at a rate where this would be a practical issue, and should this turn out to actually be a problem I can always reprovision my nodes as needed.
+
+## Declaring success
+
+I'm pretty sure that this is way more than good enough for now. This should be more than enough for the next few years of infrastructure needs. Worst case though, it's just Kubernetes. I can move it anywhere else that has Kubernetes without too much fuss.
+
+I'd like to make the Deno cache mounted in [Tigris](https://tigrisdata.com) or something using [csi-s3](https://github.com/yandex-cloud/k8s-csi-s3), but that's not a priority right now. This would only help with cold start latency, and to be honest the cold start latency right now is fine. Not the most ideal, but fine.
+
+Everything else is just a matter of implementation more than anything at this point.
+
+Hope this look behind the scenes was interesting! I put this level of thought and care into things so that you don't have to care about how things work.

@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xesite
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: xesite
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: xesite
+    spec:
+      volumes:
+      - name: cache
+        persistentVolumeClaim:
+          claimName: xesite-cache
+      - name: data
+        hostPath:
+          path: /data/xesite
+          type: DirectoryOrCreate
+      containers:
+      - name: web
+        image: ghcr.io/xe/site/bin:latest
+        imagePullPolicy: Always
+        env:
+        - name: "BIND"
+          value: ":3000"
+        - name: "INTERNAL_API_BIND"
+          value: ":3001"
+        - name: "DATA_DIR"
+          value: "/xe/data"
+        - name: "SITE_URL"
+          value: "https://xeiaso.net"
+        - name: "ONION_DOMAIN"
+          value: "gi3bsuc5ci2dr4xbh5b3kja5c6p5zk226ymgszzx7ngmjpc25tmnhaqd.onion"
+        - name: "REDIRECT_DOMAIN"
+          value: "xeiaso.net"
+        - name: "PATREON_SAASPROXY_URL"
+          value: "http://xesite-patreon-saasproxy.default.svc"
+        envFrom:
+        - secretRef:
+            name: xesite
+        ports:
+        - containerPort: 3000
+          name: http
+        volumeMounts:
+        - mountPath: "/xe/data"
+          name: data
+        #- mountPath: "/root/.cache"
+        #  name: cache
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 3001
+            httpHeaders:
+            - name: X-Kubernetes
+              value: "Is alright, I guess"
+          initialDelaySeconds: 60
+          periodSeconds: 5
+          failureThreshold: 69
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3001
+            httpHeaders:
+            - name: X-Kubernetes
+              value: "Is alright, I guess"
+          initialDelaySeconds: 30
+          periodSeconds: 30

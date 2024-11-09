@@ -3,6 +3,7 @@ package internal
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"expvar"
 	"fmt"
 	"os"
@@ -13,6 +14,8 @@ import (
 
 var (
 	tokenRefreshCount = expvar.NewInt("gauge_xesite_token_refresh_count")
+
+	ErrSecretValueDoesntExist = errors.New("internal: can't find oauth2-token in secret")
 )
 
 type cachingTokenSource struct {
