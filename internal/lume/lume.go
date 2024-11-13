@@ -82,7 +82,7 @@ type FS struct {
 	eventsClient mi.Events
 
 	fs   fs.FS
-	lock sync.Mutex
+	lock sync.RWMutex
 
 	lastBuildTime time.Time
 }
@@ -120,6 +120,9 @@ func (f *FS) BuildTime() time.Time {
 }
 
 func (f *FS) Open(name string) (fs.File, error) {
+	f.lock.RLock()
+	defer f.lock.RUnlock()
+
 	fin, err := f.fs.Open(name)
 	if err != nil {
 		return nil, err
