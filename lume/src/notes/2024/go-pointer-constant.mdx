@@ -1,0 +1,98 @@
+---
+title: "Getting a pointer to a constant in Go"
+desc: "From least to most hacky"
+date: 2024-11-25
+---
+
+In Go, sometimes you need to get a pointer to a constant value. This is normally easy, but only if you have a _value_, not a _constant_. Let's say you or a friend are dealing with the AWS S3 API and you need to pass a value to one of the parameters:
+
+```go
+_, err = s3c.PutObject(ctx, &s3.PutObjectInput{
+	Bucket:      "mah-bukkit",
+	Key:         "something",
+	Body:        bytes.NewReader(fileContent),
+})
+```
+
+Doing this gets you a compile error, because you need a _pointer_ to the string.
+
+There's several ways to work around this. I'm going to go over them in order from least to most hacky.
+
+## Make those constants into values
+
+You can make a pointer to a value, but not a constant. Lift the bucket name and key values into variables:
+
+```go
+bucketName := "mah-bukkit"
+key := "something"
+
+_, err = s3c.PutObject(ctx, &s3.PutObjectInput{
+	Bucket:      &bucketName,
+	Key:         &key,
+	Body:        bytes.NewReader(fileContent),
+})
+```
+
+This works in most cases, but you have to declare variables every time. This can look odd.
+
+## The `aws.String` / `aws.Type` functions:
+
+The [`aws` package](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) exposes some [helper functions](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/aws#hdr-Value_and_Pointer_Conversion_Utilities) that do this conversion for you. You'll see these in the example code:
+
+```go
+_, err = s3c.PutObject(ctx, &s3.PutObjectInput{
+	Bucket:      aws.String("mah-bukkit"),
+	Key:         aws.String("something"),
+	Body:        bytes.NewReader(fileContent),
+})
+```
+
+This works because function arguments are treated as values:
+
+```go
+package aws
+
+func String(val string) *string {
+  return &val
+}
+```
+
+## Making your own generic pointer to anything function
+
+Something else you can do is use Go generics to make a "get me the pointer of this" function:
+
+```go
+func p[T any](val T) (*T) {
+  return &val
+}
+```
+
+Then you can use it as normal:
+
+```go
+_, err = s3c.PutObject(ctx, &s3.PutObjectInput{
+	Bucket:      p("mah-bukkit"),
+	Key:         p("something"),
+	Body:        bytes.NewReader(fileContent),
+})
+```
+
+## The Kubernetes trick
+
+Making variables and passing things as arguments to functions aren't the only way to do this, there's also a trick I learned by reading Kubernetes source code. I'll paste an example and then explain how it works:
+
+```go
+raised := &[]string{"foo"}[0]
+```
+
+This works by creating an anonymous string slice with one member `"foo"`, grabs the first element of that slice, and gets the pointer to it. This makes the code look kinda cursed:
+
+```go
+_, err = s3c.PutObject(ctx, &s3.PutObjectInput{
+	Bucket:      &[]string{"mah-bukkit"}[0],
+	Key:         &[]string{"something"}[0],
+	Body:        bytes.NewReader(fileContent),
+})
+```
+
+However every step in this is perfectly logical.

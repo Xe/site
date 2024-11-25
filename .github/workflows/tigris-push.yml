@@ -44,13 +44,6 @@ jobs:
         path: |
           /home/runner/.cache/deno
 
-    - name: Tailscale
-      uses: tailscale/github-action@v2
-      with:
-        oauth-client-id: ${{ secrets.TAILSCALE_CLIENT_ID }}
-        oauth-secret: ${{ secrets.TAILSCALE_CLIENT_SECRET }}
-        tags: tag:ci
-
     - name: Build and deploy xesite
       run: |
         go run ./cmd/fabricate-generation

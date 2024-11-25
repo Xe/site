@@ -80,7 +80,29 @@ let flyio =
         }
       }
 
+let xeserv =
+      Company::{
+      , name = "Xeserv"
+      , url = Some "https://xeserv.us"
+      , tagline = "Uber for developer marketing consulting"
+      , location = ottawa
+      }
+
 in  [ Job::{
+      , company = xeserv
+      , title = "Chief Executive Officer"
+      , startDate = "2024-08-30"
+      , salary = annualCAD 150000
+      , locations = [ ottawa ]
+      , highlights =
+        [ "Developer relations"
+        , "Content creation"
+        , "Technical writing"
+        , "Video production"
+        , "Generative AI consulting"
+        ]
+      }
+    , Job::{
       , company = flyio
       , title = "Senior Technophilosopher"
       , startDate = "2024-01-07"

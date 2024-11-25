@@ -29,7 +29,7 @@ import (
 var (
 	bucketName          = flag.String("bucket-name", "xesite", "Name of the S3 bucket to upload to")
 	githubSHA           = flag.String("github-sha", "", "GitHub SHA to use for the site")
-	miURL               = flag.String("mimi-announce-url", "", "Mi url (named mimi-announce-url for historical reasons)")
+	miURL               = flag.String("mimi-announce-url", "", "Mi url")
 	patreonSaasProxyURL = flag.String("patreon-saasproxy-url", "http://xesite-patreon-saasproxy.flycast", "URL to use for the patreon saasproxy")
 	siteURL             = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")
 )
@@ -52,6 +52,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	_ = s3c
 
 	fs, err := lume.New(context.Background(), &lume.Options{
 		Branch:        "main",
@@ -69,9 +70,9 @@ func main() {
 
 	defer fs.Close()
 
-	if err := uploadFolderToS3(context.Background(), s3c, "./var/repo/lume/_site", *bucketName); err != nil {
-		log.Fatal(err)
-	}
+	// if err := uploadFolderToS3(context.Background(), s3c, "./var/repo/lume/_site", *bucketName); err != nil {
+	// 	log.Fatal(err)
+	// }
 }
 
 func NewPatreonClient(hc *http.Client) (*patreon.Client, error) {
