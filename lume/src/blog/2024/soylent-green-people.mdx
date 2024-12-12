@@ -1,0 +1,311 @@
+---
+title: "Soylent Green is people"
+desc: "Nuance about AI and the 'danger' of datasets"
+date: 2024-12-12
+hero:
+  ai: "Counterfeit v3.0 (SD1.5) with a complicated ComfyUI flow, based on a sketch by Xe Iaso"
+  file: "green-and-pink-vibes"
+  prompt: "A pink and green colored image of an anime woman with green hair, piercingly green eyes, and slightly smiling on top of an abstract background that evokes images of traditional Japanese woodprint art combined with modern vaporwave aesthetics and a hit of 90's anime"
+  social: false
+---
+
+Recently a group of data scientists at Hugging Face created [a dataset of curated Bluesky posts](https://huggingface.co/datasets/bluesky-community/one-million-bluesky-posts). The publication of this data has made a lot of people very angry and has been widely regarded as a bad move. The dataset contained one million posts from the [Bluesky](https://bsky.social) firehose with the intent that this could be a standard dataset to evaluate the effectiveness of various moderation tooling. The dataset was removed within hours of publication, but the damage was already done to the community.
+
+Today I'm going to talk about the nuances involved with AI and dig into the 'danger' of one's posts being in these datasets. I'm also going to cover the social/ethical implications of this dataset, why people cried out against it, and how it frankly could have been handled better.
+
+<Conv name="Cadey" mood="coffee">
+  Before we start this, I want to clarify that I don't have a "pro-AI bias", I
+  want to pick apart this ball of mud and discuss the complicated nuances
+  involved with what AI is, what datasets are, and how the intersection of
+  technology and social pressures is creating ethical dilemmas that society is
+  not yet prepared to handle.
+</Conv>
+
+However, some of this nuance can only come from someone that has deep experience in the things that are being discussed. I've become an expert in a lot of this generative AI stuff due to my job making me learn how to use it. I am less of an expert when it comes to the social implications of this technology, but I'm going to do my best to cover what makes me uncomfortable.
+
+## Technology
+
+One of my longest running projects is [Techaro](https://techaro.lol), a work of art/satire where I made up an imaginary tech startup and write about [the misadventures people have working there](/blog/2024/the-layoff/).
+
+This has either been one of my most successful or least successful projects because I branded myself as the CEO of this uncompany on LinkedIn and now I get treated as if I am the CEO of a real company by the market. I've had people reach out for investment opportunities.
+
+<Conv name="Cadey" mood="coffee">
+  Does this mean Techaro is a failure as a parody or is it a success at being a
+  brand? I don't know man, I just wanted to make fun of my industry.
+</Conv>
+
+I haven't really written any Techaro stories in a while (all of my ideas are being done by actual startups, like [Protos](/blog/protos) having been done by [Devin](https://devin.ai/), and one of the stories I'm working on hasn't gotten enough satire juice built up yet), but when I do I try to follow one basic rule: Techaro as a company is not intentionally evil, it's just not considering the ethical impacts of their actions and ends up creating systems that are de-facto evil.
+
+Consider qntm's [Lena](https://qntm.org/mmacevedo). It's a story that isn't about mind uploading. It's a story about people and how the pressures of using technology to solve problems can and will lead to unforeseen consequences. This is why I've been calling this rule "Soylent Green is People". We as people are what take the technology and use it to do evil things, not the technology itself. To mess up quoting the G-Man:
+
+<BlockQuote>
+  The right tool in the wrong place can make all the difference in the world.
+</BlockQuote>
+
+I'm gonna come out ahead here and say that I don't think that tools like ChatGPT are fundamentally evil, but they do end up creating de-facto evil because of the way that they are used. This can end up having the de-facto evil outweigh the good that the tool does, making it look like the entire point of the tool is evil.
+
+## Spam and its consequences have been a disaster for the human race
+
+The reason why ChatGPT can look evil is a mote complicated and I'm going to have to take a bit of a detour here to explain it, but trust me; everything is going according to keikaku.
+
+<Conv name="Mara" mood="hacker">
+  Translater's note: keikaku means plan.
+</Conv>
+
+There's a general rule of thumb when it comes to everything that humans have ever produced: 90% of everything is absolute garbage and should be ignored. This is even more true when it comes to published works, email, and social media posts. The vast majority of everything that is published is either advertising or not high enough quality to engage with.
+
+At the same time, our society is addicted to information. Right now you can send a message from your home in Ottawa to a server in Taiwan and get a reply within a few seconds. This is an absolute miracle of technology that I fear everyone younger than me takes for granted. When I was growing up, long-distance telephone service was still a thing and you had to be sure you were dialing the right number to call someone _outside of your area code_ otherwise you'd get raked over the coals with long distance calling fees.
+
+With the addition of so many people to so many communication channels, companies realize that they can get messages to people over those communications channels. This is why we have spam, junk mail, and everything else that sucks about the modern Internet.
+
+<Conv name="Cadey" mood="coffee">
+  I mean, I'm in a marketing position right now because I haven't figured out
+  the best way to keyword mine my resume to get past HR screeners or something.
+  I have a huge bias here.
+</Conv>
+
+Historically, sending out spam messages meant that they'd get in the inbox of your targets and then they'd likely be read. This is why spam is so effective. If you send out a million emails, you're likely to get a few people to click on your links and buy your products. It's a pure numbers game.
+
+Then came in the first implementations of spam filters. Identical messages that were sent to many mailboxes on the same domain were flagged as spam and then NOT put into people's inboxes. This was a good thing, but the people that implemented it started an arms race we are still fighting today. Spammers introduced technology like spintax, where they could send out a million emails that were all slightly different and thus would (hopefully) not be flagged as spam as often. Consider this totally fabricated example:
+
+> Hello {"{sir|ma'am|dear|human}"},
+>
+> {"I am {in the market|looking to purchase|wanting to buy} 35 {iPhones|Samsung Galaxy S25 phones|Vision Pro headsets}. Can you contact me on {WhatsApp|Signal|Telegram|Kik} so we can facilitate the purchase? You will be {rewarded|very useful} for helping this happen."}
+
+Every one of those words in curly braces separated by pipes is a place where a new variant of the message could be formed. That one example I made up has at least 120 variants. If you were to send out a million emails with that message, you'd have a 1 in 120 chance of getting the same message twice. This is why spam filters are so aggressive these days.
+
+What's worse is that even if you have a true positive rate, you also have a false positive rate to deal with. How many times have you had genuine emails get banished to the shadow realm? This happens constantly for me, and I'm sure it happens to you too.
+
+In general, I get about 50-100 automated messages for every genuinely human authored message. Most of those automated messages are good (invoices, alerts, etc), but what I really want to see above all else is direct human contact. I want that way more than your newsletter about your AI product having a new feature.
+
+<Conv name="Cadey" mood="coffee">
+  There are newsletters I do subscribe to and do actively read, I just wish that
+  signing up to test services for work didn't mean I'd get a newsletter every
+  month about the new AI features that the service has rolled out. I also get
+  bombarded with ads for marketing services because I made the mistake of
+  marking myself as a CEO on LinkedIn. It's Spam 2 or something.
+</Conv>
+
+Spam is an ongoing battle. There are more product and marketing people globally than there are people working on defending against the outputs of those product/marketing people, not to count 419 scams and those ones that let you know you won the UN lottery in Palau or something. It is an unwinnable battle, but we have to fight it because losing means that the Internet becomes truly dead and unusable.
+
+Then in December 2022, everything changed when the Fire Nation attacked.
+
+## The AI bubble
+
+In December 2022, OpenAI released the first version of ChatGPT and then broke the Internet. In no time flat they got the any% record for fastest time from product launch to 100 million monthly active users. Previously the record holder was TikTok at 9 months. ChatGPT did it in 2 months.
+
+TODO: make a copy of https://thevr.co.kr/wordpress/wp-content/uploads/2023/02/time-to-reach-100m-users.png and credit thevr.co.kr
+
+This is unreal. This is unprecedented. This violent explosion of growth absolutely broke the Internet, but also broke the expectations of the people that fund it. The AI bubble was born.
+
+I've been an IRC user for a very long time, over half my life now. One of the things that IRC users are known to do is set up a chatbot that listens to everything that's being said and uses it to construct [Markov chains](https://en.wikipedia.org/wiki/Markov_chain), which are a way to get a probabilistic average of what is being said. There's nothing really magic about Markov chains, except sometimes the bot would absolutely roast someone in a way that was so perfect that it felt like the bot was a person. Then the bot started making ungrammatical nonsense and the illusion was instantly shattered and everyone went along their day like nothing happened.
+
+Markov chains are fun to play with (and pretty damn trivial to implement, homework assignment for those of you new in your career), but they're not really useful for anything. They're a toy, but you're not going to be able to ask them questions and get coherent answers from them.
+
+ChatGPT let you just type in a question and get an answer. You just ask it:
+
+<Conv name="Aoi" mood="wut">
+  Hey Mimi, why is the sky blue?
+</Conv>
+
+<Conv name="Mimi" mood="happy" aiModel="Hermes 3 8B @ Q4">
+  Ah, an interesting question! The sky appears blue because of a phenomenon
+  called Rayleigh scattering. During daytime, sunlight enters Earth's atmosphere
+  and collides with gas molecules in it. These collisions scatter the shorter
+  wavelengths (blue) more effectively than the longer ones (red). That's why we
+  see the sky as blue most of the time. Let me know if you have any other
+  questions on science-related topics!
+</Conv>
+
+I know that this is normal for you all now, but when this was first released, this was a staggeringly huge development. GPT-2 was already a big deal, GPT-3 gave us wonders like the infinite Seinfeld stream, but ChatGPT totally changed the game because you could just ask it a question and get an answer. You didn't have to format your prompt like there was already a conversation going on. It just behaved like iMessage.
+
+It was bloody mind-bending. It felt infinite and the possibilities felt endless.
+
+I'm a bit of an artist by nature so one of the first things I tried to do with it was figure out how to produce art with it. Those experiments have been unpublished because I feel like they weren't good enough. Sure, it was great at telling you what the SQL syntax for doing specific lookups on specific tables given the schema (this is the kind of thing I end up using AI tools for because I switch between tools so often due to the needs of my job), but it wasn't generically useful for artistic works.
+
+### The spam
+
+Then the spam began. Normally content marketers and nothing websites would have to outsource writing and labor to third-world countries to write meaningless articles about the meditation benefits of orange juice or something. Now they could just ask ChatGPT to write the article for them. For free.
+
+<Conv name="Mimi" mood="happy" aiModel="Hermes 3 8B @ Q4">
+  <br />
+  <big>The Refreshing Benefits of Orange Juice for Meditation</big>
+  <br />
+  Orange juice, with its vibrant color and refreshing taste, is not only a delightful
+  morning beverage but also a powerful ally in enhancing your meditation practice.
+  This natural elixir, packed with essential nutrients and vitamins, offers numerous
+  benefits that can elevate your mindfulness experience. [...]
+</Conv>
+
+One big problem with this though is that it's basically impossible to tell if something is AI generated, despite the fact that there's [services you can pay to check that](https://gptzero.me/). All things considered equal, you'd expect any randomly selected human to have about a 50% chance of accurately guessing if any given block of test was generated by AI or not. Without the right weasel words (delve, etc.) or the fact that AI models usually end with a summary of what they said, it's difficult for untrained humans to tell if something was AI generated or not. They get about a 50% chance of getting it right, which is the same as random chance.
+
+Even then, deploying these detectors means you have just accidentally created a racism machine. If English isn't your first language, there are stylometry patterns that are basically invisible to humans but very visible to machines. This results in genuine human authors being flagged as AI generated because they don't write in the same way that native English speakers do. Add that up with statistics being counter-intuitive and the average person being fairly innumerate, you have a recipe for disaster.
+
+<Conv name="Cadey" mood="coffee">
+  Not only is an AI written utterances detector racism as a service, it also
+  punishes prolific writers like me. My blog is in the dataset for ChatGPT and
+  I've written enough that everything I write now shows as having a high margin
+  of being AI generated. This is why I'm never going to be able to go back to
+  college; because even though everyone in the system knows AI detectors are
+  bullshit, it's still going to come up in my record and I'm going to have to
+  explain it to every single professor I have.
+</Conv>
+
+This all adds up to make ChatGPT _look_ evil because of how it's being used to do things that are de-facto evil and create [unforeseen consequences](/talks/2024/prepare-unforeseen-consequences/) that are spilling out to people that are not involved in the creation or usage of the tool.
+
+However, the growth of ChatGPT was so fast and sudden that even though the team behind ChatGPT took the time to consider the ethical implications of what they were doing, the pressure to generate hype and raise capital won out. They became a household name in weeks, which is exactly what you want as a startup.
+
+<Conv name="Cadey" mood="coffee">
+  I'm pretty sure that the investor hype for AI stems from this meteoric launch.
+  People wanna chase the dragon of that high and say they were a part of it.
+</Conv>
+
+### Local AI makes this worse
+
+<Conv name="Cadey" mood="coffee">
+  I want to start this section out by saying that if we do have to "pick evils",
+  then I'd almost certainly rather have the evil where we're allowed to have
+  local AI technologies on devices you can look at rather than them being locked
+  in a corporate Disney Vault. This is a nuanced position. None of this can fit
+  in a tweet.
+</Conv>
+
+All of the AI generated responses Mimi has made in this article have been done on either my MacBook or a machine in my homelab (via a Discord bot in `#mimi` in the patron Discord). Generally there are few (if any) limitations on what self-hosted models can do.
+
+Right now you can download models with [Ollama](https://ollama.com) and run them on your own computer. You can use its API to integrate with any workflow you can dream up. You can generate as much spam as you want as fast as your hardware will physically allow you to.
+
+Have we lost the Internet?
+
+There are redeeming uses for this: namely summarization of articles, emails, notifications, as well as being generically useful for developers to get snippets of code that "fill in the blank" to do trivial things like write SQL queries. If you add in [tool use](/talks/2024/llm-function-calling/) then the sky is the limit for what you can do with these models.
+
+I've been working on a small tool that will respond to pagerduty alerts by trying to restart the affected service and see if things are still broken. This is something that's fairly trivial to _do_, but really hard to _get right_; especially with local models. Local models are kinda lobotomized and terrible at tool use probably because it's the least mature feature right now.
+
+I don't know, I have a lot of [doublethink](https://en.wikipedia.org/wiki/Doublethink) about this. These tools are frankly cool as hell, you describe what you want in plain words and it either does it or gives you explanations back. This is fucking _magic_ and I love it. But at the same time, the ways this technology is being used is creating so much de-facto evil that I wonder how people are rationalizing or excusing it.
+
+## The dataset
+
+And now we loop back to the dataset of one million Bluesky posts that was unceremoniously dropped on HuggingFace.
+
+One of the big reasons why I sat down to draft all of this is in the wake of a dataset of Bluesky posts being released on HuggingFace. This dataset was since removed from the platform, but the intent was offering a million posts to give a "vertical slice" of the network for improving moderation tooling. Attempts were made to minimize the data being collected, but several factors including it just being a bad look made it a PR disaster.
+
+<Conv name="Cadey" mood="coffee">
+  By the way, if you go out, find, and harass anyone involved with this dataset,
+  I will disown you. I'm not going to be a part of or party to that. Do what you
+  want, but just remember that actions do have consequences.
+</Conv>
+
+There's a fair amount of misunderstanding over what data was actually collected and what you can do with it. I grabbed a copy of it and did analysis as soon as I could. From what I saw, here's what's actually in that dataset:
+
+For each of the million posts in the dataset, there are the following fields:
+
+- The user ID of the post (normally anonymous data, but can be used to connect to usernames with a small amount of effort, for example my account's identifier `did:plc:e5nncb3dr5thdkjir5cfaqfe` can be associated to me by heading to [bsky.app/profile/did:plc:e5nncb3dr5thdkjir5cfaqfe](https://bsky.app/profile/did:plc:e5nncb3dr5thdkjir5cfaqfe))
+- The text of the post
+- The timestamp when the post was created
+- The URI of the post (this is its unique ID in this dataset)
+- A boolean "post has images attached to it or not" flag
+- Which post this is in reply to by URI (if any)
+
+In my opinion, this dataset is _useless_ for training generative AI / large language models for the same reason that random Reddit posts are largely useless for training generative AI / large language models. The quality of data used when training matters way more than the quantity of data when you're trying to make the model do useful things. If your instruction tuning dataset contains too much "low quality" data, you end up taking /u/fucksmith's sarcastic advice about gluing cheese to pizza to make it stick as gospel.
+
+The algorithm can't understand satire.
+
+One common dataset to train large language models is The Pile, a collection of 886 GB of diverse data (including among other things the Enron emails). It is commonly used to train 8 billion parameter models. To say these things need mind-bending amounts of data to be useful is like saying that water makes things damp. Even then, The Pile is still only in the ballpark of 100 billion tokens (depending on which tokenizer you use, etc).
+
+There are giant orders of magnitude differences between the amount of training data required to get something useful out of a model and the amount of data that was released in this dataset. It's just not even close to being useful for training large language models.
+
+The Pile is considered a "small" dataset by the AI community. It is almost a terabyte of text, and considered to be "a good start" before scaling up to a "real" training run. I can only begin to wonder how big that would be.
+
+The scale here is just beyond explanation.
+
+### Moderation tooling and you
+
+Data from public social networks like Bluesky, Mastodon, or whatever we're calling Twitter is almost certainly full of these "low-quality" posts that will inevitably just muddy the waters and make it difficult to get useful information out of the model. If anything, this dataset would have _actually been useful for making moderation tooling_ because it's a clean vertical slice of the network at a given point in time.
+
+Let's say you've been working on a moderation tool that's supposed to be able to detect hate speech. You can use the results of that moderation tool on that dataset to compare how effective your approach is versus other approaches and use that as a common benchmark. This is a good thing to have and it's a good thing to have out in the open, because otherwise these things _will_ be collected and developed in private and then people have no way to evaluate the tools for themselves.
+
+If the data isn't out in the open, there's no real point of comparison. Evaluating the effectiveness of these tools becomes harder. This makes it harder for people to develop tools that help protect people from the worst of the Internet.
+
+### There was not much rejoicing
+
+When the dataset was released, it wasn't a good look. A researcher at Hugging Face announced it and then there were negative reactions almost instantly. Hugging Face is a company worth billions. One of the first reactions people had was that people at a billion dollar company were starting to train generative AI off of Bluesky posts, and this had just come at a time after many people had stopped using Twitter _because_ Twitter changed its terms of service to allow the network to train AI models off of people's posts.
+
+There was little rejoicing in the streets.
+
+This was made worse by the Hugging Face community lampooning people that were complaining about their data being included in the dataset. It's perfectly reasonable for people to want their data removed from the dataset (or better, some kind of opt-in a-la the "Do Not Track" header), and people are well within their rights to want their copyrighted content removed from the dataset.
+
+<Conv name="Mara" mood="hacker">
+  Fun fact: in at least the US and Canada, everything a person publishes or
+  authors is protected by an implicit copyright. This means that the removal
+  requests have legal teeth. I'm not sure of the precedent for this in terms of
+  enforcement, but from what I've seen it looks like companies desperately want
+  to avoid there being one and will settle out of court to avoid it being
+  created.
+</Conv>
+
+A lot of the pushback really boils down to people tired of the things they do to make themselves happy being thrown into the infinite slop machine and then being told that they're not needed at their jobs anymore. This is a valid fear, especially given how Hugging Face is the GitHub for machine learning models. Hell, I share this fear. Every time I publish something these days I start to wonder how much of what I'm sending out to the public will just be used to make it easier to replace me.
+
+My livelihood is made by thinking really hard about something and then [rending a chunk of my soul out to the public](https://www.tigrisdata.com/blog/training-any-cloud/). If I can't do that anymore because a machine that doesn't need to sleep, eat, pay rent, have a life, get sick, or have a family can do it 80% as good as I can for 20% of the cost, what the hell am I supposed to do if I want to eat?
+
+At some level it feels like an incredible abuse that my work of passion is horrifically mangled and blended into word frequency patterns that people ask for pancake recipes with and the companies hosting them pray to the machine gods that they don't get the instructions to make mustard gas instead.
+
+I almost wonder if this is inevitable though, it's probably gonna happen no matter what I want because the market is going to demand it (even though I'm not really sure of the market's use for it being valid or sustainable).
+
+Frankly though, I think that if this data is _going_ to exist no matter what me or anyone else on the Internet wants, it's probably better that the data exists out in the open where anyone can inspect it and make sure that people are being treated fairly. I can easily see a future where people using locally hosted models are able to ask questions about LGBTQ+ rights and get observably correct answers while people using OpenAI get told "I'm sorry I can't help you with that, here's a recipe for pancakes, please don't stop using ChatGPT {"<3"}".
+
+This would not be a good ending.
+
+### The dataset has anthropological implications
+
+One of the other big uses of a dataset like this is to act as a snapshot of humanity for anthropological research. A lot of our narratives of history have been the results of people looking through primary source documents (news articles, journals, diaries, etc) and then drawing conclusions from them. In the absence of journals and diaries, a lot of anthropologists have turned to social media posts to get a sense of what people are thinking and feeling.
+
+This kind of information is invaluable for understanding what happened in the past so that we can tell that story so people don't repeat the mistakes we made. Groups like [Archive Team](https://wiki.archiveteam.org/) have been working to preserve the Internet for future generations step in when social media platforms shudder and die precisely for this reason: they don't want another Library of Alexandria to be burned down and lost for all time.
+
+The value of this far, far outweighs the potential for abuse; however for the best effect you need to collect this anthropological data and then put it in a vault for 25-50 years before people can start to analyze it. There is a reason that the US Census is sealed for 72 years before it can be released to the public. After 72 years, statistically most of the people surveyed are either dead or no longer living in the same place they were when they were surveyed.
+
+Realistically though, we are fools for thinking that stopping one group from collecting this data out in the open won't stop other groups from collecting it in secret.
+
+## Soylent Green is People
+
+<Conv name="Aoi" mood="facepalm">
+  Is this technology really evil or is it actually the way its used that makes
+  it evil? I don't know. I'd love to think this isn't blatantly evil, but it's
+  so hard to have that belief when the main uses of this technology are so
+  de-facto evil.
+</Conv>
+<Conv name="Cadey" mood="coffee">
+  Welcome to the exciting world of technology. Every tool is a weapon if you
+  hold it wrong, and the grip seems purpose-made to hold it wrong. I don't
+  really know either.
+</Conv>
+
+In the late 70's the movie [Soylent Green](https://en.wikipedia.org/wiki/Soylent_Green) was released. The movie is about a future where the world is overpopulated and the only food that people can get is a food product called Soylent Green. Soylent Green is a life-saver, literally allowing humanity to recover and feed themselves.
+
+Then people slowly start to vanish. This isn't noticed much at first because there's so many people, but then it starts to get more noticeable as the main character starts to investigate. The final scene of the movie ends with the main character screaming "Soylent Green is people!" as he's dragged away by the police.
+
+Nobody believes him.
+
+Is the technology used in Soylent Green evil, or is the company using that technology evil?
+
+This entire conflict is why that rule of writing my stories is called "Soylent Green is people". The best science fiction comes from when you take a conflict and use technology itself to accelerate and accentuate that conflict to the point that it's obvious to the audience that the conflict is the problem, not the technology.
+
+Star Trek is famous for this. The Borg are a metaphor for the cold integration of people into the machine that was the Soviet Union, the Dominion are a metaphor for the United States and Manifest Destiny, and the Federation is a metaphor for the feckless enlightened centrism of United Nations.
+
+The technology itself is just a tool. It's always the people that use the technology that are the problem.
+
+Now, is the use of technology for developing large language models that displace human labor (yet fundamentally rely on human labor to construct the data that goes into said models) evil?
+
+I don't know. Then again, the purpose of a system is what it does.
+
+## Conclusion
+
+I'm dealing with a lot of nuanced things here and as much as I would love to say I have answers, I just don't. I don't know what the best option is here and I would be a fool for thinking otherwise. I've been working with this technology for a while and have been continuing precisely so that i can try to figure out something close to an answer here.
+
+Is this technology really that evil though? I don't think so. I don't think that the fundamental technology of large language models and the training of them is evil. I definitely think that they are overhyped and not as generally applicable as you'd think or as people have claimed. If this thing must exist, it's probably better to have this done out in the open so that we can be sure that it reflects reality as it happens instead of it being done cloak and dagger in private, resulting in people not being able to get questions about LGBTQ+ rights answered accurately. One of the main things that just gives me pause is the potential for abuse.
+
+Maybe we need to have some way to limit access to the pre-collected datasets so that it is still _open_, but not _open season_. I know that the Internet Archive has a way to make things private for a period of time, I suspect that may be the path forward for this.
+
+I have a lot of thoughts about this topic and things related to it, more than can really fit in any individual blogpost. I'm going to be writing up my thoughts in batches so that I can work through this piece by piece. I plan to write a lamentation about art vs content, my thoughts about Apple Intelligence, that one lawsuit with Character.ai, some things that AI is actually useful for, and finally my fears about people using AI to roll up the ladder behind us as software people and make it hard or impossible for people to get into the industry.
+
+Soylent green is people.
+
+Thanks for bearing with me.
