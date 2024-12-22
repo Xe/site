@@ -55,7 +55,7 @@ jobs:
     - name: cache deno.land dependencies
       uses: actions/cache@v2
       with:
-        key: ${{ runner.os }}-deno-${{ hashFiles('**/deno.lock') }}
+        key: ${{ runner.os }}-deno-${{ hashFiles('**/deno.json') }}
         restore-keys: ${{ runner.os }}-deno-
         path: |
           /home/runner/.cache/deno
