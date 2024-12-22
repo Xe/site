@@ -13,6 +13,11 @@ jobs:
     if: ${{ github.actor_id == '49699333' }} # Dependabot
     runs-on: alrest-xe-site
     steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          submodules: true
       - name: Enable Pull Request Automerge
         run: gh pr merge --squash --auto ${{ github.event.number }}
         env:
