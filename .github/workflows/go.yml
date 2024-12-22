@@ -26,6 +26,14 @@ jobs:
       with:
         path: |
           /home/linuxbrew/.linuxbrew/Cellar
+          /home/linuxbrew/.linuxbrew/bin
+          /home/linuxbrew/.linuxbrew/etc
+          /home/linuxbrew/.linuxbrew/include
+          /home/linuxbrew/.linuxbrew/lib
+          /home/linuxbrew/.linuxbrew/opt
+          /home/linuxbrew/.linuxbrew/sbin
+          /home/linuxbrew/.linuxbrew/share
+          /home/linuxbrew/.linuxbrew/var
         key: ${{ runner.os }}-homebrew-cellar-${{ hashFiles('go.sum') }}
         restore-keys: |
           ${{ runner.os }}-homebrew-cellar-
