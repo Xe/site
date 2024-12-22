@@ -16,9 +16,7 @@ spec:
         persistentVolumeClaim:
           claimName: xesite-cache
       - name: data
-        hostPath:
-          path: /data/xesite
-          type: DirectoryOrCreate
+        emptyDir: {}
       containers:
       - name: web
         image: ghcr.io/xe/site/bin:latest
