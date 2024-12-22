@@ -25,7 +25,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: |
-          ~/.linuxbrew/Cellar
+          /home/linuxbrew/.linuxbrew/Cellar
         key: ${{ runner.os }}-homebrew-cellar-${{ hashFiles('go.sum') }}
         restore-keys: |
           ${{ runner.os }}-homebrew-cellar-
