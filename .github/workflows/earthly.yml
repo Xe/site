@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: alrest-xe-site
     permissions:
       contents: read
       packages: write
@@ -23,12 +23,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           version: "latest" # or pin to an specific version, e.g. "0.8.1"
-      - name: Tailscale
-        uses: tailscale/github-action@v2
-        with:
-          oauth-client-id: ${{ secrets.TAILSCALE_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TAILSCALE_CLIENT_SECRET }}
-          tags: tag:ci
       - name: Log into registry 
         if: github.event_name != 'pull_request'
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
@@ -50,7 +44,7 @@ jobs:
   deploy:
     name: "Deploy xesite"
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: alrest-xe-site
     permissions:
       contents: read
     if: github.ref == 'refs/heads/main'
