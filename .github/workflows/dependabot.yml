@@ -1,0 +1,19 @@
+name: Dependabot super yolo
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  run-custom-command:
+    if: ${{ github.actor_id == '49699333' }} # Dependabot
+    runs-on: alrest-xe-site
+    steps:
+      - name: Enable Pull Request Automerge
+        run: gh pr merge --squash --auto ${{ github.event.number }}
+        env:
+          GH_TOKEN: ${{ github.token }}
