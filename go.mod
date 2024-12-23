@@ -14,7 +14,7 @@ require (
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/invopop/yaml v0.3.1
 	github.com/joho/godotenv v1.5.1
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	github.com/twitchtv/twirp v8.1.3+incompatible
 	golang.org/x/oauth2 v0.24.0
 	google.golang.org/protobuf v1.36.0
