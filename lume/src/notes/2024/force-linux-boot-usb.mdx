@@ -1,0 +1,35 @@
+---
+title: "How to force a Linux device to boot from USB when the GPU is dead and you can't do it from the BIOS"
+date: 2024-12-28
+---
+
+tl;dr: use `efibootmgr`
+
+Let's say you have a Kingston DataTraveler with a Linux ISO on it and want to boot from it, but your GPU is broken or something and you can't view output. Here's what you do:
+
+List the potential boot targets with `sudo efibootmgr`:
+
+```
+$ sudo efibootmgr
+BootCurrent: 0005
+Timeout: 1 seconds
+BootOrder: 0005,0000,0006
+Boot0000* Linux Boot Manager HD(3,GPT,d540ada8-f3df-4783-b774-01f46cb8246f,0x800,0xff800)/File(\EFI\systemd\systemd-bootx64.efi)
+Boot0005* UEFI OS HD(3,GPT,d540ada8-f3df-4783-b774-01f46cb8246f,0x800,0xff800)/File(\EFI\BOOT\BOOTX64.EFI)0000424f
+Boot0006* UEFI: KingstonDataTraveler 3.0, Partition 2 PciRoot(0x0)/Pci(0x8,0x1)/Pci(0x0,0x3)/USB(2,0)/USB(0,0)/HD(2,GPT,39313032-3630-4130-b232-303133343532,0x150,0x1680)0000424f
+```
+
+The Kingston DataTraveler is Boot0006, so tell efibootmgr to mark 0006 as the next boot target:
+
+```
+$ sudo efibootmgr --bootnext 0006
+BootNext: 0006
+BootCurrent: 0005
+Timeout: 1 seconds
+BootOrder: 0005,0000,0006
+Boot0000* Linux Boot Manager HD(3,GPT,d540ada8-f3df-4783-b774-01f46cb8246f,0x800,0xff800)/File(\EFI\systemd\systemd-bootx64.efi)
+Boot0005* UEFI OS HD(3,GPT,d540ada8-f3df-4783-b774-01f46cb8246f,0x800,0xff800)/File(\EFI\BOOT\BOOTX64.EFI)0000424f
+Boot0006* UEFI: KingstonDataTraveler 3.0, Partition 2 PciRoot(0x0)/Pci(0x8,0x1)/Pci(0x0,0x3)/USB(2,0)/USB(0,0)/HD(2,GPT,39313032-3630-4130-b232-303133343532,0x150,0x1680)0000424f
+```
+
+Then reboot. You will boot off of the USB drive.
