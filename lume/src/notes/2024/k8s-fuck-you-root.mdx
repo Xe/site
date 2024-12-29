@@ -1,0 +1,18 @@
+---
+title: "How to make a Kubernetes debug pod that is actually root"
+date: 2024-12-28
+---
+
+tl;dr: `--profile=sysadmin`
+
+Let's say you have a k8s cluster but running on a distro without SSH and god is dead requiring you to interactively debug the machine with a shell session. [Wonder why you'd want to do that](/blog/2024/k8s-irc-client/).
+
+`kubectl debug node/whatever` lets you get a pod that is kinda root, but you end up getting permissions issues when you try to do something exciting like format a disk. This is because you need the `--profile=sysadmin` flag to curse the pod with super-god powers. You also need to run these super-god pods in the `kube-system` namespace. Here's the command you want for the node `pneuma` (replace your node name here):
+
+```
+$ kubectl debug node/pneuma -it --image=ubuntu -n kube-system --profile=sysadmin
+```
+
+This gets you a super-god pod running ubuntu (or any other image you want).
+
+Happy Kubesing!
