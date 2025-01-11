@@ -1,0 +1,4 @@
+layout: blog.njk
+type: blog
+index: true
+year: 2025

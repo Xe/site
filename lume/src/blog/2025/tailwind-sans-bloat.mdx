@@ -1,0 +1,126 @@
+---
+title: "CSSWind: bloat-free component styling"
+desc: "What you need when even HTMX is too much."
+date: 2025-01-11
+hero:
+  ai: "Stable Diffusion v1.5 with about 13 LoRAs stacked on top"
+  file: "vaporwave-vibes"
+  prompt: "A blue-haired anime woman in front of a vaporwave grid and a slowly setting synthwave sun"
+  social: false
+---
+
+I'm trying to consolidate my hosting for this website onto my cloud Kubernetes cluster as much as I can. Today I moved the part of my website that serves stickers into the Kubernetes cluster. I wanted to see how minimal I could make it. Turns out, it can be way more minimal than I thought.
+
+In the process I discovered how to get all the advantages of Tailwind with none of the bloat. I'm calling this CSSWind and it's the next best thing since canned bread.
+
+Here's an example of a Tailwind component:
+
+<Conv name="Mimi" mood="happy" standalone>
+  Have you ever been far even as decided to use even go want to do look more
+  like?
+</Conv>
+
+Tailwind makes you style components inline using classnames. This ends up making giant chungus monsters like this:
+
+{/* prettier-ignore */}
+<center>
+<textarea
+  className="mx-auto"
+  style="color: #FFFFFF; background-color: #000000;"
+  cols={80}
+  rows={12}
+>
+<div
+  class="my-4 flex space-x-4 rounded-md border border-solid border-fg-4 bg-bg-2 p-3 dark:border-fgDark-4 dark:bg-bgDark-2 lg:max-w-[65ch] mx-auto min-h-fit"
+/>
+</textarea>
+</center>
+
+<Conv name="Numa" mood="disgust" standalone>
+  Eww. There's so many classes I can't think straight.
+</Conv>
+
+Even worse, in order to add Tailwind to my simple Go services, I have to mangle them and force Tailwind into the mix with `go generate`. Every time I do this, I just keep thinking "it would surely be simpler if I could just write CSS, right?"
+
+Yep, you can. Here's a semantically identical version of the Tailwind component in CSSWind:
+
+{/* prettier-ignore */}
+<div style="margin: 1rem 0; display: flex; gap: 1rem; border-radius: 0.375rem; color: #000000; border: 1px solid #d1d5db; background-color: #f3f4f6; padding: 0.75rem; max-width: 65ch; margin-left: auto; margin-right: auto; min-height: fit-content;">
+  <div style="display: flex; padding-top: 0.5rem; padding-bottom: 0.5rem; max-height: 4rem; flex-shrink: 0; align-items: center; justify-content: center; align-self: center;">
+    <img
+      style="max-height: 6rem"
+      alt="Mimi is happy"
+      loading="lazy"
+      src="https://stickers.xeiaso.net/sticker/mimi/happy"
+    />
+  </div>
+  <div style="min-width: 0; align-self: center;">
+    &lt;<a style="color: #000000;" href="/characters#Mimi">Mimi</a>&gt; Have you ever been far even as decided to use even go want to do look more like?
+  </div>
+</div>
+
+Here's the HTML for that:
+
+{/* prettier-ignore */}
+<center>
+<textarea
+  className="mx-auto"
+  style="color: #FFFFFF; background-color: #000000;"
+  cols={80}
+  rows={20}
+>
+<pre>
+<div style="margin: 1rem 0; display: flex; gap: 1rem; border-radius: 0.375rem; color: #000000; border: 1px solid #d1d5db; background-color: #f3f4f6; padding: 0.75rem; max-width: 65ch; margin-left: auto; margin-right: auto; min-height: fit-content;">
+  <div style="display: flex; padding-top: 0.5rem; padding-bottom: 0.5rem; max-height: 4rem; flex-shrink: 0; align-items: center; justify-content: center; align-self: center;">
+    <img
+      style="max-height: 4rem"
+      alt="Mimi is happy"
+      loading="lazy"
+      src="https://stickers.xeiaso.net/sticker/mimi/happy"
+    />
+  </div>
+  <div style="min-width: 0; align-self: center;">
+    &amp;lt;<a style="color: #000000;" href="/characters#Mimi">Mimi</a>&amp;gt; Have you ever been far even as decided to use even go want to do look more like?
+  </div>
+</div>
+</pre>
+</textarea>
+</center>
+
+This gives you all the advantages of Tailwind without any of the bloat, installing things from NPM, or anything else. It even works with [Xess](https://github.com/Xe/Xess)!
+
+As an example of how simple this is in practice, here's the sticker testing page I made when I was working on this:
+
+<iframe
+  src="https://stickers.xeiaso.net"
+  className="lg:w-[80ch] h-[30rem] mx-auto"
+  style="gap: 1rem; border-radius: 0.375rem; border: 1px solid #d1d5db; background-color: #f3f4f6;"
+/>
+
+This is the actual website embedded into another page with an [`<iframe>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe) tag. You can type in [character and mood names](/characters) and then see what the stickers look like in isolation as well as in conversation snippets. It's everything I need in order to test that things look nice and nothing 404s.
+
+I was gonna use HTMX for it, but even that was too much bloat. I just ended up using a normal [HTML form](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form) because that's all I needed. When you hit submit in that iframe, the page reloads and the server responds with new HTML. That's all you need. Anything more is bloat.
+
+Oh also, there's an "error image" when it can't find a sticker. I had to make it an image because if you make it text when the browser expects an image, things get sad and you get a broken picture icon. I'd rather have my own branded broken picture icon than some sad browser default one that makes the UX bad.
+
+<center>
+  <Picture
+    path="blog/2025/csswind/not_found"
+    desc="A red x in a circle with 'Not Found' over it in white text."
+  />
+</center>
+
+I made this with Image Playground out of curiosity to see if I could actually get something usable out of it in any fashion. I was genuinely surprised to see this as the first output:
+
+<Picture
+  path="blog/2025/csswind/not_found_imageplay"
+  desc="A red x in a circle."
+/>
+
+My prompt was "x, no symbol, white background, simple background". I expected to get a waste of my time and then make it myself in Affinty, but this is totally usable. This is shockingly usable even because in ideal circumstances nobody should ever see this. All it took to make it prod-ready was turning the white into transparency and adding text over it to get that error message.
+
+This is the only time I've ever had a positive experience with Image Playground. I don't know what this says about the product. "Image Playground is better than stock vectors"?
+
+If you want to see the source code of the sticker server, [look here](https://github.com/Xe/x/tree/master/cmd/stickers) in my [/x/](https://github.com/Xe/x) repo. It's really simple. It just forwards requests to a presigned URL. There's nothing else really complicated about it. It does what it needs to do and runs fine in Kubernetes.
+
+Enjoy liberation from CSS complexities!
