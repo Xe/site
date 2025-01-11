@@ -15,7 +15,6 @@ const ConvSnippet = ({
 }: XeblogConvProps) => {
   const nameLower = name.toLowerCase();
   name = name.replace(" ", "_");
-  const size = standalone ? 256 : 128;
 
   return (
     <>
@@ -25,7 +24,7 @@ const ConvSnippet = ({
             style={`max-height:${standalone ? "6" : "4"}rem`}
             alt={`${name} is ${mood}`}
             loading="lazy"
-            src={`https://cdn.xeiaso.net/sticker/${nameLower}/${mood}/${size}`}
+            src={`https://stickers.xeiaso.net/sticker/${nameLower}/${mood}`}
           />
         </div>
         <div className="convsnippet min-w-0 self-center">

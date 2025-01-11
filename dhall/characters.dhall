@@ -38,16 +38,16 @@ let characters =
         , stickerName = "numa"
         , defaultPose = "delet"
         , description =
-            "Numa is the keeper of firey hot takes. Born in the fires of shitposting and satire, Numa genuinely does care about the topics being discussed, but has a bad habit of communicating in shitposts, memes, and hot takes intentionally designed to make you reconsider how serious she is being about any given topic. She could definitely be a wonderful teacher if she could lessen up a bit on the satire. The stickers for Numa are 3d renders of the author's v-tubing avatar, but Numa is written differently than the characterization of the author when streaming. Numa is a fairly tall (6') human with neon green hair that usually wears it in a high ponytail."
+            "Numa is the keeper of firey hot takes. Born in the fires of shitposting and satire, Numa genuinely does care about the topics being discussed, but has a bad habit of communicating in shitposts, memes, and hot takes intentionally designed to make you reconsider how serious she is being about any given topic. She could definitely be a wonderful teacher if she could lessen up a bit on the satire."
         , stickers =
           [ "delet"
-          , "delet2"
-          , "dismay"
+          , "disgust"
           , "happy"
-          , "neutral"
+          , "selfie"
+          , "sleepy"
+          , "smug"
           , "stare"
           , "thinking"
-          , "vibe"
           ]
         }
       , C::{

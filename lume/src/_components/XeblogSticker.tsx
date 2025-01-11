@@ -1,29 +1,28 @@
 export interface XeblogStickerProps {
   name: string;
   mood: string;
+  maxHeight?: string | null;
 }
 
-export default function XeblogSticker({ name, mood }: XeblogStickerProps) {
+export default function XeblogSticker({
+  name,
+  mood,
+  maxHeight = null,
+}: XeblogStickerProps) {
   const nameLower = name.toLowerCase();
   name = name.replace(" ", "_");
+  if (maxHeight === null) {
+    maxHeight = "12rem";
+  }
 
   return (
     <>
-      <picture>
-        <source
-          type="image/avif"
-          srcset={`https://cdn.xeiaso.net/file/christine-static/stickers/${nameLower}/${mood}.avif`}
-        />
-        <source
-          type="image/webp"
-          srcset={`https://cdn.xeiaso.net/file/christine-static/stickers/${nameLower}/${mood}.webp`}
-        />
-        <img
-          alt={`${name} is ${mood}`}
-          loading="lazy"
-          src={`https://cdn.xeiaso.net/file/christine-static/stickers/${nameLower}/${mood}.png`}
-        />
-      </picture>
+      <img
+        style={`max-height:${maxHeight}`}
+        alt={`${name} is ${mood}`}
+        loading="lazy"
+        src={`https://stickers.xeiaso.net/sticker/${nameLower}/${mood}`}
+      />
     </>
   );
 }
