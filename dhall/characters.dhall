@@ -40,12 +40,17 @@ let characters =
         , description =
             "Numa is the keeper of firey hot takes. Born in the fires of shitposting and satire, Numa genuinely does care about the topics being discussed, but has a bad habit of communicating in shitposts, memes, and hot takes intentionally designed to make you reconsider how serious she is being about any given topic. She could definitely be a wonderful teacher if she could lessen up a bit on the satire."
         , stickers =
-          [ "delet"
+          [ "concern"
+          , "delet"
           , "disgust"
+          , "hacker"
           , "happy"
+          , "neutral"
           , "selfie"
+          , "shout"
           , "sleepy"
           , "smug"
+          , "sobbing"
           , "stare"
           , "thinking"
           ]
