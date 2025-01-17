@@ -4,6 +4,23 @@ desc: "Please, just stop."
 date: 2025-01-17
 ---
 
+EDIT(2025-01-17 17:50 UTC):
+
+I added this snippet to the ingress config:
+
+```yaml
+nginx.ingress.kubernetes.io/configuration-snippet: |
+  if ($http_user_agent ~* "(Amazon)" ){
+    return 418;
+  }
+```
+
+The bots are still hammering away from a different IP every time. About 10% of the requests do not have the amazonbot user agent. I'm at a loss for what to do next.
+
+I hate the future.
+
+---
+
 Hi all. This is a different kind of post. This is not informative. This is a cry for help.
 
 To whoever runs AmazonBot, please add `git.xeserv.us` to your list of blocked domains. If you know anyone at Amazon, please forward this to them and ask them to forward it to the AmazonBot team.
