@@ -132,8 +132,9 @@
   /* Code blocks */
   pre[class*="language-"] {
     padding: 1em;
-    margin: 0.5em 0;
     overflow: auto;
+
+    @apply mx-auto;
   }
 
   :not(pre) > code[class*="language-"],
