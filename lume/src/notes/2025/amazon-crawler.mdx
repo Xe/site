@@ -1,0 +1,22 @@
+---
+title: "Amazon's AI crawler is making my git server unstable"
+desc: "Please, just stop."
+date: 2025-01-17
+---
+
+Hi all. This is a different kind of post. This is not informative. This is a cry for help.
+
+To whoever runs AmazonBot, please add `git.xeserv.us` to your list of blocked domains. If you know anyone at Amazon, please forward this to them and ask them to forward it to the AmazonBot team.
+
+Should you want to crawl my git server for some reason, please reach out to me so we can arrange for payment for hardware upgrades commensurate to your egregious resource usage.
+
+I don't want to have to close off my Gitea server to the public, but I will if I have to. It's futile to block AI crawler bots because they lie, change their user agent, use residential IP addresses as proxies, and more. I just want the requests to stop.
+
+I have already configured the `robots.txt` file to block all bots:
+
+```
+User-agent: *
+Disallow: /
+```
+
+What else do I need to do?
