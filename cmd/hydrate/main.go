@@ -78,6 +78,8 @@ func main() {
 		log.Fatalf("can't parse year in %s: %v", *date, year)
 	}
 
+	os.MkdirAll(filepath.Join(routing[kind], year), 0755)
+
 	foutName := filepath.Join(routing[kind], year, slug+".mdx")
 
 	if _, err := os.Stat(foutName); !os.IsNotExist(err) {
