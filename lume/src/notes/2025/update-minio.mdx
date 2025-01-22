@@ -1,0 +1,19 @@
+---
+title: "Update MinIO to account for AWS SDK changes"
+desc: "TL;DR: docker pull && docker restart"
+date: 2025-01-22
+hero:
+  ai: sketch by Xe Iaso
+  file: container-airlift
+  prompt: "A hot air balloon raises a shipping container into the heavens"
+---
+
+Recent [AWS SDK changes](https://www.tigrisdata.com/blog/downgrade-py-js/) have broken many non-S3 object stores. MinIO has released [RELEASE.2025-01-20T14-49-07Z](https://github.com/minio/minio/releases/tag/RELEASE.2025-01-20T14-49-07Z) that fixes compatibility with these new SDK versions.
+
+If you do not update your MinIO instance, you will get error messages like this when using the AWS CLI, boto3, SDK for JavaScript, SDK for Java, or SDK for PHP:
+
+```
+upload failed: ./pvc.yaml to s3://radical/pvc.yaml An error occurred (MissingContentLength) when calling the PutObject operation: You must provide the Content-Length HTTP header.
+```
+
+Good luck!
