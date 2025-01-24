@@ -1,0 +1,44 @@
+---
+title: "Life pro tip: Oracle Linux is the best local VM for MacBooks"
+desc: "No, seriously. It sips battery life. I don't get it either."
+date: 2025-01-23
+---
+
+Part of working on Anubis means that I need a local Linux environment on my MacBook. Ideally, I want Kubernetes so that I have a somewhat cromulent setup.
+Most of my experience using a local Kubernetes cluster on a MacBook is with [Docker Desktop](https://www.docker.com/products/docker-desktop/). I have a love/hate relationship with Docker Desktop. Historically it's been a battery hog and caused some really weird issues.
+
+I tried to use Docker Desktop on my MacBook again and not only was it a battery hog like I remembered; whenever the Kubernetes cluster is running the machine fails to go to sleep when I close it. I haven't been able to diagnose this despite help from mac expert friends in an infosec shitposting slack. I've resigned myself to just shutting down the Docker Desktop app when I don't immediately need Docker.
+
+I have found a solution thanks to a very unlikely Linux distribution: [Oracle Linux](https://www.oracle.com/linux/). Oracle Linux is downstream of Red Hat Enterprise Linux, and more importantly they ship a "no thinking required" template for [UTM](https://mac.getutm.app). Just download the aarch64 UTM image from their [cloud images page](https://yum.oracle.com/oracle-linux-templates.html), extract it somewhere, rename the `.utm` file to the name of your VM, double click, copy the password, log in, change your password on first login, and bam. You get a Linux environment.
+
+It is glorious.
+
+Additionally, [k3s](https://k3s.io) works seamlessly on it. Just run the curl2bash, copy `/etc/rancher/k3s/k3s.yaml` to your `~/.kube/config` (or change the IP address in the file and install it to your MacBook via a bridged network), and you have a fully working Kubernetes cluster with [Traefik](https://traefik.io/) preinstalled.
+
+They also have a [`HelmChart` custom resource](https://docs.k3s.io/helm#using-the-helm-controller) that lets you install Helm releases declaratively. Here's how my VM gets `cert-manager`:
+
+```yaml
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: cert-manager
+  namespace: kube-system
+spec:
+  repo: https://charts.jetstack.io
+  chart: cert-manager
+  targetNamespace: cert-manager
+  createNamespace: true
+  set:
+    installCRDs: "true"
+    "prometheus.enabled": "false"
+```
+
+I love it.
+
+The best part is that this setup is more complicated than the Docker Desktop VM, yet it _sips_ battery life. Opening the Docker Desktop app can cause my MacBook's fans to spin up and stay on at a dull roar. Oracle Linux in UTM leaves the fans silent and doesn't show up in the top energy users list.
+
+This is frankly nuts and I'm going to be taking advantage of this as much as I can for local development.
+
+I need to figure out a good way to run a Docker registry in the k3s node or something so I can do builds and test runs on an airplane, but this is a solveable issue with enough time and effort.
+
+I'm still just flabbergasted at how well put together Oracle Linux is though, it's very minimal, but very well documented [on Oracle's site](https://docs.oracle.com/en/operating-systems/oracle-linux/9/). I don't know if I'd feel comfortable using it in prod yet, but I'm very happy with it.
