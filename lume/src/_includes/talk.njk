@@ -6,10 +6,10 @@ layout: base.njk
     {{ comp.ads() | safe }}
 {% endif %}
 
-<article class="prose dark:prose-invert max-w-none">
+<article class="prose dark:prose-invert max-w-none lg:prose-p:max-w-[80ch] lg:prose-p:mx-auto">
     <h1>{{title}}</h1>
     <p class="text-sm text-fg-3 dark:text-fgDark-3">
-        {{date.toDateString()}}
+        Published on <time datetime={{date | date("DATE")}}>{{date | date("DATE_US")}}</time>, {{ readingInfo.words }} words, {{ readingInfo.minutes }} minutes to read
     </p>
 
     {% if hero %}

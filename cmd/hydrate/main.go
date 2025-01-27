@@ -95,8 +95,12 @@ func main() {
 
 	if err := tmpl.ExecuteTemplate(fout, kind+".tmpl", struct {
 		Date string
+		Year string
+		Slug string
 	}{
 		Date: *date,
+		Year: year,
+		Slug: slug,
 	}); err != nil {
 		log.Fatalf("error writing template: %v", err)
 	}
