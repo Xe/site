@@ -27,7 +27,9 @@ import LoadingSpinner from "./src/_components/LoadingSpinner.jsx";
 import IntercomButton from "./src/_components/IntercomButton.jsx";
 import PullQuote from "./src/_components/PullQuote.jsx";
 import TecharoDisclaimer from "./src/_components/TecharoDisclaimer.jsx";
+import Reflection from "./src/_components/Reflection.jsx";
 import XeblogConv from "./src/_components/XeblogConv.tsx";
+import XeblogConvParent from "./src/_components/XeblogConvParent.jsx";
 import XeblogHero from "./src/_components/XeblogHero.tsx";
 import XeblogPicture from "./src/_components/XeblogPicture.tsx";
 import XeblogSlide from "./src/_components/XeblogSlide.tsx";
@@ -129,6 +131,8 @@ site.use(mdx({
     "Conv": XeblogConv,
     "XeblogConv": XeblogConv,
     "XesiteConv": XeblogConv,
+    "ConvP": XeblogConvParent,
+    "Reflection": Reflection,
     "Hero": XeblogHero,
     "XeblogHero": XeblogHero,
     "Picture": XeblogPicture,

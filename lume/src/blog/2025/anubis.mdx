@@ -32,17 +32,20 @@ Anubis is a man-in-the-middle HTTP proxy that requires clients to either solve o
 
 The most hilarious part about how Anubis is implemented is that it triggers challenges for every request with a User-Agent containing "Mozilla". Nearly all AI scrapers (and browsers) use a User-Agent string that includes "Mozilla" in it. This means that Anubis is able to block nearly all AI scrapers without any configuration.
 
-<Conv name="Aoi" mood="wut">
-  Doesn't that mean that you're allowing any AI scraper that simply chooses to
-  not put "Mozilla" in their User-Agent string?
-</Conv>
-<Conv name="Cadey" mood="coffee">
-  Well, yes, but that's a very small number of AI scrapers. Most of them want to
-  appear as a browser to get around the most basic of bot protections because a
-  lot of servers have [dubious logic around "Mozilla" being in the User-Agent
-  string](https://en.wikipedia.org/wiki/User-Agent_header#User_agent_sniffing).
-  It's a bit of a hack, but it works way better than should be expected.
-</Conv>
+<ConvP>
+  <Conv name="Aoi" mood="wut">
+    Doesn't that mean that you're allowing any AI scraper that simply chooses to
+    not put "Mozilla" in their User-Agent string?
+  </Conv>
+  <Conv name="Cadey" mood="coffee">
+    Well, yes, but that's a very small number of AI scrapers. Most of them want
+    to appear as a browser to get around the most basic of bot protections
+    because a lot of servers have [dubious logic around "Mozilla" being in the
+    User-Agent
+    string](https://en.wikipedia.org/wiki/User-Agent_header#User_agent_sniffing).
+    It's a bit of a hack, but it works way better than should be expected.
+  </Conv>
+</ConvP>
 
 At a super high level, Anubis follows the basic idea of [hashcash](https://en.wikipedia.org/wiki/Hashcash). In order to prevent spamming the protected service with requests, the client needs to solve a mathematical operation that takes a certain amount of time to compute, but can be validated almost instantly. The answer is stored as a signed [JWT](https://jwt.io/) token in an HTTP cookie, and the client sends this token with every request to the protected service. The server will usually validate the signature of the token and allow it through, but the server will also randomly select the token for secondary screening. If the token is selected for secondary screening, the server will validate the proof-of-work and allow the request through if everything checks out.
 

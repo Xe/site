@@ -1,0 +1,158 @@
+---
+title: "The gist of s1: simple test time scaling"
+desc: "TL;DR: when the model thinks it's done thinking, tell it to think some more. Yes, really."
+date: 2025-02-03
+hero:
+  ai: "Flux [pro] Ultra v1.1 via fal.ai"
+  file: "orca-wave"
+  prompt: "A green-haired anime woman riding an orca through a wave while taking a selfie"
+  social: false
+---
+
+Recently a paper came across my desk: [s1: Simple test-time scaling](https://arxiv.org/abs/2501.19393). The paper is about a technique to improve the output of reasoning models that is so hilariously simple that when I read it, I had to laugh, try it out, and then write it up here. In order to understand what's going on, let's talk about the problem that the paper is trying to solve.
+
+## The problem
+
+There's two kinds of AI models, the kind that starts replying instantly when you ask it why the sky is blue, and the kind that takes a moment to consider what you send it before it starts replying "out loud". The latter kind of models are [more accurate](https://arxiv.org/abs/2201.11903) and more easily able to handle complex questions or math problems. The problem is that they're slower and sometimes can stop reasoning too early.
+
+<ConvP>
+  <Conv name="Cadey" mood="aha">
+    In AI jargon, "test-time" refers to when the model is running and you are
+    asking it questions. The model is being "tested", so to speak.
+  </Conv>
+</ConvP>
+
+So you can get a better idea of what's going on, here's what the output of a reasoning model looks like:
+
+<ConvP>
+  <Conv name="Aoi" mood="wut">
+    How many r's are in the word raspberry?
+  </Conv>
+  <Conv name="Mimi" mood="happy" aiModel="DeepSeek R1">
+    <Reflection timeTaken={9} open>
+
+      Okay, let's see. The question is asking how many times the letter "r"
+      appears in the word "raspberry." Hmm, I need to make sure I spell the word
+      correctly first. Raspberry. R-A-S-P-B-E-R-R-Y. Wait, let me break it down
+      letter by letter.
+
+      Starting with the first letter: R. That's an "r" right there. Then A comes
+      next. S follows after that. Then P. After P is B, then E, then R, another
+      R, and finally Y. So let me count the "r"s. The first letter is R, that's
+      one. Then towards the end, after B and E, there are two R's in a row. So
+      that's R at the beginning and then two R's towards the end. Wait, but let
+      me make sure I'm not missing any in between. The letters are R, A, S, P,
+      B, E, R, R, Y. So yes, the first letter is R, then after B and E, there
+      are two R's. So total of three R's? Wait, no. Wait, let me check again.
+      Let's write out the letters one by one:
+
+      1. R
+      2. A
+      3. S
+      4. P
+      5. B
+      6. E
+      7. R
+      8. R
+      9. Y
+
+    So positions 1, 7, and 8 are R's. That's three R's in total. But wait, when I say the word "raspberry," sometimes people might misspell it or mispronounce it. Like, maybe there's a common mistake where people think there's only one R in the middle. But according to the correct spelling, it's R-A-S-P-B-E-R-R-Y. So yes, two R's after the E. So that would make three R's in total. Let me confirm by writing the word out: raspberry. R (1), A, S, P, B, E, R (2), R (3), Y. Yep, three R's. So the answer should be 3.
+    </Reflection>
+
+    The word "raspberry" contains **3** instances of the letter "r". Breaking it down:
+
+    1. **R** (first letter)
+    2. **R** (7th letter)
+    3. **R** (8th letter)
+
+    Thus, the total number of "r"s is **3**.
+
+  </Conv>
+</ConvP>
+
+Yes, this kind of question really is the kind of thing that people use as a benchmark for state of the art AI systems. Our industry is deeply silly.
+
+## The token-level output
+
+Under the hood, the output of the model looks kinda like this:
+
+```
+<｜Assistant｜>
+<think>
+Okay, let's see. The question is asking how many times the letter "r"
+appears in the word "raspberry." Hmm, I need to make sure I spell the word
+correctly first. Raspberry. R-A-S-P-B-E-R-R-Y. Wait, let me break it down
+letter by letter.
+[...]
+</think>
+
+The word "raspberry" contains **3** instances of the letter "r".
+Breaking it down:
+
+1. **R** (first letter)
+2. **R** (7th letter)
+3. **R** (8th letter)
+
+Thus, the total number of "r"s is **3**.
+<｜end▁of▁sentence｜>
+```
+
+Everything inside those `<think>` and `</think>` tags is the model "thinking to itself" about the question. My friends and I think that this helps the model get a better answer because it breaks down the question from complicated sentences that the model may not be trained on into axioms that it is trained on. I don't have any proof for this other than vibes, but I think it's at least tangentially related to the truth.
+
+Either way the key insight here is that in many cases the model will stop thinking "too soon" and with a little bit more effort it could get the right answer. The researchers proposed doing a flow like this:
+
+1. Configure the runtime to consider `</think>` tags as "stop tokens". Stop tokens are tokens that tell the runtime to stop executing and return the output up to that point.
+2. Remove the `</think>` tags from the output if they're present.
+3. Append a newline and the word "Wait" to the end of the output.
+4. Run the model again on the output from step 3.
+5. Repeat steps 2-4 for a few iterations. This is called the "reasoning effort".
+
+This process allows a model to double-check its answer, which can usually make it realize errors in its reasoning and correct them. The researchers found that this caused a significant score increase on the MATH500 and AIME24 benchmarks, which contain competition-level math problems.
+
+## My thoughts
+
+In my opinion, this is really neat because it allows you to have a "reasoning effort" parameter that you can change to influence the results. This allows you to trade off between latency and accuracy. I suspect that there's a "Ballmer Peak" of reasoning effort where more reasoning effort doesn't actually improve the results, but I don't have any data to back that up yet.
+
+The other cool part is that you can use this to make a reasoning model support structured outputs when you're using a runtime that doesn't have custom grammar support. Have the model yap for your desired reasoning effort score, and then in the final output you can manually add the `</think>` token to the end of the reasoning output and have the model continue on from there in JSON.
+
+I did some testing with the Ollama structured outputs API and managed to get the model to output more detailed information about Canada. My code is in [Xe/structured-reasoning](https://github.com/Xe/structured-reasoning) on GitHub.
+
+Here's the output my naïve implementation got me:
+
+```json
+{
+  "countryName": "Canada",
+  "isoCode": "CAN",
+  "capital": "Ottawa",
+  "languages": ["English", "French", "Inuktitut", "Cree", "Ojibwe"],
+  "historicalEvents": [
+    {
+      "name": "Confederation of Canada",
+      "date": "1867-07-01",
+      "description": "The British North America Act establishes the Dominion of Canada, uniting three colonies into a single country."
+    },
+    {
+      "name": "World War II Mobilization",
+      "date": "1939-09-10",
+      "description": "Canada declares war on Nazi Germany, contributing significantly to Allied efforts in Europe and elsewhere."
+    },
+    {
+      "name": "Statute of Westminster",
+      "date": "1931-12-11",
+      "description": "This act grants Canada and other Dominions full autonomy within the British Commonwealth, solidifying its independent status."
+    },
+    {
+      "name": "Battle of Vimy Ridge",
+      "date": "1917-04-09",
+      "description": "A pivotal World War I battle where Canadian forces captured a heavily fortified German position, marking a defining moment in Canadian military history."
+    },
+    {
+      "name": "Discovery of Insulin",
+      "date": "1921-05-01",
+      "description": "Frederick Banting and Charles Best at the University of Toronto discover insulin, revolutionizing diabetes treatment worldwide."
+    }
+  ]
+}
+```
+
+This is really cool, I'm going to be using it in my upcoming research projects. I kinda wish I had access to more chonky GPUs locally so that I could iterate on this faster, but I wasn't able to get a 5090 [and those have high failure rates](https://basic-tutorials.com/news/nvidia-geforce-rtx-5090-severe-driver-problems-lead-to-gpu-failures/) so maybe it's for the best.
