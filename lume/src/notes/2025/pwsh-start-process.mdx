@@ -1,0 +1,38 @@
+---
+title: "Life pro tip: How to run a gui application in the foreground with PowerShell"
+desc: "TL;DR: Start-Process -Wait -NoNewWindow"
+date: 2025-02-04
+---
+
+Among other things, I am the systems administrator for the home network and all of its services. My husband wanted to run the dedicated server for a game on the homelab but was having some trouble setting it up. Eventually it resulted in us giving up and renting a Windows VPS in the cloud.
+
+I wanted a script that I can leave running that will update the dedicated server program, start up the server, and then try to update the dedicated server when it crashes. In order to do this in PowerShell, you need a script like this:
+
+```powershell
+Set-Location -Path C:\Games\Motortown
+
+while ($true) {
+  & C:\Users\Administrator\Software\steamcmd.exe blah blah
+  Start-Process \
+    -FilePath C:\Games\Motortown\server.exe \
+    -Wait \
+    -NoNewWindow \
+    -ArgumentList "Jeju_World?listen?","-server","-log","-useperfthreads","-Port=7777","-QueryPort=27015"
+}
+```
+
+The important part is the [`Start-Process`](https://lazyadmin.nl/powershell/start-process/#using-arguments-with-start-process) cmdlet, this is what lets you start a GUI program and then block execution until the program exits. If you don't do this, then the script will continue to the next line while the program is started in the background. This makes steamcmd very unhappy.
+
+In order to pass command-line arguments to the process, you need to use the `-ArgumentList` flag with the arguments for the program. This is similar to how you would pass arguments to a program in a shell script:
+
+```sh
+some-program arg1 arg2 arg3
+```
+
+Except in PowerShell it looks worse:
+
+```powershell
+Start-Process -FilePath some-program.exe -ArgumentList "arg1","arg2","arg3"
+```
+
+I hope this helps you.
