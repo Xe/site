@@ -12,7 +12,7 @@ require (
 	github.com/emicklei/proto v1.14.0
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
 	github.com/getkin/kin-openapi v0.129.0
-	github.com/go-faker/faker/v4 v4.5.0
+	github.com/go-faker/faker/v4 v4.6.0
 	github.com/go-git/go-git/v5 v5.13.2
 	github.com/invopop/yaml v0.3.1
 	github.com/joho/godotenv v1.5.1
