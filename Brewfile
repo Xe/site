@@ -1,6 +1,6 @@
 tap "xe/pkgs"
 
-brew "go@1.23"
+brew "go"
 
 brew "dhall"
 brew "dhall-lsp-server"
