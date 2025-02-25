@@ -1,0 +1,78 @@
+---
+title: "Anubis Update: February 2025"
+desc: "This update highlights the new features and enhancements for Anubis."
+date: 2025-02-24
+---
+
+Hi all! I've been busy working on Anubis and I'm excited to share the new features and enhancements I've added. I wish I could have gotten around to this sooner, but I've been doing research into AI browser operators and doing some futile attempts to detect them statically in code. I'll share more about that in a future post, once I have more to show.
+
+Here's what I've gotten done since the first release of Anubis:
+
+- Bot policy file
+- DNSBL checking
+
+## A failed experiment: video element detection
+
+Earlier this month, I tried to add the first browser environment check to Anubis, a simple test that makes sure your browser can render video elements correctly. I thought that it would be a fairly easy way to check if someone was using a headful browser, but it turns out that iOS Safari doesn't support the kind of .mp4 video that I was using for the test. I'm going to figure something out, but I'll have to figure out how to automate testing on iOS Safari first.
+
+The basic premise of the test is that it checks if the video element is supported by the browser and if it can actually load a video file. My assumption is that a lot of the headless browsers will be set up in environments that don't have all those codecs installed (because they use a fair bit of space), so they won't be able to load the video file. I'm going to try a different video format and see if that works better.
+
+## Bot policy JSON file
+
+This is the biggest feature I shipped in Anubis this month. Previously I hardcoded some "sensible default behavior" into Anubis. This allowed me to get the project off the ground, but it meant that Anubis wouldn't fire on RSS feeds or other "low risk" requests by default. I wanted to make it easier for users to customize how Anubis reacts to different types of requests, so I added a bot policy JSON file. The bot policy allows users to define rules that better suit their specific needs and environments. Here's an example that allows GoogleBot, but blocks ChatGPT:
+
+```json
+{
+  "bots": [
+    {
+      "name": "googlebot",
+      "user_agent_regex": "\\+http\\:\\/\\/www\\.google\\.com/bot\\.html",
+      "action": "ALLOW"
+    },
+    {
+      "name": "chatgpt",
+      "user_agent_regex": "\\+https\\:\\/\\/openai\\.com\\/gptbot",
+      "action": "DENY"
+    },
+    {
+      "name": "generic-browser",
+      "user_agent_regex": "Mozilla",
+      "action": "CHALLENGE"
+    }
+  ]
+}
+```
+
+I have more documentation about this in the [Bot policy JSON documentation](https://github.com/Xe/x/blob/master/cmd/anubis/docs/policies.md).
+
+## DNSBL checking
+
+I've also added [DNS blocklist](https://en.wikipedia.org/wiki/Domain_Name_System_blocklist) support to Anubis. If you enable it in the policy file, this checks every client's IPv4 or IPv6 address in [DroneBL](https://dronebl.org/). If the client is on the blocklist, Anubis will block the request. This is a great way to block known bad actors from accessing your site.
+
+I plan to make this support custom DNS blocklists in the future (such as the [Tor exit node blocklist](https://www.dan.me.uk/dnsbl)), but for now DroneBL will help cut out a lot of the most abusive hosts on the internet.
+
+To enable DNSBL checking, add `dnsbl: true` to your bot policy JSON file. This is on by default if you don't have a bot policy file.
+
+## Half-baked forward thinking idea: remote updating checker via WebAssembly
+
+I've been thinking about how to make Anubis better able to react to the constantly changing landscape of AI scrpaers. I want to be able to define additional checks via WebAssembly binaries that Anubis downloads and runs. This would allow me to ship new checks without having to wait for you to update Anubis.
+
+I need to work out a lot of the details here, but I think that I'd have a few calls that the host would make to the WebAssembly binary:
+
+- ListChallenges() -> []Challenge
+- CheckChallenge(Challenge, Input) -> bool
+- CheckIP(IP) -> bool
+
+This would allow me to define new challenges (such as the video element challenge) and deploy them without having to update Anubis. I'm going to work more on this in the near future, but I wanted to share the idea with you all.
+
+This would be an opt-in feature and would require a lot of trust in me to not abuse the feature. I'm going to work on a way to make this as secure as possible.
+
+## Half-baked idea: allow users that don't have JavaScript enabled to bypass the challenge
+
+The current version of Anubis requires JavaScript to be enabled to pass the challenge. I've been thinking about how to allow users that don't have JavaScript enabled to bypass the challenge. One of the more terrible ideas I've had is to give non-JS users a HTML form that asks them to write the name of something orange. Surprisingly, this works way better than you'd think. I've done the pricing logic with a few models and assuming that you prevent user input to about 64 characters, you can get a fairly high true positive rate for absolutely negligible amounts of money.
+
+I'm going to experiment with this idea more and see about implementing it in a future release. This will be opt-in and not on by default.
+
+## Conclusion
+
+That's what I've been up to! Thanks for reading and following Anubis. I'm surprised that there's been so much uptick in the project. I'm excited to see where it goes next. If you have any questions, feedback, or ideas, please make an issue [on GitHub](https://github.com/Xe/x/issues)!
