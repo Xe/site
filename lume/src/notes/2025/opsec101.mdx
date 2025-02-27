@@ -1,0 +1,66 @@
+---
+title: "Supplemental materials for Opsec and you: how to navigate having things to hide"
+date: 2025-03-06
+index: false
+---
+
+Hey, thanks for coming to my talk about opsec! Here's a list of the resources I put in the slides, as well as some additional resources that I didn't have time to cover.
+
+I'll post the full talk and video when I get it edited.
+
+Links:
+
+- [GPSDetect extension (Firefox)](https://addons.mozilla.org/en-US/firefox/addon/gpsdetect/)
+- [Tor Project](https://www.torproject.org/)
+- [PrivacyTools](https://www.privacytools.io/)
+- [Signal](https://signal.org/)
+- [Soatok's Blog: Reviewing the Cryptography Used by Signal](https://soatok.blog/2025/02/18/reviewing-the-cryptography-used-by-signal/)
+- [Hackers Exploit Signal's Linked Devices Feature to Hijack Accounts via Malicious QR Codes](https://thehackernews.com/2025/02/hackers-exploit-signals-linked-devices.html)
+- [Woot: Destkop computers](https://www.woot.com/category/computers/desktops)
+- [k3s](https://k3s.io/)
+- [Plex](https://www.plex.tv/)
+- [Jellyfin](https://jellyfin.org/)
+- [Nextcloud](https://nextcloud.com/)
+- [Gitea](https://about.gitea.com/)
+- [Pocket ID](https://pocket-id.org/)
+- [tor-controller](https://github.com/bugfest/tor-controller)
+- [My blog on Tor](http://gi3bsuc5ci2dr4xbh5b3kja5c6p5zk226ymgszzx7ngmjpc25tmnhaqd.onion/)
+
+## Making an OnionService with tor-controller
+
+When you use Kubernetes, you only really need to care about the following resources:
+
+- Pod: a set of containers that share an IP address
+- Deployment: manages Pods so you can update the settings
+- Service: gives a DNS name to a group of Pods
+- Ingress: routes HTTP traffic to a Service, optionally handling HTTPS for you
+- Secret: stores sensitive information, like passwords or TLS certificates
+- PersistentVolumeClaim: requests storage for a Pod with a persistent volume
+
+An OnionService just points to a Service. Say you have a service named blog, you can create an OnionService that points to it like this:
+
+```yaml
+apiVersion: tor.k8s.torproject.org/v1alpha2
+kind: OnionService
+metadata:
+  name: blog
+spec:
+  version: 3
+  - port:
+      number: 80
+    backend:
+      service:
+        name: blog
+        port:
+          number: 80
+```
+
+After you apply that with `kubectl apply`, you can get the `.onion` address with `kubectl`:
+
+```text
+$ kubectl get onionservice --context aeacus
+NAME          HOSTNAME                                                         AGE
+blog   r737va47fj4qzs4qysxr767de75wypau5gnaqkbcovqifklhg6n4jcyd.onion   111d
+```
+
+This works for things that aren't websites, such as IRC servers. I have a [full example on GitHub](https://github.com/Xe/self-hosted-irc-server).
