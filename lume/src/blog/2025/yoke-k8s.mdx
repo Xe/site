@@ -1,0 +1,402 @@
+---
+title: "Yoke is really cool"
+desc: "Infrastructure as code, but actually"
+date: 2025-03-02
+hero:
+  ai: "Photo by Xe Iaso, Canon EOS R6 mk II, Helios 44-2 58mm f/2"
+  file: "santa-cruz-seals"
+  prompt: "A group of seals swimming in the ocean near Santa Cruz, California"
+  social: false
+---
+
+One of the biggest memes in site reliability is "infrastructure as code". This is usually very well-intentioned, but there's one small problem:
+
+```hcl
+data "aws_route53_zone" "cetacean_club" {
+  name = "cetacean.club."
+}
+
+resource "aws_route53_record" "A" {
+  zone_id = data.aws_route53_zone.cetacean_club.zone_id
+  name    = "ingressd.${data.aws_route53_zone.cetacean_club.name}"
+  type    = "A"
+  ttl     = "300"
+  records = [resource.vultr_instance.my_instance.main_ip]
+}
+```
+
+This is not code. This is configuration. Sure you manage the configuration with the same tools you use to manage code, you can lint it like it is code, but it's not code. It's a fairly limited DSL that makes it easy to get infrastructure up and running. Let's say you create a new server and you want to add it to DNS. You have to declare the instance, then declare the DNS record using data from the instance.
+
+<Conv name="Cadey" mood="coffee">
+  If you really do think that Terraform is code, then go try and make multiple
+  DNS records for each random instance ID based on a dynamic number of
+  instances. Correct me if I'm wrong, but I don't think you can do that in
+  Terraform.
+</Conv>
+
+What if things were a bit more flexible? What if you could make a common "dns_for_instance" method and then use that everywhere?
+
+This is the basic idea behind [Pulumi](https://www.pulumi.com/). Instead of managing your infrastructure using configuration files, you manage it in code. You can create helper functions that can be shared between projects and you can use the full power of whatever programming language you want to manage your infrastructure.
+
+However, Pulumi has a few downsides:
+
+- You have to install the language runtimes and dependencies for the language you're using
+- The code has to run on the server that's managing the infrastructure
+
+This sounds reasonable at first, but then you come to the shocking realization that code that runs on the host machine can do literally anything it wants. This means that if a dependency gets popped, your infrastructure is now compromised and likely has cryptocurrency miners running on it.
+
+This is where [Yoke](https://yokecd.github.io/docs/) comes in.
+
+## Yoke: infrastructure as code, but actually
+
+[Yoke](https://yokecd.github.io/docs/) is a project that takes this basic idea to the next level. With Yoke, you write your infrastructure definitions in Go or Rust, compile it to WebAssembly, and then you take input and output Kubernetes manifests that get applied to the cluster.
+
+<ConvP>
+<Conv name="Aoi" mood="wut">
+Wait, there's something here that I'm not getting. Why are you compiling the code to WebAssembly instead of just running it directly on the server?
+</Conv>
+<Conv name="Numa" mood="hacker">
+Well, everything's a tradeoff. Let's imagine a world where you run the code on the server directly.
+
+If you're using a language like Python, you need to have the Python runtime and any dependencies installed. This means you have to incur the famous wrath of pip (pip hell is a real place and you will go there without notice). If you're using a language like Go, you need to have either the Go compiler toolchain installed or prebuild binaries for every permutation of CPU architecture and OS that you want to run your infrastructure on. This doesn't scale well.
+
+One of the main advantages of using WebAssembly here is that you can compile your code once and then run it anywhere that has a WebAssembly runtime, such as with the `yoke` CLI or with [Air Traffic Controller](https://yokecd.github.io/docs/airtrafficcontroller/atc/). This means that you can do your infrastructure applies on Windows, Linux, macOS, or even in a VM on your aarch64 MacBook without having to notice or care.
+
+One of the main downsides of an approach like this is that WebAssembly binaries are not easy for users to introspect, meaning that you have to execute the code to see what it does. WebAssembly is a hard layer of sandboxing and Yoke doesn't expose any system calls to the host, but again this is a tradeoff between modeling infrastructure as actual code and the ability to introspect the shipped binaries.
+
+Imagine if someone published a malicious dependency that somehow percolated into your infrastructure code. If you're running the code directly on your laptop or a server, there's basically no real way to easily sandbox that code; meaning that it can just steal your Bitcoin wallet, exfiltrate your SSH keys, or do literally whatever it wants. Modern operating systems are general-purpose and will do _exactly_ what they are told. If you're running the code in a WebAssembly sandbox, you can be sure that it can't do anything malicious to your system because it literally does not have access to anything outside of the sandbox.
+
+I guess an attacker could make a dependency that percolates up and causes a yoke flight to create a cryptocurrency miner in your cluster or something, but in the process it'd probably break a lot of other things and it'd be a pretty obvious attack.
+
+I think that the tradeoff is worth it, even though it may limit the ability to share flights between users.
+
+</Conv>
+</ConvP>
+
+Think about Yoke flights as functions. They take in input and output Kubernetes resources. One of the big advantages of using WebAssembly here is that you can use the same Kubernetes manifest types that Kubernetes itself uses. This means you don't have to write your own types and you can reuse code aggressively. Here's an example bit of code that creates a Kubernetes [ServiceAccount](https://kubernetes.io/docs/concepts/security/service-accounts/):
+
+<Conv name="Cadey" mood="enby">
+In this article, KubernetesTerms will be in JavaClassNameCase. If you're not sure what one of them is, search this in [DuckDuckGo](https://ddg.gg):
+
+```
+site:kubernetes.io KubernetesTerm
+```
+
+Other things like the App CustomResourceDefinition are specific to my setup and you won't find them in the Kubernetes documentation.
+
+</Conv>
+
+```go
+func createServiceAccount(app v1.App) *corev1.ServiceAccount {
+	return &corev1.ServiceAccount{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: corev1.SchemeGroupVersion.Identifier(),
+			Kind:       "ServiceAccount",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      app.Name,
+			Namespace: app.Namespace,
+			Labels:    app.Labels,
+		},
+    AutomountServiceAccountToken: ptr.To(true),
+	}
+}
+```
+
+This is roughly the same thing as the following Helm template:
+
+```yaml
+{{- if .Values.serviceAccount.create -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "simpleapp.serviceAccountName" . }}
+  labels:
+    {{- include "simpleapp.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+{{- end }}
+```
+
+Note the differences here:
+
+- The Go code takes in variables and replaces values directly in the structs
+- The Helm template uses [text/template](https://pkg.go.dev/text/template) to replace values in the YAML, and in order to make the YAML valid, you have to pass values to the `nindent` function to make sure that the YAML is properly indented
+- The Go code is type-checked by the Go compiler
+- The Helm template is not type-checked by anything until it is applied to the cluster, at which point it may be too late
+
+Admittedly, this is a super contrived simple example, but you can see how this can get way out of hand super quickly. The Go code looks terrible in comparison because all of the type names are verbose, but it is completely type-checked and you can be sure that it will work when you run it because the compiler will reject obviously invalid code.
+
+<Conv name="Cadey" mood="coffee">
+  Note that type-checked is different than semantically correct. The Go compiler
+  can make sure that you are putting a string where the type wants a string, but
+  it can't stop you if you make something semantically invalid. For example, you
+  could create a ServiceAccount with the same name as another ServiceAccount in
+  the same namespace, which would cause a conflict when you try to apply the
+  manifest to the cluster.
+</Conv>
+
+Yoke is cool and all, but at a high level it's really just a slightly inconvenient way to write manifests in ways that make Helm look easier at first glance. However, they didn't stop there. They introduced a feature that honestly made me throw out Helm entirely: [Air Traffic Control](https://yokecd.github.io/docs/airtrafficcontroller/atc/).
+
+## Air Traffic Control
+
+Air Traffic Control is a Kubernetes operator that has you define your infrastructure as CustomResourceDefinitions. The data in the CustomResource is passed into the Flight you associate with it, and the Flight generates the manifests that get applied to the cluster.
+
+This is the part that really transformed Yoke from "this is neat but I don't know where I'd use it" to "this is the single thing that will make Yoke indispensable in my workflow".
+
+The key difference between Air Traffic Control and other tools like Helm is that Helm largely operates on the side of your Kubernetes cluster. You run Helm to generate manifests that get applied to the cluster, but there's no real introspection into what Helm has done from inside the cluster. Sure, there are things like [k3s' HelmChart](https://docs.k3s.io/helm) resource that let you define Helm charts declaratively, but that's really not the same as having things be a native part of the cluster.
+
+The big thing that this fixes is editor support for understanding your CustomResources (which function similar to Helm `values.yaml` files in practice). With the Kubernetes extensions I'm using in my copy of VSCode, it's automatically imported the OpenAPI spec for the CustomResource types so I can get my editor's syntax highlighting, documentation, and autocompletion for free.
+
+<Conv name="Mara" mood="hacker">
+  -Wpedantic: this is possible with Helm using a plugin like [Helm
+  Intellisense](https://marketplace.visualstudio.com/items?itemName=Tim-Koehler.helm-intellisense)
+  and [defining a values json
+  schema](https://austindewey.com/2020/06/13/helm-tricks-input-validation-with-values-schema-json/),
+  but the process requires manual intervention and upkeep. Air Traffic Control
+  does this automatically for you the moment you define your
+  CustomResourceDefinition.
+</Conv>
+
+To really understand where and when this can be useful, let's talk about how I've been using Air Traffic Control to make deploying stuff to my clusters easier than it has ever been to deploy things at any job I've ever had.
+
+### My App CustomResourceDefinition
+
+When I deploy my own apps to Kubernetes, I generally follow a few common "shapes" for how they should be run:
+
+- An internal web app that's exposed to the cluster with a Service
+- An external web app that's exposed to the internet with an Ingress
+- A worker app that doesn't need to be exposed
+- A web app that's exposed as a tor hidden service
+
+There's also a few common bits of configuration that I usually need:
+
+- Persistent storage via a PersistentVolumeClaim (usually pointing to [Longhorn](https://longhorn.io/) or [Tigris](https://tigrisdata.com))
+- The number of pod replicas
+- If the app should auto-update or not
+- The port the app listens on
+- If the app should run as root
+- The healthcheck route for the app
+- The log level for the app
+- Arbitrary environment variables for the app
+- Any Kubernetes role permissions for the app
+- Secrets from [1Password](https://1password.com/) via [the 1Password operator](https://github.com/1Password/onepassword-operator)
+
+I've been working on a [`simpleapp`](https://github.com/Xe/x/tree/master/kube/helm/simpleapp) chart to encode a lot of these common patterns, but it's been fairly annoying to use because I end up fighting Helm's templating system more than I end up using it to my advantage.
+
+At some level, I'm really just doing a pure transformation of data from one format (a brief set of configuration flags) to another (a set of Kubernetes manifests). This is where I felt like Yoke could really help.
+
+So I did that. Here's an example from the manifest that powers [the sticker server](https://stickers.xeiaso.net):
+
+```yaml
+apiVersion: x.within.website/v1
+kind: App
+metadata:
+  name: stickers
+
+spec:
+  image: ghcr.io/xe/x/stickers:latest
+  autoUpdate: true
+
+  healthcheck:
+    enabled: true
+
+  ingress:
+    enabled: true
+    host: stickers.xeiaso.net
+
+  secrets:
+    - name: tigris-creds
+      itemPath: "vaults/lc5zo4zjz3if3mkeuhufjmgmui/items/kvc2jqoyriem75ny4mvm6keguy"
+      environment: true
+```
+
+That's it. Everything else is just ambiently created and deployed with Yoke. Here's all the resources this creates:
+
+- The OnePasswordItem for the `tigris-creds` secret
+- The `tigris-creds` secret containing [Tigris](https://tigrisdata.com) credentials to presign sticker URLs
+- The Deployment for the sticker server, listening on port 3000 (unless you override it with the `spec.port` field)
+- The Service for the sticker server, forwarding traffic from Service port 80 to the Deployment's port 3000
+- An Ingress pointing to port 80 on the Service, with the hostname `stickers.xeiaso.net`
+- A [cert-manager](https://cert-manager.io/) Certificate for `stickers.xeiaso.net` that gets automatically renewed
+- DNS records for `stickers.xeiaso.net` pointing to the Ingress
+
+This is a huge improvement over the previous state of things. I got to remove over 150 lines of YAML (that let's be real, I copy-pasted from another manifest in the same repo) and replaced it with a single deterministic program that just does what I want.
+
+Most of the features of the App CustomResource are off by default, but here's an example showing everything off at once:
+
+<details>
+<summary>Click to expand</summary>
+
+```yaml
+apiVersion: x.within.website/v1
+kind: App
+metadata:
+  name: maximum-settings
+
+spec:
+  autoUpdate: true # If true, sets Keel to update images automatically
+  image: ghcr.io/xe/x/stickers:latest # The image to run
+  logLevel: info # The log level for the app, specific to my apps
+  replicas: 3 # The number of replicas to run, defaults to 1
+  port: 3000 # The port the app listens on, defaults to 3000, sets PORT and BIND
+  runAsRoot: false # If true, runs the app as root, defaults to false
+
+  env: # Arbitrary environment variables to set, same as env in a Deployment
+    - name: FOO
+      value: bar
+    - name: BAZ
+      value: qux
+
+  healthcheck: # Healthcheck configuration for the app, defaults to / on the app's port
+    enabled: true
+    path: /
+    port: 3000
+
+  ingress: # Ingress configuration for the app, defaults to off
+    enabled: true
+    host: maximum-settings.xeiaso.net # The hostname to use for the Ingress
+    clusterIssuer: letsencrypt-prod # The cert-manager ClusterIssuer to use for the Ingress
+    className: nginx # The Ingress class to use for the Ingress, defaults to nginx
+
+  onion: # Tor hidden service configuration for the app, defaults to off
+    enabled: true
+    nonAnonymous: true # If true, creates a non-anonymous OnionService, defaults to false
+    haproxy: true # If true, configures Tor to expose hidden service circuit IDs in haproxy format, defaults to false
+    proofOfWorkDefense: false # If true, configures Tor to require proof of work for hidden service connections, defaults to false
+
+  storage: # configures a PersistentVolumeClaim for this App
+    enabled: true
+    path: /data # The path to mount persistent storage to
+    size: 10Gi # The size of the persistent storage
+    storageClass: longhorn # The storage class to use for the PersistentVolumeClaim
+
+  role: # Kubernetes role configuration for this App
+    enabled: true
+    rules: # The rules to apply to the role
+      - apiGroups: [""]
+        resources: ["pods"]
+        verbs: ["get", "list", "watch"]
+
+  secrets: # 1Password secrets to inject into the app
+    - name: tigris-creds
+      itemPath: "vaults/Kubernetes/items/stickers tigris creds"
+      environment: true # If true, injects the secret values as environment variables
+    - name: another-secret
+      itemPath: "vaults/Kubernetes/items/another secret"
+      folder: true # If true, injects the secret values to /run/secrets/another-secret
+```
+
+</details>
+
+<br />
+
+<Conv name="Numa" mood="hacker">
+  In practice, most Helm `values.yaml` files end up this complicated with a
+  bunch of `if` statements to handle all the different permutations of
+  configuration.
+</Conv>
+
+This looks like a lot of configuration, but I've found that in practice I only need a very small subset of these options for any given app. Usually I end up needing just the following:
+
+- `autoUpdate` if I want the app to automatically update
+- `image` for the image to run (though I can probably default this based on the name of the App)
+- `replicas` to define how many instances of the app I want to run
+- `env` to set environment variables
+- `healthcheck` to define the healthcheck route
+- `ingress` to expose the app to the internet
+- `secrets` to inject secrets from 1Password
+
+The rest is there for when I need it, but off by default so things are simple. This means that creating a new app on one of my clusters is down to this:
+
+- Write code
+- Build/push docker image
+- Write an App manifest
+- `kubectl apply -f app.yaml`
+- Share URL with friends
+
+Now sure, I could just make my own operator with [operator-sdk](https://sdk.operatorframework.io/) or [kubebuilder](https://book.kubebuilder.io/) to do this, but that would be way overkill for my needs. Yoke's Air Traffic Control let me take a simple "generate manifests" program and turn it into most of a Kubernetes operator with only a few hours of work.
+
+If you want to check out my App resource, you can find [it on GitHub](https://github.com/Xe/yoke-stuff/tree/main/within-website-app). It's nowhere near ready for production use or for other people to use, but I think it's a great example for how you can use Yoke to reduce the amount of boilerplate you have to write for your infrastructure.
+
+## Security
+
+Earlier in the article, I mentioned the fact that Yoke uses WebAssembly as a way to sandbox the code that generates manifests. When I [streamed my first reactions](https://www.twitch.tv/videos/2393595012) last Friday, one of the most common questions I got in the chat was "how do you know that the code you're running isn't malicious?"
+
+So let's take a look at the security model of Yoke. Yoke flights are run in [Wazero](https://wazero.io), a WebAssembly runtime for Go programs. I've used Wazero pretty extensively since it was released and I love it. Yoke flights also target [WASI](https://wasi.dev/), the WebAssembly System Interface, the POSIX of WebAssembly.
+
+WASI normally has the following restrictions:
+
+- WASI cannot open outgoing network connections (this is kind of a huge pain in my experience because it limits its usability for me, but it's a great security feature)
+- WASI programs are not assigned filesystem permissions by default
+- WASI programs cannot access the host's environment variables
+- If you mount a filesystem into the WASI program, it can only access that filesystem (be it a chroot in the host filesystem or a user-defined filesystem in code)
+- If you pass a pre-opened socket to the WASI program, it can only access that socket (this does allow for WASI programs to listen on a port to serve HTTP)
+
+Yoke flights are run in Wazero without filesystem access and no sockets are passed to them. Here are the ways that Yoke flights interact with the outside world:
+
+- Standard input to the `yoke takeoff` command
+- Standard output from the flight
+- Standard error from the flight
+- Command line flags to the `yoke takeoff` command
+- Opt-in [cluster access](https://yokecd.github.io/docs/concepts/cluster-access/) allowing a flight to look up resources in the cluster
+
+That last bit sounds like it might be scary, but it's actually way more limited than you'd think: Yoke flights can only access resources that are managed by that flight. For example, imagine a flight that creates a password in a Secret. Cluster access allows the flight to look up the Secret and if it doesn't exist, create it. If the flight doesn't have cluster access, it can't look up the Secret and will either fail to create it or regenerate it every time it runs.
+
+I guess an attacker could make a flight that somehow detects what cluster it's being deployed to via its release name and then does something malicious like running cryptocurrency miners, but I think that in practice this is a pretty limited attack vector. The flight would have to be pretty obvious about what it's doing and it would be pretty easy to detect and stop.
+
+Long-term, this can probably be solved with signature validation of the WebAssembly binaries, but that's a problem for another day. For now, I'm pretty happy with the security model of Yoke.
+
+## WebAssembly tangent
+
+One of the cool parts about Yoke is the cluster access feature with WebAssembly. The way that this works is such an elegant hack that I feel like I have to tell someone lest I explode or something.
+
+One of the most annoying problems with embedding WebAssembly programs is handling system calls. If you've never done OS development before, system calls are the way that a program asks the operating system to do something for it, such as reading from or writing to a file. WebAssembly doesn't specify any system calls by default, so you either have to use a standard like [WASI](https://wasi.dev/) or you have to write your own system call interface.
+
+WASI does work, but it doesn't have a good interface for things like reading from Kubernetes resources. Yoke implements cluster access by adding a `k8s_lookup` system call to the mix. The flow looks like this:
+
+- Guest runs `k8s_lookup` with a resource identifier
+- Guest puts the resource identifier into a buffer and sends the pointer to the buffer in the `k8s_lookup` system call
+- Host reads the buffer from the guest memory, parses it as JSON, and looks up the resource in the cluster
+- Host serializes the resource as JSON in memory
+- Host runs `malloc` on the guest memory to allocate a buffer for the response
+- Host writes the serialized resource to the buffer
+- Host returns the pointer to the buffer to the guest
+
+The part that made me really take a look at Yoke is the definition of the Buffer type:
+
+```go
+type Buffer uint64
+
+func (buffer Buffer) Address() uint32 {
+	return uint32(buffer >> 32)
+}
+
+func (buffer Buffer) Length() uint32 {
+	return uint32((buffer << 32) >> 32)
+}
+```
+
+This hack works because of several features of WebAssembly and several limitations of how Go's WebAssembly port works. The first big part of this is the calling convention of WebAssembly. WebAssembly is natively a 32 bit environment, but function arguments are stored in the stack (which is external to linear memory). Function arguments can natively be a few types:
+
+- 32 bit integers (signed or unsigned)
+- 64 bit integers (signed or unsigned)
+- 32 bit floats
+- 64 bit floats
+- Function references
+- Userdata references
+
+Go's WebAssembly port only allows you to return a single value from a function. This would normally mean that you'd have to return the address and length of the buffer separately, but that's not possible due to Go just not supporting this.
+
+However, it can return 64 bit integers. You can pack two 32 bit integers into a 64 bit integer. This is what the `Buffer` type does. The "top" 32 bits are the address of the buffer and the "bottom" 32 bits are the length of the buffer. This is a really elegant hack that I'm surprised I haven't seen before.
+
+This means you can allocate memory in the guest, pass the pointer to the host, then the host can read and write to that memory.
+
+I love this hack so much that I'm going to use it in my own projects. I've been thinking out building a (unary only) gRPC client function via something like this and I think it's gonna be a lot of fun.
+
+## Conclusion
+
+Yoke is really exciting and I can't wait to see how it develops. I think that this has a lot of potential to make your infrastructure as code actually code and I'm excited to see where it goes. I hope I'll be able to get a coffee with the maintainer at some point.
