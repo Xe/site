@@ -277,5 +277,22 @@ in  [ Person::{
         , Link::{ url = "https://github.com/shepherdjerred", title = "GitHub" }
         ]
       }
+    , Person::{
+      , name = "Izzy Lancaster"
+      , tags =
+        [ "Software Engineer"
+        , "Fullstack"
+        , "C#"
+        , ".NET"
+        , "Rust"
+        , "Python"
+        , "React"
+        , "Typescript"
+        , "AWS"
+        , "SQL"
+        ]
+      , links =
+        [ Link::{ url = "https://github.com/ILikePizza555", title = "GitHub"} ]
+      }
     ]
 
