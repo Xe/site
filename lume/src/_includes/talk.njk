@@ -6,7 +6,14 @@ layout: base.njk
     {{ comp.ads() | safe }}
 {% endif %}
 
-<article class="prose dark:prose-invert max-w-none lg:prose-p:max-w-[80ch] lg:prose-p:mx-auto">
+<article class="prose dark:prose-invert max-w-none lg:prose-p:max-w-[80ch] lg:prose-p:mx-auto lg:prose-headings:mx-20 lg:prose-blockquote:max-w-[70ch] lg:prose-blockquote:mx-auto lg:prose-li:max-w-[78ch] lg:prose-li:mx-auto lg:prose-pre:max-w-[85ch] lg:prose-pre:mx-auto lg:prose-table:max-w-[100ch] lg:prose-table:mx-auto">
+    <style>
+        .prose :where(li):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 78ch;
+        }
+    </style>
     <h1>{{title}}</h1>
     <p class="text-sm text-fg-3 dark:text-fgDark-3">
         Published on <time datetime={{date | date("DATE")}}>{{date | date("DATE_US")}}</time>, {{ readingInfo.words }} words, {{ readingInfo.minutes }} minutes to read
@@ -66,5 +73,7 @@ layout: base.njk
 
     <p class="mb-4">Tags: {{tags.join(", ")}}</p>
 
-    <a href="{{slides_link}}">View slides</a>
+    {% if slides_link %}
+        <a href="{{slides_link}}">View slides</a>
+    {% endif %}
 </article>
