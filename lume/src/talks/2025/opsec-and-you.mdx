@@ -1,0 +1,339 @@
+---
+title: "Opsec and you: how to navigate having things to hide"
+desc: "A discussion on operational security and privacy in modern life."
+date: 2025-03-13
+image: talks/2025/opsec-and-you/001
+---
+
+import Slide from "../../_components/XeblogSlide.tsx";
+
+It feels like privacy has become "impossible", hasn't it? What does it mean to actually be "private" these days? Who are you defending against? What do you want to do in order to mitigate it? And more importantly, how do you do this without giving up the conveniences of modern life?
+
+In this talk, I'll be covering the finer points of operational security (opsec), knowing your threat model, building your own infrastructure to self-host things that are important to you with discarded hardware, and how to "blend in" when traveling or even at home. It's all about balance and figuring out what your needs are. My needs are certainly a lot different than yours are. This is a nuanced topic and I am not going to pretend there isn't any.
+
+<Video path="talks/2025/opsec-and-you" />
+
+export const S = ({ number, desc }) => (
+  <Slide name={`2025/opsec-and-you/${number}`} desc={desc} />
+);
+
+<S
+  number="001"
+  desc="The title slide with the title 'Opsec and you: how to navigate having something to hide' and speaker information."
+/>
+
+Hi, I'm Xe. You probably know me from my blog. Today, I'm gonna give a talk that I really wish I didn't have to give. In a sane or just world, I wouldn't need to have this talk exist; however, we know what world we got and I'm here, so today I'm gonna talk about operational security or opsec.
+
+<S number="002" desc="Opsec in rather large text." />
+
+Opsec is a somewhat multifaceted topic, but it really boils down to making sure you keep yourself safe online.
+
+It’s really easy to go down the online privacy rabbit hole and way past Narnia. This is fundamentally a game of balancing your authentic expression with how much information you share. Again, it sucks that we have to have this conversation, but I’d really much rather y’all have the tools to protect yourselves.
+
+<S number="004" desc="The agenda slide for the talk." />
+
+Today, I’m gonna cover the basics of what opsec is, give you practical tips on how to protect yourself online, how to control what you can, be aware of the things you can’t, show you the tools you can use today to keep yourself safe, and give you tips on how you can set up your own online infrastructure so that you can have real privacy online.
+
+<S number="005" desc="About the speaker slide." />
+
+Before we get into all that though, I’m Xe. I’m the CEO of Techaro, which is a totally real company that actually exists. I’ve written god knows how many articles and I’ve worked at a smattering of companies. Some of them you know, most of them you don’t. I live in Ottawa with my husband and my 6 homelab servers.
+
+<S number="006" desc="'Opsec 101' in rather large text." />
+
+So, let’s talk about opsec. Today I’ll start out with what it means. Perfect security is impossible. Any actions you take are compromises. Sure in theory you can just become a hermit and live away from society, but that makes it difficult to do things like attend conference talks or post on social media. Like I said, it’s all about compromises and balance. Unless you're a citizen of Germany, in which case you can actually have real privacy online, asterisk.
+
+Another thing to keep in mind is that it’s a lot easier to be one of the people out there in the audience watching this talk than it is to be me, the person giving it. There are completely different security implications at play. The trick is to figure out the right balance of information you share vs information you don’t share.
+
+<S number="011" desc="'You're gonna fuck it up' in rather large text." />
+
+Also, you’re gonna fuck it up. You will accidentally leak something. You are going to make an error and it will be okay. The other trick with opsec is to balance things out such that when you do inevitably make that error you minimize the consequences. You will fall for a phishing link. The trick is when you inevitably fuck it up, the consequences are minimized as much as possible.
+
+### Threat modeling
+
+The heart of operational security is the threat model. A threat model is the list of things and people you care about and what you are protecting against. This is probably one of the most personal parts of this. Your threat model is going to differ vastly from mine. Here’s an example threat model for a guy I just made up:
+
+<S number="013" desc="An example threat model for Sleve McDichael" />
+
+Let’s imagine a guy named Sleve McDichael. He’s a straight white dude that posts cooking videos to TikTok. He doesn’t really have any enemies and works as a car mechanic. He’s civilly involved and sometimes posts about US politics. He used to play baseball and probably peaked in high school.
+
+Let’s say the worst thing that could happen to Sleve is that someone gets angry about one of his cooking videos. He doesn’t mention his employer in his cooking videos, maybe he’ll say “oh yeah I’m a car mechanic” at some point, but overall he doesn’t mention where he works. Just to be safe, he let his employer know about the cooking TikTok videos. Their reaction was “oh cool I’ll follow and make the good recipes”. Imagine how simple Sleve’s life is. This is the dream.
+
+Sleve has random internet strangers in scope for his threat model. Random internet strangers aren’t the most predictable, but generally they have limits as to what they can do. Individuals can only really do small scale actions.
+
+The other thing to keep in mind with Sleve’s threat model is that there’s things that are out of scope. Usually most threat models end where the government begins. Sure hope that’s not an ominous thing to say in Anno Dominium Two Thousand And Twenty Five _fake laugh_.
+
+<S number="017" desc="The list of things Sleve can control." />
+
+In terms of things that can impact his threat model, here’s the low hanging fruit that Sleve can control. He can control what he posts, such as by not mentioning that he works at Jiffy Lube. He can control what social media apps he uses, such as TikTok or Bluesky. He can control when he posts because you can figure out where someone lives by when you post (you usually don’t post while you’re asleep!). He can also control what he shows in any photos or videos he posts.
+
+<S number="018" desc="The list of things Sleve cannot control." />
+
+Now let’s take a look at the things Sleve can’t control. Generally, Sleve can control the things he does, but he can’t control what other people do in response to them. He can’t control what other people do, and he has even less control over what the government does. Sure, he votes, but I vote too.
+
+<S number="019" desc="The list of things Sleve cannot easily control." />
+
+There’s also a bunch of things in the middle between things Sleve can and can’t control. In theory he can control his writing style so that people can’t identify him by his “writeprint”, but changing your writeprint (or even being cognizant of it) is difficult for most people. If he’s really worried, he can use an AI tool to rewrite what he posts so that it’ll hide his writeprint. Yes, this is something that works, and every AI model has its own writeprint. Even models that run on your local device are good enough to hide it -- fun fact, the Torment Nexus has a use.
+
+In theory, Sleve also has control of how he speaks (voice training is a thing that does exist), but it’s difficult to control for most people. These are things that he needs to keep in mind as he writes posts or makes cooking videos.
+
+## Opsec behaviors
+
+Despite everything, Sleve still manages to keep himself safe online. In order to keep yourself safe like Sleve does, there’s a few behaviors you can follow and they’re mostly low-hanging fruit:
+
+- Don’t follow out those viral online quizzes or install apps you don’t need to. Who knows what the publishers of those quizzes or viral apps are doing with your data. Remember [Cambridge Analytica](https://en.wikipedia.org/wiki/Facebook%E2%80%93Cambridge_Analytica_data_scandal)? That started with online quizzes. Once it's off your device, God knows.
+- Another strategy is to google your name or usernames to see what comes up. Think like an attacker. What can you dig up about yourself from your online footprint?
+- Be aware of phishing. This is statistically the thing that you are inevitably going to fuck up. Attackers only have to be lucky once, you have to be lucky every time. I’ve fallen for phishing before and because I set things up to lessen the consequences, nothing bad happened. I didn’t even lose control of that Discord account that got temporarily yoinked. I even got control back without contacting support.
+- Use HTTPS. Browsers used to be more vocal about using HTTPS, but the s in HTTPS means “secure”. When you connect over HTTPS, it’s encrypted on the wire. Attackers may be able to see what domain names you are visiting, but they won’t see much more than that. Any contents of webpages or the paths you are visiting aren’t visible, even over public insecure wifi. The page you're visiting, the contents, or the paths are secure, even over public Wi-Fi.
+
+<Conv name="Numa" mood="concern">
+
+<S
+  number="browser-not-secure-comparison"
+  desc="What the 'not secure' mark looks like in Chrome, Firefox, and Safari."
+/>
+
+Most browsers won’t let you know if the website you’re connected to is over HTTPS. Browsers will want you to assume HTTPS is the default. They will show you a “NOT SECURE” warning when you are not using HTTPS. Look for “Not Secure” in the address bar. If it’s there? Browse away to somewhere else. They probably don't need your traffic.
+
+</Conv>
+
+- Use multi-factor authentication. It’s free. Passkeys are built into every major OS and are immune to phishing. Use 6 digit two factor authentication codes if you have to, but if you can avoid it never use SMS authentication codes. Your bank may not let you disable SMS authentication though. Your password manager will have support for two-factor auth stuff; I'll get into password managers later.
+- Before you post something, take a moment to think about what you’re about to do. Is it really worth posting? Once you post something, even if you delete it, it’s really hard to un-post it. It’s much easier to just not post it in the first place. I have a thing set up to let me think I’m posting things but it just deletes them. Best thing I’ve set up in a while. One of the things I have set up for myself is a website that looks like Twitter, so I can type things and hit "post", and it just gets sent to /dev/null. It's great, one of the best things I've ever set up.
+- Use full disk encryption on your machines. If you use a Mac, it’s on by default. If you use Windows, look for BitLocker in your settings. If you use Linux, look for LUKS in your distribution’s documentation. Full disk encryption is especially important for laptops because laptops can and will inevitably be left behind at the coffee shop. If the disk is encrypted, the machine is worthless to attackers.
+
+### Nyms
+
+<S number="028" desc="'Nyms' in rather large text." />
+
+One of the things you can do to keep yourself anonymous online is to use pseudonyms, also known as nyms. These are names that don’t match the name on your passport. If you’re part of the furry community, you probably know your best friends by names like Soatok, Cendyne, or Framebuffer instead of whatever their passport names are. Pseudonyms are really easy to adopt and can be a great way to add personality to your online presence.
+
+<S number="029" desc="Xe's GitHub profile." />
+
+Fun fact: the name I use professionally is a pseudonym! I don’t use my passport name professionally so that I can brand myself better. Xe Iaso is three syllables instead of the longer name that I use on my passport that people constantly misspell and mispronounce. It's also three syllables, and I thought it would be less easy to typo, but I've also had to buy the domain xeLaso.net because someone at Apple decided that the serifs on lowercase L were too ugly.
+
+If you are going to adopt pseudonyms, make sure that you only use two or three separate nyms at once. If you use more than that, you’ll run into the risk of confusing them with each other. If you’re plural, you may be able to get away with more, your mileage may vary, less is more. You’ve probably run into something I’ve published under a pseudonym and never known. Someone you know has published under a pseudonym and you've never known.
+
+If you’re going to use pseudonyms longer term, make sure to make their social media accounts in advance and “age” them. New accounts look more suspicious than older accounts do. Brand new accounts have things that stand out in the UI of most social platforms to make them look fishy, because most phishing comes from brand new accounts. Accounts that recently became active after being idle also look suspicious for super-intense scrutiny, but you can automate posting to prevent a lot of the worst effects. Don’t feel bad about aging your nyms for a few months or even a year.
+
+Pro tip: use AI models to help anonymize your writing. I use obscure locally hosted models to do this so that people can't place why they think the text looks familiar. This is a great way to keep your writing style from being used to identify you.
+
+<ConvP>
+  <Conv name="Aoi" mood="wut">
+    Really? Are you sure? That seems a bit unbelievable.
+  </Conv>
+  <Conv name="Cadey" mood="aha">
+    Yep! The really neat part is that this extends to very small local models
+    too. Here's an example of Apple Intelligence (one of the worst models out
+    there) rewriting the abstract for this talk (you can see it at the top of
+    the page).
+  </Conv>
+  <Conv name="Mimi" mood="happy" aiModel="Apple Intelligence (macOS)">
+    In today’s digital landscape, privacy has become increasingly challenging.
+    This presentation will delve into the intricacies of operational security
+    (opsec), elucidating the concept of true privacy in the modern world. It
+    will explore the identification of potential threats, the establishment of
+    self-hosted infrastructure utilizing discarded hardware, and strategies for
+    blending in during travel or at home. The key takeaway is the importance of
+    striking a balance between privacy and convenience. While the specific
+    requirements may vary, this presentation aims to provide a comprehensive
+    understanding of the nuances involved.
+  </Conv>
+  <Conv name="Cadey" mood="enby">
+    The really cool part is that this effect works with _every_ single language
+    model on the market. Each of them have their own writeprint, meaning that if
+    you consistently stick to one, you can be theoretically tracked that way.
+    This will be a way to keep your writing style from identifying you in
+    particular, but people can and will track the writing style of the model.
+    Everything's a tradeoff.
+  </Conv>
+</ConvP>
+
+### Metadata
+
+<S number="032" desc="'Metadata' in rather large text." />
+
+One of the other big things to think about with regards to opsec is metadata. Metadata is data about data. One of the best examples of metadata is the data attached to photos. Here’s an example with a photo I took on my iPhone:
+
+<S
+  number="033"
+  desc="A picture of a sign in Brooklyn that says 'No standing'."
+/>
+
+This is a photo I took in New York City in order to communicate how strange the sign was to me. I still think it’s kinda strange, but here’s the metadata that my iPhone attached: It says "no standing," referring to stopped cars.
+
+<S
+  number="034"
+  desc="The same picture with a window to the side showing the photo metadata."
+/>
+
+Wow, that’s a lot of info! It says I used an iPhone 15 Pro Max with the telephoto lens at ISO 50, f/2.8, a shutter speed of 1/125 seconds, and has the exact GPS coordinates the photo was taken at. Let's break this down. The telephoto lens is about 120mm equivalent, has an aperture of f2.8, shutter speed of 1/125 seconds, and has the _exact_ GPS coordinates of where I hit the capture button. This is a shocking amount of metadata at first glance. It makes you wonder, how much information are you really sharing when you upload a picture to the internet?
+
+The good news is that online platforms know about this and take steps to prevent you from doxxing yourself with picture metadata. Most of this data is stored as EXIF data. Modern platforms will scrub this data before sharing any photos users upload. I’ve even seen some mobile phone OSes strip EXIF data when you use the photo picker tool. I've seen some mobile OSes, like CalyxOS and GrapheneOS, strip that at the photo picker level. But your mileage may vary; you may be more or less paranoid.
+
+<S number="036" desc="A screenshot of the GPSDetect extension." />
+
+If you use Firefox, you can install the [GPSDetect](https://addons.mozilla.org/en-US/firefox/addon/gpsdetect/) extension and you’ll get a notification every time someone leaves GPS metadata in their photos. The link to the extension will be in a resource list at the end. Here’s an example of what it looks like in action:
+
+<S
+  number="037"
+  desc="A screenshot of the GPSDetect extension in action. Three notifications showing GPS coordinates of photos."
+/>
+
+You’ll get notifications like this every time someone didn’t strip the GPS metadata from their photos. When I encounter these in the wild, I usually send an email to the people that published those photos to help them out. They’re almost always thankful.
+
+Other bit of metadata you may not think about: pictures of the sky can be used to figure out where the photo was taken. This requires more complicated attacks, but try to avoid posting pictures of the sky the same day you are taking them. If they're posted within about five minutes of when you took them, a dedicated attacker can figure out where you are.
+
+Some people vary, but most people have a 24 hour sleep cycle. About 8 hours of the day are going to be spent sleeping. Usually when people are asleep, they aren’t posting. Here’s an example based on my Reddit account:
+
+<S
+  number="040"
+  desc="A screenshot of my active times on Reddit based on public account actions like comments and story posts."
+/>
+
+I live in eastern time. My most active hours on reddit align with the morning and evening eastern time. This is my Reddit account's peak activity time: right after work, and right after I wake up. If you were looking at my Reddit account history, you could probably figure out that I live in eastern time just from the metadata of when I post. This is something to keep in mind.
+
+## Tools
+
+<S number="041" desc="'Tools' in rather large text." />
+
+Now that we covered metadata, let’s branch into the more practical part of this talk: what tools you should use.
+
+### Browsers
+
+<S number="042" desc="The old Google Chrome and Mozilla Firefox logos." />
+
+As far as browsers go: use very common browsers. Pick either Firefox or Chrome. They are very boring browsers, but they’re used by a lot of people. If someone hacks Chrome or Firefox, it’s almost certainly not to hack you in particular. They both suck, but they are used by so many people that nobody is going to attack _you_ in particular via Chrome or Firefox, because there are way more high-value targets like governments and banks. Common browsers also mean that you blend into the crowd and are harder to attack. Common browsers also mean your metadata blends in better and is harder to uniquely identify.
+
+### VPNs
+
+<S number="043" desc="'VPN' in rather large text." />
+
+One of the things that you’re gonna want to do is shove all your traffic into a VPN. This is what the YouTubers suggest after all, it sounds like it’s a good idea, and it’s not that expensive, right? It encrypts your IP address, right? It stops the hackers from getting your information! It's what the YouTubers suggest with the NordVPN and ProtonVPN ads, and advertising hasn't lied to you, has it? It's not that expensive, it's like three Starbucks drinks in 2019.
+
+<S number="044" desc="'VPN' in rather large text with a 'no' symbol over it." />
+
+Don’t.
+
+Don’t use VPN services unless you have a very good reason to. Privacy VPNs are the security snake oil of our day. You should only use a VPN service as your default route if you have a very good reason to, such as to make sure that your very legal Linux ISOs are able to be downloaded without getting love letters.
+
+<S
+  number="045"
+  desc="A screenshot of the HTTPS metadata for the website xeiaso.net."
+/>
+
+Remember that bit about HTTPS? HTTPS is already encrypted. You don’t need to encrypt it again with a VPN. I mean, you _can_ if you want, but you don't need to.
+
+<S number="046" desc="A screenshot of the Tor browser." />
+
+Use the Tor browser for any browsing that you really want to be private. Tor is free. Tor is used by a lot of people all over the world. It's free, and it's available on your OS of choice.
+
+Remember that ancient meme that went something like “you can’t get me, I’m behind seven proxies”. That’s how Tor works.
+
+<S number="048" desc="A diagram about how onion routing works." />
+
+Tor takes your traffic and uses onion routing to send it through a bunch of nodes and then end up getting to the target through an indirect route. This gives you even more privacy advantages than a VPN server does, especially because every website is inevitably going to be using a different circuit. Your computer sends traffic to a node that decrypts it, unwraps it, and sends it along until it reaches an exit node, which sends it to the target. You get the response back, do the whole song and dance, and you get there indirectly, usually through like seven European countries.
+
+<S number="049" desc="A screenshot of the Tor Project website." />
+
+You can download the Tor browser for free from [torproject.org](https://www.torproject.org). Again, I’ll have a resource list linked at the end of the talk. The Tor browser is available on every major OS. The Tor Project is getting an aarch64 Linux port soon. The Tor browser is made by experts that care.
+
+The only thing to keep in mind is that you shouldn’t use it all the time, and this is more from a practical angle rather than a theoretical angle. Tor helps keep activists safe and lets people evade government censorship, but there’s also a shocking amount of abusive traffic that comes from Tor exit nodes. Lots of websites block Tor in order to protect themselves. This probably includes your favorite websites. Lots of websites, like Reddit, block Tor to protect themselves.
+
+### Messaging
+
+<S number="051" desc="A screenshot of the Signal website." />
+
+If you’re gonna message people, use Signal. Make sure to enable disappearing messages. Disappearing messages mean that everything you send with people gets automatically deleted after a configurable amount of time. I personally use a week for most people I know.
+
+Signal is one of the few encrypted messaging apps that has [Soatok approval](https://soatok.blog/2025/02/18/reviewing-the-cryptography-used-by-signal/).
+
+Of note: when nation state actors attack Signal, they don’t even go after the cryptography. They just attack convenience features like [linked devices](https://thehackernews.com/2025/02/hackers-exploit-signals-linked-devices.html). When nation-state actors attack Signal, they don't go after the cryptography; they phish you. That should say a lot about Signal's security.
+
+One of the annoying features of Signal is that it doesn’t sync message scrollback to new devices by default. I think this is a feature and proof that the messages ARE NOT BEING SAVED ON THE SERVER, but this can be an annoyance. I think they're changing this, but I think it's a feature. It's proof that messages are _not_ being saved on the server. It's a balance of trade-offs.
+
+### Password managers
+
+<S number="055" desc="'Use a password manager' in rather large text." />
+
+Use a password manager. Your device or browser likely comes with one. That one is free. I personally use 1Password with my husband and it works great for us. It’s effortless and even supports all the two-factor auth that we use. I use 1Password because we used it before a lot of the other options existed. But if you use a Mac, there's a password manager built into your iCloud account. I think Microsoft has a similar thing, but I try to avoid using Windows.
+
+Your password manager has a password generator embedded into it. Use it. You should not know your passwords beyond the root password you use to unlock the password manager. If you only use randomly generated passwords, you can’t reuse passwords. A generated password cannot be reused unless someone has broken randomness, in which case we all have bigger issues. You should not know your passwords beyond the root password. If you only use generated passwords, you _can't_ reuse passwords, and reused passwords are how people get popped.
+
+### Run updates
+
+<S number="057" desc="'Run updates' in rather large text." />
+
+I know that Windows is a giant pain in the ass about updates, but seriously, run them. Updates get released for a reason. Updates patch security issues. If you don’t install updates, you can’t be protected by them. Running updates regularly is one of the easiest ways to make sure that your computers are secure. Seriously, run updates.
+
+## Self-hosting
+
+<S number="058" desc="'Self-hosting' in rather large text." />
+
+Finally, you should probably know how to host things yourself. This gives you the most understanding of what platform owners can see about what you do because you become a platform. Self-hosting also can give you absolute superpowers, like being able to have every TV show or movie you want steaming at a moment’s notice without having to follow a flowchart or use dedicated websites to find out where you can watch things. No, seriously, there's a website that has detailed flowcharts for every show now, based on the show, what country you're in, and so on. It's a nightmare. There was a video by videogamedunkey about figuring out where to watch a TV show. He didn't even need to write any comedy, he just described the process of trying to watch, I think it was _Severance_.
+
+If you want to get started with self-hosting, any computer will do really. You can get used desktops off of Craigslist, your local university’s surplus store, or at Woot.com. When you’re starting out, you probably don’t really have elaborate hardware needs, but anything that can turn on and run Linux is fine. You probably just need something that can turn on.
+
+As for what to run on it, all the normal options suck equally at this point. The important part is to pick whatever you’re the most comfortable with learning about. Ubuntu and Rocky are the closest to what you’d use in production if you were to become a career systems administrator or site reliability expert. But really by this point everything is the same brand of suckitude in different ways. Some are more up to date than others, others prioritize unchanging stability, the important part is to Just Pick Something™️. Some suck more than others. Some are more out of date than others, and consider that a feature.
+
+Once you have the OS, set up something like [k3s](https://k3s.io) or Docker Compose. Then you can install whatever self hosted apps you want. Here’s a whirlwind tour of the self hosted apps that I use on a regular basis: Yes, I know Kubernetes seems like a lot, but that's where the entire industry is going, because Kubernetes has sucked out all of the oxygen for everything else.
+
+- [Plex](https://www.plex.tv/) is self-hosted Netflix that points to a folder full of media. I use it to watch anime and catch up on old movies.
+- If you want to only run open source software, there’s also [Jellyfin](https://jellyfin.org). I personally don’t use it because I bought a lifetime Plex pass a while ago, but when Plex inevitably kills off the lifetime Plex pass I’m gonna set up Jellyfin. I don't use it because Plex was dumb enough to sell me a lifetime Plex pass for like $20. When Plex inevitably kills that off, I'm probably going to set up Jellyfin.
+- [Nextcloud](https://nextcloud.com) is like google docs, google calendar, an email client, google drive, and Slack all in one. It can do anything from instant messaging to meetings to integrations with self-hosted AI models. I’ve been meaning to use it more, but I mostly use it for storing files. It can integrate with AI stuff that runs on hardware you can look at.
+- [Gitea](https://about.gitea.com) is a self hosted GitHub. You can push private repos and even run CI on them without GitHub ever seeing your code. I use it for Techaro’s secret projects.
+- [Pocket ID](https://pocket-id.org) is an identity provider. This lets me have one account for all my internal services so that I don’t need to configure individual passwords for individual services. This is honestly one of the best things I’ve ever set up and the time savings add up so much. I don't need to configure individual passwords, group memberships, and all that nightmare nonsense. It sounds abstract, but it makes a lot of sense in practice.
+
+<S number="067" desc="'Your own apps' in rather large text." />
+
+One of the other big things I have in my homelab is my own apps. Here’s a screenshot of what I’m running: I've been working on something to make this easier, which I'll announce at some point in the future.
+
+<S number="068" desc="A screenshot of the k9s dashboard for my homelab." />
+
+Listed there I have a bunch of static sites for community resources, monitoring tools, pocket-id, the slang website, a Bluesky passive scraper, a docker registry, the Techaro website, a pull-through cache of the docker hub, and even a self-hosted object storage system called Minio. This gives me basically unlimited abilities to host whatever I want. The industry standardized on Kubernetes, so whenever I want to add something else, it’s a cinch. I have a website for a satirical programming language based around the letter H, a Bluesky passive scraper, a Docker registry, the Techaro website, a pull-through cache of the Docker Hub (because they realized that their business model is inviable, so they're jacking down the rate limit), and a self-hosted object storage system called Minio. Hosting stuff myself gives me basically unlimited superpowers to do whatever I want. Because the industry standardized on Kubernetes, I can put stuff on my home lab and then move it to the cloud without thinking more than pushing a YAML file in the right place.
+
+One of the other cool things you can do with Kubernetes is set up a [Tor hidden service controller](https://github.com/bugfest/tor-controller). This lets you expose your blog or another service only to people using Tor. This lets you expose services to your friends without leaking your home IP address to the world. Doing this is slow, but it’s a tradeoff that makes sense in many cases. Tor hidden services are neat; they're a way to expose a website such that people can only view it over the Tor browser, and in ideal scenarios, you can't tell where that website is hosted.
+
+I use this for [my blog](http://gi3bsuc5ci2dr4xbh5b3kja5c6p5zk226ymgszzx7ngmjpc25tmnhaqd.onion/) so that you can access what I write regardless of any government or corporate censorship. I also plan to write something in the near future that will only be visible to people reading my blog over Tor, so keep an eye out for that! I’ll have more details about this in the resource sheet at the end. I also plan to write something that's probably going to need to _only_ be released over Tor.
+
+## Conclusion
+
+It’s been so much fun, but my time with you is about to run out. Let’s wrap this up. In conclusion:
+
+- Know your threat model. Who are you protecting against? What could they do? How can you handle the inevitable opsec fail?
+- Think before you post. It’s easier to not post something than it is to un-post something. If you really need to let it out, write it out on paper and burn it. _That_ can't be hacked.
+- Your phone attaches GPS coordinates to photos. Strip them or use a platform you know strips them before you share them. Verify it with extensions like GPSDetect.
+- Don’t use a VPN unless you’re using it to get back into your homelab. Unless it's a site-to-site VPN to get back into hosting _you_ control.
+- Use Tor when you want to keep browsing private. I use Tor all the time for research. Tor is love, Tor is life.
+- Use Signal for private chat. Make sure to enable disappearing messages. You got it.
+- Know how to host things yourself. Anything on your own hardware is infinitely more private than anything involving a platform.
+- Again, run updates. Updates are free and they patch security issues.
+
+<S
+  number="079"
+  desc="The GReeTZ / special thanks slide with a list of names."
+/>
+
+Before we go though, I wanna give some special thanks to all these people. You know what you did to help. If you’re not on this list, you know what you didn’t do.
+
+<S number="080" desc="The end slide with a list of my social media accounts." />
+
+And with that, I've been Xe! I'll be around if you have questions or want stickers. Stay warm! This is the first of two conferences I'm presenting at this weekend.
+
+If I don’t get to you, please email your questions to dontusevpns@xeserv.us. With all that out of the way, does anyone have any questions? I will get back to you as soon as I can.
+
+## Q&A
+
+**Question:** Can you speak about the privacy and security trade-offs between self-hosting and what it offers for privacy versus those security risks?
+
+**Xe:** It's a trade-off. If you're hosting something for somebody else to connect to, then you need to make sure that keeps up to date. If you're using Kubernetes, there are ways to install tools like Keel, which will automatically update things for you, so you don't have to think about it. I use stuff like that heavily so that I have basically everything automated as much as possible. But in general, if you run updates, you're probably not going to be someone that someone's going to waste a zero-day on. And if you _are_ that kind of person, my talk probably isn't for you because you probably need the advice of a dedicated opsec specialist. And I'm not that; I'm not even going to pretend that I am able to be that.
+
+**Question:** When you say to not use VPNs, are you talking about WireGuard mesh networks such as the one that Tailscale provides?
+
+**Xe:** Yeah, you can use something like a WireGuard mesh network. I use that for some of my stuff when I connect to my home lab services. A lot of them are not exposed to the public internet. I have my Kubernetes cluster set up with a unique domain name, so I can just address it by the service name. So, when I am starting to stream on Twitch, I have a PowerShell script on my desktop that I double-click, and it sends a POST request to an internal service that announces that I'm streaming. It is very hacky, but it works, asterisk.
+
+**Question:** How about self-hosting your email services?
+
+**Xe:** What's the diplomatic way to phrase this? I can't stop you from hurting yourself. Personally, I pay Google for my email because Google doesn't have support. And if it doesn't have support, you can't phish support. Which is kind of a horrible thing to say. But like, let's be real, one of the biggest threat vectors at this point is people phishing the support for like your phone provider, and then managing to convince them that you need a new SIM card and SIM swapping you and oh, they just stole all your apes.
+
+**Question:** If you're self-hosting things, some ISPs will work to interfere with that, and can like jack down the speed or prevent incoming ICMP or something to make it difficult. How would you work around that?
+
+**Xe:** I'm gonna be totally honest with the stuff that I self host that's exposed to the public internet. I have a VPS set up in Toronto that runs the moral equivalent of HA proxy. And that sends all the traffic that listens, that's the address that gets put into DNS connections go on there, get sent out over wire guard hit one of the nginx ingress pods in my home lab. And then you know that routes to wherever the hell it is all across the house gets response goes all the way back out to the internet and to the person to the person I have found that this adds like 15 milliseconds of lag and that's like literally like one frame at 60 hz and in order for people to notice it, it has to be closer to like 150 milliseconds. So it's not really that bad. In terms of providers to use for that. I use Vultr for mine, but you may want to look into Civo. The reason why is they don't have egress fees. And if a cloud provider these days is willing to make that pricing decision, you should take advantage of it while you can.
