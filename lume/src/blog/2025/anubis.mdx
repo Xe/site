@@ -22,7 +22,7 @@ I got tired of this and made a tool to stop them for good. I call it Anubis. Anu
 
 To test Anubis, [click here](https://git.xeserv.us/xe/anubis-test/src/branch/main/README.md).
 
-If you want to protect your Gitea, Forgejo, or other self-hosted server with Anubis, check out [the instructions on GitHub](https://github.com/Xe/x/tree/master/cmd/anubis#setting-up-anubis).
+If you want to protect your Gitea, Forgejo, or other self-hosted server with Anubis, check out [the instructions on GitHub](https://github.com/TecharoHQ/anubis/#setting-up-anubis).
 
 If you would like to purchase commercial support for Anubis including an unbranded or custom branded version (namely one without the happy anime girl), please [contact me](/contact/).
 
@@ -105,7 +105,7 @@ Anubis uses an ed25519 keypair to sign the JWTs issued when challenges are passe
 
 Anubis is meant to sit between your reverse proxy (such as Nginx or Caddy) and your target service. One instance of Anubis must be used per service you are protecting.
 
-Anubis is shipped in the Docker image [`ghcr.io/xe/x/anubis:latest`](https://github.com/Xe/x/pkgs/container/x%2Fanubis). Other methods to install Anubis may exist, but the Docker image is currently the only supported method.
+Anubis is shipped in the Docker image [`ghcr.io/techarohq/anubis:latest`](https://github.com/TecharoHQ/anubis/pkgs/container/anubis). Other methods to install Anubis may exist, but the Docker image is currently the only supported method.
 
 Anubis has very minimal system requirements. I suspect that 128Mi of ram may be sufficient for a large number of concurrent clients. Anubis may be a poor fit for apps that use WebSockets and maintain open connections, but I don't have enough real-world experience to know one way or another.
 
@@ -126,7 +126,7 @@ Add Anubis to your compose file pointed at your service:
 ```yaml
 services:
   anubis-nginx:
-    image: ghcr.io/xe/x/anubis:latest
+    image: ghcr.io/techarohq/anubis:latest
     environment:
       BIND: ":8080"
       DIFFICULTY: "5"
@@ -154,7 +154,7 @@ Attach Anubis to your Deployment:
 containers:
   # ...
   - name: anubis
-    image: ghcr.io/xe/x/anubis:latest
+    image: ghcr.io/techarohq/anubis:latest
     imagePullPolicy: Always
     env:
       - name: "BIND"
