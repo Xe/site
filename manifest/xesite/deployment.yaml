@@ -17,6 +17,9 @@ spec:
           claimName: xesite-cache
       - name: data
         emptyDir: {}
+      - name: anubis
+        configMap:
+          name: anubis-cfg
       containers:
       - name: web
         image: ghcr.io/xe/site/bin:latest
@@ -66,3 +69,41 @@ spec:
               value: "Is alright, I guess"
           initialDelaySeconds: 30
           periodSeconds: 30
+      - name: anubis
+        image: ghcr.io/techarohq/anubis:pr-19
+        imagePullPolicy: Always
+        env:
+          - name: "BIND"
+            value: ":8081"
+          - name: "DIFFICULTY"
+            value: "4"
+          - name: "METRICS_BIND"
+            value: ":9090"
+          - name: "POLICY_FNAME"
+            value: "/xe/cfg/anubis/botPolicies.json"
+          - name: "SERVE_ROBOTS_TXT"
+            value: "false"
+          - name: "TARGET"
+            value: "http://localhost:3000"
+          # - name: "SLOG_LEVEL"
+          #   value: "debug"
+        volumeMounts:
+          - name: anubis
+            mountPath: /xe/cfg/anubis
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 250m
+            memory: 128Mi
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          seccompProfile:
+            type: RuntimeDefault

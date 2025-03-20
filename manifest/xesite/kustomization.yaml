@@ -7,3 +7,9 @@ resources:
   - onionservice.yaml
   - pod-disruption-budget.yaml
   - service.yaml
+
+configMapGenerator:
+  - name: anubis-cfg
+    behavior: create
+    files:
+      - ./anubis/botPolicies.json
