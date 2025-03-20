@@ -70,7 +70,7 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 30
       - name: anubis
-        image: ghcr.io/techarohq/anubis:pr-19
+        image: ghcr.io/techarohq/anubis:latest
         imagePullPolicy: Always
         env:
           - name: "BIND"
