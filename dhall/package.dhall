@@ -41,19 +41,9 @@ in  Config::{
             "An esoteric programming language that compiles to WebAssembly"
         }
       , Link::{
-        , url = "https://github.com/Xe/olin"
-        , title = "Olin"
-        , description = "WebAssembly on the server"
-        }
-      , Link::{
-        , url = "https://printerfacts.cetacean.club/"
-        , title = "Printer Facts"
-        , description = "Useful facts about printers"
-        }
-      , Link::{
-        , url = "https://github.com/Xe/waifud"
-        , title = "waifud"
-        , description = "A VM manager for my homelab cluster"
+        , url = "https://anubis.techaro.lol"
+        , title = "Anubis"
+        , description = "A anti-scraper bot filter that protects git servers for GNOME, Sourcehut, and many other small communities"
         }
       , Link::{
         , url = "https://when-then-zen.christine.website/"
@@ -65,12 +55,6 @@ in  Config::{
         , title = "x"
         , description =
             "A monorepo of my experiments, toy programs and other interesting things of that nature."
-        }
-      , Link::{
-        , url = "https://github.com/Xe/Xeact"
-        , title = "Xeact"
-        , description =
-            "My personal JavaScript femtoframework for high productivity development"
         }
       , Link::{
         , url = "https://github.com/Xe/site"
