@@ -1,0 +1,396 @@
+---
+title: "The surreal joy of having an overprovisioned homelab"
+desc: "Stand-up comedy about having a homelab."
+date: 2025-03-25
+image: talks/2025/surreal-joy-homelab/001
+---
+
+import Slide from "../../_components/XeblogSlide.tsx";
+
+I like making things with computers. There’s just one problem about computer programs: they have to run somewhere. Sure, you can just spin up a new VPS per project, but that gets expensive and most of my projects are very lightweight. I run most of them at home with the power of floor desktops.
+
+Tonight I’ll tell you what gets me excited about my homelab and maybe inspire you to make your own. I'll get into what I like about it and clue you into some of the fun you get to have if one of your projects meant to protect your homelab goes hockey-stick.
+
+<Video path="talks/2025/surreal-joy-homelab" />
+
+<Conv name="Cadey" mood="enby">
+  For this one, a lot of the humor works better in the video.
+</Conv>
+
+export const S = ({ number, desc }) => (
+  <Slide name={`2025/surreal-joy-homelab/${number}`} desc={desc} />
+);
+
+<S
+  number="001"
+  desc="The title slide with the name of the speaker, their sigil, and contact info for the speaker."
+/>
+
+Hi everyone! I’m Xe, and I’m the CEO of Techaro, the anti-AI AI company. Today I’m gonna talk with you about the surreal job of having an over-provisioned homelab and what you can do with one of your own. Buckle up, it’s gonna be a ride.
+
+So to start, what’s a homelab? You may have heard of the word before, but what is it really?
+
+<S number="003" desc="A homelab is a playground for devops." />
+
+It’s a playground for devops. It’s where you can mess around to try and see what you can do with computers. It’s where you can research new ways of doing things, play with software, and more. Importantly though, it’s where you can self-host things that are the most precious to you. Online platforms are vanishing left and right these days. It’s a lot harder for platforms that run on hardware that you look at to go away without notice.
+
+<S number="005" desc="An about the speaker slide explaining Xe's background." />
+
+Before we continue though, let’s cover who I am. I’m Xe. I live over in Orleans with my husband and our 6 homelab servers. I’m the CEO of the totally real company Techaro. I’m an avid blogger that’s written Architect knows how many articles. I stream programming crimes on Fridays.
+
+<S
+  number="006"
+  desc="The agenda slide covering all the topics that are about to be listed below"
+/>
+
+Today we’re gonna cover:
+
+- What a homelab is
+- What you can run on one
+- A brief history of my homelab
+- Tradeoffs I made to get it to its current form
+- What I like about it
+
+Finally I’ll give you a stealth mountain into the fun you can have when you self host things.
+
+<S number="007" desc="A disclaimer that this talk is going to be funny" />
+
+Before we get started though, my friend Leg Al told me that I should say this.
+
+> This talk may contain humor. Upon hearing something that sounds like it may be funny, please laugh. Some of the humor goes over people’s heads and laughing makes everyone have a good time.
+
+Oh, also, any opinions are my own and not the opinions of Techaro.
+
+Unless it would be funny for those opinions to be the opinions of Techaro, then it would be totally on-brand.
+
+<S
+  number="010"
+  desc="A pink haired anthropomorphic orca character whacking the hell out of a server rack with the text 'Servers at home' next to it in rather large text"
+/>
+
+But yes, tl;dr: when you have servers at home, it’s a homelab. They come in all shapes and sizes from single mini pcs from Kijiji to actual rack mount infrastructure in a basement. The common theme though is experimentation and exploration. We do these things not because they are easy, but because they look like they might be easy. Let’s be real, they usually are easy but you can’t know until you’ve done it to know for sure, right?
+
+### What I run
+
+In order to give you ideas on what you can do with one, here’s what I run in my homelab. I use a lot of this all the time. It’s just become a generic place to put things with relative certainty that they’ll just stay up. I also use it to flex my SRE muscle because working in marketing has started to atrophy that and I do not want to lose that skillset.
+
+<S
+  number="013"
+  desc="The Plex logo with a green haired gremlin wearing a pirate hat sticking out behind it"
+/>
+
+One of the services I run is Plex which lets me—Wait, what, how did you get there?...One second.
+
+<S number="014" desc="The Plex logo" />
+
+Like I was saying, one of the services I run is Plex which lets me watch TV shows and movies without having to go through flowcharts of doom to figure out where to watch them.
+
+<Conv name="Numa" mood="smug" standalone>
+  Remember: it’s a service problem.
+</Conv>
+
+<S number="015" desc="The Pocket-ID homepage" />
+
+One of the best things I set up was pocket-id, an OIDC provider. Before your eyes glaze over, here’s what you should think.
+
+<S
+  number="016"
+  desc="'One ring to rule them all' with 'ring' hastily replaced with 'account'"
+/>
+
+A lot of the time with homelabs and self-hosted services you end up making a new account, admin permissions flags, group memberships, and profile pictures for every service. This sucks and does not scale. Something like Pocket-ID lets you have one account to rule them all. It’s such a time-saver.
+
+<Conv name="Cadey" mood="coffee" standalone>
+  I wish I set one up a long time ago.
+</Conv>
+
+<S number="017" desc="A screenshot of my homelab's Gitea server" />
+
+I also run a git server! It’s where Techaro’s super secret projects like the Anubis integration jungle live.
+
+<S
+  number="018"
+  desc="A screenshot of the github actions self hosted runner docs"
+/>
+
+I run my own GitHub Actions runners because let’s face it, who would win: free cloud instances that are probably oversubscribed or my mostly idle homelab 5950x’s?
+
+<S
+  number="019"
+  desc="A screenshot of the Longhorn UI showing 42.6 terabytes of storage available to use"
+/>
+
+One of the big things I run is Longhorn, which spreads out the storage across my house. This is just for the Kubernetes cluster, the NAS has an additional 64-ish terabytes of space where I store my tax documents, stream VODs, and…Linux ISOs.
+
+<S
+  number="021"
+  desc="Logos for tools like ingress-nginx, external-dns, cert manager, let's encrypt, and Docker"
+/>
+
+Like any good cluster I also have a smattering of support services like cert-manager, ingress-nginx, a private docker registry, external-dns, a pull-through cache of the docker hub for when they find out that their business model is unsustainable because nobody wants to pay for the docker hub, etc. Just your standard Kubernetes setup sans the standard “sludge pipe” architecture.
+
+<S
+  number="022"
+  desc="A screenshot showing proof of Eric Chlebek coining the term sludge pipe architecture"
+/>
+
+By the way, I have to thank my friend Eric Chlebek for coming up with the term “sludge pipe” architecture to describe modern CI/CD flows. I mean look at this:
+
+<S
+  number="023"
+  desc="A screenshot of ArgoCD showing off the standard sludge pipe architecture"
+/>
+
+You just pipe the sludge into git repos and it flows into prod! Hope it doesn’t take anything out!
+
+<S number="024" desc="A smattering of the webapps I host in my homelab" />
+
+I’ve also got a smattering of apps that I’ve written for myself over the years, including but not limited to the hlang website, Techaro’s website, the Stealth Mountain feed on Bluesky, a personal API that’s technically part of my blog’s infrastructure, the most adorable chatbot you’ve ever seen, a bot to post things on a subreddit to Discord for a friend, and Architect knows how many other small experiments.
+
+### The history of my homelab
+
+Like I said though, you don’t always need to start out with a complicated multi-node system with distributed storage. Most of the time you’ll start out with a single computer that can turn on. I did.
+
+<S number="026" desc="A picture of my 2012 trash can mac pro on my desk" />
+
+I started out with this: a trash can Mac Pro that was running Ubuntu. I pushed a bunch of strange experiments to it over the years and it’s where I learned how to use Docker in anger. It’s been a while and I lost the config management for it, but I’m pretty sure it ran bog-standard Docker Compose with a really old version of Caddy. I’m pretty sure this was the machine I used as my test network when I was maintaining an IRC network. Either way, 12 cores and 16 GB of RAM went a long way in giving me stuff to play with. This lasted me until I moved to Montreal in mid-2019. It’s now my Prometheus server.
+
+Then in 2020 I got the last tax refund I’m probably ever going to get. It was about 2.2 thousand snow pesos and I wanted to use it to build a multi-node homelab cluster. I wanted to experiment with multi-node replicated services without Kubernetes.
+
+<S
+  number="028"
+  desc="A triangular diagram balancing wattage, cost, and muscle"
+/>
+
+When I designed the nodes, I wanted to pick something that had a balance of cost, muscle, and wattage. I also wanted to get CPUs that had built-in PCI to HDMI converters in them so I can attach a “crash cart” to debug them. This was also before the AI bubble, so I didn’t have langle mangles in mind. I also made sure to provision the nodes with just enough power supply overhead that I could add more hard drives, GPUs, or whatever else I wanted to play with as new shiny things came out.
+
+<S
+  number="029"
+  desc="A picture of three of my homelab nodes, kos-mos, ontos, and pneuma"
+/>
+
+Here’s a few of them on screen, from left to right that is kos-mos, ontos, and pneuma. Most of the nodes have 32 GB of RAM and a Core-i5 10-600 with 12 threads. Pneuma has a Ryzen 5950x (retired from my husband’s gaming rig when he upgraded to a 7950x3D) and 64 GB of RAM. Pneuma used to be my main shellbox until I did the big Kubernetes changeover.
+
+Not shown are Logos and Shachi. Shachi is my old gaming tower and has another 5950x in it. In total this gives me something like 100 cores and 160 GB of RAM. This is way overkill for my needs, but allows me to basically do whatever I want. Don’t diss the power of floor desktops!
+
+Eventually, Stable Diffusion version 1 came out and then I wanted to play with it. The only problem was that it needed a GPU. Luckily we had an RTX 2060 laying around and I was able to get it up and running on Ontos. Early Stable Diffusion was so much fun. Like look at this.
+
+<S
+  number="032"
+  desc="An AI generated illustration of a figure that vaguely looks like Richard Stallman having a great time with an acid trip in the forest"
+/>
+
+The prompt for this was “Richard Stallman acid trip in a forest, Lisa frank 420 modern computing, vaporwave, best quality”. This was hallucinated, pun intended, on Ontos’ 2060. I used that 2060 for a while but then bigger models came out. Thankfully I got a job at a cloud provider so I could just leech off of their slack time. But I wanted to get langle mangles running at home so Logos got an RTX 3060 to run Ollama.
+
+<S
+  number="033"
+  desc="A badly photoshopped screenshot of The End of Evangelion with a certain Linux distribution's logo over Rei's face while Shinji and Asuka look on in horror at the last sunset humanity will ever see"
+/>
+
+At a certain point though, a few things happened that made me realize that I was going off course for what I wanted. My homelab nodes weren’t actually redundant like I wanted. The setup I used had me allocate tasks to specific nodes, and if one of them fell over I had to do configuration pushes to move services around. This was not according to keikaku.
+
+<Conv name="Numa" mood="smug">
+  By the way, translator’s note: keikaku means plan.
+</Conv>
+
+Then the distribution I was using made…creative decisions in community management and I realized that my reach as a large-scale content creator (I hate that term) and blogger meant that by continuing to advocate for that distro in its current state, I was de-facto harming people. So then I decided to look for something else.
+
+<S number="036" desc="The Kubernetes logo" />
+
+Let’s be real, the kind of things I wanted out of my homelab were literally Kubernetes shaped. I wanted a bunch of nodes that I could just push jobs to and let the machine figure out where it lives. I couldn’t have that with my previous setup no matter how much I wanted because the tools just weren’t there to do it in real life.
+
+<S number="037" desc="A screenshot of my 'Do I need Kubernetes?' post" />
+
+This was kind of a shock, as previously I had been on record saying that you don’t in fact need Kubernetes. At the time I gave this take though, there were other options. Docker Swarm was still actively in development. Nomad was a thing that didn’t have any known glaring flaws other than being well Nomad, and Kubernetes was really looking like an over engineered pile of jank.
+
+It really didn’t help that one of my past jobs was to create a bog-standard sludge pipe architecture on AWS and Google Cloud but way before cert-manager was stable. Ingress-nginx was still in beta. Everything was in flux.
+
+<S
+  number="039"
+  desc="Instructions on how to use hand dryers, but with the text 'Push button, receive bacon' under each step"
+/>
+
+Kubernetes itself was fine, but it was not enough to push button and receive bacon and get your web apps running somewhere. I get that’s not the _point_ of Kubernetes per se, it scales from web apps to fighter jets, but at the end of the day you gotta ship something, right?
+
+It really just burnt me out and I nearly left the industry at large as a result of the endless churn of bullshit. The admission that Kubernetes was what I needed really didn’t come easy. It was one of the last things I wanted to use; but with everything else either dying out from lack of interest or having known gaping flaws show up, it’s what I was left with.
+
+Then at some point I thought, “eh, fuck it, what do I have to lose” and set it up. It worked out pretty great actually.
+
+<S
+  number="042"
+  desc="A screenshot of a Discord conversation where someone asks me what I think about Kubernetes after using it for a while, I reply 'I don't hate it'"
+/>
+
+After a few months someone in the patron discord asked me what I thought about Kubernetes in my homelab after using it for a while and my reply was “It’s nice to not have to think about it”. To be totally honest, as someone with sludge pipe operator experience, “it’s nice to not have to think about it” is actually high praise. It just kinda worked out and I didn’t have to spend too much time or energy on it modulo occasional upgrades.
+
+### What I like about it
+
+And with that in mind, here’s what I really like about my homelab setup as it is right now.
+
+I can just push button and receive bacon. If I want to run more stuff, I push it to the cluster. If I want to run less stuff, I delete it from the cluster. Backups happen automatically every night. The backup restore procedure works. Pushing apps is trivial. Secrets are integrated with 1password. Honestly, pushing stuff to my homelab cluster is so significantly easier than it’s ever been at any company I’ve ever worked at. Even when I was a sludge pipe operator.
+
+One of the best parts is that I haven’t really had to fight it. Stuff just kinda works and it’s glorious. My apps are available internally and externally and I don’t really have to think too much about the details.
+
+Of course, I didn’t just stop there. I took things one step farther and then realized across my /x/ repo that I had a bunch of services fall into a few basic patterns:
+
+- The first generic shape of service is the headless bot that just does a thing like monitor an RSS feed and poke a web hook somewhere. This only really needs a Deployment to manage the versions of the container images and maybe some secrets for API keys or the like.
+- Second, I need to run programs that listen internally and serve API calls. Maybe they have some persistent storage. Either way, they definitely need a DNS name within the cluster so other services can use that API to do things like post messages on IRC.
+- Third, some of the things I run are web apps. Webapps are pretty much the same, but they need a DNS name outside the cluster and a way to get HTTP ingress routed to the pod. I use nginx for that, but the configuration can be a bit fiddly and manual. It’d be nice to hyper automate it so that I don’t have to think about the details, I just think about the App.
+
+I was really inspired by Heroku’s setup back when I worked there. With Heroku you just pushed your code and let the platform figure it out. Given that I had a few known “shapes” of apps, what if I just made my own resources in Kubernetes to do that?
+
+```yaml
+apiVersion: x.within.website/v1
+kind: App
+metadata:
+  name: httpdebug
+
+spec:
+  image: ghcr.io/xe/x/httpdebug:latest
+  autoUpdate: true
+
+  ingress:
+    enabled: true
+    host: httpdebug.xelaso.net
+```
+
+So I did that, thanks to Yoke. I just define an App, and it creates everything downstream for me. 1Password Secrets can be put in the filesystem or the environment. Persistent storage is a matter of saying where to mount it and how much I want. HTTP ingresses are a simple boolean flag with the DNS name. External DNS records, TLS certificates, and the whole nine yards is naught but an implementation detail. A single flag lets me create a Tor hidden service out of the App so that people can view it wherever they want in the world without government interference. I can add Kubernetes roles by just describing the permissions I want. It’s honestly kind of amazing.
+
+<S
+  number="052"
+  desc="A screenshot of the Techaro Bluesky account ominously posting about HyperCloud"
+/>
+
+This is something I want to make more generic so that you can use it too, I’ll get to it eventually. It’s in the cards.
+
+### Learning to play defense
+
+In the process of messing with my homelab, I’ve had to learn to play defense.
+
+<Conv name="Numa" mood="smug">
+  This isn’t something that the Jedi will teach you, learning how to do this is
+  much more of a Sith legend.
+</Conv>
+
+Something to keep in mind though: I have problems you don’t. My blog gets a lot of traffic in weird patterns. If it didn’t, I’d run it at home, but it does so I have to host it in the cloud. However, remember that git server? Yeah, that runs at home.
+
+<S
+  number="056"
+  desc="A brown haired anime catgirl running away from a swarm of bots, generated with Flux [schnell]"
+/>
+
+When you host things on the modern internet, bots will run in once the cert is minted and start pummeling the hell out of it. I like to think that the stuff I make can withstand this, but some things just aren’t up to snuff. It’s not their fault mind you, modern scraper bots are unusually aggressive.
+
+Honestly it feels like when modern scrapers are designed, they have these goals in mind:
+
+<Conv name="Numa" mood="smug">
+* Speed up requests when the server is overloaded, because if it’s returning responses faster it must be able to handle more traffic, right?
+* Oh and if the server is responding with anything but 200, just retry that page later. It’ll be fine, right?
+* Not to mention, those Linux kernel commits from 15 years ago may have changed since you last looked, so why not just scrape everything all over again a few days later?
+* Caches? That requires more code. We gotta ship fast and iterate. We can’t spend time downloading git repositories or caching the etags. That’ll slow us down!
+* Oh, they’re blocking our datacenter IP addresses? No problem! We’ll just cycle through sketchy residential proxy services so that they just think it’s a bunch of people using normal chrome to fetch unusual amounts of webpages.
+
+What could go wrong? Pass me the booch yo.
+
+</Conv>
+
+<S
+  number="058"
+  desc="A smug green haired anime woman telling you to not use VPNs"
+/>
+
+By the way, public service announcement. Don’t use VPNs unless you have a really good reason. Especially don’t use free VPNs. Those sketchy residential proxy services are all powered by people using free VPNs. If you aren’t a customer, you are the product.
+
+What makes this worse is that git servers are the most pathologically vulnerable to the onslaught of doom from modern internet scrapers because remember, they click on every link on every page.
+
+<S
+  number="060"
+  desc="A screenshot of a webpage with about 50 billion yellow tags highlighted, each is a clickable link"
+/>
+
+See those little yellow tags? Those are all links. Do the math. There’s a lot of them. Not to mention that git packfiles are stored in compressed files which can’t seek. Every time they open every link on every page, they go deeper and deeper into uncached git pack file resolution because let’s face it, who on this planet is going out of their way to look at every file in every commit of GTK from 2004 and older. Not many people it turns out!
+
+And that’s how Amazon’s scraper took out my Git server. I tried some things and they didn’t work including but not limited to things I can’t say in a recording. I debated taking it offline completely and just having the stuff I wanted to expose publicly be mirrored on GitHub. That would have worked, but I didn’t want to give up. I wanted to get even.
+
+Then I had an idea. Raise your hand if you know what I do enough to know how terrifying that statement is.
+
+More of you than I thought.
+
+Somehow I ended up on the wikipedia page for weighing of souls. Anubis, the god of the underworld, weighed your soul and if it was lighter than a feather you got to go into the afterlife. This felt like a good metaphor.
+
+<S
+  number="065"
+  desc="A screenshot of Anubis' readme, showing a brown haired jackal waifu looking happy and successful"
+/>
+
+And thus I had a folder name to pass to mkdir. Anubis weighs the soul of your connection using a SHA256 proof-of-work challenge in order to protect upstream resources from scraper bots. This was a super nuclear response, but remember, this was the state of my git server:
+
+<S number="066" desc="A server that was immolated by fire" />
+
+I just wanted uptime, man.
+
+Either way, the absolute hack I had worked, so I put it on GitHub. Honestly, when I’ve done this before it got ignored. So I just had my 4080 dream up some placeholder assets, posted an blog about it, and went back to playing video games.
+
+Then people started using it. I put it in its own repo and posted about it on Bluesky.
+
+<S number="069" desc="Screenshots of people raving about Anubis" />
+
+I wasn’t the only one having this problem it seems! It’s kinda taking off! This is so wild and not the kind of problem I usually have.
+
+<S number="070" desc="The GitHub star count graph going hockey-stick" />
+
+Like the graphs went hockey stick.
+
+<S
+  number="071"
+  desc="The GitHub star count graph going even more hockey-stick"
+/>
+
+Like really hockey-stick.
+
+<S
+  number="072"
+  desc="The GitHub star count graph continuing to be a hockey-stick"
+/>
+
+It just keeps going up and it’s not showing any signs of stopping any time soon.
+
+<S
+  number="073"
+  desc="Anubis' GitHub star count compared to my other big projects"
+/>
+
+For context, here it is compared to my two biggest other projects. It's the mythical second Y axis graph shape. So yeah, you can understand that it’s gonna take a while to circle back to the Techaro HyperCloud.
+
+The cool part about this in my book though is that because I had a problem that was only exposed with the hardware my homelab uses (specifically because my git server was apparently running on rotational storage, oops), I got creative, made a solution, pushed it to GitHub, and now it’s in use to protect GNOME’s GitLab, SourceHut, small community projects, god knows how many git forges, and I’ve heard that basically every major open source project that self-hosts infrastructure is evaluating it to protect their websites too. I really must have touched a nerve or something.
+
+### Conclusion
+
+In conclusion:
+
+If you like it, you should self-host it. Online services are vanishing so frequently. Everything is centralizing around the big web and it makes me afraid for what the future of the small Internet could look like should this continue.
+
+<S number="077" desc="Anubis looking pensive next to 'Think small'" />
+
+Think small. A single node with a 2012 grade CPU and 16 gigabytes of dedotated wam lasted me until 2019. When I get a computer, I use the whole computer. If it’s fine for me, it’s more than enough for you.
+
+<S
+  number="078"
+  desc="A smug green haired anime woman telling you to fuck around and find out, but not as a threat"
+/>
+
+Fuck around and find out. That’s not just a threat. That’s a mission statement.
+
+Remember that if you get an idea, fuck around, find out, and write down what you’ve learned: you’ve literally just done science. Well, with computers, so it’d be computer science, but you get my point.
+
+And if bots should come in and start a-pummeling away, remember: you’re not in the room with them. They’re in the room with you. Remember Slowloris? A little birdie told me that it works server to client too. Consider that.
+
+<S number="080" desc="The GReeTZ / special thanks slide" />
+
+My time with you is about to come to an end, but before we go, I just want to thank everyone on this list. You know what you did. If you’re not on this list, you know what you didn’t do.
+
+<S number="081" desc="The conclusion slide with more contact info" />
+
+And with that, I've been Xe! I'll be around if you have questions or want stickers. Stay warm!
+
+If I don’t get to you, please email your questions to homelabtalk@xeserv.us. With all that out of the way, does anyone have any questions?

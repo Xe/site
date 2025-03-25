@@ -5,6 +5,8 @@ date: {{.Date}}
 image: talks/{{.Year}}/{{.Slug}}/001
 ---
 
+import Slide from "../../_components/XeblogSlide.tsx";
+
 Talk abstract here
 
 ## Video
@@ -12,3 +14,7 @@ Talk abstract here
 <Video path="talks/{{.Year}}/{{.Slug}}"/>
 
 ## Transcript
+
+export const S = ({ number, desc }) => (
+  <Slide name={`{{.Year}}/{{.Slug}}/${number}`} desc={desc}/>
+);
