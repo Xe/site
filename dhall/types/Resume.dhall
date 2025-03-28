@@ -13,7 +13,7 @@ in  { Type =
         }
     , default =
       { name = "Xe Iaso"
-      , tagline = "Senior Technophilosopher"
+      , tagline = "CEO @ Techaro"
       , location = Location::{
         , city = "Ottawa"
         , stateOrProvince = "ON"
