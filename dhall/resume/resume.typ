@@ -122,6 +122,7 @@
     (name: "github", link: "https://github.com/Xe", display: "@Xe"),
     (name: "linkedin", link: "https://www.linkedin.com/in/xe-iaso/", display: resume.name),
     (name: "mastodon", link: "https://pony.social/@cadey", display: "@cadey@pony.social"),
+    (name: "twitch", link: "https://twitch.tv/princessxen", display: "princessxen"),
     (name: "tiktok", link: "https://www.tiktok.com/@xeiaso.1337", display: "@xeiaso.1337"),
   ),
   tagline: resume.tagline,
@@ -136,12 +137,17 @@ If you want someone that is dedicated to their craft, a fearless innovator and a
 
 == Experience
 
+#titleCompany[Senior Cloud Whisperer][Tigris Data]\
+#term[2024-09 -- present][Ottawa, CA]
+
+At Tigris Data I founded the Developer Relations / Go To Market team. I am responsible for writing educational content, speaking at events, boothing, and evangelizing the product to a global audience. This includes in-person, online, and occasional video content as well as extensive writing for the Tigris Data blog. I am also responsible for the social media strategy and content creation. I maintain the documentation site and work on continuous testing of the product against the AWS SDKs for many languages.
+
+I also did ghost writing on behalf of my coworkers that are doing awesome things but were not able to take the time to write them up in detail.
+
 #titleCompany[Senior Techniphilosopher][Fly.io]\
 #term[2023-11 -- 2024-09][Ottawa, CA]
 
 At Fly.io I am responsible for helping to build the developer relations team from scratch. I am working with the team to create a new developer relations strategy that is focused on helping developers understand the value of Fly.io and how to use it in their projects. This includes in-person, online, and video content as well as occasional writing for the Fly.io and partner companies' blogs.
-
-I also lead social media posting on websites like X (formerly Twitter) and have contributed heavily to social media strategy and content creation. I am the main maintainer of the Fly.io YouTube and TikTok channels.
 
 While working here, I became an early expert in AI tooling and how to properly use locally hosted AI models. I am capable of using AI in new products as well as adapting it to existing products.
 
@@ -150,9 +156,7 @@ While working here, I became an early expert in AI tooling and how to properly u
 #titleCompany[Archmage of Infrastructure][Tailscale]\
 #term[2020-12 -- 2023-10][Ottawa, CA]
 
-At Tailscale I founded the developer relations team with the goal of inspiring people to use Tailscale in fun and interesting ways. I work with the DevRel team to write articles for #text(fill: blue)[#link("https://tailscale.dev")[tailscale.dev]] to help teach people fundamentals of computer science and networking in the process of learning about new product features and things you can do with them.
-
-Tailscale has easily been the best job I've ever had and I've had an enormous impact on how Tailscale is percieved by developers worldwide. For a while my actions were directly attributable to MAU growth. One of the hardest projects I've worked on was making DevRel efforts more than single flashes in the pan and create a reason for people to visit the website on a regular basis.
+At Tailscale I founded the developer relations team with the goal of inspiring people to use Tailscale in fun and interesting ways. I worked with the DevRel team to write articles for #text(fill: blue)[#link("https://tailscale.dev")[tailscale.dev]] to help teach people fundamentals of computer science and networking in the process of learning about new product features and things you can do with them.
 
 I regularly wrote articles and lead internal talks about how to use Tailscale and other technology topics in new and interesting ways.
 

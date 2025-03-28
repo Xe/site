@@ -40,17 +40,22 @@ in  Resume::{
       ]
     , notablePublications =
       [ Link::{
+        , url = "https://xeiaso.net/talks/2025/ai-chatbot-friends/"
+        , title = "Affording your AI chatbot friends"
+        , description =
+            "A presentation focused at technical experts about the moving parts involved with AI model hosting and how it's not actually expensive to run if you manage the scope and scale correctly."
+        }
+      , Link::{
         , url = "https://blog.heroku.com/how-to-make-progressive-web-app"
         , title = "How to Make a Progressive Web App From Your Existing Website"
         , description =
             "An article summarizing how easy it is to make a webpage into an installable Progressive Web App using APIs available in the most commonly used browsers."
         }
       , Link::{
-        , url =
-            "https://web.archive.org/web/20210318102148/https://tech.lightspeedhq.com/palisade-version-bumping-at-scale-in-ci/"
-        , title = "Palisade: Version Bumping at Scale in CI"
+        , url = "https://www.tigrisdata.com/blog/training-any-cloud/"
+        , title = "Training with Big Data on Any Cloud"
         , description =
-            "The release post for Palisade, a tool to automate version bumping, release tagging and more."
+            "A detailed breakdown of how to use Object Storage to help train Large Language Models / AI models on any cloud provider that has an internet connection."
         }
       , Link::{
         , url = "https://tailscale.com/blog/magicdns-why-name/"
@@ -70,12 +75,6 @@ in  Resume::{
         , title = "Using Tailscale without Using Tailscale"
         , description =
             "An award-winning April Fools Day post describing how you can use Tailscale via Headscale via Tailscale Funnel. This post is notable for demonstrating all five of the Tailscale company values at the same time."
-        }
-      , Link::{
-        , url = "https://fly.io/blog/how-i-fly/"
-        , title = "How I Fly"
-        , description =
-            "A post about how I use Fly.io to host my personal website and its supporting infrastructure."
         }
       ]
     }
