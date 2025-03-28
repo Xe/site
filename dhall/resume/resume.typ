@@ -144,6 +144,8 @@ At Tigris Data I founded the Developer Relations / Go To Market team. I am respo
 
 I also did ghost writing on behalf of my coworkers that are doing awesome things but were not able to take the time to write them up in detail.
 
+#smallColoredLine()
+
 #titleCompany[Senior Techniphilosopher][Fly.io]\
 #term[2023-11 -- 2024-09][Ottawa, CA]
 
