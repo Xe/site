@@ -7,6 +7,11 @@ let Desc = xesite.SeriesDescription
 let descriptions
     : List Desc.Type
     = [ Desc::{
+      , name = "anubis"
+      , details =
+          "Adventures, misadventures, and implementation details for Anubis, Techaro's anti-AI scraper tooling."
+      }
+      , Desc::{
         , name = "colemak"
         , details =
             "My efforts at learning to type with colemak instead of qwerty."
