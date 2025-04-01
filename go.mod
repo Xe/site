@@ -5,7 +5,7 @@ toolchain go1.24.1
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.36.3
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.78.2
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.79.0
 	github.com/bep/debounce v1.2.1
 	github.com/donatj/hmacsig v1.1.0
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
