@@ -21,7 +21,7 @@ require (
 	k8s.io/apimachinery v0.32.3
 	k8s.io/client-go v0.32.3
 	tailscale.com v1.82.0
-	within.website/x v1.12.0
+	within.website/x v1.13.0
 )
 
 require (
@@ -30,8 +30,8 @@ require (
 	github.com/ProtonMail/go-crypto v1.1.5 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.10 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.29.5 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.59 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.28 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.17.60 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.29 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.34 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.34 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.2 // indirect
@@ -40,9 +40,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.7.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.15 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.18.15 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.24.15 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.28.14 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.33.14 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.24.16 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.28.15 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.33.15 // indirect
 	github.com/aws/smithy-go v1.22.2 // indirect
 	github.com/cloudflare/circl v1.6.0 // indirect
 	github.com/cyphar/filepath-securejoin v0.4.1 // indirect
@@ -56,7 +56,7 @@ require (
 	github.com/go-git/go-billy/v5 v5.6.2 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-openapi/jsonpointer v0.21.0 // indirect
-	github.com/go-openapi/jsonreference v0.20.4 // indirect
+	github.com/go-openapi/jsonreference v0.21.0 // indirect
 	github.com/go-openapi/swag v0.23.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
@@ -78,7 +78,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
 	github.com/skeema/knownhosts v1.3.1 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	go4.org/mem v0.0.0-20240501181205-ae6ca9944745 // indirect
