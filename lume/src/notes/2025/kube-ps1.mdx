@@ -1,0 +1,85 @@
+---
+title: "Life pro tip: put your active kubernetes context in your prompt"
+desc: "kube_ps1 is love, kube_ps1 is life"
+date: 2025-04-05
+hero:
+  ai: "Photo by Xe Iaso, Canon EOS R6 Mark ii, 16mm wide angle lens"
+  file: touch-grass
+  prompt: "A color-graded photo of a forest in Gatineau Park, the wildlife looks green and lush"
+---
+
+Today I did an oopsie. I tried to upgrade a service in my homelab cluster (`alrest`) but accidentally upgraded it in the production cluster (`aeacus`). I was upgrading `ingress-nginx` to patch [the security vulnerabilities released a while ago](https://kubernetes.io/blog/2025/03/24/ingress-nginx-cve-2025-1974/). I should have done it sooner, but [things have been rather wild lately](https://arstechnica.com/ai/2025/03/devs-say-ai-crawlers-dominate-traffic-forcing-blocks-on-entire-countries/) and now [kernel.org runs some software I made](https://social.kernel.org/notice/Asir7LiPevX6XcEVJQ).
+
+<Conv name="Cadey" mood="coffee">
+  <Picture
+    path="notes/2025/kube-ps1/domino-meme"
+    desc="A domino effect starting at 'Amazon takes out my git server' ending in 'software running on kernel.org'."
+  />
+</Conv>
+
+Either way, I found out that [Oh my ZSH](https://ohmyz.sh/) (the ZSH prompt toolkit I use) has a plugin for [kube_ps1](https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/kube-ps1/README.md). This lets you put your active Kubernetes context in your prompt so that you're less likely to apply the wrong manifest to the wrong cluster.
+
+To install it, I changed the `plugins` list in my `~/.zshrc`:
+
+```diff
+-plugins=(git)
++plugins=(git kube-ps1)
+```
+
+And then added configuration at the end for kube_ps1:
+
+```sh
+export KUBE_PS1_NS_ENABLE=false
+export KUBE_PS1_SUFFIX=") "
+
+PROMPT='$(kube_ps1)'$PROMPT
+```
+
+This makes my prompt look like this:
+
+```text
+(⎈|alrest) ➜  site git:(main) ✗
+```
+
+Showing that I'm using the Kubernetes cluster Alrest.
+
+<ConvP>
+  <Conv name="Aoi" mood="wut">
+    Wouldn't it be better to modify your configuration such that you always have
+    to pass a `--context` flag or something?
+  </Conv>
+  <Conv name="Cadey" mood="coffee">
+    Yes, but some of the tools I use don't have that support universally. Until
+    I can ensure they all do, I'm willing to settle for tamper-evident instead
+    of tamper-resistant.
+  </Conv>
+</ConvP>
+
+## Why upgrading ingress-nginx broke my HTTP ingress setup
+
+Apparently when I set up the Kubernetes cluster for my website, the [Anubis docs](https://anubis.techaro.lol) and other things like my Headscale server, I did a very creative life decision. I started out with the "baremetal" self-hosted ingress-nginx install flow and then manually edited the `Service` to be a `LoadBalancer` service instead of a `NodePort` service.
+
+I had forgotten about this. So when the upgrade hit the wrong cluster, Kubernetes happily made that `Service` into a `NodePort` service, destroying the cloud's load balancer that had been doing all of my HTTP ingress.
+
+Thankfully, Kubernetes dutifully recorded logs of that entire process, which I have reproduced here for your amusement.
+
+| Event type | Reason               | Age | From               | Message                  |
+| :--------- | :------------------- | :-- | :----------------- | :----------------------- |
+| Normal     | Type changed         | 13m | service-controller | LoadBalancer -> NodePort |
+| Normal     | DeletingLoadBalancer | 13m | service-controller | Deleting load balancer   |
+| Normal     | DeletedLoadBalancer  | 13m | service-controller | Deleted load balancer    |
+
+<ConvP>
+  <Conv name="Cadey" mood="facepalm">
+    OOPS!
+  </Conv>
+  <Conv name="Numa" mood="smug">
+    Pro tip if you're ever having trouble waking up, take down production.
+    That'll wake you up in [a
+    jiffy](https://en.wikipedia.org/wiki/Jiffy_(time))!
+  </Conv>
+</ConvP>
+
+Thankfully, getting this all back up was easy. All I needed to do was change the `Service` type back to LoadBalancer, wait a second for the cloud to converge, and then change the default DNS target from the old IP address to the new one. [external-dns](https://kubernetes-sigs.github.io/external-dns/latest/) updated everything once I changed the IP it was told to use, and now everything should be back to normal.
+
+Well, at least I know how to do that now!
