@@ -1,6 +1,7 @@
 export interface XeblogConvProps {
   name: string;
   mood: string;
+  title?: string;
   children: HTMLElement[];
   standalone?: boolean;
   aiModel?: string;
@@ -10,6 +11,7 @@ const ConvSnippet = ({
   name,
   mood,
   children,
+  title,
   standalone,
   aiModel,
 }: XeblogConvProps) => {
@@ -45,6 +47,13 @@ const ConvSnippet = ({
         {/* Username */}
         <span className="font-semibold text-sm block mb-1">
           <a href={`/characters#${nameLower}`}>{name}</a>
+          {!!title && (
+            <>
+              {" ("}
+              {title}
+              {")"}
+            </>
+          )}
         </span>
         <span className="mx-auto" />
 
