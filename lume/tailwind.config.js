@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Iosevka Aile Iaso", "sans-serif"],
+        sans: ["Schibsted Grotesk", "Iosevka Aile Iaso", "sans-serif"],
         mono: ["Iosevka Curly Iaso", "monospace"],
         serif: ["Podkova", "Iosevka Etoile Iaso", "serif"],
         aile: ["Iosevka Aile Iaso", "Inter"],
