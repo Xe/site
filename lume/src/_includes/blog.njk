@@ -30,7 +30,9 @@ layout: base.njk
     {% endif %}
 
     {% if hero %}
-        {{ comp.XeblogHero(hero) | safe }}
+        <center>
+            {{ comp.XeblogHero(hero) | safe }}
+        </center>
         <small class="text-xs text-fg-3 dark:text-fgDark-3 mb-2 mx-auto">{{hero.prompt}} - {{hero.ai}}</small>
     {% endif %}
 
