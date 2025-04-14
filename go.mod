@@ -21,7 +21,7 @@ require (
 	gopkg.in/mxpv/patreon-go.v1 v1.0.0-20171031001022-1d2f253ac700
 	k8s.io/apimachinery v0.32.3
 	k8s.io/client-go v0.32.3
-	tailscale.com v1.82.2
+	tailscale.com v1.82.4
 	within.website/x v1.13.4
 )
 
