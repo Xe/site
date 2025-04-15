@@ -11,17 +11,17 @@ export default function XeblogHero({ ai, file, prompt }: XeblogHeroProps) {
         <picture>
           <source
             type="image/avif"
-            srcset={`https://cdn.xeiaso.net/file/christine-static/hero/${file}.avif`}
+            srcset={`https://files.xeiaso.net/hero/${file}.avif`}
           />
           <source
             type="image/webp"
-            srcset={`https://cdn.xeiaso.net/file/christine-static/hero/${file}.webp`}
+            srcset={`https://files.xeiaso.net/hero/${file}.webp`}
           />
           <img
             alt={`An image of ${prompt}`}
             className="hero-image"
             loading="lazy"
-            src={`https://cdn.xeiaso.net/file/christine-static/hero/${file}.jpg`}
+            src={`https://files.xeiaso.net/hero/${file}.jpg`}
           />
         </picture>
         {ai !== undefined ? (

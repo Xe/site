@@ -1,9 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://cdn.xeiaso.net/file/christine-static/static/font/inter/inter.css");
+@import url(https://files.xeiaso.net/static/font/inter/inter.css);
 @import url(https://cdn.xeiaso.net/static/css/iosevka/family.css);
-@import url(https://cdn.xeiaso.net/static/css/podkova/family.css);
+
+@font-face {
+  font-family: "Podkova";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("static/font/Podkova.woff2") format("woff2");
+}
 
 /* latin-ext */
 @font-face {

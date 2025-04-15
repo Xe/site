@@ -50,7 +50,6 @@ la budza pu cusku lu
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta name="go-import" content="xeiaso.net/v4 git https://github.com/Xe/site"/>
 
-        <link rel="stylesheet" href="https://cdn.xeiaso.net/static/pkg/iosevka/family.css"/>
         <link rel="stylesheet" href="/styles.css"/>
         <link rel="alternate" type="application/rss+xml" href="https://xeiaso.net/blog.rss"/>
         <link rel="alternate" type="application/json" href="https://xeiaso.net/blog.json"/>
@@ -73,7 +72,7 @@ la budza pu cusku lu
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="/static/favicon/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
-        <link rel="canonical" href="https://xeiaso.net{{ url }}" />
+        <link rel="canonical" href="https://xeiaso.net{{ url }}"/>
 
         {% if title %}
             <title>{{ title }} - Xeserv</title>
@@ -86,11 +85,11 @@ la budza pu cusku lu
         {% endif %}
 
         {% if hero %}
-            <meta property="og:image" content="https://cdn.xeiaso.net/file/christine-static/hero/{{ hero.file }}.jpg"/>
-            <meta property="twitter:image" content="https://cdn.xeiaso.net/file/christine-static/hero/{{ hero.file }}.jpg"/>
+            <meta property="og:image" content="https://files.xeiaso.net/hero/{{ hero.file }}.jpg"/>
+            <meta property="twitter:image" content="https://files.xeiaso.net/hero/{{ hero.file }}.jpg"/>
         {% endif %}
     </head>
-    
+
     {{ comp.ads() | safe }}
     {{ content | safe }}
 

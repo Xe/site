@@ -4,22 +4,28 @@ export interface XeblogSlideProps {
   desc?: string;
 }
 
-export default function XeblogSlide({ name, essential, desc }: XeblogSlideProps) {
+export default function XeblogSlide({
+  name,
+  essential,
+  desc,
+}: XeblogSlideProps) {
   return (
-    <figure class={essential ? "xeblog-sides-essential" : "xeblog-slides-fluff"}>
+    <figure
+      class={essential ? "xeblog-sides-essential" : "xeblog-slides-fluff"}
+    >
       <picture>
         <source
           type="image/avif"
-          srcset={`https://cdn.xeiaso.net/file/christine-static/talks/${name}.avif`}
+          srcset={`https://files.xeiaso.net/talks/${name}.avif`}
         />
         <source
           type="image/webp"
-          srcset={`https://cdn.xeiaso.net/file/christine-static/talks/${name}.webp`}
+          srcset={`https://files.xeiaso.net/talks/${name}.webp`}
         />
         <img
           alt={desc || `Slide ${name}`}
           loading="lazy"
-          src={`https://cdn.xeiaso.net/file/christine-static/talks/${name}.jpg`}
+          src={`hhttps://files.xeiaso.net/talks/${name}.jpg`}
         />
       </picture>
       {desc && <figcaption>{desc}</figcaption>}

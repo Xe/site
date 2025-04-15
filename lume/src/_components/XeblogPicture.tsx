@@ -11,21 +11,21 @@ export default function XeblogPicture({
 }: XeblogPicture) {
   return (
     <figure className={`max-w-3xl mx-auto not-prose w-full ${className}`}>
-      <a href={`https://cdn.xeiaso.net/file/christine-static/${path}.jpg`}>
+      <a href={`https://files.xeiaso.net/${path}.jpg`}>
         <picture>
           <source
             type="image/avif"
-            srcset={`https://cdn.xeiaso.net/file/christine-static/${path}.avif`}
+            srcset={`https://files.xeiaso.net/${path}.avif`}
           />
           <source
             type="image/webp"
-            srcset={`https://cdn.xeiaso.net/file/christine-static/${path}.webp`}
+            srcset={`https://files.xeiaso.net/${path}.webp`}
           />
           <img
             alt={desc}
             className={className}
             loading="lazy"
-            src={`https://cdn.xeiaso.net/file/christine-static/${path}.jpg`}
+            src={`https://files.xeiaso.net/${path}.jpg`}
           />
         </picture>
       </a>

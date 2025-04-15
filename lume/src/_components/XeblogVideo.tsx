@@ -7,13 +7,13 @@ export interface VideoProps {
 }
 
 export default function Video({ path, vertical }: VideoProps) {
-  const streamURL = `https://cdn.xeiaso.net/file/christine-static/${path}/index.m3u8`;
+  const streamURL = `https://files.xeiaso.net/${path}/index.m3u8`;
   const id = sha256(streamURL);
   const video = (
     <video id={id} className="not-prose sm:max-h-[50vh] mx-auto" controls>
       <source src={streamURL} type="application/vnd.apple.mpegurl" />
       <source
-        src="https://cdn.xeiaso.net/file/christine-static/blog/HLSBROKE.mp4"
+        src="https://files.xeiaso.net/blog/HLSBROKE.mp4"
         type="video/mp4"
       />
     </video>

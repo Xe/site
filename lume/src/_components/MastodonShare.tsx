@@ -1,13 +1,13 @@
 import { useState } from "npm:preact/hooks";
 
 const u = (url = "", params = {}) => {
-    let result = new URL(url, window.location.href);
-    Object.entries(params).forEach((kv) => {
-      let [k, v] = kv;
-      result.searchParams.set(k, v as string);
-    });
-    return result.toString();
-  };
+  let result = new URL(url, window.location.href);
+  Object.entries(params).forEach((kv) => {
+    let [k, v] = kv;
+    result.searchParams.set(k, v as string);
+  });
+  return result.toString();
+};
 
 export interface MastodonShareButtonProps {
   title: string;
@@ -16,9 +16,12 @@ export interface MastodonShareButtonProps {
   tags: string;
 }
 
-export default function MastodonShareButton(
-  { title, url, series, tags }: MastodonShareButtonProps,
-) {
+export default function MastodonShareButton({
+  title,
+  url,
+  series,
+  tags,
+}: MastodonShareButtonProps) {
   let defaultURL = localStorage["mastodon_instance"];
 
   if (defaultURL == undefined) {
@@ -49,11 +52,7 @@ ${series ? "#" + series + " " : ""}${
           oninput={(e) => setURL(e.target.value)}
         />
         <br />
-        <textarea
-          rows={6}
-          cols={40}
-          oninput={(e) => setToot(e.target.value)}
-        >
+        <textarea rows={6} cols={40} oninput={(e) => setToot(e.target.value)}>
           {getToot()}
         </textarea>
         <br />

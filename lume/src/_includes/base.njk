@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta name="go-import" content="xeiaso.net/v4 git https://github.com/Xe/site"/>
 
-        <link rel="stylesheet" href="https://cdn.xeiaso.net/static/pkg/iosevka/family.css"/>
         <link rel="stylesheet" href="/styles.css"/>
 
         <link rel="alternate" type="application/rss+xml" href="https://xeiaso.net/blog.rss"/>
@@ -48,19 +47,19 @@
         {% endif %}
 
         {% if image %}
-            <meta property="og:image" content="https://cdn.xeiaso.net/file/christine-static/{{ image }}.jpg"/>
-            <meta property="twitter:image" content="https://cdn.xeiaso.net/file/christine-static/{{ image }}.jpg"/>
+            <meta property="og:image" content="https://files.xeiaso.net/{{ image }}.jpg"/>
+            <meta property="twitter:image" content="https://files.xeiaso.net/{{ image }}.jpg"/>
             <meta name="twitter:card" content="summary_image_large"/>
         {% endif %}
 
         {% if hero %}
             {% if hero.social %}
-                <meta property="og:image" content="https://cdn.xeiaso.net/file/christine-static/social/{{ hero.file }}.jpg"/>
-                <meta property="twitter:image" content="https://cdn.xeiaso.net/file/christine-static/social/{{ hero.file }}.jpg"/>
+                <meta property="og:image" content="https://files.xeiaso.net/social/{{ hero.file }}.jpg"/>
+                <meta property="twitter:image" content="https://files.xeiaso.net/social/{{ hero.file }}.jpg"/>
                 <meta name="twitter:card" content="summary_large_image"/>
             {% else %}
-                <meta property="og:image" content="https://cdn.xeiaso.net/file/christine-static/hero/{{ hero.file }}.jpg"/>
-                <meta property="twitter:image" content="https://cdn.xeiaso.net/file/christine-static/hero/{{ hero.file }}.jpg"/>
+                <meta property="og:image" content="https://files.xeiaso.net/hero/{{ hero.file }}.jpg"/>
+                <meta property="twitter:image" content="https://files.xeiaso.net/hero/{{ hero.file }}.jpg"/>
                 <meta name="twitter:card" content="summary_large_image"/>
             {% endif %}
         {% endif %}
@@ -71,6 +70,7 @@
 
         <link rel="preconnect" href="https://stickers.xeiaso.net"/>
         <link rel="preconnect" href="https://cdn.xeiaso.net"/>
+        <link rel="preconnect" href="https://files.xeiaso.net"/>
         <link rel="preconnect" href="https://fly.storage.tigris.dev"/>
     </head>
 
