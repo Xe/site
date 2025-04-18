@@ -66,6 +66,8 @@ export default ({ search, resume, notableProjects, contactLinks }, { date }) => 
 
             <p class="mb-4">Looking for someone for your team? Check <a href="/signalboost">here</a>.</p>
 
+            <iframe src="https://github.com/sponsors/Xe/card" title="Sponsor Xe" height="225" width="600" style="border: 0;" />
+
             <div class="flex flex-wrap items-start justify-center p-5">
                 {resume.buzzwords.map((buzzword) => (
                     <span class="m-2 p-2 text-sm bg-bg-1 dark:bg-bgDark-1 text-fg-1 dark:text-fgDark-1 rounded-lg">{buzzword}</span>
