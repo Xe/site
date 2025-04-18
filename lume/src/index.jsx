@@ -37,6 +37,8 @@ export default ({ search, resume, notableProjects, contactLinks }, { date }) => 
                 })}
             </ul>
 
+            <iframe src="https://github.com/sponsors/Xe/card" title="Sponsor Xe" height="225" width="600" style="border: 0;" className="mx-auto" />
+
             <h2 class="text-2xl mb-4">Notable Publications</h2>
             <ul class="list-disc ml-4 mb-4">
                 {resume.notablePublications.map((publication) => (
@@ -65,8 +67,6 @@ export default ({ search, resume, notableProjects, contactLinks }, { date }) => 
             </ul>
 
             <p class="mb-4">Looking for someone for your team? Check <a href="/signalboost">here</a>.</p>
-
-            <iframe src="https://github.com/sponsors/Xe/card" title="Sponsor Xe" height="225" width="600" style="border: 0;" />
 
             <div class="flex flex-wrap items-start justify-center p-5">
                 {resume.buzzwords.map((buzzword) => (

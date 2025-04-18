@@ -11,13 +11,21 @@ layout: base.njk
         }
     </style>
     <h1 class="mb-2">{{title}}</h1>
-    <p class="text-sm text-fg-3 dark:text-fgDark-3 my-1 lg:mx-16">
-        Published on <time datetime={{date | date("DATE")}}>{{date | date("DATE_US")}}</time>, {{ readingInfo.words }} words, {{ readingInfo.minutes }} minutes to read
-    </p>
 
-    {% if desc %}
-        <p class="max-w-[60ch] lg:mx-auto text-sm font-sans text-fg-3 dark:text-fgDark-3 my-1">{{desc}}</p>
-    {% endif %}
+    <div class="max-w-[80ch] flex items-stretch mx-auto gap-4 lg:gap-12">
+        <div>
+            <p class="text-sm text-fg-3 dark:text-fgDark-3 my-1 lg:mx-16">
+                Published on <time datetime={{date | date("DATE")}}>{{date | date("DATE_US")}}</time>, {{ readingInfo.words }} words, {{ readingInfo.minutes }} minutes to read
+            </p>
+
+            {% if desc %}
+                <p class="text-sm font-sans text-fg-3 dark:text-fgDark-3 my-1">{{desc}}</p>
+            {% endif %}
+        </div>
+        <div>
+            <iframe src="https://github.com/sponsors/Xe/button" title="Sponsor Xe" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
+        </div>
+    </div>
 
     {% if patronExclusive %}
         <div class="bg-yellow-50 border-l-4 border-yellow-400 py-1 px-4 mb-4">
