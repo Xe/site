@@ -71,7 +71,8 @@ jobs:
               - 'pb/**/*'
               - 'go.mod'
               - 'go.sum'
-              - 'Earthfile'
+              - 'docker/*'
+              - "docker-bake.hcl"
               - 'manifest/**/*.yaml'
       - uses: azure/setup-kubectl@v4
         if: steps.changes.outputs.src == 'true'
