@@ -23,7 +23,7 @@ export default ({ patrons }) => {
       <p className="mb-4">
         This page is a list of all of my patrons. Thank you all so much for your
         support! If you want to get on this list, please consider{" "}
-        <a href="https://patreon.com/cadey">becoming a patron</a> or sponsoring me on
+        <a href="https://patreon.com/cadey">becoming a patron</a> or sponsoring me on{" "}
         <a href="https://github.com/sponsors/Xe">GitHub Sponsors</a>! This page
         will update whenever something changes on Patreon.
       </p>
