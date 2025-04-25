@@ -21,7 +21,7 @@ export default ({ search }, { date }) => {
             const url = post.redirect_to ? post.redirect_to : post.url;
             return (
               <li>
-                <time datetime={date(post.date)} className="font-mono">{post.date.toLocaleDateString("en-US", dateOptions)}</time> -{" "}
+                <time datetime={date(post.date)} className="font-mono">{post.date.toISOString().split('T')[0]}</time> -{" "}
                 <a href={url}>{post.title}</a>
               </li>
             );

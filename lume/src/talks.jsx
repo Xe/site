@@ -9,12 +9,15 @@ export default ({ search }, { date }) => {
       <ul class="list-disc ml-4 mb-4">
         {search.pages("layout=talk.njk", "order date=desc")
           .filter(post => post.index)
-          .map((post) => (
-            <li>
-              <time datetime={date(post.date)}>{date(post.date, "DATE_US")}</time> -{" "}
-              <a href={post.url}>{post.title}</a>
-            </li>
-          ))}
+          .map((post) => {
+            const url = post.redirect_to ? post.redirect_to : post.url;
+            return (
+              <li>
+                <time datetime={date(post.date)} className="font-mono">{post.date.toISOString().split('T')[0]}</time> -{" "}
+                <a href={url}>{post.title}</a>
+              </li>
+            );
+          })}
       </ul>
     </>
   );

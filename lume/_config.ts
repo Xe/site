@@ -60,7 +60,7 @@ site.use(jsx_preact());
 site.use(attributes());
 site.use(date({
   formats: {
-    "DATE_US": "MM/dd/yyyy",
+    "DATE_US": "yyyy-MM-dd",
   },
 }));
 site.use(esbuild({
