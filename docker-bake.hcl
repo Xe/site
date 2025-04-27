@@ -32,15 +32,11 @@ target "patreon-saasproxy" {
 target "xesite" {
   args = {
     ALPINE_VERSION = null
-    DENO_SHA = null
     DENO_VERSION = null
     DHALL_VERSION = null
     DHALL_JSON_VERSION = null
-    DHALL_JSON_SHA = null
     FONTS_VERSION = null
-    FONTS_SHA = null
     GO_VERSION = null
-    TYPST_SHA = null
     TYPST_VERSION = null
     UBUNTU_VERSION = "24.04"
   }
