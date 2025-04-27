@@ -80,7 +80,7 @@ spec:
           - name: "METRICS_BIND"
             value: ":9090"
           - name: "POLICY_FNAME"
-            value: "/xe/cfg/anubis/botPolicies.json"
+            value: "/xe/cfg/anubis/botPolicies.yaml"
           - name: "SERVE_ROBOTS_TXT"
             value: "false"
           - name: "TARGET"

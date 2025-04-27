@@ -1,0 +1,9 @@
+- name: blog-rss-feed
+  action: ALLOW
+  path_regex: ^/blog.rss$
+- name: blog-json-feed
+  action: ALLOW
+  path_regex: ^/blog.json$
+- name: xecast-rss-feed
+  action: ALLOW
+  path_regex: ^/xecast.rss$

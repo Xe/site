@@ -12,4 +12,5 @@ configMapGenerator:
   - name: anubis-cfg
     behavior: create
     files:
-      - ./anubis/botPolicies.json
+      - ./anubis/botPolicies.yaml
+      - ./anubis/xesite-rss-feeds.yaml
