@@ -2,7 +2,27 @@ let Link = ./types/Link.dhall
 
 let Person = ./types/Person.dhall
 
-in  [ Person::{
+in  [ 
+      Person::{
+      , name = "Azan"
+      , tags =
+        [ "generalist"
+        , "product"
+        , "full-stack"
+        , "typescript"
+        , "react"
+        , "angular"
+        , "rust"
+        , "design-systems"
+        , "engineering-management"
+        ]
+      , links =
+        [ Link::{ url = "https://github.com/azan-n", title = "GitHub" }
+        , Link::{ url = "https://azan-n.com", title = "Website" }
+        , Link::{ url = "https://azan-n.com/resume.pdf", title = "Resume" }
+        ]
+      }
+    , Person::{
       , name = "bri recchia"
       , tags =
         [ "virtualization"
