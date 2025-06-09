@@ -1,0 +1,30 @@
+---
+title: Apple just Sherlocked Docker
+date: 2025-06-09
+---
+
+This year's [WWDC keynote](https://www.youtube.com/watch?v=0_DjDdfqtUE) was cool. They announced a redesign of the OSes, unified the version numbers across the fleet, and found ways to hopefully make AI useful (I'm reserving my right to be a skeptic based on how bad Apple Intelligence currently is). However, the keynote slept on the biggest announcement for developers: they're bringing the ability to run Linux containers in macOS:
+
+> <big>Containerization Framework</big>
+>
+> The Containerization framework enables developers to create, download, or run Linux container images directly on Mac. It’s built on an open-source framework optimized for Apple silicon and provides secure isolation between container images.
+
+<Picture path="blog/2025/dubdub/container-command" />
+
+This is an absolute game changer. One of the biggest pain points with my MacBook is that the battery life is great...until I start my Linux VM or run the Docker app. I don't even know where to begin to describe how cool this is and how it will make production deployments so much easier to access for the next generation of developers.
+
+Maybe this could lead to Swift being a viable target for web applications. I've wanted to use Swift on the backend before but Vapor and other frameworks just feel so frustratingly close to greatness. Combined with the [Swift Static Linux SDK](https://www.swift.org/documentation/articles/static-linux-getting-started.html) and some of the magic that powers [Private Cloud Compute](https://security.apple.com/blog/private-cloud-compute/), you could get an invincible server side development experience that rivals what Google engineers dream up directly on your MacBook.
+
+I can't wait to see more. This may actually be what gets me to raw-dog beta macOS on my MacBook.
+
+The things I'd really like to know:
+
+1. What is the battery life impact when you have an nginx container that's doing nothing?
+2. What is the support for things like the GPU APIs?
+3. How does it handle Rosetta?
+4. Can you run Kubernetes (or even k3s) on it?
+5. Can I use any Docker/OCI image or do I need to use the Mac Container Store or whatever?
+
+I really wonder how Docker is feeling, I think they're getting [Sherlocked](https://www.npr.org/2024/06/17/g-s1-4912/apple-app-store-obsolete-sherlocked-tapeacall-watson-copy).
+
+Either way, cool things are afoot and I can't wait to see more.
