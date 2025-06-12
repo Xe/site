@@ -20,7 +20,7 @@ require (
 	k8s.io/apimachinery v0.33.1
 	k8s.io/client-go v0.33.1
 	tailscale.com v1.84.2
-	within.website/x v1.21.0
+	within.website/x v1.22.0
 )
 
 require (
