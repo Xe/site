@@ -1,0 +1,118 @@
+---
+title: "I fight bots in my free time"
+desc: |
+  I made Anubis, a lightweight, open-source Web Application Firewall designed to block automated bot attacks without frustrating real users. Anubis uses techniques like TLS fingerprinting and JavaScript proof of work to keep your site safe while staying flexible, fast, and easy to deploy.
+date: 2025-06-15
+image: talks/2025/ai-chatbot-friends/001
+---
+
+import Slide from "../../_components/XeblogSlide.tsx";
+
+This was a lightning talk I did at [BSDCan](https://www.bsdcan.org/2025/). It was a great conference and I'll be sure to be there next year!
+
+<Video path="talks/2025/bsdcan-anubis" />
+
+export const S = ({ number, desc }) => (
+  <Slide name={`2025/bsdcan-anubis/${number}`} desc={desc} />
+);
+
+<S number="002" desc="The title slide with the talk and speaker name." />
+
+Hi, I'm Xe, and I fight bots in my free time. I'd love to do it full time, but that's not financially in the cards yet. I made Anubis. Anubis is a web AI firewall utility that stops the bots from taking out your website. It's basically the Cloudflare "Are you a bot?" page, but self-hostable.
+
+<S number="003" desc="A captcha component." />
+
+And without this. Scrapers have CAPTCHA solvers built in. These CAPTCHA solvers are effectively APIs that just have underpaid third world humans in the loop, and it's just kind of bad and horrible.
+
+<S number="004" desc="A captcha component." />
+
+So Anubis is an uncaptcha. It uses features of your browser to automate a lot of the work that a CAPTCHA would, and right now the main implementation is by having it run a bunch of cryptographic math with JavaScript to prove that you can run JavaScript in a way that can be validated on the server. I'm working on obviating that because surprisingly many people get very angry about having to run JavaScript, but it's within the cards.
+
+<S number="005" desc="A captcha component." />
+
+Anubis is open source software written in Go. It's on GitHub. It's got like eight kilostars. It works on any stack that lets you run more than one program. We have examples for Nginx, Caddy, Apache, and Kubernetes.
+
+<S
+  number="007"
+  desc="A slide showing the Repology version history graph for Anubis."
+/>
+
+It's in your package repos. If you do ports for FreeBSD or pkgsrc for NetBSD, please bump the version. I'm about to release a new one, but please bump the current version.
+
+<S number="008" desc="Why does Anubis exist?" />
+
+So you might be wondering, what's the story? Why does Anubis exist?
+
+<S
+  number="009"
+  desc="The Amazon logo using a flamethrower to burninate my Gitea server."
+/>
+
+Well, this happened. I have a Git server for my own private evil plans, and Amazon's crawler discovered it through TLS certificate transparency logs and decided to unleash the hammer of God. And that happened. They had the flamethrower of requests just burning down my poor server, and it was really annoying because I was trying to do something and it just didn't work. Also helps if you don't schedule your storage on rotational drives.
+
+<S
+  number="010"
+  desc="A slide showing a hilarious number of logos of organizations that deploy Anubis."
+/>
+
+But I published it on GitHub, and like four months later, look at all these logos. There's more logos that I forgot to put on here and will be in the version on my website. But like, yeah, it's used by FreeBSD, NetBSD, Haiku, GNOME, FFmpeg, and the United Nations Educational, Scientific, and Cultural Organization. Honestly, seeing UNESCO just through a random DuckDuckGo search made me think, huh, maybe this is an actual problem. And like any good problem, it's a hard problem.
+
+<S
+  number="012"
+  desc="A screenshot of Pale Moon passing the bot detection check."
+/>
+
+How do you tell if any request is coming from a browser?
+
+This screenshot right here uses Pale Moon, which is a known problem child in terms of bot detection services and something that I actively do test against to make sure that it works. But how do you know if any given request is coming from a browser?
+
+It’s very hard, and I have been trying to find ways to do it better. The problem is, in order to know what good browsers look like, you have to know what bad scrapers look like. And the great news is that scrapers look like browsers, asterisk. So you have to find other ways, like behaviors or third-party or like third-order side effects. It’s a huge pain.
+
+<S
+  number="015"
+  desc="A list of fingerprinting methods that I've been trying including JA4, JA3N, JA4H, HTTP/2 fingerprinting, THR1, and if the client executes JS."
+/>
+
+So as a result, I'm trying a bunch of fingerprinting methods. These are a lot of the fingerprints that I've listed here, like JA4, JA3N are all based on the TLS information that you send to every website, whether you want to or not, because that's how security works. I'm trying to do stuff based on HTTP requests or the HTTP2 packets that you send to the server, which you have to do in order for things to work. And I'm falling back to, can you run JavaScript, lol?
+
+<S number="016" desc="A list of things I want to try in the future." />
+
+So in terms of things I want to do next, obviously, I want to do better testing on BSD. Right now my testing is: does it compile? And because I've written it in Go without Cgo, that answer is yes. I want to build binary packages for BSDs, because even though I think it's better suited by downstream ports and stuff, I still want to have those packages as an option.
+
+I want to do a hosted option like Cloudflare, because some people just don't want to run Anubis but want to run Anubis. I want to do system load-based thresholds, so it only kicks in as it is aggressive when things are actively on fire. I want to have better NoJS support, which will include every way to tell something as a browser without JavaScript in ways that make you read all of the specs and start having an existential breakdown. I want to do stuff with WebAssembly on the server, because I've always wanted to see how that would blow up in prod. I want to do an IP reputation database, Kubernetes stuff, end-to-end testing doesn't suck.
+
+And finally, there's one of the contributors that I really want to hire, but I can't afford to yet, so I'd love to when I can.
+
+<S
+  number="017"
+  desc="If you want to sabotage Anubis, make sure Final Fantasy 14 stays up."
+/>
+
+Also, if you work at an AI company, I know AI companies follow me. If you are working at an AI company, here's how you can sabotage Anubis development as easily and quickly as possible. So first is quit your job, second is work for Square Enix, and third is make absolute banger stuff for Final Fantasy XIV. That’s how you can sabotage this the best.
+
+<S number="018" desc="Xe's social media contact information." />
+
+Anyways, I've been Xe, I have stickers, I'll be in the back, and thank you for having me here. And if you have any questions, please feel free to ask.
+
+## Q&A
+
+> Well, as the con chair, I think about people making comments instead of questions. I'm going to abuse my position and make a comment. You saved my butt, thank you.
+
+You're welcome. I'm so happy that it's worked out. It’s a surreal honor to—let me get back to the logo slide, because this is nuts.
+
+<S
+  number="010"
+  desc="A slide showing a hilarious number of logos of organizations that deploy Anubis."
+/>
+
+Let’s just look at this. That’s gnome, that's wine, that's dolphin, that's the Linux kernel, that's ScummVM, that's FreeCAD, and UNESCO on the same slide. What other timeline could we have?
+
+This 2025 has been wild.
+
+> So how are your feelings? Because you’re basically trying to solve not a technical problem, but actually it’s more of a problem of society. Do you think it is winnable that way, or do we have to fight this problem in another way and make people, well, smarter is probably the wrong word.
+
+I am not sure what the end game is for this. I started out developing it for, I want my Git server to stay up. Then gnome started using it. And then it became a thing. I put it under the GitHub org of a satirical startup that I made up for satire about the tech industry. And now that has a market in education.
+
+I want to make this into a web application firewall that can potentially survive the AI bubble bursting. Because right now the AI bubble bursting is the biggest threat to the business, as it were. So a lot of it is figuring out how to pivot and do that. I've also made a build tool called Yeet that uses JavaScript to build RPM packages. Yes, there is a world where that does make sense. It's a lot of complicated problems. And there are a lot of social problems.
+
+But if you’re writing a scraper, don't. Like seriously, there is enough scraping traffic already. Use Common Crawl. It exists for a reason.
