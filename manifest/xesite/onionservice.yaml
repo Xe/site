@@ -8,10 +8,10 @@ spec:
     HiddenServiceNonAnonymousMode 1
     HiddenServiceSingleHopMode 1
   rules:
-  - port:
-      number: 80
-    backend:
-      service:
-        name: xesite
-        port:
-          number: 80
+    - port:
+        number: 80
+      backend:
+        service:
+          name: xesite
+          port:
+            number: 80
