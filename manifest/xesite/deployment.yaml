@@ -12,9 +12,6 @@ spec:
         app.kubernetes.io/name: xesite
     spec:
       volumes:
-        - name: cache
-          persistentVolumeClaim:
-            claimName: xesite-cache
         - name: data
           emptyDir: {}
         - name: anubis
@@ -70,7 +67,7 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 30
         - name: anubis
-          image: ghcr.io/techarohq/anubis:latest
+          image: reg.xeiaso.net/techaro/anubis:thoth
           imagePullPolicy: Always
           env:
             - name: "BIND"
@@ -109,3 +106,6 @@ spec:
                 - ALL
             seccompProfile:
               type: RuntimeDefault
+          envFrom:
+            - secretRef:
+                name: xesite-anubis

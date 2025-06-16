@@ -32,4 +32,4 @@ spec:
               service:
                 name: xesite
                 port:
-                  number: 80
+                  name: anubis

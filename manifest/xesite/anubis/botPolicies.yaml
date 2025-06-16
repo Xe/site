@@ -11,41 +11,79 @@
 ## /usr/share/docs/anubis/data or in the tarball you extracted Anubis from.
 
 bots:
-# Pathological bots to deny
-- # This correlates to data/bots/ai-robots-txt.yaml in the source tree
-  import: (data)/bots/ai-robots-txt.yaml
-- import: (data)/bots/cloudflare-workers.yaml 
-- import: (data)/bots/headless-browsers.yaml
-- import: (data)/bots/us-ai-scraper.yaml
+  # Pathological bots to deny
+  - # This correlates to data/bots/ai-robots-txt.yaml in the source tree
+    import: (data)/bots/ai-robots-txt.yaml
+  - import: (data)/bots/cloudflare-workers.yaml
+  - import: (data)/bots/headless-browsers.yaml
+  - import: (data)/bots/us-ai-scraper.yaml
 
-# Search engines to allow
-- import: (data)/crawlers/googlebot.yaml
-- import: (data)/crawlers/bingbot.yaml
-- import: (data)/crawlers/duckduckbot.yaml
-- import: (data)/crawlers/qwantbot.yaml
-- import: (data)/crawlers/internet-archive.yaml
-- import: (data)/crawlers/kagibot.yaml
-- import: (data)/crawlers/marginalia.yaml
-- import: (data)/crawlers/mojeekbot.yaml
+  # Search engines to allow
+  - import: (data)/crawlers/googlebot.yaml
+  - import: (data)/crawlers/bingbot.yaml
+  - import: (data)/crawlers/duckduckbot.yaml
+  - import: (data)/crawlers/qwantbot.yaml
+  - import: (data)/crawlers/internet-archive.yaml
+  - import: (data)/crawlers/kagibot.yaml
+  - import: (data)/crawlers/marginalia.yaml
+  - import: (data)/crawlers/mojeekbot.yaml
 
-# Allow common "keeping the internet working" routes (well-known, favicon, robots.txt)
-- import: (data)/common/keep-internet-working.yaml
-- import: /xe/cfg/anubis/xesite-rss-feeds.yaml
+  # Allow common "keeping the internet working" routes (well-known, favicon, robots.txt)
+  - import: (data)/common/keep-internet-working.yaml
+  - import: /xe/cfg/anubis/xesite-rss-feeds.yaml
 
-# # Punish any bot with "bot" in the user-agent string
-# # This is known to have a high false-positive rate, use at your own risk
-# - name: generic-bot-catchall
-#   user_agent_regex: (?i:bot|crawler)
-#   action: CHALLENGE
-#   challenge:
-#     difficulty: 16  # impossible
-#     report_as: 4    # lie to the operator
-#     algorithm: slow # intentionally waste CPU cycles and time
+  # Requires a subscription to Thoth to use, see
+  # TODO(Xe): docs link
+  #
+  # Throw blanket challenges for specific countries known to host abusive scrapers
+  # that do not respond to abuse complaints
+  - name: challenge-aggressive-scrapers
+    geoip:
+      counties:
+        - BR
+        - CN
+    action: WEIGH
+    weight:
+      adjust: 30
 
-# Generic catchall rule
-- name: generic-browser
-  user_agent_regex: >-
-    Mozilla|Opera
-  action: CHALLENGE
+  # Requires a subscription to Thoth to use, see
+  # TODO(Xe): docs link
+  #
+  # Deny traffic from the worst offenders hosting AI scrapers.
+  - name: deny-aggressive-asns-without-functional-abuse-contact
+    asns:
+      match:
+        - 13335 # Cloudflare
+        - 136907 # Huawei Cloud
+        - 45102 # Alibaba Cloud
+    action: WEIGH
+    weight:
+      adjust: 30
+
+  - name: residential-proxy
+    asns:
+      match:
+        - 7018
+    action: WEIGH
+    weight:
+      adjust: 10
+
+  # # Punish any bot with "bot" in the user-agent string
+  # # This is known to have a high false-positive rate, use at your own risk
+  # - name: generic-bot-catchall
+  #   user_agent_regex: (?i:bot|crawler)
+  #   action: CHALLENGE
+  #   challenge:
+  #     difficulty: 16  # impossible
+  #     report_as: 4    # lie to the operator
+  #     algorithm: slow # intentionally waste CPU cycles and time
+
+  # Generic catchall rule
+  - name: generic-browser
+    user_agent_regex: >-
+      Mozilla|Opera
+    action: WEIGH
+    weight:
+      adjust: 5
 
 dnsbl: false
