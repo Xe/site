@@ -57,7 +57,7 @@ in  [ Person::{
       }
     , Person::{
       , name = "Karan Yadav"
-      , tags = 
+      , tags =
         [ "ruby"
         , "python"
         , "linux"
