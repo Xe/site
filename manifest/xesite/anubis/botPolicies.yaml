@@ -63,10 +63,19 @@ bots:
   - name: residential-proxy
     asns:
       match:
-        - 7018
+        - 7018 # AT&T
     action: WEIGH
     weight:
       adjust: 10
+
+  - name: http2-client-protocol
+    expression:
+      all:
+        - '"X-Http-Protocol" in headers'
+        - headers["X-Http-Protocol"] == "HTTP/2.0"
+    action: WEIGH
+    weight:
+      adjust: -5
 
   # # Punish any bot with "bot" in the user-agent string
   # # This is known to have a high false-positive rate, use at your own risk
