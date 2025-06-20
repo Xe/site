@@ -67,7 +67,7 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 30
         - name: anubis
-          image: reg.xeiaso.net/techaro/anubis:thoth
+          image: ghcr.io/techarohq/anubis:latest
           imagePullPolicy: Always
           env:
             - name: "BIND"
@@ -84,8 +84,8 @@ spec:
               value: "false"
             - name: "TARGET"
               value: "http://localhost:3000"
-            # - name: "SLOG_LEVEL"
-            #   value: "debug"
+            - name: "SLOG_LEVEL"
+              value: "debug"
           volumeMounts:
             - name: anubis
               mountPath: /xe/cfg/anubis

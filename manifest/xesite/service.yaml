@@ -20,3 +20,6 @@ spec:
       port: 8081
       targetPort: 8081
       protocol: TCP
+    - name: anubis-metrics
+      port: 9090
+      targetPort: 9090

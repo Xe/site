@@ -32,4 +32,5 @@ spec:
               service:
                 name: xesite
                 port:
-                  name: anubis
+                  #name: anubis
+                  name: http
