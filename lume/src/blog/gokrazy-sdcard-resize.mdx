@@ -4,9 +4,9 @@ date: 2023-10-02
 tags:
   - gokrazy
 hero:
-  ai: Anything V3
-  file: seattle-commute
-  prompt: "1girl, green hair, green eyes, tshirt, jeans, sneakers, seattle, space needle, controlnet overlay: soyjacks pointing"
+  ai: Photo by Xe Iaso
+  file: sunburst
+  prompt: "The sun bursting into the sky at daybreak, taken from a plane."
 ---
 
 I have a Raspberry Pi embedded into my main shellbox. This allows me
@@ -57,43 +57,27 @@ sudo dd if=/dev/sde of=/dev/sdd bs=4M status=progress
 ```
 
 <XeblogConv name="Mara" mood="hacker">
-  In `dd`, the `if=` is the _input_ file and the `of=` is the _output
-  file_. These can be any files you want, even normal files on the
-  disk. If you SD card reader doesn't have two slots, you will have to
-  set the output file to somewhere on the disk, and then use that file
-  as the input file for the next run. It'd be something like:
-  
-  ```
-  sudo dd if=/dev/sde of=./sdcard.img bs=4M status=progress
-  (swap cards)
-  sudo dd if=./sdcard.img of=/dev/sde bs=4M status=progress
-  ```
-  
-  Keep in mind that when you're running `dd` commands like this, you are
-  basically working without guardrails or handbrakes. You need to be
-  _absolutely certain_ that you are dealing with the correct devices.
-  You can check these by using the `lsblk` or `dmesg` commands.
-  
-  `lsblk` lets you see the storage "block" devices that are connected
-  to a Linux machine. For example, here's what you could see on a
-  Linux machine's NVME drive:
-  
-  ```
-  $ lsblk /dev/nvme0n1
-  NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
-  nvme0n1     259:0    0 931.5G  0 disk
-  ├─nvme0n1p1 259:1    0   923G  0 part
-  ├─nvme0n1p2 259:2    0     8G  0 part [SWAP]
-  └─nvme0n1p3 259:3    0   511M  0 part /boot
-  ```
-  
-  `dmesg` lets you see the kernel log buffer. You may want to run it
-  with `-w` so that you can continuously watch the changes. When
-  figuring out which SD card was which, I used `dmesg -w` to look for
-  new block storage devices being connected, and then `lsblk` to
-  figure out which one was the old/new one. Gokrazy sets up 4
-  partitions (boot, root A, root B, and persistent storage), so you
-  can also use that to help you figure out which is which.
+  In `dd`, the `if=` is the _input_ file and the `of=` is the _output file_.
+  These can be any files you want, even normal files on the disk. If you SD card
+  reader doesn't have two slots, you will have to set the output file to
+  somewhere on the disk, and then use that file as the input file for the next
+  run. It'd be something like: ``` sudo dd if=/dev/sde of=./sdcard.img bs=4M
+  status=progress (swap cards) sudo dd if=./sdcard.img of=/dev/sde bs=4M
+  status=progress ``` Keep in mind that when you're running `dd` commands like
+  this, you are basically working without guardrails or handbrakes. You need to
+  be _absolutely certain_ that you are dealing with the correct devices. You can
+  check these by using the `lsblk` or `dmesg` commands. `lsblk` lets you see the
+  storage "block" devices that are connected to a Linux machine. For example,
+  here's what you could see on a Linux machine's NVME drive: ``` $ lsblk
+  /dev/nvme0n1 NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS nvme0n1 259:0 0 931.5G 0
+  disk ├─nvme0n1p1 259:1 0 923G 0 part ├─nvme0n1p2 259:2 0 8G 0 part [SWAP]
+  └─nvme0n1p3 259:3 0 511M 0 part /boot ``` `dmesg` lets you see the kernel log
+  buffer. You may want to run it with `-w` so that you can continuously watch
+  the changes. When figuring out which SD card was which, I used `dmesg -w` to
+  look for new block storage devices being connected, and then `lsblk` to figure
+  out which one was the old/new one. Gokrazy sets up 4 partitions (boot, root A,
+  root B, and persistent storage), so you can also use that to help you figure
+  out which is which.
 </XeblogConv>
 
 The data copy took at least half an hour, which I left running while

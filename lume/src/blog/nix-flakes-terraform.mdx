@@ -7,9 +7,9 @@ tags:
   - NixOS
   - Scaleway
 hero:
-  ai: Eimis Anime Diffusion v1.0
-  file: nix-flake-terraform-waifu
-  prompt: "a girl, Phoenix girl, fluffy hair, pixie cut, red hair, red eyes, chuunibyou, war, a hell on earth, Beautiful and detailed explosion, Cold machine, Fire in eyes, burning, Metal texture, Exquisite cloth, Metal carving, volume, best quality, Metal details, Metal scratch, Metal defects, masterpiece, best quality, best quality, illustration, highres, masterpiece, contour deepening, illustration, (beautiful detailed girl), beautiful detailed glow, green necklace, green earrings, kimono, fan, grin"
+  ai: Photo by Xe Iaso
+  file: snowy-sunset
+  prompt: "A picture of the sunset taken near the Ottawa River in winter, snow covers the ground"
 ---
 
 For the sake of argument, let's say that you want to create all of your cloud
@@ -419,7 +419,9 @@ mkSystem = extraModules:
 nixpkgs.lib.nixosSystem rec {
 system = "x86_64-linux";
 modules = [
+
 # bake the git revision of the repo into the system
+
 ({ ... }: { system.configurationRevision = self.sourceInfo.rev; })
 ] ++ extraModules;
 };

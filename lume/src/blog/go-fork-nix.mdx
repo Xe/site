@@ -2,12 +2,12 @@
 title: How to use a fork of the Go compiler with Nix
 date: 2023-03-28
 tags:
- - golang
- - nix
+  - golang
+  - nix
 hero:
-  ai: Fluff Proto-r10
-  file: coffee-gopher
-  prompt: rodent, gopher, blue fur, blue hair, blue skin, calarts, solo, male, laptop, coffee shop, detailed background, anthro, coffee mug, happy, black nose, best quality, highly detailed, eyes closed
+  ai: Photo by Xe Iaso
+  file: pike-place-market-pig
+  prompt: One of the iconic golden pig statues in the Pike Place Market in Seattle
 ---
 
 Sometimes God is dead and you need to build something with a different
@@ -16,7 +16,9 @@ multiple Go toolchains is _possible_, but it's not very elegant.
 
 However, we're in Nix land. We can do anything\*.
 
-<XeblogConv name="Aoi" mood="coffee">\*with sufficent hackery.</XeblogConv>
+<XeblogConv name="Aoi" mood="coffee">
+  \*with sufficent hackery.
+</XeblogConv>
 
 I got accepted to [Gophercon EU](https://gophercon.eu/speakers) and a
 lot of it involves doing weird things with WebAssembly and messing
@@ -32,9 +34,10 @@ that adds the port under the name `GOARCH=wasm GOOS=wasip1`. I wanted
 to pull this into my monorepo's Nix flake so that I can run `gowasi
 build foo.go` and get `foo.wasm` in the same folder to experiment with.
 
-<XeblogConv name="Mara" mood="hacker">A CL in the Go ecosystem is a
-change list or change log. You can think about it as analogous to a
-pull request in GitHub.</XeblogConv>
+<XeblogConv name="Mara" mood="hacker">
+  A CL in the Go ecosystem is a change list or change log. You can think about
+  it as analogous to a pull request in GitHub.
+</XeblogConv>
 
 Turns out this is really easy. In order to do this, you need to do
 three things:
@@ -92,28 +95,32 @@ wasigo' = pkgs.go_1_20.overrideAttrs (old: {
 });
 ```
 
-<XeblogConv name="Aoi" mood="wut">Why are you using a `'` and calling
-it `wasigo-prime`?</XeblogConv>
-<XeblogConv name="Cadey" mood="enby">If I don't name it something
-else, I will create an infinitely recursive definition. Nix is lazy
-and only evaluates things when it needs to. Making a binding called
-`wasigo` and using the name `wasigo` inside that will create infinite
-recursion when it is evaluated. I don't know of a better name for
-this, but a common pattern in Nix land is to use primes (`'`) for
-distinct values with the same name. Just like in
-Haskell.</XeblogConv>
-<XeblogConv name="Aoi" mood="wut">What about that `VERSION`
-file, what's that there for?</XeblogConv>
-<XeblogConv name="Cadey" mood="enby">That is there to tell the Go
-compiler toolchain what version it is. When you clone a git repository
-into the Nix store, all of the git metadata is purged from the
-checkout (because it's not byte-for-byte reproducible and random
-changes there could cause unwanted rebuilds of a lot of packages). If
-the `VERSION` file doesn't exist, the Go toolchain will try to
-discover what version it is from the `git` metadata, which doesn't
-exist. This file lies to the toolchain so that builds
-work.</XeblogConv>
-<XeblogConv name="Aoi" mood="cheer">I see, thanks!</XeblogConv>
+<XeblogConv name="Aoi" mood="wut">
+  Why are you using a `'` and calling it `wasigo-prime`?
+</XeblogConv>
+<XeblogConv name="Cadey" mood="enby">
+  If I don't name it something else, I will create an infinitely recursive
+  definition. Nix is lazy and only evaluates things when it needs to. Making a
+  binding called `wasigo` and using the name `wasigo` inside that will create
+  infinite recursion when it is evaluated. I don't know of a better name for
+  this, but a common pattern in Nix land is to use primes (`'`) for distinct
+  values with the same name. Just like in Haskell.
+</XeblogConv>
+<XeblogConv name="Aoi" mood="wut">
+  What about that `VERSION` file, what's that there for?
+</XeblogConv>
+<XeblogConv name="Cadey" mood="enby">
+  That is there to tell the Go compiler toolchain what version it is. When you
+  clone a git repository into the Nix store, all of the git metadata is purged
+  from the checkout (because it's not byte-for-byte reproducible and random
+  changes there could cause unwanted rebuilds of a lot of packages). If the
+  `VERSION` file doesn't exist, the Go toolchain will try to discover what
+  version it is from the `git` metadata, which doesn't exist. This file lies to
+  the toolchain so that builds work.
+</XeblogConv>
+<XeblogConv name="Aoi" mood="cheer">
+  I see, thanks!
+</XeblogConv>
 
 ## Make a wrapper script
 
@@ -144,11 +151,12 @@ export GOARCH=wasm
 exec /nix/store/px67cnp39lzynhknqqjjn9c3b838qnw9-go-1.20.2/bin/go $*
 ```
 
-<XeblogConv name="Mimi" mood="happy">The exec builtin command in Bash
-is used to execute a command that completely replaces the current
-shell process. The original shell process is destroyed and overwritten
-by the new command. Any commands after the exec command in the script
-do not get executed.</XeblogConv>
+<XeblogConv name="Mimi" mood="happy">
+  The exec builtin command in Bash is used to execute a command that completely
+  replaces the current shell process. The original shell process is destroyed
+  and overwritten by the new command. Any commands after the exec command in the
+  script do not get executed.
+</XeblogConv>
 
 And then you can go off to the races and compile things to your
 heart's content!
