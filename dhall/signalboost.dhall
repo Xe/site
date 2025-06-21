@@ -271,5 +271,23 @@ in  [ Person::{
       , links =
         [ Link::{ url = "https://github.com/ILikePizza555", title = "GitHub"} ]
       }
+    , Person::{
+      , name = "Xenia D."
+      , tags =
+        [ "Software Engineer",
+          "DevOps Engineer",
+          "Kubernetes",
+          "Terraform",
+          "Ansible",
+          "Sysadmin",
+          "Linux",
+          "BSD",
+          "Python",
+          "Java",
+          "Backend"
+        ]
+      , links =
+        [ Link::{ url = "https://github.com/fwam", title = "GitHub"} ]
+      }
     ]
 
