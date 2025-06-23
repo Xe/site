@@ -31,7 +31,7 @@ spec:
             - name: "SITE_URL"
               value: "https://xeiaso.net"
             - name: "ONION_DOMAIN"
-              value: "gi3bsuc5ci2dr4xbh5b3kja5c6p5zk226ymgszzx7ngmjpc25tmnhaqd.onion"
+              value: "ryelkcbr65vy7pzx26c3rvxya54yuh5ciafth7p6d3p3phpgo2wkznid.onion"
             - name: "REDIRECT_DOMAIN"
               value: "xeiaso.net"
             - name: "PATREON_SAASPROXY_URL"
@@ -45,8 +45,6 @@ spec:
           volumeMounts:
             - mountPath: "/xe/data"
               name: data
-          #- mountPath: "/root/.cache"
-          #  name: cache
           readinessProbe:
             httpGet:
               path: /healthz
@@ -84,8 +82,8 @@ spec:
               value: "false"
             - name: "TARGET"
               value: "http://localhost:3000"
-            - name: "SLOG_LEVEL"
-              value: "debug"
+            # - name: "SLOG_LEVEL"
+            #   value: "debug"
           volumeMounts:
             - name: anubis
               mountPath: /xe/cfg/anubis

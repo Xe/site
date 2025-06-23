@@ -17,7 +17,10 @@
   "deno.enable": true,
   "deno.lint": true,
   "deno.unstable": true,
-  "cSpell.enableFiletypes": ["mdx"],
+  "cSpell.enabledFileTypes": {
+    "mdx": true,
+    "md": true
+  },
   "cSpell.words": [
     "bootloader",
     "catgirl",
