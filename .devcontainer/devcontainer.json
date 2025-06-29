@@ -3,24 +3,26 @@
 {
   "name": "Dev",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "cacheFrom": [
+      "type=registry,ref=ghcr.io/xe/site/devcontainer"
+    ]
+  },
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
-    "ghcr.io/devcontainers/features/go:1": {},
-    "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/xe/devcontainer-features/deno:1.2.1": {},
-    "ghcr.io/xe/devcontainer-features/fish:0.1.1": {},
-    "ghcr.io/devcontainer-community/devcontainer-features/atuin.sh:1": {},
     "ghcr.io/devcontainers-extra/features/protoc:1": {},
     "ghcr.io/mrsimonemms/devcontainers/buf:1": {},
-    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
     "ghcr.io/michidk/devcontainers-features/typst:1": {}
   },
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.local/share/atuin,target=/home/vscode/.local/share/atuin,type=bind,consistency=cached"
   ],
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [3000],
+  "forwardPorts": [
+    3000
+  ],
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
