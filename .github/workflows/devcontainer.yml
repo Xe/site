@@ -22,6 +22,10 @@ jobs:
         with:
           node-version: latest
 
+      - run: |
+          sudo apt-get update
+          sudo apt-get -y install skopeo
+
       - name: Log into registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
