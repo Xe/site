@@ -7,6 +7,8 @@
     "ronnidc.nunjucks",
     "streetsidesoftware.code-spell-checker",
     "zxh404.vscode-proto3",
-    "xaver.clang-format"
+    "xaver.clang-format",
+    "austenc.tailwind-docs",
+    "spellforce.css-tailwind"
   ]
 }
