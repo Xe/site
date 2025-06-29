@@ -13,7 +13,7 @@
   "features": {
     "ghcr.io/xe/devcontainer-features/deno:1.2.1": {},
     "ghcr.io/devcontainers-extra/features/protoc:1": {},
-    "ghcr.io/mrsimonemms/devcontainers/buf:1": {},
+    // "ghcr.io/mrsimonemms/devcontainers/buf:1": {},
     "ghcr.io/michidk/devcontainers-features/typst:1": {}
   },
   "mounts": [
