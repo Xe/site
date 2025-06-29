@@ -16,9 +16,6 @@
     "ghcr.io/mrsimonemms/devcontainers/buf:1": {},
     "ghcr.io/michidk/devcontainers-features/typst:1": {}
   },
-  "mounts": [
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.local/share/atuin,target=/home/vscode/.local/share/atuin,type=bind,consistency=cached"
-  ],
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [
     3000
