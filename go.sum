@@ -273,5 +273,5 @@ sigs.k8s.io/yaml v1.4.0 h1:Mk1wCc2gy/F0THH0TAp1QYyJNzRm2KCLy3o5ASXVI5E=
 sigs.k8s.io/yaml v1.4.0/go.mod h1:Ejl7/uTz7PSA4eKMyQCUTnhZYNmLIl+5c2lQPGR2BPY=
 tailscale.com v1.84.3 h1:Ur9LMedSgicwbqpy5xn7t49G8490/s6rqAJOk5Q5AYE=
 tailscale.com v1.84.3/go.mod h1:6/S63NMAhmncYT/1zIPDJkvCuZwMw+JnUuOfSPNazpo=
-within.website/x v1.22.0 h1:sO43mrlBXv+UsQFd19oM/5cdRztprIDYJfeUZBjwbjY=
-within.website/x v1.22.0/go.mod h1:D8sEFA4WnOQbJOWmnTuc6pZ5SSS+4ucohst0R/OIAH4=
+within.website/x v1.23.0 h1:H8J4LOxMyIWB+ga6x4ne5q0eteVQ3mK0AQETZ9aD8QI=
+within.website/x v1.23.0/go.mod h1:D8sEFA4WnOQbJOWmnTuc6pZ5SSS+4ucohst0R/OIAH4=
