@@ -12,6 +12,8 @@
   "runArgs": [
     "--net=host"
   ],
+  "postStartCommand": "npm ci && go mod download",
+  "initializeCommand": "mkdir -p ${localEnv:HOME}${localEnv:USERPROFILE}/.local/share/atuin",
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/xe/devcontainer-features/deno:1.2.1": {},
