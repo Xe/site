@@ -1,0 +1,21 @@
+---
+title: "Experimenting with Development containers"
+desc: "Development containers are cool and I want to see if they work out in practice."
+date: 2025-06-30
+---
+
+A few years ago I was introduced to the idea of [Development containers](https://containers.dev/) by a former coworker. I was deep into the Nix koolaid at the time, so I thought they were kinda superfluous and ultimately not worth looking into. After having run a [fairly popular open source project](https://github.com/TecharoHQ/anubis) for a while, I've come to realize that setting up a development environment for it is actually a fair bit harder than it seems. I want to make it easy to contribute to the project, and one of the best ways I can do that is by lowering the skill floor for contribution.
+
+As such, I'm starting to experiment with development containers across my projects. I wrote this article from inside a development container on my Macbook. If you want to play around with my development environment Techaro's package builder yeet, you can [clone its repo from GitHub](https://github.com/TecharoHQ/yeet) and activate the development container. You will get a known working configuration that you can use to build new and exciting things.
+
+Notably, these development containers also allow you to use [GitHub Codespaces](https://github.com/features/codespaces) to contribute. This means you don't even need to have a machine that's able to run Linux containers. You can contribute from any machine that can run GitHub Codespaces.
+
+This is still an experiment, and here are the criteria I'm using to determine if this will be a success or not:
+
+1. Can people that don't really understand much about the stack behind projects clone a repo and get the software to build or run?
+2. Does this help lower the skill floor to make it easier to contribute to those projects?
+3. Will this finally get Anubis' integration tests to run consistently across OSes?
+
+The main reason I was inspired to try this out was after I heard a YouTuber describe what AI assisted code editing felt like for new developers: it feels like being a senior developer where you just have things flow out of your hands and you're able to make new and exciting things. I think the Techaro way of giving people that kind of experience to someone would be letting you get the development environment of a senior developer, akin to what it feels like to use an expert mechanic's garage to fix your car. When you clone the repos I'm testing with, you get a version of the configuration that I use, modulo the parts that don't make the most sense for running inside containers.
+
+I'm super excited to see how this turns out. Maybe it'll be a good thing, maybe it won't. Only one way to know for sure!

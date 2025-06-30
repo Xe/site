@@ -9,6 +9,9 @@
       "type=registry,ref=ghcr.io/xe/site/devcontainer"
     ]
   },
+  "runArgs": [
+    "--net=host"
+  ],
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/xe/devcontainer-features/deno:1.2.1": {},
