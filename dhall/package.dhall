@@ -29,6 +29,7 @@ in  Config::{
       , "Paul Allen"
       , "Kevin Mitnick"
       , "Sir Clive Sinclair"
+      , "Matt Trout"
       ]
     , jobHistory = ./jobHistory.dhall
     , seriesDescriptions = desc.descriptions
@@ -43,7 +44,8 @@ in  Config::{
       , Link::{
         , url = "https://anubis.techaro.lol"
         , title = "Anubis"
-        , description = "A anti-scraper bot filter that protects git servers for GNOME, Sourcehut, and many other small communities"
+        , description =
+            "A anti-scraper bot filter that protects git servers for GNOME, Sourcehut, and many other small communities"
         }
       , Link::{
         , url = "https://when-then-zen.christine.website/"
