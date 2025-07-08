@@ -1,16 +1,14 @@
 let xesite = ./types/package.dhall
 
-let Prelude = ./Prelude.dhall
-
 let Desc = xesite.SeriesDescription
 
 let descriptions
     : List Desc.Type
     = [ Desc::{
-      , name = "anubis"
-      , details =
-          "Adventures, misadventures, and implementation details for Anubis, Techaro's anti-AI scraper tooling."
-      }
+        , name = "anubis"
+        , details =
+            "Adventures, misadventures, and implementation details for Anubis, Techaro's anti-AI scraper tooling."
+        }
       , Desc::{
         , name = "colemak"
         , details =
@@ -54,7 +52,7 @@ let descriptions
       , Desc::{
         , name = "homelabV2"
         , details = "My second attempt at a homelab via Fedora CoreOS and k3s."
-      }
+        }
       , Desc::{
         , name = "howto"
         , details = "Instructions on how to do various things."
@@ -78,9 +76,10 @@ let descriptions
         , details =
             "Instructions on how to use Nix flakes, a new way to use Nix in a more reproducible way."
         }
-        , Desc::{
-          name = "no-way-to-prevent-this",
-          details = "Articles about the futility of preventing memory safety vulnerabilities."
+      , Desc::{
+        , name = "no-way-to-prevent-this"
+        , details =
+            "Articles about the futility of preventing memory safety vulnerabilities."
         }
       , Desc::{ name = "nixos", details = "Nix." }
       , Desc::{
@@ -127,7 +126,7 @@ let descriptions
       , Desc::{
         , name = "techaro"
         , details = "Stories about Techaro, the imaginary technology startup."
-      }
+        }
       , Desc::{
         , name = "templeos"
         , details =
@@ -158,14 +157,4 @@ let descriptions
         }
       ]
 
-let descToMapValue =
-      \(desc : Desc.Type) -> { mapKey = desc.name, mapValue = desc.details }
-
-let map =
-      Prelude.List.map
-        Desc.Type
-        (Prelude.Map.Entry Text Text)
-        descToMapValue
-        descriptions
-
-in  { descriptions, map }
+in  { descriptions }

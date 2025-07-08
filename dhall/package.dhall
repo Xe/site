@@ -4,19 +4,15 @@ let Config = xesite.Config
 
 let Link = xesite.Link
 
-let authors = ./authors.dhall
-
 let desc = ./seriesDescriptions.dhall
 
 in  Config::{
     , signalboost = ./signalboost.dhall
-    , authors = authors.map
-    , defaultAuthor = authors.default
     , clackSet =
       [ "Ashlynn"
       , "Terry Davis"
       , "Dennis Ritchie"
-      , "Steven Hawking"
+      , "Stephen Hawking"
       , "John Conway"
       , "Ruth Bader Ginsburg"
       , "Bram Moolenaar"
@@ -33,7 +29,6 @@ in  Config::{
       ]
     , jobHistory = ./jobHistory.dhall
     , seriesDescriptions = desc.descriptions
-    , seriesDescMap = desc.map
     , notableProjects =
       [ Link::{
         , url = "https://h.within.lgbt"
@@ -45,7 +40,7 @@ in  Config::{
         , url = "https://anubis.techaro.lol"
         , title = "Anubis"
         , description =
-            "A anti-scraper bot filter that protects git servers for GNOME, Sourcehut, and many other small communities"
+            "A anti-scraper bot filter that protects git servers for GNOME, UNESCO, and many other small communities"
         }
       , Link::{
         , url = "https://when-then-zen.christine.website/"
@@ -91,6 +86,5 @@ in  Config::{
       ]
     , pronouns = ./pronouns.dhall
     , characters = ./characters.dhall
-    , vods = ./streamVOD.dhall
     , resume = ./resume.dhall
     }

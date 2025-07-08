@@ -425,18 +425,16 @@ func (f *FS) writeConfig(siteCommit string) error {
 	}
 
 	for fname, data := range map[string]any{
-		"argv.json":               os.Args,
-		"authors.json":            f.conf.Authors,
-		"characters.json":         f.conf.Characters,
-		"commit.json":             map[string]any{"hash": siteCommit},
-		"contactLinks.json":       f.conf.ContactLinks,
-		"events.json":             events,
-		"jobHistory.json":         f.conf.JobHistory,
-		"notableProjects.json":    f.conf.NotableProjects,
-		"pronouns.json":           f.conf.Pronouns,
-		"resume.json":             f.conf.Resume,
-		"seriesDescriptions.json": f.conf.SeriesDescMap,
-		"signalboost.json":        f.conf.Signalboost,
+		"argv.json":            os.Args,
+		"characters.json":      f.conf.Characters,
+		"commit.json":          map[string]any{"hash": siteCommit},
+		"contactLinks.json":    f.conf.ContactLinks,
+		"events.json":          events,
+		"jobHistory.json":      f.conf.JobHistory,
+		"notableProjects.json": f.conf.NotableProjects,
+		"pronouns.json":        f.conf.Pronouns,
+		"resume.json":          f.conf.Resume,
+		"signalboost.json":     f.conf.Signalboost,
 	} {
 		slog.Debug("opening data file", "fname", filepath.Join(dataDir, fname))
 		fh, err := os.Create(filepath.Join(dataDir, fname))
@@ -465,8 +463,8 @@ func (f *FS) Clacks() []string {
 func (f *FS) writeSeriesPages() error {
 	seriesPageDir := filepath.Join(f.repoDir, f.opt.StaticSiteDir, "src", "blog", "series")
 
-	for k, v := range f.conf.SeriesDescMap {
-		fname := filepath.Join(seriesPageDir, fmt.Sprintf("%s.jsx", k))
+	for _, v := range f.conf.SeriesDescriptions {
+		fname := filepath.Join(seriesPageDir, fmt.Sprintf("%s.jsx", v.Name))
 
 		fout, err := os.Create(fname)
 		if err != nil {
@@ -478,8 +476,8 @@ func (f *FS) writeSeriesPages() error {
 			Series string
 			Desc   string
 		}{
-			Series: k,
-			Desc:   v,
+			Series: v.Name,
+			Desc:   v.Details,
 		}); err != nil {
 			return fmt.Errorf("can't write %s: %w", fname, err)
 		}

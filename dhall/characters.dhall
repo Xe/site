@@ -1,7 +1,5 @@
 let xesite = ./types/package.dhall
 
-let Prelude = ./Prelude.dhall
-
 let C = xesite.Character
 
 let they = ./pronouns/they.dhall

@@ -34,124 +34,109 @@ func Load(fname string) (*Config, error) {
 }
 
 type Config struct {
-	Authors            map[string]Author    `json:"authors"`
-	Characters         []Character          `json:"characters"`
-	ClackSet           []string             `json:"clackSet"`
-	ContactLinks       []Link               `json:"contactLinks"`
-	DefaultAuthor      Author               `json:"defaultAuthor"`
-	JobHistory         []Job                `json:"jobHistory"`
-	MiToken            string               `json:"miToken"`
-	NotableProjects    []NotableProjects    `json:"notableProjects"`
-	Port               int                  `json:"port"`
-	Pronouns           []Pronouns           `json:"pronouns"`
-	SeriesDescMap      map[string]string    `json:"seriesDescMap"`
-	SeriesDescriptions []SeriesDescriptions `json:"seriesDescriptions"`
-	Signalboost        []Signalboost        `json:"signalboost"`
-	WebMentionEndpoint string               `json:"webMentionEndpoint"`
-	Resume             Resume               `json:"resume"`
+	Characters         []Character          `json:"characters" dhall:"characters"`
+	ClackSet           []string             `json:"clackSet" dhall:"clackSet"`
+	ContactLinks       []Link               `json:"contactLinks" dhall:"contactLinks"`
+	JobHistory         []Job                `json:"jobHistory" dhall:"jobHistory"`
+	NotableProjects    []NotableProjects    `json:"notableProjects" dhall:"notableProjects"`
+	Port               int                  `json:"port" dhall:"port"`
+	Pronouns           []Pronouns           `json:"pronouns" dhall:"pronouns"`
+	SeriesDescriptions []SeriesDescriptions `json:"seriesDescriptions" dhall:"seriesDescriptions"`
+	Signalboost        []Signalboost        `json:"signalboost" dhall:"signalboost"`
+	WebMentionEndpoint string               `json:"webMentionEndpoint" dhall:"webMentionEndpoint"`
+	Resume             Resume               `json:"resume" dhall:"resume"`
 }
 
 type Pronouns struct {
-	Accusative           string `json:"accusative"`
-	Nominative           string `json:"nominative"`
-	Possessive           string `json:"possessive"`
-	PossessiveDeterminer string `json:"possessiveDeterminer"`
-	Reflexive            string `json:"reflexive"`
-	Singular             bool   `json:"singular"`
+	Accusative           string `json:"accusative" dhall:"accusative"`
+	Nominative           string `json:"nominative" dhall:"nominative"`
+	Possessive           string `json:"possessive" dhall:"possessive"`
+	PossessiveDeterminer string `json:"possessiveDeterminer" dhall:"possessiveDeterminer"`
+	Reflexive            string `json:"reflexive" dhall:"reflexive"`
+	Singular             bool   `json:"singular" dhall:"singular"`
 }
 
 type Character struct {
-	DefaultPose string   `json:"defaultPose"`
-	Description string   `json:"description"`
-	Name        string   `json:"name"`
-	Pronouns    Pronouns `json:"pronouns"`
-	StickerName string   `json:"stickerName"`
-	Stickers    []string `json:"stickers"`
+	DefaultPose string   `json:"defaultPose" dhall:"defaultPose"`
+	Description string   `json:"description" dhall:"description"`
+	Name        string   `json:"name" dhall:"name"`
+	Pronouns    Pronouns `json:"pronouns" dhall:"pronouns"`
+	StickerName string   `json:"stickerName" dhall:"stickerName"`
+	Stickers    []string `json:"stickers" dhall:"stickers"`
 }
 
 type Link struct {
-	Description string `json:"description"`
-	Title       string `json:"title"`
-	URL         string `json:"url"`
-}
-
-type Author struct {
-	Handle   string   `json:"handle"`
-	Image    string   `json:"image"`
-	InSystem bool     `json:"inSystem"`
-	JobTitle string   `json:"jobTitle"`
-	Name     string   `json:"name"`
-	Pronouns Pronouns `json:"pronouns"`
-	SameAs   []string `json:"sameAs"`
-	URL      string   `json:"url"`
+	Description string `json:"description" dhall:"description"`
+	Title       string `json:"title" dhall:"title"`
+	URL         string `json:"url" dhall:"url"`
 }
 
 type Location struct {
-	City            string `json:"city"`
-	Country         string `json:"country"`
-	Remote          bool   `json:"remote"`
-	StateOrProvince string `json:"stateOrProvince"`
+	City            string `json:"city" dhall:"city"`
+	Country         string `json:"country" dhall:"country"`
+	Remote          bool   `json:"remote" dhall:"remote"`
+	StateOrProvince string `json:"stateOrProvince" dhall:"stateOrProvince"`
 }
 
 type Company struct {
-	Defunct  bool     `json:"defunct"`
-	Location Location `json:"location"`
-	Name     string   `json:"name"`
-	Tagline  string   `json:"tagline"`
-	URL      string   `json:"url"`
+	Defunct  bool     `json:"defunct" dhall:"defunct"`
+	Location Location `json:"location" dhall:"location"`
+	Name     string   `json:"name" dhall:"name"`
+	Tagline  string   `json:"tagline" dhall:"tagline"`
+	URL      string   `json:"url" dhall:"url"`
 }
 
 type Salary struct {
-	Amount   int    `json:"amount"`
-	Currency string `json:"currency"`
-	Per      string `json:"per"`
-	Stock    *Stock `json:"stoc,omitempty"`
+	Amount   int    `json:"amount" dhall:"amount"`
+	Currency string `json:"currency" dhall:"currency"`
+	Per      string `json:"per" dhall:"per"`
+	Stock    *Stock `json:"stoc,omitempty" dhall:"stoc,omitempty"`
 }
 
 type Stock struct {
-	Amount       int    `json:"amount"`
-	CliffYears   int    `json:"cliffYears"`
-	Kind         string `json:"kind"`
-	Liquid       bool   `json:"liquid"`
-	VestingYears int    `json:"vestingYears"`
+	Amount       int    `json:"amount" dhall:"amount"`
+	CliffYears   int    `json:"cliffYears" dhall:"cliffYears"`
+	Kind         string `json:"kind" dhall:"kind"`
+	Liquid       bool   `json:"liquid" dhall:"liquid"`
+	VestingYears int    `json:"vestingYears" dhall:"vestingYears"`
 }
 
 type Job struct {
-	Company        Company    `json:"company,omitempty"`
-	Contract       bool       `json:"contract"`
-	HideFromResume bool       `json:"hideFromResume"`
-	Highlights     []string   `json:"highlights"`
-	Locations      []Location `json:"locations"`
-	Salary         Salary     `json:"salary,omitempty"`
-	StartDate      string     `json:"startDate"`
-	Title          string     `json:"title"`
-	DaysWorked     int        `json:"daysWorked,omitempty"`
-	EndDate        string     `json:"endDate,omitempty"`
-	LeaveReason    string     `json:"leaveReason,omitempty"`
-	DaysBetween    int        `json:"daysBetween,omitempty"`
+	Company        Company    `json:"company,omitempty" dhall:"company,omitempty"`
+	Contract       bool       `json:"contract" dhall:"contract"`
+	HideFromResume bool       `json:"hideFromResume" dhall:"hideFromResume"`
+	Highlights     []string   `json:"highlights" dhall:"highlights"`
+	Locations      []Location `json:"locations" dhall:"locations"`
+	Salary         Salary     `json:"salary,omitempty" dhall:"salary,omitempty"`
+	StartDate      string     `json:"startDate" dhall:"startDate"`
+	Title          string     `json:"title" dhall:"title"`
+	DaysWorked     int        `json:"daysWorked,omitempty" dhall:"daysWorked,omitempty"`
+	EndDate        string     `json:"endDate,omitempty" dhall:"endDate,omitempty"`
+	LeaveReason    string     `json:"leaveReason,omitempty" dhall:"leaveReason,omitempty"`
+	DaysBetween    int        `json:"daysBetween,omitempty" dhall:"daysBetween,omitempty"`
 }
 
 type NotableProjects struct {
-	Description string `json:"description"`
-	Title       string `json:"title"`
-	URL         string `json:"url"`
+	Description string `json:"description" dhall:"description"`
+	Title       string `json:"title" dhall:"title"`
+	URL         string `json:"url" dhall:"url"`
 }
 
 type SeriesDescriptions struct {
-	Details string `json:"details"`
-	Name    string `json:"name"`
+	Details string `json:"details" dhall:"details"`
+	Name    string `json:"name" dhall:"name"`
 }
 
 type Signalboost struct {
-	Links []Link   `json:"links"`
-	Name  string   `json:"name"`
-	Tags  []string `json:"tags"`
+	Links []Link   `json:"links" dhall:"links"`
+	Name  string   `json:"name" dhall:"name"`
+	Tags  []string `json:"tags" dhall:"tags"`
 }
 
 type Resume struct {
-	Buzzwords           []string `json:"buzzwords"`
-	Location            Location `json:"location"`
-	Name                string   `json:"name"`
-	NotablePublications []Link   `json:"notablePublications"`
-	Tagline             string   `json:"tagline"`
+	Buzzwords           []string `json:"buzzwords" dhall:"buzzwords"`
+	Location            Location `json:"location" dhall:"location"`
+	Name                string   `json:"name" dhall:"name"`
+	NotablePublications []Link   `json:"notablePublications" dhall:"notablePublications"`
+	Tagline             string   `json:"tagline" dhall:"tagline"`
 }

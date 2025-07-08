@@ -57,14 +57,7 @@ in  [ Person::{
       }
     , Person::{
       , name = "Karan Yadav"
-      , tags =
-        [ "ruby"
-        , "python"
-        , "linux"
-        , "c++"
-        , "aws"
-        , "backend"
-        ]
+      , tags = [ "ruby", "python", "linux", "c++", "aws", "backend" ]
       , links =
         [ Link::{ url = "https://github.com/karan-ydv", title = "GitHub" }
         , Link::{ url = "https://karanydv.tech", title = "website" }
@@ -273,22 +266,5 @@ in  [ Person::{
         , Link::{ url = "https://resume.sjer.red", title = "Resume" }
         , Link::{ url = "https://github.com/shepherdjerred", title = "GitHub" }
         ]
-      }
-    , Person::{
-      , name = "Izzy Lancaster"
-      , tags =
-        [ "Software Engineer"
-        , "Fullstack"
-        , "C#"
-        , ".NET"
-        , "Rust"
-        , "Python"
-        , "React"
-        , "Typescript"
-        , "AWS"
-        , "SQL"
-        ]
-      , links =
-        [ Link::{ url = "https://github.com/ILikePizza555", title = "GitHub" } ]
       }
     ]
