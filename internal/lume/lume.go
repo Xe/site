@@ -425,16 +425,17 @@ func (f *FS) writeConfig(siteCommit string) error {
 	}
 
 	for fname, data := range map[string]any{
-		"argv.json":            os.Args,
-		"characters.json":      f.conf.Characters,
-		"commit.json":          map[string]any{"hash": siteCommit},
-		"contactLinks.json":    f.conf.ContactLinks,
-		"events.json":          events,
-		"jobHistory.json":      f.conf.JobHistory,
-		"notableProjects.json": f.conf.NotableProjects,
-		"pronouns.json":        f.conf.Pronouns,
-		"resume.json":          f.conf.Resume,
-		"signalboost.json":     f.conf.Signalboost,
+		"argv.json":               os.Args,
+		"characters.json":         f.conf.Characters,
+		"commit.json":             map[string]any{"hash": siteCommit},
+		"contactLinks.json":       f.conf.ContactLinks,
+		"events.json":             events,
+		"jobHistory.json":         f.conf.JobHistory,
+		"notableProjects.json":    f.conf.NotableProjects,
+		"pronouns.json":           f.conf.Pronouns,
+		"resume.json":             f.conf.Resume,
+		"signalboost.json":        f.conf.Signalboost,
+		"seriesDescriptions.json": f.conf.SeriesDescriptions,
 	} {
 		slog.Debug("opening data file", "fname", filepath.Join(dataDir, fname))
 		fh, err := os.Create(filepath.Join(dataDir, fname))

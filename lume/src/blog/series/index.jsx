@@ -13,14 +13,11 @@ export default ({ seriesDescriptions }) => {
       </p>
 
       <ul class="list-disc ml-4 mb-4">
-        {Object
-          .keys(seriesDescriptions)
-          .map((k) => [k, seriesDescriptions[k]])
-          .map(([k, v]) => (
-            <li>
-              <a href={`/blog/series/${k}`}>{k}</a>: {v}
-            </li>
-          ))}
+        {seriesDescriptions.map((v) => (
+          <li>
+            <a href={`/blog/series/${v.name}`}>{v.name}</a>: {v.details}
+          </li>
+        ))}
       </ul>
     </>
   );
