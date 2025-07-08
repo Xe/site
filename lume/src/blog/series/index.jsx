@@ -12,13 +12,15 @@ export default ({ seriesDescriptions }) => {
         Some posts of mine are intended to be read in order. This is a list of all the series I have written along with a little description of what it's about.
       </p>
 
-      <ul class="list-disc ml-4 mb-4">
+      <p className="mb-4">This page is currently under maintenance.</p>
+
+      {/* <ul class="list-disc ml-4 mb-4">
         {seriesDescriptions.map((v) => (
           <li>
             <a href={`/blog/series/${v.name}`}>{v.name}</a>: {v.details}
           </li>
         ))}
-      </ul>
+      </ul> */}
     </>
   );
 };
