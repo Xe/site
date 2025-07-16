@@ -17,7 +17,7 @@ require (
 	google.golang.org/protobuf v1.36.6
 	gopkg.in/fsnotify.v1 v1.4.7
 	gopkg.in/mxpv/patreon-go.v1 v1.0.0-20171031001022-1d2f253ac700
-	k8s.io/apimachinery v0.33.2
+	k8s.io/apimachinery v0.33.3
 	k8s.io/client-go v0.33.2
 	tailscale.com v1.84.3
 	within.website/x v1.24.0
