@@ -1,6 +1,6 @@
 module xeiaso.net/v4
 
-go 1.24.2
+go 1.24.4
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.36.6
@@ -19,7 +19,7 @@ require (
 	gopkg.in/mxpv/patreon-go.v1 v1.0.0-20171031001022-1d2f253ac700
 	k8s.io/apimachinery v0.33.3
 	k8s.io/client-go v0.33.3
-	tailscale.com v1.84.3
+	tailscale.com v1.86.0
 	within.website/x v1.24.0
 )
 
