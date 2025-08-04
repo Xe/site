@@ -68,6 +68,9 @@ an editor and add the following to it:
     locations."/" = {
         proxyPass = "http://127.0.0.1:${toString config.services.grafana.port}";
         proxyWebsockets = true;
+        extraConfig = ''
+          proxy_set_header Host ${config.services.grafana.domain};
+        '';
     };
   };
 }
