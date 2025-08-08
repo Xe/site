@@ -271,7 +271,7 @@ sigs.k8s.io/structured-merge-diff/v4 v4.6.0 h1:IUA9nvMmnKWcj5jl84xn+T5MnlZKThmUW
 sigs.k8s.io/structured-merge-diff/v4 v4.6.0/go.mod h1:dDy58f92j70zLsuZVuUX5Wp9vtxXpaZnkPGWeqDfCps=
 sigs.k8s.io/yaml v1.4.0 h1:Mk1wCc2gy/F0THH0TAp1QYyJNzRm2KCLy3o5ASXVI5E=
 sigs.k8s.io/yaml v1.4.0/go.mod h1:Ejl7/uTz7PSA4eKMyQCUTnhZYNmLIl+5c2lQPGR2BPY=
-tailscale.com v1.86.2 h1:rZyR7vBqpFfQcei+vf69uaJXlJtcLGIub5Sftjs5Tbc=
-tailscale.com v1.86.2/go.mod h1:Lm8dnzU2i/Emw15r6sl3FRNp/liSQ/nYw6ZSQvIdZ1M=
+tailscale.com v1.86.4 h1:KHAmLyzVn50t2P5877wohBU0UPVeIMHC9XDzRw4Ycz4=
+tailscale.com v1.86.4/go.mod h1:Lm8dnzU2i/Emw15r6sl3FRNp/liSQ/nYw6ZSQvIdZ1M=
 within.website/x v1.24.0 h1:4q4YazRzy3Vjgc1XCT44R9hBKjVfyXMQDyhyEEweNME=
 within.website/x v1.24.0/go.mod h1:T4TVqyOCa20PuGpx9Qi9VlH2wiMpT11RWDHMHyXgDXY=
