@@ -21,10 +21,6 @@
     "ghcr.io/mrsimonemms/devcontainers/buf:1": {},
     "ghcr.io/michidk/devcontainers-features/typst:1": {}
   },
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [
-    3000
-  ],
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
@@ -38,7 +34,8 @@
         "zxh404.vscode-proto3",
         "xaver.clang-format",
         "austenc.tailwind-docs",
-        "spellforce.css-tailwind"
+        "spellforce.css-tailwind",
+        "esbenp.prettier-vscode"
       ]
     }
   }

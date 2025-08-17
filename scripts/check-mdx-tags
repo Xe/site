@@ -1,0 +1,4 @@
+#!/usr/bin/env fish
+
+cd (dirname (status --current-filename))/..
+go run scripts/check-mdx-tags.go $argv
