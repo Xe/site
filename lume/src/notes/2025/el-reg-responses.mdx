@@ -1,0 +1,41 @@
+---
+title: "My responses to The Register"
+desc: "A copy of my best quotes they didn't publish"
+date: 2025-08-22
+---
+
+Today my quotes about generative AI scrapers [got published in The Register](https://www.theregister.com/2025/08/21/ai_crawler_traffic/). For transparency's sake, here's a copy of the questions I was asked and my raw, unedited responses. Enjoy!
+
+> First, do you see the growth in crawler traffic slowing any time soon?
+
+I can only see a few things that can stop this: government regulation, or the hype finally starting to die down. There is too much hype in the mix that causes us to funnel billions of dollars into this technology instead of curing cancer, solving world hunger, or making people’s lives genuinely better.
+
+> Is it likely to continue growing?
+
+I see no reason why it would not grow. People are using these tools to replace knowledge and gaining skills instead of augmenting knowledge and augmenting skills. Even if they are intended to be used for letting us focus on the fun parts of our work and automating away the chores, there are some bad apples that are spoiling the bunch and making this technology about replacing people, not drudgery and toil. This technology was obviously meant well, but at some level the output of AI superficially resembles the finished work product of human labour, superficially. As someone asked to Charles Babbage: if you put in the wrong numbers, you get the wrong answer.
+
+This isn’t necessarily a bubble popping, this is a limitation of how well AI can function without direct and constant human input. Even so, we’ll hit the limit on data that can be scraped that hasn’t been touched by AI before the venture capital runs out. I see no value in the need for scrapers to hit the same 15 year old commit of the Linux kernel over and over and over every 30 minutes like they are now. There are ways to do this ethically that don’t penalize open source infrastructure such as using the Common Crawl dataset.
+
+> If so, how can that be sustainable?
+
+It's not lol. We are destroying the commons in order to get hypothetical gains. The last big AI breakthrough happened with GPT-4 in 2023. The rest has been incremental improvements in tokenization, multimodal inputs (also tokenization), tool calling (also tokenization), and fill-in-the-middle completion (again, also tokenization). Even with scrapers burning everything in their wake, there is not enough training data to create another exponential breakthrough. All we can do now is make it more efficient to run GPT-4 level models on lesser hardware. I can (and regularly do) run a model just as good as GPT-4 on my MacBook at this point, which is really cool.
+
+> Would broader deployment of Anubis and other active countermeasures help?
+
+This is a regulatory issue. The thing that needs to happen is that governments need to step in and give these unethical scrapers that are destroying the digital common good existentially threatening fines and make them pay reparations to the communities they are harming. Ironically enough, most of these unethical scraping activities rely on the products of the communities they are destroying. This presents the kind of paradox that I would expect to read in a Neal Stephenson book from the '90s, not CBC's front page.
+
+Anubis helps mitigate a lot of the badness by making attacks more computationally expensive. Anubis (even in configurations that omit proof of work) makes attackers have to retool their scraping to use headless browsers instead of blindly scraping HTML. This increases the infrastructure costs of the scrapers propagating this abusive traffic. The hope is that this makes it fiscally unviable for the unethical scrapers to scrape by making them have to dedicate much more hardware to the problem.
+
+In essence: it makes the scrapers have to spend more money to do the same work.
+
+> Is regulation required to prevent abuse of the open web?
+
+Yes, but this regulation would have to be global, simultaneous, and permanent to have any chance of this actually having a positive impact. Our society cannot currently regulate against similar existential threats like climate change. I have no hope for such regulation to be made regarding generative AI.
+
+> Fastly's claims that 80% of bot traffic is now AI crawlers
+
+In some cases for open source projects, we've seen upwards of 95% of traffic being AI crawlers. Not just bot traffic, but _traffic in general_. For one, deploying Anubis almost instantly caused server load to crater by so much that it made them think they accidentally took their site offline. One of my customers had their power bills drop by a significant fraction after deploying Anubis. It's nuts. The ecological impact of these scrapers is probably a significant fraction of the ecological impact of generative AI as a whole.
+
+Personally, deploying Anubis to my blog has reduced the amount of ad impressions I've been giving by over 50%. I suspect that there is a lot of unreported click fraud for online advertising.
+
+I hope this helps. Keep up the good fight!
