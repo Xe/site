@@ -11,7 +11,7 @@ require (
 	github.com/go-faker/faker/v4 v4.6.1
 	github.com/go-git/go-git/v5 v5.16.2
 	github.com/joho/godotenv v1.5.1
-	github.com/stretchr/testify v1.11.0
+	github.com/stretchr/testify v1.11.1
 	github.com/twitchtv/twirp v8.1.3+incompatible
 	golang.org/x/oauth2 v0.30.0
 	google.golang.org/protobuf v1.36.8
