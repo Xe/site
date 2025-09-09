@@ -1,0 +1,74 @@
+---
+title: "We all dodged a bullet"
+desc: "That NPM attack could have been so much worse."
+date: 2025-09-09
+---
+
+<Conv name="Cadey" mood="coffee">
+  This post and its online comment sections are blame-free zones. We are not
+  blaming anyone for clicking on the phishing link. If you were targeted with
+  such a phishing attack, you'd fall for it too and it's a matter of when not
+  if. Anyone who claims they wouldn't is wrong.
+  <br />
+  This is also a bit of a rant.
+</Conv>
+
+Yesterday [one of the biggest package ecosystems had very popular packages get compromised](https://www.aikido.dev/blog/npm-debug-and-chalk-packages-compromised). We're talking functionality like:
+
+- Formatting text with colors for use in the terminal
+- A list of common color names and their RGB values
+- A decorator for functions so you can debug their inputs/outputs as they are run
+- A utility function that determines if its argument can be used like an array
+
+These kinds of dependencies are everywhere and nobody would even think that they could be harmful. Getting code into these packages means that it's almost guaranteed a free path to production deployments. If an open proxy server (a-la Bright Data or other botnets that the credit card network tolerates for some reason), API key stealer, or worse was sent through this chain of extreme luck on the attacker's part, then this would be a completely different story.
+
+We all dodged a massive bullet because all the malware did was modify the destination addresses of cryptocurrency payments mediated via online wallets like [MetaMask](https://metamask.io/).
+
+As someone adjacent to the online security community, I have a sick sense of appreciation for this attack. This was a really good attack. It started with a phishing email that I'd probably fall for if it struck at the right time:
+
+<Picture path="blog/2025/we-dodged-a-bullet/the-email" />
+
+This is frankly a really good phishing email. Breaking it down:
+
+- It greets the user personally with their NPM username. This makes it look personalized, so people are more likely to trust it.
+- People are used to the idea of changing passwords for security. With that in mind, at a glance the idea of changing your two-factor auth credentials "for security reasons" isn't completely unreasonable.
+- NPM has always been kinda weird compared to other open source package repositories, so them requiring something strange like that reads as reasonable.
+- It sets a deadline a few days in the future. This creates a sense of urgency, and when you combine urgency with being rushed by life, you are much more likely to fall for the phishing link.
+- It links to a website (I'm assuming it's on npm.help), and that website is used to get the two-factor credentials somehow and then start publishing new packages with the exploit code.
+
+This is a 10/10 phishing email. Looking at it critically the only part about it that stands out is the domain "npm.help" instead of "npmjs.com". Even then, that wouldn't really stand out to me because I've seen companies use new [generic top level domains](https://en.wikipedia.org/wiki/Generic_top-level_domain) to separate out things like the blog at `.blog` or the docs at `.guide`, not to mention the [`.new` stack](https://www.linkedin.com/posts/tokih_heres-your-builders-guide-to-new-activity-7315851665348141057-9oBM).
+
+One of my friends [qdot](https://bsky.app/profile/buttplug.engineer) also got the phishing email and here's what he had to say:
+
+<center>
+  <blockquote
+    class="bluesky-embed"
+    data-bluesky-uri="at://did:plc:sfvpv6dfrug3rnjewn7gyx62/app.bsky.feed.post/3lyds45qxpc2i"
+    data-bluesky-cid="bafyreigtonkqupqoprhrsosj6sf5sj5wmy6nseof5nx3mtrycsycw4pcxi"
+    data-bluesky-embed-color-mode="system"
+  >
+    <p lang="en">
+      I got the email for it and was like &quot;oh I&#x27;ll deal with this
+      later&quot;.
+      <br />
+      <br />
+      Saved by procrastination!
+    </p>
+    &mdash; qdot (<a href="https://bsky.app/profile/did:plc:sfvpv6dfrug3rnjewn7gyx62?ref_src=embed">
+      @buttplug.engineer
+    </a>) <a href="https://bsky.app/profile/did:plc:sfvpv6dfrug3rnjewn7gyx62/post/3lyds45qxpc2i?ref_src=embed">September 8, 2025 at 2:04 PM</a>
+  </blockquote>
+  <script
+    async
+    src="https://embed.bsky.app/static/embed.js"
+    charset="utf-8"
+  ></script>
+</center>
+
+With [how](https://www.npmjs.com/package/is-arrayish) [widely](https://www.npmjs.com/package/color-string) [used](https://www.npmjs.com/package/color-name) these libraries are, this could have been _so much worse_ than it was. I can easily imagine a timeline where this wasn't just a cryptocurrency interceptor. Imagine if something this widely deployed into an ecosystem where automated package bumping triggering production releases is common did API key theft. You'd probably have more OpenAI API keys than you know what you'd do with. You could probably go for years without having to pay for AWS again.
+
+It is just maddening to me that a near Jia Tan level chain of malware and phishing was wasted on cryptocurrency interception that won't even run in the majority of places those compromised libraries were actually used. When I was bumping packages around these issues, I found that most of these libraries were used in command line tools.
+
+This was an attack obviously targeted towards the Web 3 ecosystem as users of Web 3 tools are used to making payments with their browsers. With my black hat on, I think that the reason they targeted more generic packages instead of Web 3 packages was so that the compromise wouldn't be as noticed by the Web 3 ecosystem. Sure, you'd validate the rigging that helps you interface with Metamask, but you'd never think that it would get monkey-patched by your color value parsing library.
+
+One of the important things to take away from this is that every dependency could be malicious. We should take the time to understand the entire dependency tree of our programs, but we aren't given that time. At the end of the day, we still have to ship things.
