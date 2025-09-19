@@ -2,7 +2,8 @@
 title: Coming Out
 date: 2015-12-01
 tags:
- - personal
+  - personal
+index: false
 ---
 
 I'd like to bring up something that has been hanging over my head for a
