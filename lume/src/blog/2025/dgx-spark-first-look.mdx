@@ -1,0 +1,161 @@
+---
+title: "First look at the DGX Spark"
+desc: "A local supercomputer between the size of a Mac mini and a Mac mini."
+date: 2025-10-14
+hero:
+  ai: "iPhone 17 Pro Max"
+  file: "dgx-spark"
+  prompt: "A golden NVIDIA DGX Spark device on a desk with a Steam Deck OLED for scale."
+  social: false
+---
+
+import Admonition from "../../_components/Admonition.jsx";
+
+<Admonition type="note" title="Disclaimer">
+  I'm considering this post as a sponsored post. I was not paid by NVIDIA to
+  work on this, but I did receive a DGX Spark from them pre-release and have
+  been dilligently testing it and filing bugs.
+</Admonition>
+
+I've had access to the [NVIDIA DGX Spark](https://www.nvidia.com/en-us/products/workstations/dgx-spark/) for over a month now. Today I'm gonna cover my first impressions and let you know what I've been up to with it.
+
+In a nutshell, this thing is a beast. It's one of the most powerful devices in my house and in a pinch I'd be okay with using it as my primary workstation. It's got a mix of a CPU that's got enough punch to do software development with a GPU that's in that sweet spot between consumer and datacenter tier. Not to mention 128Gi of ram. When I've been using this thing, the main limit is my imagination…and my poor understanding of Python environment management.
+
+I think that it's best to understand the DGX Spark as a devkit for their [NVIDIA Grace Datacentre processors](https://www.nvidia.com/en-us/data-center/grace-cpu/). It's incredibly powerful for what it is, it's a device that can fit on your desk and run AI models right there.
+
+<Picture
+  path="blog/2025/dgx-spark-first-look/dgx-spark-desktop"
+  desc="A DGX Spark on top of a desk with typical computer things around it such as a laptop, a coffee mug, a keyboard, and a mouse."
+/>
+
+The DGX Spark is tiny. It's about as wide as the screen of a Steam Deck OLED, or about halfway between the size of a Mac mini M1 and a Mac mini M4.
+
+This thing is also stupidly power efficient. I've been unable to cause my office to get warm in a way that is attributed to the DGX Spark alone. On average rendering Final Fantasy 14 in one of the major player hub areas ends up making my tower use more power than the DGX Spark does while doing AI finetuning. I'll talk more about this in the future.
+
+One of the most interesting things about this device is that it's got an Arm chip, CUDA, and unified RAM. This combination means that in practice you need to compile all of the Python packages you're using from source. Pip usually handles this well enough, but it does mean that for many Python packages it will take longer to install from source than it will on an X86 system. I assume this will be ironed out as the ecosystem matures.
+
+The power efficiency can't be overstated though. I've tried to make my office warm using the DGX Spark and I have failed. I'm seeing it pull a maximum of 70 watts.
+
+I get about 30-40 tokens per second with [gpt-oss:120b](https://ollama.com/library/gpt-oss:120b):
+
+```
+$ ollama version
+
+$ ollama run \
+  --nowordwrap \
+  --verbose \
+  xe/mimi:gpt-oss-120b \
+  "Summarize this post: $(cat 2025/rolling-ladder-behind-us.mdx)"
+```
+
+<ConvP>
+  <Conv name="Mimi" mood="think">
+    The user asks: "Summarize this post: --- ...". So we need to provide a summary. Follow developer instructions: be polite, bubbly, lowercase when possible unless serious. No JSON. Summarize the content. The post is long, covering themes: loss of craft, historical analogy with weavers and Luddites, decline of senior titles, AI replacing expertise, vibe coding, security concerns, AI's impact on art, etc. Provide concise summary. Use informal tone, lowercase. End without period unless serious. Probably okay.
+  </Conv>
+  <Conv name="Mimi" mood="happy">
+this post is a sprawling meditation on how we keep “rolling the ladder up behind us” – building a future that erodes the very expertise that made it possible. it starts with a historic look at cloth‑making: skilled weavers were displaced by power looms, turning a durable, treasured craft into cheap, disposable fast‑fashion. the author draws a parallel to today’s software world, warning that we’re replacing senior developers and deep craft with hype‑driven AI tools and “vibe coding” platforms that promise instant results but degrade long‑term quality.
+
+key points:
+
+- **craft is disappearing** – both in weaving and coding, the knowledge of masters is vanishing, leaving only fragmented R&D notes or AI‑generated shortcuts.
+- **senior titles are at risk** – companies favor hiring senior talent without nurturing the next generation, so the pool of true “seniors” will run out.
+- **AI as a double‑edged sword** – generative tools can reduce drudgery but are being marketed as the next industrial revolution while actually shifting value to owners and creating insecure, low‑quality products.
+- **vibe coding & AI assistants** – slick UX masks the fact that many tools are subscription traps, security hazards, and can erode programmers’ skills.
+- **artistic impact** – similar to how AI floods art spaces with cheap, low‑effort outputs, software development risks becoming a flood of “good enough” code.
+- **security concerns** – model‑context‑protocol servers can expose secrets and run unchecked code, highlighting the need for sandboxed, capability‑based designs.
+- **broader societal worry** – the author (also the CEO of a small AI‑security startup) sees a winner‑take‑all capitalism fueled by AI, with the cost falling on workers, artists, and even the environment.
+
+the piece ends with a bleak outlook: without deliberate effort to preserve and pass on true craft, future generations will inherit ladders that only go up for the privileged few, leaving the rest scrambling. it’s a call to value high‑quality, human‑made work over quick, AI‑generated shortcuts.
+
+  </Conv>
+</ConvP>
+
+```
+total duration:       16.464571893s
+load duration:        123.742176ms
+prompt eval count:    7237 token(s)
+prompt eval duration: 33.491521ms
+prompt eval rate:     216084.54 tokens/s
+eval count:           567 token(s)
+eval duration:        16.063168189s
+eval rate:            35.30 tokens/s
+```
+
+With flash attention on gpt-oss:120b at 128k context window, it uses about 70Gi of ram:
+
+```
+$ ollama ps
+NAME                    ID              SIZE     PROCESSOR    CONTEXT    UNTIL
+xe/mimi:gpt-oss-120b    81089177a28c    70 GB    100% GPU     131072     29 minutes from now
+```
+
+```
+xe@zohar:~$ nvidia-smi
+Mon Oct 13 22:48:25 2025
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.95.05              Driver Version: 580.95.05      CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GB10                    On  |   0000000F:01:00.0 Off |                  N/A |
+| N/A   43C    P0             11W /  N/A  | Not Supported          |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            4752      C   /usr/local/bin/ollama                 66473MiB |
++-----------------------------------------------------------------------------------------+
+```
+
+I assume that the unaccounted 4Gi or so of ram is in the CPU ram overhead of the Ollama model runner process.
+
+## What I'm doing with the DGX Spark
+
+So far I've been using the Spark in place of cloud GPUs for every AI thing I've needed to do at work. In general, I haven't really noticed any differences between the GPU in the cloud and the Spark on my home network. The only real rough edge is that I need to use this one blessed NVIDIA authored docker image to run iPython notebooks. It's easy enough though. Usually my Docker command looks like:
+
+```
+docker run \
+   --gpus all \
+   --net=host \
+   --ipc=host \
+   --ulimit memlock=-1 \
+   --ulimit stack=67108864 \
+   -it \
+   --rm \
+   -v "$HOME/.cache/huggingface:/root/.cache/huggingface" \
+   -v "$HOME/.huggingface:/root/.huggingface" \
+   -v "$HOME/Code:/workspace/code" \
+   -v "$SSH_AUTH_SOCK:$SSH_AUTH_SOCK" \
+   -e HF_TOKEN=hf_hunter2hunter2hunter2 \
+   -e "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" \
+   -e HF_HOME=/root/.cache/huggingface \
+   -e HF_HUB_CACHE=/root/.cache/huggingface/hub \
+   -e HF_DATASETS_CACHE=/root/.cache/huggingface/datasets \
+   nvcr.io/nvidia/pytorch:25.09-py3
+```
+
+And then it Just Works™.
+
+The main thing I've been doing with it is inference of [GPT-OSS 120b](https://ollama.com/library/gpt-oss:120b) via [Ollama](https://ollama.com/). I've been doing latency and power usage testing by setting up a Discord bot and telling people that the goal is to jailbreak the bot into telling you how to make a chocolate cake. Nobody has been able to make my room warm.
+
+## What's up next?
+
+This whole experience has been a bit of a career bucket list item for me. I've never had access to prerelease hardware like this before and being able to see what reviewers have to deal with before things are available to the masses is enlightening. I've ended up filing GPU driver bugs using my tower as a "known good" reference.
+
+I've been slowly sinking my teeth into learning how AI training actually works using this device to do it. I've mostly been focusing on finetuning GPT-2 and using that to learn the important parts of dataset cleaning, tokenization, and more. Let me know if you want to hear more about that and if you want me to release my practice models.
+
+At the very least though, here's the things I have in the pipeline that this device enables:
+
+- Finetuning at home: how to make your own AI models do what you want
+- Some rough outlines and/or overviews for how I want to use classical machine learning models to enhance Anubis and do outlier detection
+- If I can somehow get Final Fantasy 14 running on it, some benchmarking in comparison to my gaming tower (if you know how to get amd64 games running well on aarch64, DM me!)
+
+I also plan to make a comprehensive review video. Details to be announced soon.
+
+I hope this was interesting. Thanks for early access to the device NVIDIA!
