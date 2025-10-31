@@ -86,10 +86,17 @@ Linkposts have enhanced functionality:
 1. **Automatic slug extraction**: If no custom slug is provided, the skill will extract the basename from the URL (e.g., `https://example.com/blog/my-post` becomes `my-post`)
 
 2. **Auto-fetching content**: The skill can automatically fetch the webpage to extract:
+
    - The page title (used as the post title)
    - A summary/description (added to the post body)
    - The publication date (used as the post date, defaults to today if not found)
    - This saves time and ensures accurate representation of the linked content
+
+Use the extract-meta.js file in this folder to extract meta-information from webpages:
+
+```bash
+node extract-meta.js <url>
+```
 
 3. **URL handling**: The skill handles redirects and will follow them to get the final content for title/description extraction
 

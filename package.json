@@ -2,6 +2,7 @@
   "name": "@xeserv/xesite",
   "version": "4.0.0",
   "description": "Hacking because node",
+  "type": "module",
   "main": "index.js",
   "directories": {
     "doc": "docs"
@@ -9,7 +10,8 @@
   "scripts": {
     "test": "go test ./...",
     "dev": "go run ./cmd/xesite --site-url https://preview.xeiaso.net --devel",
-    "deploy": "kubectl --context limsa-lominsa apply -k manifest"
+    "deploy": "kubectl --context limsa-lominsa apply -k manifest",
+    "extract-meta": "node scripts/extract-meta.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,7 @@
   },
   "homepage": "https://github.com/Xe/site#readme",
   "dependencies": {
-    "execa": "^8.0.1"
+    "execa": "^8.0.1",
+    "jsdom": "^25.0.0"
   }
 }
