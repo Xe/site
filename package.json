@@ -7,8 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "go run ./cmd/xesite --site-url https://preview.xeiaso.net --devel"
+    "test": "go test ./...",
+    "dev": "go run ./cmd/xesite --site-url https://preview.xeiaso.net --devel",
+    "deploy": "kubectl --context limsa-lominsa apply -k manifest"
   },
   "repository": {
     "type": "git",
