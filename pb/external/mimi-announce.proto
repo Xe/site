@@ -1,5 +1,5 @@
 syntax = "proto3";
-package within.website.x.mimi.announce;
+package within.website.x.mimi.announce.v1;
 option go_package = "xeiaso.net/v4/pb/external/mimi/announce";
 
 import "google/protobuf/empty.proto";
