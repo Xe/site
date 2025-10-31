@@ -10,6 +10,11 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: xesite
+      annotations:
+        keel.sh/policy: "all"
+        keel.sh/trigger: poll
+        keel.sh/pollSchedule: "@every 5m"
+        keel.sh/match-tag: "true"
     spec:
       volumes:
         - name: data
