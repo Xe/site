@@ -17,6 +17,8 @@ spec:
         - name: anubis
           configMap:
             name: anubis-cfg
+        - name: anubis-data
+          emptyDir: {}
       containers:
         - name: web
           image: ghcr.io/xe/site/bin:latest
@@ -87,6 +89,8 @@ spec:
           volumeMounts:
             - name: anubis
               mountPath: /xe/cfg/anubis
+            - name: anubis-data
+              mountPath: /data
           resources:
             limits:
               cpu: 500m
@@ -107,3 +111,5 @@ spec:
           envFrom:
             - secretRef:
                 name: xesite-anubis
+            - secretRef:
+                name: xesite-anubis-tigris
