@@ -137,3 +137,9 @@ thresholds:
       algorithm: fast
       difficulty: 4
       report_as: 4
+
+store:
+  backend: s3api
+  parameters:
+    bucketName: xesite-anubis
+    pathStyle: false
