@@ -119,6 +119,7 @@ export interface FeedItem {
     updated?: Date;
     content: string;
     lang: string;
+    categories?: string[];
 }
 
 const defaultGenerator = `Lume ${getCurrentVersion()}`;
@@ -156,6 +157,15 @@ export default function (userOptions?: Options) {
                     const fixedContent = fixUrls(new URL(pageUrl), content || "");
 
                     const link = getDataValue(data, "=redirect_to") ?? site.url(data.url, true);
+                    const isLinkpost = getDataValue(data, "=redirect_to") !== undefined;
+
+                    // Get existing tags from frontmatter
+                    const existingTags = getDataValue(data, "=tags") as string[] || [];
+
+                    // Add "external" tag for linkposts
+                    const categories = isLinkpost
+                        ? [...existingTags, "external"]
+                        : existingTags;
 
                     return {
                         title: getDataValue(data, items.title),
@@ -165,6 +175,7 @@ export default function (userOptions?: Options) {
                         updated: getDataValue(data, items.updated),
                         content: fixedContent,
                         lang: getDataValue(data, items.lang),
+                        categories,
                     };
                 }),
             };
@@ -242,6 +253,9 @@ function generateRss(data: FeedData, file: string): string {
                         "content:encoded": item.content,
                         pubDate: item.published.toUTCString(),
                         "atom:updated": item.updated?.toISOString(),
+                        category: item.categories?.map((category) => ({
+                            "#text": category,
+                        })),
                     })
                 ),
             }),
@@ -266,6 +280,7 @@ function generateJson(data: FeedData, file: string): string {
                 content_html: item.content,
                 date_published: item.published.toISOString(),
                 date_modified: item.updated?.toISOString(),
+                tags: item.categories,
             })
         ),
     });
