@@ -9,3 +9,4 @@ cw.tar
 .patreon.json
 .direnv
 node_modules
+/xesite

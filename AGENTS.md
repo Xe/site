@@ -18,6 +18,7 @@
 
 ## Coding Style & Naming Conventions
 - Go code follows `gofmt`; run `go fmt ./...` before committing.
+- Use `goimports` to organize imports: `go get -tool golang.org/x/tools/cmd/goimports@latest` then `find . -name "*.go" -exec goimports -w {} \;`.
 - Use `camelCase` for variables/functions, `PascalCase` for exported types.
 - Indentation: tabs (default `go fmt`).
 - Dhall files use kebab‑case filenames (e.g., `my-config.dhall`).
