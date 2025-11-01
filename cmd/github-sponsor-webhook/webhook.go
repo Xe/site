@@ -2,38 +2,65 @@ package main
 
 import (
 	"encoding/json"
-	"expvar"
 	"fmt"
 	"log/slog"
 	"net/http"
 
-	"tailscale.com/metrics"
+	"github.com/prometheus/client_golang/prometheus"
 	"xeiaso.net/v4/internal/github"
-	"xeiaso.net/v4/internal/lume"
 )
 
 var (
-	sponsorsWebhookCount = metrics.LabelMap{Label: "action"}
-	sponsorsErrorCount   = metrics.LabelMap{Label: "error_type"}
+	sponsorsWebhookCount = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "github_sponsors_webhook_total",
+			Help: "Total number of GitHub Sponsors webhook events processed, by action",
+		},
+		[]string{"action"},
+	)
+
+	sponsorsErrorCount = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "github_sponsors_webhook_errors_total",
+			Help: "Total number of GitHub Sponsors webhook errors, by error type",
+		},
+		[]string{"error_type"},
+	)
 )
 
 func init() {
-	expvar.Publish("gauge_xesite_sponsors_webhook_count", &sponsorsWebhookCount)
-	expvar.Publish("gauge_xesite_sponsors_error_count", &sponsorsErrorCount)
+	prometheus.MustRegister(sponsorsWebhookCount)
+	prometheus.MustRegister(sponsorsErrorCount)
 }
 
 // GitHubSponsorsWebhook handles GitHub Sponsors webhook events.
 type GitHubSponsorsWebhook struct {
-	fs *lume.FS
+	// No lume.FS dependency for the standalone service
 }
 
 // ServeHTTP processes incoming GitHub Sponsors webhook events.
 func (gsh *GitHubSponsorsWebhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// Set CORS headers for web requests
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, X-GitHub-Event, X-Hub-Signature-256")
+
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	if r.Method != "POST" {
+		slog.Info("method not allowed", "method", r.Method)
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	// Check for GitHub Sponsors event header
 	eventType := r.Header.Get("X-GitHub-Event")
 	if eventType != "sponsorship" {
 		slog.Info("not a sponsorship event", "event", eventType)
-		sponsorsErrorCount.Add("invalid_event_type", 1)
+		sponsorsErrorCount.WithLabelValues("invalid_event_type").Inc()
 		http.Error(w, "Invalid event type", http.StatusBadRequest)
 		return
 	}
@@ -42,13 +69,13 @@ func (gsh *GitHubSponsorsWebhook) ServeHTTP(w http.ResponseWriter, r *http.Reque
 	var event github.SponsorsEvent
 	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
 		slog.Error("error decoding GitHub Sponsors event", "error", err)
-		sponsorsErrorCount.Add("decode_error", 1)
+		sponsorsErrorCount.WithLabelValues("decode_error").Inc()
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	// Increment the specific action counter
-	sponsorsWebhookCount.Add(event.Action, 1)
+	sponsorsWebhookCount.WithLabelValues(event.Action).Inc()
 
 	// Log the sponsorship event
 	slog.Info("GitHub Sponsors webhook received",
@@ -57,6 +84,7 @@ func (gsh *GitHubSponsorsWebhook) ServeHTTP(w http.ResponseWriter, r *http.Reque
 		"sponsorable", event.Sponsorship.Sponsorable.Login,
 		"tier", event.Sponsorship.Tier.Name,
 		"monthly_price", event.Sponsorship.Tier.MonthlyPriceInDollars,
+		"sender", event.Sender.Login,
 	)
 
 	// Handle different sponsorship event types
@@ -73,10 +101,11 @@ func (gsh *GitHubSponsorsWebhook) ServeHTTP(w http.ResponseWriter, r *http.Reque
 		gsh.handlePendingCancellation(event)
 	default:
 		slog.Info("unhandled GitHub Sponsors event type", "action", event.Action)
-		sponsorsErrorCount.Add("unhandled_action", 1)
+		sponsorsErrorCount.WithLabelValues("unhandled_action").Inc()
 	}
 
 	// Respond with success
+	w.Header().Set("Content-Type", "text/plain")
 	fmt.Fprintln(w, "OK")
 }
 
@@ -84,8 +113,10 @@ func (gsh *GitHubSponsorsWebhook) ServeHTTP(w http.ResponseWriter, r *http.Reque
 func (gsh *GitHubSponsorsWebhook) handleSponsorshipCreated(event github.SponsorsEvent) {
 	slog.Info("New sponsorship created",
 		"sponsor", event.Sponsorship.Sponsor.Login,
+		"sponsor_id", event.Sponsorship.Sponsor.ID,
 		"tier", event.Sponsorship.Tier.Name,
 		"monthly_price", event.Sponsorship.Tier.MonthlyPriceInDollars,
+		"privacy_level", event.Sponsorship.PrivacyLevel,
 	)
 	// TODO: Add sponsorship creation logic here
 	// This could include updating database records, sending notifications, etc.
@@ -95,8 +126,10 @@ func (gsh *GitHubSponsorsWebhook) handleSponsorshipCreated(event github.Sponsors
 func (gsh *GitHubSponsorsWebhook) handleSponsorshipEdited(event github.SponsorsEvent) {
 	slog.Info("Sponsorship edited",
 		"sponsor", event.Sponsorship.Sponsor.Login,
+		"sponsor_id", event.Sponsorship.Sponsor.ID,
 		"tier", event.Sponsorship.Tier.Name,
 		"monthly_price", event.Sponsorship.Tier.MonthlyPriceInDollars,
+		"privacy_level", event.Sponsorship.PrivacyLevel,
 	)
 	// TODO: Add sponsorship edit logic here
 	// This could include updating records, changing access levels, etc.
@@ -106,6 +139,7 @@ func (gsh *GitHubSponsorsWebhook) handleSponsorshipEdited(event github.SponsorsE
 func (gsh *GitHubSponsorsWebhook) handleSponsorshipCancelled(event github.SponsorsEvent) {
 	slog.Info("Sponsorship cancelled",
 		"sponsor", event.Sponsorship.Sponsor.Login,
+		"sponsor_id", event.Sponsorship.Sponsor.ID,
 		"tier", event.Sponsorship.Tier.Name,
 	)
 	// TODO: Add sponsorship cancellation logic here
@@ -116,6 +150,7 @@ func (gsh *GitHubSponsorsWebhook) handleSponsorshipCancelled(event github.Sponso
 func (gsh *GitHubSponsorsWebhook) handlePendingTierChange(event github.SponsorsEvent) {
 	slog.Info("Pending sponsorship tier change",
 		"sponsor", event.Sponsorship.Sponsor.Login,
+		"sponsor_id", event.Sponsorship.Sponsor.ID,
 		"tier", event.Sponsorship.Tier.Name,
 		"monthly_price", event.Sponsorship.Tier.MonthlyPriceInDollars,
 	)
@@ -126,6 +161,7 @@ func (gsh *GitHubSponsorsWebhook) handlePendingTierChange(event github.SponsorsE
 func (gsh *GitHubSponsorsWebhook) handlePendingCancellation(event github.SponsorsEvent) {
 	slog.Info("Pending sponsorship cancellation",
 		"sponsor", event.Sponsorship.Sponsor.Login,
+		"sponsor_id", event.Sponsorship.Sponsor.ID,
 		"tier", event.Sponsorship.Tier.Name,
 	)
 	// TODO: Add pending cancellation logic here
