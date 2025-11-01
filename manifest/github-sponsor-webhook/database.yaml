@@ -1,0 +1,10 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: github-sponsor-webhook
+spec:
+  instances: 2
+  enableSuperuserAccess: true
+
+  storage:
+    size: 16Gi
