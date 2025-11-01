@@ -1,7 +1,7 @@
 // Package maybedoer contains a pipeline of actions that might fail. If any action
 // in the chain fails, no further actions take place and the error becomes the pipeline
 // error.
-// 
+//
 // MIT License
 package maybedoer
 
