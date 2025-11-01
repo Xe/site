@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	defaultWebhookURL = "http://localhost:3000/.within/hook/github-sponsors"
+	defaultWebhookURL = "http://localhost:4823/.within/hook/github-sponsors"
 	defaultSecret     = "test-secret"
 )
 

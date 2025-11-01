@@ -13,14 +13,16 @@ import (
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 	"xeiaso.net/v4/internal"
+	"xeiaso.net/v4/internal/models"
 )
 
 var (
-	bind                 = flag.String("bind", ":8080", "Port to listen on")
-	dataDir              = flag.String("data-dir", "./var", "Directory to store data in")
+	bind                 = flag.String("bind", ":4823", "Port to listen on")
+	databaseURL          = flag.String("database-url", "", "Database URL")
 	githubSponsorsSecret = flag.String("github-sponsors-secret", "", "GitHub Sponsors secret to use for webhooks")
-	logLevel             = flag.String("log-level", "info", "Log level (debug, info, warn, error)")
 )
 
 func main() {
@@ -35,7 +37,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	os.MkdirAll(*dataDir, 0700)
+	if *databaseURL == "" {
+		slog.Error("database-url is required")
+		os.Exit(1)
+	}
 
 	if *githubSponsorsSecret == "" {
 		slog.Error("github-sponsors-secret is required")
@@ -44,14 +49,29 @@ func main() {
 
 	slog.Info("starting GitHub Sponsors webhook service",
 		"bind", *bind,
-		"data_dir", *dataDir,
 	)
+
+	db, err := gorm.Open(postgres.Open(*databaseURL), &gorm.Config{})
+	if err != nil {
+		slog.Error("can't connect to database", "err", err)
+		os.Exit(1)
+	}
+
+	if err := db.Exec("SELECT 1 + 1").Error; err != nil {
+		slog.Error("can't ping database", "err", err)
+		os.Exit(1)
+	}
+
+	if err := models.SetupDatabase(db); err != nil {
+		slog.Error("database setup error", "err", err)
+		os.Exit(1)
+	}
 
 	gsh := &GitHubSponsorsWebhook{}
 	s := hmacsig.Handler256(gsh, *githubSponsorsSecret)
 
 	mux := http.NewServeMux()
-	mux.Handle("/webhook", s)
+	mux.Handle("/.within/hook/github-sponsors", s)
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
