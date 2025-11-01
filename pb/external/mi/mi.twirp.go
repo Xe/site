@@ -3,25 +3,38 @@
 
 package mi
 
-import context "context"
-import fmt "fmt"
-import http "net/http"
-import io "io"
-import json "encoding/json"
-import strconv "strconv"
-import strings "strings"
+import (
+	context "context"
+	fmt "fmt"
 
-import protojson "google.golang.org/protobuf/encoding/protojson"
-import proto "google.golang.org/protobuf/proto"
-import twirp "github.com/twitchtv/twirp"
-import ctxsetters "github.com/twitchtv/twirp/ctxsetters"
+	http "net/http"
 
-import google_protobuf "google.golang.org/protobuf/types/known/emptypb"
+	io "io"
 
-import bytes "bytes"
-import errors "errors"
-import path "path"
-import url "net/url"
+	json "encoding/json"
+
+	strconv "strconv"
+
+	strings "strings"
+
+	protojson "google.golang.org/protobuf/encoding/protojson"
+
+	proto "google.golang.org/protobuf/proto"
+
+	twirp "github.com/twitchtv/twirp"
+
+	ctxsetters "github.com/twitchtv/twirp/ctxsetters"
+
+	google_protobuf "google.golang.org/protobuf/types/known/emptypb"
+
+	bytes "bytes"
+
+	errors "errors"
+
+	path "path"
+
+	url "net/url"
+)
 
 // Version compatibility assertion.
 // If the constant is not defined in the package, that likely means
