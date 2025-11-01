@@ -50,43 +50,4 @@ jobs:
             patreon-saasproxy.tags=ghcr.io/xe/site/patreon-saasproxy:latest
             xesite.tags=ghcr.io/xe/site/bin:latest
 
-  deploy:
-    name: "Deploy xesite"
-    needs: build
-    runs-on: alrest-xe-site
-    if: github.ref == 'refs/heads/main'
-    permissions:
-      contents: read
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-            src:
-              - 'cmd/**/*.go'
-              - 'internal/**/*.go'
-              - 'pb/*'
-              - 'pb/**/*'
-              - 'go.mod'
-              - 'go.sum'
-              - 'docker/*'
-              - "docker-bake.hcl"
-              - 'manifest/**/*.yaml'
-      - uses: azure/setup-kubectl@v4
-        if: steps.changes.outputs.src == 'true'
-      - name: Save Civo kubeconfig
-        if: steps.changes.outputs.src == 'true'
-        run: |
-          curl -sL https://civo.com/get | sudo sh
-          civo apikey add default $CIVO_TOKEN
-          civo apikey current default
-          civo kubernetes config --region phx1 aeacus --save --switch
-        env:
-          CIVO_TOKEN: ${{ secrets.CIVO_TOKEN }}
-      - name: "Deploy"
-        if: steps.changes.outputs.src == 'true'
-        run: |
-          kubectl apply -k manifest
-          kubectl rollout restart -n default deploy/xesite
+  
