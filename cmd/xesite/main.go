@@ -21,17 +21,18 @@ import (
 )
 
 var (
-	bind                = flag.String("bind", ":3000", "Port to listen on")
-	devel               = flag.Bool("devel", false, "Enable development mode")
-	dataDir             = flag.String("data-dir", "./var", "Directory to store data in")
-	futureSightURL      = flag.String("future-sight-url", "", "URL to use for future sight preview deploys")
-	gitBranch           = flag.String("git-branch", "main", "Git branch to clone")
-	gitRepo             = flag.String("git-repo", "https://github.com/Xe/site", "Git repository to clone")
-	githubSecret        = flag.String("github-secret", "", "GitHub secret to use for webhooks")
-	internalAPIBind     = flag.String("internal-api-bind", ":3001", "Port to listen on for the internal API")
-	miURL               = flag.String("mimi-announce-url", "", "Mi url (named mimi-announce-url for historical reasons)")
-	patreonSaasProxyURL = flag.String("patreon-saasproxy-url", "http://xesite-patreon-saasproxy.flycast", "URL to use for the patreon saasproxy")
-	siteURL             = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")
+	bind                 = flag.String("bind", ":3000", "Port to listen on")
+	devel                = flag.Bool("devel", false, "Enable development mode")
+	dataDir              = flag.String("data-dir", "./var", "Directory to store data in")
+	futureSightURL       = flag.String("future-sight-url", "", "URL to use for future sight preview deploys")
+	gitBranch            = flag.String("git-branch", "main", "Git branch to clone")
+	gitRepo              = flag.String("git-repo", "https://github.com/Xe/site", "Git repository to clone")
+	githubSecret         = flag.String("github-secret", "", "GitHub secret to use for webhooks")
+	githubSponsorsSecret = flag.String("github-sponsors-secret", "", "GitHub Sponsors secret to use for webhooks")
+	internalAPIBind      = flag.String("internal-api-bind", ":3001", "Port to listen on for the internal API")
+	miURL                = flag.String("mimi-announce-url", "", "Mi url (named mimi-announce-url for historical reasons)")
+	patreonSaasProxyURL  = flag.String("patreon-saasproxy-url", "http://xesite-patreon-saasproxy.flycast", "URL to use for the patreon saasproxy")
+	siteURL              = flag.String("site-url", "https://xeiaso.net/", "URL to use for the site")
 )
 
 func main() {
@@ -113,6 +114,10 @@ func main() {
 	gh := &GitHubWebhook{fs: fs}
 	s := hmacsig.Handler256(gh, *githubSecret)
 	mux.Handle("/.within/hook/github", s)
+
+	gsh := &GitHubSponsorsWebhook{fs: fs}
+	ss := hmacsig.Handler256(gsh, *githubSponsorsSecret)
+	mux.Handle("/.within/hook/github-sponsors", ss)
 
 	mux.Handle("/.within/hook/patreon", &PatreonWebhook{fs: fs})
 
