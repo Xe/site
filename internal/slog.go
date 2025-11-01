@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"mime"
 	"net/http"
 	"os"
 )
@@ -14,6 +15,11 @@ var (
 
 	leveler *slog.LevelVar
 )
+
+func init() {
+	// Register additional MIME types
+	mime.AddExtensionType(".svg", "image/svg+xml")
+}
 
 func Slog() {
 	var programLevel slog.Level
