@@ -10,3 +10,4 @@ cw.tar
 .direnv
 node_modules
 /xesite
+/xesitectl
