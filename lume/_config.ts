@@ -157,7 +157,7 @@ site.use(tailwindcss({
 }));
 site.use(postcss());
 site.use(sitemap({
-  query: "",
+  query: "index=true",
 }));
 site.use(readInfo({
   extensions: [".md", ".mdx"],
