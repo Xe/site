@@ -67,7 +67,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	gsh := &GitHubSponsorsWebhook{}
+	gsh := &GitHubSponsorsWebhook{DB: db}
 	s := hmacsig.Handler256(gsh, *githubSponsorsSecret)
 
 	mux := http.NewServeMux()
