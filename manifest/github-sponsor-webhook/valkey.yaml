@@ -1,0 +1,12 @@
+apiVersion: db.x.within.website/v1
+kind: Valkey
+metadata:
+  name: anubis
+  namespace: gitea
+spec:
+  env:
+    - name: ALLOW_EMPTY_PASSWORD
+      value: "true"
+  storage:
+    enabled: true
+    size: 5Gi

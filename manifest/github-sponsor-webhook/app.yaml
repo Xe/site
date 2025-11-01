@@ -1,0 +1,21 @@
+apiVersion: x.within.website/v1
+kind: App
+metadata:
+  name: spons-webhook
+
+spec:
+  image: reg.xeiaso.net/xe/site/github-sponsor-webhook:main
+  autoUpdate: true
+
+  healthcheck:
+    enabled: true
+    path: /health
+
+  ingress:
+    enabled: true
+    host: webhook.sponsors.xeiaso.net
+
+  secrets:
+    - name: env
+      itemPath: vaults/lc5zo4zjz3if3mkeuhufjmgmui/items/ykvytf776gf5pt53a2u5u4eeie
+      environment: true

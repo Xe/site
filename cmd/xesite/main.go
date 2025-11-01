@@ -83,7 +83,6 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServerFS(fs))
-	//mux.Handle("/", http.FileServer(http.FS(fs)))
 	mux.Handle("/api/defs/", http.StripPrefix("/api/defs/", http.FileServer(http.FS(pb.Proto))))
 
 	ms := pb.NewMetaServer(&MetaServer{fs}, twirp.WithServerPathPrefix("/api"))
@@ -113,7 +112,6 @@ func main() {
 	gh := &GitHubWebhook{fs: fs}
 	s := hmacsig.Handler256(gh, *githubSecret)
 	mux.Handle("/.within/hook/github", s)
-
 	mux.Handle("/.within/hook/patreon", &PatreonWebhook{fs: fs})
 
 	mux.HandleFunc("/static/talks/irc-why-it-failed.pdf", func(w http.ResponseWriter, r *http.Request) {
