@@ -1,44 +1,93 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `cmd/` – entry‑point binaries (e.g., `xesite`, `patreon-saasproxy`). Each subdirectory contains a `main.go`.
-- `internal/` – reusable Go packages for core logic.
-- `dhall/` – configuration files written in Dhall, used by the site generator.
-- `lume/` – static content (blog posts, videos) in Markdown/MDX.
-- `scripts/` – helper scripts (e.g., `fabricate-generation`, `imgoptimize`).
-- `manifest/` – Kubernetes manifests for deployment.
-- `var/` – generated artifacts (compiled binaries, assets).
 
-## Build, Test, and Development Commands
-- `go build ./cmd/xesite` – compile the main site binary.
-- `go run ./cmd/xesite --site-url https://preview.xeiaso.net --devel` – start the dev server (see `package.json` script `dev`).
-- `npm run dev` – alias for the above Go command.
-- `npm run deploy` – deploy the site to production.
-- `go test ./...` – run any Go tests (currently none).
+```text
+├─ cmd/            # Main applications (each sub‑directory is a binary)
+├─ docs/           # Documentation assets
+├─ internal/       # Private packages used by the repo
+├─ lume/           # Static site generator configuration
+├─ lume/src        # Static site pages
+├─ test files      # Go test files live alongside source (`*_test.go`)
+├─ go.mod          # Go module definition
+└─ package.json    # npm scripts and JS tooling
+```
 
-## Coding Style & Naming Conventions
-- Go code follows `gofmt`; run `go fmt ./...` before committing.
-- Use `goimports` to organize imports: `go get -tool golang.org/x/tools/cmd/goimports@latest` then `find . -name "*.go" -exec goimports -w {} \;`.
-- Use `camelCase` for variables/functions, `PascalCase` for exported types.
-- Indentation: tabs (default `go fmt`).
-- Dhall files use kebab‑case filenames (e.g., `my-config.dhall`).
-- Bash/Node scripts use `snake_case` for variable names.
+Source code is primarily Go; JavaScript tooling lives under `node_modules` and the root `package.json`.
 
-## Testing Guidelines
-- Add tests using the `testing` package; name files `*_test.go` and place them alongside the package.
-- Run `go test ./...` to execute all tests.
+## Development Workflow
 
-## Commit & Pull Request Guidelines
-- Commit messages follow the conventional format:
-  - `type(scope): short description`
-  - Example: `feat(cli): add --site-url flag`.
-- Keep commits atomic and self‑contained.
-- PR description must include:
-  - Summary of changes.
-  - Related issue number (if any).
-  - Verification steps (e.g., run `go run ./cmd/xesite`).
+### Build, Test & Development Commands
 
-## Security & Configuration Tips
-- Secrets live in `.env` and must never be committed; `.gitignore` already excludes it.
-- When adding new environment variables, document them in `README.md` or a dedicated config file.
+| Command                      | Description                                         |
+| ---------------------------- | --------------------------------------------------- |
+| `npm run generate`           | Regenerates protobuf, Go code, and runs formatters. |
+| `npm test` or `npm run test` | Runs `generate` then executes `go test ./...`.      |
+| `go build ./...`             | Compiles all Go packages.                           |
+| `go run ./cmd/<app>`         | Runs a specific binary from `cmd/`.                 |
+| `npm run format`             | Formats Go (`goimports`) and JS/HTML (`prettier`).  |
 
+### Code Formatting & Style
+
+- **Go** – use `go fmt`/`goimports`; tabs for indentation, `camelCase` for variables, `PascalCase` for exported identifiers.
+- **JavaScript/HTML/CSS** – formatted with Prettier (2‑space tabs, trailing commas, double quotes).
+- Files are snake_case; packages use lower‑case module names.
+- Run `npm run format` before committing.
+
+### Testing
+
+- Tests are written in Go using the standard `testing` package (`*_test.go`).
+- Keep test files next to the code they cover.
+- Run the full suite with `npm test`.
+- Aim for high coverage on new modules; existing coverage is not enforced.
+- **Go** – follow the standard library style; prefer table‑driven tests.
+
+## Code Quality & Security
+
+### Commit Guidelines
+
+Commit messages follow **Conventional Commits** format:
+
+```text
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+**Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
+
+- Add `!` after type/scope for breaking changes or include `BREAKING CHANGE:` in the footer.
+- Keep descriptions concise, imperative, lowercase, and without a trailing period.
+- Reference issues/PRs in the footer when applicable.
+
+### Attribution Requirements
+
+AI agents must disclose what tool and model they are using in the "Assisted‑by" commit footer:
+
+```text
+Assisted‑by: [Model Name] via [Tool Name]
+```
+
+Example:
+
+```text
+Assisted‑by: GLM 4.6 via Claude Code
+```
+
+### Additional Guidelines
+
+## Pull Request Requirements
+
+- Include a clear description of changes.
+- Reference any related issues.
+- Pass CI (`npm test`).
+- Optionally add screenshots for UI changes.
+
+### Security Best Practices
+
+- Secrets never belong in the repo; use environment variables via `.env` files.
+- Run `npm audit` periodically and address reported vulnerabilities.
+
+_This file is consulted by the repository's tooling. Keep it up‑to‑date as the project evolves._
