@@ -11,7 +11,8 @@
     "test": "go test ./...",
     "dev": "go run ./cmd/xesite --site-url https://preview.xeiaso.net --devel",
     "deploy": "kubectl --context limsa-lominsa apply -k manifest",
-    "extract-meta": "node scripts/extract-meta.js"
+    "extract-meta": "node scripts/extract-meta.js",
+    "validate-content-dates": "node scripts/validate-blog-dates.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +27,8 @@
   "dependencies": {
     "execa": "^8.0.1",
     "jsdom": "^25.0.0"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3"
   }
 }
