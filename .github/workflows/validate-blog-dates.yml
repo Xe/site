@@ -1,0 +1,35 @@
+name: Validate Content Dates
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'lume/src/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'lume/src/**'
+
+jobs:
+  validate-dates:
+    runs-on: ubuntu-latest
+    name: Check for future-dated content
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for PR diff
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Validate blog post dates
+      env:
+        GITHUB_EVENT_NAME: ${{ github.event_name }}
+      run: node scripts/validate-blog-dates.js
