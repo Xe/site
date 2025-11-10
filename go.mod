@@ -1,6 +1,6 @@
 module xeiaso.net/v4
 
-go 1.25.3
+go 1.25.4
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.39.6
@@ -24,7 +24,7 @@ require (
 	k8s.io/apimachinery v0.34.1
 	k8s.io/client-go v0.34.1
 	tailscale.com v1.90.6
-	within.website/x v1.25.0
+	within.website/x v1.26.0
 )
 
 require (
