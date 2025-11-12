@@ -1,0 +1,114 @@
+---
+title: "Valve is about to win the console generation"
+desc: "Valve does nothing and still wins"
+date: 2025-11-12
+# hero:
+#   ai: ""
+#   file: ""
+#   prompt: ""
+#   social: false
+---
+
+Today was a big day for gamers as Valve just introduced three products: the Steam Controller, the Steam Machine, and the Steam Frame. When you add this alongside the Steam Deck, I think it's safe to say that Valve is about to win the next console generation.
+
+## Steam Controller
+
+I have basically nothing to say about the Steam Controller. It's the Steam Deck's input but in a controller. There's no way they can really mess it up in a way that isn't recoverable.
+
+<Conv name="Cadey" mood="wat">
+  What else is there to say?
+</Conv>
+
+## Steam Machine
+
+The Steam Machine of yore was one of the biggest tech flops in history and led to a lot of the changes that has made Valve hardware so good. Based on what they've announced, the software ecosystem I know and love on SteamOS, and response from developers I talk with, there's a reasonable chance that this [new Steam Machine](https://store.steampowered.com/sale/steammachine) is going to be the most compelling console on the market.
+
+TL;DR: The Steam Machine's specs are on par or better with the PS5. It's got 16 GB of ram, a dedicated GPU with 8GB of video ram, and it's about the size of three M1 Mac Minis stacked on top of each other with a slightly bigger footprint than a Nintendo GameCube.
+
+I see no real way that this could be a failure in the same way that the last Steam Machine was. If they don't fuck this up, I could pretty confidently say that Valve is going to win this console generation.
+
+<Conv name="Cadey" mood="coffee">
+  In retrospect, I think that the failure of the first Steam Machine was
+  probably one of the best things to ever happen to Valve. Proton, Steam Play,
+  and the Steam Deck are the proof that Valve learned all the lessons they
+  needed to in order to make a next generation Steam Machine a viable console.
+</Conv>
+
+The biggest difference between SteamOS and other console operating systems is that SteamOS is just an immutable image-based fork of Arch Linux with a skin on top. If you can do it with a normal PC, you can do it on SteamOS.
+
+<ConvP>
+  <Conv name="Aoi" mood="wut">
+    Wait, you said that you can do _anything_ you can do on a normal PC, but you
+    also said it's running an immutable OS. What if my definition of "anything"
+    includes "install system packages"?
+  </Conv>
+  <Conv name="Cadey" mood="aha">
+    Good point, I'm not worried about that for two main reasons: developers have
+    already found ways to use things like [distrobox](https://distrobox.it/) to
+    give you islands of mutablity in an otherwise immutable system on the Steam
+    Deck, and you can just blow away the OS and install whatever you want (such
+    as [Bazzite](https://bazzite.gg/)) or any normal Linux distribution. You
+    could even put Windows on it if you needed to for some reason.
+  </Conv>
+</ConvP>
+
+This means that even though Valve will be selling this hardware at a loss, you can still buy one and never purchase anything else from them. You can install any compatible game from any marketplace. In their own words:
+
+> Yes, Steam Machine is optimized for gaming, but it's still your PC. Install your own apps, or even another operating system. Who are we to tell you how to use your computer?
+
+I cannot even imagine the other console manufacturers saying this.
+
+I'd easily imagine that it'd have free reign across a majority of the Steam library. By sheer game count alone, this would make it one of the biggest console launch libraries on the market. This isn't even counting the fact that you can install alternative marketplaces like [itch.io](http://itch.io), GOG, or anything [Lutris](https://lutris.net/) supports (EG: Epic Games).
+
+<Conv name="Numa" mood="smug">
+  Valve does nothing and still wins.
+</Conv>
+
+One of the bigger things that I don't think people really appreciate about the Steam Machine (or even the Steam Deck for that matter) is that the freedom to install whatever program, framework, background service, or OS you want means that every Steam Machine can be used to make games. Some of their promotional images show a Steam Machine in a dual-monitor setup split between Blender and Godot.
+
+I don't think you realize how big of a deal this is. By making every Steam Machine also powerful enough to do full on game development, Valve is making it so much easier to become an independent game developer. Just add ideas, skill, and time.
+
+<Conv name="Cadey" mood="aha">
+  Hilariously, this means that the Steam Machine is probably the only console on
+  the market that's fully compliant with the EU's Digital Markets Act. It would
+  be absolutely hilarious if the EU ends up using this as rationale for
+  Nintendo, Microsoft, and Sony to open up their consoles for third party
+  developers.
+</Conv>
+
+Oh and to top it off, the internal storage is upgradable and can take full-size nvme drives. If you pop your microSD card out of your Steam Deck, you can put it into your Steam Machine and get all your games instantly. Reportedly the ram is user-upgradable too.
+
+The only way that they could mess this up is with the pricing. The price will be what determines if this is a PS5 killer or a mid-range home theater PC that can do games decently well. Given the fact that Steam prints so much money, I'd expect the pricing to be super aggressive.
+
+<Conv name="Cadey" mood="enby">
+  Worst case, this would be a great home theatre PC. I'd rock it in my media
+  centre. It's going to run Plex, Twitch, and Youtube just fine.
+</Conv>
+
+## Steam Frame
+
+Valve also announced their successor to the Valve Index today, the [Steam Frame](https://store.steampowered.com/sale/steamframe), a standalone VR headset. It's basically a Meta Quest headset, but also a Steam Deck. They market it as being able to play VR and 2D games effortlessly. The weirdest thing about it is that it's running a 64 bit ARM CPU instead of a conventional AMD APU like the Steam Deck and Steam Machine. This means that SteamOS is going to be cross-architecture for the first time and they're going to use [FEX](https://github.com/FEX-Emu/FEX) to bridge the gap.
+
+The big thing I want to see in practice is their implementation of foveated rendering. This beautiful hack abuses the fact that human eyes have the most sharpness and fidelity at the exact centre of your field of vision, whereas your peripheral vision is abysmal at it. This means that on average you only have to render about 10% of the frame at maximum quality for it to _feel_ like it's running at full resolution all over the screen.
+
+This should make the fact that the Frame is using a "weaker" CPU/GPU irrelevant. Games should look fine as long as they render the slice that needs to be in full quality fast enough.
+
+Even more fun, they take advantage of the same tricks behind foveated rendering for streaming games from a PC or Steam Machine. This means that you get that same optically perfect quality but with even less latency because less data has to be transferred to hit your eyes.
+
+<Conv name="Cadey" mood="hug">
+  I really want to see what this is like in practice. Reportedly there's no
+  perceptual difference between this setup and rendering games at 100% full
+  quality.
+</Conv>
+
+The Steam Frame ships with a USB dongle that lets you use the might of your gaming tower for low latency VR gaming. I'll need to see this in practice in order to have opinions. I think that in the worst case it can't possibly be any worse than it was streaming VR games to my Quest 2 over Wi-Fi. That was tolerable and viable for mid-level Beat Saber. I have confidence that it will at least be sufficient for high level Beat Saber gameplay.
+
+Remember how I said that it's a Steam Deck in a headset? The Steam Frame runs full SteamOS. You can just boot it into a full KDE desktop and use it as a normal computer. I have no reason to doubt that every Steam Frame is also a development kit in the same way that the Steam Machine is also a development kit.
+
+They also claim you can load arbitrary Android apps into the Steam Frame. I need to see this in action before I have opinions about it. It would be exceptionally funny if this meant you could take apps/games made for the Meta Quest and just plop them onto the Steam Frame without modification. I'm not holding my breath, but it would be funny.
+
+The only possible flaw I can see is that the strap it ships with doesn't go over the top of your head. If this ends up being an issue in practice, somebody is going to make a third party strap that just fixes this problem. I'm not concerned.
+
+Really, the only thing that can go wrong with any of this hardware is the price. I would still be happy if the pricing was the worst part of this lineup. It would be really cool if there was a bundle.
+
+I'm at least planning on getting a Steam Machine on day 1 and making a review. What would you like to see in that? Let me know on [Bluesky](https://bsky.app/profile/xeiaso.net/post/3m5hdpui5zc2z).
