@@ -4,7 +4,7 @@ go 1.25.4
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.40.0
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.91.1
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.92.0
 	github.com/bep/debounce v1.2.1
 	github.com/donatj/hmacsig v1.1.0
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
