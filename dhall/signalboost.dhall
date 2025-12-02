@@ -267,4 +267,24 @@ in  [ Person::{
         , Link::{ url = "https://github.com/shepherdjerred", title = "GitHub" }
         ]
       }
+   , Person::{
+    , name = "River"
+    , tags =
+      [ "full-stack"
+      , "javascript"
+      , "typescript"
+      , "python"
+      , "react"
+      , "nextjs"
+      , "docker"
+      , "ai/ml"
+      , "computer-vision"
+      ]
+    , links =
+      [ Link::{ url = "https://river.berlin", title = "Website" }
+      , Link::{ url = "https://river.berlin/resume", title = "Resume" }
+      , Link::{ url = "https://github.com/therealadityashankar", title = "GitHub" }
+      , Link::{ url = "https://www.linkedin.com/in/aditya-shankar-338641252/", title = "LinkedIn" }
+      ]
+    }
     ]
