@@ -1,0 +1,29 @@
+---
+title: "New AI slop signal: code blocks with weird indentation"
+desc: "If the first line of a set of commands isn't indented but the rest are: the post is AI slop"
+date: 2025-12-01
+---
+
+I just discovered a new way to tell if a blogpost is AI slop or at least if someone blindly copied and pasted commands from Claude Code: the first line of a group of commands isn't indented but the rest are, like this:
+
+```bash
+sudo apt update
+  sudo apt upgrade
+  sudo apt autoremove
+  sudo apt autoclean
+```
+
+This happens because the raw CLI output of Claude code for this question looks like this:
+
+```text
+> What are the commands to fully update an Ubuntu system? Just list the commands.
+
+● sudo apt update
+  sudo apt upgrade
+  sudo apt autoremove
+  sudo apt autoclean
+```
+
+And then the writer copied from the beginning of the set of commands to the end. Their text editor / formatting tool did not remove the preceding spaces because that's sometimes syntactically relevant in code blocks.
+
+I'll keep y'all updated as I find more indicators. There are so many in the wild and it's making me grow weary.
