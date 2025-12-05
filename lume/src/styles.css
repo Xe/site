@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import url(https://files.xeiaso.net/static/font/inter/inter.css);
-@import url(https://cdn.xeiaso.net/static/css/iosevka/family.css);
+@import url(https://files.xeiaso.net/static/font/iosevka/family.css);
 
 @font-face {
   font-family: "Podkova";
