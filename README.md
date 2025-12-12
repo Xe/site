@@ -1,5 +1,8 @@
 # site
 
+[![Run in Smithery](https://smithery.ai/badge/skills/xe)](https://smithery.ai/skills?ns=xe&utm_source=github&utm_medium=badge)
+
+
 ![enbyware](https://pride-badges.pony.workers.dev/static/v1?label=enbyware&labelColor=%23555&stripeWidth=8&stripeColors=FCF434%2CFFFFFF%2C9C59D1%2C2C2C2C)
 ![dependency status](https://img.shields.io/librariesio/github/Xe/site)
 ![license](https://img.shields.io/github/license/Xe/site)
