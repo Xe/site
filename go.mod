@@ -23,7 +23,7 @@ require (
 	gorm.io/gorm v1.31.1
 	k8s.io/apimachinery v0.35.0
 	k8s.io/client-go v0.34.3
-	tailscale.com v1.92.3
+	tailscale.com v1.92.4
 	within.website/x v1.26.1
 )
 
