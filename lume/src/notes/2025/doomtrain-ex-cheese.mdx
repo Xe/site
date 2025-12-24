@@ -1,0 +1,77 @@
+---
+title: "Arcane Cheese with Doomtrain Extreme"
+desc: "If you don't play Final Fantasy 14, try to identify how many words in this post are in the bible."
+date: 2025-12-24
+---
+
+import Admonition from "../../_components/Admonition.jsx";
+
+<Admonition type="warning" title="Spoiler Warning">
+  If you want to go through the Final Fantasy 14 duty Hell on Rails (Extreme)
+  blind, don't read this guide as it spoils how to easily solve one of the
+  mechanics in it.
+
+{" "}
+
+If you don't play Final Fantasy 14, most of the words in this article are going to
+make no sense to you and I will make no attempt to explain them. Just know that most
+of the words I am saying do have meaning even though they aren't in The Bible.
+
+</Admonition>
+
+In phase 4 of Hell on Rails (Extreme), the boss will cast Arcane Revelation, which makes the arena look something like this:
+
+<Picture path="blog/2025/doomtrain-ex-cheese/arcane-rev-setup" />
+
+There will be a very large circle of bad moving around the arena. One tank and one healer will be marked with an untelegraphed AoE attack that MUST be soaked by at least one other player (or two for healers). Doomtrain will move the circle of bad anywhere from 1-3 times and leave only a small area of the arena safe. Normally you're supposed to solve it something like this:
+
+<Picture path="blog/2025/doomtrain-ex-cheese/arcane-revelation-normal" />
+
+Instead of normal light party groups, break up into two groups: melee and casters. This will allow the melees to keep as much uptime as the mechanics allow, but also let the casters get uptime at a distance. Solving this is pretty easy with practice.
+
+However as a caster this is kinda annoying because when the North side is safe, you have to fall down off the ledge and the only way to get back is by going around the long way with the janky teleporters that are annoying to hit on purpose but very easy to hit on accident. There is an easier way: you just stand in the upper corners so your melees can greed uptime and just soak all of the bad:
+
+<Picture path="blog/2025/doomtrain-ex-cheese/arcane-cheese" />
+
+This looks a lot easier but is actually very technically complicated for nearly every class. My example solve for this includes the following party members:
+
+- Tank 1: [Warrior](https://ffxiv.consolegameswiki.com/wiki/Warrior) (WAR)
+- Tank 2: [Gunbreaker](https://ffxiv.consolegameswiki.com/wiki/Gunbreaker) (GNB)
+- Healer 1: [White Mage](https://ffxiv.consolegameswiki.com/wiki/White_Mage) (WHM)
+- Healer 2: [Sage](https://ffxiv.consolegameswiki.com/wiki/Sage) (SGE)
+- Melee 1: [Samurai](https://ffxiv.consolegameswiki.com/wiki/Samurai) (SAM)
+- Melee 2: [Reaper](https://ffxiv.consolegameswiki.com/wiki/Reaper) (RPR)
+- Ranged 1: [Dancer](https://ffxiv.consolegameswiki.com/wiki/Dancer) (DNC)
+- Ranger 2: [Pictomancer](https://ffxiv.consolegameswiki.com/wiki/Pictomancer) (PCT)
+
+The light party assignment is as follows:
+
+1. WAR, WHM, SAM, DNC
+2. GNB, SGE, RPR, PCT
+
+Arcane Revelation can perform up to three hits. In each of the hits you need to mitigate the damage heavily or you will wipe. I've found the most consistent results doing this:
+
+First hit: WAR casts [Shake it Off](https://ffxiv.consolegameswiki.com/wiki/Shake_It_Off), [Reprisal](https://ffxiv.consolegameswiki.com/wiki/Reprisal), and [Rampart](https://ffxiv.consolegameswiki.com/wiki/Rampart); WHM casts [Plenary Indulgence](https://ffxiv.consolegameswiki.com/wiki/Plenary_Indulgence) and [Medica III](https://ffxiv.consolegameswiki.com/wiki/Medica_III); SGE casts [Kerachole](https://ffxiv.consolegameswiki.com/wiki/Kerachole) and [Eukrasian Prognosis II](https://ffxiv.consolegameswiki.com/wiki/Eukrasian_Prognosis_II); SAM (and RPR) casts [Bloodbath](https://ffxiv.consolegameswiki.com/wiki/Bloodbath) and mostly focuses on DPSing as much as possible to heal from the massive damage you will be taking throughout this mechanic; DNC casts [Shield Samba](https://ffxiv.consolegameswiki.com/wiki/Shield_Samba).
+
+After the hit: heal as much as you can to offset the hit you took. If you're lucky you didn't take much. If you're not: you took a lot. Dancer's [Curing Waltz](https://ffxiv.consolegameswiki.com/wiki/Curing_Waltz) can help here.
+
+Second hit: GNB casts [Heart of Light](https://ffxiv.consolegameswiki.com/wiki/Heart_of_Light), [Reprisal](https://ffxiv.consolegameswiki.com/wiki/Reprisal), and [Rampart](https://ffxiv.consolegameswiki.com/wiki/Rampart); SGE casts [Holos](https://ffxiv.consolegameswiki.com/wiki/Holos) and [Eukrasian Prognosis II](https://ffxiv.consolegameswiki.com/wiki/Eukrasian_Prognosis_II); PCT casts [Addle](https://ffxiv.consolegameswiki.com/wiki/Addle).
+
+After the hit: SGE casts a [Zoe](https://ffxiv.consolegameswiki.com/wiki/Zoe)-boosted [Pneuma](https://ffxiv.consolegameswiki.com/wiki/Pneuma). Generally you do what you can to heal and maintain DPS uptime. Hopefully you don't have to take another heavy hit.
+
+Third hit: One of the tanks uses a [Tank Limit Break 2](https://ffxiv.consolegameswiki.com/wiki/Limit_Break#Level_2), Healers dump as many mits as they have left, hopefully you won't die but getting to this point means you got very very unlucky.
+
+Between each of these hits you need to heal everyone up to 100% **as soon as possible** otherwise you WILL wipe. Most of the damage assumptions in this guide assume that everyone is at 100% health. The melee classes can mostly be left to their own devices to greed as much uptime as possible, but they may need Aquaveil, Taurochole, or other single target damage mitigations as appropriate. By the end of this you will have used up all of your mitigations save tank invulns.
+
+Here's a video of the first time I did this as Sage:
+
+<XeblogVideo path="blog/2025/doomtrain-ex-cheese/sge-vid" />
+
+<Conv name="Cadey" mood="coffee">
+  That exasperated laugh is because previously Arcane Revelation was my hard
+  prog point as even though I was able to do it consistently, others were not.
+  This caused many wipes 7 minutes into a 10 minute fight. This cheese makes it
+  consistent with random people on Party Finder.
+</Conv>
+
+One of the tanks will need to soak a stack tower with an invuln. Everyone else runs to the back of the car to enter the next phase and then you continue the fight as normal.
