@@ -1,0 +1,15 @@
+---
+title: "Git's HTTP server side design does not scale"
+desc: "A small rant about CGI."
+date: 2025-12-29
+---
+
+Recently [Sourceware had to disable git clone over HTTP](https://inbox.sourceware.org/overseers/20251229005935.GJ30914@gnu.wildebeest.org/T/) due to an attack where lots of random Git clients are cloning repositories. This was surprising to me, I thought the Git client didn't need any smarts on the server and most of the "magic" was just serving flat files based on the client needs. It turns out that [the git HTTP backend](https://git-scm.com/docs/git-http-backend) is way more complicated than I thought it was and the actual problem boils down to something that's as old as I am: the [Common Gateway Interface (CGI)](https://en.wikipedia.org/wiki/Common_Gateway_Interface).
+
+A CGI handler is a program that gets request metadata from environment variables and standard input, then returns the result over standard output. This means that the web server has to fork/exec a new process for every request. If your service ends up getting very popular very quickly, this can incur [forkbomb](https://en.wikipedia.org/wiki/Fork_bomb) attacks.
+
+The default and recommended configuration for serving git repositories over HTTP is to use [the git-http-backend CGI handler](https://git-scm.com/docs/git-http-backend) to serve traffic. This means that every time a git client is cloning a repo, the server side needs to spawn a new copy of the process to handle the request. In most cases, this is fine. In extreme cases where lots of residential proxies are cloning every repo they can and making the server calculate absurd diffs between random commit hashes, this results in the opposite of rejoicing.
+
+I am not entirely sure what to suggest to users of Anubis that serve git repositories with git-http-backend. My SRE instinct is that the entire model of using fork/exec with CGI is fundamentally broken and the git-http-backend service needs to be its own HTTP server that can run persistently and concurrently handle requests, but that is not something that can be slapped together instantly.
+
+Am I missing something really simple that I don't know about? Google has failed me.
