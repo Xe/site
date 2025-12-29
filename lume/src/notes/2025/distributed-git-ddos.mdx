@@ -4,6 +4,8 @@ desc: "A small rant about CGI."
 date: 2025-12-29
 ---
 
+UPDATE(2025-12-29T13:04Z-5): If you run a git forge: disable unauthenticated clones for repos larger than 512Mi until further notice.
+
 Recently [Sourceware had to disable git clone over HTTP](https://inbox.sourceware.org/overseers/20251229005935.GJ30914@gnu.wildebeest.org/T/) due to an attack where lots of random Git clients are cloning repositories. This was surprising to me, I thought the Git client didn't need any smarts on the server and most of the "magic" was just serving flat files based on the client needs. It turns out that [the git HTTP backend](https://git-scm.com/docs/git-http-backend) is way more complicated than I thought it was and the actual problem boils down to something that's as old as I am: the [Common Gateway Interface (CGI)](https://en.wikipedia.org/wiki/Common_Gateway_Interface).
 
 A CGI handler is a program that gets request metadata from environment variables and standard input, then returns the result over standard output. This means that the web server has to fork/exec a new process for every request. If your service ends up getting very popular very quickly, this can incur [forkbomb](https://en.wikipedia.org/wiki/Fork_bomb) attacks.
