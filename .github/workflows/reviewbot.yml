@@ -1,0 +1,30 @@
+name: Reviewbot
+
+on:
+  pull_request_review_comment:
+    types: [created]
+  issue_comment:
+    types: [created]
+
+jobs:
+  manual_invocation:
+    if: |
+      startsWith(github.event.comment.body, '/reviewbot')
+
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Run reviewbot
+        uses: docker://ghcr.io/xe/x/reviewbot:latest
+        env:
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_BASE: https://zohar.automuse.art/v1
+          OPENAI_API_KEY: ${{ secrets.ZOHAR_API_KEY }}
+          OPENAI_MODEL: gpt-oss-120b
+          PR_NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}

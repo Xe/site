@@ -4,14 +4,25 @@
 
 ```text
 ├─ cmd/            # Main applications (each sub‑directory is a binary)
+├─ dhall/          # Configuration files using Dhall language
 ├─ docs/           # Documentation assets
+├─ docker/         # Docker-related files
+├─ fly/            # Fly.io deployment configuration
 ├─ internal/       # Private packages used by the repo
 ├─ lume/           # Static site generator configuration
 ├─ lume/src        # Static site pages
+├─ manifest/       # Kubernetes manifests
+├─ pb/             # Protocol buffer files
+├─ scripts/        # Node.js and shell scripts for automation
+├─ var/            # Variable data/runtime files
+├─ .devcontainer/  # VS Code dev container configuration
+├─ .github/        # GitHub workflows and configuration
 ├─ test files      # Go test files live alongside source (`*_test.go`)
 ├─ go.mod          # Go module definition
 └─ package.json    # npm scripts and JS tooling
 ```
+
+**Binaries in cmd/**: `fabricate-generation`, `github-sponsor-webhook`, `hydrate`, `no-way-to-prevent-this`, `patreon-saasproxy`, `xesite` (main site binary), `xesitectl`.
 
 Source code is primarily Go; JavaScript tooling lives under `node_modules` and the root `package.json`.
 
@@ -21,18 +32,19 @@ Source code is primarily Go; JavaScript tooling lives under `node_modules` and t
 
 | Command                      | Description                                         |
 | ---------------------------- | --------------------------------------------------- |
-| `npm run generate`           | Regenerates protobuf, Go code, and runs formatters. |
-| `npm test` or `npm run test` | Runs `generate` then executes `go test ./...`.      |
+| `npm test`                   | Executes `go test ./...`.                           |
+| `npm run dev`                | Runs the site in development mode.                  |
+| `npm run deploy`             | Deploys to Kubernetes via kubectl.                  |
+| `npm run extract-meta`       | Extracts metadata from content files.               |
+| `npm run validate-content-dates` | Validates blog post dates.                     |
 | `go build ./...`             | Compiles all Go packages.                           |
 | `go run ./cmd/<app>`         | Runs a specific binary from `cmd/`.                 |
-| `npm run format`             | Formats Go (`goimports`) and JS/HTML (`prettier`).  |
 
 ### Code Formatting & Style
 
 - **Go** – use `go fmt`/`goimports`; tabs for indentation, `camelCase` for variables, `PascalCase` for exported identifiers.
 - **JavaScript/HTML/CSS** – formatted with Prettier (2‑space tabs, trailing commas, double quotes).
 - Files are snake_case; packages use lower‑case module names.
-- Run `npm run format` before committing.
 
 ### Testing
 
