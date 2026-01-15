@@ -109,6 +109,8 @@ func main() {
 		log.Fatalf("error closing output file: %v", err)
 	}
 
+	fmt.Println(foutName)
+
 	codePath, err := exec.LookPath("code")
 	if err != nil {
 		log.Println("hint: control shift p -> install code command")
