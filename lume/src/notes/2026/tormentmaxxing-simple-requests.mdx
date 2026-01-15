@@ -1,0 +1,55 @@
+---
+title: "Tormentmaxxing 'simple requests'"
+desc: "Automating the full lifecycle of 'quick' requests with Claude Code slash commands"
+date: 2026-01-15
+tags:
+  - vibecoding
+  - shitpost
+---
+
+I don't like being interrupted when I'm deep in flow working on things. When my flow is interrupted, it can feel like my focus was violently stolen from me and the mental context that was crystalline falls apart into a thousand pieces before it is lost forever. With this in mind, being asked to do a "quick" 5 minute task can actually result in over an hour of getting back up to speed.
+
+This means that I sometimes will agree to do things, go back into flow (because if I get back into flow _almost instantly_ I'm more likely to not lose any context), forget about them, and then look bad as a result. This is not ideal for employment uptime.
+
+When you work at a startup, you don't do your job; you project the perception of doing it and ensure that the people above you are happy with what you are doing. This is a weird fundamental conflict and understanding this at a deep level has caused a lot of strange thoughts about the nature of the late-stage capitalism that we find ourselves in.
+
+## Tormentmaxxing it
+
+However, it's the future and we have tools like [Claude Code](https://claude.com/product/claude-code). As much as I am horrified by the [massive abuses the AI industry is doing to the masses with abusive scraping](/talks/2025/bsdcan-anubis/), there are real things that the tools the AI industry can do today. The biggest thing they can do is just implement those "quick requests" because most of them are on the line of:
+
+- Delete this paragraph from the readme please.
+- This thing is confusing, can you reword or remove it?
+- You forgot to xyz.
+
+Nearly 90% of these are in fact things that tools the AI industry has released can do today. I could **just** open an AI coding agent and tell it to go to town, but we can do better.
+
+Claude Code has [custom slash command support](https://code.claude.com/docs/en/slash-commands#custom-slash-commands). In Claude Code land, slash commands are prompt templates that you can hydrate with arguments. This means you can **just** describe the normal workflow process and have the agent dutifully go about and get that done for you while you focus on more important things.
+
+Here's what those commands look like in practice:
+
+> Please make the following change:
+>
+> $ARGUMENTS
+>
+> When you are done, do the following:
+>
+> - Create a Linear issue for this task.
+> - Create a branch based on the changes to be made and my github username (eg: `ty/update-readme-not-mention-foo`).
+> - Make a commit with the footer `Closes: (linear issue ID)` and use the `--signoff` flag.
+> - Push that branch to GitHub.
+> - Create a pull request for that branch.
+> - Make a comment on that pull request mentioning `${CEO_GITHUB_USERNAME}`.
+>
+> When all that is done, please reply with a message similar to the following:
+>
+> \> Got it, please review this PR when you can: (link).
+
+So whenever I get a "quick request", I can open a new worktree in something like [Conductor](https://www.conductor.build/), copy that Slack message verbatim, then type in:
+
+> /quick-request add a subsection to the README pointing people to the Python repository (link) based on the subsections for Go and JavaScript
+
+From there all I have to do is hit enter and then go back to writing. The agent will dutifully Just Solve The Thing™️ using [GLM 4.7](https://z.ai/subscribe?ic=IO8AAMMWKM) via their coding plan. It's not as good as Anthropic's models, but it works well enough and has a generous rate limit such that I don't have to think about it. It's good enough, and good enough is good enough for me.
+
+I realize the fundamental conflict between what I work on with [Anubis](https://anubis.techaro.lol) and this tormentmaxxing workflow, but if these tools are going to exist regardless of what I think is "right", is decently cheap, and is genuinely useful, I may as well take advantage of this while the gravy train lasts.
+
+Remember: think smarter, not harder.
