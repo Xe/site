@@ -3,26 +3,6 @@ let Link = ./types/Link.dhall
 let Person = ./types/Person.dhall
 
 in  [ Person::{
-      , name = "Adam Cooper"
-      , tags =
-        [ "golang"
-        , "nodejs"
-        , "typescript"
-        , "sql"
-        , "gcp"
-        , "aws"
-        , "docker"
-        , "terraform"
-        , "backend engineer"
-        ]
-      , links =
-        [ Link::{
-          , url = "https://www.linkedin.com/in/adamcooperdev/"
-          , title = "LinkedIn"
-          }
-        ]
-      }
-    , Person::{
       , name = "bri recchia"
       , tags =
         [ "virtualization"
