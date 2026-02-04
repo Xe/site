@@ -1,0 +1,180 @@
+---
+title: "Tigris CLI: A terminal user's interface to object storage"
+desc: "We made a CLI that feels like a Unix tool because that's what we are."
+date: 2026-02-04
+hero:
+  ai: ""
+  file: ""
+  prompt: ""
+  social: false
+---
+
+import Admonition from "../../_components/Admonition.jsx";
+
+If you live in the terminal, you know the feeling. Everything your computer can do is available through simple commands. You pipe things together. You compose tools in ways the authors never imagined.
+
+The shell is probably the most important UI in computing.
+
+<ConvP>
+  <Conv name="Mara" mood="hacker">
+    You don't discover features by clicking around menus. Everything is
+    available through the command line, and you can combine tools in ways the
+    authors never imagined.
+  </Conv>
+  <Conv name="Cadey" mood="enby">
+    Yeah, and if you know what you're doing, you can automate practically
+    anything. Pipes, redirection, process substitution—it's a composable
+    interface that's been battle-tested since the 70s.
+  </Conv>
+</ConvP>
+
+So it only makes sense that Tigris would have a CLI. The [Tigris CLI](https://github.com/tigrisdata/cli) gives you object storage from any shell prompt.
+
+## Wait, didn't you have a CLI already?
+
+Fun fact: Tigris wasn't always an object storage company. We used to have a database similar to DynamoDB. That database had its own `tigris` command.
+
+<Conv name="Numa" mood="neutral">
+  RIP in pepperonis TigrisDB. We hardly knew ye. Well, some of us knew ye better
+  than others, but that's a story for another time.
+</Conv>
+
+We deprecated the old command when we discontinued the database. This new CLI is for object storage.
+
+## What's different about the `tigris` command?
+
+The UNIX philosophy states: each command should do one thing well. Complex tasks emerge from chaining simple programs. Every `tigris` subcommand follows this rule.
+
+- `tigris login`: Authenticate with a temporary access key (lasts about an hour)
+- `tigris buckets list`: List buckets in your organization
+- `tigris objects delete`: Delete an object
+
+`tigris` follows this pattern:
+
+```text
+tigris DOMAIN OPERATION ARGUMENT --flags
+```
+
+Domain: the area of concern (objects, buckets, credentials, forks, snapshots). Operation: the verb (list, get, put, delete). Arguments follow. You'll intuit your way through the rest after one command.
+
+<Conv name="Numa" mood="neutral">
+  If you're the right kind of nerd and this sounds vaguely familiar, that's
+  because it's basically the same thing as Lojban grammar for your terminal.
+  You've got your brivla (verbs), your gismu (= nouns), your sumti (arguments),
+  and your modal tags (the flags). Everything stacks together in predictable
+  ways because the language was designed to be parsed by machines _and_ humans.
+</Conv>
+
+This design also feels natural to our artificial coworkers.
+
+<ConvP>
+  <Conv name="Cadey" mood="coffee">
+    Hey Mimi, try running `tigris objects put --help` and copy yeetfile.js to
+    the xe-zohar-copy bucket.
+  </Conv>
+  <Conv name="Mimi" mood="happy" aiModel="Claude Opus 4.5">
+    ```text
+    Usage: tigris objects put|p [options] [command] <bucket> <key> <file>
+
+    Upload an object
+    ...
+    ```
+
+  </Conv>
+  <Conv name="Mimi" mood="happy" aiModel="Claude Opus 4.5">
+    ```text
+    -rw-r--r--  1 xe  staff  5010 Jan 12 15:55 yeetfile.js
+    ```
+  </Conv>
+  <Conv name="Mimi" mood="happy" aiModel="Claude Opus 4.5">
+    ```text
+    ┌─────────────┬────────┬──────────────┬─────────────────────────┐
+    │ Path        │ Size   │ Content-Type │ Modified                │
+    ├─────────────┼────────┼──────────────┼─────────────────────────┤
+    │ yeetfile.js │ 4.9 KB │ application/ │ 2025-01-12 15:55:00     │
+    │             │        │ javascript+  │                         │
+    │             │        │ module       │                         │
+    └─────────────┴────────┴──────────────┴─────────────────────────┘
+    ```
+  </Conv>
+  <Conv name="Cadey" mood="enby">
+    Nice! yeetfile.js has been uploaded to the xe-zohar-copy bucket (4.9 KB).
+  </Conv>
+</ConvP>
+
+## How did we get to this design?
+
+Tigris uses a plan-driven workflow. We create Request For Comment documents, gather feedback, and iterate. The CLI RFC generated _a lot_ of feedback—we needed structure.
+
+I created a [spec file](https://github.com/tigrisdata/cli/blob/main/src/specs.yaml) in YAML. It lists every command, argument, and flag. The spec drives the RFC process, but it also generates the CLI itself. It's the single source of truth.
+
+<Admonition type="tip">
+  This spec-driven approach worked well enough that I think other teams should
+  consider it. What is science but trying things and seeing what works and doing
+  more of it?
+</Admonition>
+
+The feedback shaped the design in some key ways:
+
+<ConvP>
+  <Conv name="Mara" mood="hacker">
+    Let's not map the APIs directly. Think of them like system commands—cp, mv,
+    ls, rm.
+  </Conv>
+  <Conv name="Cadey" mood="enby">
+    You're right. We're not exposing every API endpoint. We're building a tool
+    that feels like part of your terminal.
+  </Conv>
+  <Conv name="Aoi" mood="coffee">
+    Commands are verbose though. We should have shorthands.
+  </Conv>
+  <Conv name="Cadey" mood="enby">
+    Good point. We'll add `m` for move, `p` for put, `g` for get.
+  </Conv>
+  <Conv name="Cadey" mood="coffee">
+    And bucket names should be arguments, not flags. Arguments are nouns, flags
+    are adjectives.
+  </Conv>
+  <Conv name="Numa" mood="neutral">
+    AWS and R2 provide commands like "sync" and "pipe." They're more concise.
+  </Conv>
+  <Conv name="Cadey" mood="coffee">
+    True, but we avoid cleverness at first. Better to start simple and add power
+    features later than to build something only power users understand.
+  </Conv>
+</ConvP>
+
+```text
+tigris buckets get mybucket
+tigris buckets create --access=public --default-tier=standard mybucket
+tigris buckets delete mybucket
+```
+
+`mybucket` is the noun. `tigris buckets create` is the qualified verb. The flags are adjectives. This feels more natural than `--bucket=mybucket` everywhere.
+
+## Documentation packaged alongside the code
+
+We package documentation alongside the CLI so LLMs can use it locally. The [README.md](https://github.com/tigrisdata/cli/blob/main/README.md) and `--help` output help, but more is possible.
+
+I'm not sure what "more" looks like—structured docs, examples, or something else. When you ask an AI for help with Tigris CLI, it shouldn't need to search the web. It should inspect the binary itself.
+
+<Conv name="Mara" mood="hmm">
+  This is actually a really interesting problem. How much documentation is
+  enough? Is the README enough, or do we need per-command docs with examples? Or
+  do we need something more structured that tools can parse?
+</Conv>
+
+## Try it out
+
+The CLI is [on GitHub](https://github.com/tigrisdata/cli). We use it internally. We plan to replace the AWS CLI company-wide—there's only so many times you can type `aws s3api` before your fingers fall off.
+
+Install it. Try it. Let us know what you think. We're still balancing familiarity with natural design. Real feedback beats internal speculation.
+
+<Conv name="Numa" mood="smug">
+  Unless your feedback is that we should just copy the AWS CLI exactly, in which
+  case, hard pass.
+</Conv>
+
+We want to hear from you. Open [an issue](https://github.com/tigrisdata/cli/issues), drop by [the Discord](https://community.tigrisdata.com), or reply wherever you found this post.
+
+The shell is waiting.
