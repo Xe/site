@@ -58,6 +58,14 @@ Read `references/story-circle.md` to apply Xe's narrative scaffolding when the c
 
 Read `references/xeblogconv-guide.md` to apply Xe's persona dialogue system for pacing, commentary, and Socratic explanations.
 
+### 4.6 Use Picture Guide
+
+Read `references/picture-guide.md` for image embedding and `uploud` upload workflow.
+
+### 4.7 Use Admonition Guide
+
+Read `references/admonition-guide.md` for callout usage and tone guidance.
+
 ### 5. Organize the Content
 
 Choose the structure that fits the material:
@@ -182,7 +190,7 @@ thoughts on self-hosting versus managed services
 
 Process:
 
-1. Read `voice-tone.md`
+1. Read `references/voice-tone.md`
 2. Choose structure: current state -> past -> learning -> future
 3. Draft opening with a personal hook and opinionated framing
 4. Add concrete details (tools, commands, real constraints)
