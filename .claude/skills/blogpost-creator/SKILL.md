@@ -1,7 +1,7 @@
 ---
 name: blogpost-creator
 description: Create new blogposts from a template or linkposts using the hydrate command.
-allowed-tools: Read, Grep, Glob, WebFetch
+allowed-tools: Read, Grep, Glob, WebFetch, Bash(go run *), Edit, Write
 ---
 
 # Blog Post Creator
