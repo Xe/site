@@ -1,0 +1,18 @@
+package htmx
+
+// Use pulls in the HTMX core library and any extensions.
+//
+// Right now the extensions you can choose from are:
+//
+//     * event-header
+//     * path-params
+//     * remove-me
+//     * websocket
+//
+// This is mostly based on the extensions that I personally use.
+templ Use(exts ...string) {
+	<script src={ URL + "htmx.js" }></script>
+	for _, ext := range exts {
+		<script src={ URL + ext + ".js" }></script>
+	}
+}
