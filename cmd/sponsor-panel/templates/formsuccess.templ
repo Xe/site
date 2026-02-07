@@ -1,0 +1,26 @@
+package templates
+
+// InviteSuccess renders the success response for team invitation.
+templ InviteSuccess(username, state string) {
+	<div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+		<p class="text-green-700 dark:text-green-300 font-semibold">Invitation sent!</p>
+		<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+			{ "@" + username } is { state }
+		</p>
+	</div>
+}
+
+// LogoSuccess renders the success response for logo submission.
+templ LogoSuccess(company, issueURL string, issueNumber int) {
+	<div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+		<p class="text-green-700 dark:text-green-300 font-semibold">Logo submitted!</p>
+		<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+			Your logo for { company } has been submitted for review.
+		</p>
+		<p class="text-sm mt-2">
+			<a href={ templ.SafeURL(issueURL) } target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">
+				View issue #{ issueNumber }
+			</a>
+		</p>
+	</div>
+}

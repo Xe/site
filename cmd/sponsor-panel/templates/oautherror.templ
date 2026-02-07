@@ -1,0 +1,13 @@
+package templates
+
+templ OAuthError(message string) {
+	<div class="min-h-screen flex items-center justify-center px-4">
+		<div class="max-w-md w-full bg-red-50 dark:bg-red-950/50 rounded-xl p-8 text-center border border-red-200 dark:border-red-900">
+			<h1 class="text-xl font-bold text-red-900 dark:text-red-200 mb-2">Authentication Failed</h1>
+			<p class="text-red-700 dark:text-red-300 mb-6">{ message }</p>
+			<a href="/login" class="inline-block bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg transition-colors">
+				Try Again
+			</a>
+		</div>
+	</div>
+}

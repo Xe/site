@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sponsor-panel
+  labels:
+    app.kubernetes.io/name: sponsor-panel
+    app.kubernetes.io/component: web
+  annotations:
+    keel.sh/policy: all
+    keel.sh/trigger: poll
+    keel.sh/pollSchedule: "@hourly"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sponsor-panel
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sponsor-panel
+        app.kubernetes.io/component: web
+    spec:
+      containers:
+        - name: web
+          image: reg.xeiaso.net/xe/site/sponsor-panel:main
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+          env:
+            - name: BIND
+              value: ":4823"
+            - name: SLOG_LEVEL
+              value: "info"
+          ports:
+            - containerPort: 4823
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4823
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4823
+            initialDelaySeconds: 1
+            periodSeconds: 3
+          envFrom:
+            - secretRef:
+                name: sponsor-panel-creds

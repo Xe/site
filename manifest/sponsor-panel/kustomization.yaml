@@ -1,0 +1,11 @@
+resources:
+  - 1password.yaml
+  #- database.yaml
+  - deployment.yaml
+  - ingress.yaml
+  - service.yaml
+
+namespace: default
+
+commonLabels:
+  app.kubernetes.io/name: sponsor-panel
