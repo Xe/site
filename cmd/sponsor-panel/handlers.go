@@ -1,13 +1,19 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"log/slog"
+	"mime"
 	"net/http"
+	"path"
 	"strings"
 
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/google/go-github/v82/github"
+	"github.com/google/uuid"
 
 	"xeiaso.net/v4/cmd/sponsor-panel/templates"
 )
@@ -162,6 +168,56 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Read file into memory for S3 upload
+	fileData, err := io.ReadAll(file)
+	if err != nil {
+		slog.Error("logoHandler: failed to read file", "err", err)
+		renderError(w, "Failed to read file", http.StatusInternalServerError)
+		return
+	}
+
+	// Upload to S3 with UUID v7 folder structure
+	var logoURL string
+	var s3Key string
+	if s.bucketName != "" && s.s3Client != nil {
+		// Generate UUID v7 for folder
+		folderID := uuid.Must(uuid.NewV7())
+		ext := path.Ext(header.Filename)
+		s3Key = fmt.Sprintf("%s/%s%s", folderID.String(), "logo", ext)
+
+		// Detect content type
+		contentType := mime.TypeByExtension(ext)
+		if contentType == "" {
+			contentType = "application/octet-stream"
+		}
+
+		slog.Debug("logoHandler: uploading to S3",
+			"user_id", user.ID,
+			"bucket", s.bucketName,
+			"key", s3Key,
+			"content_type", contentType)
+
+		putInput := &s3.PutObjectInput{
+			Bucket:      &s.bucketName,
+			Key:         &s3Key,
+			Body:        bytes.NewReader(fileData),
+			ContentType: &contentType,
+		}
+
+		_, err := s.s3Client.PutObject(r.Context(), putInput)
+		if err != nil {
+			slog.Error("logoHandler: failed to upload to S3", "err", err, "user_id", user.ID)
+			renderError(w, "Failed to upload logo: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		logoURL = fmt.Sprintf("https://%s.s3.amazonaws.com/%s", s.bucketName, s3Key)
+		slog.Info("logoHandler: uploaded to S3",
+			"user_id", user.ID,
+			"url", logoURL,
+			"key", s3Key)
+	}
+
 	// Create GitHub issue
 	issueTitle := fmt.Sprintf("Logo Submission: %s", companyName)
 	issueBody := fmt.Sprintf(`# Logo Submission: %s
@@ -174,6 +230,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 - **Website:** %s
 - **File:** %s
 - **File Size:** %d bytes
+%s
 
 ## Next Steps
 
@@ -183,7 +240,12 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 
 /label logo-submission
 /label needs-review
-`, companyName, user.Login, companyName, website, header.Filename, header.Size)
+`, companyName, user.Login, companyName, website, header.Filename, header.Size, func() string {
+		if logoURL != "" {
+			return fmt.Sprintf("- **S3 Bucket:** %s\n- **S3 Key:** `%s`\n- **Logo URL:** %s", s.bucketName, s3Key, logoURL)
+		}
+		return "- **Storage:** Not configured (bucket-name not set)"
+	}())
 
 	issue := &github.IssueRequest{
 		Title:  github.Ptr(issueTitle),
@@ -193,7 +255,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 
 	slog.Debug("logoHandler: creating GitHub issue", "user_id", user.ID, "company", companyName, "title", issueTitle)
 
-	createdIssue, _, err := s.ghClient.Issues.Create(r.Context(), "TecharoHQ", "anubis", issue)
+	createdIssue, _, err := s.ghClient.Issues.Create(r.Context(), "TecharoHQ", *logoSubmissionRepo, issue)
 	if err != nil {
 		slog.Error("logoHandler: failed to create GitHub issue", "err", err, "user_id", user.ID, "company", companyName)
 		renderError(w, "Failed to create issue: "+err.Error(), http.StatusInternalServerError)
@@ -212,6 +274,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 		UserID:            user.ID,
 		CompanyName:       companyName,
 		Website:           website,
+		LogoURL:           logoURL,
 		GitHubIssueURL:    createdIssue.GetHTMLURL(),
 		GitHubIssueNumber: createdIssue.GetNumber(),
 	}

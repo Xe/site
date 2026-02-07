@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/rand"
 	"database/sql"
 	"embed"
@@ -14,6 +15,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/facebookgo/flagenv"
 	gh "github.com/google/go-github/v82/github"
 	"github.com/gorilla/sessions"
@@ -27,14 +30,16 @@ import (
 )
 
 var (
-	bind           = flag.String("bind", ":4823", "Port to listen on")
-	databaseURL    = flag.String("database-url", "", "Database URL")
-	githubToken    = flag.String("github-token", "", "GitHub token for operations")
-	discordInvite  = flag.String("discord-invite", "", "Discord invite link")
-	fiftyPlusSpons = flag.String("fifty-plus-sponsors", "", "Comma-separated list of usernames/orgs that are always treated as $50+ sponsors")
-	sessionKey     = flag.String("session-key", "", "Session authentication/encryption key (32+ bytes for AES-256)")
-	generateKey    = flag.Bool("generate-session-key", false, "Generate a new session key and exit")
-	cookieSecure   = flag.Bool("cookie-secure", true, "Set Secure flag on cookies (enable for HTTPS)")
+	bind               = flag.String("bind", ":4823", "Port to listen on")
+	databaseURL        = flag.String("database-url", "", "Database URL")
+	githubToken        = flag.String("github-token", "", "GitHub token for operations")
+	discordInvite      = flag.String("discord-invite", "", "Discord invite link")
+	fiftyPlusSpons     = flag.String("fifty-plus-sponsors", "", "Comma-separated list of usernames/orgs that are always treated as $50+ sponsors")
+	sessionKey         = flag.String("session-key", "", "Session authentication/encryption key (32+ bytes for AES-256)")
+	generateKey        = flag.Bool("generate-session-key", false, "Generate a new session key and exit")
+	cookieSecure       = flag.Bool("cookie-secure", true, "Set Secure flag on cookies (enable for HTTPS)")
+	bucketName         = flag.String("bucket-name", "", "S3 bucket name for logo storage")
+	logoSubmissionRepo = flag.String("logo-submission-repo", "anubis", "Repo to submit logo requests to")
 
 	// OAuth configuration
 	clientID      = flag.String("github-client-id", "", "GitHub OAuth Client ID")
@@ -54,6 +59,8 @@ type Server struct {
 	fiftyPlusSponsors map[string]bool // Always treated as $50+ sponsors
 	sessionStore      *sessions.CookieStore
 	cookieSecure      bool
+	bucketName        string
+	s3Client          *s3.Client
 }
 
 func main() {
@@ -187,6 +194,19 @@ func main() {
 		Secure:   *cookieSecure,
 	}
 
+	// Create S3 client for logo storage
+	var s3Client *s3.Client
+	if *bucketName != "" {
+		slog.Debug("main: creating S3 client", "bucket", *bucketName)
+		cfg, err := config.LoadDefaultConfig(context.Background())
+		if err != nil {
+			slog.Error("main: failed to load AWS config", "err", err)
+			os.Exit(1)
+		}
+		s3Client = s3.NewFromConfig(cfg)
+		slog.Info("main: S3 client created", "bucket", *bucketName)
+	}
+
 	server := &Server{
 		db:                db,
 		ghClient:          ghClient,
@@ -195,6 +215,8 @@ func main() {
 		fiftyPlusSponsors: fiftyPlusMap,
 		sessionStore:      sessionStore,
 		cookieSecure:      *cookieSecure,
+		bucketName:        *bucketName,
+		s3Client:          s3Client,
 	}
 
 	mux := http.NewServeMux()
