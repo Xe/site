@@ -49,7 +49,7 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 		Path:     "/",
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
-		Secure:   false,
+		Secure:   s.cookieSecure,
 	})
 
 	// Redirect to GitHub
@@ -466,6 +466,7 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 		Path:     "/",
 		MaxAge:   -1,
 		HttpOnly: true,
+		Secure:   s.cookieSecure,
 	})
 
 	// Exchange code for token

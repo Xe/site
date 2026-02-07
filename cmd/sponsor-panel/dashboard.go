@@ -26,7 +26,7 @@ func (s *Server) loginPageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	templ.Handler(
-		templates.Base("Login", templates.Login(s.discordInvite)),
+		templates.Base("Login", templates.Login()),
 	).ServeHTTP(w, r)
 }
 

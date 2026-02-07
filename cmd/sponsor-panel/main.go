@@ -34,6 +34,7 @@ var (
 	fiftyPlusSpons = flag.String("fifty-plus-sponsors", "", "Comma-separated list of usernames/orgs that are always treated as $50+ sponsors")
 	sessionKey     = flag.String("session-key", "", "Session authentication/encryption key (32+ bytes for AES-256)")
 	generateKey    = flag.Bool("generate-session-key", false, "Generate a new session key and exit")
+	cookieSecure   = flag.Bool("cookie-secure", true, "Set Secure flag on cookies (enable for HTTPS)")
 
 	// OAuth configuration
 	clientID      = flag.String("github-client-id", "", "GitHub OAuth Client ID")
@@ -52,6 +53,7 @@ type Server struct {
 	discordInvite     string
 	fiftyPlusSponsors map[string]bool // Always treated as $50+ sponsors
 	sessionStore      *sessions.CookieStore
+	cookieSecure      bool
 }
 
 func main() {
@@ -182,7 +184,7 @@ func main() {
 		MaxAge:   30 * 24 * 3600, // 30 days
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
-		Secure:   false, // Set to true in production with HTTPS
+		Secure:   *cookieSecure,
 	}
 
 	server := &Server{
@@ -192,6 +194,7 @@ func main() {
 		discordInvite:     *discordInvite,
 		fiftyPlusSponsors: fiftyPlusMap,
 		sessionStore:      sessionStore,
+		cookieSecure:      *cookieSecure,
 	}
 
 	mux := http.NewServeMux()
