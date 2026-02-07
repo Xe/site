@@ -10,7 +10,7 @@ metadata:
     keel.sh/trigger: poll
     keel.sh/pollSchedule: "@hourly"
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: sponsor-panel
