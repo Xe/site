@@ -108,24 +108,26 @@ func fetchGitHubUser(ctx context.Context, token string) (*githubUser, error) {
 	return &user, nil
 }
 
-// graphqlSponsorshipResponse represents the GraphQL sponsorship response.
+// sponsorshipInfo represents the sponsorship tier info returned from GraphQL.
+type sponsorshipInfo struct {
+	Tier struct {
+		MonthlyPriceInCents int    `json:"monthlyPriceInCents"`
+		Name                string `json:"name"`
+	} `json:"tier"`
+	PrivacyLevel string `json:"privacyLevel"`
+	IsActive     bool   `json:"isActive"`
+	CreatedAt    string `json:"createdAt"`
+}
+
+// graphqlSponsorshipResponse represents the GraphQL sponsorship response for a single entity.
 type graphqlSponsorshipResponse struct {
 	Data struct {
-		Viewer struct {
-			SponsorshipsAsMaintainer struct {
-				Nodes []struct {
-					SponsorEntity struct {
-						Login string `json:"login"`
-					} `json:"sponsorEntity"`
-					Tier struct {
-						MonthlyPriceInCents int    `json:"monthlyPriceInCents"`
-						Name                string `json:"name"`
-					} `json:"tier"`
-					IsActive     bool   `json:"isActive"`
-					PrivacyLevel string `json:"privacyLevel"`
-				} `json:"nodes"`
-			} `json:"sponsorshipsAsMaintainer"`
-		} `json:"viewer"`
+		User struct {
+			SponsorshipForViewer *sponsorshipInfo `json:"sponsorshipForViewer"`
+		} `json:"user"`
+		Organization struct {
+			SponsorshipForViewer *sponsorshipInfo `json:"sponsorshipForViewer"`
+		} `json:"organization"`
 	} `json:"data"`
 }
 
@@ -166,121 +168,125 @@ func fetchUserOrganizations(ctx context.Context, token string) (map[string]bool,
 	return orgMap, nil
 }
 
-// fetchSponsorship fetches sponsorship data from GitHub GraphQL API.
-// It checks both direct sponsorship and organizational membership.
-func fetchSponsorship(ctx context.Context, token string, userLogin string, userOrgs map[string]bool, fiftyPlusSponsors map[string]bool) (string, error) {
-	slog.Debug("fetchSponsorship: fetching sponsorship data from GitHub GraphQL")
-	query := `{
-		"query": "query { viewer { sponsorshipsAsMaintainer(first: 100, includePrivate: true) { nodes { sponsorEntity { ... on User { login } ... on Organization { login } } tier { monthlyPriceInCents name } privacyLevel isActive } } } }"
-	}`
+// fetchSponsorshipForEntity checks if a specific entity (user or org) sponsors the viewer.
+// Returns the sponsorship tier info if active, nil otherwise.
+func fetchSponsorshipForEntity(ctx context.Context, token string, entityType string, entityLogin string) (*sponsorshipInfo, error) {
+	query := fmt.Sprintf(`{"query": "query ($name: String!) { %s(login: $name) { sponsorshipForViewer { tier { monthlyPriceInCents name } privacyLevel isActive createdAt } } }", "variables": {"name": "%s"}}`, entityType, entityLogin)
 
 	req, err := http.NewRequestWithContext(ctx, "POST", "https://api.github.com/graphql", strings.NewReader(query))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	tokenPrefix := token[:8] + "..."
 	req.Header.Set("Authorization", "Bearer "+token)
 	req.Header.Set("Content-Type", "application/json")
 
-	slog.Debug("fetchSponsorship: sending GraphQL request", "token_prefix", tokenPrefix)
-
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		slog.Error("fetchSponsorship: request failed", "err", err)
-		return "", err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
-	slog.Debug("fetchSponsorship: received response", "status", resp.StatusCode)
-
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
-		slog.Error("fetchSponsorship: GraphQL API error",
-			"status", resp.StatusCode,
-			"response", string(body))
-		return "", fmt.Errorf("GraphQL API returned status %d: %s", resp.StatusCode, string(body))
+		return nil, fmt.Errorf("GraphQL API returned status %d: %s", resp.StatusCode, string(body))
 	}
 
 	var result graphqlSponsorshipResponse
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		slog.Error("fetchSponsorship: failed to decode response", "err", err)
-		return "", err
+		return nil, err
 	}
 
-	nodes := result.Data.Viewer.SponsorshipsAsMaintainer.Nodes
-	slog.Debug("fetchSponsorship: received sponsorship nodes", "node_count", len(nodes))
-
-	// Log all sponsorship nodes for debugging
-	for i, node := range nodes {
-		slog.Debug("fetchSponsorship: sponsorship node",
-			"index", i,
-			"sponsor_login", node.SponsorEntity.Login,
-			"tier_name", node.Tier.Name,
-			"tier_amount_cents", node.Tier.MonthlyPriceInCents,
-			"is_active", node.IsActive,
-			"privacy_level", node.PrivacyLevel)
-	}
-
-	// Find highest active tier
-	var highestPriceInCents int
-	var highestName string
-
-	for _, node := range nodes {
-		if !node.IsActive {
-			continue
+	if entityType == "user" {
+		s := result.Data.User.SponsorshipForViewer
+		if s != nil && s.IsActive {
+			return s, nil
 		}
-
-		// Check if this sponsor is an organization the user belongs to
-		isUsersOrg := userOrgs[node.SponsorEntity.Login]
-
-		if isUsersOrg {
-			slog.Debug("fetchSponsorship: found organizational sponsorship",
-				"org", node.SponsorEntity.Login,
-				"tier_amount_cents", node.Tier.MonthlyPriceInCents)
-		}
-
-		if node.Tier.MonthlyPriceInCents > highestPriceInCents {
-			highestPriceInCents = node.Tier.MonthlyPriceInCents
-			highestName = node.Tier.Name
+	} else {
+		s := result.Data.Organization.SponsorshipForViewer
+		if s != nil && s.IsActive {
+			return s, nil
 		}
 	}
 
-	// Check if user or their orgs are in the fifty-plus sponsors list
+	return nil, nil
+}
+
+// fetchSponsorship fetches sponsorship data from GitHub GraphQL API.
+// It checks both direct user sponsorship and organizational membership.
+func fetchSponsorship(ctx context.Context, token string, userLogin string, userOrgs map[string]bool, fiftyPlusSponsors map[string]bool) (string, error) {
+	slog.Debug("fetchSponsorship: checking sponsorship", "user", userLogin)
+
+	// Check if user or their orgs are in the fifty-plus sponsors list first
+	var fiftyPlusAmount int
+	var fiftyPlusName string
+
 	if fiftyPlusSponsors[userLogin] {
 		slog.Info("fetchSponsorship: user in fifty-plus sponsors list", "user", userLogin)
-		if highestPriceInCents < 5000 {
-			highestPriceInCents = 5000
-			highestName = "Fifty Plus Sponsor"
-		}
+		fiftyPlusAmount = 5000
+		fiftyPlusName = "Fifty Plus Sponsor"
 	}
 	for org := range userOrgs {
 		if fiftyPlusSponsors[org] {
 			slog.Info("fetchSponsorship: org in fifty-plus sponsors list", "org", org)
-			if highestPriceInCents < 5000 {
-				highestPriceInCents = 5000
-				highestName = "Fifty Plus Sponsor (via " + org + ")"
-			}
+			fiftyPlusAmount = 5000
+			fiftyPlusName = "Fifty Plus Sponsor (via " + org + ")"
 			break
 		}
 	}
 
-	if highestPriceInCents == 0 {
-		slog.Debug("fetchSponsorship: no active sponsorship found")
-		return `{"is_active": false}`, nil
+	// Check direct user sponsorship
+	userSponsorship, err := fetchSponsorshipForEntity(ctx, token, "user", userLogin)
+	if err != nil {
+		slog.Warn("fetchSponsorship: failed to check user sponsorship", "err", err)
+	} else if userSponsorship != nil {
+		slog.Info("fetchSponsorship: found active user sponsorship",
+			"user", userLogin,
+			"tier_name", userSponsorship.Tier.Name,
+			"monthly_amount_cents", userSponsorship.Tier.MonthlyPriceInCents)
+
+		resultJSON, _ := json.Marshal(map[string]any{
+			"is_active":            true,
+			"monthly_amount_cents": userSponsorship.Tier.MonthlyPriceInCents,
+			"tier_name":            userSponsorship.Tier.Name,
+		})
+		return string(resultJSON), nil
 	}
 
-	slog.Info("fetchSponsorship: found active sponsorship",
-		"tier_name", highestName,
-		"monthly_amount_cents", highestPriceInCents)
+	// Check organizational sponsorships
+	for org := range userOrgs {
+		orgSponsorship, err := fetchSponsorshipForEntity(ctx, token, "organization", org)
+		if err != nil {
+			slog.Warn("fetchSponsorship: failed to check org sponsorship", "org", org, "err", err)
+			continue
+		}
+		if orgSponsorship != nil {
+			slog.Info("fetchSponsorship: found active org sponsorship",
+				"org", org,
+				"tier_name", orgSponsorship.Tier.Name,
+				"monthly_amount_cents", orgSponsorship.Tier.MonthlyPriceInCents)
 
-	resultJSON, _ := json.Marshal(map[string]interface{}{
-		"is_active":            true,
-		"monthly_amount_cents": highestPriceInCents,
-		"tier_name":            highestName,
-	})
+			resultJSON, _ := json.Marshal(map[string]any{
+				"is_active":            true,
+				"monthly_amount_cents": orgSponsorship.Tier.MonthlyPriceInCents,
+				"tier_name":            orgSponsorship.Tier.Name,
+			})
+			return string(resultJSON), nil
+		}
+	}
 
-	return string(resultJSON), nil
+	// If no active sponsorship but in fifty-plus list, use that
+	if fiftyPlusAmount > 0 {
+		resultJSON, _ := json.Marshal(map[string]any{
+			"is_active":            true,
+			"monthly_amount_cents": fiftyPlusAmount,
+			"tier_name":            fiftyPlusName,
+		})
+		return string(resultJSON), nil
+	}
+
+	slog.Debug("fetchSponsorship: no active sponsorship found", "user", userLogin)
+	return `{"is_active": false}`, nil
 }
 
 // callbackHandler handles the OAuth callback from GitHub.
@@ -357,7 +363,7 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 		userOrgs = make(map[string]bool)
 	}
 
-	// Fetch sponsorship data from GraphQL
+	// Fetch sponsorship data from GraphQL (checks both user and org sponsorships)
 	sponsorData, err := fetchSponsorship(r.Context(), token.AccessToken, ghUser.Login, userOrgs, s.fiftyPlusSponsors)
 	if err != nil {
 		slog.Error("callbackHandler: failed to fetch sponsorship", "err", err)

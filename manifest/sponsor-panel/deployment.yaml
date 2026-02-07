@@ -5,8 +5,12 @@ metadata:
   labels:
     app.kubernetes.io/name: sponsor-panel
     app.kubernetes.io/component: web
+  annotations:
+    keel.sh/policy: all
+    keel.sh/trigger: poll
+    keel.sh/pollSchedule: "@hourly"
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: sponsor-panel
@@ -30,6 +34,8 @@ spec:
           env:
             - name: BIND
               value: ":4823"
+            - name: SLOG_LEVEL
+              value: "DEBUG"
           ports:
             - containerPort: 4823
               name: http

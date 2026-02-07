@@ -1,6 +1,6 @@
 resources:
   - 1password.yaml
-  - database.yaml
+  #- database.yaml
   - deployment.yaml
   - ingress.yaml
   - service.yaml
