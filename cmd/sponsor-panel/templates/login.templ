@@ -1,0 +1,21 @@
+package templates
+
+templ Login(discordInvite string) {
+	<div class="min-h-screen flex items-center justify-center px-4">
+		<div class="max-w-md w-full bg-white dark:bg-slate-800/80 backdrop-blur-sm rounded-xl p-8 shadow-lg border border-gray-200 dark:border-slate-700">
+			<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Sponsor Panel</h1>
+			<p class="text-gray-600 dark:text-gray-300 mb-6">Manage your sponsorship benefits</p>
+			<a href="/login" class="block w-full bg-gray-900 dark:bg-orange-600 hover:bg-gray-800 dark:hover:bg-orange-700 text-white text-center py-3 rounded-lg mb-6 transition-colors">
+				Login with GitHub
+			</a>
+			<div class="border-t border-gray-200 dark:border-slate-700 pt-4">
+				<h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Benefits:</h3>
+				<ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+					<li>✓ All sponsors: Discord access</li>
+					<li>✓ $50+/month: Team invitations</li>
+					<li>✓ All sponsors: Logo submission</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+}

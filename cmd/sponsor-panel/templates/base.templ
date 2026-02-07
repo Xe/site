@@ -1,0 +1,23 @@
+package templates
+
+import "xeiaso.net/v4/web/htmx"
+
+templ Base(title string, content templ.Component) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			if title == "" {
+				<title>Xe Iaso Sponsor Panel</title>
+			} else {
+				<title>{ title } - Xe Iaso Sponsor Panel</title>
+			}
+			<link rel="stylesheet" href="/static/css/styles.css"/>
+			@htmx.Use("remove-me")
+		</head>
+		<body class="bg-gray-50 dark:bg-gray-900">
+			@content
+		</body>
+	</html>
+}

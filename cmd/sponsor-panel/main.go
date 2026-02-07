@@ -1,0 +1,209 @@
+package main
+
+import (
+	"database/sql"
+	"embed"
+	"flag"
+	"log"
+	"log/slog"
+	"net"
+	"net/http"
+	"os"
+	"strings"
+
+	"github.com/facebookgo/flagenv"
+	gh "github.com/google/go-github/v82/github"
+	_ "github.com/jackc/pgx/v5/stdlib"
+	_ "github.com/joho/godotenv/autoload"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/github"
+	"xeiaso.net/v4/internal"
+	"xeiaso.net/v4/web/htmx"
+)
+
+var (
+	bind           = flag.String("bind", ":4823", "Port to listen on")
+	databaseURL    = flag.String("database-url", "", "Database URL")
+	githubToken    = flag.String("github-token", "", "GitHub token for operations")
+	discordInvite  = flag.String("discord-invite", "", "Discord invite link")
+	fiftyPlusSpons = flag.String("fifty-plus-sponsors", "", "Comma-separated list of usernames/orgs that are always treated as $50+ sponsors")
+
+	// OAuth configuration
+	clientID      = flag.String("github-client-id", "", "GitHub OAuth Client ID")
+	clientSecret  = flag.String("github-client-secret", "", "GitHub OAuth Client Secret")
+	oauthRedirect = flag.String("oauth-redirect-url", "", "OAuth redirect URL")
+
+	//go:embed static
+	staticFS embed.FS
+)
+
+// Server holds the application dependencies.
+type Server struct {
+	db                *sql.DB
+	ghClient          *gh.Client
+	oauth             *oauth2.Config
+	discordInvite     string
+	fiftyPlusSponsors map[string]bool // Always treated as $50+ sponsors
+}
+
+func main() {
+	flagenv.Parse()
+	flag.Parse()
+	internal.Slog()
+
+	slog.Debug("main: starting sponsor panel service")
+
+	ln, err := net.Listen("tcp", *bind)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	slog.Info("main: listening", "bind", *bind)
+
+	// Required flags
+	if *databaseURL == "" {
+		slog.Error("database-url is required")
+		os.Exit(1)
+	}
+	if *githubToken == "" {
+		slog.Error("github-token is required")
+		os.Exit(1)
+	}
+	if *discordInvite == "" {
+		slog.Error("discord-invite is required")
+		os.Exit(1)
+	}
+
+	// OAuth configuration
+	if *clientID == "" {
+		slog.Error("github-client-id is required")
+		os.Exit(1)
+	}
+	if *clientSecret == "" {
+		slog.Error("github-client-secret is required")
+		os.Exit(1)
+	}
+	if *oauthRedirect == "" {
+		slog.Error("oauth-redirect-url is required")
+		os.Exit(1)
+	}
+
+	// Connect to database
+	slog.Debug("main: connecting to database")
+	db, err := sql.Open("pgx", *databaseURL)
+	if err != nil {
+		slog.Error("failed to open database", "err", err)
+		os.Exit(1)
+	}
+	defer db.Close()
+
+	if err := db.Ping(); err != nil {
+		slog.Error("failed to ping database", "err", err)
+		os.Exit(1)
+	}
+	slog.Info("main: database connection established")
+
+	// Run migrations
+	slog.Debug("main: running migrations")
+	if err := runMigrations(db); err != nil {
+		slog.Error("failed to run migrations", "err", err)
+		os.Exit(1)
+	}
+	slog.Info("main: migrations completed")
+
+	// Create GitHub client
+	slog.Debug("main: creating GitHub client")
+	ghClient := gh.NewClient(nil).WithAuthToken(*githubToken)
+
+	// OAuth configuration
+	oauthConfig := &oauth2.Config{
+		ClientID:     *clientID,
+		ClientSecret: *clientSecret,
+		RedirectURL:  *oauthRedirect,
+		Scopes:       []string{"read:user", "user:email", "read:org", "read:sponsors"},
+		Endpoint:     github.Endpoint,
+	}
+	slog.Debug("main: OAuth configured", "client_id", *clientID, "redirect_url", *oauthRedirect)
+
+	// Parse fifty-plus sponsors list
+	fiftyPlusMap := make(map[string]bool)
+	if *fiftyPlusSpons != "" {
+		slog.Debug("main: parsing fifty-plus sponsors", "list", *fiftyPlusSpons)
+		for _, sponsor := range strings.Split(*fiftyPlusSpons, ",") {
+			sponsor = strings.TrimSpace(sponsor)
+			if sponsor != "" {
+				fiftyPlusMap[sponsor] = true
+			}
+		}
+		slog.Info("main: loaded fifty-plus sponsors", "count", len(fiftyPlusMap))
+	}
+
+	server := &Server{
+		db:                db,
+		ghClient:          ghClient,
+		oauth:             oauthConfig,
+		discordInvite:     *discordInvite,
+		fiftyPlusSponsors: fiftyPlusMap,
+	}
+
+	mux := http.NewServeMux()
+
+	htmx.Mount(mux)
+	mux.Handle("/static/", http.FileServer(http.FS(staticFS)))
+
+	// Health check
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		slog.Debug("health check requested")
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"status":"ok","service":"sponsor-panel"}`))
+	})
+
+	// OAuth handlers
+	mux.HandleFunc("/login", server.loginHandler)
+	mux.HandleFunc("/callback", server.callbackHandler)
+	mux.HandleFunc("/logout", server.logoutHandler)
+
+	// Login page handler
+	mux.HandleFunc("/login-page", server.loginPageHandler)
+
+	// Dashboard handler (also serves login page if not authenticated)
+	mux.HandleFunc("/", server.dashboardHandler)
+
+	// Feature handlers
+	mux.HandleFunc("/invite", server.inviteHandler)
+	mux.HandleFunc("/logo", server.logoHandler)
+
+	// Expose Prometheus metrics at /metrics for observability
+	mux.Handle("/metrics", promhttp.Handler())
+
+	slog.Debug("main: HTTP routes registered",
+		"routes", []string{
+			"/health",
+			"/login",
+			"/callback",
+			"/logout",
+			"/login-page",
+			"/",
+			"/invite",
+			"/logo",
+			"/metrics",
+		})
+
+	var h http.Handler = mux
+	h = internal.AcceptEncodingMiddleware(h)
+	h = internal.RefererMiddleware(h)
+
+	slog.Info(
+		"Sponsor panel service ready",
+		"bind", *bind,
+		"has-database-url", *databaseURL != "",
+		"has-github-token", *githubToken != "",
+		"discord-invite", *discordInvite,
+		"github-client-id", *clientID,
+		"has-github-client-secret", *clientSecret != "",
+		"oauth-redirect-url", *oauthRedirect,
+	)
+	log.Fatal(http.Serve(ln, h))
+}

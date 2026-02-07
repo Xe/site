@@ -1,0 +1,140 @@
+package templates
+
+// DashboardProps contains the data needed to render the dashboard
+type DashboardProps struct {
+	DiscordInvite string
+	User          UserProps
+	IsSponsor     bool
+	SponsorAmount int
+	SponsorTier   string
+	IsFiftyPlus   bool
+}
+
+// UserProps contains user information
+type UserProps struct {
+	Login     string
+	AvatarURL string
+}
+
+templ Dashboard(props DashboardProps) {
+	@Navbar(props.User.Login, props.User.AvatarURL)
+	<main class="max-w-4xl mx-auto px-4 py-8">
+		<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Welcome, { props.User.Login }!</h1>
+		<div class="grid md:grid-cols-2 gap-6">
+			if props.IsSponsor {
+				@DiscordCard(props.DiscordInvite)
+			}
+			@SponsorshipCard(props.IsSponsor, props.SponsorAmount, props.SponsorTier)
+		</div>
+		<div class="grid md:grid-cols-2 gap-6 mt-6">
+			if props.IsFiftyPlus {
+				@TeamInviteCard()
+			}
+			if props.IsSponsor {
+				@LogoSubmitCard()
+			}
+		</div>
+	</main>
+}
+
+templ Navbar(login, avatarURL string) {
+	<nav class="bg-white dark:bg-slate-800/90 border-b border-gray-200 dark:border-slate-700 px-4 py-3">
+		<div class="max-w-4xl mx-auto flex items-center justify-between">
+			<div class="flex items-center gap-3">
+				<img src={ templ.SafeURL(avatarURL) } class="w-8 h-8 rounded-full" alt=""/>
+				<span class="font-semibold text-gray-900 dark:text-gray-100">{ login }</span>
+			</div>
+			<a href="/logout" class="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+				Logout
+			</a>
+		</div>
+	</nav>
+}
+
+templ DiscordCard(inviteURL string) {
+	<div class="bg-white dark:bg-slate-800/80 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-slate-700">
+		<h2 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Discord Community</h2>
+		<p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+			Join our Discord server to chat with other sponsors.
+		</p>
+		<a href={ templ.SafeURL(inviteURL) } target="_blank" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+			Join Discord
+		</a>
+	</div>
+}
+
+templ SponsorshipCard(isSponsor bool, amount int, tier string) {
+	<div class="bg-white dark:bg-slate-800/80 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-slate-700">
+		<h2 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Your Sponsorship</h2>
+		if isSponsor {
+			<p class="text-green-600 dark:text-green-400">
+				${ formatDollars(amount) }/month - { tier }
+			</p>
+			<p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Thank you for your support!</p>
+		} else {
+			<p class="text-gray-600 dark:text-gray-300">Not an active sponsor.</p>
+			<a href="https://github.com/sponsors/Xe" target="_blank" class="inline-block bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg text-sm mt-2 transition-colors">
+				Become a Sponsor
+			</a>
+			<p class="text-sm text-gray-600 dark:text-gray-300 mt-1">If you are a part of an organization that sponsors Anubis and see this message, please contact me@xeiaso.net for help.</p>
+		}
+	</div>
+}
+
+templ TeamInviteCard() {
+	<div class="bg-white dark:bg-slate-800/80 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-slate-700">
+		<h2 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Team Invitation</h2>
+		<p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+			Invite team members to TecharoHQ.
+		</p>
+		<form hx-post="/invite" hx-target="#invite-result" class="space-y-3">
+			<input
+				type="text"
+				name="username"
+				placeholder="GitHub username"
+				required
+				class="w-full border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+			/>
+			<button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm w-full transition-colors">
+				Invite to Team
+			</button>
+		</form>
+		<div id="invite-result"></div>
+	</div>
+}
+
+templ LogoSubmitCard() {
+	<div class="bg-white dark:bg-slate-800/80 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-slate-700">
+		<h2 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Logo Submission</h2>
+		<p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+			Submit your company logo for the Anubis README.
+		</p>
+		<form hx-post="/logo" hx-encoding="multipart/form-data" hx-target="#logo-result" class="space-y-3">
+			<input
+				type="text"
+				name="company"
+				placeholder="Company Name"
+				required
+				class="w-full border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400"
+			/>
+			<input
+				type="url"
+				name="website"
+				placeholder="Website URL"
+				required
+				class="w-full border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400"
+			/>
+			<input
+				type="file"
+				name="logo"
+				accept="image/png,image/jpeg,image/svg+xml"
+				required
+				class="w-full border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400"
+			/>
+			<button type="submit" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm w-full transition-colors">
+				Submit Logo
+			</button>
+		</form>
+		<div id="logo-result"></div>
+	</div>
+}

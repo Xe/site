@@ -1,0 +1,37 @@
+@import url("https://cdn.xeiaso.net/static/pkg/iosevka/family.css");
+@import url("https://cdn.xeiaso.net/static/pkg/podkova/family.css");
+
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
+
+@theme {
+  --font-sans: "Iosevka Aile Iaso", sans-serif;
+  --font-mono: "Iosevka Curly Iaso", monospace;
+  --font-serif: "Podkova", serif;
+}
+
+@layer base {
+  @reference "tailwindcss";
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
+  }
+
+  .xe-hero-image {
+    background-image: url("/static/img/hero.avif");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .frosted-glass {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
