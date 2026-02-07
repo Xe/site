@@ -1,9 +1,12 @@
 package main
 
 import (
+	"crypto/rand"
 	"database/sql"
 	"embed"
+	"encoding/base64"
 	"flag"
+	"fmt"
 	"log"
 	"log/slog"
 	"net"
@@ -15,6 +18,7 @@ import (
 	gh "github.com/google/go-github/v82/github"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/gorilla/sessions"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
@@ -28,6 +32,8 @@ var (
 	githubToken    = flag.String("github-token", "", "GitHub token for operations")
 	discordInvite  = flag.String("discord-invite", "", "Discord invite link")
 	fiftyPlusSpons = flag.String("fifty-plus-sponsors", "", "Comma-separated list of usernames/orgs that are always treated as $50+ sponsors")
+	sessionKey     = flag.String("session-key", "", "Session authentication/encryption key (32+ bytes for AES-256)")
+	generateKey    = flag.Bool("generate-session-key", false, "Generate a new session key and exit")
 
 	// OAuth configuration
 	clientID      = flag.String("github-client-id", "", "GitHub OAuth Client ID")
@@ -45,12 +51,24 @@ type Server struct {
 	oauth             *oauth2.Config
 	discordInvite     string
 	fiftyPlusSponsors map[string]bool // Always treated as $50+ sponsors
+	sessionStore      *sessions.CookieStore
 }
 
 func main() {
 	flagenv.Parse()
 	flag.Parse()
 	internal.Slog()
+
+	// Handle session key generation
+	if *generateKey {
+		key := make([]byte, 64)
+		if _, err := rand.Read(key); err != nil {
+			fmt.Fprintf(os.Stderr, "Failed to generate key: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Println(base64.RawURLEncoding.EncodeToString(key))
+		os.Exit(0)
+	}
 
 	slog.Debug("main: starting sponsor panel service")
 
@@ -86,6 +104,23 @@ func main() {
 	}
 	if *oauthRedirect == "" {
 		slog.Error("oauth-redirect-url is required")
+		os.Exit(1)
+	}
+
+	// Session key
+	if *sessionKey == "" {
+		key := make([]byte, 64)
+		if _, err := rand.Read(key); err != nil {
+			slog.Error("failed to generate session key", "err", err)
+			os.Exit(1)
+		}
+		generatedKey := base64.RawURLEncoding.EncodeToString(key)
+		slog.Error("session-key is required (should be 32+ bytes)")
+		fmt.Fprintf(os.Stderr, "\nGenerate a key with:\n    go run ./cmd/sponsor-panel --generate-session-key\n\nOr use this generated key:\n    --session-key=%s\n", generatedKey)
+		os.Exit(1)
+	}
+	if len(*sessionKey) < 32 {
+		slog.Error("session-key must be at least 32 bytes for AES-256", "length", len(*sessionKey))
 		os.Exit(1)
 	}
 
@@ -139,12 +174,24 @@ func main() {
 		slog.Info("main: loaded fifty-plus sponsors", "count", len(fiftyPlusMap))
 	}
 
+	// Create session store
+	slog.Debug("main: creating session store")
+	sessionStore := sessions.NewCookieStore([]byte(*sessionKey))
+	sessionStore.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   30 * 24 * 3600, // 30 days
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+		Secure:   false, // Set to true in production with HTTPS
+	}
+
 	server := &Server{
 		db:                db,
 		ghClient:          ghClient,
 		oauth:             oauthConfig,
 		discordInvite:     *discordInvite,
 		fiftyPlusSponsors: fiftyPlusMap,
+		sessionStore:      sessionStore,
 	}
 
 	mux := http.NewServeMux()

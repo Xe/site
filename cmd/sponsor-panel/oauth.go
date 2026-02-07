@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/gorilla/sessions"
 	"xeiaso.net/v4/cmd/sponsor-panel/templates"
 )
 
@@ -181,7 +182,7 @@ func fetchUserOrganizationsWithSponsorship(ctx context.Context, token string, us
 	slog.Debug("fetchUserOrganizationsWithSponsorship: fetching user organizations with sponsorship info", "user", userLogin)
 
 	// Build the request body as a map and marshal to JSON
-	reqBody := map[string]interface{}{
+	reqBody := map[string]any{
 		"query": `query ($userLogin: String!) { user(login: $userLogin) { organizations(first: 20) { nodes { login name sponsorshipForViewer { isActive tier { name monthlyPriceInCents } } } } } }`,
 		"variables": map[string]string{"userLogin": userLogin},
 	}
@@ -540,16 +541,20 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	slog.Debug("callbackHandler: user upserted successfully", "user_id", user.ID, "github_id", ghUser.ID)
 
-	// Create session cookie with just user ID
-	http.SetCookie(w, &http.Cookie{
-		Name:     "session",
-		Value:    fmt.Sprintf("%d", user.ID),
-		Path:     "/",
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-		Secure:   false,
-		MaxAge:   30 * 24 * 3600, // 30 days
-	})
+	// Create session with user ID
+	// Try to get existing session first, but if we get a decode error (old cookie format), create new one
+	session, err := s.sessionStore.Get(r, "session")
+	if err != nil {
+		// Failed to decode existing session (probably old format), create a fresh one
+		slog.Debug("callbackHandler: failed to decode existing session, creating new one", "err", err)
+		session = sessions.NewSession(s.sessionStore, "session")
+	}
+	session.Values["user_id"] = user.ID
+	if err := s.sessionStore.Save(r, w, session); err != nil {
+		slog.Error("callbackHandler: failed to save session", "err", err)
+		renderOAuthError(w, "Failed to save session")
+		return
+	}
 
 	slog.Info("callbackHandler: user logged in successfully", "user_id", user.ID, "login", ghUser.Login)
 
@@ -557,7 +562,7 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-// logoutHandler logs the user out by clearing the session cookie.
+// logoutHandler logs the user out by clearing the session.
 func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -572,30 +577,51 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 		slog.Debug("logoutHandler: no active session to logout")
 	}
 
-	http.SetCookie(w, &http.Cookie{
-		Name:     "session",
-		Value:    "",
-		Path:     "/",
-		MaxAge:   -1,
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-	})
+	// Clear the session (ignore decode errors from old cookie format)
+	session, err := s.sessionStore.Get(r, "session")
+	if err == nil {
+		session.Values["user_id"] = nil
+		session.Options.MaxAge = -1
+		s.sessionStore.Save(r, w, session)
+	} else {
+		// If we can't decode the old session, just clear the cookie
+		http.SetCookie(w, &http.Cookie{
+			Name:     "session",
+			Value:    "",
+			Path:     "/",
+			MaxAge:   -1,
+			HttpOnly: true,
+		})
+	}
 
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-// getSessionUser retrieves the user from the session cookie.
+// getSessionUser retrieves the user from the session.
 func (s *Server) getSessionUser(r *http.Request) (*User, error) {
-	sessionCookie, err := r.Cookie("session")
+	session, err := s.sessionStore.Get(r, "session")
 	if err != nil {
-		slog.Debug("getSessionUser: no session cookie found")
-		return nil, fmt.Errorf("no session cookie")
+		// Failed to decode session - might be old format, try to read raw cookie
+		slog.Debug("getSessionUser: failed to get session, trying old format", "err", err)
+		cookie, err := r.Cookie("session")
+		if err != nil {
+			return nil, fmt.Errorf("no session cookie")
+		}
+		var userID int
+		if _, err := fmt.Sscanf(cookie.Value, "%d", &userID); err != nil {
+			return nil, fmt.Errorf("invalid session format")
+		}
+		if userID == 0 {
+			return nil, fmt.Errorf("invalid user id in session")
+		}
+		slog.Debug("getSessionUser: fetched user from old session format", "user_id", userID)
+		return getUserByID(s.db, userID)
 	}
 
-	var userID int
-	if _, err := fmt.Sscanf(sessionCookie.Value, "%d", &userID); err != nil {
-		slog.Debug("getSessionUser: invalid user ID in session", "cookie_value", sessionCookie.Value)
-		return nil, fmt.Errorf("invalid user ID in session")
+	userID, ok := session.Values["user_id"].(int)
+	if !ok || userID == 0 {
+		slog.Debug("getSessionUser: no user_id in session")
+		return nil, fmt.Errorf("no user_id in session")
 	}
 
 	slog.Debug("getSessionUser: fetching user from session", "user_id", userID)
