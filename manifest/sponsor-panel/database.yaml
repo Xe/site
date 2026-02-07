@@ -1,0 +1,10 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: sponsor-panel
+spec:
+  instances: 2
+  enableSuperuserAccess: true
+
+  storage:
+    size: 32Gi

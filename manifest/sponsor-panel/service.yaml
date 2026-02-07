@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sponsor-panel
+  labels:
+    app.kubernetes.io/name: sponsor-panel
+spec:
+  selector:
+    app.kubernetes.io/name: sponsor-panel
+  ports:
+  - port: 80
+    targetPort: 4823
+    protocol: TCP
+    name: http

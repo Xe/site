@@ -12,7 +12,7 @@ variable "TYPST_VERSION" { default = "0.13.1" }
 variable "UBUNTU_VERSION" { default = "24.04" }
 
 group "default" {
-  targets = [ "patreon-saasproxy", "xesite", "github-sponsor-webhook" ]
+  targets = [ "patreon-saasproxy", "xesite", "github-sponsor-webhook", "sponsor-panel" ]
 }
 
 target "patreon-saasproxy" {
@@ -63,5 +63,19 @@ target "github-sponsor-webhook" {
   pull = true
   tags = [
     "registry.int.xeserv.us/xe/site/github-sponsor-webhook:main"
+  ]
+}
+
+target "sponsor-panel" {
+  args = {
+    ALPINE_VERSION = null
+    GO_VERSION = null
+  }
+  context = "."
+  dockerfile = "./docker/sponsor-panel.Dockerfile"
+  platforms = [ "linux/amd64", "linux/arm64" ]
+  pull = true
+  tags = [
+    "registry.int.xeserv.us/xe/site/sponsor-panel:main"
   ]
 }
