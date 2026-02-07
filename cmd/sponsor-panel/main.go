@@ -16,9 +16,9 @@ import (
 
 	"github.com/facebookgo/flagenv"
 	gh "github.com/google/go-github/v82/github"
+	"github.com/gorilla/sessions"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/gorilla/sessions"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
@@ -198,6 +198,9 @@ func main() {
 
 	htmx.Mount(mux)
 	mux.Handle("/static/", http.FileServer(http.FS(staticFS)))
+	mux.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFileFS(w, r, staticFS, "static/favicon.ico")
+	})
 
 	// Health check
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
