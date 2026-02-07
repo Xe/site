@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: alrest-xe-site
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
