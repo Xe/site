@@ -9,6 +9,7 @@ metadata:
     keel.sh/policy: all
     keel.sh/trigger: poll
     keel.sh/pollSchedule: "@hourly"
+    operator.1password.io/auto-restart: "true"
 spec:
   replicas: 3
   selector:
@@ -22,7 +23,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: reg.xeiaso.net/xe/site/sponsor-panel:main
+          image: ghcr.io/xe/site/sponsor-panel:main
           imagePullPolicy: Always
           resources:
             limits:
