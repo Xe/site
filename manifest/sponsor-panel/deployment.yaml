@@ -35,7 +35,7 @@ spec:
             - name: BIND
               value: ":4823"
             - name: SLOG_LEVEL
-              value: "DEBUG"
+              value: "info"
           ports:
             - containerPort: 4823
               name: http
