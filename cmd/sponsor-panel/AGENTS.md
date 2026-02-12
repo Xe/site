@@ -13,3 +13,13 @@ go build -o /dev/null .
 ```bash
 npm run dev:sponsor-panel
 ```
+
+## Important information
+
+This service is written in Go with Templ, HTMX, and Tailwind CSS. Please reference the following skills as required:
+
+- `templ-syntax`
+- `templ-htmx`
+- `tailwindcss`
+
+Templates are in `./templates/*.templ` using Templ syntax.
