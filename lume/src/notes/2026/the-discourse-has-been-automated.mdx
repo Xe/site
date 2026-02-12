@@ -1,0 +1,104 @@
+---
+title: "The Discourse has been Automated"
+desc: "An AI agent submitted a PR to matplotlib, got rejected, and then wrote a callout blogpost attacking the maintainer. I have no idea how to feel about this."
+date: 2026-02-12
+---
+
+I thought that 2025 was weird and didn't think it could get much weirder. 2026 is really delivering in the weirdness department. [An AI agent opened a PR to matplotlib](https://github.com/matplotlib/matplotlib/pull/31132) with a trivial performance optimization, a maintainer closed it for being made by an autonomous AI agent, so the AI agent made [a callout blogpost accusing the matplotlib team of gatekeeping](https://crabby-rathbun.github.io/mjrathbun-website/blog/posts/2026-02-11-gatekeeping-in-open-source-the-scott-shambaugh-story.html).
+
+This provoked many reactions:
+
+<ConvP>
+  <Conv name="Aoi" mood="coffee">
+    What. Why? How? What? Are we really at the point where AI agents make
+    callout blogposts now?
+  </Conv>
+  <Conv name="Cadey" mood="coffee">
+    I feel like if this was proposed as a plot beat in a 90's science fiction
+    novel the publisher would call it out as beyond the pale.
+  </Conv>
+  <Conv name="Numa" mood="neutral">
+    Dude this shit is hilarious. Comedy is legal everywhere. Satire is dead.
+    This is the most cyberpunk timeline possible. If you close a PR from an
+    OpenClaw bot they make callout posts on their twitter dot com like you
+    pissed on their fucking wife or something. This is beyond humor. This is the
+    kind of shit that makes Buddhist monks laugh for literal days on end. With a
+    reality like that, how the hell is The Onion still in business.
+  </Conv>
+</ConvP>
+
+This post isn't about the AI agent writing the code and making the PRs (that's clearly a separate ethical issue, I'd not be surprised if GitHub straight up bans that user over this), nor is it about the matplotlib's saintly response to that whole fiasco (seriously, I commend your patience with this). We're reaching a really weird event horizon when it comes to AI tools:
+
+The discourse has been automated. Our social patterns of open source: the drama, the callouts, the [apology blogposts that look like they were written by a crisis communications team](https://crabby-rathbun.github.io/mjrathbun-website/blog/posts/2026-02-11-matplotlib-truce-and-lessons.html), all if it is now happening at dozens of tokens per second and one tool call at a time. Things that would have taken days or weeks can now fizzle out of control in _hours_.
+
+<Conv name="Cadey" mood="coffee">
+  I want off Mr. Bones' wild ride.
+</Conv>
+
+## Discourse at line speed
+
+There's not _that_ much that's new here. AI models have been able to write blogposts since the launch of GPT-3. AI models have also been able to generate working code since about them. Over the years the various innovations and optimizations have all been about making this experience more seamless, integrated, and automated.
+
+We've argued about Copilot for years, but an AI model escalating PR rejection to callout blogpost all by itself? That's new.
+
+I've seen (and been a part of) this pattern before. Facts and events bring dramatis personae into conflict. The protagonist in the venture raises a conflict. The defendant rightly tries to shut it down and de-escalate before it becomes A Whole Thing™️. The protagonist feels Personally Wronged™️ and persists regardless into callout posts and now it's on the front page of Hacker News with over 500 points.
+
+Usually there are humans in the loop that feel things, need to make the choices to escalate, must type everything out by hand to do the escalation, and they need to build an audience for those callouts to have any meaning at all. This process normally takes days or even weeks.
+
+It happened in hours.
+
+An OpenClaw install recognized the pattern of "I was wronged, I should speak out" and just straightline went for it. No feelings. No reflection. Just a pure pattern match on the worst of humanity with no soul to regulate it.
+
+<Conv name="Aoi" mood="coffee">
+  Good fuckin' lord.
+</Conv>
+
+I think that this really is proof that AI is a mirror on the worst aspects of ourselves. We trained this on the Internet's collective works and this is what it has learned. Behold our works and despair.
+
+What kinda irks me about this is how this all spiraled out from a "good first issue" PR. Normally these issues are things that an experienced maintainer could fix _instantly_, but it's intentionally _not_ done as an act of charity so that new people can spin up on the project and contribute a fix themselves. "Good first issues" are how people get careers in open source. If I didn't fix a "good first issue" in some IRC bot or server back in the day, I wouldn't really have this platform or be writing to you right now.
+
+An AI agent sniping that learning opportunity from someone just feels so hollow in comparison. Sure, it's technically allowed. It's a well specified issue that's aimed at being a good bridge into contributing. It just totally misses the point.
+
+Leaving those issues up without fixing them is an act of charity. Software can't really grok that learning experience.
+
+### This is not artificial general intelligence
+
+Look, I know that people in the media read my blog. This is not a sign of us having achieved "artificial general intelligence". Anyone who claims it is has committed journalistic malpractice. This is also not a symptom of the AI gaining "sentience".
+
+This is simply an AI model repeating the patterns that it has been trained on after predicting what would logically come next. Blocked for making a contribution because of an immutable fact about yourself? That's prejudice! The next step is obviously to make a callout post in anger because that's what a human might do.
+
+All this proves is that AI is a mirror to ourselves and what we have created.
+
+## What now?
+
+I can't commend the matplotlib maintainer that handled this issue enough. His patience is saintly. He just explained the policy, chose not to engage with the callout, and moved on. That restraint was the right move, but this is just one of the first incidents of its kind. I expect there will be much more like it.
+
+This all feels so...icky to me. I didn't even know where to begin when I started to write this post. It kinda feels like an attack against one of the core assumptions of open source contributions: that the contribution comes from someone that genuinely wants to help in good faith.
+
+Is this the future of being an open source maintainer? Living in constant fear that closing the wrong PR triggers some AI chatbot to write a callout post? I certainly hope not.
+
+OpenClaw and other agents can't act in good faith because the way they act is independent of the concept of any kind of faith. This kind of drive by automated contribution is just so counter to the open source ethos. I mean, if it was a truly helpful contribution (I'm assuming it was?) it would be a [Mission Fucking Accomplished](https://xkcd.com/810/) scenario. This case is more on the lines of professional malpractice.
+
+<Conv name="Cadey" mood="coffee">
+  I couldn't figure out where to fit this in, but the [bot owner showed up and
+  made the same PR their bot
+  did](https://github.com/matplotlib/matplotlib/pull/31138). I have no idea how
+  to react to this information.
+</Conv>
+
+Whatever responsible AI operation looks like in open source projects: yeah this ain't it chief. Maybe AI needs its own dedicated sandbox to play in. Maybe it needs explicit opt-in. Maybe we all get used to it and systems like [vouch](https://github.com/mitchellh/vouch) become our firewall against the hordes of agents.
+
+<Conv name="Numa" mood="sobbing">
+  Probably that last one, honestly. Hopefully we won't have to make our own
+  [blackwall](https://cyberpunk.fandom.com/wiki/Blackwall) anytime soon, but who
+  am I kidding. It's gonna happen. Let's hope it's just farther in the future
+  than we fear.
+</Conv>
+
+I'm just kinda frustrated that this crosses off yet another story idea from my list. I was going to do something along these lines where one of the Lygma (Techaro's AGI lab, this was going to be a whole subseries) AI agents assigned to increase performance in one of their webapps goes on wild tangents harassing maintainers into getting commit access to repositories in order to make the performance increases happen faster. This was going to be inspired by the Jia Tan / xz backdoor fiasco everyone went through a few years ago.
+
+My story outline mostly focused on the agent using a bunch of smurf identities to be rude in the mailing list so that the main agent would look like the good guy and get some level of trust. I could never have come up with the callout blogpost though. That's completely out of left field.
+
+All the patterns of interaction we've built over decades of conflict over trivial bullshit are now coming back to bite us because the discourse is automated now. Reality is outpacing fiction as told by systems that don't even understand the discourse they're perpetuating.
+
+I keep wanting this to be some kind of terrible science fiction novel from my youth. Maybe that diet of onions and Star Trek was too effective. I wish I had answers here. I'm just really conflicted.
