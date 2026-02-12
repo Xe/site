@@ -4,7 +4,7 @@ import "xeiaso.net/v4/web/htmx"
 
 templ Base(title string, content templ.Component) {
 	<!DOCTYPE html>
-	<html lang="en">
+	<html lang="en" class="bg-canvas dark:bg-canvas-dark">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -16,7 +16,7 @@ templ Base(title string, content templ.Component) {
 			<link rel="stylesheet" href="/static/css/styles.css"/>
 			@htmx.Use("remove-me")
 		</head>
-		<body class="bg-gray-50 dark:bg-gray-900">
+		<body>
 			@content
 		</body>
 	</html>

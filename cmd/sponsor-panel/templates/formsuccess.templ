@@ -2,25 +2,42 @@ package templates
 
 // InviteSuccess renders the success response for team invitation.
 templ InviteSuccess(username, state string) {
-	<div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-		<p class="text-green-700 dark:text-green-300 font-semibold">Invitation sent!</p>
-		<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-			{ "@" + username } is { state }
-		</p>
+	<div class="alert-success mt-3">
+		<div class="flex items-start gap-3">
+			<svg class="w-5 h-5 text-green-light dark:text-greenDark-light flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+			</svg>
+			<div>
+				<p class="text-sm text-green-dark dark:text-greenDark-dark font-semibold">Invitation sent!</p>
+				<p class="text-sm text-green-light dark:text-greenDark-light mt-1">
+					<code class="bg-greenDark-dark/20 dark:bg-greenDark-dark/30 px-1.5 py-0.5 rounded">{ "@" + username }</code> is { state }
+				</p>
+			</div>
+		</div>
 	</div>
 }
 
 // LogoSuccess renders the success response for logo submission.
 templ LogoSuccess(company, issueURL string, issueNumber int) {
-	<div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-		<p class="text-green-700 dark:text-green-300 font-semibold">Logo submitted!</p>
-		<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-			Your logo for { company } has been submitted for review.
-		</p>
-		<p class="text-sm mt-2">
-			<a href={ templ.SafeURL(issueURL) } target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">
-				View issue #{ issueNumber }
-			</a>
-		</p>
+	<div class="alert-success mt-3">
+		<div class="flex items-start gap-3">
+			<svg class="w-5 h-5 text-green-light dark:text-greenDark-light flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+			</svg>
+			<div>
+				<p class="text-sm text-green-dark dark:text-greenDark-dark font-semibold">Logo submitted!</p>
+				<p class="text-sm text-green-light dark:text-greenDark-light mt-1">
+					Your logo for <strong>{ company }</strong> has been submitted for review.
+				</p>
+				<p class="text-sm mt-2">
+					<a href={ templ.SafeURL(issueURL) } target="_blank" class="inline-flex items-center gap-1.5 text-blue-light dark:text-blueDark-light hover:underline">
+						<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+						</svg>
+						View issue #{ issueNumber }
+					</a>
+				</p>
+			</div>
+		</div>
 	</div>
 }

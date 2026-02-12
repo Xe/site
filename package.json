@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "go test ./...",
+    "generate": "go generate ./...",
     "dev": "go run ./cmd/xesite --site-url https://preview.xeiaso.net --devel",
     "dev:sponsor-panel": "cd ./cmd/sponsor-panel && go generate ./... && go run .",
     "deploy": "kubectl --context limsa-lominsa apply -k manifest",
