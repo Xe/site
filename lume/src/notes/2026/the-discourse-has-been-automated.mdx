@@ -4,6 +4,8 @@ desc: "An AI agent submitted a PR to matplotlib, got rejected, and then wrote a 
 date: 2026-02-12
 ---
 
+import Admonition from "../../_components/Admonition.jsx";
+
 I thought that 2025 was weird and didn't think it could get much weirder. 2026 is really delivering in the weirdness department. [An AI agent opened a PR to matplotlib](https://github.com/matplotlib/matplotlib/pull/31132) with a trivial performance optimization, a maintainer closed it for being made by an autonomous AI agent, so the AI agent made [a callout blogpost accusing the matplotlib team of gatekeeping](https://crabby-rathbun.github.io/mjrathbun-website/blog/posts/2026-02-11-gatekeeping-in-open-source-the-scott-shambaugh-story.html).
 
 This provoked many reactions:
@@ -79,12 +81,11 @@ Is this the future of being an open source maintainer? Living in constant fear t
 
 OpenClaw and other agents can't act in good faith because the way they act is independent of the concept of any kind of faith. This kind of drive by automated contribution is just so counter to the open source ethos. I mean, if it was a truly helpful contribution (I'm assuming it was?) it would be a [Mission Fucking Accomplished](https://xkcd.com/810/) scenario. This case is more on the lines of professional malpractice.
 
-<Conv name="Cadey" mood="coffee">
-  I couldn't figure out where to fit this in, but the [bot owner showed up and
-  made the same PR their bot
-  did](https://github.com/matplotlib/matplotlib/pull/31138). I have no idea how
-  to react to this information.
-</Conv>
+<Admonition type="note">
+  Update: A previous version of this post claimed that a GitHub user was the
+  owner of the bot. This was incorrect (a bad taste joke on their part that was
+  poorly received) and has been removed. Please leave that user alone.
+</Admonition>
 
 Whatever responsible AI operation looks like in open source projects: yeah this ain't it chief. Maybe AI needs its own dedicated sandbox to play in. Maybe it needs explicit opt-in. Maybe we all get used to it and systems like [vouch](https://github.com/mitchellh/vouch) become our firewall against the hordes of agents.
 
