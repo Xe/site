@@ -49,20 +49,20 @@ func Dashboard(props DashboardProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<main class=\"max-w-4xl mx-auto px-4 py-8\"><h1 class=\"text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6\">Welcome, ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<main class=\"max-w-4xl mx-auto px-4 md:px-10 py-4 md:py-10\"><div class=\"\"><h1 class=\"hero-title mb-3\">Welcome back, ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(props.User.Login)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 22, Col: 98}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 23, Col: 63}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "!</h1><div class=\"grid md:grid-cols-2 gap-6\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</h1><p class=\"text-fg-3 dark:text-fgDark-3\">Manage your sponsorship benefits</p></div><div class=\"grid md:grid-cols-2 gap-8 mt-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -76,7 +76,7 @@ func Dashboard(props DashboardProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div><div class=\"grid md:grid-cols-2 gap-6 mt-6\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div><div class=\"grid md:grid-cols-2 gap-8 mt-8\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -121,33 +121,33 @@ func Navbar(login, avatarURL string) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<nav class=\"bg-white dark:bg-slate-800/90 border-b border-gray-200 dark:border-slate-700 px-4 py-3\"><div class=\"max-w-4xl mx-auto flex items-center justify-between\"><div class=\"flex items-center gap-3\"><img src=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<nav class=\"navbar sticky top-0 z-50 px-8 py-5 md:px-12\"><div class=\"max-w-4xl mx-auto flex items-center justify-between\"><div class=\"flex items-center gap-3\"><img src=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(templ.SafeURL(avatarURL))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 44, Col: 39}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 47, Col: 39}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" class=\"w-8 h-8 rounded-full\" alt=\"\"> <span class=\"font-semibold text-gray-900 dark:text-gray-100\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" class=\"w-9 h-9 rounded-full ring-2 ring-bg-3 dark:ring-bgDark-3\" alt=\"\"> <span class=\"font-medium text-fg-1 dark:text-fgDark-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(login)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 45, Col: 72}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 48, Col: 66}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</span></div><a href=\"/logout\" class=\"text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors\">Logout</a></div></nav>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</span></div><a href=\"/logout\" class=\"btn btn-ghost text-sm p-2\">Logout</a></div></nav>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -176,7 +176,7 @@ func DiscordCard(inviteURL string) templ.Component {
 			templ_7745c5c3_Var6 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div class=\"bg-white dark:bg-slate-800/80 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-slate-700\"><h2 class=\"font-semibold text-gray-900 dark:text-gray-100 mb-2\">Discord Community</h2><p class=\"text-sm text-gray-600 dark:text-gray-300 mb-4\">Join our Discord server to chat with other sponsors.</p><a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div class=\"card card-cool p-4\"><h2 class=\"card-title flex items-center gap-3 !mb-4\"><svg class=\"w-6 h-6 text-blue-light dark:text-blueDark-light\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z\"></path></svg> Discord Community</h2><p class=\"card-description !mb-6\">Connect with other sponsors and get early access to updates.</p><a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -185,7 +185,7 @@ func DiscordCard(inviteURL string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" target=\"_blank\" class=\"inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm transition-colors\">Join Discord</a></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" target=\"_blank\" class=\"btn btn-secondary p-2\">Join Discord</a></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -214,43 +214,43 @@ func SponsorshipCard(isSponsor bool, amount int, tier string) templ.Component {
 			templ_7745c5c3_Var8 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div class=\"bg-white dark:bg-slate-800/80 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-slate-700\"><h2 class=\"font-semibold text-gray-900 dark:text-gray-100 mb-2\">Your Sponsorship</h2>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div class=\"card card-warm p-4\"><h2 class=\"card-title flex items-center gap-2\"><svg class=\"w-5 h-5 text-orange-light dark:text-orangeDark-light\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z\"></path></svg> Your Sponsorship</h2>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if isSponsor {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<p class=\"text-green-600 dark:text-green-400\">$")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<div class=\"flex items-center gap-2 mb-2\"><span class=\"accent-dot\"></span> <span class=\"text-lg font-semibold text-green-light dark:text-greenDark-light\">$")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(formatDollars(amount))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 71, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 86, Col: 29}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "/month - ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "/month</span></div><p class=\"text-sm text-fg-3 dark:text-fgDark-3 mb-3\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(tier)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 71, Col: 45}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 89, Col: 62}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</p><p class=\"text-sm text-gray-600 dark:text-gray-300 mt-1\">Thank you for your support!</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</p><p class=\"text-sm font-medium text-orange-light dark:text-orangeDark-light\">Thank you for your support!</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<p class=\"text-gray-600 dark:text-gray-300\">Not an active sponsor.</p><a href=\"https://github.com/sponsors/Xe\" target=\"_blank\" class=\"inline-block bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg text-sm mt-2 transition-colors\">Become a Sponsor</a><p class=\"text-sm text-gray-600 dark:text-gray-300 mt-1\">If you are a part of an organization that sponsors Anubis and see this message, please contact me@xeiaso.net for help.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<p class=\"card-description\">You're not currently an active sponsor.</p><a href=\"https://github.com/sponsors/Xe\" target=\"_blank\" class=\"btn btn-pink\">Become a Sponsor</a><p class=\"text-xs text-fg-4 dark:text-fgDark-4 mt-4 leading-relaxed\">If you're part of an organization that sponsors Anubis and see this message, please contact me@xeiaso.net for help.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -284,7 +284,7 @@ func TeamInviteCard() templ.Component {
 			templ_7745c5c3_Var11 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"bg-white dark:bg-slate-800/80 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-slate-700\"><h2 class=\"font-semibold text-gray-900 dark:text-gray-100 mb-2\">Team Invitation</h2><p class=\"text-sm text-gray-600 dark:text-gray-300 mb-4\">Invite team members to TecharoHQ.</p><form hx-post=\"/invite\" hx-target=\"#invite-result\" class=\"space-y-3\"><input type=\"text\" name=\"username\" placeholder=\"GitHub username\" required class=\"w-full border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400\"> <button type=\"submit\" class=\"bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm w-full transition-colors\">Invite to Team</button></form><div id=\"invite-result\"></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"card card-green p-4\"><h2 class=\"card-title flex items-center gap-2\"><svg class=\"w-5 h-5 text-green-light dark:text-greenDark-light\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z\"></path></svg> Team Invitation</h2><p class=\"card-description\">Invite team members to TecharoHQ as part of your sponsorship.</p><form hx-post=\"/invite\" hx-target=\"#invite-result\" class=\"space-y-3\"><input type=\"text\" name=\"username\" placeholder=\"GitHub username\" required class=\"input\"> <button type=\"submit\" class=\"btn btn-primary w-full\">Send Invitation</button></form><div id=\"invite-result\"></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -313,7 +313,7 @@ func LogoSubmitCard() templ.Component {
 			templ_7745c5c3_Var12 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"bg-white dark:bg-slate-800/80 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-slate-700\"><h2 class=\"font-semibold text-gray-900 dark:text-gray-100 mb-2\">Logo Submission</h2><p class=\"text-sm text-gray-600 dark:text-gray-300 mb-4\">Submit your company logo for the Anubis README.</p><form hx-post=\"/logo\" hx-encoding=\"multipart/form-data\" hx-target=\"#logo-result\" class=\"space-y-3\"><input type=\"text\" name=\"company\" placeholder=\"Company Name\" required class=\"w-full border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400\"> <input type=\"url\" name=\"website\" placeholder=\"Website URL\" required class=\"w-full border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400\"> <input type=\"file\" name=\"logo\" accept=\"image/png,image/jpeg,image/svg+xml\" required class=\"w-full border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-400\"> <button type=\"submit\" class=\"bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm w-full transition-colors\">Submit Logo</button></form><div id=\"logo-result\"></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"card p-4\"><h2 class=\"card-title flex items-center gap-2\"><svg class=\"w-5 h-5 text-purple-light dark:text-purpleDark-light\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> Logo Submission</h2><p class=\"card-description\">Submit your company logo for the Anubis README.</p><form hx-post=\"/logo\" hx-encoding=\"multipart/form-data\" hx-target=\"#logo-result\" class=\"space-y-3\"><input type=\"text\" name=\"company\" placeholder=\"Company Name\" required class=\"input\"> <input type=\"url\" name=\"website\" placeholder=\"Website URL\" required class=\"input\"> <input type=\"file\" name=\"logo\" accept=\"image/png,image/jpeg,image/svg+xml\" required class=\"file-input\"> <button type=\"submit\" class=\"btn btn-dark w-full\">Submit Logo</button></form><div id=\"logo-result\"></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

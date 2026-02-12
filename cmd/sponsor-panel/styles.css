@@ -1,17 +1,123 @@
 @import url("https://cdn.xeiaso.net/static/pkg/iosevka/family.css");
 @import url("https://cdn.xeiaso.net/static/pkg/podkova/family.css");
 
-@import "tailwindcss/preflight";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
 
 @theme {
   --font-sans: "Iosevka Aile Iaso", sans-serif;
   --font-mono: "Iosevka Curly Iaso", monospace;
   --font-serif: "Podkova", serif;
+
+  /* Gruvbox color palette - consistent with main site */
+  --color-bg-hard: #f9f5d7;
+  --color-bg-soft: #f2e5bc;
+  --color-bg-0: #fbf1c7;
+  --color-bg-1: #ebdbb2;
+  --color-bg-2: #d5c4a1;
+  --color-bg-3: #bdae93;
+  --color-bg-4: #a89984;
+
+  --color-bgDark-hard: #1d2021;
+  --color-bgDark-soft: #32302f;
+  --color-bgDark-0: #282828;
+  --color-bgDark-1: #3c3836;
+  --color-bgDark-2: #504945;
+  --color-bgDark-3: #665c54;
+  --color-bgDark-4: #7c6f64;
+
+  --color-fg-0: #282828;
+  --color-fg-1: #3c3836;
+  --color-fg-2: #504945;
+  --color-fg-3: #665c54;
+  --color-fg-4: #7c6f64;
+
+  --color-fgDark-0: #fbf1c7;
+  --color-fgDark-1: #ebdbb2;
+  --color-fgDark-2: #d5c4a1;
+  --color-fgDark-3: #bdae93;
+  --color-fgDark-4: #a89984;
+
+  --color-red-light: #cc241d;
+  --color-red-dark: #9d0006;
+  --color-redDark-dark: #cc241d;
+  --color-redDark-light: #fb4934;
+
+  --color-green-light: #98971a;
+  --color-green-dark: #79740e;
+  --color-greenDark-dark: #98971a;
+  --color-greenDark-light: #b8bb26;
+
+  --color-yellow-light: #d79921;
+  --color-yellow-dark: #b57614;
+  --color-yellowDark-light: #d79921;
+  --color-yellowDark-dark: #fabd2f;
+
+  --color-blue-light: #458588;
+  --color-blue-dark: #076678;
+  --color-blueDark-dark: #458588;
+  --color-blueDark-light: #83a598;
+
+  --color-purple-light: #b16286;
+  --color-purple-dark: #8f3f71;
+  --color-purpleDark-dark: #b16286;
+  --color-purpleDark-light: #d3869b;
+
+  --color-aqua-light: #689d6a;
+  --color-aqua-dark: #427b58;
+  --color-aquaDark-dark: #689d6a;
+  --color-aquaDark-light: #8ec07c;
+
+  --color-orange-light: #d65d0e;
+  --color-orange-dark: #af3a03;
+  --color-orangeDark-dark: #d65d0e;
+  --color-orangeDark-light: #fe8019;
+
+  --color-link-light-normal: #b80050;
+  --color-link-light-hover: #fdf4c1;
+  --color-link-light-hoverBg: #9e0045;
+  --color-link-light-visited: #53493c;
+  --color-link-light-visitedHover: #fff;
+  --color-link-light-visitedHoverBg: #282828;
+
+  --color-link-dark-normal: #ffa8ce;
+  --color-link-dark-hover: #fff;
+  --color-link-dark-hoverBg: #b3004d;
+  --color-link-dark-visited: #c1b7a9;
+  --color-link-dark-visitedHover: #fdf4c1;
+  --color-link-dark-visitedHoverBg: #282828;
+
+  /* Semantic aliases */
+  --color-canvas: var(--color-bg-hard);
+  --color-canvas-dark: var(--color-bgDark-hard);
+  --color-surface: var(--color-bg-0);
+  --color-surface-dark: var(--color-bgDark-0);
+  --color-surface-elevated: var(--color-bg-soft);
+  --color-surface-elevated-dark: var(--color-bgDark-1);
+
+  --color-border: var(--color-bg-3);
+  --color-border-dark: var(--color-bgDark-3);
+
+  --color-text: var(--color-fg-0);
+  --color-text-muted: var(--color-fg-3);
+  --color-text-muted-dark: var(--color-fgDark-3);
+
+  /* Accent colors using gruvbox */
+  --color-accent-warm: var(--color-orange-light);
+  --color-accent-warm-dark: var(--color-orangeDark-light);
+  --color-accent-cool: var(--color-blue-light);
+  --color-accent-cool-dark: var(--color-blueDark-light);
+  --color-accent-pink: var(--color-link-light-normal);
+  --color-accent-pink-dark: var(--color-link-dark-normal);
+  --color-accent-green: var(--color-green-light);
+  --color-accent-green-dark: var(--color-greenDark-light);
+  --color-accent-purple: var(--color-purple-light);
+  --color-accent-purple-dark: var(--color-purpleDark-light);
 }
 
 @layer base {
-  @reference "tailwindcss";
+  * {
+    @apply border-border dark:border-border-dark;
+  }
 
   h1,
   h2,
@@ -19,19 +125,269 @@
   h4,
   h5,
   h6 {
-    @apply font-serif;
+    @apply font-serif tracking-tight;
   }
 
-  .xe-hero-image {
-    background-image: url("/static/img/hero.avif");
-    background-size: cover;
-    background-position: center;
+  body {
+    @apply bg-canvas dark:bg-canvas-dark text-text dark:text-fgDark-1;
+    background-image:
+      radial-gradient(
+        ellipse at top left,
+        rgba(214, 93, 14, 0.05) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse at bottom right,
+        rgba(69, 133, 136, 0.05) 0%,
+        transparent 50%
+      );
   }
 
-  .frosted-glass {
-    backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  body {
+    @variant dark {
+      background-image:
+        radial-gradient(
+          ellipse at top left,
+          rgba(254, 128, 25, 0.08) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          ellipse at bottom right,
+          rgba(131, 165, 152, 0.08) 0%,
+          transparent 50%
+        );
+    }
   }
+}
+
+@layer components {
+  /* Card with subtle depth and warm border accent */
+  .card {
+    @apply bg-surface dark:bg-surface-dark rounded-2xl p-10 shadow-sm;
+    @apply border border-bg-2 dark:border-bgDark-2;
+    @apply relative overflow-hidden;
+  }
+
+  .card::before {
+    content: "";
+    @apply absolute top-0 left-0 right-0 h-[2px];
+    background: linear-gradient(
+      90deg,
+      var(--color-orange-light) 0%,
+      var(--color-blue-light) 50%,
+      var(--color-purple-light) 100%
+    );
+    opacity: 0.6;
+  }
+
+  .card::before {
+    @variant dark {
+      background: linear-gradient(
+        90deg,
+        var(--color-orangeDark-light) 0%,
+        var(--color-blueDark-light) 50%,
+        var(--color-purpleDark-light) 100%
+      );
+      opacity: 0.8;
+    }
+  }
+
+  /* Card variants for visual variety */
+  .card-warm::before {
+    background: linear-gradient(
+      90deg,
+      var(--color-orange-light),
+      var(--color-link-light-normal)
+    );
+  }
+
+  .card-cool::before {
+    background: linear-gradient(
+      90deg,
+      var(--color-blue-light),
+      var(--color-purple-light)
+    );
+  }
+
+  .card-green::before {
+    background: linear-gradient(
+      90deg,
+      var(--color-green-light),
+      var(--color-aqua-light)
+    );
+  }
+
+  .card-warm::before {
+    @variant dark {
+      background: linear-gradient(
+        90deg,
+        var(--color-orangeDark-light),
+        var(--color-link-dark-normal)
+      );
+    }
+  }
+
+  .card-cool::before {
+    @variant dark {
+      background: linear-gradient(
+        90deg,
+        var(--color-blueDark-light),
+        var(--color-purpleDark-light)
+      );
+    }
+  }
+
+  .card-green::before {
+    @variant dark {
+      background: linear-gradient(
+        90deg,
+        var(--color-greenDark-light),
+        var(--color-aquaDark-light)
+      );
+    }
+  }
+
+  /* Buttons with depth and personality */
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-xl;
+    @apply font-medium text-sm transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply shadow-sm hover:shadow-md active:shadow-sm;
+    @apply transform hover:-translate-y-px active:translate-y-0;
+  }
+
+  .btn-primary {
+    @apply bg-orange-light dark:bg-orangeDark-light text-white;
+    @apply hover:bg-orange-dark dark:hover:bg-yellowDark-dark;
+    @apply focus:ring-orange-light dark:focus:ring-orangeDark-light;
+    @apply dark:text-white;
+  }
+
+  .btn-secondary {
+    @apply bg-blue-light dark:bg-blueDark-dark text-white;
+    @apply hover:bg-blue-dark dark:hover:bg-blue-dark;
+    @apply focus:ring-blue-light dark:focus:ring-blueDark-light;
+    @apply dark:text-white;
+  }
+
+  .btn-dark {
+    @apply bg-fg-0 dark:bg-purpleDark-light text-white;
+    @apply hover:bg-fg-1 dark:hover:bg-purpleDark-dark;
+    @apply focus:ring-fg-0 dark:focus:ring-purpleDark-light;
+    @apply dark:text-white;
+  }
+
+  .btn-pink {
+    @apply bg-link-light-normal dark:bg-link-dark-normal text-white;
+    @apply hover:bg-link-light-hoverBg dark:hover:bg-link-dark-hoverBg;
+    @apply focus:ring-link-light-normal dark:focus:ring-link-dark-normal;
+    @apply dark:text-white;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-fg-1 dark:text-fgDark-1;
+    @apply hover:bg-bg-1 dark:hover:bg-bgDark-1;
+    @apply focus:ring-bg-3 dark:focus:ring-bgDark-3;
+    @apply shadow-none hover:shadow-none;
+    @apply dark:bg-bgDark-2/50;
+  }
+
+  /* Input styling */
+  .input {
+    @apply w-full rounded-xl px-5 py-3.5 text-sm;
+    @apply bg-bg-0 dark:bg-bgDark-4;
+    @apply border-2 border-bg-4 dark:border-bgDark-4;
+    @apply text-fg-0 dark:text-fgDark-1;
+    @apply placeholder:text-fg-4 dark:placeholder:text-fgDark-4;
+    @apply focus:outline-none focus:ring-2 focus:ring-orange-light/50 dark:focus:ring-orangeDark-dark/50;
+    @apply focus:border-orange-light dark:focus:border-orangeDark-dark;
+    @apply transition-all duration-200;
+  }
+
+  /* Navigation styling */
+  .navbar {
+    @apply bg-bg-0/80 dark:bg-bgDark-0/80;
+    @apply backdrop-blur-lg border-b border-bg-3 dark:border-bgDark-3;
+  }
+
+  /* Hero section with gradient text */
+  .hero-title {
+    @apply text-3xl md:text-4xl font-bold font-serif;
+    background: linear-gradient(
+      135deg,
+      var(--color-orange-light) 0%,
+      var(--color-link-light-normal) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-title {
+    @variant dark {
+      background: linear-gradient(
+        135deg,
+        var(--color-orangeDark-light) 0%,
+        var(--color-link-dark-normal) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  /* Success/error states */
+  .alert-success {
+    @apply bg-greenDark-dark/10 dark:bg-greenDark-dark/20 border border-green-light dark:border-greenDark-light;
+    @apply rounded-xl p-5;
+  }
+
+  .alert-error {
+    @apply bg-redDark-dark/10 dark:bg-redDark-dark/20 border border-red-light dark:border-redDark-light;
+    @apply rounded-xl p-5;
+  }
+
+  /* Card section headers */
+  .card-title {
+    @apply text-lg font-semibold font-serif text-fg-0 dark:text-fgDark-1 mb-2;
+  }
+
+  .card-description {
+    @apply text-sm text-fg-3 dark:text-fgDark-3 mb-4;
+  }
+
+  /* Decorative elements */
+  .accent-dot {
+    @apply inline-block w-2 h-2 rounded-full bg-orange-light dark:bg-orangeDark-light mr-2;
+  }
+
+  /* File input styling */
+  .file-input {
+    @apply block w-full text-sm text-fg-4 dark:text-fgDark-4;
+    @apply file:mr-4 file:py-2 file:px-4;
+    @apply file:rounded-lg file:border-0;
+    @apply file:text-sm file:font-medium;
+    @apply file:bg-orange-light/10 dark:file:bg-orangeDark-dark/50;
+    @apply file:text-orange-light dark:file:text-orangeDark-light;
+    @apply hover:file:bg-orange-light/20 dark:hover:file:bg-orangeDark-dark/30;
+    @apply cursor-pointer;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-canvas dark:bg-canvas-dark;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-bg-3 dark:bg-bgDark-3 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-fg-4 dark:bg-fgDark-4;
 }
