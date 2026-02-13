@@ -3,7 +3,7 @@ module xeiaso.net/v4
 go 1.25.5
 
 require (
-	github.com/a-h/templ v0.3.865
+	github.com/a-h/templ v0.3.977
 	github.com/aws/aws-sdk-go-v2 v1.41.1
 	github.com/aws/aws-sdk-go-v2/config v1.29.5
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.95.1
