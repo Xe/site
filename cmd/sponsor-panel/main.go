@@ -39,6 +39,7 @@ var (
 	cookieSecure       = flag.Bool("cookie-secure", true, "Set Secure flag on cookies (enable for HTTPS)")
 	bucketName         = flag.String("bucket-name", "", "S3 bucket name for logo storage")
 	logoSubmissionRepo = flag.String("logo-submission-repo", "anubis", "Repo to submit logo requests to")
+	sponsorTarget      = flag.String("sponsor-target", "Xe", "GitHub username to sync sponsorships for")
 
 	// OAuth configuration
 	clientID      = flag.String("github-client-id", "", "GitHub OAuth Client ID")

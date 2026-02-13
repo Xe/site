@@ -51,7 +51,7 @@ func syncSponsors(ctx context.Context, pool *pgxpool.Pool, ghToken string) error
 	for {
 		// Build GraphQL query
 		query := fmt.Sprintf(`query {
-			user(login: "Xe") {
+			user(login: "%s") {
 				sponsorshipsAsMaintainer(first: 100, after: %s, activeOnly: true) {
 					pageInfo { hasNextPage, endCursor }
 					nodes {
@@ -65,7 +65,7 @@ func syncSponsors(ctx context.Context, pool *pgxpool.Pool, ghToken string) error
 					}
 				}
 			}
-		}`, formatGraphQLString(after))
+		}`, *sponsorTarget, formatGraphQLString(after))
 
 		reqBody := map[string]any{"query": query}
 		bodyBytes, err := json.Marshal(reqBody)
