@@ -6,7 +6,7 @@ require (
 	github.com/a-h/templ v0.3.977
 	github.com/aws/aws-sdk-go-v2 v1.41.1
 	github.com/aws/aws-sdk-go-v2/config v1.29.5
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.95.1
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.96.0
 	github.com/bep/debounce v1.2.1
 	github.com/donatj/hmacsig v1.1.0
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
