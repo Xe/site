@@ -32,4 +32,7 @@ jobs:
     - name: Validate blog post dates
       env:
         GITHUB_EVENT_NAME: ${{ github.event_name }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
       run: node scripts/validate-blog-dates.js
