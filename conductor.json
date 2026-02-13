@@ -1,0 +1,6 @@
+{
+    "scripts": {
+        "setup": "go mod download && cd ./lume && deno install",
+        "run": "npm run dev"
+    }
+}
