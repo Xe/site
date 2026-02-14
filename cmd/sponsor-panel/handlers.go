@@ -278,7 +278,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 		GitHubIssueURL:    createdIssue.GetHTMLURL(),
 		GitHubIssueNumber: createdIssue.GetNumber(),
 	}
-	if err := createLogoSubmission(s.db, submission); err != nil {
+	if err := createLogoSubmission(r.Context(), s.pool, submission); err != nil {
 		slog.Error("logoHandler: failed to store submission", "err", err, "user_id", user.ID, "issue_number", createdIssue.GetNumber())
 	} else {
 		slog.Debug("logoHandler: submission stored in database", "user_id", user.ID, "issue_number", createdIssue.GetNumber())

@@ -1,14 +1,15 @@
 package main
 
 import (
-	"database/sql"
+	"context"
 	"encoding/json"
 	"log/slog"
 	"time"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // User represents a GitHub user with cached sponsorship data.
-// This is the simplified model from SPEC.md using sqlx (not GORM).
 type User struct {
 	ID                   int       `json:"id" db:"id"`
 	GitHubID             int64     `json:"github_id" db:"github_id"`
@@ -66,12 +67,24 @@ type LogoSubmission struct {
 	SubmittedAt       time.Time `json:"submitted_at" db:"submitted_at"`
 }
 
+// SponsorUsername represents a synced sponsor username (user or org).
+type SponsorUsername struct {
+	ID                  int       `json:"id" db:"id"`
+	Username            string    `json:"username" db:"username"`
+	EntityType          string    `json:"entity_type" db:"entity_type"`
+	MonthlyAmountCents  int       `json:"monthly_amount_cents" db:"monthly_amount_cents"`
+	TierName            string    `json:"tier_name" db:"tier_name"`
+	IsActive            bool      `json:"is_active" db:"is_active"`
+	SyncedAt            time.Time `json:"synced_at" db:"synced_at"`
+	CreatedAt           time.Time `json:"created_at" db:"created_at"`
+}
+
 // getUserByID retrieves a user by ID from the database.
-func getUserByID(db *sql.DB, userID int) (*User, error) {
+func getUserByID(ctx context.Context, pool *pgxpool.Pool, userID int) (*User, error) {
 	slog.Debug("getUserByID: querying user", "user_id", userID)
 
 	var user User
-	err := db.QueryRow(`
+	err := pool.QueryRow(ctx, `
 		SELECT id, github_id, login, avatar_url, name, email,
 		       sponsorship_data, last_sponsorship_check, created_at, updated_at
 		FROM users WHERE id = $1
@@ -89,30 +102,12 @@ func getUserByID(db *sql.DB, userID int) (*User, error) {
 	return &user, nil
 }
 
-// getUserByGitHubID retrieves a user by GitHub ID from the database.
-func getUserByGitHubID(db *sql.DB, githubID int64) (*User, error) {
-	var user User
-	err := db.QueryRow(`
-		SELECT id, github_id, login, avatar_url, name, email,
-		       sponsorship_data, last_sponsorship_check, created_at, updated_at
-		FROM users WHERE github_id = $1
-	`, githubID).Scan(
-		&user.ID, &user.GitHubID, &user.Login, &user.AvatarURL,
-		&user.Name, &user.Email, &user.SponsorshipData,
-		&user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &user, nil
-}
-
 // upsertUser creates or updates a user in the database.
-func upsertUser(db *sql.DB, user *User) error {
+func upsertUser(ctx context.Context, pool *pgxpool.Pool, user *User) error {
 	slog.Debug("upsertUser: attempting upsert", "github_id", user.GitHubID, "login", user.Login)
 
 	// Try update first
-	result, err := db.Exec(`
+	tag, err := pool.Exec(ctx, `
 		UPDATE users
 		SET login=$1, avatar_url=$2, name=$3, email=$4,
 		    sponsorship_data=$5, last_sponsorship_check=NOW(), updated_at=NOW()
@@ -124,11 +119,9 @@ func upsertUser(db *sql.DB, user *User) error {
 		return err
 	}
 
-	rows, _ := result.RowsAffected()
-	if rows > 0 {
-		slog.Debug("upsertUser: updated existing user", "github_id", user.GitHubID, "rows_affected", rows)
-		// Fetch the updated user
-		return db.QueryRow(`
+	if tag.RowsAffected() > 0 {
+		slog.Debug("upsertUser: updated existing user", "github_id", user.GitHubID, "rows_affected", tag.RowsAffected())
+		return pool.QueryRow(ctx, `
 			SELECT id, github_id, login, avatar_url, name, email,
 			       sponsorship_data, last_sponsorship_check, created_at, updated_at
 			FROM users WHERE github_id = $1
@@ -141,8 +134,7 @@ func upsertUser(db *sql.DB, user *User) error {
 
 	slog.Debug("upsertUser: inserting new user", "github_id", user.GitHubID, "login", user.Login)
 
-	// Insert new user
-	return db.QueryRow(`
+	return pool.QueryRow(ctx, `
 		INSERT INTO users (github_id, login, avatar_url, name, email, sponsorship_data)
 		VALUES ($1, $2, $3, $4, $5, $6)
 		RETURNING id, github_id, login, avatar_url, name, email,
@@ -156,13 +148,13 @@ func upsertUser(db *sql.DB, user *User) error {
 }
 
 // createLogoSubmission creates a logo submission in the database.
-func createLogoSubmission(db *sql.DB, submission *LogoSubmission) error {
+func createLogoSubmission(ctx context.Context, pool *pgxpool.Pool, submission *LogoSubmission) error {
 	slog.Debug("createLogoSubmission: inserting submission",
 		"user_id", submission.UserID,
 		"company", submission.CompanyName,
 		"issue_number", submission.GitHubIssueNumber)
 
-	err := db.QueryRow(`
+	err := pool.QueryRow(ctx, `
 		INSERT INTO logo_submissions (user_id, company_name, website, logo_url, github_issue_url, github_issue_number)
 		VALUES ($1, $2, $3, $4, $5, $6)
 		RETURNING id, submitted_at
@@ -181,4 +173,100 @@ func createLogoSubmission(db *sql.DB, submission *LogoSubmission) error {
 		"submitted_at", submission.SubmittedAt)
 
 	return nil
+}
+
+// getActiveSponsorsByUsernames returns active sponsors matching any of the given usernames.
+func getActiveSponsorsByUsernames(ctx context.Context, pool *pgxpool.Pool, usernames []string) ([]*SponsorUsername, error) {
+	if len(usernames) == 0 {
+		return nil, nil
+	}
+
+	slog.Debug("getActiveSponsorsByUsernames: querying sponsors", "usernames", usernames)
+
+	rows, err := pool.Query(ctx, `
+		SELECT id, username, entity_type, monthly_amount_cents, tier_name, is_active, synced_at, created_at
+		FROM github_sponsor_usernames
+		WHERE username = ANY($1) AND is_active = TRUE
+		ORDER BY monthly_amount_cents DESC
+	`, usernames)
+	if err != nil {
+		slog.Error("getActiveSponsorsByUsernames: query failed", "err", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var sponsors []*SponsorUsername
+	for rows.Next() {
+		s := &SponsorUsername{}
+		if err := rows.Scan(&s.ID, &s.Username, &s.EntityType, &s.MonthlyAmountCents, &s.TierName, &s.IsActive, &s.SyncedAt, &s.CreatedAt); err != nil {
+			slog.Error("getActiveSponsorsByUsernames: scan failed", "err", err)
+			return nil, err
+		}
+		sponsors = append(sponsors, s)
+	}
+
+	slog.Debug("getActiveSponsorsByUsernames: found sponsors", "count", len(sponsors))
+	return sponsors, nil
+}
+
+// upsertSponsorUsername inserts or updates a sponsor username.
+func upsertSponsorUsername(ctx context.Context, pool *pgxpool.Pool, sponsor *SponsorUsername) error {
+	slog.Debug("upsertSponsorUsername: upserting sponsor",
+		"username", sponsor.Username,
+		"entity_type", sponsor.EntityType,
+		"monthly_amount_cents", sponsor.MonthlyAmountCents,
+		"tier_name", sponsor.TierName)
+
+	tag, err := pool.Exec(ctx, `
+		UPDATE github_sponsor_usernames
+		SET entity_type=$1, monthly_amount_cents=$2, tier_name=$3, is_active=$4, synced_at=NOW()
+		WHERE username=$5
+	`, sponsor.EntityType, sponsor.MonthlyAmountCents, sponsor.TierName, sponsor.IsActive, sponsor.Username)
+	if err != nil {
+		slog.Error("upsertSponsorUsername: update failed", "err", err, "username", sponsor.Username)
+		return err
+	}
+
+	if tag.RowsAffected() > 0 {
+		slog.Debug("upsertSponsorUsername: updated existing sponsor", "username", sponsor.Username)
+		return pool.QueryRow(ctx, `SELECT id, created_at FROM github_sponsor_usernames WHERE username = $1`, sponsor.Username).Scan(&sponsor.ID, &sponsor.CreatedAt)
+	}
+
+	err = pool.QueryRow(ctx, `
+		INSERT INTO github_sponsor_usernames (username, entity_type, monthly_amount_cents, tier_name, is_active)
+		VALUES ($1, $2, $3, $4, $5)
+		RETURNING id, synced_at, created_at
+	`, sponsor.Username, sponsor.EntityType, sponsor.MonthlyAmountCents, sponsor.TierName, sponsor.IsActive).Scan(&sponsor.ID, &sponsor.SyncedAt, &sponsor.CreatedAt)
+	if err != nil {
+		slog.Error("upsertSponsorUsername: insert failed", "err", err, "username", sponsor.Username)
+		return err
+	}
+
+	slog.Debug("upsertSponsorUsername: inserted new sponsor", "username", sponsor.Username, "id", sponsor.ID)
+	return nil
+}
+
+// markInactiveSponsorsNotIn marks all sponsors as inactive that are not in the given usernames list.
+func markInactiveSponsorsNotIn(ctx context.Context, pool *pgxpool.Pool, usernames []string) (int64, error) {
+	if len(usernames) == 0 {
+		tag, err := pool.Exec(ctx, `UPDATE github_sponsor_usernames SET is_active = FALSE WHERE is_active = TRUE`)
+		if err != nil {
+			return 0, err
+		}
+		slog.Debug("markInactiveSponsorsNotIn: marked all sponsors inactive", "count", tag.RowsAffected())
+		return tag.RowsAffected(), nil
+	}
+
+	tag, err := pool.Exec(ctx, `
+		UPDATE github_sponsor_usernames
+		SET is_active = FALSE
+		WHERE NOT (username = ANY($1)) AND is_active = TRUE
+	`, usernames)
+	if err != nil {
+		slog.Error("markInactiveSponsorsNotIn: update failed", "err", err)
+		return 0, err
+	}
+
+	slog.Debug("markInactiveSponsorsNotIn: marked sponsors inactive", "count", tag.RowsAffected())
+	return tag.RowsAffected(), nil
 }

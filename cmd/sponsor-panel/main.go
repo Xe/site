@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"crypto/rand"
-	"database/sql"
 	"embed"
 	"encoding/base64"
 	"flag"
@@ -20,7 +19,7 @@ import (
 	"github.com/facebookgo/flagenv"
 	gh "github.com/google/go-github/v82/github"
 	"github.com/gorilla/sessions"
-	_ "github.com/jackc/pgx/v5/stdlib"
+	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/oauth2"
@@ -40,6 +39,7 @@ var (
 	cookieSecure       = flag.Bool("cookie-secure", true, "Set Secure flag on cookies (enable for HTTPS)")
 	bucketName         = flag.String("bucket-name", "", "S3 bucket name for logo storage")
 	logoSubmissionRepo = flag.String("logo-submission-repo", "anubis", "Repo to submit logo requests to")
+	sponsorTarget      = flag.String("sponsor-target", "Xe", "GitHub username to sync sponsorships for")
 
 	// OAuth configuration
 	clientID      = flag.String("github-client-id", "", "GitHub OAuth Client ID")
@@ -52,7 +52,7 @@ var (
 
 // Server holds the application dependencies.
 type Server struct {
-	db                *sql.DB
+	pool              *pgxpool.Pool
 	ghClient          *gh.Client
 	oauth             *oauth2.Config
 	discordInvite     string
@@ -135,14 +135,15 @@ func main() {
 
 	// Connect to database
 	slog.Debug("main: connecting to database")
-	db, err := sql.Open("pgx", *databaseURL)
+	ctx := context.Background()
+	pool, err := pgxpool.New(ctx, *databaseURL)
 	if err != nil {
-		slog.Error("failed to open database", "err", err)
+		slog.Error("failed to create connection pool", "err", err)
 		os.Exit(1)
 	}
-	defer db.Close()
+	defer pool.Close()
 
-	if err := db.Ping(); err != nil {
+	if err := pool.Ping(ctx); err != nil {
 		slog.Error("failed to ping database", "err", err)
 		os.Exit(1)
 	}
@@ -150,11 +151,17 @@ func main() {
 
 	// Run migrations
 	slog.Debug("main: running migrations")
-	if err := runMigrations(db); err != nil {
+	if err := runMigrations(ctx, pool); err != nil {
 		slog.Error("failed to run migrations", "err", err)
 		os.Exit(1)
 	}
 	slog.Info("main: migrations completed")
+
+	// Start sponsor sync loop in background
+	syncCtx, syncCancel := context.WithCancel(context.Background())
+	defer syncCancel()
+	go startSyncLoop(syncCtx, pool, *githubToken)
+	slog.Info("main: sponsor sync loop started")
 
 	// Create GitHub client
 	slog.Debug("main: creating GitHub client")
@@ -208,7 +215,7 @@ func main() {
 	}
 
 	server := &Server{
-		db:                db,
+		pool:              pool,
 		ghClient:          ghClient,
 		oauth:             oauthConfig,
 		discordInvite:     *discordInvite,
