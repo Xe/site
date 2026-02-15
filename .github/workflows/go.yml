@@ -2,66 +2,38 @@ name: Go
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-
-  build:
+  go_build:
     runs-on: alrest-xe-site
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-    - name: build essential
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential
-    
-    - name: Set up Homebrew
-      uses: Homebrew/actions/setup-homebrew@master
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: latest
 
-    - name: Setup Homebrew cellar cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          /home/linuxbrew/.linuxbrew/Cellar
-          /home/linuxbrew/.linuxbrew/bin
-          /home/linuxbrew/.linuxbrew/etc
-          /home/linuxbrew/.linuxbrew/include
-          /home/linuxbrew/.linuxbrew/lib
-          /home/linuxbrew/.linuxbrew/opt
-          /home/linuxbrew/.linuxbrew/sbin
-          /home/linuxbrew/.linuxbrew/share
-          /home/linuxbrew/.linuxbrew/var
-        key: ${{ runner.os }}-homebrew-cellar-${{ hashFiles('go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-homebrew-cellar-
+      - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version: stable
 
-    - name: Install Brew dependencies
-      run: |
-        brew bundle
+      - uses: dhall-lang/setup-dhall@6b28be8f2912e67dd49585759e165ef53e4f7518 # v4.4.0
+      - uses: denoland/setup-deno@e95548e56dfa95d4e1a28d6f422fafe75c4c26fb # v2
+      - uses: typst-community/setup-typst@48aeee7543d37f01afd1ffb27307dc277387ba13 # v4.3.1
 
-    - name: Setup Golang caches
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cache/go-build
-          ~/go/pkg/mod
-        key: ${{ runner.os }}-golang-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-golang-
+      - name: cache deno.land dependencies
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          key: ${{ runner.os }}-deno-${{ hashFiles('**/deno.json') }}
+          restore-keys: ${{ runner.os }}-deno-
+          path: |
+            /home/runner/.cache/deno
 
-    - name: cache deno.land dependencies
-      uses: actions/cache@v4
-      with:
-        key: ${{ runner.os }}-deno-${{ hashFiles('**/deno.json') }}
-        restore-keys: ${{ runner.os }}-deno-
-        path: |
-          /home/runner/.cache/deno
+      - name: Build
+        run: go build -v ./...
 
-    - name: Build
-      run: go build -v ./...
-
-    - name: Test
-      run: go test -v ./...
+      - name: Test
+        run: go test -v ./...
