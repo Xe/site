@@ -2,55 +2,54 @@ name: Build and deploy site to Tigris
 
 on:
   push:
-    branches: [ "never" ]
+    branches: ["never"]
 
 jobs:
   deploy:
     runs-on: alrest-xe-site
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Homebrew
-      uses: Homebrew/actions/setup-homebrew@master
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-    - name: Setup Homebrew cellar cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.linuxbrew/Cellar
-        key: ${{ runner.os }}-homebrew-cellar-${{ hashFiles('Brewfile.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-homebrew-cellar-
-  
-    - name: Install Brew dependencies
-      run: |
-        brew bundle
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@04a6d8cfe9d251e2afb78c5bdc6274ec9642aea2 # master
 
-    - name: Setup Golang caches
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cache/go-build
-          ~/go/pkg/mod
-        key: ${{ runner.os }}-golang-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-golang-
+      - name: Setup Homebrew cellar cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.linuxbrew/Cellar
+          key: ${{ runner.os }}-homebrew-cellar-${{ hashFiles('Brewfile.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-homebrew-cellar-
 
-    - name: cache deno.land dependencies
-      uses: actions/cache@v2
-      with:
-        key: ${{ runner.os }}-deno-${{ hashFiles('**/*') }}
-        restore-keys: ${{ runner.os }}-deno-
-        path: |
-          /home/runner/.cache/deno
+      - name: Install Brew dependencies
+        run: |
+          brew bundle
 
-    - name: Build and deploy xesite
-      run: |
-        go run ./cmd/fabricate-generation
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_ENDPOINT_URL_S3: "https://fly.storage.tigris.dev"
-        AWS_REGION: auto
-        MIMI_ANNOUNCE_URL: ${{ secrets.MIMI_ANNOUNCE_URL }}
-    
+      - name: Setup Golang caches
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-golang-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-golang-
+
+      - name: cache deno.land dependencies
+        uses: actions/cache@8492260343ad570701412c2f464a5877dc76bace # v2
+        with:
+          key: ${{ runner.os }}-deno-${{ hashFiles('**/*') }}
+          restore-keys: ${{ runner.os }}-deno-
+          path: |
+            /home/runner/.cache/deno
+
+      - name: Build and deploy xesite
+        run: |
+          go run ./cmd/fabricate-generation
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL_S3: "https://fly.storage.tigris.dev"
+          AWS_REGION: auto
+          MIMI_ANNOUNCE_URL: ${{ secrets.MIMI_ANNOUNCE_URL }}
