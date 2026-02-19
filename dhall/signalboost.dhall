@@ -115,22 +115,25 @@ in  [ Person::{
         , "nodejs"
         , "deno"
         , "alpinelinux"
+        , "nixos"
+        , "nix"
         , "linux"
         , "actuallyautistic"
         ]
       , links =
         [ Link::{ url = "https://github.com/ajhalili2006", title = "GitHub" }
-        , Link::{ url = "https://mau.dev/ajhalili2006", title = "GitLab" }
+        , Link::{ url = "https://gitlab.com/ajhalili2006", title = "GitLab" }
         , Link::{ url = "https://sr.ht/~ajhalili2006", title = "sourcehut" }
         , Link::{
           , url = "https://tilde.zone/@ajhalili2006"
           , title = "Fediverse"
           }
+        , Link::{ url = "https://bsky.app/profile/andreijiroh.dev", title = "Bluesky" }
         , Link::{
           , url = "https://substack.com/@ajhalili2006"
           , title = "Substack"
           }
-        , Link::{ url = "https://andreijiroh.eu.org", title = "Website" }
+        , Link::{ url = "https://andreijiroh.dev", title = "Website" }
         ]
       }
     , Person::{
