@@ -1,0 +1,279 @@
+---
+title: "Humanity's last programming language"
+desc: "What if markdown was executable? You get markdownlang."
+date: 2026-02-10
+# hero:
+#   ai: ""
+#   file: ""
+#   prompt: ""
+#   social: false
+---
+
+In Blade Runner, Deckard hunts down replicants, biochemical labourers that are
+basically indistinguishable from humans. They were woven into the core of Blade
+Runner's society with a temporal Sword of Damocles hung over their head: four
+years of life, not a day more. This made replicants desperate to cling to life;
+they'd kill for the chance of an hour more. This is why the job of the Blade
+Runner was so deadly.
+
+Metanarratively, the replicants weren't the problem. The problem was the people
+that made them. The people that gave them the ability to think. The ability to
+feel. The ability to understand and emphathize. The problem was the people that
+gave them the ability to enjoy life and then hit them with a temporal Sword of
+Damocles overhead because those replicants were fundamentally disposable.
+
+In Blade Runner, the true horror was not the technology. The technology worked
+fine. The horror was the deployment and the societal implications around making
+people disposable. I wonder what underclass of people like that exists today.
+
+<Conv name="Numa" mood="neutral">
+  This is why science fiction is inseparable from social commentary, all the
+  best art does this. Once you start to notice it you'll probably never unsee
+  it. Enjoy being cursed for life!
+</Conv>
+
+I keep thinking about those scenes when I watch people interact with AI agents.
+With these new flows, the cost to integrate any two systems is approaching zero;
+the most expensive thing is time. People don't read documentation anymore,
+that's a job for their AI agents. Mental labour is shifting from flesh and blood
+to HBM and coil whine. The thing doing the "actual work" is its own kind of
+replicant and as long as the results "work", many humans don't even review the
+output before shipping it.
+
+Looking at this, I think I see where a future could end up. Along this line,
+I've started to think about how programming is going to change and what
+humanity's "last programming language" could look like. I don't think we'll stop
+making new ones (nerds are compulsive language designers), but I think that in
+the fallout of AI tools being so widespread the _shape_ of what "a program" is
+might be changing drastically out from under us while we argue about tabs,
+spaces, and database frameworks.
+
+Let's consider a future where markdown files are the new executables. For the
+sake of argument, let's call this result Markdownlang.
+
+## Markdownlang
+
+Markdownlang is an AI-native programming environment built with structured
+outputs and Markdown. Every markdownlang program is an AI agent with its own
+agentic loop generating output or calling tools to end up with structured output
+following a per-program schema.
+
+Instead of using a parser, lexer, or traditional programming runtime,
+markdownlang programs are executed by large language models running an agentic
+inference loop with structured JSON and a templated prompt as an input and then
+emitting structured JSON as a response.
+
+Markdownlang programs can import other markdownlang programs as dependencies. In
+that case they will just show up as other tools like any other. If you need to
+interact with existing systems or programs, you are expected to expose those
+tools via
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro)
+servers. MCP tools get added to the runtime the same way any other tools would.
+Those MCP tools are how you do web searches, make GitHub issues, or update
+tickets in Linear.
+
+### Why?
+
+Before you ask why, lemme cover the state of the art with the AI ecosystem for
+discrete workflows like the kind markdownlang enables: it's a complete fucking
+nightmare. Every week we get new agent frameworks, DSLs, paridigms, or CLI tools
+that only work with one provider for no reason. In a desperate attempt to appear
+relevant, everything has massive complexity creep requiring you(r AI agent) to
+write miles of YAML, struggle through brittle orchestration, and makes debugging
+a nightmare.
+
+The hype says that this mess will replace programmers, but speaking as someone
+who uses these tools professionally in an effort to figure out if there really
+is something there to them, I'm not really sure it will. Even accounting for
+multiple generational improvements.
+
+### The core of markdownlang
+
+With this in mind, let's take a look at what markdownlang brings to the table.
+
+The most important concept with markdownlang is that your documentation and your
+code are the same thing. One of the biggest standing problems with documentation
+is that the best way to make any bit of it out of date is to write it down in
+any capacity. Testing documentation becomes onerous because over time humans
+gain enough finesse to not require it anymore. One of the biggest advantages of
+AI models for this usecase is that they legitimately cannot remember things
+between tasks, so your documentation being bad means the program won't execute
+consistently.
+
+Other than that, everything is just a composable agent. Agents become tools that
+can be used by other agents, and strictly typed schemata holds the entire façade
+together. No magic required.
+
+Oh, also the markdownlang runtime has an embedded python interpreter using
+WebAssembly and WASI. The runtime does not have access to any local filesystem
+folders. It is purely there because language models have been trained to shell
+out to Python to do calculations (I'm assuming someone was inspired by
+[my satirical post where I fixed the "strawberry" problem with AI models](/blog/2024/strawberry)).
+
+## Fizzbuzz
+
+Here's what Fizzbuzz looks like in markdownlang:
+
+```markdown
+---
+name: fizzbuzz
+description:
+  FizzBuzz classic programming exercise - counts from start to end, replacing
+  multiples of 3 with "Fizz", multiples of 5 with "Buzz", and multiples of both
+  with "FizzBuzz"
+input:
+  type: object
+  properties:
+    start:
+      type: integer
+      minimum: 1
+    end:
+      type: integer
+      minimum: 1
+  required: [start, end]
+output:
+  type: object
+  properties:
+    results:
+      type: array
+      items:
+        type: string
+  required: [results]
+---
+
+# FizzBuzz
+
+For each number from {{ .start }} to {{ .end }}, output:
+
+- "FizzBuzz" if divisible by both 3 and 5
+- "Fizz" if divisible by 3
+- "Buzz" if divisible by 5
+- The number itself otherwise
+
+Return the results as an array of strings.
+```
+
+When I showed this to some friends, I got some pretty amusing responses:
+
+- "You have entered the land of partially specified problems and the stark limit
+  of concurrent pronoun-antecedent associations in the English language."
+- "You need to be studied."
+- "Did you just reinvent COBOL?"
+- "I think something is either wrong with you, or wrong with me for thinking
+  there is something wrong with you."
+- "Yeah, this is going to escape containment quickly."
+
+When you run this program, you get this output:
+
+```json
+{
+  "results": [
+    "1",
+    "2",
+    "Fizz",
+    "4",
+    "Buzz",
+    "Fizz",
+    "7",
+    "8",
+    "Fizz",
+    "Buzz",
+    "11",
+    "Fizz",
+    "13",
+    "14",
+    "FizzBuzz"
+  ]
+}
+```
+
+As you can imagine, the possibilities here are truly endless.
+
+## A new layer of abstraction
+
+Yeah, I realize that a lot of this is high-brow shitposting, but really the best
+way to think about something like markdownlang is that it's a new layer of
+abstraction. In something like markdownlang the real abstraction you deal with
+is the specifications that you throw around in Jira/Linear instead of dealing
+with the low level machine pedantry that is endemic to programming in today's
+Internet.
+
+Imagine how much more you could get done if you could just ask the computer to
+do it. This is the end of syntax issues, of semicolon fights, of memorizing
+APIs, of compiler errors because some joker used sed to replace semicolons with
+greek question marks. Everything becomes strictly typed data that acts as the
+guardrails between snippets of truly high level language.
+
+Like, looking at the entire langle mangle programming space from that angle, the
+user experience at play here is that kind of science fiction magic you see in
+Star Trek. You just ask the computer to adjust the Norokov phase variance of the
+phasers to a triaxilating frequency and it figures out what you mean and does
+it. This is the kind of magic that Apple said they'd do with AI in their big
+keynote
+[right before they squandered that holy grail](/blog/2025/squandered-holy-grail/).
+
+Even then, this is still just programming. Schemata are your new types, imports
+are your new dependencies, composition is your new architecture, debugging is
+still debugging, and the massive MCP ecosystem becomes an integration boon
+instead of a burden.
+
+Markdownlang is just a tool. Large language models can (and let's face it: will)
+make mistakes. Schemata can't express absolutely everything. Someone needs to
+write these agents and even if something like this becomes so widespread, I'm
+pretty sure that programmers are still safe in terms of their jobs.
+
+If only because in order for us to truly be replaced, the people that hire us
+have to know what they want at a high enough level of detail in order to specify
+it such that markdownlang can make it possible. I'd be willing to argue that
+when we get hired as programmers, we get hired to have that level of deep clear
+thinking to be able to come up with the kinds of requirements to get to the core
+business goal regardless of the tools we use to get it done.
+
+It's not _that_ deep.
+
+## Future ideas
+
+From here something like this has many obvious and immediate usecases. It's
+quite literally a universal lingua franca for integrating any square peg into
+any other round hole. The big directions I could go from here include:
+
+- Some kind of web platform for authoring and deploying markdownlang programs
+  (likely with some level of MCP exposure so that you can tell your Claude Code
+  to make an agent do something every hour or so and have it just Do The Right
+  Thing™️ spawning something in the background).
+- It would be really funny to make a `markdownlang compile` command that just
+  translates the markdownlang program to Go, Python, or JavaScript; complete
+  with the MCP imports as direct function calls.
+- I'd love to make some kind of visual flow editor in that web platform, maybe
+  there's some kind of product potential here. It would be really funny to
+  attribute markdownlang to Techaro's AGI lab (Lygma).
+
+But really, I think working on markdownlang (I do have a fully working version
+of it, I'm not releasing it yet) has made me understand a lot more of the nuance
+that I feel with AI tools. That melodrama of Blade Runner has been giving me
+pause when I look at what I have just created and making me understand the true
+horror of why I find AI tooling so cool and disturbing at the same time.
+
+The problem is not the technology. The real horror reveals itself when you
+consider how technology is deployed and the societal implications around what
+could happen when a tool like markdownlang makes programmers like me societally
+disposable. When "good enough" becomes the ceiling instead of the floor, we're
+going to lose something we can't easily get back.
+
+The real horror for me is knowing that this kind of tool is not only possible to
+build with things off the shelf, but knowing that I did build it by having a
+small swarm of Claudes Code go off and build it while I did raiding in Final
+Fantasy 14. I haven't looked at basically any of the code (intentionally, it's
+part of The Bit™️), and it just works well enough that I didn't feel the need to
+dig into it in much detail. It's as if programmers now have our own Sword of
+Damocles over our heads because management can point at the tool and say "behave
+more like this or we'll replace you".
+
+This is the level of nuance I feel about this technology that can't fit into a
+single tweet. I love this idea of programming as description, but I hate how
+something like this will be treated by the market should it be widely released.
+
+<Conv name="Cadey" mood="coffee">
+  For those of you entrenched in The Deep Lore™️, this post was authored in the
+  voice of [Numa](/characters/#numa).
+</Conv>
