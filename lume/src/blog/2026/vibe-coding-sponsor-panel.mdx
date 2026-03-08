@@ -11,7 +11,7 @@ hero:
 
 import Conv from "../../_components/XeblogConv.tsx";
 
-I'm on [medical leave recovering from surgery](/blog/2026/killing-my-inner-necron/). Before I went under, I wanted to ship one thing I'd been failing to build for months: a sponsor panel at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). Previous attempts had all drowned in GraphQL pain. This time I vibe coded it — pointed agent teams at the problem with prepared skills and let them generate the gnarly code I couldn't write myself.
+I'm on [medical leave recovering from surgery](/blog/2026/killing-my-inner-necron/). Before I went under, I wanted to ship one thing I'd been failing to build for months: a sponsor panel at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). Previous attempts kept dying in the GraphQL swamp. This time I vibe coded it — pointed agent teams at the problem with prepared skills and let them generate the gnarly code I couldn't write myself.
 
 And it works.
 
@@ -25,7 +25,7 @@ Go and GraphQL are oil and water. I've held this opinion for years and nothing h
   needed. Now you're reading docs and guessing. Fun.
 </Conv>
 
-My previous attempts at building this sponsor panel all died in that swamp. I'd get partway through wrestling the GitHub Sponsors API into Go structs, lose momentum, and shelve it. At roughly the same point each time: when the query I needed turned out to be four levels of nested connections deep and the struct tags looked like someone fell asleep on their keyboard.
+I'd tried building this panel before, and each attempt died in that swamp. I'd get partway through wrestling the GitHub Sponsors API into Go structs, lose momentum, and shelve it. At roughly the same point each time: when the query I needed turned out to be four levels of nested connections deep and the struct tags looked like someone fell asleep on their keyboard.
 
 Vibe coding was a hail mary. I figured if it didn't work, I was no worse off. If it did, I'd ship something before disappearing into a hospital for a week.
 
@@ -37,7 +37,7 @@ Vibe coding is not "type a prompt and pray." Output quality depends on the conte
   Wait, so how do you fix that?
 </Conv>
 
-I wrote four focused context documents — agent skills — that I could load into the context window:
+I wrote four agent skills to load into the context window:
 
 - **templ-syntax**: Templ's actual syntax, with enough detail that the model can look up expressions, conditionals, and loops instead of guessing.
 - **templ-components**: Reusable component patterns — props, children, composition. Obvious if you've used Templ, impossible to infer from sparse training data.
@@ -111,7 +111,7 @@ The full stack:
 
 Org sponsorships are still broken. The schema for organization sponsors differs enough from individual sponsors that it needs its own query path and auth flow. I know what the fix looks like, but it requires reaching out to other devs who've cracked GitHub's org-level sponsor queries.
 
-The code isn't my usual style either — JSON parsing that makes me wince, variable names that are functional but uninspired, missing error context in a few places. I'll rewrite chunks of this after I've recovered. The panel _exists_ now, though. It renders real data, people can OAuth in and see their sponsorship status. Before this attempt, it was vaporware.
+The code isn't my usual style either — JSON parsing that makes me wince, variable names that are functional but uninspired, missing error context in a few places. I'll rewrite chunks of this after I've recovered. The panel _exists_ now, though. It renders real data. People can OAuth in and see their sponsorship status. Before this attempt, it was vaporware.
 
 <Conv name="Cadey" mood="percussive-maintenance">
   I've been telling people "just ship it" for years. Took vibe coding to make
