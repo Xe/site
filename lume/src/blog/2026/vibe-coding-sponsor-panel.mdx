@@ -1,0 +1,134 @@
+---
+title: "Vibe Coding Trip Report: Making a sponsor panel"
+desc: "I needed to ship this before my surgery, so I vibe coded it. It turned out well enough."
+date: 2026-03-09
+hero:
+  ai: ""
+  file: ""
+  prompt: ""
+  social: false
+---
+
+import Conv from "../../_components/XeblogConv.tsx";
+
+I'm currently on [medical leave recovering from surgery](/blog/2026/killing-my-inner-necron/). Before I went under, I wanted to ship something I'd been failing to build for months: a sponsor panel at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). The thing that finally got it across the finish line wasn't some breakthrough in my understanding of GraphQL or a new library that magically made Go and GraphQL play nice. It was vibe coding. I pointed agent teams at the problem with prepared skills and let them generate the gnarly code I'd been unable to write myself.
+
+Needless to say, it works.
+
+## The GraphQL swamp
+
+Go and GraphQL are oil and water. I've held this opinion for years and nothing has changed it. The library ecosystem is a mess — you either use [shurcooL/graphql](https://github.com/shurcooL/graphql) with its reflection-based query generation that requires abusive struct tags, or you use code generation tools that produce mountains of boilerplate. Neither feels like writing Go. Both feel like fighting the language to make it do something it fundamentally doesn't want to do.
+
+<Conv name="Cadey" mood="coffee">
+  GitHub removing the GraphQL explorer made this even worse. You used to be able
+  to poke around the schema interactively and figure out what queries you
+  needed. Now you're reading docs and guessing. Fun.
+</Conv>
+
+Every previous attempt at building this sponsor panel died in that swamp. I'd get partway through wrestling the GitHub Sponsors API into Go structs, lose momentum, and shelve it. Three separate attempts over the past year, all abandoned at roughly the same point: the moment where you realize the query you need is four levels of nested connections deep and the struct tags look like someone fell asleep on their keyboard.
+
+So I tried vibe coding it as a hail mary. Worst case, it didn't work and I was no worse off than before. Best case, I'd ship something before disappearing into a hospital for a week.
+
+## Preparing the skills
+
+Here's the thing about vibe coding that most people get wrong: it's not "type a prompt and pray." The quality of the output depends entirely on the context you give the model. Templ — the Go HTML templating library I use — is not well represented in LLM training data. If you just ask Claude Code to write Templ components, it'll hallucinate syntax that looks plausible but doesn't compile. Ask me how I know.
+
+<Conv name="Aoi" mood="wut">
+  Wait, so how do you fix that?
+</Conv>
+
+Skills. I wrote four focused context documents that I could load into the agent's context window:
+
+- **templ-syntax**: A quick overview of Templ's syntax with detailed resources so the model can look up specifics. Covers expressions, conditionals, loops, and how Go integration actually works.
+- **templ-components**: How to break things into reusable components with props, children, and composition patterns. The stuff that's obvious if you've used Templ but impossible to infer from limited training data.
+- **templ-htmx**: The weird edge cases when combining Templ with HTMX. There are gotchas around attribute rendering and event handling that trip up both humans and models.
+- **templ-http**: Best practices for using Templ with `net/http` handlers. How to wire up routes, pass data to templates, and handle the request lifecycle properly.
+
+Loading these skills into the context window transforms the model's behavior. Instead of guessing at syntax and hoping for the best, it's copying patterns directly from authoritative references. It's the difference between asking someone to write in a language they've heard of versus one they have documentation for. The model doesn't need to _infer_ how to write Templ — it just follows what the skills say.
+
+<Conv name="Mara" mood="hacker">
+  Think of it like giving someone a cookbook instead of asking them to invent
+  recipes from first principles. The ingredients are the same, but the results
+  are dramatically more consistent.
+</Conv>
+
+## Building the thing
+
+With skills loaded, I pointed an agent team at a spec I'd written with [Mimi](https://mimi.xeserv.us). The spec covered the basics: OAuth login via GitHub, query the Sponsors API, render a panel showing who sponsors me and at what tier, store sponsor logos in [Tigris](https://www.tigrisdata.com/). Nothing revolutionary, just the thing I'd failed to build by hand three times.
+
+<Conv name="Cadey" mood="enby">
+  I'm not going to pretend I wrote the spec alone. I talked through the
+  requirements with Mimi and iterated on it until it was clear enough for an
+  agent team to execute. The full spec is available as a gist if you want to
+  see what "clear enough for agents" looks like in practice.
+</Conv>
+
+One agent team split the spec into tasks and started building. A second team reviewed the output and flagged issues. Meanwhile, I was doing the _human_ work: provisioning OAuth credentials in the GitHub developer settings, creating the Neon Postgres database, setting up the Tigris bucket for sponsor logos. The workflow was genuinely async — agents would hit a point where they needed a credential, I'd paste it in, and they'd continue.
+
+Here's what surprised me: the GraphQL code the agents wrote is _ugly_. Like, genuinely ugly. Raw GraphQL query strings with manual JSON parsing that would make any linting tool weep. But you know what? It works. The shurcooL approach is "clean" in the sense that it uses Go idioms, but it requires so much gymnastics to handle nested connections that the cognitive load is arguably worse. The agent-generated code is straightforward: send this query string, parse this JSON, done. It's the kind of code I'd be embarrassed to show at a code review, and it's also the kind of code that ships.
+
+```go
+// This is roughly what the agent generated.
+// It's not pretty. It works.
+query := `{
+  viewer {
+    sponsors(first: 100) {
+      nodes {
+        ... on User {
+          login
+          name
+          avatarUrl
+        }
+        ... on Organization {
+          login
+          name
+          avatarUrl
+        }
+      }
+    }
+  }
+}`
+```
+
+<Conv name="Numa" mood="neutral">
+  For the record, this is the kind of code that exists because the alternative
+  — the "proper" way — kept killing the project entirely. Sometimes ugly code
+  that ships is better than clean code that doesn't exist.
+</Conv>
+
+## The stack
+
+For posterity, here's what powers the sponsor panel:
+
+- **Go** for the backend, because that's what I know and what my site runs on
+- **Templ** for HTML rendering, because I'm tired of `html/template`'s limitations
+- **HTMX** for interactivity, because I refuse to write a React app for something this simple
+- **PostgreSQL** via [Neon](https://neon.tech/) for persistence
+- **GitHub OAuth** for authentication
+- **GitHub Sponsors GraphQL API** for the actual sponsor data
+- **[Tigris](https://www.tigrisdata.com/)** for sponsor logo storage — plugged it in and it Just Works™
+
+## The warts
+
+I'd be lying if I said everything was perfect. Org sponsorships are still broken. The schema for organization sponsors is different enough from individual sponsors that it needs its own query path and auth flow. I know what needs to happen to fix it, but it's going to require reaching out to other devs who've navigated that particular maze.
+
+And the code isn't my usual style. There's JSON parsing that makes me wince. Variable names that are functional but uninspired. Missing error context in a few places. I know I'll rewrite chunks of this after I'm recovered from surgery. But here's the thing: the panel _exists_. It renders real data. People can OAuth in and see their sponsorship status. Before this attempt, it was vaporware — a thing I kept saying I'd build and never actually shipping.
+
+<Conv name="Cadey" mood="percussive-maintenance">
+  Perfect is the enemy of shipped. I've been saying this for years and it took
+  vibe coding to actually make me live it.
+</Conv>
+
+## What I actually learned
+
+Vibe coding isn't for everything. I wouldn't use it for security-critical code, for anything that needs to be auditable, or for systems where I need to understand every line. But for getting past a wall I'd banged my head against repeatedly? For shipping a clean-enough MVP before disappearing into surgery recovery for weeks? It's a genuinely useful tool.
+
+The skills are the missing piece that makes it work. Without them, you're asking a model to guess. With them, you're giving it a reference manual and asking it to follow instructions. That's a fundamentally different interaction, and the results reflect it.
+
+I don't know if this sponsor panel will still look like this in six months. I suspect I'll rewrite the GraphQL layer once I find a pattern that doesn't make me cringe. Maybe org sponsorships will work by then. Maybe I'll tear out HTMX and replace it with something else entirely.
+
+But it exists. And before my surgery, that's what mattered.
+
+---
+
+Check out the sponsor panel at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). If you're interested in the skills I used, they're available in [my site's repo](https://github.com/Xe/site) under `.claude/skills/`.
