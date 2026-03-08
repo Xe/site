@@ -14,13 +14,13 @@ import Admonition from "../../_components/Admonition.jsx";
 
 A few weeks before surgery, I stared at my project list and felt the clock. If I don't ship this now, it rots for months. I'm [on medical leave recovering from that surgery now](/blog/2026/killing-my-inner-necron/), and the window for meaningful work was closing fast.
 
-The project: a sponsor panel at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). A dashboard showing who sponsors me on GitHub, what tiers they're at, all the financial plumbing of open source. Not glamorous, but I'd procrastinated long enough that it had become a guilt object on my list.
+The project: a sponsor panel at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). A dashboard showing who sponsors me on GitHub, what tiers they're at, the financial plumbing of open source. Not glamorous, but I'd procrastinated long enough that it had become a guilt object.
 
 I didn't build it the way I normally would. I vibe coded it -- directed an agent team, prepared skills, let the AI handle the parts that had defeated me three separate times. It worked. I'm still kind of surprised.
 
 ## The GraphQL swamp
 
-Go and GitHub's GraphQL API are oil and water. I've tried to build this sponsor panel before -- more than once -- and every attempt died the same death.
+Go and GitHub's GraphQL API are oil and water. I've tried to build this sponsor panel three times before, and every attempt died the same death.
 
 <Conv name="Cadey" mood="facepalm">
   Every. Single. Time.
@@ -53,7 +53,7 @@ Stack: Go, [Templ](https://templ.guide), [HTMX](https://htmx.org), Postgres via 
 
 ## Preparing the skills
 
-Claude Code supports [agent skills](https://docs.anthropic.com/en/docs/claude-code/skills) -- pre-loaded context documents that tell the model how to work with a specific technology. I've been experimenting with these, and this project was the real test.
+Claude Code supports [agent skills](https://docs.anthropic.com/en/docs/claude-code/skills) -- pre-loaded context documents that tell the model how to work with a specific technology. I've been experimenting with them for months, and this project put them through their paces.
 
 [Templ](https://templ.guide) barely exists in LLM training data. It's a young Go templating library, and most models confidently hallucinate syntax that looks plausible but doesn't compile. Without intervention, you get code that's 80% right and 100% broken.
 
@@ -70,9 +70,9 @@ With these loaded, the model goes from "confidently wrong about Templ" to "relia
 
 ## Specification
 
-Before turning the agents loose, I worked with [Mimi](https://github.com/anthropics/claude-code) to draft a spec. I didn't say "build me a sponsor panel" and walk away. That's how you get a mess.
+Before turning the agents loose, I worked with [Mimi](https://github.com/anthropics/claude-code) to draft a spec -- not "build me a sponsor panel" and walk away. That's how you get a mess.
 
-I described the OAuth flow, the data I needed from the GraphQL API, the page structure, the tier management. We iterated. Then I reviewed, simplified, cut scope -- removed features I didn't need for the MVP.
+I described the OAuth flow, the data I needed from the GraphQL API, the page structure, the tier management. We went back and forth until it felt right. Then I simplified, cut scope, removed features I didn't need for the MVP.
 
 <Conv name="Numa" mood="smug">
   You mean you did product management. Like a normal person. Shocking.
@@ -90,7 +90,7 @@ Nothing revolutionary. But writing it down gave the agent team a clear target in
 
 ## Implementation with an agent team
 
-Once I locked the spec, I handed it to a second agent team that split it into tasks and started building. Meanwhile I did the one thing the agents couldn't do themselves: provision credentials.
+Once I locked the spec, a second agent team split it into tasks and started building. Meanwhile, I did the one thing the agents couldn't do themselves: provision credentials.
 
 GitHub OAuth client ID and secret. A Neon database URL. A personal access token with the `read:org` scope for the Sponsors API. The workflow: agent hits an error asking for a credential, I paste it in, agent continues. Rinse and repeat.
 
@@ -104,7 +104,7 @@ Async pair programming. My partner wrote code faster than me but couldn't open a
   I was the one with the password manager. Arguably more important.
 </Conv>
 
-The magic moment: OAuth worked on the first try. Click "Sign in with GitHub," get redirected, authorize the app, land on a page reading "Hi there, Xe!" with real sponsor data below. The first version looked incredibly generic -- bootstrap-y, default fonts, zero personality -- but it _worked_.
+The magic moment: OAuth worked on the first try. Click "Sign in with GitHub," get redirected, authorize the app, land on a page that said "Hi there, Xe!" with real sponsor data below. The first version looked incredibly generic -- bootstrap-y, default fonts, zero personality -- but it _worked_.
 
 Sponsor avatars loaded. Tier names displayed correctly. Real data from the API that had defeated me for years.
 
@@ -114,9 +114,9 @@ Sponsor avatars loaded. Tier names displayed correctly. Real data from the API t
 
 ## UI v2: making it match my site
 
-The generic look lasted about an hour before I couldn't stand it. I ran another agent pass to restyle everything -- the dark background, the fonts, the xeiaso.net vibe.
+The generic look lasted about an hour before I couldn't stand it. I had the agents restyle everything -- the dark background, the fonts, the xeiaso.net vibe.
 
-Most of it was a CSS and Templ component exercise. Swapping a bootstrap card for a custom styled component is where the Templ skills shine: the model knows the precise syntax for conditional classes, children composition, and attribute spreading. No hallucinated tag names, no broken renders.
+Mostly CSS and Templ component work. Swapping a bootstrap card for a custom styled component is where the Templ skills shine: the model knows the precise syntax for conditional classes, children composition, and attribute spreading. No hallucinated tag names, no broken renders.
 
 <!-- TODO: screenshots of the final themed panel -->
 
@@ -128,21 +128,21 @@ After the initial launch, I made another pass for organizational sponsorships. T
   Because of course they do.
 </Conv>
 
-Getting org sponsorships right required another round of GraphQL wrestling, but the pattern held: let the agent generate the query, verify the data comes back, move on. The code isn't pretty. Some JSON parsing would make a linting tool weep. But it handles both individual and organizational sponsors, and that's what matters.
+Getting org sponsorships right required another round of GraphQL wrestling, but the pattern held: let the agent generate the query, verify the data comes back, move on. The code isn't pretty. The raw JSON parsing would make a linting tool weep. But it handles both individual and organizational sponsors, and that's what matters.
 
-## What I learned
+## Was it worth it?
 
-The sponsor panel exists. It works. I shipped it before going under anesthesia.
+The sponsor panel exists. It works. I shipped it before going under.
 
 <Conv name="Cadey" mood="coffee">
   We'll see how much I still like it in a few months when I look at the code
   with fresh eyes. Post-surgery me will have opinions.
 </Conv>
 
-Vibe coding works best for exactly this: punching through a wall you've hit repeatedly, shipping a clean-enough MVP before a hard deadline. I wouldn't hand an agent team a codebase that a whole team needs to deeply understand and maintain. But for "generate the cursed GraphQL code so I never touch shurcooL struct tags again"? Perfect.
+Vibe coding works best for exactly this: punching through a wall you've hit repeatedly, shipping a clean-enough MVP before a hard deadline. I wouldn't use it for codebases that whole teams need to understand and maintain. But for "generate the cursed GraphQL code so I never touch shurcooL struct tags again"? Perfect.
 
-Four Markdown files loaded into the context window turned a frustrating experiment into a working product. That's the part worth remembering. Skills aren't optional -- they're the difference between an AI that flails and one that ships.
+Four Markdown files loaded into the context window turned a frustrating experiment into a working product. Skills aren't optional -- they're the difference between an AI that flails and one that ships.
 
-I suspect I'll rewrite the GraphQL code after recovery. There's a version of this with proper query types instead of raw JSON parsing, and future-me will demand it. But right now the panel exists, the data is correct, and my sponsors can see that I appreciate them.
+I suspect I'll rewrite the GraphQL code after recovery. There's a version of this with proper query types instead of raw JSON parsing, and future-me will demand it. But right now the panel exists, the data is correct, and my sponsors can see I appreciate them.
 
 Knowing that loose end was tied before going under -- that mattered more than clean code.
