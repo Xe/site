@@ -11,13 +11,13 @@ hero:
 
 import Conv from "../../_components/XeblogConv.tsx";
 
-I'm currently on [medical leave recovering from surgery](/blog/2026/killing-my-inner-necron/). Before I went under, I wanted to ship one thing I'd been failing to build for months: a sponsor panel at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). Three previous attempts had drowned in GraphQL pain. This time I vibe coded it — pointed agent teams at the problem with prepared skills and let them generate the gnarly code I couldn't write myself.
+I'm on [medical leave recovering from surgery](/blog/2026/killing-my-inner-necron/). Before I went under, I wanted to ship one thing I'd been failing to build for months: a sponsor panel at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). Previous attempts had all drowned in GraphQL pain. This time I vibe coded it — pointed agent teams at the problem with prepared skills and let them generate the gnarly code I couldn't write myself.
 
 And it works.
 
 ## The GraphQL swamp
 
-Go and GraphQL are oil and water. I've held this opinion for years and nothing has changed it. The library ecosystem is a mess: [shurcooL/graphql](https://github.com/shurcooL/graphql) requires abusive struct tags for its reflection-based query generation, and the code generation tools produce mountains of boilerplate. Neither feels like writing Go. Both feel like fighting the language into doing something it actively resists.
+Go and GraphQL are oil and water. I've held this opinion for years and nothing has changed it. The library ecosystem is a mess: [shurcooL/graphql](https://github.com/shurcooL/graphql) requires abusive struct tags for its reflection-based query generation, and the code generation tools produce mountains of boilerplate. Every approach feels like fighting the language into doing something it actively resists.
 
 <Conv name="Cadey" mood="coffee">
   GitHub removing the GraphQL explorer made this even worse. You used to be able
@@ -25,7 +25,7 @@ Go and GraphQL are oil and water. I've held this opinion for years and nothing h
   needed. Now you're reading docs and guessing. Fun.
 </Conv>
 
-Every previous attempt at building this sponsor panel died in that swamp. I'd get partway through wrestling the GitHub Sponsors API into Go structs, lose momentum, and shelve it. Three separate attempts over the past year, all abandoned at roughly the same point: the moment where you realize the query you need is four levels of nested connections deep and the struct tags look like someone fell asleep on their keyboard.
+Every previous attempt at building this sponsor panel died in that swamp. I'd get partway through wrestling the GitHub Sponsors API into Go structs, lose momentum, and shelve it. Always at roughly the same point: when the query I needed turned out to be four levels of nested connections deep and the struct tags looked like someone fell asleep on their keyboard.
 
 So I tried vibe coding it as a hail mary. Worst case, it didn't work and I was no worse off than before. Best case, I'd ship something before disappearing into a hospital for a week.
 
@@ -37,14 +37,14 @@ Vibe coding is not "type a prompt and pray." Output quality depends on the conte
   Wait, so how do you fix that?
 </Conv>
 
-Skills. I wrote four focused context documents that I could load into the agent's context window:
+I wrote four focused context documents — agent skills — that I could load into the context window:
 
-- **templ-syntax**: A quick overview of Templ's syntax with detailed resources so the model can look up specifics. Covers expressions, conditionals, loops, and how Go integration actually works.
-- **templ-components**: How to break things into reusable components with props, children, and composition patterns. The stuff that's obvious if you've used Templ but impossible to infer from limited training data.
-- **templ-htmx**: The weird edge cases when combining Templ with HTMX. There are gotchas around attribute rendering and event handling that trip up both humans and models.
-- **templ-http**: Best practices for using Templ with `net/http` handlers. How to wire up routes, pass data to templates, and handle the request lifecycle properly.
+- **templ-syntax**: Templ's actual syntax, with enough detail that the model can look up expressions, conditionals, and loops instead of guessing.
+- **templ-components**: Reusable component patterns — props, children, composition. Obvious if you've used Templ, impossible to infer from sparse training data.
+- **templ-htmx**: The gotchas when combining Templ with HTMX. Attribute rendering and event handling trip up humans and models alike.
+- **templ-http**: Wiring Templ into `net/http` handlers properly — routes, data passing, request lifecycle.
 
-With skills loaded, the model stops guessing at syntax and starts copying patterns from authoritative references. It doesn't need to _infer_ how to write Templ. It reads the skill, follows instructions, and produces code that compiles on the first try more often than not.
+With these loaded, the model stops guessing and starts copying patterns from authoritative references. It reads the skill and follows instructions. Most of the generated Templ code compiled on the first try, which is more than I can say for my manual attempts.
 
 <Conv name="Mara" mood="hacker">
   Think of it like giving someone a cookbook instead of asking them to invent
@@ -54,7 +54,7 @@ With skills loaded, the model stops guessing at syntax and starts copying patter
 
 ## Building the thing
 
-Next I pointed an agent team at a spec I'd written with [Mimi](https://mimi.xeserv.us). The spec covered the basics: OAuth login via GitHub, query the Sponsors API, render a panel showing who sponsors me and at what tier, store sponsor logos in [Tigris](https://www.tigrisdata.com/). Just the thing I'd failed to build by hand three times.
+I pointed an agent team at a spec I'd written with [Mimi](https://mimi.xeserv.us). The spec covered the basics: OAuth login via GitHub, query the Sponsors API, render a panel showing who sponsors me and at what tier, store sponsor logos in [Tigris](https://www.tigrisdata.com/).
 
 <Conv name="Cadey" mood="enby">
   I'm not going to pretend I wrote the spec alone. I talked through the
@@ -63,7 +63,7 @@ Next I pointed an agent team at a spec I'd written with [Mimi](https://mimi.xese
   see what "clear enough for agents" looks like in practice.
 </Conv>
 
-One agent team split the spec into tasks and started building. A second team reviewed the output and flagged issues. Meanwhile, I provisioned OAuth credentials in the GitHub developer settings, created the Neon Postgres database, and set up the Tigris bucket for sponsor logos. The workflow was async in the truest sense — agents would hit a point where they needed a credential, I'd paste it in, and they'd continue.
+One agent team split the spec into tasks and started building. A second reviewed output and flagged issues. Meanwhile, I provisioned OAuth credentials in the GitHub developer settings, created the Neon Postgres database, and set up the Tigris bucket for sponsor logos. Agents would hit a point where they needed a credential, I'd paste it in, and they'd continue. Async development in the most literal sense — I was doing ops work while they wrote code.
 
 The GraphQL code the agents wrote is _ugly_. Raw query strings with manual JSON parsing that would make a linting tool weep. But it works. The shurcooL approach uses Go idioms, sure, but it requires so much gymnastics to handle nested connections that the cognitive load is worse. Agent-generated code is direct: send this query string, parse this JSON, done. I'd be embarrassed to show it at a code review. I'd also be embarrassed to admit how many times I failed to ship the "clean" version.
 
@@ -91,9 +91,8 @@ query := `{
 ```
 
 <Conv name="Numa" mood="neutral">
-  For the record, this is the kind of code that exists because the alternative
-  — the "proper" way — kept killing the project entirely. Sometimes ugly code
-  that ships is better than clean code that doesn't exist.
+  This code exists because the "proper" way kept killing the project. I'll
+  take ugly-and-shipped over clean-and-imaginary.
 </Conv>
 
 ## The stack
@@ -121,14 +120,14 @@ The code also isn't my usual style. JSON parsing that makes me wince. Variable n
 
 ## What I actually learned
 
-I wouldn't vibe code security-critical systems or anything I need to audit line-by-line. For breaking through a wall that had killed three previous attempts, though, it was exactly the right tool. Good-enough MVP, shipped before surgery. Done.
+I wouldn't vibe code security-critical systems or anything I need to audit line-by-line. For breaking through a wall that had stopped me cold every time I'd tried? Right tool, right moment.
 
-Skills make the difference. A model with skills follows instructions from authoritative references. A model without them guesses from training data, and the gap in output quality is enormous.
+Skills made the difference here. Loading those four documents into the context window turned Claude Code from "plausible but broken Templ" into "working code on the first compile." I suspect that gap will only matter more as people try to use AI with libraries that aren't well-represented in training data.
 
-This sponsor panel probably won't look anything like it does today in six months. I suspect I'll rewrite the GraphQL layer once I find a pattern that doesn't make me cringe. Org sponsorships might work by then. HTMX might get replaced with something else entirely.
+This sponsor panel probably won't look anything like it does today in six months. I'll rewrite the GraphQL layer once I find a pattern that doesn't make me cringe. Org sponsorships still need work. HTMX might get replaced.
 
-For now, the thing exists, and before my surgery, that mattered more than clean code.
+But it exists, and before my surgery, shipping mattered more than polish.
 
 ---
 
-Check out the sponsor panel at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). If you're interested in the skills I used, they're available in [my site's repo](https://github.com/Xe/site) under `.claude/skills/`.
+The sponsor panel is at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). The skills are in [my site's repo](https://github.com/Xe/site) under `.claude/skills/`.
