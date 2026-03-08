@@ -5,7 +5,7 @@ export const layout = "base.njk";
 export const date = "2012-12-31";
 export const desc = "A list of the upcoming events that I plan to attend and what I'll do there.";
 
-export default ({ events }) => (
+export default ({ events = {} }) => (
     <>
         <h1 className="text-3xl mb-4">Events</h1>
         <p className="my-4">Where in the world is Xe Iaso?</p>

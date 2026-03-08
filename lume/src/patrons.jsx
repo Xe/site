@@ -12,7 +12,7 @@ const PatronCard = ({ full_name, image_url }) => (
   </div>
 );
 
-export default ({ patrons }) => {
+export default ({ patrons = { included: { Items: [] } } }) => {
   const users = patrons.included.Items
     .filter((item) => item.type === "user")
     .map((item) => item.attributes)

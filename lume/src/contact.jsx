@@ -1,7 +1,7 @@
 export const title = "Contact";
 export const layout = "base.njk";
 
-export default ({ contactLinks }) => (
+export default ({ contactLinks = [] }) => (
   <>
     <h1 className="text-3xl mb-4">Contact</h1>
 
