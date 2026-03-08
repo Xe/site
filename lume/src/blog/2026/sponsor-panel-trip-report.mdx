@@ -12,11 +12,11 @@ date: 2026-03-08
 import Conv from "../../_components/XeblogConv.tsx";
 import Admonition from "../../_components/Admonition.jsx";
 
-A few weeks before I went under the knife, I had one of those moments where I looked at my project list and thought: if I don't ship this now, it's going to rot on the vine for months. I'm currently [on medical leave recovering from surgery](/blog/2026/killing-my-inner-necron/), and the window to get meaningful work done was closing fast.
+A few weeks before surgery, I looked at my project list and made a call: if I don't ship this now, it rots on the vine for months. I'm [on medical leave recovering from that surgery now](/blog/2026/killing-my-inner-necron/), and the window to do meaningful work had been closing fast.
 
-The project in question: a sponsor panel at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). Something that lets me see who's sponsoring me on GitHub, manage tiers, and generally have a dashboard for the financial side of my open source work. Not glamorous, but important enough that I'd been procrastinating on it for ages.
+The project: a sponsor panel at [sponsors.xeiaso.net](https://sponsors.xeiaso.net). A dashboard for seeing who sponsors me on GitHub, what tiers they're at, the financial plumbing of open source work. Not glamorous, but I'd been procrastinating on it long enough that it had become a guilt object.
 
-Here's the thing though -- I didn't build it the way I normally would. I vibe coded it. Directed an agent team, prepared skills, and let AI handle the parts that had defeated me multiple times before. It worked. I'm still kind of surprised.
+I didn't build it the way I normally would. I vibe coded it -- directed an agent team, prepared skills, let the AI handle the parts that had defeated me three separate times. It worked. Honestly, I'm still kind of surprised.
 
 ## The GraphQL swamp
 
@@ -26,15 +26,15 @@ Go and GitHub's GraphQL API are oil and water. I've tried to build this sponsor 
   Every. Single. Time.
 </Conv>
 
-Honestly, the GraphQL libraries in Go are genuinely awful. You're choosing between [shurcooL/graphql](https://github.com/shurcooL/graphql), which uses reflection-based struct tag gymnastics to build queries, or code generation tools that produce mountains of boilerplate you'll never fully understand. Neither option sparks joy. Both options make you question your career choices.
+Honestly, the GraphQL libraries in Go are genuinely awful. You choose between [shurcooL/graphql](https://github.com/shurcooL/graphql), which uses reflection-based struct tag gymnastics to build queries, and code generation tools that produce mountains of boilerplate you'll never fully understand. Neither sparks joy. Both make you question your career.
 
-Making matters worse, GitHub removed their GraphQL explorer a while back, so you can't even interactively poke at the schema to figure out what fields exist. You're reading raw schema docs and guessing. It's the kind of developer experience that makes you close your laptop and go outside.
+GitHub also removed their GraphQL explorer, so you can't interactively poke at the schema to figure out what fields exist. You're reading raw schema docs and guessing. It's the kind of developer experience that makes you close your laptop and go outside.
 
-Previous attempts usually followed the same pattern: I'd get excited, spend an evening wrestling with struct tags, realize the pagination model for sponsors is more complex than I expected, get frustrated, and shelve it. Rinse and repeat every few months.
+Every previous attempt followed the same arc: excitement, an evening wrestling struct tags, the dawning realization that sponsor pagination is more complex than expected, frustration, and then the shelving. Rinse and repeat every few months.
 
 ## The hail mary
 
-With surgery looming, I figured: worst case, the vibe coding attempt fails and I'm exactly where I started. Best case, it actually works and I ship something before disappearing into a haze of anesthesia and hospital food.
+With surgery looming, I figured: worst case the vibe coding attempt fails and I'm exactly where I started. Best case it works and I ship something before disappearing into a haze of anesthesia and hospital food.
 
 Needless to say, it works. The panel is live. You can go look at it right now.
 
@@ -44,35 +44,35 @@ Needless to say, it works. The panel is live. You can go look at it right now.
 </Conv>
 
 <Conv name="Cadey" mood="coffee">
-  Yep. Turns out when you don't have to care about whether the struct tags are
-  "clean", you can just let it generate whatever abomination parses the JSON
+  Yep. Turns out when you stop caring whether the struct tags are "clean", you
+  can just let it generate whatever accursed abomination parses the JSON
   correctly and move on with your life.
 </Conv>
 
-The stack ended up being Go, [Templ](https://templ.guide), [HTMX](https://htmx.org), and Postgres via [Neon](https://neon.tech). OAuth login through GitHub handles authentication. The GitHub Sponsors GraphQL API provides the actual sponsor data. Nothing exotic, but solid enough to ship on.
+Stack: Go, [Templ](https://templ.guide), [HTMX](https://htmx.org), Postgres via [Neon](https://neon.tech). GitHub OAuth handles login. The Sponsors GraphQL API provides the actual data. Nothing exotic -- but solid enough to ship.
 
 ## Preparing the skills
 
-Here's where this gets interesting. If you've been following my work with Claude Code, you know I've been experimenting with [agent skills](https://docs.anthropic.com/en/docs/claude-code/skills) -- essentially pre-loaded context documents that tell the model how to work with specific technologies.
+If you've followed my work with Claude Code, you know I've been experimenting with [agent skills](https://docs.anthropic.com/en/docs/claude-code/skills) -- pre-loaded context documents that tell the model how to work with specific technologies.
 
-[Templ](https://templ.guide) is not well-represented in LLM training data. It's a relatively young Go templating library and most models will confidently hallucinate syntax that looks plausible but doesn't compile. Without intervention, you get code that's 80% right and 100% broken.
+[Templ](https://templ.guide) barely exists in LLM training data. It's a young Go templating library, and most models will confidently hallucinate syntax that looks plausible but doesn't compile. Without intervention, you get code that's 80% right and 100% broken.
 
-Skills fix this. By loading reference documents into the context window, you give the model needles to copy from its haystack instead of forcing it to reconstruct syntax from vibes alone. The model doesn't need to _infer_ how Templ works -- it just follows what the skills say.
+Skills fix this. Loading reference documents into the context window gives the model needles to copy from its haystack instead of forcing it to reconstruct syntax from vibes. The model doesn't need to _infer_ how Templ works -- it reads what the skills say and copies the patterns.
 
-I made four skills for this project:
+I made four:
 
-- **templ-syntax**: A quick overview of Templ's syntax with detailed resources for edge cases. This one was the most important -- it covers expressions, conditionals, loops, and how Go integration actually works versus how you'd expect it to work.
-- **templ-components**: How to break UI elements into reusable components with props, children, and composition patterns. Without this, the model tends to dump everything into one giant template.
-- **templ-htmx**: The weird edge cases when combining Templ with HTMX. There are subtle gotchas around how HTMX attributes interact with Templ's rendering model, and getting these wrong produces bugs that are maddening to debug.
-- **templ-http**: Best practices for wiring Templ components into `net/http` handlers. This is the glue code that's easy to get subtly wrong in ways that only show up at runtime.
+- **templ-syntax**: Templ's syntax, with detailed resources for edge cases. The most important one -- covers expressions, conditionals, loops, and how Go integration _actually_ works versus how you'd expect it to.
+- **templ-components**: How to break UI elements into reusable components with props, children, and composition. Without this, the model dumps everything into one giant template.
+- **templ-htmx**: Weird edge cases when combining Templ with HTMX. Subtle gotchas around how HTMX attributes interact with Templ's rendering model -- getting these wrong produces bugs that are maddening to debug.
+- **templ-http**: Best practices for wiring Templ components into `net/http` handlers. Glue code that's easy to get subtly wrong in ways that only surface at runtime.
 
-Loading these four skills transforms the model from "confidently wrong about Templ" to "reliably correct about Templ". It's the difference between fighting your tools and directing them.
+With these four skills loaded, the model goes from "confidently wrong about Templ" to "reliably correct." Fighting your tools versus directing them.
 
 ## Specification
 
-Before turning the agents loose, I worked with [Mimi](https://github.com/anthropics/claude-code) to draft a specification. This is something I want to emphasize: I didn't just say "build me a sponsor panel" and walk away. That's how you get a mess.
+Before turning the agents loose, I worked with [Mimi](https://github.com/anthropics/claude-code) to draft a spec. I want to be clear: I didn't say "build me a sponsor panel" and walk away. That's how you get a mess.
 
-I described what I wanted -- the OAuth flow, the data I needed from the GraphQL API, the page structure, the tier management -- and we iterated on a spec together. Then I reviewed that spec and simplified it. Cut scope. Removed features I didn't actually need for an MVP.
+I described what I wanted -- the OAuth flow, the data from the GraphQL API, the page structure, the tier management -- and we iterated together. Then I reviewed, simplified, cut scope. Removed features I didn't need for the MVP.
 
 <Conv name="Numa" mood="smug">
   You mean you did product management. Like a normal person. Shocking.
@@ -82,59 +82,63 @@ The spec covered:
 
 - GitHub OAuth login flow
 - Querying the Sponsors GraphQL API for sponsor data (name, tier, avatar, URL)
-- Storing sponsor data in Postgres for caching and display
-- A simple dashboard showing current sponsors grouped by tier
+- Caching sponsor data in Postgres
+- A dashboard showing current sponsors grouped by tier
 - Session management with secure cookies
 
-Nothing revolutionary. But having it written down meant the agent team had a clear target instead of vibing their way into feature creep.
+Nothing revolutionary. But writing it down gave the agent team a clear target instead of letting them vibe their way into feature creep.
 
 ## Implementation with an agent team
 
-Once the spec was locked, I handed it to a second agent team. They split the spec into tasks and started building. Meanwhile, I did the one thing the agents couldn't do for themselves: I provisioned credentials.
+Once I locked the spec, I handed it to a second agent team. They split it into tasks and started building. Meanwhile, I did the one thing the agents couldn't do themselves: provision credentials.
 
-GitHub OAuth client ID and secret. A Neon database URL. A personal access token with the `read:org` scope for the Sponsors API. The workflow went like this: agent hits an error because a credential is missing, I paste it in, agent continues. Rinse and repeat.
+GitHub OAuth client ID and secret. A Neon database URL. A personal access token with the `read:org` scope for the Sponsors API. The workflow: agent hits an error asking for a credential, I paste it in, agent continues. Rinse and repeat.
 
-It felt like async pair programming where my partner was faster than me at writing code but couldn't open a browser to create an OAuth app. A fair tradeoff, honestly.
+Async pair programming, basically. My partner wrote code faster than me but couldn't open a browser to create an OAuth app. Fair tradeoff.
 
 <Conv name="Aoi" mood="grin">
   So you were the intern in this arrangement.
 </Conv>
 
 <Conv name="Cadey" mood="coffee">
-  I was the one with the password manager. That's arguably more important.
+  I was the one with the password manager. Arguably more important.
 </Conv>
 
-The magic moment was when the OAuth flow worked on the first try. I clicked "Sign in with GitHub", got redirected, authorized the app, and landed on a page that said "Hi there, Xe!" with my actual sponsor data rendered below it. The first version looked incredibly generic -- bootstrap-y, default fonts, zero personality -- but it _worked_.
+The magic moment: OAuth worked on the first try. Click "Sign in with GitHub," get redirected, authorize the app, land on a page reading "Hi there, Xe!" with real sponsor data rendered below. The first version looked incredibly generic -- bootstrap-y, default fonts, zero personality -- but it _worked_.
 
-Sponsor avatars loaded. Tier names displayed correctly. The data was real.
+Sponsor avatars loaded. Tier names displayed correctly. Real data, rendered from the API that had defeated me for years.
 
-## UI v2: making it look like my website
+## UI v2: making it match my site
 
-The generic look lasted about an hour before I couldn't take it anymore. I did another pass with the agents to restyle everything to match my site's aesthetic -- the dark background, the fonts, the general vibe of xeiaso.net.
+The generic look lasted about an hour before I couldn't take it anymore. Another pass with the agents restyled everything to match my site's aesthetic -- the dark background, the fonts, the general xeiaso.net vibe.
 
-Most of it was a CSS and Templ component exercise. The agents handled it well because the skills I'd prepared covered exactly this kind of component-level UI work. Swapping out a bootstrap card for a custom styled component is the kind of task where Templ skills shine because the model knows the exact syntax for conditional classes, children composition, and attribute spreading.
+Most of it was a CSS and Templ component exercise. Swapping a bootstrap card for a custom styled component is exactly where Templ skills shine: the model knows the precise syntax for conditional classes, children composition, and attribute spreading. No hallucinated tag names, no broken renders.
 
 <!-- TODO: screenshots of the final themed panel -->
 
 ## Org sponsorships
 
-After the initial launch I did another pass to make organizational sponsorships work properly. This turned out to be gnarlier than individual sponsorships -- different schema shape, different fields available, different everything. GitHub treats org sponsors as a fundamentally different entity in the API, because of course they do.
+After the initial launch, I made another pass for organizational sponsorships. This turned out gnarlier than individual ones -- different schema shape, different fields, different everything. GitHub treats org sponsors as a fundamentally different entity in the API.
 
-Getting this right required another round of GraphQL wrestling, but at this point the pattern was established: let the agent generate the query, verify the data comes back correctly, move on. The code isn't pretty. There's some JSON parsing in there that would make a linting tool weep. But it handles both individual and organizational sponsors now, and that's what matters.
-
-## The broader lesson
-
-I'm genuinely happy with how this turned out. The sponsor panel exists, it works, and I shipped it before going into surgery. Mission accomplished.
-
-<Conv name="Cadey" mood="coffee">
-  We'll see how much I still like it in a few months when I actually look at the
-  code with fresh eyes. Post-surgery me might have opinions.
+<Conv name="Cadey" mood="facepalm">
+  Because of course they do.
 </Conv>
 
-Vibe coding isn't for everything. I wouldn't use this approach for something that needs to be deeply understood and maintained by a team. But for getting past a wall I'd banged my head against multiple times? For shipping a clean-enough MVP before disappearing for weeks of recovery? It's a real tool in the toolbox.
+Getting org sponsorships right required another round of GraphQL wrestling, but the pattern held: let the agent generate the query, verify the data comes back, move on. The code isn't pretty. Some JSON parsing in there would make a linting tool weep. But it handles both individual and organizational sponsors now, and that's what matters.
 
-The skills are the missing piece that most people overlook when they talk about vibe coding. Without them, you're letting the model flail. With them, you're giving it a reference manual and saying "copy this, not whatever you hallucinated from your training data." That distinction is the difference between a frustrating afternoon and a working product.
+## What I learned
 
-I don't know if this sponsor panel will still look like this in six months. I suspect I'll rewrite the GraphQL code at minimum -- there's a version of this that uses proper query types instead of raw JSON parsing, and future-me will probably insist on it. But the panel exists, the data is correct, and my sponsors can see that I appreciate them.
+The sponsor panel exists. It works. I shipped it before going under anesthesia. Mission accomplished.
 
-Sometimes good enough really is good enough.
+<Conv name="Cadey" mood="coffee">
+  We'll see how much I still like it in a few months when I look at the code
+  with fresh eyes. Post-surgery me will have opinions.
+</Conv>
+
+Vibe coding works best for exactly this situation: getting past a wall you've hit repeatedly, shipping a clean-enough MVP before a hard deadline. I wouldn't hand an agent team a project that demands deep architectural understanding by a whole team. But for "generate the cursed GraphQL code so I never have to look at shurcooL struct tags again"? Perfect.
+
+Skills are the part most people overlook. Without them, the model flails. With them, you're handing it a reference manual and saying "copy this, not whatever you hallucinated from training data." That one change -- loading four Markdown files into the context window -- turned a frustrating experiment into a working product.
+
+I suspect I'll rewrite the GraphQL code after recovery. There's a version of this with proper query types instead of raw JSON parsing, and future-me will insist on it. But right now the panel exists, the data is correct, and my sponsors can see that I appreciate them.
+
+Knowing that loose end was tied before going under -- that mattered more than clean code.
