@@ -72,13 +72,14 @@ With these loaded, the model goes from "confidently wrong about Templ" to "relia
 
 Before turning the agents loose, I worked with [Mimi](https://github.com/anthropics/claude-code) to draft a spec -- not "build me a sponsor panel" and walk away. That's how you get a mess.
 
-I described the OAuth flow, the data I needed from the GraphQL API, the page structure, the tier management. We went back and forth until it felt right. Then I simplified, cut scope, removed features I didn't need for the MVP.
+I described the OAuth flow, the data I needed from the GraphQL API, the page structure, the tier management. We went back and forth until it felt right. Then I ran a second agent over the spec -- one prompted as a cynic whose job was to cut anything that wasn't strictly necessary for an MVP. It was ruthless. It was correct. Half the features I'd specced didn't survive.
 
 <Conv name="Numa" mood="smug">
-  You mean you did product management. Like a normal person. Shocking.
+  You mean you automated the "do we actually need this?" meeting. Like a normal
+  person would do if they had access to an infinite supply of skeptical coworkers.
 </Conv>
 
-The spec covered:
+What survived:
 
 - GitHub OAuth login flow
 - Querying the Sponsors GraphQL API for sponsor data (name, tier, avatar, URL)
