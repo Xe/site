@@ -17,7 +17,7 @@ And it works.
 
 ## The GraphQL swamp
 
-Go and GraphQL are oil and water. I've held this opinion for years and nothing has changed it. The library ecosystem is a mess: [shurcooL/graphql](https://github.com/shurcooL/graphql) requires abusive struct tags for its reflection-based query generation, and the code generation tools produce mountains of boilerplate. Every approach feels like fighting the language into doing something it actively resists.
+Go and GraphQL are oil and water. I've held this opinion for years and nothing has changed it. The library ecosystem is a mess: [shurcooL/graphql](https://github.com/shurcooL/graphql) requires abusive struct tags for its reflection-based query generation, and the code generation tools produce mountains of boilerplate. All of it feels like fighting the language into doing something it actively resists.
 
 <Conv name="Cadey" mood="coffee">
   GitHub removing the GraphQL explorer made this even worse. You used to be able
@@ -25,9 +25,9 @@ Go and GraphQL are oil and water. I've held this opinion for years and nothing h
   needed. Now you're reading docs and guessing. Fun.
 </Conv>
 
-Every previous attempt at building this sponsor panel died in that swamp. I'd get partway through wrestling the GitHub Sponsors API into Go structs, lose momentum, and shelve it. Always at roughly the same point: when the query I needed turned out to be four levels of nested connections deep and the struct tags looked like someone fell asleep on their keyboard.
+My previous attempts at building this sponsor panel all died in that swamp. I'd get partway through wrestling the GitHub Sponsors API into Go structs, lose momentum, and shelve it. At roughly the same point each time: when the query I needed turned out to be four levels of nested connections deep and the struct tags looked like someone fell asleep on their keyboard.
 
-So I tried vibe coding it as a hail mary. Worst case, it didn't work and I was no worse off than before. Best case, I'd ship something before disappearing into a hospital for a week.
+Vibe coding was a hail mary. I figured if it didn't work, I was no worse off. If it did, I'd ship something before disappearing into a hospital for a week.
 
 ## Preparing the skills
 
@@ -44,7 +44,7 @@ I wrote four focused context documents — agent skills — that I could load in
 - **templ-htmx**: The gotchas when combining Templ with HTMX. Attribute rendering and event handling trip up humans and models alike.
 - **templ-http**: Wiring Templ into `net/http` handlers properly — routes, data passing, request lifecycle.
 
-With these loaded, the model stops guessing and starts copying patterns from authoritative references. It reads the skill and follows instructions. Most of the generated Templ code compiled on the first try, which is more than I can say for my manual attempts.
+With these loaded, the model copies patterns from authoritative references instead of inventing syntax from vibes. Most of the generated Templ code compiled on the first try, which is more than I can say for my manual attempts.
 
 <Conv name="Mara" mood="hacker">
   Think of it like giving someone a cookbook instead of asking them to invent
@@ -63,7 +63,7 @@ I pointed an agent team at a spec I'd written with [Mimi](https://mimi.xeserv.us
   see what "clear enough for agents" looks like in practice.
 </Conv>
 
-One agent team split the spec into tasks and started building. A second reviewed output and flagged issues. Meanwhile, I provisioned OAuth credentials in the GitHub developer settings, created the Neon Postgres database, and set up the Tigris bucket for sponsor logos. Agents would hit a point where they needed a credential, I'd paste it in, and they'd continue. Async development in the most literal sense — I was doing ops work while they wrote code.
+One agent team split the spec into tasks and started building. A second reviewed output and flagged issues. Meanwhile, I provisioned OAuth credentials in the GitHub developer settings, created the Neon Postgres database, and set up the Tigris bucket for sponsor logos. Agents would hit a point where they needed a credential, I'd paste it in, and they'd continue — ops work and code generation happening in parallel.
 
 The GraphQL code the agents wrote is _ugly_. Raw query strings with manual JSON parsing that would make a linting tool weep. But it works. The shurcooL approach uses Go idioms, sure, but it requires so much gymnastics to handle nested connections that the cognitive load is worse. Agent-generated code is direct: send this query string, parse this JSON, done. I'd be embarrassed to show it at a code review. I'd also be embarrassed to admit how many times I failed to ship the "clean" version.
 
@@ -109,9 +109,9 @@ The full stack:
 
 ## The warts
 
-Org sponsorships are still broken. The schema for organization sponsors differs enough from individual sponsors that it needs its own query path and auth flow. I know what the fix looks like, but it requires reaching out to other devs who've navigated that particular maze.
+Org sponsorships are still broken. The schema for organization sponsors differs enough from individual sponsors that it needs its own query path and auth flow. I know what the fix looks like, but it requires reaching out to other devs who've cracked GitHub's org-level sponsor queries.
 
-The code also isn't my usual style. JSON parsing that makes me wince. Variable names that are functional but uninspired. Missing error context in a few places. I'll rewrite chunks of this after I've recovered. Even so, the panel _exists_ now. It renders real data. People can OAuth in and see their sponsorship status. Before this attempt, it was vaporware.
+The code isn't my usual style either — JSON parsing that makes me wince, variable names that are functional but uninspired, missing error context in a few places. I'll rewrite chunks of this after I've recovered. The panel _exists_ now, though. It renders real data, people can OAuth in and see their sponsorship status. Before this attempt, it was vaporware.
 
 <Conv name="Cadey" mood="percussive-maintenance">
   I've been telling people "just ship it" for years. Took vibe coding to make
@@ -120,7 +120,7 @@ The code also isn't my usual style. JSON parsing that makes me wince. Variable n
 
 ## What I actually learned
 
-I wouldn't vibe code security-critical systems or anything I need to audit line-by-line. For breaking through a wall that had stopped me cold every time I'd tried? Right tool, right moment.
+I wouldn't vibe code security-critical systems or anything I need to audit line-by-line. But this project had stopped me cold on every attempt, and vibe coding got it across the line in a weekend.
 
 Skills made the difference here. Loading those four documents into the context window turned Claude Code from "plausible but broken Templ" into "working code on the first compile." I suspect that gap will only matter more as people try to use AI with libraries that aren't well-represented in training data.
 
