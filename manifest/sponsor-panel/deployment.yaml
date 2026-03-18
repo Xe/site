@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: ghcr.io/xe/site/sponsor-panel:main
+          image: ghcr.io/xe/site/sponsor-panel:latest
           imagePullPolicy: Always
           resources:
             limits:

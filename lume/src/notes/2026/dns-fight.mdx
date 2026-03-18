@@ -1,0 +1,73 @@
+---
+title: "Homelab downtime update: The fight for DNS supremacy"
+desc: "Turns out everything DID NOT go offline somehow. Yay!"
+date: 2026-03-18
+---
+
+Hey all, quick update continuing from yesterday's announcement that my homelab went down. This is stream of consciousness and unedited. Enjoy!
+
+Turns out the entire homelab didn't go down and two Kubernetes nodes survived the power outage somehow.
+
+Two Kubernetes controlplane nodes.
+
+Kubernetes really wants there to be an odd number of controlplane nodes and my workloads are too heavy for any single node to run and Longhorn really wants there to be at least three nodes online. So I had to turn them off.
+
+How did I get in? The Mac mini that I used for Anubis CI. It somehow automatically powered on when the grid reset and/or survived the power outage.
+
+```text
+xe@t-elos:~$ uptime
+ 09:45:55 up 66 days,  9:51,  4 users,  load average: 0.37, 0.22, 0.18
+```
+
+Holy shit, that's good to know!
+
+Anyways the usual suspects for trying to debug things didn't work (kubectl get nodes got a timeout, etc.), so I did an nmap across the entire home subnet. Normally this is full of devices and hard to read. This time there's basically nothing. What stood out was this:
+
+```text
+Nmap scan report for kos-mos (192.168.2.236)
+Host is up, received arp-response (0.00011s latency).
+Scanned at 2026-03-18 09:23:09 EDT for 1s
+Not shown: 996 closed tcp ports (reset)
+PORT      STATE SERVICE   REASON
+3260/tcp  open  iscsi     syn-ack ttl 64
+9100/tcp  open  jetdirect syn-ack ttl 64
+50000/tcp open  ibm-db2   syn-ack ttl 64
+50001/tcp open  unknown   syn-ack ttl 64
+MAC Address: FC:34:97:0D:1E:CD (Asustek Computer)
+
+Nmap scan report for ontos (192.168.2.237)
+Host is up, received arp-response (0.00011s latency).
+Scanned at 2026-03-18 09:23:09 EDT for 1s
+Not shown: 996 closed tcp ports (reset)
+PORT      STATE SERVICE   REASON
+3260/tcp  open  iscsi     syn-ack ttl 64
+9100/tcp  open  jetdirect syn-ack ttl 64
+50000/tcp open  ibm-db2   syn-ack ttl 64
+50001/tcp open  unknown   syn-ack ttl 64
+MAC Address: FC:34:97:0D:1F:AE (Asustek Computer)
+```
+
+Those two machines are Kubernetes controlplane nodes! I can't SSH into them because they're running Talos Linux, but I can use `talosctl` (via port 50000) to shut them down:
+
+```text
+$ ./bin/talosctl -n 192.168.2.236 shutdown --force
+WARNING: 192.168.2.236: server version 1.9.1 is older than client version 1.12.5
+watching nodes: [192.168.2.236]
+    * 192.168.2.236: events check condition met
+
+$ ./bin/talosctl -n 192.168.2.237 shutdown --force
+WARNING: 192.168.2.237: server version 1.9.1 is older than client version 1.12.5
+watching nodes: [192.168.2.237]
+    * 192.168.2.237: events check condition met
+```
+
+And now it's offline until I get home.
+
+This was causing the sponsor panel to be offline because the external-dns pod in the homelab was online and fighting my new cloud deployment for DNS supremacy. The sponsor panel is now back online (I should have put it in the cloud in the first place, that's on me) and peace has been restored to most of the galaxy, at least as much as I can from here.
+
+Action items:
+
+- Figure out why ontos and kos-mos came back online
+- Make all nodes in the homelab resume power when wall power exists again
+- Review homelab for PSU damage
+- Re-evaluate usage of Talos Linux, switch to Rocky?
