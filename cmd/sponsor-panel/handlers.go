@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/google/go-github/v82/github"
 	"github.com/google/uuid"
 
@@ -197,11 +198,13 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 			"key", s3Key,
 			"content_type", contentType)
 
+		acl := types.ObjectCannedACLPublicRead
 		putInput := &s3.PutObjectInput{
 			Bucket:      &s.bucketName,
 			Key:         &s3Key,
 			Body:        bytes.NewReader(fileData),
 			ContentType: &contentType,
+			ACL:         acl,
 		}
 
 		_, err := s.s3Client.PutObject(r.Context(), putInput)
@@ -211,7 +214,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		logoURL = fmt.Sprintf("https://%s.s3.amazonaws.com/%s", s.bucketName, s3Key)
+		logoURL = fmt.Sprintf("https://%s.t3.storage.dev/%s", s.bucketName, s3Key)
 		slog.Info("logoHandler: uploaded to S3",
 			"user_id", user.ID,
 			"url", logoURL,
