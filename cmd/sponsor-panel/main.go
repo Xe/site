@@ -52,6 +52,7 @@ var (
 	patreonClientSecret = flag.String("patreon-client-secret", "", "Patreon OAuth Client Secret")
 	patreonRedirect     = flag.String("patreon-redirect-url", "", "Patreon OAuth redirect URL")
 	patreonCampaignID   = flag.String("patreon-campaign-id", "", "Patreon campaign ID to check pledges against")
+	patreonFiftyPlus    = flag.String("patreon-fifty-plus", "", "Comma-separated list of Patreon usernames always treated as $50+ sponsors")
 
 	//go:embed static
 	staticFS embed.FS
@@ -62,8 +63,9 @@ type Server struct {
 	pool              *pgxpool.Pool
 	ghClient          *gh.Client
 	oauth             *oauth2.Config
-	patreonOAuth      *oauth2.Config // nil if Patreon not configured
-	patreonCampaignID string
+	patreonOAuth          *oauth2.Config // nil if Patreon not configured
+	patreonCampaignID     string
+	patreonFiftyPlusSpons map[string]bool // Patreon usernames always treated as $50+
 	discordInvite     string
 	fiftyPlusSponsors map[string]bool // Always treated as $50+ sponsors
 	sessionStore      *sessions.CookieStore
@@ -215,6 +217,19 @@ func main() {
 		slog.Info("main: loaded fifty-plus sponsors", "count", len(fiftyPlusMap))
 	}
 
+	// Parse Patreon fifty-plus sponsors list
+	patreonFiftyPlusMap := make(map[string]bool)
+	if *patreonFiftyPlus != "" {
+		slog.Debug("main: parsing patreon fifty-plus sponsors", "list", *patreonFiftyPlus)
+		for _, sponsor := range strings.Split(*patreonFiftyPlus, ",") {
+			sponsor = strings.TrimSpace(sponsor)
+			if sponsor != "" {
+				patreonFiftyPlusMap[sponsor] = true
+			}
+		}
+		slog.Info("main: loaded patreon fifty-plus sponsors", "count", len(patreonFiftyPlusMap))
+	}
+
 	// Create session store
 	slog.Debug("main: creating session store")
 	sessionStore := sessions.NewCookieStore([]byte(*sessionKey))
@@ -243,8 +258,9 @@ func main() {
 		pool:              pool,
 		ghClient:          ghClient,
 		oauth:             oauthConfig,
-		patreonOAuth:      patreonConfig,
-		patreonCampaignID: *patreonCampaignID,
+		patreonOAuth:          patreonConfig,
+		patreonCampaignID:     *patreonCampaignID,
+		patreonFiftyPlusSpons: patreonFiftyPlusMap,
 		discordInvite:     *discordInvite,
 		fiftyPlusSponsors: fiftyPlusMap,
 		sessionStore:      sessionStore,

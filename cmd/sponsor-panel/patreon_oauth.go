@@ -162,40 +162,60 @@ func (s *Server) patreonCallbackHandler(w http.ResponseWriter, r *http.Request) 
 		login = identity.Data.Attributes.FullName
 	}
 
-	// Find membership matching our campaign
+	// Check if user is in the Patreon fifty-plus sponsors list
+	slog.Debug("patreonCallbackHandler: checking fifty-plus allowlist",
+		"login", login,
+		"vanity", identity.Data.Attributes.Vanity,
+		"full_name", identity.Data.Attributes.FullName,
+		"allowlist", s.patreonFiftyPlusSpons)
 	sponsorData := `{"is_active": false}`
-	for _, raw := range identity.Included {
-		var member patreonMember
-		if err := json.Unmarshal(raw, &member); err != nil {
-			continue
-		}
-		if member.Type != "member" {
-			continue
-		}
-		if s.patreonCampaignID != "" && member.Relationships.Campaign.Data.ID != s.patreonCampaignID {
-			continue
-		}
-
-		isActive := member.Attributes.PatronStatus == "active_patron"
-		amountCents := member.Attributes.CurrentlyEntitledAmountCents
-
-		slog.Info("patreonCallbackHandler: found matching membership",
-			"campaign_id", member.Relationships.Campaign.Data.ID,
-			"patron_status", member.Attributes.PatronStatus,
-			"amount_cents", amountCents)
-
-		tierName := "Patreon Supporter"
-		if amountCents >= 5000 {
-			tierName = "Patreon Premium"
-		}
-
+	if s.patreonFiftyPlusSpons[login] {
+		slog.Info("patreonCallbackHandler: user in patreon fifty-plus list", "login", login)
 		resultJSON, _ := json.Marshal(map[string]any{
-			"is_active":            isActive,
-			"monthly_amount_cents": amountCents,
-			"tier_name":            tierName,
+			"is_active":            true,
+			"monthly_amount_cents": 5000,
+			"tier_name":            "Fifty Plus Sponsor",
 		})
 		sponsorData = string(resultJSON)
-		break
+	}
+
+	// Find membership matching our campaign (skip if already blessed via allowlist)
+	slog.Debug("patreonCallbackHandler: included resources count", "count", len(identity.Included))
+	if sponsorData == `{"is_active": false}` {
+		for i, raw := range identity.Included {
+			slog.Debug("patreonCallbackHandler: included resource", "index", i, "raw", string(raw))
+			var member patreonMember
+			if err := json.Unmarshal(raw, &member); err != nil {
+				continue
+			}
+			if member.Type != "member" {
+				continue
+			}
+			if s.patreonCampaignID != "" && member.Relationships.Campaign.Data.ID != s.patreonCampaignID {
+				continue
+			}
+
+			isActive := member.Attributes.PatronStatus == "active_patron"
+			amountCents := member.Attributes.CurrentlyEntitledAmountCents
+
+			slog.Info("patreonCallbackHandler: found matching membership",
+				"campaign_id", member.Relationships.Campaign.Data.ID,
+				"patron_status", member.Attributes.PatronStatus,
+				"amount_cents", amountCents)
+
+			tierName := "Patreon Supporter"
+			if amountCents >= 5000 {
+				tierName = "Patreon Premium"
+			}
+
+			resultJSON, _ := json.Marshal(map[string]any{
+				"is_active":            isActive,
+				"monthly_amount_cents": amountCents,
+				"tier_name":            tierName,
+			})
+			sponsorData = string(resultJSON)
+			break
+		}
 	}
 
 	slog.Debug("patreonCallbackHandler: sponsorship data", "data", sponsorData)
