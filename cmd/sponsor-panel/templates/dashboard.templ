@@ -14,6 +14,7 @@ type DashboardProps struct {
 type UserProps struct {
 	Login     string
 	AvatarURL string
+	Provider  string // "github" or "patreon"
 }
 
 templ Dashboard(props DashboardProps) {
@@ -27,7 +28,7 @@ templ Dashboard(props DashboardProps) {
 			if props.IsSponsor {
 				@DiscordCard(props.DiscordInvite)
 			}
-			@SponsorshipCard(props.IsSponsor, props.SponsorAmount, props.SponsorTier)
+			@SponsorshipCard(props.IsSponsor, props.SponsorAmount, props.SponsorTier, props.User.Provider)
 		</div>
 		<div class="grid md:grid-cols-2 gap-8 mt-8">
 			if props.IsFiftyPlus {
@@ -71,7 +72,7 @@ templ DiscordCard(inviteURL string) {
 	</div>
 }
 
-templ SponsorshipCard(isSponsor bool, amount int, tier string) {
+templ SponsorshipCard(isSponsor bool, amount int, tier string, provider string) {
 	<div class="card card-warm p-4">
 		<h2 class="card-title flex items-center gap-2">
 			<svg class="w-5 h-5 text-orange-light dark:text-orangeDark-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -90,9 +91,15 @@ templ SponsorshipCard(isSponsor bool, amount int, tier string) {
 			<p class="text-sm font-medium text-orange-light dark:text-orangeDark-light">Thank you for your support!</p>
 		} else {
 			<p class="card-description">You're not currently an active sponsor.</p>
-			<a href="https://github.com/sponsors/Xe" target="_blank" class="btn btn-pink">
-				Become a Sponsor
-			</a>
+			if provider == "patreon" {
+				<a href="https://www.patreon.com/cadey" target="_blank" class="btn btn-pink">
+					Become a Patron
+				</a>
+			} else {
+				<a href="https://github.com/sponsors/Xe" target="_blank" class="btn btn-pink">
+					Become a Sponsor
+				</a>
+			}
 			<p class="text-xs text-fg-4 dark:text-fgDark-4 mt-4 leading-relaxed">
 				If you're part of an organization that sponsors Anubis and see this message, please contact me@xeiaso.net for help.
 			</p>

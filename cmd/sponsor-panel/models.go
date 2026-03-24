@@ -9,10 +9,12 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// User represents a GitHub user with cached sponsorship data.
+// User represents an authenticated user with cached sponsorship data.
 type User struct {
 	ID                   int       `json:"id" db:"id"`
-	GitHubID             int64     `json:"github_id" db:"github_id"`
+	GitHubID             *int64    `json:"github_id" db:"github_id"`
+	PatreonID            *string   `json:"patreon_id" db:"patreon_id"`
+	Provider             string    `json:"provider" db:"provider"` // "github" or "patreon"
 	Login                string    `json:"login" db:"login"`
 	AvatarURL            string    `json:"avatar_url" db:"avatar_url"`
 	Name                 string    `json:"name" db:"name"`
@@ -85,11 +87,11 @@ func getUserByID(ctx context.Context, pool *pgxpool.Pool, userID int) (*User, er
 
 	var user User
 	err := pool.QueryRow(ctx, `
-		SELECT id, github_id, login, avatar_url, name, email,
+		SELECT id, github_id, patreon_id, provider, login, avatar_url, name, email,
 		       sponsorship_data, last_sponsorship_check, created_at, updated_at
 		FROM users WHERE id = $1
 	`, userID).Scan(
-		&user.ID, &user.GitHubID, &user.Login, &user.AvatarURL,
+		&user.ID, &user.GitHubID, &user.PatreonID, &user.Provider, &user.Login, &user.AvatarURL,
 		&user.Name, &user.Email, &user.SponsorshipData,
 		&user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
 	)
@@ -122,11 +124,11 @@ func upsertUser(ctx context.Context, pool *pgxpool.Pool, user *User) error {
 	if tag.RowsAffected() > 0 {
 		slog.Debug("upsertUser: updated existing user", "github_id", user.GitHubID, "rows_affected", tag.RowsAffected())
 		return pool.QueryRow(ctx, `
-			SELECT id, github_id, login, avatar_url, name, email,
+			SELECT id, github_id, patreon_id, provider, login, avatar_url, name, email,
 			       sponsorship_data, last_sponsorship_check, created_at, updated_at
 			FROM users WHERE github_id = $1
 		`, user.GitHubID).Scan(
-			&user.ID, &user.GitHubID, &user.Login, &user.AvatarURL,
+			&user.ID, &user.GitHubID, &user.PatreonID, &user.Provider, &user.Login, &user.AvatarURL,
 			&user.Name, &user.Email, &user.SponsorshipData,
 			&user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
 		)
@@ -135,13 +137,13 @@ func upsertUser(ctx context.Context, pool *pgxpool.Pool, user *User) error {
 	slog.Debug("upsertUser: inserting new user", "github_id", user.GitHubID, "login", user.Login)
 
 	return pool.QueryRow(ctx, `
-		INSERT INTO users (github_id, login, avatar_url, name, email, sponsorship_data)
-		VALUES ($1, $2, $3, $4, $5, $6)
-		RETURNING id, github_id, login, avatar_url, name, email,
+		INSERT INTO users (github_id, provider, login, avatar_url, name, email, sponsorship_data)
+		VALUES ($1, 'github', $2, $3, $4, $5, $6)
+		RETURNING id, github_id, patreon_id, provider, login, avatar_url, name, email,
 		          sponsorship_data, last_sponsorship_check, created_at, updated_at
 	`, user.GitHubID, user.Login, user.AvatarURL, user.Name, user.Email,
 		user.SponsorshipData).Scan(
-		&user.ID, &user.GitHubID, &user.Login, &user.AvatarURL,
+		&user.ID, &user.GitHubID, &user.PatreonID, &user.Provider, &user.Login, &user.AvatarURL,
 		&user.Name, &user.Email, &user.SponsorshipData,
 		&user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
 	)
@@ -244,6 +246,51 @@ func upsertSponsorUsername(ctx context.Context, pool *pgxpool.Pool, sponsor *Spo
 
 	slog.Debug("upsertSponsorUsername: inserted new sponsor", "username", sponsor.Username, "id", sponsor.ID)
 	return nil
+}
+
+// upsertPatreonUser creates or updates a Patreon user in the database.
+func upsertPatreonUser(ctx context.Context, pool *pgxpool.Pool, user *User) error {
+	slog.Debug("upsertPatreonUser: attempting upsert", "patreon_id", user.PatreonID, "login", user.Login)
+
+	// Try update first
+	tag, err := pool.Exec(ctx, `
+		UPDATE users
+		SET login=$1, avatar_url=$2, name=$3, email=$4,
+		    sponsorship_data=$5, last_sponsorship_check=NOW(), updated_at=NOW()
+		WHERE patreon_id=$6
+	`, user.Login, user.AvatarURL, user.Name, user.Email,
+		user.SponsorshipData, user.PatreonID)
+	if err != nil {
+		slog.Error("upsertPatreonUser: update failed", "err", err, "patreon_id", user.PatreonID)
+		return err
+	}
+
+	if tag.RowsAffected() > 0 {
+		slog.Debug("upsertPatreonUser: updated existing user", "patreon_id", user.PatreonID, "rows_affected", tag.RowsAffected())
+		return pool.QueryRow(ctx, `
+			SELECT id, github_id, patreon_id, provider, login, avatar_url, name, email,
+			       sponsorship_data, last_sponsorship_check, created_at, updated_at
+			FROM users WHERE patreon_id = $1
+		`, user.PatreonID).Scan(
+			&user.ID, &user.GitHubID, &user.PatreonID, &user.Provider, &user.Login, &user.AvatarURL,
+			&user.Name, &user.Email, &user.SponsorshipData,
+			&user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
+		)
+	}
+
+	slog.Debug("upsertPatreonUser: inserting new user", "patreon_id", user.PatreonID, "login", user.Login)
+
+	return pool.QueryRow(ctx, `
+		INSERT INTO users (patreon_id, provider, login, avatar_url, name, email, sponsorship_data)
+		VALUES ($1, 'patreon', $2, $3, $4, $5, $6)
+		RETURNING id, github_id, patreon_id, provider, login, avatar_url, name, email,
+		          sponsorship_data, last_sponsorship_check, created_at, updated_at
+	`, user.PatreonID, user.Login, user.AvatarURL, user.Name, user.Email,
+		user.SponsorshipData).Scan(
+		&user.ID, &user.GitHubID, &user.PatreonID, &user.Provider, &user.Login, &user.AvatarURL,
+		&user.Name, &user.Email, &user.SponsorshipData,
+		&user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
+	)
 }
 
 // markInactiveSponsorsNotIn marks all sponsors as inactive that are not in the given usernames list.

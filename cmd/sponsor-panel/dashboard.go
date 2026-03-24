@@ -26,7 +26,7 @@ func (s *Server) loginPageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	templ.Handler(
-		templates.Base("Login", templates.Login()),
+		templates.Base("Login", templates.Login(s.patreonOAuth != nil)),
 	).ServeHTTP(w, r)
 }
 
@@ -86,6 +86,7 @@ func (s *Server) dashboardHandler(w http.ResponseWriter, r *http.Request) {
 		User: templates.UserProps{
 			Login:     user.Login,
 			AvatarURL: user.AvatarURL,
+			Provider:  user.Provider,
 		},
 		IsSponsor:     isSponsor,
 		SponsorAmount: monthlyAmount,

@@ -21,6 +21,7 @@ import (
 	"github.com/gorilla/sessions"
 	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/joho/godotenv/autoload"
+	patreon "gopkg.in/mxpv/patreon-go.v1"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
@@ -41,10 +42,17 @@ var (
 	logoSubmissionRepo = flag.String("logo-submission-repo", "anubis", "Repo to submit logo requests to")
 	sponsorTarget      = flag.String("sponsor-target", "Xe", "GitHub username to sync sponsorships for")
 
-	// OAuth configuration
+	// GitHub OAuth configuration
 	clientID      = flag.String("github-client-id", "", "GitHub OAuth Client ID")
 	clientSecret  = flag.String("github-client-secret", "", "GitHub OAuth Client Secret")
 	oauthRedirect = flag.String("oauth-redirect-url", "", "OAuth redirect URL")
+
+	// Patreon OAuth configuration (optional)
+	patreonClientID     = flag.String("patreon-client-id", "", "Patreon OAuth Client ID")
+	patreonClientSecret = flag.String("patreon-client-secret", "", "Patreon OAuth Client Secret")
+	patreonRedirect     = flag.String("patreon-redirect-url", "", "Patreon OAuth redirect URL")
+	patreonCampaignID   = flag.String("patreon-campaign-id", "", "Patreon campaign ID to check pledges against")
+	patreonFiftyPlus    = flag.String("patreon-fifty-plus", "", "Comma-separated list of Patreon usernames always treated as $50+ sponsors")
 
 	//go:embed static
 	staticFS embed.FS
@@ -55,6 +63,9 @@ type Server struct {
 	pool              *pgxpool.Pool
 	ghClient          *gh.Client
 	oauth             *oauth2.Config
+	patreonOAuth          *oauth2.Config // nil if Patreon not configured
+	patreonCampaignID     string
+	patreonFiftyPlusSpons map[string]bool // Patreon usernames always treated as $50+
 	discordInvite     string
 	fiftyPlusSponsors map[string]bool // Always treated as $50+ sponsors
 	sessionStore      *sessions.CookieStore
@@ -175,7 +186,23 @@ func main() {
 		Scopes:       []string{"read:user", "user:email", "read:org", "read:sponsors"},
 		Endpoint:     github.Endpoint,
 	}
-	slog.Debug("main: OAuth configured", "client_id", *clientID, "redirect_url", *oauthRedirect)
+	slog.Debug("main: GitHub OAuth configured", "client_id", *clientID, "redirect_url", *oauthRedirect)
+
+	// Patreon OAuth configuration (optional)
+	var patreonConfig *oauth2.Config
+	if *patreonClientID != "" && *patreonClientSecret != "" && *patreonRedirect != "" {
+		patreonConfig = &oauth2.Config{
+			ClientID:     *patreonClientID,
+			ClientSecret: *patreonClientSecret,
+			RedirectURL:  *patreonRedirect,
+			Scopes:       []string{"identity", "identity[email]", "campaigns.members"},
+			Endpoint: oauth2.Endpoint{
+				AuthURL:  patreon.AuthorizationURL,
+				TokenURL: patreon.AccessTokenURL,
+			},
+		}
+		slog.Info("main: Patreon OAuth configured", "client_id", *patreonClientID, "redirect_url", *patreonRedirect)
+	}
 
 	// Parse fifty-plus sponsors list
 	fiftyPlusMap := make(map[string]bool)
@@ -188,6 +215,19 @@ func main() {
 			}
 		}
 		slog.Info("main: loaded fifty-plus sponsors", "count", len(fiftyPlusMap))
+	}
+
+	// Parse Patreon fifty-plus sponsors list
+	patreonFiftyPlusMap := make(map[string]bool)
+	if *patreonFiftyPlus != "" {
+		slog.Debug("main: parsing patreon fifty-plus sponsors", "list", *patreonFiftyPlus)
+		for _, sponsor := range strings.Split(*patreonFiftyPlus, ",") {
+			sponsor = strings.TrimSpace(sponsor)
+			if sponsor != "" {
+				patreonFiftyPlusMap[sponsor] = true
+			}
+		}
+		slog.Info("main: loaded patreon fifty-plus sponsors", "count", len(patreonFiftyPlusMap))
 	}
 
 	// Create session store
@@ -218,6 +258,9 @@ func main() {
 		pool:              pool,
 		ghClient:          ghClient,
 		oauth:             oauthConfig,
+		patreonOAuth:          patreonConfig,
+		patreonCampaignID:     *patreonCampaignID,
+		patreonFiftyPlusSpons: patreonFiftyPlusMap,
 		discordInvite:     *discordInvite,
 		fiftyPlusSponsors: fiftyPlusMap,
 		sessionStore:      sessionStore,
@@ -245,6 +288,10 @@ func main() {
 	mux.HandleFunc("/login", server.loginHandler)
 	mux.HandleFunc("/callback", server.callbackHandler)
 	mux.HandleFunc("/logout", server.logoutHandler)
+
+	// Patreon OAuth handlers
+	mux.HandleFunc("/login/patreon", server.patreonLoginHandler)
+	mux.HandleFunc("/callback/patreon", server.patreonCallbackHandler)
 
 	// Login page handler
 	mux.HandleFunc("/login-page", server.loginPageHandler)

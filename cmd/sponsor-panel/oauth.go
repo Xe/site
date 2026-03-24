@@ -558,7 +558,8 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Upsert user in database
 	user := &User{
-		GitHubID:        ghUser.ID,
+		GitHubID:        &ghUser.ID,
+		Provider:        "github",
 		Login:           ghUser.Login,
 		AvatarURL:       ghUser.AvatarURL,
 		Name:            ghUser.Name,
