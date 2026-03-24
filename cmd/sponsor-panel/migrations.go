@@ -61,6 +61,30 @@ CREATE INDEX IF NOT EXISTS idx_sponsor_usernames ON github_sponsor_usernames(use
 CREATE INDEX IF NOT EXISTS idx_sponsor_active ON github_sponsor_usernames(is_active);
 `
 
+const migration002 = `
+-- Make github_id nullable (Patreon users won't have one)
+ALTER TABLE users ALTER COLUMN github_id DROP NOT NULL;
+
+-- Add patreon_id column for Patreon OAuth users
+ALTER TABLE users ADD COLUMN IF NOT EXISTS patreon_id TEXT UNIQUE;
+
+-- Add provider column to distinguish auth source
+ALTER TABLE users ADD COLUMN IF NOT EXISTS provider TEXT NOT NULL DEFAULT 'github';
+
+-- Drop old unique constraint on login (may not exist by name)
+DO $$ BEGIN
+    ALTER TABLE users DROP CONSTRAINT IF EXISTS users_login_key;
+EXCEPTION WHEN undefined_object THEN NULL;
+END $$;
+
+-- Uniqueness is now per-provider
+DROP INDEX IF EXISTS idx_users_provider_login;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_users_provider_login ON users(provider, login);
+
+-- Index for Patreon lookups
+CREATE INDEX IF NOT EXISTS idx_users_patreon_id ON users(patreon_id);
+`
+
 // runMigrations executes the database schema migration.
 func runMigrations(ctx context.Context, pool *pgxpool.Pool) error {
 	slog.Info("running database migrations")
@@ -68,6 +92,12 @@ func runMigrations(ctx context.Context, pool *pgxpool.Pool) error {
 	if err != nil {
 		return err
 	}
+
+	_, err = pool.Exec(ctx, migration002)
+	if err != nil {
+		return err
+	}
+
 	slog.Info("database migrations completed")
 	return nil
 }
