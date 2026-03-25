@@ -8,7 +8,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "go test ./...",
+    "test": "npm run generate && go test ./...",
     "generate": "go generate ./...",
     "dev": "go run ./cmd/xesite --site-url https://preview.xeiaso.net --devel",
     "dev:sponsor-panel": "cd ./cmd/sponsor-panel && go generate ./... && go run .",

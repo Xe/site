@@ -8,8 +8,6 @@ User-agent: Applebot-Extended
 User-agent: Bytespider
 User-agent: CCBot
 User-agent: ChatGPT-User
-User-agent: Claude-Web
-User-agent: ClaudeBot
 User-agent: cohere-ai
 User-agent: Diffbot
 User-agent: DuckAssistBot

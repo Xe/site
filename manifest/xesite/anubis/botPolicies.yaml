@@ -12,8 +12,6 @@
 
 bots:
   # Pathological bots to deny
-  - # This correlates to data/bots/ai-robots-txt.yaml in the source tree
-    import: (data)/bots/ai-robots-txt.yaml
   - import: (data)/bots/cloudflare-workers.yaml
   - import: (data)/bots/headless-browsers.yaml
   - import: (data)/bots/us-ai-scraper.yaml
