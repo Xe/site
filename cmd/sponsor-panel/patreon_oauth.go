@@ -222,7 +222,7 @@ func (s *Server) patreonCallbackHandler(w http.ResponseWriter, r *http.Request) 
 
 	// Upsert user in database
 	patreonID := identity.Data.ID
-	user := &User{
+	user := &PanelUser{
 		PatreonID:       &patreonID,
 		Provider:        "patreon",
 		Login:           login,
@@ -232,7 +232,7 @@ func (s *Server) patreonCallbackHandler(w http.ResponseWriter, r *http.Request) 
 		SponsorshipData: sponsorData,
 	}
 
-	if err := upsertPatreonUser(r.Context(), s.pool, user); err != nil {
+	if err := upsertPatreonUser(s.db, user); err != nil {
 		slog.Error("patreonCallbackHandler: failed to upsert user", "err", err, "patreon_id", patreonID)
 		renderOAuthError(w, "Failed to create user")
 		return
@@ -246,7 +246,7 @@ func (s *Server) patreonCallbackHandler(w http.ResponseWriter, r *http.Request) 
 		slog.Debug("patreonCallbackHandler: failed to decode existing session, creating new one", "err", err)
 		session = sessions.NewSession(s.sessionStore, "session")
 	}
-	session.Values["user_id"] = user.ID
+	session.Values["user_id"] = int(user.ID)
 	if err := s.sessionStore.Save(r, w, session); err != nil {
 		slog.Error("patreonCallbackHandler: failed to save session", "err", err)
 		renderOAuthError(w, "Failed to save session")
