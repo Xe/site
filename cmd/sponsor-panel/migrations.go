@@ -85,6 +85,30 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_users_provider_login ON users(provider, lo
 CREATE INDEX IF NOT EXISTS idx_users_patreon_id ON users(patreon_id);
 `
 
+const migration003 = `
+-- Add stripe_customer_id to users for Stripe invoicing
+ALTER TABLE users ADD COLUMN IF NOT EXISTS stripe_customer_id TEXT UNIQUE;
+CREATE INDEX IF NOT EXISTS idx_users_stripe_customer_id ON users(stripe_customer_id);
+
+-- Add google_id and microsoft_id for new OAuth providers
+ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id TEXT UNIQUE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS microsoft_id TEXT UNIQUE;
+CREATE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id);
+CREATE INDEX IF NOT EXISTS idx_users_microsoft_id ON users(microsoft_id);
+
+-- Magic link tokens for passwordless email auth
+CREATE TABLE IF NOT EXISTS magic_link_tokens (
+    id SERIAL PRIMARY KEY,
+    email TEXT NOT NULL,
+    token_hash TEXT NOT NULL UNIQUE,  -- SHA-256 of the raw token
+    expires_at TIMESTAMP NOT NULL,
+    used_at TIMESTAMP,                -- NULL until consumed
+    created_at TIMESTAMP DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_magic_link_email ON magic_link_tokens(email);
+CREATE INDEX IF NOT EXISTS idx_magic_link_expires ON magic_link_tokens(expires_at);
+`
+
 // runMigrations executes the database schema migration.
 func runMigrations(ctx context.Context, pool *pgxpool.Pool) error {
 	slog.Info("running database migrations")
@@ -94,6 +118,11 @@ func runMigrations(ctx context.Context, pool *pgxpool.Pool) error {
 	}
 
 	_, err = pool.Exec(ctx, migration002)
+	if err != nil {
+		return err
+	}
+
+	_, err = pool.Exec(ctx, migration003)
 	if err != nil {
 		return err
 	}

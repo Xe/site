@@ -26,7 +26,7 @@ func (s *Server) loginPageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	templ.Handler(
-		templates.Base("Login", templates.Login(s.patreonOAuth != nil)),
+		templates.Base("Login", templates.Login(s.patreonOAuth != nil, s.googleOAuth != nil, s.microsoftOAuth != nil)),
 	).ServeHTTP(w, r)
 }
 
@@ -82,17 +82,37 @@ func (s *Server) dashboardHandler(w http.ResponseWriter, r *http.Request) {
 		slog.Debug("dashboardHandler: no sponsorship data", "user_id", user.ID)
 	}
 
+	// Check Stripe billing status
+	hasStripeCustomer := user.StripeCustomerID != nil && *user.StripeCustomerID != ""
+	stripeSponsorActive := false
+	stripeSponsorAmount := 0
+	stripeSponsorTier := "Stripe Sponsor"
+	if hasStripeCustomer {
+		var data SponsorshipData
+		if user.SponsorshipData != "" {
+			if err := json.Unmarshal([]byte(user.SponsorshipData), &data); err == nil && data.IsActive && data.TierName == "Stripe Sponsor" {
+				stripeSponsorActive = true
+				stripeSponsorAmount = data.MonthlyAmount
+				stripeSponsorTier = data.TierName
+			}
+		}
+	}
+
 	props := templates.DashboardProps{
 		User: templates.UserProps{
 			Login:     user.Login,
 			AvatarURL: user.AvatarURL,
 			Provider:  user.Provider,
 		},
-		IsSponsor:     isSponsor,
-		SponsorAmount: monthlyAmount,
-		SponsorTier:   tierName,
-		IsFiftyPlus:   isFiftyPlus,
-		DiscordInvite: s.discordInvite,
+		IsSponsor:           isSponsor,
+		SponsorAmount:       monthlyAmount,
+		SponsorTier:         tierName,
+		IsFiftyPlus:         isFiftyPlus,
+		DiscordInvite:       s.discordInvite,
+		HasStripeCustomer:   hasStripeCustomer,
+		StripeSponsorActive: stripeSponsorActive,
+		StripeSponsorAmount: stripeSponsorAmount,
+		StripeSponsorTier:   stripeSponsorTier,
 	}
 
 	slog.Debug("dashboardHandler: rendering dashboard", "user_id", user.ID, "login", user.Login)

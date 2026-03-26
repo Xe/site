@@ -2,19 +2,23 @@ package templates
 
 // DashboardProps contains the data needed to render the dashboard
 type DashboardProps struct {
-	DiscordInvite string
-	User          UserProps
-	IsSponsor     bool
-	SponsorAmount int
-	SponsorTier   string
-	IsFiftyPlus   bool
+	DiscordInvite      string
+	User               UserProps
+	IsSponsor          bool
+	SponsorAmount      int
+	SponsorTier        string
+	IsFiftyPlus        bool
+	HasStripeCustomer  bool
+	StripeSponsorActive bool
+	StripeSponsorAmount int
+	StripeSponsorTier   string
 }
 
 // UserProps contains user information
 type UserProps struct {
 	Login     string
 	AvatarURL string
-	Provider  string // "github" or "patreon"
+	Provider  string // "github", "patreon", "google", "microsoft", or "email"
 }
 
 templ Dashboard(props DashboardProps) {
@@ -29,6 +33,9 @@ templ Dashboard(props DashboardProps) {
 				@DiscordCard(props.DiscordInvite)
 			}
 			@SponsorshipCard(props.IsSponsor, props.SponsorAmount, props.SponsorTier, props.User.Provider)
+			if props.HasStripeCustomer {
+				@BillingCard(props.StripeSponsorActive, props.StripeSponsorAmount, props.StripeSponsorTier)
+			}
 		</div>
 		<div class="grid md:grid-cols-2 gap-8 mt-8">
 			if props.IsFiftyPlus {
@@ -95,10 +102,14 @@ templ SponsorshipCard(isSponsor bool, amount int, tier string, provider string) 
 				<a href="https://www.patreon.com/cadey" target="_blank" class="btn btn-pink">
 					Become a Patron
 				</a>
-			} else {
+			} else if provider == "github" {
 				<a href="https://github.com/sponsors/Xe" target="_blank" class="btn btn-pink">
 					Become a Sponsor
 				</a>
+			} else {
+				<p class="text-sm text-fg-3 dark:text-fgDark-3 mb-3">
+					Your sponsorship will be activated once your invoice is paid.
+				</p>
 			}
 			<p class="text-xs text-fg-4 dark:text-fgDark-4 mt-4 leading-relaxed">
 				If you're part of an organization that sponsors Anubis and see this message, please contact me@xeiaso.net for help.

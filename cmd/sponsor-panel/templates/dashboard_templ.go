@@ -10,19 +10,23 @@ import templruntime "github.com/a-h/templ/runtime"
 
 // DashboardProps contains the data needed to render the dashboard
 type DashboardProps struct {
-	DiscordInvite string
-	User          UserProps
-	IsSponsor     bool
-	SponsorAmount int
-	SponsorTier   string
-	IsFiftyPlus   bool
+	DiscordInvite       string
+	User                UserProps
+	IsSponsor           bool
+	SponsorAmount       int
+	SponsorTier         string
+	IsFiftyPlus         bool
+	HasStripeCustomer   bool
+	StripeSponsorActive bool
+	StripeSponsorAmount int
+	StripeSponsorTier   string
 }
 
 // UserProps contains user information
 type UserProps struct {
 	Login     string
 	AvatarURL string
-	Provider  string // "github" or "patreon"
+	Provider  string // "github", "patreon", "google", "microsoft", or "email"
 }
 
 func Dashboard(props DashboardProps) templ.Component {
@@ -57,7 +61,7 @@ func Dashboard(props DashboardProps) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(props.User.Login)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 24, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 28, Col: 63}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -76,6 +80,12 @@ func Dashboard(props DashboardProps) templ.Component {
 		templ_7745c5c3_Err = SponsorshipCard(props.IsSponsor, props.SponsorAmount, props.SponsorTier, props.User.Provider).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
+		}
+		if props.HasStripeCustomer {
+			templ_7745c5c3_Err = BillingCard(props.StripeSponsorActive, props.StripeSponsorAmount, props.StripeSponsorTier).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
 		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div><div class=\"grid md:grid-cols-2 gap-8 mt-8\">")
 		if templ_7745c5c3_Err != nil {
@@ -129,7 +139,7 @@ func Navbar(login, avatarURL string) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(templ.SafeURL(avatarURL))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 48, Col: 39}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 55, Col: 39}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -142,7 +152,7 @@ func Navbar(login, avatarURL string) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(login)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 49, Col: 66}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 56, Col: 66}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -184,7 +194,7 @@ func DiscordCard(inviteURL string) templ.Component {
 		var templ_7745c5c3_Var7 templ.SafeURL
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(inviteURL))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 69, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 76, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -231,7 +241,7 @@ func SponsorshipCard(isSponsor bool, amount int, tier string, provider string) t
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(formatDollars(amount))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 87, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 94, Col: 29}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -244,7 +254,7 @@ func SponsorshipCard(isSponsor bool, amount int, tier string, provider string) t
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(tier)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 90, Col: 62}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/dashboard.templ`, Line: 97, Col: 62}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -264,18 +274,23 @@ func SponsorshipCard(isSponsor bool, amount int, tier string, provider string) t
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-			} else {
+			} else if provider == "github" {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<a href=\"https://github.com/sponsors/Xe\" target=\"_blank\" class=\"btn btn-pink\">Become a Sponsor</a>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
+			} else {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<p class=\"text-sm text-fg-3 dark:text-fgDark-3 mb-3\">Your sponsorship will be activated once your invoice is paid.</p>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, " <p class=\"text-xs text-fg-4 dark:text-fgDark-4 mt-4 leading-relaxed\">If you're part of an organization that sponsors Anubis and see this message, please contact me@xeiaso.net for help.</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, " <p class=\"text-xs text-fg-4 dark:text-fgDark-4 mt-4 leading-relaxed\">If you're part of an organization that sponsors Anubis and see this message, please contact me@xeiaso.net for help.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -304,7 +319,7 @@ func TeamInviteCard() templ.Component {
 			templ_7745c5c3_Var11 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<div class=\"card card-green p-4\"><h2 class=\"card-title flex items-center gap-2\"><svg class=\"w-5 h-5 text-green-light dark:text-greenDark-light\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z\"></path></svg> Team Invitation</h2><p class=\"card-description\">Invite team members to TecharoHQ as part of your sponsorship.</p><form hx-post=\"/invite\" hx-target=\"#invite-result\" class=\"space-y-3\"><input type=\"text\" name=\"username\" placeholder=\"GitHub username\" required class=\"input\"> <button type=\"submit\" class=\"btn btn-primary w-full\">Send Invitation</button></form><div id=\"invite-result\"></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"card card-green p-4\"><h2 class=\"card-title flex items-center gap-2\"><svg class=\"w-5 h-5 text-green-light dark:text-greenDark-light\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z\"></path></svg> Team Invitation</h2><p class=\"card-description\">Invite team members to TecharoHQ as part of your sponsorship.</p><form hx-post=\"/invite\" hx-target=\"#invite-result\" class=\"space-y-3\"><input type=\"text\" name=\"username\" placeholder=\"GitHub username\" required class=\"input\"> <button type=\"submit\" class=\"btn btn-primary w-full\">Send Invitation</button></form><div id=\"invite-result\"></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -333,7 +348,7 @@ func LogoSubmitCard() templ.Component {
 			templ_7745c5c3_Var12 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"card p-4\"><h2 class=\"card-title flex items-center gap-2\"><svg class=\"w-5 h-5 text-purple-light dark:text-purpleDark-light\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> Logo Submission</h2><p class=\"card-description\">Submit your company logo for the Anubis README.</p><form hx-post=\"/logo\" hx-encoding=\"multipart/form-data\" hx-target=\"#logo-result\" class=\"space-y-3\"><input type=\"text\" name=\"company\" placeholder=\"Company Name\" required class=\"input\"> <input type=\"url\" name=\"website\" placeholder=\"Website URL\" required class=\"input\"> <input type=\"file\" name=\"logo\" accept=\"image/png,image/jpeg,image/svg+xml\" required class=\"file-input\"> <button type=\"submit\" class=\"btn btn-dark w-full\">Submit Logo</button></form><div id=\"logo-result\"></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"card p-4\"><h2 class=\"card-title flex items-center gap-2\"><svg class=\"w-5 h-5 text-purple-light dark:text-purpleDark-light\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> Logo Submission</h2><p class=\"card-description\">Submit your company logo for the Anubis README.</p><form hx-post=\"/logo\" hx-encoding=\"multipart/form-data\" hx-target=\"#logo-result\" class=\"space-y-3\"><input type=\"text\" name=\"company\" placeholder=\"Company Name\" required class=\"input\"> <input type=\"url\" name=\"website\" placeholder=\"Website URL\" required class=\"input\"> <input type=\"file\" name=\"logo\" accept=\"image/png,image/jpeg,image/svg+xml\" required class=\"file-input\"> <button type=\"submit\" class=\"btn btn-dark w-full\">Submit Logo</button></form><div id=\"logo-result\"></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

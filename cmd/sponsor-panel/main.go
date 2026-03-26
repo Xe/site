@@ -25,6 +25,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
+	"golang.org/x/oauth2/google"
+	"github.com/stripe/stripe-go/v84"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/web/htmx"
 )
@@ -54,6 +56,26 @@ var (
 	patreonCampaignID   = flag.String("patreon-campaign-id", "", "Patreon campaign ID to check pledges against")
 	patreonFiftyPlus    = flag.String("patreon-fifty-plus", "", "Comma-separated list of Patreon usernames always treated as $50+ sponsors")
 
+	// Google OAuth configuration (optional)
+	googleClientID     = flag.String("google-client-id", "", "Google OAuth Client ID")
+	googleClientSecret = flag.String("google-client-secret", "", "Google OAuth Client Secret")
+	googleRedirect     = flag.String("google-redirect-url", "", "Google OAuth redirect URL")
+
+	// Microsoft OAuth configuration (optional)
+	microsoftClientID     = flag.String("microsoft-client-id", "", "Microsoft OAuth Client ID")
+	microsoftClientSecret = flag.String("microsoft-client-secret", "", "Microsoft OAuth Client Secret")
+	microsoftRedirect     = flag.String("microsoft-redirect-url", "", "Microsoft OAuth redirect URL")
+
+	// Email magic link configuration
+	smtpFrom   = flag.String("smtp-from", "", "Sender email address for magic links")
+	sesRegion  = flag.String("ses-region", "", "AWS SES region (if empty, logs emails instead)")
+	baseURLStr = flag.String("base-url", "", "Base URL for constructing magic link URLs")
+
+	// Stripe billing configuration (optional)
+	stripeSecretKey    = flag.String("stripe-secret-key", "", "Stripe secret API key")
+	stripeWebhookSec   = flag.String("stripe-webhook-secret", "", "Stripe webhook signing secret")
+	stripePortalConfig = flag.String("stripe-portal-config-id", "", "Stripe Billing Portal configuration ID")
+
 	//go:embed static
 	staticFS embed.FS
 )
@@ -66,12 +88,19 @@ type Server struct {
 	patreonOAuth          *oauth2.Config // nil if Patreon not configured
 	patreonCampaignID     string
 	patreonFiftyPlusSpons map[string]bool // Patreon usernames always treated as $50+
+	googleOAuth           *oauth2.Config // nil if Google not configured
+	microsoftOAuth        *oauth2.Config // nil if Microsoft not configured
 	discordInvite     string
 	fiftyPlusSponsors map[string]bool // Always treated as $50+ sponsors
 	sessionStore      *sessions.CookieStore
 	cookieSecure      bool
 	bucketName        string
 	s3Client          *s3.Client
+	emailSender          EmailSender
+	baseURL              string
+	stripeClient         *stripe.Client
+	stripeWebhookSecret  string
+	stripePortalConfigID string
 }
 
 func main() {
@@ -204,6 +233,35 @@ func main() {
 		slog.Info("main: Patreon OAuth configured", "client_id", *patreonClientID, "redirect_url", *patreonRedirect)
 	}
 
+	// Google OAuth configuration (optional)
+	var googleConfig *oauth2.Config
+	if *googleClientID != "" && *googleClientSecret != "" && *googleRedirect != "" {
+		googleConfig = &oauth2.Config{
+			ClientID:     *googleClientID,
+			ClientSecret: *googleClientSecret,
+			RedirectURL:  *googleRedirect,
+			Scopes:       []string{"openid", "email", "profile"},
+			Endpoint:     google.Endpoint,
+		}
+		slog.Info("main: Google OAuth configured", "client_id", *googleClientID, "redirect_url", *googleRedirect)
+	}
+
+	// Microsoft OAuth configuration (optional)
+	var microsoftConfig *oauth2.Config
+	if *microsoftClientID != "" && *microsoftClientSecret != "" && *microsoftRedirect != "" {
+		microsoftConfig = &oauth2.Config{
+			ClientID:     *microsoftClientID,
+			ClientSecret: *microsoftClientSecret,
+			RedirectURL:  *microsoftRedirect,
+			Scopes:       []string{"openid", "email", "profile", "User.Read"},
+			Endpoint: oauth2.Endpoint{
+				AuthURL:  "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+				TokenURL: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+			},
+		}
+		slog.Info("main: Microsoft OAuth configured", "client_id", *microsoftClientID, "redirect_url", *microsoftRedirect)
+	}
+
 	// Parse fifty-plus sponsors list
 	fiftyPlusMap := make(map[string]bool)
 	if *fiftyPlusSpons != "" {
@@ -254,6 +312,28 @@ func main() {
 		slog.Info("main: S3 client created", "bucket", *bucketName)
 	}
 
+	// Initialize email sender for magic links
+	var emailSender EmailSender
+	if *sesRegion != "" && *smtpFrom != "" {
+		sender, err := newSESEmailSender(ctx, *sesRegion, *smtpFrom)
+		if err != nil {
+			slog.Error("main: failed to create SES email sender", "err", err)
+			os.Exit(1)
+		}
+		emailSender = sender
+		slog.Info("main: SES email sender configured", "region", *sesRegion, "from", *smtpFrom)
+	} else {
+		emailSender = &logEmailSender{}
+		slog.Info("main: using log email sender (no SES region configured)")
+	}
+
+	// Initialize Stripe client (optional)
+	var stripeClient *stripe.Client
+	if *stripeSecretKey != "" {
+		stripeClient = stripe.NewClient(*stripeSecretKey)
+		slog.Info("main: Stripe client configured")
+	}
+
 	server := &Server{
 		pool:              pool,
 		ghClient:          ghClient,
@@ -261,12 +341,19 @@ func main() {
 		patreonOAuth:          patreonConfig,
 		patreonCampaignID:     *patreonCampaignID,
 		patreonFiftyPlusSpons: patreonFiftyPlusMap,
+		googleOAuth:           googleConfig,
+		microsoftOAuth:        microsoftConfig,
 		discordInvite:     *discordInvite,
 		fiftyPlusSponsors: fiftyPlusMap,
 		sessionStore:      sessionStore,
 		cookieSecure:      *cookieSecure,
 		bucketName:        *bucketName,
 		s3Client:          s3Client,
+		emailSender:       emailSender,
+		baseURL:           strings.TrimRight(*baseURLStr, "/"),
+		stripeClient:         stripeClient,
+		stripeWebhookSecret:  *stripeWebhookSec,
+		stripePortalConfigID: *stripePortalConfig,
 	}
 
 	mux := http.NewServeMux()
@@ -292,6 +379,22 @@ func main() {
 	// Patreon OAuth handlers
 	mux.HandleFunc("/login/patreon", server.patreonLoginHandler)
 	mux.HandleFunc("/callback/patreon", server.patreonCallbackHandler)
+
+	// Google OAuth handlers
+	mux.HandleFunc("/login/google", server.googleLoginHandler)
+	mux.HandleFunc("/callback/google", server.googleCallbackHandler)
+
+	// Microsoft OAuth handlers
+	mux.HandleFunc("/login/microsoft", server.microsoftLoginHandler)
+	mux.HandleFunc("/callback/microsoft", server.microsoftCallbackHandler)
+
+	// Email magic link handlers
+	mux.HandleFunc("/login/email", server.magicLinkRequestHandler)
+	mux.HandleFunc("/login/email/verify", server.magicLinkVerifyHandler)
+
+	// Stripe billing handlers
+	mux.HandleFunc("/webhooks/stripe", server.stripeWebhookHandler)
+	mux.HandleFunc("/billing/portal", server.billingPortalHandler)
 
 	// Login page handler
 	mux.HandleFunc("/login-page", server.loginPageHandler)

@@ -14,7 +14,10 @@ type User struct {
 	ID                   int       `json:"id" db:"id"`
 	GitHubID             *int64    `json:"github_id" db:"github_id"`
 	PatreonID            *string   `json:"patreon_id" db:"patreon_id"`
-	Provider             string    `json:"provider" db:"provider"` // "github" or "patreon"
+	GoogleID             *string   `json:"google_id" db:"google_id"`
+	MicrosoftID          *string   `json:"microsoft_id" db:"microsoft_id"`
+	StripeCustomerID     *string   `json:"stripe_customer_id" db:"stripe_customer_id"`
+	Provider             string    `json:"provider" db:"provider"` // "github", "patreon", "google", "microsoft", or "email"
 	Login                string    `json:"login" db:"login"`
 	AvatarURL            string    `json:"avatar_url" db:"avatar_url"`
 	Name                 string    `json:"name" db:"name"`
@@ -23,6 +26,16 @@ type User struct {
 	LastSponsorshipCheck time.Time `json:"last_sponsorship_check" db:"last_sponsorship_check"`
 	CreatedAt            time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt            time.Time `json:"updated_at" db:"updated_at"`
+}
+
+// MagicLinkToken represents a passwordless email login token.
+type MagicLinkToken struct {
+	ID        int        `json:"id" db:"id"`
+	Email     string     `json:"email" db:"email"`
+	TokenHash string     `json:"token_hash" db:"token_hash"`
+	ExpiresAt time.Time  `json:"expires_at" db:"expires_at"`
+	UsedAt    *time.Time `json:"used_at" db:"used_at"`
+	CreatedAt time.Time  `json:"created_at" db:"created_at"`
 }
 
 // SponsorshipData represents the cached GraphQL response.
@@ -81,27 +94,35 @@ type SponsorUsername struct {
 	CreatedAt           time.Time `json:"created_at" db:"created_at"`
 }
 
+// scanUser scans a user row into a User struct. The query must SELECT columns
+// in the order returned by userQuery().
+func scanUser(row interface{ Scan(...any) error }) (*User, error) {
+	var user User
+	err := row.Scan(
+		&user.ID, &user.GitHubID, &user.PatreonID, &user.GoogleID, &user.MicrosoftID, &user.StripeCustomerID,
+		&user.Provider, &user.Login, &user.AvatarURL, &user.Name, &user.Email,
+		&user.SponsorshipData, &user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
+	)
+	return &user, err
+}
+
 // getUserByID retrieves a user by ID from the database.
 func getUserByID(ctx context.Context, pool *pgxpool.Pool, userID int) (*User, error) {
 	slog.Debug("getUserByID: querying user", "user_id", userID)
 
-	var user User
-	err := pool.QueryRow(ctx, `
-		SELECT id, github_id, patreon_id, provider, login, avatar_url, name, email,
+	user, err := scanUser(pool.QueryRow(ctx, `
+		SELECT id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+		       provider, login, avatar_url, name, email,
 		       sponsorship_data, last_sponsorship_check, created_at, updated_at
 		FROM users WHERE id = $1
-	`, userID).Scan(
-		&user.ID, &user.GitHubID, &user.PatreonID, &user.Provider, &user.Login, &user.AvatarURL,
-		&user.Name, &user.Email, &user.SponsorshipData,
-		&user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
-	)
+	`, userID))
 	if err != nil {
 		slog.Error("getUserByID: user not found", "user_id", userID, "err", err)
 		return nil, err
 	}
 
 	slog.Debug("getUserByID: user found", "user_id", userID, "login", user.Login)
-	return &user, nil
+	return user, nil
 }
 
 // upsertUser creates or updates a user in the database.
@@ -123,30 +144,34 @@ func upsertUser(ctx context.Context, pool *pgxpool.Pool, user *User) error {
 
 	if tag.RowsAffected() > 0 {
 		slog.Debug("upsertUser: updated existing user", "github_id", user.GitHubID, "rows_affected", tag.RowsAffected())
-		return pool.QueryRow(ctx, `
-			SELECT id, github_id, patreon_id, provider, login, avatar_url, name, email,
+		found, scanErr := scanUser(pool.QueryRow(ctx, `
+			SELECT id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+			       provider, login, avatar_url, name, email,
 			       sponsorship_data, last_sponsorship_check, created_at, updated_at
 			FROM users WHERE github_id = $1
-		`, user.GitHubID).Scan(
-			&user.ID, &user.GitHubID, &user.PatreonID, &user.Provider, &user.Login, &user.AvatarURL,
-			&user.Name, &user.Email, &user.SponsorshipData,
-			&user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
-		)
+		`, user.GitHubID))
+		if scanErr != nil {
+			return scanErr
+		}
+		*user = *found
+		return nil
 	}
 
 	slog.Debug("upsertUser: inserting new user", "github_id", user.GitHubID, "login", user.Login)
 
-	return pool.QueryRow(ctx, `
+	found, scanErr := scanUser(pool.QueryRow(ctx, `
 		INSERT INTO users (github_id, provider, login, avatar_url, name, email, sponsorship_data)
 		VALUES ($1, 'github', $2, $3, $4, $5, $6)
-		RETURNING id, github_id, patreon_id, provider, login, avatar_url, name, email,
+		RETURNING id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+		          provider, login, avatar_url, name, email,
 		          sponsorship_data, last_sponsorship_check, created_at, updated_at
 	`, user.GitHubID, user.Login, user.AvatarURL, user.Name, user.Email,
-		user.SponsorshipData).Scan(
-		&user.ID, &user.GitHubID, &user.PatreonID, &user.Provider, &user.Login, &user.AvatarURL,
-		&user.Name, &user.Email, &user.SponsorshipData,
-		&user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
-	)
+		user.SponsorshipData))
+	if scanErr != nil {
+		return scanErr
+	}
+	*user = *found
+	return nil
 }
 
 // createLogoSubmission creates a logo submission in the database.
@@ -267,30 +292,219 @@ func upsertPatreonUser(ctx context.Context, pool *pgxpool.Pool, user *User) erro
 
 	if tag.RowsAffected() > 0 {
 		slog.Debug("upsertPatreonUser: updated existing user", "patreon_id", user.PatreonID, "rows_affected", tag.RowsAffected())
-		return pool.QueryRow(ctx, `
-			SELECT id, github_id, patreon_id, provider, login, avatar_url, name, email,
+		found, scanErr := scanUser(pool.QueryRow(ctx, `
+			SELECT id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+			       provider, login, avatar_url, name, email,
 			       sponsorship_data, last_sponsorship_check, created_at, updated_at
 			FROM users WHERE patreon_id = $1
-		`, user.PatreonID).Scan(
-			&user.ID, &user.GitHubID, &user.PatreonID, &user.Provider, &user.Login, &user.AvatarURL,
-			&user.Name, &user.Email, &user.SponsorshipData,
-			&user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
-		)
+		`, user.PatreonID))
+		if scanErr != nil {
+			return scanErr
+		}
+		*user = *found
+		return nil
 	}
 
 	slog.Debug("upsertPatreonUser: inserting new user", "patreon_id", user.PatreonID, "login", user.Login)
 
-	return pool.QueryRow(ctx, `
+	found, scanErr := scanUser(pool.QueryRow(ctx, `
 		INSERT INTO users (patreon_id, provider, login, avatar_url, name, email, sponsorship_data)
 		VALUES ($1, 'patreon', $2, $3, $4, $5, $6)
-		RETURNING id, github_id, patreon_id, provider, login, avatar_url, name, email,
+		RETURNING id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+		          provider, login, avatar_url, name, email,
 		          sponsorship_data, last_sponsorship_check, created_at, updated_at
 	`, user.PatreonID, user.Login, user.AvatarURL, user.Name, user.Email,
-		user.SponsorshipData).Scan(
-		&user.ID, &user.GitHubID, &user.PatreonID, &user.Provider, &user.Login, &user.AvatarURL,
-		&user.Name, &user.Email, &user.SponsorshipData,
-		&user.LastSponsorshipCheck, &user.CreatedAt, &user.UpdatedAt,
-	)
+		user.SponsorshipData))
+	if scanErr != nil {
+		return scanErr
+	}
+	*user = *found
+	return nil
+}
+
+// upsertGoogleUser creates or updates a Google OAuth user in the database.
+func upsertGoogleUser(ctx context.Context, pool *pgxpool.Pool, user *User) error {
+	slog.Debug("upsertGoogleUser: attempting upsert", "google_id", user.GoogleID, "login", user.Login)
+
+	tag, err := pool.Exec(ctx, `
+		UPDATE users
+		SET login=$1, avatar_url=$2, name=$3, email=$4,
+		    sponsorship_data=$5, last_sponsorship_check=NOW(), updated_at=NOW()
+		WHERE google_id=$6
+	`, user.Login, user.AvatarURL, user.Name, user.Email,
+		user.SponsorshipData, user.GoogleID)
+	if err != nil {
+		return err
+	}
+
+	if tag.RowsAffected() > 0 {
+		found, scanErr := scanUser(pool.QueryRow(ctx, `
+			SELECT id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+			       provider, login, avatar_url, name, email,
+			       sponsorship_data, last_sponsorship_check, created_at, updated_at
+			FROM users WHERE google_id = $1
+		`, user.GoogleID))
+		if scanErr != nil {
+			return scanErr
+		}
+		*user = *found
+		return nil
+	}
+
+	found, scanErr := scanUser(pool.QueryRow(ctx, `
+		INSERT INTO users (google_id, provider, login, avatar_url, name, email, sponsorship_data)
+		VALUES ($1, 'google', $2, $3, $4, $5, $6)
+		RETURNING id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+		          provider, login, avatar_url, name, email,
+		          sponsorship_data, last_sponsorship_check, created_at, updated_at
+	`, user.GoogleID, user.Login, user.AvatarURL, user.Name, user.Email,
+		user.SponsorshipData))
+	if scanErr != nil {
+		return scanErr
+	}
+	*user = *found
+	return nil
+}
+
+// upsertMicrosoftUser creates or updates a Microsoft OAuth user in the database.
+func upsertMicrosoftUser(ctx context.Context, pool *pgxpool.Pool, user *User) error {
+	slog.Debug("upsertMicrosoftUser: attempting upsert", "microsoft_id", user.MicrosoftID, "login", user.Login)
+
+	tag, err := pool.Exec(ctx, `
+		UPDATE users
+		SET login=$1, avatar_url=$2, name=$3, email=$4,
+		    sponsorship_data=$5, last_sponsorship_check=NOW(), updated_at=NOW()
+		WHERE microsoft_id=$6
+	`, user.Login, user.AvatarURL, user.Name, user.Email,
+		user.SponsorshipData, user.MicrosoftID)
+	if err != nil {
+		return err
+	}
+
+	if tag.RowsAffected() > 0 {
+		found, scanErr := scanUser(pool.QueryRow(ctx, `
+			SELECT id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+			       provider, login, avatar_url, name, email,
+			       sponsorship_data, last_sponsorship_check, created_at, updated_at
+			FROM users WHERE microsoft_id = $1
+		`, user.MicrosoftID))
+		if scanErr != nil {
+			return scanErr
+		}
+		*user = *found
+		return nil
+	}
+
+	found, scanErr := scanUser(pool.QueryRow(ctx, `
+		INSERT INTO users (microsoft_id, provider, login, avatar_url, name, email, sponsorship_data)
+		VALUES ($1, 'microsoft', $2, $3, $4, $5, $6)
+		RETURNING id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+		          provider, login, avatar_url, name, email,
+		          sponsorship_data, last_sponsorship_check, created_at, updated_at
+	`, user.MicrosoftID, user.Login, user.AvatarURL, user.Name, user.Email,
+		user.SponsorshipData))
+	if scanErr != nil {
+		return scanErr
+	}
+	*user = *found
+	return nil
+}
+
+// upsertEmailUser creates or updates an email magic link user in the database.
+func upsertEmailUser(ctx context.Context, pool *pgxpool.Pool, user *User) error {
+	slog.Debug("upsertEmailUser: attempting upsert", "email", user.Email, "login", user.Login)
+
+	tag, err := pool.Exec(ctx, `
+		UPDATE users
+		SET avatar_url=$1, name=$2,
+		    last_sponsorship_check=NOW(), updated_at=NOW()
+		WHERE provider='email' AND login=$3
+	`, user.AvatarURL, user.Name, user.Login)
+	if err != nil {
+		return err
+	}
+
+	if tag.RowsAffected() > 0 {
+		found, scanErr := scanUser(pool.QueryRow(ctx, `
+			SELECT id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+			       provider, login, avatar_url, name, email,
+			       sponsorship_data, last_sponsorship_check, created_at, updated_at
+			FROM users WHERE provider='email' AND login = $1
+		`, user.Login))
+		if scanErr != nil {
+			return scanErr
+		}
+		*user = *found
+		return nil
+	}
+
+	found, scanErr := scanUser(pool.QueryRow(ctx, `
+		INSERT INTO users (provider, login, avatar_url, name, email, sponsorship_data)
+		VALUES ('email', $1, $2, $3, $4, $5)
+		RETURNING id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+		          provider, login, avatar_url, name, email,
+		          sponsorship_data, last_sponsorship_check, created_at, updated_at
+	`, user.Login, user.AvatarURL, user.Name, user.Email,
+		user.SponsorshipData))
+	if scanErr != nil {
+		return scanErr
+	}
+	*user = *found
+	return nil
+}
+
+// getUserByStripeCustomerID retrieves a user by their Stripe customer ID.
+func getUserByStripeCustomerID(ctx context.Context, pool *pgxpool.Pool, stripeID string) (*User, error) {
+	user, err := scanUser(pool.QueryRow(ctx, `
+		SELECT id, github_id, patreon_id, google_id, microsoft_id, stripe_customer_id,
+		       provider, login, avatar_url, name, email,
+		       sponsorship_data, last_sponsorship_check, created_at, updated_at
+		FROM users WHERE stripe_customer_id = $1
+	`, stripeID))
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+// setStripeCustomerID links a Stripe customer ID to a user.
+func setStripeCustomerID(ctx context.Context, pool *pgxpool.Pool, userID int, stripeID string) error {
+	_, err := pool.Exec(ctx, `UPDATE users SET stripe_customer_id=$1, updated_at=NOW() WHERE id=$2`, stripeID, userID)
+	return err
+}
+
+// createMagicLinkToken stores a magic link token hash in the database.
+func createMagicLinkToken(ctx context.Context, pool *pgxpool.Pool, email, tokenHash string, expiresAt time.Time) error {
+	_, err := pool.Exec(ctx, `
+		INSERT INTO magic_link_tokens (email, token_hash, expires_at)
+		VALUES ($1, $2, $3)
+	`, email, tokenHash, expiresAt)
+	return err
+}
+
+// consumeMagicLinkToken marks a token as used and returns it if valid and unexpired.
+func consumeMagicLinkToken(ctx context.Context, pool *pgxpool.Pool, tokenHash string) (*MagicLinkToken, error) {
+	var token MagicLinkToken
+	err := pool.QueryRow(ctx, `
+		UPDATE magic_link_tokens
+		SET used_at = NOW()
+		WHERE token_hash = $1 AND used_at IS NULL AND expires_at > NOW()
+		RETURNING id, email, token_hash, expires_at, used_at, created_at
+	`, tokenHash).Scan(&token.ID, &token.Email, &token.TokenHash, &token.ExpiresAt, &token.UsedAt, &token.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return &token, nil
+}
+
+// countRecentMagicLinks returns the number of magic link tokens created for an email in the last hour.
+func countRecentMagicLinks(ctx context.Context, pool *pgxpool.Pool, email string) (int, error) {
+	var count int
+	err := pool.QueryRow(ctx, `
+		SELECT COUNT(*) FROM magic_link_tokens
+		WHERE email = $1 AND created_at > NOW() - INTERVAL '1 hour'
+	`, email).Scan(&count)
+	return count, err
 }
 
 // markInactiveSponsorsNotIn marks all sponsors as inactive that are not in the given usernames list.

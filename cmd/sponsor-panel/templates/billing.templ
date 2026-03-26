@@ -1,0 +1,26 @@
+package templates
+
+templ BillingCard(isActive bool, amount int, tierName string) {
+	<div class="card card-cool p-4">
+		<h2 class="card-title flex items-center gap-2">
+			<svg class="w-5 h-5 text-blue-light dark:text-blueDark-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+			</svg>
+			Stripe Billing
+		</h2>
+		if isActive {
+			<div class="flex items-center gap-2 mb-2">
+				<span class="accent-dot"></span>
+				<span class="text-lg font-semibold text-green-light dark:text-greenDark-light">
+					${ formatDollars(amount) }/month
+				</span>
+			</div>
+			<p class="text-sm text-fg-3 dark:text-fgDark-3 mb-3">{ tierName }</p>
+		} else {
+			<p class="card-description">Your Stripe sponsorship is currently inactive.</p>
+		}
+		<a href="/billing/portal" class="btn btn-secondary p-2">
+			Manage Billing
+		</a>
+	</div>
+}

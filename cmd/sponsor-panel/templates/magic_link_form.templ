@@ -1,0 +1,33 @@
+package templates
+
+templ MagicLinkForm() {
+	<div id="magic-link-form">
+		<div class="relative my-6">
+			<div class="absolute inset-0 flex items-center">
+				<div class="w-full border-t border-bg-3 dark:border-bgDark-3"></div>
+			</div>
+			<div class="relative flex justify-center text-sm">
+				<span class="px-3 bg-bg-2 dark:bg-bgDark-2 text-fg-3 dark:text-fgDark-3">or sign in with email</span>
+			</div>
+		</div>
+		<form hx-post="/login/email" hx-swap="outerHTML" hx-target="#magic-link-form">
+			<div class="mb-3">
+				<label for="email" class="block text-sm font-medium text-fg-2 dark:text-fgDark-2 mb-1">Email address</label>
+				<input
+					type="email"
+					id="email"
+					name="email"
+					required
+					placeholder="you@example.com"
+					class="w-full px-3 py-2 rounded-md border border-bg-3 dark:border-bgDark-3 bg-bg-1 dark:bg-bgDark-1 text-fg-1 dark:text-fgDark-1 placeholder-fg-3 dark:placeholder-fgDark-3 focus:outline-none focus:ring-2 focus:ring-orange-light dark:focus:ring-orangeDark-light"
+				/>
+			</div>
+			<button type="submit" class="btn btn-dark w-full p-2">
+				<svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+				</svg>
+				Send login link
+			</button>
+		</form>
+	</div>
+}
