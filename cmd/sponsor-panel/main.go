@@ -19,7 +19,10 @@ import (
 	"github.com/facebookgo/flagenv"
 	gh "github.com/google/go-github/v82/github"
 	"github.com/gorilla/sessions"
-	"github.com/jackc/pgx/v5/pgxpool"
+	slogGorm "github.com/orandin/slog-gorm"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	gormPrometheus "gorm.io/plugin/prometheus"
 	_ "github.com/joho/godotenv/autoload"
 	patreon "gopkg.in/mxpv/patreon-go.v1"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -60,7 +63,7 @@ var (
 
 // Server holds the application dependencies.
 type Server struct {
-	pool              *pgxpool.Pool
+	db                *gorm.DB
 	ghClient          *gh.Client
 	oauth             *oauth2.Config
 	patreonOAuth          *oauth2.Config // nil if Patreon not configured
@@ -144,34 +147,37 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Connect to database
-	slog.Debug("main: connecting to database")
-	ctx := context.Background()
-	pool, err := pgxpool.New(ctx, *databaseURL)
+	// Connect to database via GORM
+	slog.Debug("main: connecting to database via GORM")
+	db, err := gorm.Open(postgres.Open(*databaseURL), &gorm.Config{
+		Logger: slogGorm.New(
+			slogGorm.WithErrorField("err"),
+			slogGorm.WithRecordNotFoundError(),
+		),
+	})
 	if err != nil {
-		slog.Error("failed to create connection pool", "err", err)
+		slog.Error("failed to connect to database", "err", err)
 		os.Exit(1)
 	}
-	defer pool.Close()
 
-	if err := pool.Ping(ctx); err != nil {
-		slog.Error("failed to ping database", "err", err)
-		os.Exit(1)
-	}
+	db.Use(gormPrometheus.New(gormPrometheus.Config{
+		DBName: "sponsor_panel",
+	}))
+
 	slog.Info("main: database connection established")
 
-	// Run migrations
-	slog.Debug("main: running migrations")
-	if err := runMigrations(ctx, pool); err != nil {
-		slog.Error("failed to run migrations", "err", err)
+	// Run GORM AutoMigrate
+	slog.Debug("main: running GORM auto-migration")
+	if err := db.AutoMigrate(PanelModels()...); err != nil {
+		slog.Error("failed to auto-migrate", "err", err)
 		os.Exit(1)
 	}
-	slog.Info("main: migrations completed")
+	slog.Info("main: auto-migration completed")
 
 	// Start sponsor sync loop in background
 	syncCtx, syncCancel := context.WithCancel(context.Background())
 	defer syncCancel()
-	go startSyncLoop(syncCtx, pool, *githubToken)
+	go startSyncLoop(syncCtx, db, *githubToken)
 	slog.Info("main: sponsor sync loop started")
 
 	// Create GitHub client
@@ -255,7 +261,7 @@ func main() {
 	}
 
 	server := &Server{
-		pool:              pool,
+		db:                db,
 		ghClient:          ghClient,
 		oauth:             oauthConfig,
 		patreonOAuth:          patreonConfig,
