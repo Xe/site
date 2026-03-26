@@ -5,7 +5,7 @@ Go-based static site generator with JavaScript tooling for content automation.
 ## Project Structure
 
 ```
-cmd/        # Binaries: fabricate-generation, github-sponsor-webhook, hydrate, no-way-to-prevent-this, patreon-saasproxy, xesite (main), xesitectl
+cmd/        # Binaries: fabricate-generation, hydrate, no-way-to-prevent-this, patreon-saasproxy, xesite (main), xesitectl
 internal/   # Private packages
 lume/       # Static site generator configuration and pages
 ```

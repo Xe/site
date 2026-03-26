@@ -1,4 +1,0 @@
-resources:
-  - app.yaml
-  - database.yaml
-  - valkey.yaml

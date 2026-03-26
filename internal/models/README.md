@@ -178,7 +178,3 @@ models.IsValidAccountType("Organization")  // true
 - `MaxURLLength`: 500 characters
 - `MaxDescriptionLength`: 1000 characters
 - `MaxMetadataSize`: 10000 bytes
-
-## Webhook Integration
-
-The models are designed to work with GitHub Sponsors webhooks. See the [github-sponsor-webhook](../../cmd/github-sponsor-webhook) service for the webhook processing implementation.
