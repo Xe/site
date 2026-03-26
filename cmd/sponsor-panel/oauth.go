@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/sessions"
-	"github.com/jackc/pgx/v5/pgxpool"
+	"gorm.io/gorm"
 	"xeiaso.net/v4/cmd/sponsor-panel/templates"
 )
 
@@ -366,7 +366,7 @@ func fetchSponsorshipForEntity(ctx context.Context, token string, entityType str
 
 // fetchSponsorship fetches sponsorship data from GitHub GraphQL API.
 // It checks the explicit allowlist first, then the synced sponsor table, then direct user sponsorship, then organizational membership.
-func fetchSponsorship(ctx context.Context, pool *pgxpool.Pool, token string, userLogin string, userOrgs map[string]bool, userOrgsWithSponsorship map[string]*sponsorshipInfo, fiftyPlusSponsors map[string]bool) (string, error) {
+func fetchSponsorship(ctx context.Context, db *gorm.DB, token string, userLogin string, userOrgs map[string]bool, userOrgsWithSponsorship map[string]*sponsorshipInfo, fiftyPlusSponsors map[string]bool) (string, error) {
 	slog.Debug("fetchSponsorship: checking sponsorship", "user", userLogin)
 
 	// Check if user is in the fifty-plus sponsors list first (highest priority)
@@ -400,7 +400,7 @@ func fetchSponsorship(ctx context.Context, pool *pgxpool.Pool, token string, use
 		usernames = append(usernames, org)
 	}
 
-	syncedSponsors, err := getActiveSponsorsByUsernames(ctx, pool, usernames)
+	syncedSponsors, err := getActiveSponsorsByUsernames(db, usernames)
 	if err != nil {
 		slog.Warn("fetchSponsorship: failed to check synced sponsors table", "err", err)
 	} else if len(syncedSponsors) > 0 {
@@ -547,7 +547,7 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch sponsorship data (checks allowlist, synced table, then user, then org sponsorships)
-	sponsorData, err := fetchSponsorship(r.Context(), s.pool, token.AccessToken, ghUser.Login, userOrgs, userOrgsWithSponsorship, s.fiftyPlusSponsors)
+	sponsorData, err := fetchSponsorship(r.Context(), s.db, token.AccessToken, ghUser.Login, userOrgs, userOrgsWithSponsorship, s.fiftyPlusSponsors)
 	if err != nil {
 		slog.Error("callbackHandler: failed to fetch sponsorship", "err", err)
 		// Non-fatal: continue with empty sponsorship data
@@ -557,7 +557,7 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 	slog.Debug("callbackHandler: sponsorship data", "data", sponsorData)
 
 	// Upsert user in database
-	user := &User{
+	user := &PanelUser{
 		GitHubID:        &ghUser.ID,
 		Provider:        "github",
 		Login:           ghUser.Login,
@@ -567,7 +567,7 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 		SponsorshipData: sponsorData,
 	}
 
-	if err := upsertUser(r.Context(), s.pool, user); err != nil {
+	if err := upsertUser(s.db, user); err != nil {
 		slog.Error("callbackHandler: failed to upsert user", "err", err, "github_id", ghUser.ID)
 		renderOAuthError(w, "Failed to create user")
 		return
@@ -583,7 +583,7 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 		slog.Debug("callbackHandler: failed to decode existing session, creating new one", "err", err)
 		session = sessions.NewSession(s.sessionStore, "session")
 	}
-	session.Values["user_id"] = user.ID
+	session.Values["user_id"] = int(user.ID)
 	if err := s.sessionStore.Save(r, w, session); err != nil {
 		slog.Error("callbackHandler: failed to save session", "err", err)
 		renderOAuthError(w, "Failed to save session")
@@ -632,7 +632,7 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // getSessionUser retrieves the user from the session.
-func (s *Server) getSessionUser(r *http.Request) (*User, error) {
+func (s *Server) getSessionUser(r *http.Request) (*PanelUser, error) {
 	session, err := s.sessionStore.Get(r, "session")
 	if err != nil {
 		// Failed to decode session - might be old format, try to read raw cookie
@@ -649,7 +649,7 @@ func (s *Server) getSessionUser(r *http.Request) (*User, error) {
 			return nil, fmt.Errorf("invalid user id in session")
 		}
 		slog.Debug("getSessionUser: fetched user from old session format", "user_id", userID)
-		return getUserByID(r.Context(), s.pool, userID)
+		return getUserByID(s.db, userID)
 	}
 
 	userID, ok := session.Values["user_id"].(int)
@@ -659,7 +659,7 @@ func (s *Server) getSessionUser(r *http.Request) (*User, error) {
 	}
 
 	slog.Debug("getSessionUser: fetching user from session", "user_id", userID)
-	return getUserByID(r.Context(), s.pool, userID)
+	return getUserByID(s.db, userID)
 }
 
 // renderOAuthError renders an OAuth error page.

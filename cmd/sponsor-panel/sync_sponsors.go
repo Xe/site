@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jackc/pgx/v5/pgxpool"
+	"gorm.io/gorm"
 )
 
 // graphqlSponsorsResponse represents the GraphQL response for sponsorshipsAsMaintainer.
@@ -42,7 +42,7 @@ type graphqlSponsorsResponse struct {
 }
 
 // syncSponsors performs a single sync of all sponsors from GitHub.
-func syncSponsors(ctx context.Context, pool *pgxpool.Pool, ghToken string) error {
+func syncSponsors(ctx context.Context, db *gorm.DB, ghToken string) error {
 	slog.Info("syncSponsors: starting sponsor sync")
 
 	allSponsors := make([]string, 0)
@@ -126,7 +126,7 @@ func syncSponsors(ctx context.Context, pool *pgxpool.Pool, ghToken string) error
 			}
 
 			// Upsert to database
-			if err := upsertSponsorUsername(ctx, pool, sponsor); err != nil {
+			if err := upsertSponsorUsername(db, sponsor); err != nil {
 				slog.Error("syncSponsors: failed to upsert sponsor", "err", err, "username", login)
 				continue
 			}
@@ -142,7 +142,7 @@ func syncSponsors(ctx context.Context, pool *pgxpool.Pool, ghToken string) error
 	}
 
 	// Mark inactive sponsors not in current fetch
-	inactiveCount, err := markInactiveSponsorsNotIn(ctx, pool, allSponsors)
+	inactiveCount, err := markInactiveSponsorsNotIn(db, allSponsors)
 	if err != nil {
 		slog.Error("syncSponsors: failed to mark inactive sponsors", "err", err)
 		return err
@@ -164,10 +164,10 @@ func formatGraphQLString(s string) string {
 }
 
 // startSyncLoop runs the sync immediately, then every hour.
-func startSyncLoop(ctx context.Context, pool *pgxpool.Pool, ghToken string) {
+func startSyncLoop(ctx context.Context, db *gorm.DB, ghToken string) {
 	// Run initial sync immediately
 	slog.Info("startSyncLoop: running initial sponsor sync")
-	if err := syncSponsors(ctx, pool, ghToken); err != nil {
+	if err := syncSponsors(ctx, db, ghToken); err != nil {
 		slog.Error("startSyncLoop: initial sync failed", "err", err)
 	}
 
@@ -182,7 +182,7 @@ func startSyncLoop(ctx context.Context, pool *pgxpool.Pool, ghToken string) {
 			return
 		case <-ticker.C:
 			slog.Info("startSyncLoop: running scheduled sponsor sync")
-			if err := syncSponsors(ctx, pool, ghToken); err != nil {
+			if err := syncSponsors(ctx, db, ghToken); err != nil {
 				slog.Error("startSyncLoop: scheduled sync failed", "err", err)
 			}
 		}
