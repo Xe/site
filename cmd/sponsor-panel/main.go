@@ -285,23 +285,23 @@ func main() {
 	})
 
 	// OAuth handlers
-	mux.HandleFunc("/login", server.loginHandler)
-	mux.HandleFunc("/callback", server.callbackHandler)
-	mux.HandleFunc("/logout", server.logoutHandler)
+	mux.HandleFunc("/login", instrumentHandler("login", server.loginHandler))
+	mux.HandleFunc("/callback", instrumentHandler("callback", server.callbackHandler))
+	mux.HandleFunc("/logout", instrumentHandler("logout", server.logoutHandler))
 
 	// Patreon OAuth handlers
-	mux.HandleFunc("/login/patreon", server.patreonLoginHandler)
-	mux.HandleFunc("/callback/patreon", server.patreonCallbackHandler)
+	mux.HandleFunc("/login/patreon", instrumentHandler("login_patreon", server.patreonLoginHandler))
+	mux.HandleFunc("/callback/patreon", instrumentHandler("callback_patreon", server.patreonCallbackHandler))
 
 	// Login page handler
-	mux.HandleFunc("/login-page", server.loginPageHandler)
+	mux.HandleFunc("/login-page", instrumentHandler("login_page", server.loginPageHandler))
 
 	// Dashboard handler (also serves login page if not authenticated)
-	mux.HandleFunc("/", server.dashboardHandler)
+	mux.HandleFunc("/", instrumentHandler("dashboard", server.dashboardHandler))
 
 	// Feature handlers
-	mux.HandleFunc("/invite", server.inviteHandler)
-	mux.HandleFunc("/logo", server.logoHandler)
+	mux.HandleFunc("/invite", instrumentHandler("invite", server.inviteHandler))
+	mux.HandleFunc("/logo", instrumentHandler("logo", server.logoHandler))
 
 	// Expose Prometheus metrics at /metrics for observability
 	mux.Handle("/metrics", promhttp.Handler())

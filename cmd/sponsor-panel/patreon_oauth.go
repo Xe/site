@@ -136,6 +136,7 @@ func (s *Server) patreonCallbackHandler(w http.ResponseWriter, r *http.Request) 
 
 	token, err := s.patreonOAuth.Exchange(r.Context(), code)
 	if err != nil {
+		oauthTotal.WithLabelValues("patreon", "error_token_exchange").Inc()
 		slog.Error("patreonCallbackHandler: failed to exchange token", "err", err)
 		renderOAuthError(w, "Failed to exchange token")
 		return
@@ -233,6 +234,7 @@ func (s *Server) patreonCallbackHandler(w http.ResponseWriter, r *http.Request) 
 	}
 
 	if err := upsertPatreonUser(r.Context(), s.pool, user); err != nil {
+		oauthTotal.WithLabelValues("patreon", "error_upsert").Inc()
 		slog.Error("patreonCallbackHandler: failed to upsert user", "err", err, "patreon_id", patreonID)
 		renderOAuthError(w, "Failed to create user")
 		return
@@ -253,6 +255,7 @@ func (s *Server) patreonCallbackHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	oauthTotal.WithLabelValues("patreon", "success").Inc()
 	slog.Info("patreonCallbackHandler: user logged in successfully", "user_id", user.ID, "login", login)
 
 	http.Redirect(w, r, "/", http.StatusFound)

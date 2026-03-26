@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 // graphqlSponsorsResponse represents the GraphQL response for sponsorshipsAsMaintainer.
@@ -42,8 +43,15 @@ type graphqlSponsorsResponse struct {
 }
 
 // syncSponsors performs a single sync of all sponsors from GitHub.
-func syncSponsors(ctx context.Context, pool *pgxpool.Pool, ghToken string) error {
+func syncSponsors(ctx context.Context, pool *pgxpool.Pool, ghToken string) (retErr error) {
 	slog.Info("syncSponsors: starting sponsor sync")
+	timer := prometheus.NewTimer(sponsorSyncDuration)
+	defer func() {
+		timer.ObserveDuration()
+		if retErr != nil {
+			sponsorSyncTotal.WithLabelValues("error").Inc()
+		}
+	}()
 
 	allSponsors := make([]string, 0)
 
@@ -147,6 +155,9 @@ func syncSponsors(ctx context.Context, pool *pgxpool.Pool, ghToken string) error
 		slog.Error("syncSponsors: failed to mark inactive sponsors", "err", err)
 		return err
 	}
+
+	sponsorSyncTotal.WithLabelValues("success").Inc()
+	sponsorSyncActiveSponsors.Set(float64(len(allSponsors)))
 
 	slog.Info("syncSponsors: sync completed",
 		"active_sponsors", len(allSponsors),

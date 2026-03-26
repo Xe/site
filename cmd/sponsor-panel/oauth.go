@@ -482,6 +482,7 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	state := r.URL.Query().Get("state")
 	if state != stateCookie.Value {
+		oauthTotal.WithLabelValues("github", "error_state_mismatch").Inc()
 		slog.Error("callbackHandler: oauth state mismatch",
 			"query_state", state[:8]+"...",
 			"cookie_state", stateCookie.Value[:8]+"...")
@@ -513,6 +514,7 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	token, err := s.oauth.Exchange(r.Context(), code)
 	if err != nil {
+		oauthTotal.WithLabelValues("github", "error_token_exchange").Inc()
 		slog.Error("callbackHandler: failed to exchange token", "err", err)
 		renderOAuthError(w, "Failed to exchange token")
 		return
@@ -568,6 +570,7 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := upsertUser(r.Context(), s.pool, user); err != nil {
+		oauthTotal.WithLabelValues("github", "error_upsert").Inc()
 		slog.Error("callbackHandler: failed to upsert user", "err", err, "github_id", ghUser.ID)
 		renderOAuthError(w, "Failed to create user")
 		return
@@ -590,6 +593,7 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	oauthTotal.WithLabelValues("github", "success").Inc()
 	slog.Info("callbackHandler: user logged in successfully", "user_id", user.ID, "login", ghUser.Login)
 
 	// Redirect to dashboard
@@ -635,6 +639,7 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) getSessionUser(r *http.Request) (*User, error) {
 	session, err := s.sessionStore.Get(r, "session")
 	if err != nil {
+		sessionErrors.Inc()
 		// Failed to decode session - might be old format, try to read raw cookie
 		slog.Debug("getSessionUser: failed to get session, trying old format", "err", err)
 		cookie, err := r.Cookie("session")
