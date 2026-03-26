@@ -192,7 +192,7 @@ The sponsor-panel service provides GitHub sponsors with a self-service dashboard
 
 ### Phase 1: Foundation
 
-- [ ] Create `internal/models/` with User and LogoSubmission structs
+- [ ] Define User and LogoSubmission structs
 - [ ] Set up sqlx with PostgreSQL
 - [ ] Create migration for 2 tables
 - [ ] Implement cookie encryption/decryption

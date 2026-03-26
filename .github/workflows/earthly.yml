@@ -37,7 +37,6 @@ jobs:
           source: .
           push: true
           set: |
-            github-sponsor-webhook.tags=ghcr.io/xe/site/github-sponsor-webhook:latest
             patreon-saasproxy.tags=ghcr.io/xe/site/patreon-saasproxy:latest
             sponsor-panel.tags=ghcr.io/xe/site/sponsor-panel:latest
             xesite.tags=ghcr.io/xe/site/bin:latest
@@ -49,7 +48,6 @@ jobs:
           source: .
           push: false
           set: |
-            github-sponsor-webhook.tags=ghcr.io/xe/site/github-sponsor-webhook:latest
             patreon-saasproxy.tags=ghcr.io/xe/site/patreon-saasproxy:latest
             sponsor-panel.tags=ghcr.io/xe/site/sponsor-panel:latest
             xesite.tags=ghcr.io/xe/site/bin:latest
