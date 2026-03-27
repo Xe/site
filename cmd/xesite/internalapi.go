@@ -16,8 +16,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	adminpb "xeiaso.net/v4/gen/xeiaso/net/admin/v1"
+	pb "xeiaso.net/v4/gen/xeiaso/net/v1"
 	"xeiaso.net/v4/internal/lume"
-	"xeiaso.net/v4/pb"
 )
 
 func internalAPI(fs *lume.FS) {

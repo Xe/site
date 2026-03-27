@@ -10,9 +10,9 @@ import (
 	"github.com/twitchtv/twirp"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	protofeed "xeiaso.net/v4/gen/external/protofeed/v1"
+	pb "xeiaso.net/v4/gen/xeiaso/net/v1"
 	"xeiaso.net/v4/internal/lume"
-	"xeiaso.net/v4/pb"
-	"xeiaso.net/v4/pb/external/protofeed"
 )
 
 var denoVersion string

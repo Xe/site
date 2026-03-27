@@ -1,0 +1,43 @@
+syntax = "proto3";
+package techaro.thoth.auth.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+message JWT {
+  string id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp expires_at = 3;
+  string comment = 4;
+}
+
+service JWTService {
+  rpc Create(JWTServiceCreateRequest) returns (JWTServiceCreateResponse);
+  rpc Delete(JWTServiceDeleteRequest) returns (JWTServiceDeleteResponse);
+  rpc List(JWTServiceListRequest) returns (JWTServiceListResponse);
+}
+
+message JWTServiceListRequest {
+  int32 count = 1;
+  int32 page = 2;
+}
+
+message JWTServiceListResponse {
+  repeated JWT tokens = 1;
+}
+
+message JWTServiceCreateRequest {
+  string comment = 1 [(buf.validate.field).required = true];
+}
+
+message JWTServiceCreateResponse {
+  string jwt = 1;
+  google.protobuf.Timestamp expires = 2;
+  string jti = 3;
+}
+
+message JWTServiceDeleteRequest {
+  string jti = 1 [(buf.validate.field).required = true];
+}
+
+message JWTServiceDeleteResponse {}

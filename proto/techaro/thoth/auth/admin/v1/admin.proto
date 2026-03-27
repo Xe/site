@@ -1,0 +1,72 @@
+syntax = "proto3";
+package techaro.thoth.auth.admin.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "techaro/thoth/auth/v1/auth.proto";
+
+message User {
+  string id = 1 [(buf.validate.field).required = true];
+  string email_address = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "email_address.is_email_address"
+      message: "email_address must be an email address"
+      expression: "this.isEmail()"
+    }
+  ];
+  string name = 3 [(buf.validate.field).required = true];
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp deleted_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+  bool is_admin = 7;
+  string customer_id = 8 [(buf.validate.field).required = true];
+}
+
+service UsersService {
+  rpc Create(UsersServiceCreateRequest) returns (UsersServiceCreateResponse);
+  rpc Disable(UsersServiceDisableRequest) returns (UsersServiceDisableResponse);
+  rpc List(UsersServiceListRequest) returns (UsersServiceListResponse);
+  rpc MakeJWT(UsersServiceMakeJWTRequest) returns (UsersServiceMakeJWTResponse);
+}
+
+message UsersServiceCreateRequest {
+  string email_address = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).cel = {
+      id: "email_address.is_email_address"
+      message: "email_address must be an email address"
+      expression: "this.isEmail()"
+    }
+  ];
+  string name = 2 [(buf.validate.field).required = true];
+  string customer_id = 3 [(buf.validate.field).required = true];
+}
+
+message UsersServiceCreateResponse {
+  User user = 1;
+}
+
+message UsersServiceDisableRequest {
+  string id = 1 [(buf.validate.field).required = true];
+}
+
+message UsersServiceDisableResponse {}
+
+message UsersServiceListRequest {
+  int32 count = 1;
+  int32 page = 2;
+}
+
+message UsersServiceListResponse {
+  repeated User users = 1;
+}
+
+message UsersServiceMakeJWTRequest {
+  string user_id = 1 [(buf.validate.field).required = true];
+  string comment = 2 [(buf.validate.field).required = true];
+}
+
+message UsersServiceMakeJWTResponse {
+  techaro.thoth.auth.v1.JWTServiceCreateResponse token_info = 1;
+}

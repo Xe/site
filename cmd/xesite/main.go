@@ -14,9 +14,9 @@ import (
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/twitchtv/twirp"
+	pb "xeiaso.net/v4/gen/xeiaso/net/v1"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
-	"xeiaso.net/v4/pb"
 	"xeiaso.net/v4/pb/external/mi"
 )
 
@@ -83,7 +83,6 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServerFS(fs))
-	mux.Handle("/api/defs/", http.StripPrefix("/api/defs/", http.FileServer(http.FS(pb.Proto))))
 
 	ms := pb.NewMetaServer(&MetaServer{fs}, twirp.WithServerPathPrefix("/api"))
 	mux.Handle(ms.PathPrefix(), ms)

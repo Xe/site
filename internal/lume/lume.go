@@ -28,11 +28,11 @@ import (
 	"gopkg.in/mxpv/patreon-go.v1"
 	"tailscale.com/metrics"
 	"within.website/x/web"
+	protofeed "xeiaso.net/v4/gen/external/protofeed/v1"
+	mi "xeiaso.net/v4/gen/within/website/x/mi/v1"
+	announce "xeiaso.net/v4/gen/within/website/x/mimi/announce/v1"
 	"xeiaso.net/v4/internal/config"
 	"xeiaso.net/v4/internal/jsonfeed"
-	"xeiaso.net/v4/pb/external/mi"
-	"xeiaso.net/v4/pb/external/mimi/announce"
-	"xeiaso.net/v4/pb/external/protofeed"
 )
 
 var (

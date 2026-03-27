@@ -1,0 +1,160 @@
+syntax = "proto3";
+package protofeed;
+option go_package = "xeiaso.net/v4/pb/external/protofeed";
+
+import "google/protobuf/timestamp.proto";
+
+// Feed is the root of a Proto Feed document. A feed must at least contain a
+// title and items.
+message Feed {
+  // (required, string) is the name of the feed, which will often correspond to
+  // the name of the website (blog, for instance), though not necessarily.
+  string title = 2;
+  // (optional but strongly recommended, string) is the URL of the resource that
+  // the feed describes. This resource may or may not actually be a “home” page,
+  // but it should be an HTML page. If a feed is published on the public web,
+  // this should be considered as required. But it may not make sense in the
+  // case of a file created on a desktop computer, when that file is not shared
+  // or is shared only privately.
+  string home_page_url = 3;
+  // (optional but strongly recommended, string) is the URL of the feed, and
+  // serves as the unique identifier for the feed. As with home_page_url, this
+  // should be considered required for feeds on the public web.
+  string feed_url = 4;
+  // (optional, string) provides more detail, beyond the title, on what the feed
+  // is about. A feed reader may display this text.
+  string description = 5;
+  // (optional, string) is a description of the purpose of the feed. This is for
+  // the use of people looking at the raw Protobuf, and should be ignored by
+  // feed readers.
+  string user_comment = 6;
+  // (optional, string) is the URL of an image for the feed suitable to be used
+  // in a source list. It should be square and relatively large — such as 512 x
+  // 512 — so that it can be scaled down and so that it can look good on retina
+  // displays. It should use transparency where appropriate, since it may be
+  // rendered on a non-white background.
+  string icon = 7;
+  // (optional, string) is the URL of an image for the feed suitable to be used
+  // in a source list. It should be square and relatively small, but not smaller
+  // than 64 x 64.
+  string favicon = 8;
+  // (optional, array of objects) specifies the feed authors.
+  repeated Author authors = 9;
+  // (optional, string) is the primary language for the feed.
+  string language = 10;
+  // (optional, boolean) says whether or not the feed is finished — that is,
+  // whether or not it will ever update again. A feed for a temporary event,
+  // such as an instance of the Olympics, could expire. If the value is true,
+  // then it’s expired. Any other value, or the absence of expired, means the
+  // feed may continue to update.
+  bool expired = 11;
+  // (required, array of objects) contains the items in the feed. This is the
+  // most important element of the feed after the version field. Each item is a
+  // story, blog post, article, photograph, video, or other thing. For example,
+  // if a feed contains a long article, a podcast episode, and a photo, those
+  // three items would be included in items.
+  repeated Item items = 12;
+}
+
+// Author is an object representing the author of the feed or item.
+message Author {
+  // (optional, string) is the author’s name.
+  string name = 1;
+  // (optional, string) is the URL of a site owned by the author. It could be a
+  // blog, micro-blog, Twitter account, and so on. Ideally the linked-to page
+  // provides a way to contact the author, but that’s not required. The URL
+  // could be a mailto: link, though we suspect that will be rare.
+  string url = 2;
+  // (optional, string) is the URL for an image for the author. As with icon, it
+  // should be square and relatively large — such as 512 x 512 pixels — and
+  // should use transparency where appropriate, since it may be rendered on a
+  // non-white background.
+  string avatar = 3;
+}
+
+// Item is an object representing a single story, blog post, article,
+// photograph, video, or other thing within a feed.
+message Item {
+  // (required, string) is unique for that item for that feed over time. If an
+  // item is ever updated, the id should be unchanged. New items should never
+  // use a previously-used id. If an id is presented as a number or other type,
+  // a JSON Feed reader must coerce it to a string. Ideally, the id is the full
+  // URL of the resource described by the item, since URLs make great unique
+  // identifiers.
+  string id = 1;
+  // (optional, string) is the URL of the resource described by the item. It’s
+  // the permalink. This may be the same as the id — but should be present
+  // regardless.
+  string url = 2;
+  // (optional, string) is the URL of a page elsewhere. This is especially
+  // useful for linkblogs. If url links to where you’re talking about a thing,
+  // then external_url links to the thing you’re talking about.
+  string external_url = 3;
+  // (optional, string) is plain text. Microblog items in particular may omit
+  // titles.
+  string title = 4;
+  // (optional, string) is the body of the item. It can be plain text, HTML, or
+  // a snippet of Markdown. (It should not be the entire Markdown document; just
+  // a snippet.) This is complete enough that it can be displayed alone in a
+  // reader.
+  string content_text = 5;
+  // (optional, string) is the body of the item. It can be plain text, HTML, or
+  // a snippet of Markdown. (It should not be the entire Markdown document; just
+  // a snippet.) This is complete enough that it can be displayed alone in a
+  // reader.
+  string content_html = 6;
+  // (optional, string) is a plain text sentence or two describing the item.
+  // This might be presented in a timeline, for instance, where a detail view
+  // would display all of content_html or content_text.
+  string summary = 7;
+  // (optional, string) is the URL of the main image for the item. This image
+  // may also appear in the content_html — if so, it’s a hint to the feed reader
+  // that this is the main, featured image. Even if it’s not, it will appear in
+  // the detail view. Images should be square, with a 4:3 aspect ratio. (We will
+  // be flexible on this in the future.)
+  string image = 8;
+  // (optional, string) is the URL of an image to use as a banner. Some blogging
+  // systems (such as Medium) display a different banner image in the list view
+  // from the detail view. In those systems, this image should be used in the
+  // list view, and image in the detail view.
+  string banner_image = 9;
+  // (optional, string) specifies the date in RFC 3339 format.
+  google.protobuf.Timestamp date_published = 10;
+  // (optional, string) specifies the modification date in RFC 3339 format.
+  google.protobuf.Timestamp date_modified = 11;
+  // (optional, array of objects) has the same structure as the top-level
+  // authors. If not specified in an item, then the top-level authors, if
+  // present, are the authors of the item.
+  repeated Author authors = 12;
+  // (optional, array of strings) can have any plain text values you want. Tags
+  // tend to be just one word, but they may be anything. Note: they are not the
+  // equivalent of Twitter hashtags. Some blogging systems and other feed
+  // formats call these categories.
+  repeated string tags = 13;
+  // (optional, string) is the language for this item, using the same format as
+  // the top-level language field. The value can be different than the primary
+  // language for the feed when a specific item is written in a different
+  // language than other items in the feed.
+  string language = 14;
+  // (optional, array of objects) specifies the attachments associated with the
+  // item. Attachments are files that are associated with an item. The value of
+  // the attachments field is an array of objects, each of which has a url
+  // field, and other fields as specified in the attachment object definition.
+  repeated Attachment attachments = 15;
+}
+
+// Attachment is an object representing a file associated with an item.
+message Attachment {
+  // (required, string) specifies the location of the attachment.
+  string url = 1;
+  // (required, string) specifies the type of the attachment, such as
+  // “audio/mpeg.”
+  string mime_type = 2;
+  // (optional, string) specifies the title of the attachment.
+  string title = 3;
+  // (optional, number) specifies how large the file is.
+  int32 size_in_bytes = 4;
+  // (optional, number) specifies how long it takes to listen to or watch, when
+  // played at normal speed.
+  int32 duration_in_seconds = 5;
+}
