@@ -14,10 +14,10 @@ import (
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/twitchtv/twirp"
+	mi "xeiaso.net/v4/gen/within/website/x/mi/v1"
 	pb "xeiaso.net/v4/gen/xeiaso/net/v1"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
-	"xeiaso.net/v4/pb/external/mi"
 )
 
 var (
