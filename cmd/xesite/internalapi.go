@@ -15,7 +15,7 @@ import (
 	"github.com/twitchtv/twirp"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"xeiaso.net/v4/internal/adminpb"
+	adminpb "xeiaso.net/v4/gen/xeiaso/net/admin/v1"
 	"xeiaso.net/v4/internal/lume"
 	"xeiaso.net/v4/pb"
 )

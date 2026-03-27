@@ -17,8 +17,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gopkg.in/mxpv/patreon-go.v1"
+	adminpb "xeiaso.net/v4/gen/xeiaso/net/admin/v1"
 	"xeiaso.net/v4/internal"
-	"xeiaso.net/v4/internal/adminpb"
 	"xeiaso.net/v4/internal/k8s"
 )
 

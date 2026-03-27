@@ -1,10 +1,10 @@
 syntax = "proto3";
-package xeiaso.net.internal;
-option go_package = "xeiaso.net/v4/internal/adminpb";
+package xeiaso.net.admin.v1;
+option go_package = "adminv1";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "xesite.proto";
+import "xeiaso/net/v1/xesite.proto";
 
 service Patreon { rpc GetToken(google.protobuf.Empty) returns (PatreonToken); }
 
@@ -16,5 +16,5 @@ message PatreonToken {
 }
 
 service Admin {
-  rpc Rebuild(google.protobuf.Empty) returns (xeiaso.net.BuildInfo);
+  rpc Rebuild(google.protobuf.Empty) returns (xeiaso.net.v1.BuildInfo);
 }

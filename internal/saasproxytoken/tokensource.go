@@ -8,7 +8,7 @@ import (
 
 	"golang.org/x/oauth2"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"xeiaso.net/v4/internal/adminpb"
+	adminpb "xeiaso.net/v4/gen/xeiaso/net/admin/v1"
 )
 
 type remoteTokenSource struct {
