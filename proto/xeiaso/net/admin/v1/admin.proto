@@ -1,0 +1,45 @@
+syntax = "proto3";
+package xeiaso.net.admin.v1;
+
+import "google/protobuf/timestamp.proto";
+import "xeiaso/net/v1/xesite.proto";
+
+option go_package = "adminv1";
+
+// PatreonService provides access to Patreon OAuth tokens.
+service PatreonService {
+  // GetToken returns the current Patreon OAuth token.
+  rpc GetToken(GetTokenRequest) returns (GetTokenResponse);
+}
+
+// GetTokenRequest is the request for PatreonService.GetToken.
+message GetTokenRequest {}
+
+// GetTokenResponse is the response for PatreonService.GetToken.
+message GetTokenResponse {
+  // The Patreon OAuth token.
+  PatreonToken token = 1;
+}
+
+// PatreonToken contains a Patreon OAuth token.
+message PatreonToken {
+  string access_token = 1;
+  string token_type = 2;
+  string refresh_token = 3;
+  google.protobuf.Timestamp expiry = 4;
+}
+
+// AdminService provides administrative operations.
+service AdminService {
+  // Rebuild triggers a site rebuild.
+  rpc Rebuild(RebuildRequest) returns (RebuildResponse);
+}
+
+// RebuildRequest is the request for AdminService.Rebuild.
+message RebuildRequest {}
+
+// RebuildResponse is the response for AdminService.Rebuild.
+message RebuildResponse {
+  // The build info of the rebuilt site.
+  xeiaso.net.v1.BuildInfo build_info = 1;
+}

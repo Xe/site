@@ -13,11 +13,10 @@ import (
 	"runtime"
 
 	"github.com/twitchtv/twirp"
-	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"xeiaso.net/v4/internal/adminpb"
+	adminpb "xeiaso.net/v4/gen/xeiaso/net/admin/v1"
+	pb "xeiaso.net/v4/gen/xeiaso/net/v1"
 	"xeiaso.net/v4/internal/lume"
-	"xeiaso.net/v4/pb"
 )
 
 func internalAPI(fs *lume.FS) {
@@ -38,7 +37,7 @@ func internalAPI(fs *lume.FS) {
 		http.ServeFile(w, r, filepath.Join(*dataDir, "site.zip"))
 	})
 
-	mux.Handle(adminpb.AdminPathPrefix, adminpb.NewAdminServer(&AdminAPI{fs: fs}))
+	mux.Handle(adminpb.AdminServicePathPrefix, adminpb.NewAdminServiceServer(&AdminAPI{fs: fs}))
 
 	ln, err := net.Listen("tcp", *internalAPIBind)
 	if err != nil {
@@ -52,7 +51,7 @@ type AdminAPI struct {
 	fs *lume.FS
 }
 
-func (aa *AdminAPI) Rebuild(ctx context.Context, _ *emptypb.Empty) (*pb.BuildInfo, error) {
+func (aa *AdminAPI) Rebuild(ctx context.Context, _ *adminpb.RebuildRequest) (*adminpb.RebuildResponse, error) {
 	deno, err := exec.LookPath("deno")
 	if err != nil {
 		return nil, twirp.InternalErrorf("can't find deno in $PATH: %w", err)
@@ -70,5 +69,5 @@ func (aa *AdminAPI) Rebuild(ctx context.Context, _ *emptypb.Empty) (*pb.BuildInf
 
 	result.BuildTime = timestamppb.Now()
 
-	return result, nil
+	return &adminpb.RebuildResponse{BuildInfo: result}, nil
 }

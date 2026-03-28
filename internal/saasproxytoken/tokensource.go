@@ -7,8 +7,7 @@ import (
 	"time"
 
 	"golang.org/x/oauth2"
-	"google.golang.org/protobuf/types/known/emptypb"
-	"xeiaso.net/v4/internal/adminpb"
+	adminpb "xeiaso.net/v4/gen/xeiaso/net/admin/v1"
 )
 
 type remoteTokenSource struct {
@@ -16,23 +15,23 @@ type remoteTokenSource struct {
 	lock       sync.Mutex
 	remoteURL  string
 	httpClient *http.Client
-	ptc        adminpb.Patreon
+	ptc        adminpb.PatreonService
 }
 
 func (r *remoteTokenSource) fetchToken() (*oauth2.Token, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	resp, err := r.ptc.GetToken(ctx, &emptypb.Empty{})
+	resp, err := r.ptc.GetToken(ctx, &adminpb.GetTokenRequest{})
 	if err != nil {
 		return nil, err
 	}
 
 	var tok oauth2.Token
-	tok.AccessToken = resp.AccessToken
-	tok.TokenType = resp.TokenType
-	tok.RefreshToken = resp.RefreshToken
-	tok.Expiry = resp.Expiry.AsTime()
+	tok.AccessToken = resp.Token.AccessToken
+	tok.TokenType = resp.Token.TokenType
+	tok.RefreshToken = resp.Token.RefreshToken
+	tok.Expiry = resp.Token.Expiry.AsTime()
 
 	return &tok, nil
 }
@@ -65,6 +64,6 @@ func RemoteTokenSource(remoteURL string, httpClient *http.Client) oauth2.TokenSo
 	return &remoteTokenSource{
 		remoteURL:  remoteURL,
 		httpClient: httpClient,
-		ptc:        adminpb.NewPatreonProtobufClient(remoteURL, httpClient),
+		ptc:        adminpb.NewPatreonServiceProtobufClient(remoteURL, httpClient),
 	}
 }

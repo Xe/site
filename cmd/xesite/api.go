@@ -8,11 +8,9 @@ import (
 	"strings"
 
 	"github.com/twitchtv/twirp"
-	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	pb "xeiaso.net/v4/gen/xeiaso/net/v1"
 	"xeiaso.net/v4/internal/lume"
-	"xeiaso.net/v4/pb"
-	"xeiaso.net/v4/pb/external/protofeed"
 )
 
 var denoVersion string
@@ -31,7 +29,7 @@ type MetaServer struct {
 	fs *lume.FS
 }
 
-func (ms *MetaServer) Metadata(ctx context.Context, _ *emptypb.Empty) (*pb.BuildInfo, error) {
+func (ms *MetaServer) Metadata(ctx context.Context, _ *pb.MetadataRequest) (*pb.MetadataResponse, error) {
 	commit, err := ms.fs.Commit()
 	if err != nil {
 		return nil, twirp.InternalErrorf("can't get commit hash: %w", err)
@@ -49,13 +47,17 @@ func (ms *MetaServer) Metadata(ctx context.Context, _ *emptypb.Empty) (*pb.Build
 		result.XesiteVersion = "devel"
 	}
 
-	return result, nil
+	return &pb.MetadataResponse{BuildInfo: result}, nil
 }
 
 type FeedServer struct {
 	fs *lume.FS
 }
 
-func (f *FeedServer) Get(ctx context.Context, _ *emptypb.Empty) (*protofeed.Feed, error) {
-	return f.fs.LoadProtoFeed()
+func (f *FeedServer) Get(ctx context.Context, _ *pb.FeedServiceGetRequest) (*pb.FeedServiceGetResponse, error) {
+	feed, err := f.fs.LoadProtoFeed()
+	if err != nil {
+		return nil, err
+	}
+	return &pb.FeedServiceGetResponse{Feed: feed}, nil
 }
