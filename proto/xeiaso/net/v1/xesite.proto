@@ -1,11 +1,11 @@
 syntax = "proto3";
 package xeiaso.net.v1;
-option go_package = "xesitev1";
 
+import "external/protofeed/v1/protofeed.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
-import "external/protofeed/v1/protofeed.proto";
+option go_package = "xesitev1";
 
 // Meta lets users fetch site metadata.
 service Meta {

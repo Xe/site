@@ -2,10 +2,11 @@
 
 syntax = "proto3";
 package within.website.x.mi.v1;
-option go_package = "miv1";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+
+option go_package = "miv1";
 
 // Event is a single event that Xe will be attending.
 message Event {

@@ -1,12 +1,15 @@
 syntax = "proto3";
 package xeiaso.net.admin.v1;
-option go_package = "adminv1";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "xeiaso/net/v1/xesite.proto";
 
-service Patreon { rpc GetToken(google.protobuf.Empty) returns (PatreonToken); }
+option go_package = "adminv1";
+
+service Patreon {
+  rpc GetToken(google.protobuf.Empty) returns (PatreonToken);
+}
 
 message PatreonToken {
   string access_token = 1;

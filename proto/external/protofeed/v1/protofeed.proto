@@ -1,8 +1,9 @@
 syntax = "proto3";
 package protofeed;
-option go_package = "xeiaso.net/v4/pb/external/protofeed";
 
 import "google/protobuf/timestamp.proto";
+
+option go_package = "xeiaso.net/v4/pb/external/protofeed";
 
 // Feed is the root of a Proto Feed document. A feed must at least contain a
 // title and items.
