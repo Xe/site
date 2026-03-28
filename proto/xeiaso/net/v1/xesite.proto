@@ -2,16 +2,24 @@ syntax = "proto3";
 package xeiaso.net.v1;
 
 import "external/protofeed/v1/protofeed.proto";
-import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "xesitev1";
 
-// Meta lets users fetch site metadata.
-service Meta {
+// MetaService lets users fetch site metadata.
+service MetaService {
   // Metadata fetches the build metadata of the version of xesite that is
   // currently running.
-  rpc Metadata(google.protobuf.Empty) returns (BuildInfo);
+  rpc Metadata(MetadataRequest) returns (MetadataResponse);
+}
+
+// MetadataRequest is the request for MetaService.Metadata.
+message MetadataRequest {}
+
+// MetadataResponse is the response for MetaService.Metadata.
+message MetadataResponse {
+  // The build info of the currently running xesite instance.
+  BuildInfo build_info = 1;
 }
 
 // BuildInfo contains metadata about a build of the site.
@@ -28,8 +36,17 @@ message BuildInfo {
   string xesite_version = 5;
 }
 
-// Feed lets users fetch the current feed of posts.
-service Feed {
+// FeedService lets users fetch the current feed of posts.
+service FeedService {
   // Get fetches the current feed of posts.
-  rpc Get(google.protobuf.Empty) returns (protofeed.Feed);
+  rpc Get(FeedServiceGetRequest) returns (FeedServiceGetResponse);
+}
+
+// FeedServiceGetRequest is the request for FeedService.Get.
+message FeedServiceGetRequest {}
+
+// FeedServiceGetResponse is the response for FeedService.Get.
+message FeedServiceGetResponse {
+  // The feed of posts.
+  protofeed.Feed feed = 1;
 }

@@ -9,7 +9,6 @@ package netv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -23,6 +22,89 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+// MetadataRequest is the request for MetaService.Metadata.
+type MetadataRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MetadataRequest) Reset() {
+	*x = MetadataRequest{}
+	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MetadataRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MetadataRequest) ProtoMessage() {}
+
+func (x *MetadataRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MetadataRequest.ProtoReflect.Descriptor instead.
+func (*MetadataRequest) Descriptor() ([]byte, []int) {
+	return file_xeiaso_net_v1_xesite_proto_rawDescGZIP(), []int{0}
+}
+
+// MetadataResponse is the response for MetaService.Metadata.
+type MetadataResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The build info of the currently running xesite instance.
+	BuildInfo     *BuildInfo `protobuf:"bytes,1,opt,name=build_info,json=buildInfo,proto3" json:"build_info,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MetadataResponse) Reset() {
+	*x = MetadataResponse{}
+	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MetadataResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MetadataResponse) ProtoMessage() {}
+
+func (x *MetadataResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MetadataResponse.ProtoReflect.Descriptor instead.
+func (*MetadataResponse) Descriptor() ([]byte, []int) {
+	return file_xeiaso_net_v1_xesite_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *MetadataResponse) GetBuildInfo() *BuildInfo {
+	if x != nil {
+		return x.BuildInfo
+	}
+	return nil
+}
 
 // BuildInfo contains metadata about a build of the site.
 type BuildInfo struct {
@@ -43,7 +125,7 @@ type BuildInfo struct {
 
 func (x *BuildInfo) Reset() {
 	*x = BuildInfo{}
-	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[0]
+	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -55,7 +137,7 @@ func (x *BuildInfo) String() string {
 func (*BuildInfo) ProtoMessage() {}
 
 func (x *BuildInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[0]
+	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -68,7 +150,7 @@ func (x *BuildInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BuildInfo.ProtoReflect.Descriptor instead.
 func (*BuildInfo) Descriptor() ([]byte, []int) {
-	return file_xeiaso_net_v1_xesite_proto_rawDescGZIP(), []int{0}
+	return file_xeiaso_net_v1_xesite_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *BuildInfo) GetCommit() string {
@@ -106,11 +188,98 @@ func (x *BuildInfo) GetXesiteVersion() string {
 	return ""
 }
 
+// FeedServiceGetRequest is the request for FeedService.Get.
+type FeedServiceGetRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FeedServiceGetRequest) Reset() {
+	*x = FeedServiceGetRequest{}
+	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FeedServiceGetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FeedServiceGetRequest) ProtoMessage() {}
+
+func (x *FeedServiceGetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FeedServiceGetRequest.ProtoReflect.Descriptor instead.
+func (*FeedServiceGetRequest) Descriptor() ([]byte, []int) {
+	return file_xeiaso_net_v1_xesite_proto_rawDescGZIP(), []int{3}
+}
+
+// FeedServiceGetResponse is the response for FeedService.Get.
+type FeedServiceGetResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The feed of posts.
+	Feed          *v1.Feed `protobuf:"bytes,1,opt,name=feed,proto3" json:"feed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FeedServiceGetResponse) Reset() {
+	*x = FeedServiceGetResponse{}
+	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FeedServiceGetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FeedServiceGetResponse) ProtoMessage() {}
+
+func (x *FeedServiceGetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_xeiaso_net_v1_xesite_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FeedServiceGetResponse.ProtoReflect.Descriptor instead.
+func (*FeedServiceGetResponse) Descriptor() ([]byte, []int) {
+	return file_xeiaso_net_v1_xesite_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *FeedServiceGetResponse) GetFeed() *v1.Feed {
+	if x != nil {
+		return x.Feed
+	}
+	return nil
+}
+
 var File_xeiaso_net_v1_xesite_proto protoreflect.FileDescriptor
 
 const file_xeiaso_net_v1_xesite_proto_rawDesc = "" +
 	"\n" +
-	"\x1axeiaso/net/v1/xesite.proto\x12\rxeiaso.net.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a%external/protofeed/v1/protofeed.proto\"\xc7\x01\n" +
+	"\x1axeiaso/net/v1/xesite.proto\x12\rxeiaso.net.v1\x1a%external/protofeed/v1/protofeed.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x11\n" +
+	"\x0fMetadataRequest\"K\n" +
+	"\x10MetadataResponse\x127\n" +
+	"\n" +
+	"build_info\x18\x01 \x01(\v2\x18.xeiaso.net.v1.BuildInfoR\tbuildInfo\"\xc7\x01\n" +
 	"\tBuildInfo\x12\x16\n" +
 	"\x06commit\x18\x01 \x01(\tR\x06commit\x129\n" +
 	"\n" +
@@ -118,11 +287,14 @@ const file_xeiaso_net_v1_xesite_proto_rawDesc = "" +
 	"\n" +
 	"go_version\x18\x03 \x01(\tR\tgoVersion\x12!\n" +
 	"\fdeno_version\x18\x04 \x01(\tR\vdenoVersion\x12%\n" +
-	"\x0exesite_version\x18\x05 \x01(\tR\rxesiteVersion2D\n" +
-	"\x04Meta\x12<\n" +
-	"\bMetadata\x12\x16.google.protobuf.Empty\x1a\x18.xeiaso.net.v1.BuildInfo26\n" +
-	"\x04Feed\x12.\n" +
-	"\x03Get\x12\x16.google.protobuf.Empty\x1a\x0f.protofeed.FeedB\x9d\x01\n" +
+	"\x0exesite_version\x18\x05 \x01(\tR\rxesiteVersion\"\x17\n" +
+	"\x15FeedServiceGetRequest\"=\n" +
+	"\x16FeedServiceGetResponse\x12#\n" +
+	"\x04feed\x18\x01 \x01(\v2\x0f.protofeed.FeedR\x04feed2Z\n" +
+	"\vMetaService\x12K\n" +
+	"\bMetadata\x12\x1e.xeiaso.net.v1.MetadataRequest\x1a\x1f.xeiaso.net.v1.MetadataResponse2a\n" +
+	"\vFeedService\x12R\n" +
+	"\x03Get\x12$.xeiaso.net.v1.FeedServiceGetRequest\x1a%.xeiaso.net.v1.FeedServiceGetResponseB\x9d\x01\n" +
 	"\x11com.xeiaso.net.v1B\vXesiteProtoP\x01Z%xeiaso.net/v4/gen/xeiaso/net/v1;netv1\xa2\x02\x03XNX\xaa\x02\rXeiaso.Net.V1\xca\x02\rXeiaso\\Net\\V1\xe2\x02\x19Xeiaso\\Net\\V1\\GPBMetadata\xea\x02\x0fXeiaso::Net::V1b\x06proto3"
 
 var (
@@ -137,24 +309,29 @@ func file_xeiaso_net_v1_xesite_proto_rawDescGZIP() []byte {
 	return file_xeiaso_net_v1_xesite_proto_rawDescData
 }
 
-var file_xeiaso_net_v1_xesite_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_xeiaso_net_v1_xesite_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_xeiaso_net_v1_xesite_proto_goTypes = []any{
-	(*BuildInfo)(nil),             // 0: xeiaso.net.v1.BuildInfo
-	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),         // 2: google.protobuf.Empty
-	(*v1.Feed)(nil),               // 3: protofeed.Feed
+	(*MetadataRequest)(nil),        // 0: xeiaso.net.v1.MetadataRequest
+	(*MetadataResponse)(nil),       // 1: xeiaso.net.v1.MetadataResponse
+	(*BuildInfo)(nil),              // 2: xeiaso.net.v1.BuildInfo
+	(*FeedServiceGetRequest)(nil),  // 3: xeiaso.net.v1.FeedServiceGetRequest
+	(*FeedServiceGetResponse)(nil), // 4: xeiaso.net.v1.FeedServiceGetResponse
+	(*timestamppb.Timestamp)(nil),  // 5: google.protobuf.Timestamp
+	(*v1.Feed)(nil),                // 6: protofeed.Feed
 }
 var file_xeiaso_net_v1_xesite_proto_depIdxs = []int32{
-	1, // 0: xeiaso.net.v1.BuildInfo.build_time:type_name -> google.protobuf.Timestamp
-	2, // 1: xeiaso.net.v1.Meta.Metadata:input_type -> google.protobuf.Empty
-	2, // 2: xeiaso.net.v1.Feed.Get:input_type -> google.protobuf.Empty
-	0, // 3: xeiaso.net.v1.Meta.Metadata:output_type -> xeiaso.net.v1.BuildInfo
-	3, // 4: xeiaso.net.v1.Feed.Get:output_type -> protofeed.Feed
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 0: xeiaso.net.v1.MetadataResponse.build_info:type_name -> xeiaso.net.v1.BuildInfo
+	5, // 1: xeiaso.net.v1.BuildInfo.build_time:type_name -> google.protobuf.Timestamp
+	6, // 2: xeiaso.net.v1.FeedServiceGetResponse.feed:type_name -> protofeed.Feed
+	0, // 3: xeiaso.net.v1.MetaService.Metadata:input_type -> xeiaso.net.v1.MetadataRequest
+	3, // 4: xeiaso.net.v1.FeedService.Get:input_type -> xeiaso.net.v1.FeedServiceGetRequest
+	1, // 5: xeiaso.net.v1.MetaService.Metadata:output_type -> xeiaso.net.v1.MetadataResponse
+	4, // 6: xeiaso.net.v1.FeedService.Get:output_type -> xeiaso.net.v1.FeedServiceGetResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_xeiaso_net_v1_xesite_proto_init() }
@@ -168,7 +345,7 @@ func file_xeiaso_net_v1_xesite_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_xeiaso_net_v1_xesite_proto_rawDesc), len(file_xeiaso_net_v1_xesite_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

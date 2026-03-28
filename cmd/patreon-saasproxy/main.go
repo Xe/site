@@ -14,7 +14,6 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/twitchtv/twirp"
 	"golang.org/x/oauth2"
-	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gopkg.in/mxpv/patreon-go.v1"
 	adminpb "xeiaso.net/v4/gen/xeiaso/net/admin/v1"
@@ -57,8 +56,8 @@ func main() {
 		cts: cts,
 	}
 
-	ph := adminpb.NewPatreonServer(s)
-	http.Handle(adminpb.PatreonPathPrefix, ph)
+	ph := adminpb.NewPatreonServiceServer(s)
+	http.Handle(adminpb.PatreonServicePathPrefix, ph)
 
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "OK")
@@ -79,17 +78,19 @@ type Server struct {
 	cts oauth2.TokenSource
 }
 
-func (s *Server) GetToken(ctx context.Context, _ *emptypb.Empty) (*adminpb.PatreonToken, error) {
+func (s *Server) GetToken(ctx context.Context, _ *adminpb.GetTokenRequest) (*adminpb.GetTokenResponse, error) {
 	token, err := s.cts.Token()
 	if err != nil {
 		slog.Error("token fetch failed", "err", err)
 		return nil, twirp.InternalErrorWith(err)
 	}
 
-	return &adminpb.PatreonToken{
-		AccessToken:  token.AccessToken,
-		TokenType:    token.TokenType,
-		RefreshToken: token.RefreshToken,
-		Expiry:       timestamppb.New(token.Expiry),
+	return &adminpb.GetTokenResponse{
+		Token: &adminpb.PatreonToken{
+			AccessToken:  token.AccessToken,
+			TokenType:    token.TokenType,
+			RefreshToken: token.RefreshToken,
+			Expiry:       timestamppb.New(token.Expiry),
+		},
 	}, nil
 }

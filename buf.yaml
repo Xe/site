@@ -6,6 +6,23 @@ deps:
 lint:
   use:
     - STANDARD
+  ignore_only:
+    PACKAGE_DIRECTORY_MATCH:
+      - proto/external/protofeed/v1/protofeed.proto
+    PACKAGE_VERSION_SUFFIX:
+      - proto/external/protofeed/v1/protofeed.proto
+    SERVICE_SUFFIX:
+      - proto/within/website/x/mi/v1/mi.proto
+      - proto/within/website/x/mimi/announce/v1/announce.proto
+    RPC_REQUEST_STANDARD_NAME:
+      - proto/within/website/x/mi/v1/mi.proto
+      - proto/within/website/x/mimi/announce/v1/announce.proto
+    RPC_RESPONSE_STANDARD_NAME:
+      - proto/within/website/x/mi/v1/mi.proto
+      - proto/within/website/x/mimi/announce/v1/announce.proto
+    RPC_REQUEST_RESPONSE_UNIQUE:
+      - proto/within/website/x/mi/v1/mi.proto
+      - proto/within/website/x/mimi/announce/v1/announce.proto
 breaking:
   use:
     - FILE

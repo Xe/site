@@ -16,9 +16,6 @@ import proto "google.golang.org/protobuf/proto"
 import twirp "github.com/twitchtv/twirp"
 import ctxsetters "github.com/twitchtv/twirp/ctxsetters"
 
-import google_protobuf "google.golang.org/protobuf/types/known/emptypb"
-import protofeed "xeiaso.net/v4/gen/external/protofeed/v1"
-
 import bytes "bytes"
 import errors "errors"
 import path "path"
@@ -30,31 +27,31 @@ import url "net/url"
 // See https://twitchtv.github.io/twirp/docs/version_matrix.html
 const _ = twirp.TwirpPackageMinVersion_8_1_0
 
-// ==============
-// Meta Interface
-// ==============
+// =====================
+// MetaService Interface
+// =====================
 
-// Meta lets users fetch site metadata.
-type Meta interface {
+// MetaService lets users fetch site metadata.
+type MetaService interface {
 	// Metadata fetches the build metadata of the version of xesite that is
 	// currently running.
-	Metadata(context.Context, *google_protobuf.Empty) (*BuildInfo, error)
+	Metadata(context.Context, *MetadataRequest) (*MetadataResponse, error)
 }
 
-// ====================
-// Meta Protobuf Client
-// ====================
+// ===========================
+// MetaService Protobuf Client
+// ===========================
 
-type metaProtobufClient struct {
+type metaServiceProtobufClient struct {
 	client      HTTPClient
 	urls        [1]string
 	interceptor twirp.Interceptor
 	opts        twirp.ClientOptions
 }
 
-// NewMetaProtobufClient creates a Protobuf client that implements the Meta interface.
+// NewMetaServiceProtobufClient creates a Protobuf client that implements the MetaService interface.
 // It communicates using Protobuf and can be configured with a custom HTTPClient.
-func NewMetaProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Meta {
+func NewMetaServiceProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) MetaService {
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -74,12 +71,12 @@ func NewMetaProtobufClient(baseURL string, client HTTPClient, opts ...twirp.Clie
 
 	// Build method URLs: <baseURL>[<prefix>]/<package>.<Service>/<Method>
 	serviceURL := sanitizeBaseURL(baseURL)
-	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.v1", "Meta")
+	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.v1", "MetaService")
 	urls := [1]string{
 		serviceURL + "Metadata",
 	}
 
-	return &metaProtobufClient{
+	return &metaServiceProtobufClient{
 		client:      client,
 		urls:        urls,
 		interceptor: twirp.ChainInterceptors(clientOpts.Interceptors...),
@@ -87,26 +84,26 @@ func NewMetaProtobufClient(baseURL string, client HTTPClient, opts ...twirp.Clie
 	}
 }
 
-func (c *metaProtobufClient) Metadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
+func (c *metaServiceProtobufClient) Metadata(ctx context.Context, in *MetadataRequest) (*MetadataResponse, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Meta")
+	ctx = ctxsetters.WithServiceName(ctx, "MetaService")
 	ctx = ctxsetters.WithMethodName(ctx, "Metadata")
 	caller := c.callMetadata
 	if c.interceptor != nil {
-		caller = func(ctx context.Context, req *google_protobuf.Empty) (*BuildInfo, error) {
+		caller = func(ctx context.Context, req *MetadataRequest) (*MetadataResponse, error) {
 			resp, err := c.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*MetadataRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*MetadataRequest) when calling interceptor")
 					}
 					return c.callMetadata(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*BuildInfo)
+				typedResp, ok := resp.(*MetadataResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*BuildInfo) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*MetadataResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -116,8 +113,8 @@ func (c *metaProtobufClient) Metadata(ctx context.Context, in *google_protobuf.E
 	return caller(ctx, in)
 }
 
-func (c *metaProtobufClient) callMetadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
-	out := new(BuildInfo)
+func (c *metaServiceProtobufClient) callMetadata(ctx context.Context, in *MetadataRequest) (*MetadataResponse, error) {
+	out := new(MetadataResponse)
 	ctx, err := doProtobufRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
 		twerr, ok := err.(twirp.Error)
@@ -133,20 +130,20 @@ func (c *metaProtobufClient) callMetadata(ctx context.Context, in *google_protob
 	return out, nil
 }
 
-// ================
-// Meta JSON Client
-// ================
+// =======================
+// MetaService JSON Client
+// =======================
 
-type metaJSONClient struct {
+type metaServiceJSONClient struct {
 	client      HTTPClient
 	urls        [1]string
 	interceptor twirp.Interceptor
 	opts        twirp.ClientOptions
 }
 
-// NewMetaJSONClient creates a JSON client that implements the Meta interface.
+// NewMetaServiceJSONClient creates a JSON client that implements the MetaService interface.
 // It communicates using JSON and can be configured with a custom HTTPClient.
-func NewMetaJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Meta {
+func NewMetaServiceJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) MetaService {
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -166,12 +163,12 @@ func NewMetaJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOp
 
 	// Build method URLs: <baseURL>[<prefix>]/<package>.<Service>/<Method>
 	serviceURL := sanitizeBaseURL(baseURL)
-	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.v1", "Meta")
+	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.v1", "MetaService")
 	urls := [1]string{
 		serviceURL + "Metadata",
 	}
 
-	return &metaJSONClient{
+	return &metaServiceJSONClient{
 		client:      client,
 		urls:        urls,
 		interceptor: twirp.ChainInterceptors(clientOpts.Interceptors...),
@@ -179,26 +176,26 @@ func NewMetaJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOp
 	}
 }
 
-func (c *metaJSONClient) Metadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
+func (c *metaServiceJSONClient) Metadata(ctx context.Context, in *MetadataRequest) (*MetadataResponse, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Meta")
+	ctx = ctxsetters.WithServiceName(ctx, "MetaService")
 	ctx = ctxsetters.WithMethodName(ctx, "Metadata")
 	caller := c.callMetadata
 	if c.interceptor != nil {
-		caller = func(ctx context.Context, req *google_protobuf.Empty) (*BuildInfo, error) {
+		caller = func(ctx context.Context, req *MetadataRequest) (*MetadataResponse, error) {
 			resp, err := c.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*MetadataRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*MetadataRequest) when calling interceptor")
 					}
 					return c.callMetadata(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*BuildInfo)
+				typedResp, ok := resp.(*MetadataResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*BuildInfo) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*MetadataResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -208,8 +205,8 @@ func (c *metaJSONClient) Metadata(ctx context.Context, in *google_protobuf.Empty
 	return caller(ctx, in)
 }
 
-func (c *metaJSONClient) callMetadata(ctx context.Context, in *google_protobuf.Empty) (*BuildInfo, error) {
-	out := new(BuildInfo)
+func (c *metaServiceJSONClient) callMetadata(ctx context.Context, in *MetadataRequest) (*MetadataResponse, error) {
+	out := new(MetadataResponse)
 	ctx, err := doJSONRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
 		twerr, ok := err.(twirp.Error)
@@ -225,12 +222,12 @@ func (c *metaJSONClient) callMetadata(ctx context.Context, in *google_protobuf.E
 	return out, nil
 }
 
-// ===================
-// Meta Server Handler
-// ===================
+// ==========================
+// MetaService Server Handler
+// ==========================
 
-type metaServer struct {
-	Meta
+type metaServiceServer struct {
+	MetaService
 	interceptor      twirp.Interceptor
 	hooks            *twirp.ServerHooks
 	pathPrefix       string // prefix for routing
@@ -238,10 +235,10 @@ type metaServer struct {
 	jsonCamelCase    bool   // JSON fields are serialized as lowerCamelCase rather than keeping the original proto names
 }
 
-// NewMetaServer builds a TwirpServer that can be used as an http.Handler to handle
+// NewMetaServiceServer builds a TwirpServer that can be used as an http.Handler to handle
 // HTTP requests that are routed to the right method in the provided svc implementation.
 // The opts are twirp.ServerOption modifiers, for example twirp.WithServerHooks(hooks).
-func NewMetaServer(svc Meta, opts ...interface{}) TwirpServer {
+func NewMetaServiceServer(svc MetaService, opts ...interface{}) TwirpServer {
 	serverOpts := newServerOpts(opts)
 
 	// Using ReadOpt allows backwards and forwards compatibility with new options in the future
@@ -254,8 +251,8 @@ func NewMetaServer(svc Meta, opts ...interface{}) TwirpServer {
 		pathPrefix = "/twirp" // default prefix
 	}
 
-	return &metaServer{
-		Meta:             svc,
+	return &metaServiceServer{
+		MetaService:      svc,
 		hooks:            serverOpts.Hooks,
 		interceptor:      twirp.ChainInterceptors(serverOpts.Interceptors...),
 		pathPrefix:       pathPrefix,
@@ -266,12 +263,12 @@ func NewMetaServer(svc Meta, opts ...interface{}) TwirpServer {
 
 // writeError writes an HTTP response with a valid Twirp error format, and triggers hooks.
 // If err is not a twirp.Error, it will get wrapped with twirp.InternalErrorWith(err)
-func (s *metaServer) writeError(ctx context.Context, resp http.ResponseWriter, err error) {
+func (s *metaServiceServer) writeError(ctx context.Context, resp http.ResponseWriter, err error) {
 	writeError(ctx, resp, err, s.hooks)
 }
 
 // handleRequestBodyError is used to handle error when the twirp server cannot read request
-func (s *metaServer) handleRequestBodyError(ctx context.Context, resp http.ResponseWriter, msg string, err error) {
+func (s *metaServiceServer) handleRequestBodyError(ctx context.Context, resp http.ResponseWriter, msg string, err error) {
 	if context.Canceled == ctx.Err() {
 		s.writeError(ctx, resp, twirp.NewError(twirp.Canceled, "failed to read request: context canceled"))
 		return
@@ -283,16 +280,16 @@ func (s *metaServer) handleRequestBodyError(ctx context.Context, resp http.Respo
 	s.writeError(ctx, resp, twirp.WrapError(malformedRequestError(msg), err))
 }
 
-// MetaPathPrefix is a convenience constant that may identify URL paths.
+// MetaServicePathPrefix is a convenience constant that may identify URL paths.
 // Should be used with caution, it only matches routes generated by Twirp Go clients,
 // with the default "/twirp" prefix and default CamelCase service and method names.
 // More info: https://twitchtv.github.io/twirp/docs/routing.html
-const MetaPathPrefix = "/twirp/xeiaso.net.v1.Meta/"
+const MetaServicePathPrefix = "/twirp/xeiaso.net.v1.MetaService/"
 
-func (s *metaServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+func (s *metaServiceServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Meta")
+	ctx = ctxsetters.WithServiceName(ctx, "MetaService")
 	ctx = ctxsetters.WithResponseWriter(ctx, resp)
 
 	var err error
@@ -310,7 +307,7 @@ func (s *metaServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 
 	// Verify path format: [<prefix>]/<package>.<Service>/<Method>
 	prefix, pkgService, method := parseTwirpPath(req.URL.Path)
-	if pkgService != "xeiaso.net.v1.Meta" {
+	if pkgService != "xeiaso.net.v1.MetaService" {
 		msg := fmt.Sprintf("no handler for path %q", req.URL.Path)
 		s.writeError(ctx, resp, badRouteError(msg, req.Method, req.URL.Path))
 		return
@@ -332,7 +329,7 @@ func (s *metaServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (s *metaServer) serveMetadata(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *metaServiceServer) serveMetadata(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	header := req.Header.Get("Content-Type")
 	i := strings.Index(header, ";")
 	if i == -1 {
@@ -350,7 +347,7 @@ func (s *metaServer) serveMetadata(ctx context.Context, resp http.ResponseWriter
 	}
 }
 
-func (s *metaServer) serveMetadataJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *metaServiceServer) serveMetadataJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx = ctxsetters.WithMethodName(ctx, "Metadata")
 	ctx, err = callRequestRouted(ctx, s.hooks)
@@ -365,29 +362,29 @@ func (s *metaServer) serveMetadataJSON(ctx context.Context, resp http.ResponseWr
 		s.handleRequestBodyError(ctx, resp, "the json request could not be decoded", err)
 		return
 	}
-	reqContent := new(google_protobuf.Empty)
+	reqContent := new(MetadataRequest)
 	unmarshaler := protojson.UnmarshalOptions{DiscardUnknown: true}
 	if err = unmarshaler.Unmarshal(rawReqBody, reqContent); err != nil {
 		s.handleRequestBodyError(ctx, resp, "the json request could not be decoded", err)
 		return
 	}
 
-	handler := s.Meta.Metadata
+	handler := s.MetaService.Metadata
 	if s.interceptor != nil {
-		handler = func(ctx context.Context, req *google_protobuf.Empty) (*BuildInfo, error) {
+		handler = func(ctx context.Context, req *MetadataRequest) (*MetadataResponse, error) {
 			resp, err := s.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*MetadataRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*MetadataRequest) when calling interceptor")
 					}
-					return s.Meta.Metadata(ctx, typedReq)
+					return s.MetaService.Metadata(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*BuildInfo)
+				typedResp, ok := resp.(*MetadataResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*BuildInfo) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*MetadataResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -396,7 +393,7 @@ func (s *metaServer) serveMetadataJSON(ctx context.Context, resp http.ResponseWr
 	}
 
 	// Call service method
-	var respContent *BuildInfo
+	var respContent *MetadataResponse
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
 		respContent, err = handler(ctx, reqContent)
@@ -407,7 +404,7 @@ func (s *metaServer) serveMetadataJSON(ctx context.Context, resp http.ResponseWr
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *BuildInfo and nil error while calling Metadata. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *MetadataResponse and nil error while calling Metadata. nil responses are not supported"))
 		return
 	}
 
@@ -433,7 +430,7 @@ func (s *metaServer) serveMetadataJSON(ctx context.Context, resp http.ResponseWr
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *metaServer) serveMetadataProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *metaServiceServer) serveMetadataProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx = ctxsetters.WithMethodName(ctx, "Metadata")
 	ctx, err = callRequestRouted(ctx, s.hooks)
@@ -447,28 +444,28 @@ func (s *metaServer) serveMetadataProtobuf(ctx context.Context, resp http.Respon
 		s.handleRequestBodyError(ctx, resp, "failed to read request body", err)
 		return
 	}
-	reqContent := new(google_protobuf.Empty)
+	reqContent := new(MetadataRequest)
 	if err = proto.Unmarshal(buf, reqContent); err != nil {
 		s.writeError(ctx, resp, malformedRequestError("the protobuf request could not be decoded"))
 		return
 	}
 
-	handler := s.Meta.Metadata
+	handler := s.MetaService.Metadata
 	if s.interceptor != nil {
-		handler = func(ctx context.Context, req *google_protobuf.Empty) (*BuildInfo, error) {
+		handler = func(ctx context.Context, req *MetadataRequest) (*MetadataResponse, error) {
 			resp, err := s.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*MetadataRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*MetadataRequest) when calling interceptor")
 					}
-					return s.Meta.Metadata(ctx, typedReq)
+					return s.MetaService.Metadata(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*BuildInfo)
+				typedResp, ok := resp.(*MetadataResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*BuildInfo) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*MetadataResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -477,7 +474,7 @@ func (s *metaServer) serveMetadataProtobuf(ctx context.Context, resp http.Respon
 	}
 
 	// Call service method
-	var respContent *BuildInfo
+	var respContent *MetadataResponse
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
 		respContent, err = handler(ctx, reqContent)
@@ -488,7 +485,7 @@ func (s *metaServer) serveMetadataProtobuf(ctx context.Context, resp http.Respon
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *BuildInfo and nil error while calling Metadata. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *MetadataResponse and nil error while calling Metadata. nil responses are not supported"))
 		return
 	}
 
@@ -512,45 +509,45 @@ func (s *metaServer) serveMetadataProtobuf(ctx context.Context, resp http.Respon
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *metaServer) ServiceDescriptor() ([]byte, int) {
+func (s *metaServiceServer) ServiceDescriptor() ([]byte, int) {
 	return twirpFileDescriptor0, 0
 }
 
-func (s *metaServer) ProtocGenTwirpVersion() string {
+func (s *metaServiceServer) ProtocGenTwirpVersion() string {
 	return "v8.1.3"
 }
 
 // PathPrefix returns the base service path, in the form: "/<prefix>/<package>.<Service>/"
 // that is everything in a Twirp route except for the <Method>. This can be used for routing,
 // for example to identify the requests that are targeted to this service in a mux.
-func (s *metaServer) PathPrefix() string {
-	return baseServicePath(s.pathPrefix, "xeiaso.net.v1", "Meta")
+func (s *metaServiceServer) PathPrefix() string {
+	return baseServicePath(s.pathPrefix, "xeiaso.net.v1", "MetaService")
 }
 
-// ==============
-// Feed Interface
-// ==============
+// =====================
+// FeedService Interface
+// =====================
 
-// Feed lets users fetch the current feed of posts.
-type Feed interface {
+// FeedService lets users fetch the current feed of posts.
+type FeedService interface {
 	// Get fetches the current feed of posts.
-	Get(context.Context, *google_protobuf.Empty) (*protofeed.Feed, error)
+	Get(context.Context, *FeedServiceGetRequest) (*FeedServiceGetResponse, error)
 }
 
-// ====================
-// Feed Protobuf Client
-// ====================
+// ===========================
+// FeedService Protobuf Client
+// ===========================
 
-type feedProtobufClient struct {
+type feedServiceProtobufClient struct {
 	client      HTTPClient
 	urls        [1]string
 	interceptor twirp.Interceptor
 	opts        twirp.ClientOptions
 }
 
-// NewFeedProtobufClient creates a Protobuf client that implements the Feed interface.
+// NewFeedServiceProtobufClient creates a Protobuf client that implements the FeedService interface.
 // It communicates using Protobuf and can be configured with a custom HTTPClient.
-func NewFeedProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Feed {
+func NewFeedServiceProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) FeedService {
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -570,12 +567,12 @@ func NewFeedProtobufClient(baseURL string, client HTTPClient, opts ...twirp.Clie
 
 	// Build method URLs: <baseURL>[<prefix>]/<package>.<Service>/<Method>
 	serviceURL := sanitizeBaseURL(baseURL)
-	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.v1", "Feed")
+	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.v1", "FeedService")
 	urls := [1]string{
 		serviceURL + "Get",
 	}
 
-	return &feedProtobufClient{
+	return &feedServiceProtobufClient{
 		client:      client,
 		urls:        urls,
 		interceptor: twirp.ChainInterceptors(clientOpts.Interceptors...),
@@ -583,26 +580,26 @@ func NewFeedProtobufClient(baseURL string, client HTTPClient, opts ...twirp.Clie
 	}
 }
 
-func (c *feedProtobufClient) Get(ctx context.Context, in *google_protobuf.Empty) (*protofeed.Feed, error) {
+func (c *feedServiceProtobufClient) Get(ctx context.Context, in *FeedServiceGetRequest) (*FeedServiceGetResponse, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Feed")
+	ctx = ctxsetters.WithServiceName(ctx, "FeedService")
 	ctx = ctxsetters.WithMethodName(ctx, "Get")
 	caller := c.callGet
 	if c.interceptor != nil {
-		caller = func(ctx context.Context, req *google_protobuf.Empty) (*protofeed.Feed, error) {
+		caller = func(ctx context.Context, req *FeedServiceGetRequest) (*FeedServiceGetResponse, error) {
 			resp, err := c.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*FeedServiceGetRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*FeedServiceGetRequest) when calling interceptor")
 					}
 					return c.callGet(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*protofeed.Feed)
+				typedResp, ok := resp.(*FeedServiceGetResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*protofeed.Feed) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*FeedServiceGetResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -612,8 +609,8 @@ func (c *feedProtobufClient) Get(ctx context.Context, in *google_protobuf.Empty)
 	return caller(ctx, in)
 }
 
-func (c *feedProtobufClient) callGet(ctx context.Context, in *google_protobuf.Empty) (*protofeed.Feed, error) {
-	out := new(protofeed.Feed)
+func (c *feedServiceProtobufClient) callGet(ctx context.Context, in *FeedServiceGetRequest) (*FeedServiceGetResponse, error) {
+	out := new(FeedServiceGetResponse)
 	ctx, err := doProtobufRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
 		twerr, ok := err.(twirp.Error)
@@ -629,20 +626,20 @@ func (c *feedProtobufClient) callGet(ctx context.Context, in *google_protobuf.Em
 	return out, nil
 }
 
-// ================
-// Feed JSON Client
-// ================
+// =======================
+// FeedService JSON Client
+// =======================
 
-type feedJSONClient struct {
+type feedServiceJSONClient struct {
 	client      HTTPClient
 	urls        [1]string
 	interceptor twirp.Interceptor
 	opts        twirp.ClientOptions
 }
 
-// NewFeedJSONClient creates a JSON client that implements the Feed interface.
+// NewFeedServiceJSONClient creates a JSON client that implements the FeedService interface.
 // It communicates using JSON and can be configured with a custom HTTPClient.
-func NewFeedJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Feed {
+func NewFeedServiceJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) FeedService {
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -662,12 +659,12 @@ func NewFeedJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOp
 
 	// Build method URLs: <baseURL>[<prefix>]/<package>.<Service>/<Method>
 	serviceURL := sanitizeBaseURL(baseURL)
-	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.v1", "Feed")
+	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.v1", "FeedService")
 	urls := [1]string{
 		serviceURL + "Get",
 	}
 
-	return &feedJSONClient{
+	return &feedServiceJSONClient{
 		client:      client,
 		urls:        urls,
 		interceptor: twirp.ChainInterceptors(clientOpts.Interceptors...),
@@ -675,26 +672,26 @@ func NewFeedJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOp
 	}
 }
 
-func (c *feedJSONClient) Get(ctx context.Context, in *google_protobuf.Empty) (*protofeed.Feed, error) {
+func (c *feedServiceJSONClient) Get(ctx context.Context, in *FeedServiceGetRequest) (*FeedServiceGetResponse, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Feed")
+	ctx = ctxsetters.WithServiceName(ctx, "FeedService")
 	ctx = ctxsetters.WithMethodName(ctx, "Get")
 	caller := c.callGet
 	if c.interceptor != nil {
-		caller = func(ctx context.Context, req *google_protobuf.Empty) (*protofeed.Feed, error) {
+		caller = func(ctx context.Context, req *FeedServiceGetRequest) (*FeedServiceGetResponse, error) {
 			resp, err := c.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*FeedServiceGetRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*FeedServiceGetRequest) when calling interceptor")
 					}
 					return c.callGet(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*protofeed.Feed)
+				typedResp, ok := resp.(*FeedServiceGetResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*protofeed.Feed) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*FeedServiceGetResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -704,8 +701,8 @@ func (c *feedJSONClient) Get(ctx context.Context, in *google_protobuf.Empty) (*p
 	return caller(ctx, in)
 }
 
-func (c *feedJSONClient) callGet(ctx context.Context, in *google_protobuf.Empty) (*protofeed.Feed, error) {
-	out := new(protofeed.Feed)
+func (c *feedServiceJSONClient) callGet(ctx context.Context, in *FeedServiceGetRequest) (*FeedServiceGetResponse, error) {
+	out := new(FeedServiceGetResponse)
 	ctx, err := doJSONRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
 		twerr, ok := err.(twirp.Error)
@@ -721,12 +718,12 @@ func (c *feedJSONClient) callGet(ctx context.Context, in *google_protobuf.Empty)
 	return out, nil
 }
 
-// ===================
-// Feed Server Handler
-// ===================
+// ==========================
+// FeedService Server Handler
+// ==========================
 
-type feedServer struct {
-	Feed
+type feedServiceServer struct {
+	FeedService
 	interceptor      twirp.Interceptor
 	hooks            *twirp.ServerHooks
 	pathPrefix       string // prefix for routing
@@ -734,10 +731,10 @@ type feedServer struct {
 	jsonCamelCase    bool   // JSON fields are serialized as lowerCamelCase rather than keeping the original proto names
 }
 
-// NewFeedServer builds a TwirpServer that can be used as an http.Handler to handle
+// NewFeedServiceServer builds a TwirpServer that can be used as an http.Handler to handle
 // HTTP requests that are routed to the right method in the provided svc implementation.
 // The opts are twirp.ServerOption modifiers, for example twirp.WithServerHooks(hooks).
-func NewFeedServer(svc Feed, opts ...interface{}) TwirpServer {
+func NewFeedServiceServer(svc FeedService, opts ...interface{}) TwirpServer {
 	serverOpts := newServerOpts(opts)
 
 	// Using ReadOpt allows backwards and forwards compatibility with new options in the future
@@ -750,8 +747,8 @@ func NewFeedServer(svc Feed, opts ...interface{}) TwirpServer {
 		pathPrefix = "/twirp" // default prefix
 	}
 
-	return &feedServer{
-		Feed:             svc,
+	return &feedServiceServer{
+		FeedService:      svc,
 		hooks:            serverOpts.Hooks,
 		interceptor:      twirp.ChainInterceptors(serverOpts.Interceptors...),
 		pathPrefix:       pathPrefix,
@@ -762,12 +759,12 @@ func NewFeedServer(svc Feed, opts ...interface{}) TwirpServer {
 
 // writeError writes an HTTP response with a valid Twirp error format, and triggers hooks.
 // If err is not a twirp.Error, it will get wrapped with twirp.InternalErrorWith(err)
-func (s *feedServer) writeError(ctx context.Context, resp http.ResponseWriter, err error) {
+func (s *feedServiceServer) writeError(ctx context.Context, resp http.ResponseWriter, err error) {
 	writeError(ctx, resp, err, s.hooks)
 }
 
 // handleRequestBodyError is used to handle error when the twirp server cannot read request
-func (s *feedServer) handleRequestBodyError(ctx context.Context, resp http.ResponseWriter, msg string, err error) {
+func (s *feedServiceServer) handleRequestBodyError(ctx context.Context, resp http.ResponseWriter, msg string, err error) {
 	if context.Canceled == ctx.Err() {
 		s.writeError(ctx, resp, twirp.NewError(twirp.Canceled, "failed to read request: context canceled"))
 		return
@@ -779,16 +776,16 @@ func (s *feedServer) handleRequestBodyError(ctx context.Context, resp http.Respo
 	s.writeError(ctx, resp, twirp.WrapError(malformedRequestError(msg), err))
 }
 
-// FeedPathPrefix is a convenience constant that may identify URL paths.
+// FeedServicePathPrefix is a convenience constant that may identify URL paths.
 // Should be used with caution, it only matches routes generated by Twirp Go clients,
 // with the default "/twirp" prefix and default CamelCase service and method names.
 // More info: https://twitchtv.github.io/twirp/docs/routing.html
-const FeedPathPrefix = "/twirp/xeiaso.net.v1.Feed/"
+const FeedServicePathPrefix = "/twirp/xeiaso.net.v1.FeedService/"
 
-func (s *feedServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+func (s *feedServiceServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Feed")
+	ctx = ctxsetters.WithServiceName(ctx, "FeedService")
 	ctx = ctxsetters.WithResponseWriter(ctx, resp)
 
 	var err error
@@ -806,7 +803,7 @@ func (s *feedServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 
 	// Verify path format: [<prefix>]/<package>.<Service>/<Method>
 	prefix, pkgService, method := parseTwirpPath(req.URL.Path)
-	if pkgService != "xeiaso.net.v1.Feed" {
+	if pkgService != "xeiaso.net.v1.FeedService" {
 		msg := fmt.Sprintf("no handler for path %q", req.URL.Path)
 		s.writeError(ctx, resp, badRouteError(msg, req.Method, req.URL.Path))
 		return
@@ -828,7 +825,7 @@ func (s *feedServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (s *feedServer) serveGet(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *feedServiceServer) serveGet(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	header := req.Header.Get("Content-Type")
 	i := strings.Index(header, ";")
 	if i == -1 {
@@ -846,7 +843,7 @@ func (s *feedServer) serveGet(ctx context.Context, resp http.ResponseWriter, req
 	}
 }
 
-func (s *feedServer) serveGetJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *feedServiceServer) serveGetJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx = ctxsetters.WithMethodName(ctx, "Get")
 	ctx, err = callRequestRouted(ctx, s.hooks)
@@ -861,29 +858,29 @@ func (s *feedServer) serveGetJSON(ctx context.Context, resp http.ResponseWriter,
 		s.handleRequestBodyError(ctx, resp, "the json request could not be decoded", err)
 		return
 	}
-	reqContent := new(google_protobuf.Empty)
+	reqContent := new(FeedServiceGetRequest)
 	unmarshaler := protojson.UnmarshalOptions{DiscardUnknown: true}
 	if err = unmarshaler.Unmarshal(rawReqBody, reqContent); err != nil {
 		s.handleRequestBodyError(ctx, resp, "the json request could not be decoded", err)
 		return
 	}
 
-	handler := s.Feed.Get
+	handler := s.FeedService.Get
 	if s.interceptor != nil {
-		handler = func(ctx context.Context, req *google_protobuf.Empty) (*protofeed.Feed, error) {
+		handler = func(ctx context.Context, req *FeedServiceGetRequest) (*FeedServiceGetResponse, error) {
 			resp, err := s.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*FeedServiceGetRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*FeedServiceGetRequest) when calling interceptor")
 					}
-					return s.Feed.Get(ctx, typedReq)
+					return s.FeedService.Get(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*protofeed.Feed)
+				typedResp, ok := resp.(*FeedServiceGetResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*protofeed.Feed) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*FeedServiceGetResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -892,7 +889,7 @@ func (s *feedServer) serveGetJSON(ctx context.Context, resp http.ResponseWriter,
 	}
 
 	// Call service method
-	var respContent *protofeed.Feed
+	var respContent *FeedServiceGetResponse
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
 		respContent, err = handler(ctx, reqContent)
@@ -903,7 +900,7 @@ func (s *feedServer) serveGetJSON(ctx context.Context, resp http.ResponseWriter,
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *protofeed.Feed and nil error while calling Get. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *FeedServiceGetResponse and nil error while calling Get. nil responses are not supported"))
 		return
 	}
 
@@ -929,7 +926,7 @@ func (s *feedServer) serveGetJSON(ctx context.Context, resp http.ResponseWriter,
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *feedServer) serveGetProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *feedServiceServer) serveGetProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx = ctxsetters.WithMethodName(ctx, "Get")
 	ctx, err = callRequestRouted(ctx, s.hooks)
@@ -943,28 +940,28 @@ func (s *feedServer) serveGetProtobuf(ctx context.Context, resp http.ResponseWri
 		s.handleRequestBodyError(ctx, resp, "failed to read request body", err)
 		return
 	}
-	reqContent := new(google_protobuf.Empty)
+	reqContent := new(FeedServiceGetRequest)
 	if err = proto.Unmarshal(buf, reqContent); err != nil {
 		s.writeError(ctx, resp, malformedRequestError("the protobuf request could not be decoded"))
 		return
 	}
 
-	handler := s.Feed.Get
+	handler := s.FeedService.Get
 	if s.interceptor != nil {
-		handler = func(ctx context.Context, req *google_protobuf.Empty) (*protofeed.Feed, error) {
+		handler = func(ctx context.Context, req *FeedServiceGetRequest) (*FeedServiceGetResponse, error) {
 			resp, err := s.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*FeedServiceGetRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*FeedServiceGetRequest) when calling interceptor")
 					}
-					return s.Feed.Get(ctx, typedReq)
+					return s.FeedService.Get(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*protofeed.Feed)
+				typedResp, ok := resp.(*FeedServiceGetResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*protofeed.Feed) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*FeedServiceGetResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -973,7 +970,7 @@ func (s *feedServer) serveGetProtobuf(ctx context.Context, resp http.ResponseWri
 	}
 
 	// Call service method
-	var respContent *protofeed.Feed
+	var respContent *FeedServiceGetResponse
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
 		respContent, err = handler(ctx, reqContent)
@@ -984,7 +981,7 @@ func (s *feedServer) serveGetProtobuf(ctx context.Context, resp http.ResponseWri
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *protofeed.Feed and nil error while calling Get. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *FeedServiceGetResponse and nil error while calling Get. nil responses are not supported"))
 		return
 	}
 
@@ -1008,19 +1005,19 @@ func (s *feedServer) serveGetProtobuf(ctx context.Context, resp http.ResponseWri
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *feedServer) ServiceDescriptor() ([]byte, int) {
+func (s *feedServiceServer) ServiceDescriptor() ([]byte, int) {
 	return twirpFileDescriptor0, 1
 }
 
-func (s *feedServer) ProtocGenTwirpVersion() string {
+func (s *feedServiceServer) ProtocGenTwirpVersion() string {
 	return "v8.1.3"
 }
 
 // PathPrefix returns the base service path, in the form: "/<prefix>/<package>.<Service>/"
 // that is everything in a Twirp route except for the <Method>. This can be used for routing,
 // for example to identify the requests that are targeted to this service in a mux.
-func (s *feedServer) PathPrefix() string {
-	return baseServicePath(s.pathPrefix, "xeiaso.net.v1", "Feed")
+func (s *feedServiceServer) PathPrefix() string {
+	return baseServicePath(s.pathPrefix, "xeiaso.net.v1", "FeedService")
 }
 
 // =====
@@ -1589,30 +1586,34 @@ func callClientError(ctx context.Context, h *twirp.ClientHooks, err twirp.Error)
 }
 
 var twirpFileDescriptor0 = []byte{
-	// 388 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x92, 0xc1, 0xaa, 0xd3, 0x40,
-	0x14, 0x86, 0x49, 0x5a, 0x8b, 0x99, 0x5a, 0x8b, 0xb3, 0x28, 0x31, 0x22, 0x56, 0xa1, 0xd0, 0xd5,
-	0x0c, 0xa9, 0x22, 0x18, 0x5d, 0x05, 0xb5, 0xb8, 0x30, 0x94, 0x22, 0x21, 0x48, 0xa1, 0xa4, 0xcd,
-	0x69, 0x08, 0x34, 0x33, 0xa5, 0x39, 0x0d, 0xf5, 0x61, 0xdc, 0xb8, 0xf4, 0x45, 0x2e, 0xdc, 0xc7,
-	0xb8, 0xcb, 0xfb, 0x14, 0x97, 0xc9, 0x34, 0x2d, 0xb9, 0x97, 0xbb, 0x0a, 0xff, 0xf9, 0x3f, 0xce,
-	0xf9, 0xf3, 0x33, 0xc4, 0x39, 0x42, 0x16, 0x17, 0x92, 0x0b, 0x40, 0x5e, 0xba, 0xfc, 0x08, 0x45,
-	0x86, 0xc0, 0x76, 0x7b, 0x89, 0x92, 0xf6, 0xb4, 0xc7, 0x04, 0x20, 0x2b, 0x5d, 0xe7, 0x55, 0x2a,
-	0x65, 0xba, 0x05, 0x5e, 0x99, 0xab, 0xc3, 0x86, 0x43, 0xbe, 0xc3, 0x3f, 0x9a, 0x75, 0xde, 0xdc,
-	0x37, 0x31, 0xcb, 0xa1, 0xc0, 0x38, 0xdf, 0x9d, 0x80, 0x11, 0x1c, 0x11, 0xf6, 0x22, 0xde, 0x6a,
-	0x64, 0x03, 0x90, 0xa8, 0x83, 0x67, 0xa1, 0xb1, 0x77, 0x57, 0x06, 0xb1, 0xfc, 0x43, 0xb6, 0x4d,
-	0x7e, 0x88, 0x8d, 0xa4, 0x03, 0xd2, 0x59, 0xcb, 0x3c, 0xcf, 0xd0, 0x36, 0x86, 0xc6, 0xd8, 0x9a,
-	0x9f, 0x14, 0xfd, 0x44, 0xc8, 0x4a, 0x41, 0x4b, 0x75, 0xc5, 0x36, 0x87, 0xc6, 0xb8, 0x3b, 0x71,
-	0x98, 0x8e, 0xc0, 0xea, 0x08, 0xec, 0x57, 0x1d, 0x61, 0x6e, 0x55, 0xb4, 0xd2, 0xf4, 0x35, 0x21,
-	0xa9, 0x5c, 0x96, 0xb0, 0x2f, 0x32, 0x29, 0xec, 0x56, 0xb5, 0xd6, 0x4a, 0x65, 0xa8, 0x07, 0xf4,
-	0x2d, 0x79, 0x96, 0x80, 0xb8, 0x00, 0xed, 0x0a, 0xe8, 0xaa, 0x59, 0x8d, 0x8c, 0xc8, 0x73, 0x5d,
-	0xd3, 0x19, 0x7a, 0x52, 0x41, 0x3d, 0x3d, 0x3d, 0x61, 0x93, 0xaf, 0xa4, 0xfd, 0x13, 0x30, 0xa6,
-	0x5f, 0xc8, 0x53, 0xf5, 0x4d, 0x62, 0x8c, 0xe9, 0xe0, 0x41, 0xc6, 0x6f, 0xaa, 0x43, 0xc7, 0x66,
-	0x8d, 0xaa, 0xd9, 0xb9, 0x81, 0xc9, 0x47, 0xd2, 0xfe, 0x0e, 0x90, 0x50, 0x46, 0x5a, 0x53, 0xc0,
-	0x47, 0x17, 0xf4, 0xd9, 0xa5, 0x48, 0xc5, 0xfb, 0x7f, 0x0d, 0xf2, 0x62, 0x2d, 0xf3, 0xe6, 0x5e,
-	0xbf, 0x1b, 0x55, 0x11, 0x67, 0x8a, 0x9d, 0x19, 0xbf, 0x47, 0x17, 0x97, 0x97, 0x1f, 0x78, 0x0a,
-	0x82, 0x37, 0x9e, 0xc3, 0x67, 0x01, 0x58, 0xba, 0xff, 0xcc, 0x56, 0x14, 0x44, 0xff, 0xcd, 0x5e,
-	0xa4, 0xe9, 0x00, 0x90, 0x85, 0xee, 0x75, 0xad, 0x17, 0x01, 0xe0, 0x22, 0x74, 0x6f, 0xcc, 0x97,
-	0x0d, 0xbd, 0x98, 0xce, 0xfc, 0xfa, 0xbf, 0x6f, 0xcd, 0xbe, 0xf6, 0x3c, 0x2f, 0x00, 0xf4, 0xbc,
-	0xd0, 0x5d, 0x75, 0xaa, 0xbc, 0xef, 0xef, 0x02, 0x00, 0x00, 0xff, 0xff, 0x51, 0x96, 0x72, 0x22,
-	0x80, 0x02, 0x00, 0x00,
+	// 459 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x92, 0xd1, 0x8a, 0xd3, 0x40,
+	0x14, 0x86, 0x49, 0xba, 0x2e, 0xf6, 0xc4, 0x5a, 0x77, 0xc0, 0xb5, 0x06, 0x74, 0xb5, 0x5a, 0xf0,
+	0x6a, 0x42, 0xaa, 0x20, 0x56, 0xbc, 0xe9, 0x85, 0x45, 0x16, 0x4b, 0x89, 0x52, 0xca, 0x52, 0x58,
+	0xd2, 0xe6, 0x34, 0x04, 0x9a, 0x99, 0xda, 0x9c, 0x86, 0xbe, 0x8c, 0x37, 0x5e, 0xfa, 0x22, 0x82,
+	0x8f, 0xe1, 0xa5, 0x4f, 0x21, 0x33, 0x93, 0x69, 0x6d, 0x51, 0xf6, 0x2e, 0xe7, 0xfc, 0xdf, 0x39,
+	0xf3, 0xcf, 0x3f, 0x01, 0x7f, 0x8b, 0x59, 0x5c, 0xc8, 0x40, 0x20, 0x05, 0x65, 0x18, 0x6c, 0xb1,
+	0xc8, 0x08, 0xf9, 0x6a, 0x2d, 0x49, 0xb2, 0x86, 0xd1, 0xb8, 0x40, 0xe2, 0x65, 0xe8, 0x77, 0x70,
+	0x4b, 0xb8, 0x16, 0xf1, 0x32, 0xd0, 0xf2, 0x02, 0x31, 0x51, 0x23, 0xbb, 0xc2, 0x4c, 0xf9, 0x17,
+	0xa9, 0x94, 0xe9, 0x12, 0x4d, 0x7f, 0xb6, 0x59, 0x04, 0x94, 0xe5, 0x58, 0x50, 0x9c, 0xaf, 0x0c,
+	0xd0, 0x3e, 0x83, 0xe6, 0x47, 0xa4, 0x38, 0x89, 0x29, 0x8e, 0xf0, 0xcb, 0x06, 0x0b, 0x6a, 0x5f,
+	0xc2, 0xbd, 0x7d, 0xab, 0x58, 0x49, 0x51, 0x20, 0x7b, 0x0d, 0x30, 0xdb, 0x64, 0xcb, 0xe4, 0x3a,
+	0x13, 0x0b, 0xd9, 0x72, 0x9e, 0x38, 0x2f, 0xbc, 0x6e, 0x8b, 0x1f, 0x58, 0xe2, 0x7d, 0x05, 0x7c,
+	0x10, 0x0b, 0x19, 0xd5, 0x67, 0xf6, 0xb3, 0xfd, 0xc3, 0x81, 0xfa, 0x4e, 0x60, 0xe7, 0x70, 0x3a,
+	0x97, 0x79, 0x9e, 0x91, 0x5e, 0x51, 0x8f, 0xaa, 0x8a, 0xbd, 0xb1, 0xeb, 0x95, 0xbd, 0x96, 0xab,
+	0xd7, 0xfb, 0xdc, 0x78, 0xe7, 0xd6, 0x3b, 0xff, 0x6c, 0xbd, 0x57, 0x07, 0xa8, 0x9a, 0x3d, 0x02,
+	0x48, 0xe5, 0x75, 0x89, 0xeb, 0x22, 0x93, 0xa2, 0x55, 0xd3, 0x6b, 0xeb, 0xa9, 0x1c, 0x9b, 0x06,
+	0x7b, 0x0a, 0x77, 0x12, 0x14, 0x7b, 0xe0, 0x44, 0x03, 0x9e, 0xea, 0x59, 0xa4, 0x03, 0x77, 0x4d,
+	0xd2, 0x3b, 0xe8, 0x96, 0x86, 0x1a, 0xa6, 0x5b, 0x61, 0xed, 0x07, 0x70, 0xff, 0x3d, 0x62, 0xf2,
+	0x09, 0xd7, 0x65, 0x36, 0xc7, 0x01, 0x92, 0xcd, 0xeb, 0x1d, 0x9c, 0x1f, 0x0b, 0x55, 0x6a, 0xcf,
+	0xe0, 0x44, 0xbd, 0x45, 0x95, 0x57, 0x93, 0xef, 0x5f, 0x47, 0x0d, 0x44, 0x5a, 0xec, 0x5e, 0x81,
+	0xa7, 0xe2, 0xae, 0xc6, 0xd9, 0x25, 0xdc, 0xb6, 0xe9, 0xb3, 0xc7, 0x47, 0x09, 0x1f, 0xbd, 0x94,
+	0x7f, 0xf1, 0x5f, 0xdd, 0x18, 0xe8, 0xc6, 0xe0, 0xfd, 0x65, 0x8d, 0x45, 0x50, 0x1b, 0x20, 0xb1,
+	0xe7, 0x47, 0x63, 0xff, 0xbc, 0x96, 0xdf, 0xb9, 0x81, 0x32, 0x47, 0xf4, 0xbf, 0x3a, 0x70, 0x36,
+	0x97, 0xf9, 0x21, 0xdc, 0xf7, 0x26, 0x3a, 0xbb, 0x91, 0xba, 0xf0, 0xc8, 0xb9, 0xea, 0xec, 0xd5,
+	0xa0, 0x7c, 0x15, 0xa4, 0x28, 0x82, 0x83, 0x5f, 0xfd, 0xad, 0x40, 0x2a, 0xc3, 0x6f, 0x6e, 0x6d,
+	0x32, 0x9c, 0x7c, 0x77, 0x1b, 0x13, 0x43, 0x0f, 0x91, 0xf8, 0x38, 0xfc, 0x69, 0xeb, 0xe9, 0x10,
+	0x69, 0x3a, 0x0e, 0x7f, 0xb9, 0x0f, 0x0f, 0xea, 0xe9, 0x60, 0xd4, 0xb7, 0x17, 0xff, 0xed, 0x36,
+	0x8d, 0xd6, 0xeb, 0x0d, 0x91, 0x7a, 0xbd, 0x71, 0x38, 0x3b, 0xd5, 0xa1, 0xbf, 0xfc, 0x13, 0x00,
+	0x00, 0xff, 0xff, 0x85, 0x89, 0xc0, 0x9e, 0x5c, 0x03, 0x00, 0x00,
 }

@@ -11,8 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	v1 "xeiaso.net/v4/gen/xeiaso/net/v1"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -21,101 +19,107 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Patreon_GetToken_FullMethodName = "/xeiaso.net.admin.v1.Patreon/GetToken"
+	PatreonService_GetToken_FullMethodName = "/xeiaso.net.admin.v1.PatreonService/GetToken"
 )
 
-// PatreonClient is the client API for Patreon service.
+// PatreonServiceClient is the client API for PatreonService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type PatreonClient interface {
-	GetToken(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PatreonToken, error)
+//
+// PatreonService provides access to Patreon OAuth tokens.
+type PatreonServiceClient interface {
+	// GetToken returns the current Patreon OAuth token.
+	GetToken(ctx context.Context, in *GetTokenRequest, opts ...grpc.CallOption) (*GetTokenResponse, error)
 }
 
-type patreonClient struct {
+type patreonServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewPatreonClient(cc grpc.ClientConnInterface) PatreonClient {
-	return &patreonClient{cc}
+func NewPatreonServiceClient(cc grpc.ClientConnInterface) PatreonServiceClient {
+	return &patreonServiceClient{cc}
 }
 
-func (c *patreonClient) GetToken(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PatreonToken, error) {
+func (c *patreonServiceClient) GetToken(ctx context.Context, in *GetTokenRequest, opts ...grpc.CallOption) (*GetTokenResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(PatreonToken)
-	err := c.cc.Invoke(ctx, Patreon_GetToken_FullMethodName, in, out, cOpts...)
+	out := new(GetTokenResponse)
+	err := c.cc.Invoke(ctx, PatreonService_GetToken_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// PatreonServer is the server API for Patreon service.
-// All implementations must embed UnimplementedPatreonServer
+// PatreonServiceServer is the server API for PatreonService service.
+// All implementations must embed UnimplementedPatreonServiceServer
 // for forward compatibility.
-type PatreonServer interface {
-	GetToken(context.Context, *emptypb.Empty) (*PatreonToken, error)
-	mustEmbedUnimplementedPatreonServer()
+//
+// PatreonService provides access to Patreon OAuth tokens.
+type PatreonServiceServer interface {
+	// GetToken returns the current Patreon OAuth token.
+	GetToken(context.Context, *GetTokenRequest) (*GetTokenResponse, error)
+	mustEmbedUnimplementedPatreonServiceServer()
 }
 
-// UnimplementedPatreonServer must be embedded to have
+// UnimplementedPatreonServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedPatreonServer struct{}
+type UnimplementedPatreonServiceServer struct{}
 
-func (UnimplementedPatreonServer) GetToken(context.Context, *emptypb.Empty) (*PatreonToken, error) {
+func (UnimplementedPatreonServiceServer) GetToken(context.Context, *GetTokenRequest) (*GetTokenResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetToken not implemented")
 }
-func (UnimplementedPatreonServer) mustEmbedUnimplementedPatreonServer() {}
-func (UnimplementedPatreonServer) testEmbeddedByValue()                 {}
+func (UnimplementedPatreonServiceServer) mustEmbedUnimplementedPatreonServiceServer() {}
+func (UnimplementedPatreonServiceServer) testEmbeddedByValue()                        {}
 
-// UnsafePatreonServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to PatreonServer will
+// UnsafePatreonServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to PatreonServiceServer will
 // result in compilation errors.
-type UnsafePatreonServer interface {
-	mustEmbedUnimplementedPatreonServer()
+type UnsafePatreonServiceServer interface {
+	mustEmbedUnimplementedPatreonServiceServer()
 }
 
-func RegisterPatreonServer(s grpc.ServiceRegistrar, srv PatreonServer) {
-	// If the following call panics, it indicates UnimplementedPatreonServer was
+func RegisterPatreonServiceServer(s grpc.ServiceRegistrar, srv PatreonServiceServer) {
+	// If the following call panics, it indicates UnimplementedPatreonServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Patreon_ServiceDesc, srv)
+	s.RegisterService(&PatreonService_ServiceDesc, srv)
 }
 
-func _Patreon_GetToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+func _PatreonService_GetToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PatreonServer).GetToken(ctx, in)
+		return srv.(PatreonServiceServer).GetToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Patreon_GetToken_FullMethodName,
+		FullMethod: PatreonService_GetToken_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PatreonServer).GetToken(ctx, req.(*emptypb.Empty))
+		return srv.(PatreonServiceServer).GetToken(ctx, req.(*GetTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Patreon_ServiceDesc is the grpc.ServiceDesc for Patreon service.
+// PatreonService_ServiceDesc is the grpc.ServiceDesc for PatreonService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Patreon_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "xeiaso.net.admin.v1.Patreon",
-	HandlerType: (*PatreonServer)(nil),
+var PatreonService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "xeiaso.net.admin.v1.PatreonService",
+	HandlerType: (*PatreonServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetToken",
-			Handler:    _Patreon_GetToken_Handler,
+			Handler:    _PatreonService_GetToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -123,101 +127,107 @@ var Patreon_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	Admin_Rebuild_FullMethodName = "/xeiaso.net.admin.v1.Admin/Rebuild"
+	AdminService_Rebuild_FullMethodName = "/xeiaso.net.admin.v1.AdminService/Rebuild"
 )
 
-// AdminClient is the client API for Admin service.
+// AdminServiceClient is the client API for AdminService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type AdminClient interface {
-	Rebuild(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*v1.BuildInfo, error)
+//
+// AdminService provides administrative operations.
+type AdminServiceClient interface {
+	// Rebuild triggers a site rebuild.
+	Rebuild(ctx context.Context, in *RebuildRequest, opts ...grpc.CallOption) (*RebuildResponse, error)
 }
 
-type adminClient struct {
+type adminServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAdminClient(cc grpc.ClientConnInterface) AdminClient {
-	return &adminClient{cc}
+func NewAdminServiceClient(cc grpc.ClientConnInterface) AdminServiceClient {
+	return &adminServiceClient{cc}
 }
 
-func (c *adminClient) Rebuild(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*v1.BuildInfo, error) {
+func (c *adminServiceClient) Rebuild(ctx context.Context, in *RebuildRequest, opts ...grpc.CallOption) (*RebuildResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.BuildInfo)
-	err := c.cc.Invoke(ctx, Admin_Rebuild_FullMethodName, in, out, cOpts...)
+	out := new(RebuildResponse)
+	err := c.cc.Invoke(ctx, AdminService_Rebuild_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AdminServer is the server API for Admin service.
-// All implementations must embed UnimplementedAdminServer
+// AdminServiceServer is the server API for AdminService service.
+// All implementations must embed UnimplementedAdminServiceServer
 // for forward compatibility.
-type AdminServer interface {
-	Rebuild(context.Context, *emptypb.Empty) (*v1.BuildInfo, error)
-	mustEmbedUnimplementedAdminServer()
+//
+// AdminService provides administrative operations.
+type AdminServiceServer interface {
+	// Rebuild triggers a site rebuild.
+	Rebuild(context.Context, *RebuildRequest) (*RebuildResponse, error)
+	mustEmbedUnimplementedAdminServiceServer()
 }
 
-// UnimplementedAdminServer must be embedded to have
+// UnimplementedAdminServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedAdminServer struct{}
+type UnimplementedAdminServiceServer struct{}
 
-func (UnimplementedAdminServer) Rebuild(context.Context, *emptypb.Empty) (*v1.BuildInfo, error) {
+func (UnimplementedAdminServiceServer) Rebuild(context.Context, *RebuildRequest) (*RebuildResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Rebuild not implemented")
 }
-func (UnimplementedAdminServer) mustEmbedUnimplementedAdminServer() {}
-func (UnimplementedAdminServer) testEmbeddedByValue()               {}
+func (UnimplementedAdminServiceServer) mustEmbedUnimplementedAdminServiceServer() {}
+func (UnimplementedAdminServiceServer) testEmbeddedByValue()                      {}
 
-// UnsafeAdminServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AdminServer will
+// UnsafeAdminServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AdminServiceServer will
 // result in compilation errors.
-type UnsafeAdminServer interface {
-	mustEmbedUnimplementedAdminServer()
+type UnsafeAdminServiceServer interface {
+	mustEmbedUnimplementedAdminServiceServer()
 }
 
-func RegisterAdminServer(s grpc.ServiceRegistrar, srv AdminServer) {
-	// If the following call panics, it indicates UnimplementedAdminServer was
+func RegisterAdminServiceServer(s grpc.ServiceRegistrar, srv AdminServiceServer) {
+	// If the following call panics, it indicates UnimplementedAdminServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Admin_ServiceDesc, srv)
+	s.RegisterService(&AdminService_ServiceDesc, srv)
 }
 
-func _Admin_Rebuild_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+func _AdminService_Rebuild_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RebuildRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AdminServer).Rebuild(ctx, in)
+		return srv.(AdminServiceServer).Rebuild(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Admin_Rebuild_FullMethodName,
+		FullMethod: AdminService_Rebuild_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AdminServer).Rebuild(ctx, req.(*emptypb.Empty))
+		return srv.(AdminServiceServer).Rebuild(ctx, req.(*RebuildRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Admin_ServiceDesc is the grpc.ServiceDesc for Admin service.
+// AdminService_ServiceDesc is the grpc.ServiceDesc for AdminService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Admin_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "xeiaso.net.admin.v1.Admin",
-	HandlerType: (*AdminServer)(nil),
+var AdminService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "xeiaso.net.admin.v1.AdminService",
+	HandlerType: (*AdminServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Rebuild",
-			Handler:    _Admin_Rebuild_Handler,
+			Handler:    _AdminService_Rebuild_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

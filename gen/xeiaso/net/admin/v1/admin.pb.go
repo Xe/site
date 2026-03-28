@@ -9,7 +9,6 @@ package adminv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -24,6 +23,90 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// GetTokenRequest is the request for PatreonService.GetToken.
+type GetTokenRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetTokenRequest) Reset() {
+	*x = GetTokenRequest{}
+	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTokenRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTokenRequest) ProtoMessage() {}
+
+func (x *GetTokenRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTokenRequest.ProtoReflect.Descriptor instead.
+func (*GetTokenRequest) Descriptor() ([]byte, []int) {
+	return file_xeiaso_net_admin_v1_admin_proto_rawDescGZIP(), []int{0}
+}
+
+// GetTokenResponse is the response for PatreonService.GetToken.
+type GetTokenResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The Patreon OAuth token.
+	Token         *PatreonToken `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetTokenResponse) Reset() {
+	*x = GetTokenResponse{}
+	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTokenResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTokenResponse) ProtoMessage() {}
+
+func (x *GetTokenResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTokenResponse.ProtoReflect.Descriptor instead.
+func (*GetTokenResponse) Descriptor() ([]byte, []int) {
+	return file_xeiaso_net_admin_v1_admin_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *GetTokenResponse) GetToken() *PatreonToken {
+	if x != nil {
+		return x.Token
+	}
+	return nil
+}
+
+// PatreonToken contains a Patreon OAuth token.
 type PatreonToken struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AccessToken   string                 `protobuf:"bytes,1,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
@@ -36,7 +119,7 @@ type PatreonToken struct {
 
 func (x *PatreonToken) Reset() {
 	*x = PatreonToken{}
-	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[0]
+	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -48,7 +131,7 @@ func (x *PatreonToken) String() string {
 func (*PatreonToken) ProtoMessage() {}
 
 func (x *PatreonToken) ProtoReflect() protoreflect.Message {
-	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[0]
+	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -61,7 +144,7 @@ func (x *PatreonToken) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PatreonToken.ProtoReflect.Descriptor instead.
 func (*PatreonToken) Descriptor() ([]byte, []int) {
-	return file_xeiaso_net_admin_v1_admin_proto_rawDescGZIP(), []int{0}
+	return file_xeiaso_net_admin_v1_admin_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *PatreonToken) GetAccessToken() string {
@@ -92,21 +175,111 @@ func (x *PatreonToken) GetExpiry() *timestamppb.Timestamp {
 	return nil
 }
 
+// RebuildRequest is the request for AdminService.Rebuild.
+type RebuildRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RebuildRequest) Reset() {
+	*x = RebuildRequest{}
+	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RebuildRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RebuildRequest) ProtoMessage() {}
+
+func (x *RebuildRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RebuildRequest.ProtoReflect.Descriptor instead.
+func (*RebuildRequest) Descriptor() ([]byte, []int) {
+	return file_xeiaso_net_admin_v1_admin_proto_rawDescGZIP(), []int{3}
+}
+
+// RebuildResponse is the response for AdminService.Rebuild.
+type RebuildResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The build info of the rebuilt site.
+	BuildInfo     *v1.BuildInfo `protobuf:"bytes,1,opt,name=build_info,json=buildInfo,proto3" json:"build_info,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RebuildResponse) Reset() {
+	*x = RebuildResponse{}
+	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RebuildResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RebuildResponse) ProtoMessage() {}
+
+func (x *RebuildResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_xeiaso_net_admin_v1_admin_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RebuildResponse.ProtoReflect.Descriptor instead.
+func (*RebuildResponse) Descriptor() ([]byte, []int) {
+	return file_xeiaso_net_admin_v1_admin_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *RebuildResponse) GetBuildInfo() *v1.BuildInfo {
+	if x != nil {
+		return x.BuildInfo
+	}
+	return nil
+}
+
 var File_xeiaso_net_admin_v1_admin_proto protoreflect.FileDescriptor
 
 const file_xeiaso_net_admin_v1_admin_proto_rawDesc = "" +
 	"\n" +
-	"\x1fxeiaso/net/admin/v1/admin.proto\x12\x13xeiaso.net.admin.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1axeiaso/net/v1/xesite.proto\"\xa9\x01\n" +
+	"\x1fxeiaso/net/admin/v1/admin.proto\x12\x13xeiaso.net.admin.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1axeiaso/net/v1/xesite.proto\"\x11\n" +
+	"\x0fGetTokenRequest\"K\n" +
+	"\x10GetTokenResponse\x127\n" +
+	"\x05token\x18\x01 \x01(\v2!.xeiaso.net.admin.v1.PatreonTokenR\x05token\"\xa9\x01\n" +
 	"\fPatreonToken\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12\x1d\n" +
 	"\n" +
 	"token_type\x18\x02 \x01(\tR\ttokenType\x12#\n" +
 	"\rrefresh_token\x18\x03 \x01(\tR\frefreshToken\x122\n" +
-	"\x06expiry\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x06expiry2P\n" +
-	"\aPatreon\x12E\n" +
-	"\bGetToken\x12\x16.google.protobuf.Empty\x1a!.xeiaso.net.admin.v1.PatreonToken2D\n" +
-	"\x05Admin\x12;\n" +
-	"\aRebuild\x12\x16.google.protobuf.Empty\x1a\x18.xeiaso.net.v1.BuildInfoB\xc3\x01\n" +
+	"\x06expiry\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x06expiry\"\x10\n" +
+	"\x0eRebuildRequest\"J\n" +
+	"\x0fRebuildResponse\x127\n" +
+	"\n" +
+	"build_info\x18\x01 \x01(\v2\x18.xeiaso.net.v1.BuildInfoR\tbuildInfo2i\n" +
+	"\x0ePatreonService\x12W\n" +
+	"\bGetToken\x12$.xeiaso.net.admin.v1.GetTokenRequest\x1a%.xeiaso.net.admin.v1.GetTokenResponse2d\n" +
+	"\fAdminService\x12T\n" +
+	"\aRebuild\x12#.xeiaso.net.admin.v1.RebuildRequest\x1a$.xeiaso.net.admin.v1.RebuildResponseB\xc3\x01\n" +
 	"\x17com.xeiaso.net.admin.v1B\n" +
 	"AdminProtoP\x01Z-xeiaso.net/v4/gen/xeiaso/net/admin/v1;adminv1\xa2\x02\x03XNA\xaa\x02\x13Xeiaso.Net.Admin.V1\xca\x02\x13Xeiaso\\Net\\Admin\\V1\xe2\x02\x1fXeiaso\\Net\\Admin\\V1\\GPBMetadata\xea\x02\x16Xeiaso::Net::Admin::V1b\x06proto3"
 
@@ -122,24 +295,29 @@ func file_xeiaso_net_admin_v1_admin_proto_rawDescGZIP() []byte {
 	return file_xeiaso_net_admin_v1_admin_proto_rawDescData
 }
 
-var file_xeiaso_net_admin_v1_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_xeiaso_net_admin_v1_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_xeiaso_net_admin_v1_admin_proto_goTypes = []any{
-	(*PatreonToken)(nil),          // 0: xeiaso.net.admin.v1.PatreonToken
-	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),         // 2: google.protobuf.Empty
-	(*v1.BuildInfo)(nil),          // 3: xeiaso.net.v1.BuildInfo
+	(*GetTokenRequest)(nil),       // 0: xeiaso.net.admin.v1.GetTokenRequest
+	(*GetTokenResponse)(nil),      // 1: xeiaso.net.admin.v1.GetTokenResponse
+	(*PatreonToken)(nil),          // 2: xeiaso.net.admin.v1.PatreonToken
+	(*RebuildRequest)(nil),        // 3: xeiaso.net.admin.v1.RebuildRequest
+	(*RebuildResponse)(nil),       // 4: xeiaso.net.admin.v1.RebuildResponse
+	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(*v1.BuildInfo)(nil),          // 6: xeiaso.net.v1.BuildInfo
 }
 var file_xeiaso_net_admin_v1_admin_proto_depIdxs = []int32{
-	1, // 0: xeiaso.net.admin.v1.PatreonToken.expiry:type_name -> google.protobuf.Timestamp
-	2, // 1: xeiaso.net.admin.v1.Patreon.GetToken:input_type -> google.protobuf.Empty
-	2, // 2: xeiaso.net.admin.v1.Admin.Rebuild:input_type -> google.protobuf.Empty
-	0, // 3: xeiaso.net.admin.v1.Patreon.GetToken:output_type -> xeiaso.net.admin.v1.PatreonToken
-	3, // 4: xeiaso.net.admin.v1.Admin.Rebuild:output_type -> xeiaso.net.v1.BuildInfo
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 0: xeiaso.net.admin.v1.GetTokenResponse.token:type_name -> xeiaso.net.admin.v1.PatreonToken
+	5, // 1: xeiaso.net.admin.v1.PatreonToken.expiry:type_name -> google.protobuf.Timestamp
+	6, // 2: xeiaso.net.admin.v1.RebuildResponse.build_info:type_name -> xeiaso.net.v1.BuildInfo
+	0, // 3: xeiaso.net.admin.v1.PatreonService.GetToken:input_type -> xeiaso.net.admin.v1.GetTokenRequest
+	3, // 4: xeiaso.net.admin.v1.AdminService.Rebuild:input_type -> xeiaso.net.admin.v1.RebuildRequest
+	1, // 5: xeiaso.net.admin.v1.PatreonService.GetToken:output_type -> xeiaso.net.admin.v1.GetTokenResponse
+	4, // 6: xeiaso.net.admin.v1.AdminService.Rebuild:output_type -> xeiaso.net.admin.v1.RebuildResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_xeiaso_net_admin_v1_admin_proto_init() }
@@ -153,7 +331,7 @@ func file_xeiaso_net_admin_v1_admin_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_xeiaso_net_admin_v1_admin_proto_rawDesc), len(file_xeiaso_net_admin_v1_admin_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

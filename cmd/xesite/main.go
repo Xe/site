@@ -84,10 +84,10 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServerFS(fs))
 
-	ms := pb.NewMetaServer(&MetaServer{fs}, twirp.WithServerPathPrefix("/api"))
+	ms := pb.NewMetaServiceServer(&MetaServer{fs}, twirp.WithServerPathPrefix("/api"))
 	mux.Handle(ms.PathPrefix(), ms)
 
-	fsrv := pb.NewFeedServer(&FeedServer{fs}, twirp.WithServerPathPrefix("/api"))
+	fsrv := pb.NewFeedServiceServer(&FeedServer{fs}, twirp.WithServerPathPrefix("/api"))
 	mux.Handle(fsrv.PathPrefix(), fsrv)
 
 	es := mi.NewEventsServer(

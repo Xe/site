@@ -26,7 +26,7 @@ var File_within_website_x_mimi_announce_v1_announce_proto protoreflect.FileDescr
 
 const file_within_website_x_mimi_announce_v1_announce_proto_rawDesc = "" +
 	"\n" +
-	"0within/website/x/mimi/announce/v1/announce.proto\x12!within.website.x.mimi.announce.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a%external/protofeed/v1/protofeed.proto2A\n" +
+	"0within/website/x/mimi/announce/v1/announce.proto\x12!within.website.x.mimi.announce.v1\x1a%external/protofeed/v1/protofeed.proto\x1a\x1bgoogle/protobuf/empty.proto2A\n" +
 	"\bAnnounce\x125\n" +
 	"\bAnnounce\x12\x0f.protofeed.Item\x1a\x16.google.protobuf.Empty\"\x00B\xa1\x02\n" +
 	"%com.within.website.x.mimi.announce.v1B\rAnnounceProtoP\x01Z>xeiaso.net/v4/gen/within/website/x/mimi/announce/v1;announcev1\xa2\x02\x05WWXMA\xaa\x02!Within.Website.X.Mimi.Announce.V1\xca\x02!Within\\Website\\X\\Mimi\\Announce\\V1\xe2\x02-Within\\Website\\X\\Mimi\\Announce\\V1\\GPBMetadata\xea\x02&Within::Website::X::Mimi::Announce::V1b\x06proto3"

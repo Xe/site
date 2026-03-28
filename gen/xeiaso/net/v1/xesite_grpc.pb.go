@@ -11,8 +11,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	v1 "xeiaso.net/v4/gen/external/protofeed/v1"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -21,109 +19,109 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Meta_Metadata_FullMethodName = "/xeiaso.net.v1.Meta/Metadata"
+	MetaService_Metadata_FullMethodName = "/xeiaso.net.v1.MetaService/Metadata"
 )
 
-// MetaClient is the client API for Meta service.
+// MetaServiceClient is the client API for MetaService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// Meta lets users fetch site metadata.
-type MetaClient interface {
+// MetaService lets users fetch site metadata.
+type MetaServiceClient interface {
 	// Metadata fetches the build metadata of the version of xesite that is
 	// currently running.
-	Metadata(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*BuildInfo, error)
+	Metadata(ctx context.Context, in *MetadataRequest, opts ...grpc.CallOption) (*MetadataResponse, error)
 }
 
-type metaClient struct {
+type metaServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewMetaClient(cc grpc.ClientConnInterface) MetaClient {
-	return &metaClient{cc}
+func NewMetaServiceClient(cc grpc.ClientConnInterface) MetaServiceClient {
+	return &metaServiceClient{cc}
 }
 
-func (c *metaClient) Metadata(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*BuildInfo, error) {
+func (c *metaServiceClient) Metadata(ctx context.Context, in *MetadataRequest, opts ...grpc.CallOption) (*MetadataResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(BuildInfo)
-	err := c.cc.Invoke(ctx, Meta_Metadata_FullMethodName, in, out, cOpts...)
+	out := new(MetadataResponse)
+	err := c.cc.Invoke(ctx, MetaService_Metadata_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// MetaServer is the server API for Meta service.
-// All implementations must embed UnimplementedMetaServer
+// MetaServiceServer is the server API for MetaService service.
+// All implementations must embed UnimplementedMetaServiceServer
 // for forward compatibility.
 //
-// Meta lets users fetch site metadata.
-type MetaServer interface {
+// MetaService lets users fetch site metadata.
+type MetaServiceServer interface {
 	// Metadata fetches the build metadata of the version of xesite that is
 	// currently running.
-	Metadata(context.Context, *emptypb.Empty) (*BuildInfo, error)
-	mustEmbedUnimplementedMetaServer()
+	Metadata(context.Context, *MetadataRequest) (*MetadataResponse, error)
+	mustEmbedUnimplementedMetaServiceServer()
 }
 
-// UnimplementedMetaServer must be embedded to have
+// UnimplementedMetaServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedMetaServer struct{}
+type UnimplementedMetaServiceServer struct{}
 
-func (UnimplementedMetaServer) Metadata(context.Context, *emptypb.Empty) (*BuildInfo, error) {
+func (UnimplementedMetaServiceServer) Metadata(context.Context, *MetadataRequest) (*MetadataResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Metadata not implemented")
 }
-func (UnimplementedMetaServer) mustEmbedUnimplementedMetaServer() {}
-func (UnimplementedMetaServer) testEmbeddedByValue()              {}
+func (UnimplementedMetaServiceServer) mustEmbedUnimplementedMetaServiceServer() {}
+func (UnimplementedMetaServiceServer) testEmbeddedByValue()                     {}
 
-// UnsafeMetaServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to MetaServer will
+// UnsafeMetaServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to MetaServiceServer will
 // result in compilation errors.
-type UnsafeMetaServer interface {
-	mustEmbedUnimplementedMetaServer()
+type UnsafeMetaServiceServer interface {
+	mustEmbedUnimplementedMetaServiceServer()
 }
 
-func RegisterMetaServer(s grpc.ServiceRegistrar, srv MetaServer) {
-	// If the following call panics, it indicates UnimplementedMetaServer was
+func RegisterMetaServiceServer(s grpc.ServiceRegistrar, srv MetaServiceServer) {
+	// If the following call panics, it indicates UnimplementedMetaServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Meta_ServiceDesc, srv)
+	s.RegisterService(&MetaService_ServiceDesc, srv)
 }
 
-func _Meta_Metadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+func _MetaService_Metadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MetadataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MetaServer).Metadata(ctx, in)
+		return srv.(MetaServiceServer).Metadata(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Meta_Metadata_FullMethodName,
+		FullMethod: MetaService_Metadata_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MetaServer).Metadata(ctx, req.(*emptypb.Empty))
+		return srv.(MetaServiceServer).Metadata(ctx, req.(*MetadataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Meta_ServiceDesc is the grpc.ServiceDesc for Meta service.
+// MetaService_ServiceDesc is the grpc.ServiceDesc for MetaService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Meta_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "xeiaso.net.v1.Meta",
-	HandlerType: (*MetaServer)(nil),
+var MetaService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "xeiaso.net.v1.MetaService",
+	HandlerType: (*MetaServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Metadata",
-			Handler:    _Meta_Metadata_Handler,
+			Handler:    _MetaService_Metadata_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -131,107 +129,107 @@ var Meta_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	Feed_Get_FullMethodName = "/xeiaso.net.v1.Feed/Get"
+	FeedService_Get_FullMethodName = "/xeiaso.net.v1.FeedService/Get"
 )
 
-// FeedClient is the client API for Feed service.
+// FeedServiceClient is the client API for FeedService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// Feed lets users fetch the current feed of posts.
-type FeedClient interface {
+// FeedService lets users fetch the current feed of posts.
+type FeedServiceClient interface {
 	// Get fetches the current feed of posts.
-	Get(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*v1.Feed, error)
+	Get(ctx context.Context, in *FeedServiceGetRequest, opts ...grpc.CallOption) (*FeedServiceGetResponse, error)
 }
 
-type feedClient struct {
+type feedServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewFeedClient(cc grpc.ClientConnInterface) FeedClient {
-	return &feedClient{cc}
+func NewFeedServiceClient(cc grpc.ClientConnInterface) FeedServiceClient {
+	return &feedServiceClient{cc}
 }
 
-func (c *feedClient) Get(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*v1.Feed, error) {
+func (c *feedServiceClient) Get(ctx context.Context, in *FeedServiceGetRequest, opts ...grpc.CallOption) (*FeedServiceGetResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(v1.Feed)
-	err := c.cc.Invoke(ctx, Feed_Get_FullMethodName, in, out, cOpts...)
+	out := new(FeedServiceGetResponse)
+	err := c.cc.Invoke(ctx, FeedService_Get_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// FeedServer is the server API for Feed service.
-// All implementations must embed UnimplementedFeedServer
+// FeedServiceServer is the server API for FeedService service.
+// All implementations must embed UnimplementedFeedServiceServer
 // for forward compatibility.
 //
-// Feed lets users fetch the current feed of posts.
-type FeedServer interface {
+// FeedService lets users fetch the current feed of posts.
+type FeedServiceServer interface {
 	// Get fetches the current feed of posts.
-	Get(context.Context, *emptypb.Empty) (*v1.Feed, error)
-	mustEmbedUnimplementedFeedServer()
+	Get(context.Context, *FeedServiceGetRequest) (*FeedServiceGetResponse, error)
+	mustEmbedUnimplementedFeedServiceServer()
 }
 
-// UnimplementedFeedServer must be embedded to have
+// UnimplementedFeedServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedFeedServer struct{}
+type UnimplementedFeedServiceServer struct{}
 
-func (UnimplementedFeedServer) Get(context.Context, *emptypb.Empty) (*v1.Feed, error) {
+func (UnimplementedFeedServiceServer) Get(context.Context, *FeedServiceGetRequest) (*FeedServiceGetResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedFeedServer) mustEmbedUnimplementedFeedServer() {}
-func (UnimplementedFeedServer) testEmbeddedByValue()              {}
+func (UnimplementedFeedServiceServer) mustEmbedUnimplementedFeedServiceServer() {}
+func (UnimplementedFeedServiceServer) testEmbeddedByValue()                     {}
 
-// UnsafeFeedServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to FeedServer will
+// UnsafeFeedServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to FeedServiceServer will
 // result in compilation errors.
-type UnsafeFeedServer interface {
-	mustEmbedUnimplementedFeedServer()
+type UnsafeFeedServiceServer interface {
+	mustEmbedUnimplementedFeedServiceServer()
 }
 
-func RegisterFeedServer(s grpc.ServiceRegistrar, srv FeedServer) {
-	// If the following call panics, it indicates UnimplementedFeedServer was
+func RegisterFeedServiceServer(s grpc.ServiceRegistrar, srv FeedServiceServer) {
+	// If the following call panics, it indicates UnimplementedFeedServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Feed_ServiceDesc, srv)
+	s.RegisterService(&FeedService_ServiceDesc, srv)
 }
 
-func _Feed_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+func _FeedService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FeedServiceGetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FeedServer).Get(ctx, in)
+		return srv.(FeedServiceServer).Get(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Feed_Get_FullMethodName,
+		FullMethod: FeedService_Get_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FeedServer).Get(ctx, req.(*emptypb.Empty))
+		return srv.(FeedServiceServer).Get(ctx, req.(*FeedServiceGetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Feed_ServiceDesc is the grpc.ServiceDesc for Feed service.
+// FeedService_ServiceDesc is the grpc.ServiceDesc for FeedService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Feed_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "xeiaso.net.v1.Feed",
-	HandlerType: (*FeedServer)(nil),
+var FeedService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "xeiaso.net.v1.FeedService",
+	HandlerType: (*FeedServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Get",
-			Handler:    _Feed_Get_Handler,
+			Handler:    _FeedService_Get_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

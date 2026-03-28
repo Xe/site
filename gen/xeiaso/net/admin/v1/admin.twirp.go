@@ -16,9 +16,6 @@ import proto "google.golang.org/protobuf/proto"
 import twirp "github.com/twitchtv/twirp"
 import ctxsetters "github.com/twitchtv/twirp/ctxsetters"
 
-import google_protobuf "google.golang.org/protobuf/types/known/emptypb"
-import xeiaso_net_v1 "xeiaso.net/v4/gen/xeiaso/net/v1"
-
 import bytes "bytes"
 import errors "errors"
 import path "path"
@@ -30,28 +27,30 @@ import url "net/url"
 // See https://twitchtv.github.io/twirp/docs/version_matrix.html
 const _ = twirp.TwirpPackageMinVersion_8_1_0
 
-// =================
-// Patreon Interface
-// =================
+// ========================
+// PatreonService Interface
+// ========================
 
-type Patreon interface {
-	GetToken(context.Context, *google_protobuf.Empty) (*PatreonToken, error)
+// PatreonService provides access to Patreon OAuth tokens.
+type PatreonService interface {
+	// GetToken returns the current Patreon OAuth token.
+	GetToken(context.Context, *GetTokenRequest) (*GetTokenResponse, error)
 }
 
-// =======================
-// Patreon Protobuf Client
-// =======================
+// ==============================
+// PatreonService Protobuf Client
+// ==============================
 
-type patreonProtobufClient struct {
+type patreonServiceProtobufClient struct {
 	client      HTTPClient
 	urls        [1]string
 	interceptor twirp.Interceptor
 	opts        twirp.ClientOptions
 }
 
-// NewPatreonProtobufClient creates a Protobuf client that implements the Patreon interface.
+// NewPatreonServiceProtobufClient creates a Protobuf client that implements the PatreonService interface.
 // It communicates using Protobuf and can be configured with a custom HTTPClient.
-func NewPatreonProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Patreon {
+func NewPatreonServiceProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) PatreonService {
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -71,12 +70,12 @@ func NewPatreonProtobufClient(baseURL string, client HTTPClient, opts ...twirp.C
 
 	// Build method URLs: <baseURL>[<prefix>]/<package>.<Service>/<Method>
 	serviceURL := sanitizeBaseURL(baseURL)
-	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.admin.v1", "Patreon")
+	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.admin.v1", "PatreonService")
 	urls := [1]string{
 		serviceURL + "GetToken",
 	}
 
-	return &patreonProtobufClient{
+	return &patreonServiceProtobufClient{
 		client:      client,
 		urls:        urls,
 		interceptor: twirp.ChainInterceptors(clientOpts.Interceptors...),
@@ -84,26 +83,26 @@ func NewPatreonProtobufClient(baseURL string, client HTTPClient, opts ...twirp.C
 	}
 }
 
-func (c *patreonProtobufClient) GetToken(ctx context.Context, in *google_protobuf.Empty) (*PatreonToken, error) {
+func (c *patreonServiceProtobufClient) GetToken(ctx context.Context, in *GetTokenRequest) (*GetTokenResponse, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.admin.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Patreon")
+	ctx = ctxsetters.WithServiceName(ctx, "PatreonService")
 	ctx = ctxsetters.WithMethodName(ctx, "GetToken")
 	caller := c.callGetToken
 	if c.interceptor != nil {
-		caller = func(ctx context.Context, req *google_protobuf.Empty) (*PatreonToken, error) {
+		caller = func(ctx context.Context, req *GetTokenRequest) (*GetTokenResponse, error) {
 			resp, err := c.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*GetTokenRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*GetTokenRequest) when calling interceptor")
 					}
 					return c.callGetToken(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*PatreonToken)
+				typedResp, ok := resp.(*GetTokenResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*PatreonToken) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*GetTokenResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -113,8 +112,8 @@ func (c *patreonProtobufClient) GetToken(ctx context.Context, in *google_protobu
 	return caller(ctx, in)
 }
 
-func (c *patreonProtobufClient) callGetToken(ctx context.Context, in *google_protobuf.Empty) (*PatreonToken, error) {
-	out := new(PatreonToken)
+func (c *patreonServiceProtobufClient) callGetToken(ctx context.Context, in *GetTokenRequest) (*GetTokenResponse, error) {
+	out := new(GetTokenResponse)
 	ctx, err := doProtobufRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
 		twerr, ok := err.(twirp.Error)
@@ -130,20 +129,20 @@ func (c *patreonProtobufClient) callGetToken(ctx context.Context, in *google_pro
 	return out, nil
 }
 
-// ===================
-// Patreon JSON Client
-// ===================
+// ==========================
+// PatreonService JSON Client
+// ==========================
 
-type patreonJSONClient struct {
+type patreonServiceJSONClient struct {
 	client      HTTPClient
 	urls        [1]string
 	interceptor twirp.Interceptor
 	opts        twirp.ClientOptions
 }
 
-// NewPatreonJSONClient creates a JSON client that implements the Patreon interface.
+// NewPatreonServiceJSONClient creates a JSON client that implements the PatreonService interface.
 // It communicates using JSON and can be configured with a custom HTTPClient.
-func NewPatreonJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Patreon {
+func NewPatreonServiceJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) PatreonService {
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -163,12 +162,12 @@ func NewPatreonJSONClient(baseURL string, client HTTPClient, opts ...twirp.Clien
 
 	// Build method URLs: <baseURL>[<prefix>]/<package>.<Service>/<Method>
 	serviceURL := sanitizeBaseURL(baseURL)
-	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.admin.v1", "Patreon")
+	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.admin.v1", "PatreonService")
 	urls := [1]string{
 		serviceURL + "GetToken",
 	}
 
-	return &patreonJSONClient{
+	return &patreonServiceJSONClient{
 		client:      client,
 		urls:        urls,
 		interceptor: twirp.ChainInterceptors(clientOpts.Interceptors...),
@@ -176,26 +175,26 @@ func NewPatreonJSONClient(baseURL string, client HTTPClient, opts ...twirp.Clien
 	}
 }
 
-func (c *patreonJSONClient) GetToken(ctx context.Context, in *google_protobuf.Empty) (*PatreonToken, error) {
+func (c *patreonServiceJSONClient) GetToken(ctx context.Context, in *GetTokenRequest) (*GetTokenResponse, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.admin.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Patreon")
+	ctx = ctxsetters.WithServiceName(ctx, "PatreonService")
 	ctx = ctxsetters.WithMethodName(ctx, "GetToken")
 	caller := c.callGetToken
 	if c.interceptor != nil {
-		caller = func(ctx context.Context, req *google_protobuf.Empty) (*PatreonToken, error) {
+		caller = func(ctx context.Context, req *GetTokenRequest) (*GetTokenResponse, error) {
 			resp, err := c.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*GetTokenRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*GetTokenRequest) when calling interceptor")
 					}
 					return c.callGetToken(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*PatreonToken)
+				typedResp, ok := resp.(*GetTokenResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*PatreonToken) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*GetTokenResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -205,8 +204,8 @@ func (c *patreonJSONClient) GetToken(ctx context.Context, in *google_protobuf.Em
 	return caller(ctx, in)
 }
 
-func (c *patreonJSONClient) callGetToken(ctx context.Context, in *google_protobuf.Empty) (*PatreonToken, error) {
-	out := new(PatreonToken)
+func (c *patreonServiceJSONClient) callGetToken(ctx context.Context, in *GetTokenRequest) (*GetTokenResponse, error) {
+	out := new(GetTokenResponse)
 	ctx, err := doJSONRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
 		twerr, ok := err.(twirp.Error)
@@ -222,12 +221,12 @@ func (c *patreonJSONClient) callGetToken(ctx context.Context, in *google_protobu
 	return out, nil
 }
 
-// ======================
-// Patreon Server Handler
-// ======================
+// =============================
+// PatreonService Server Handler
+// =============================
 
-type patreonServer struct {
-	Patreon
+type patreonServiceServer struct {
+	PatreonService
 	interceptor      twirp.Interceptor
 	hooks            *twirp.ServerHooks
 	pathPrefix       string // prefix for routing
@@ -235,10 +234,10 @@ type patreonServer struct {
 	jsonCamelCase    bool   // JSON fields are serialized as lowerCamelCase rather than keeping the original proto names
 }
 
-// NewPatreonServer builds a TwirpServer that can be used as an http.Handler to handle
+// NewPatreonServiceServer builds a TwirpServer that can be used as an http.Handler to handle
 // HTTP requests that are routed to the right method in the provided svc implementation.
 // The opts are twirp.ServerOption modifiers, for example twirp.WithServerHooks(hooks).
-func NewPatreonServer(svc Patreon, opts ...interface{}) TwirpServer {
+func NewPatreonServiceServer(svc PatreonService, opts ...interface{}) TwirpServer {
 	serverOpts := newServerOpts(opts)
 
 	// Using ReadOpt allows backwards and forwards compatibility with new options in the future
@@ -251,8 +250,8 @@ func NewPatreonServer(svc Patreon, opts ...interface{}) TwirpServer {
 		pathPrefix = "/twirp" // default prefix
 	}
 
-	return &patreonServer{
-		Patreon:          svc,
+	return &patreonServiceServer{
+		PatreonService:   svc,
 		hooks:            serverOpts.Hooks,
 		interceptor:      twirp.ChainInterceptors(serverOpts.Interceptors...),
 		pathPrefix:       pathPrefix,
@@ -263,12 +262,12 @@ func NewPatreonServer(svc Patreon, opts ...interface{}) TwirpServer {
 
 // writeError writes an HTTP response with a valid Twirp error format, and triggers hooks.
 // If err is not a twirp.Error, it will get wrapped with twirp.InternalErrorWith(err)
-func (s *patreonServer) writeError(ctx context.Context, resp http.ResponseWriter, err error) {
+func (s *patreonServiceServer) writeError(ctx context.Context, resp http.ResponseWriter, err error) {
 	writeError(ctx, resp, err, s.hooks)
 }
 
 // handleRequestBodyError is used to handle error when the twirp server cannot read request
-func (s *patreonServer) handleRequestBodyError(ctx context.Context, resp http.ResponseWriter, msg string, err error) {
+func (s *patreonServiceServer) handleRequestBodyError(ctx context.Context, resp http.ResponseWriter, msg string, err error) {
 	if context.Canceled == ctx.Err() {
 		s.writeError(ctx, resp, twirp.NewError(twirp.Canceled, "failed to read request: context canceled"))
 		return
@@ -280,16 +279,16 @@ func (s *patreonServer) handleRequestBodyError(ctx context.Context, resp http.Re
 	s.writeError(ctx, resp, twirp.WrapError(malformedRequestError(msg), err))
 }
 
-// PatreonPathPrefix is a convenience constant that may identify URL paths.
+// PatreonServicePathPrefix is a convenience constant that may identify URL paths.
 // Should be used with caution, it only matches routes generated by Twirp Go clients,
 // with the default "/twirp" prefix and default CamelCase service and method names.
 // More info: https://twitchtv.github.io/twirp/docs/routing.html
-const PatreonPathPrefix = "/twirp/xeiaso.net.admin.v1.Patreon/"
+const PatreonServicePathPrefix = "/twirp/xeiaso.net.admin.v1.PatreonService/"
 
-func (s *patreonServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+func (s *patreonServiceServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.admin.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Patreon")
+	ctx = ctxsetters.WithServiceName(ctx, "PatreonService")
 	ctx = ctxsetters.WithResponseWriter(ctx, resp)
 
 	var err error
@@ -307,7 +306,7 @@ func (s *patreonServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 
 	// Verify path format: [<prefix>]/<package>.<Service>/<Method>
 	prefix, pkgService, method := parseTwirpPath(req.URL.Path)
-	if pkgService != "xeiaso.net.admin.v1.Patreon" {
+	if pkgService != "xeiaso.net.admin.v1.PatreonService" {
 		msg := fmt.Sprintf("no handler for path %q", req.URL.Path)
 		s.writeError(ctx, resp, badRouteError(msg, req.Method, req.URL.Path))
 		return
@@ -329,7 +328,7 @@ func (s *patreonServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (s *patreonServer) serveGetToken(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *patreonServiceServer) serveGetToken(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	header := req.Header.Get("Content-Type")
 	i := strings.Index(header, ";")
 	if i == -1 {
@@ -347,7 +346,7 @@ func (s *patreonServer) serveGetToken(ctx context.Context, resp http.ResponseWri
 	}
 }
 
-func (s *patreonServer) serveGetTokenJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *patreonServiceServer) serveGetTokenJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx = ctxsetters.WithMethodName(ctx, "GetToken")
 	ctx, err = callRequestRouted(ctx, s.hooks)
@@ -362,29 +361,29 @@ func (s *patreonServer) serveGetTokenJSON(ctx context.Context, resp http.Respons
 		s.handleRequestBodyError(ctx, resp, "the json request could not be decoded", err)
 		return
 	}
-	reqContent := new(google_protobuf.Empty)
+	reqContent := new(GetTokenRequest)
 	unmarshaler := protojson.UnmarshalOptions{DiscardUnknown: true}
 	if err = unmarshaler.Unmarshal(rawReqBody, reqContent); err != nil {
 		s.handleRequestBodyError(ctx, resp, "the json request could not be decoded", err)
 		return
 	}
 
-	handler := s.Patreon.GetToken
+	handler := s.PatreonService.GetToken
 	if s.interceptor != nil {
-		handler = func(ctx context.Context, req *google_protobuf.Empty) (*PatreonToken, error) {
+		handler = func(ctx context.Context, req *GetTokenRequest) (*GetTokenResponse, error) {
 			resp, err := s.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*GetTokenRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*GetTokenRequest) when calling interceptor")
 					}
-					return s.Patreon.GetToken(ctx, typedReq)
+					return s.PatreonService.GetToken(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*PatreonToken)
+				typedResp, ok := resp.(*GetTokenResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*PatreonToken) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*GetTokenResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -393,7 +392,7 @@ func (s *patreonServer) serveGetTokenJSON(ctx context.Context, resp http.Respons
 	}
 
 	// Call service method
-	var respContent *PatreonToken
+	var respContent *GetTokenResponse
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
 		respContent, err = handler(ctx, reqContent)
@@ -404,7 +403,7 @@ func (s *patreonServer) serveGetTokenJSON(ctx context.Context, resp http.Respons
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *PatreonToken and nil error while calling GetToken. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *GetTokenResponse and nil error while calling GetToken. nil responses are not supported"))
 		return
 	}
 
@@ -430,7 +429,7 @@ func (s *patreonServer) serveGetTokenJSON(ctx context.Context, resp http.Respons
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *patreonServer) serveGetTokenProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *patreonServiceServer) serveGetTokenProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx = ctxsetters.WithMethodName(ctx, "GetToken")
 	ctx, err = callRequestRouted(ctx, s.hooks)
@@ -444,28 +443,28 @@ func (s *patreonServer) serveGetTokenProtobuf(ctx context.Context, resp http.Res
 		s.handleRequestBodyError(ctx, resp, "failed to read request body", err)
 		return
 	}
-	reqContent := new(google_protobuf.Empty)
+	reqContent := new(GetTokenRequest)
 	if err = proto.Unmarshal(buf, reqContent); err != nil {
 		s.writeError(ctx, resp, malformedRequestError("the protobuf request could not be decoded"))
 		return
 	}
 
-	handler := s.Patreon.GetToken
+	handler := s.PatreonService.GetToken
 	if s.interceptor != nil {
-		handler = func(ctx context.Context, req *google_protobuf.Empty) (*PatreonToken, error) {
+		handler = func(ctx context.Context, req *GetTokenRequest) (*GetTokenResponse, error) {
 			resp, err := s.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*GetTokenRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*GetTokenRequest) when calling interceptor")
 					}
-					return s.Patreon.GetToken(ctx, typedReq)
+					return s.PatreonService.GetToken(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*PatreonToken)
+				typedResp, ok := resp.(*GetTokenResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*PatreonToken) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*GetTokenResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -474,7 +473,7 @@ func (s *patreonServer) serveGetTokenProtobuf(ctx context.Context, resp http.Res
 	}
 
 	// Call service method
-	var respContent *PatreonToken
+	var respContent *GetTokenResponse
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
 		respContent, err = handler(ctx, reqContent)
@@ -485,7 +484,7 @@ func (s *patreonServer) serveGetTokenProtobuf(ctx context.Context, resp http.Res
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *PatreonToken and nil error while calling GetToken. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *GetTokenResponse and nil error while calling GetToken. nil responses are not supported"))
 		return
 	}
 
@@ -509,43 +508,45 @@ func (s *patreonServer) serveGetTokenProtobuf(ctx context.Context, resp http.Res
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *patreonServer) ServiceDescriptor() ([]byte, int) {
+func (s *patreonServiceServer) ServiceDescriptor() ([]byte, int) {
 	return twirpFileDescriptor0, 0
 }
 
-func (s *patreonServer) ProtocGenTwirpVersion() string {
+func (s *patreonServiceServer) ProtocGenTwirpVersion() string {
 	return "v8.1.3"
 }
 
 // PathPrefix returns the base service path, in the form: "/<prefix>/<package>.<Service>/"
 // that is everything in a Twirp route except for the <Method>. This can be used for routing,
 // for example to identify the requests that are targeted to this service in a mux.
-func (s *patreonServer) PathPrefix() string {
-	return baseServicePath(s.pathPrefix, "xeiaso.net.admin.v1", "Patreon")
+func (s *patreonServiceServer) PathPrefix() string {
+	return baseServicePath(s.pathPrefix, "xeiaso.net.admin.v1", "PatreonService")
 }
 
-// ===============
-// Admin Interface
-// ===============
+// ======================
+// AdminService Interface
+// ======================
 
-type Admin interface {
-	Rebuild(context.Context, *google_protobuf.Empty) (*xeiaso_net_v1.BuildInfo, error)
+// AdminService provides administrative operations.
+type AdminService interface {
+	// Rebuild triggers a site rebuild.
+	Rebuild(context.Context, *RebuildRequest) (*RebuildResponse, error)
 }
 
-// =====================
-// Admin Protobuf Client
-// =====================
+// ============================
+// AdminService Protobuf Client
+// ============================
 
-type adminProtobufClient struct {
+type adminServiceProtobufClient struct {
 	client      HTTPClient
 	urls        [1]string
 	interceptor twirp.Interceptor
 	opts        twirp.ClientOptions
 }
 
-// NewAdminProtobufClient creates a Protobuf client that implements the Admin interface.
+// NewAdminServiceProtobufClient creates a Protobuf client that implements the AdminService interface.
 // It communicates using Protobuf and can be configured with a custom HTTPClient.
-func NewAdminProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Admin {
+func NewAdminServiceProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) AdminService {
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -565,12 +566,12 @@ func NewAdminProtobufClient(baseURL string, client HTTPClient, opts ...twirp.Cli
 
 	// Build method URLs: <baseURL>[<prefix>]/<package>.<Service>/<Method>
 	serviceURL := sanitizeBaseURL(baseURL)
-	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.admin.v1", "Admin")
+	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.admin.v1", "AdminService")
 	urls := [1]string{
 		serviceURL + "Rebuild",
 	}
 
-	return &adminProtobufClient{
+	return &adminServiceProtobufClient{
 		client:      client,
 		urls:        urls,
 		interceptor: twirp.ChainInterceptors(clientOpts.Interceptors...),
@@ -578,26 +579,26 @@ func NewAdminProtobufClient(baseURL string, client HTTPClient, opts ...twirp.Cli
 	}
 }
 
-func (c *adminProtobufClient) Rebuild(ctx context.Context, in *google_protobuf.Empty) (*xeiaso_net_v1.BuildInfo, error) {
+func (c *adminServiceProtobufClient) Rebuild(ctx context.Context, in *RebuildRequest) (*RebuildResponse, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.admin.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Admin")
+	ctx = ctxsetters.WithServiceName(ctx, "AdminService")
 	ctx = ctxsetters.WithMethodName(ctx, "Rebuild")
 	caller := c.callRebuild
 	if c.interceptor != nil {
-		caller = func(ctx context.Context, req *google_protobuf.Empty) (*xeiaso_net_v1.BuildInfo, error) {
+		caller = func(ctx context.Context, req *RebuildRequest) (*RebuildResponse, error) {
 			resp, err := c.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*RebuildRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*RebuildRequest) when calling interceptor")
 					}
 					return c.callRebuild(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*xeiaso_net_v1.BuildInfo)
+				typedResp, ok := resp.(*RebuildResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*xeiaso_net_v1.BuildInfo) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*RebuildResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -607,8 +608,8 @@ func (c *adminProtobufClient) Rebuild(ctx context.Context, in *google_protobuf.E
 	return caller(ctx, in)
 }
 
-func (c *adminProtobufClient) callRebuild(ctx context.Context, in *google_protobuf.Empty) (*xeiaso_net_v1.BuildInfo, error) {
-	out := new(xeiaso_net_v1.BuildInfo)
+func (c *adminServiceProtobufClient) callRebuild(ctx context.Context, in *RebuildRequest) (*RebuildResponse, error) {
+	out := new(RebuildResponse)
 	ctx, err := doProtobufRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
 		twerr, ok := err.(twirp.Error)
@@ -624,20 +625,20 @@ func (c *adminProtobufClient) callRebuild(ctx context.Context, in *google_protob
 	return out, nil
 }
 
-// =================
-// Admin JSON Client
-// =================
+// ========================
+// AdminService JSON Client
+// ========================
 
-type adminJSONClient struct {
+type adminServiceJSONClient struct {
 	client      HTTPClient
 	urls        [1]string
 	interceptor twirp.Interceptor
 	opts        twirp.ClientOptions
 }
 
-// NewAdminJSONClient creates a JSON client that implements the Admin interface.
+// NewAdminServiceJSONClient creates a JSON client that implements the AdminService interface.
 // It communicates using JSON and can be configured with a custom HTTPClient.
-func NewAdminJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) Admin {
+func NewAdminServiceJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) AdminService {
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -657,12 +658,12 @@ func NewAdminJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientO
 
 	// Build method URLs: <baseURL>[<prefix>]/<package>.<Service>/<Method>
 	serviceURL := sanitizeBaseURL(baseURL)
-	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.admin.v1", "Admin")
+	serviceURL += baseServicePath(pathPrefix, "xeiaso.net.admin.v1", "AdminService")
 	urls := [1]string{
 		serviceURL + "Rebuild",
 	}
 
-	return &adminJSONClient{
+	return &adminServiceJSONClient{
 		client:      client,
 		urls:        urls,
 		interceptor: twirp.ChainInterceptors(clientOpts.Interceptors...),
@@ -670,26 +671,26 @@ func NewAdminJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientO
 	}
 }
 
-func (c *adminJSONClient) Rebuild(ctx context.Context, in *google_protobuf.Empty) (*xeiaso_net_v1.BuildInfo, error) {
+func (c *adminServiceJSONClient) Rebuild(ctx context.Context, in *RebuildRequest) (*RebuildResponse, error) {
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.admin.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Admin")
+	ctx = ctxsetters.WithServiceName(ctx, "AdminService")
 	ctx = ctxsetters.WithMethodName(ctx, "Rebuild")
 	caller := c.callRebuild
 	if c.interceptor != nil {
-		caller = func(ctx context.Context, req *google_protobuf.Empty) (*xeiaso_net_v1.BuildInfo, error) {
+		caller = func(ctx context.Context, req *RebuildRequest) (*RebuildResponse, error) {
 			resp, err := c.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*RebuildRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*RebuildRequest) when calling interceptor")
 					}
 					return c.callRebuild(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*xeiaso_net_v1.BuildInfo)
+				typedResp, ok := resp.(*RebuildResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*xeiaso_net_v1.BuildInfo) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*RebuildResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -699,8 +700,8 @@ func (c *adminJSONClient) Rebuild(ctx context.Context, in *google_protobuf.Empty
 	return caller(ctx, in)
 }
 
-func (c *adminJSONClient) callRebuild(ctx context.Context, in *google_protobuf.Empty) (*xeiaso_net_v1.BuildInfo, error) {
-	out := new(xeiaso_net_v1.BuildInfo)
+func (c *adminServiceJSONClient) callRebuild(ctx context.Context, in *RebuildRequest) (*RebuildResponse, error) {
+	out := new(RebuildResponse)
 	ctx, err := doJSONRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
 		twerr, ok := err.(twirp.Error)
@@ -716,12 +717,12 @@ func (c *adminJSONClient) callRebuild(ctx context.Context, in *google_protobuf.E
 	return out, nil
 }
 
-// ====================
-// Admin Server Handler
-// ====================
+// ===========================
+// AdminService Server Handler
+// ===========================
 
-type adminServer struct {
-	Admin
+type adminServiceServer struct {
+	AdminService
 	interceptor      twirp.Interceptor
 	hooks            *twirp.ServerHooks
 	pathPrefix       string // prefix for routing
@@ -729,10 +730,10 @@ type adminServer struct {
 	jsonCamelCase    bool   // JSON fields are serialized as lowerCamelCase rather than keeping the original proto names
 }
 
-// NewAdminServer builds a TwirpServer that can be used as an http.Handler to handle
+// NewAdminServiceServer builds a TwirpServer that can be used as an http.Handler to handle
 // HTTP requests that are routed to the right method in the provided svc implementation.
 // The opts are twirp.ServerOption modifiers, for example twirp.WithServerHooks(hooks).
-func NewAdminServer(svc Admin, opts ...interface{}) TwirpServer {
+func NewAdminServiceServer(svc AdminService, opts ...interface{}) TwirpServer {
 	serverOpts := newServerOpts(opts)
 
 	// Using ReadOpt allows backwards and forwards compatibility with new options in the future
@@ -745,8 +746,8 @@ func NewAdminServer(svc Admin, opts ...interface{}) TwirpServer {
 		pathPrefix = "/twirp" // default prefix
 	}
 
-	return &adminServer{
-		Admin:            svc,
+	return &adminServiceServer{
+		AdminService:     svc,
 		hooks:            serverOpts.Hooks,
 		interceptor:      twirp.ChainInterceptors(serverOpts.Interceptors...),
 		pathPrefix:       pathPrefix,
@@ -757,12 +758,12 @@ func NewAdminServer(svc Admin, opts ...interface{}) TwirpServer {
 
 // writeError writes an HTTP response with a valid Twirp error format, and triggers hooks.
 // If err is not a twirp.Error, it will get wrapped with twirp.InternalErrorWith(err)
-func (s *adminServer) writeError(ctx context.Context, resp http.ResponseWriter, err error) {
+func (s *adminServiceServer) writeError(ctx context.Context, resp http.ResponseWriter, err error) {
 	writeError(ctx, resp, err, s.hooks)
 }
 
 // handleRequestBodyError is used to handle error when the twirp server cannot read request
-func (s *adminServer) handleRequestBodyError(ctx context.Context, resp http.ResponseWriter, msg string, err error) {
+func (s *adminServiceServer) handleRequestBodyError(ctx context.Context, resp http.ResponseWriter, msg string, err error) {
 	if context.Canceled == ctx.Err() {
 		s.writeError(ctx, resp, twirp.NewError(twirp.Canceled, "failed to read request: context canceled"))
 		return
@@ -774,16 +775,16 @@ func (s *adminServer) handleRequestBodyError(ctx context.Context, resp http.Resp
 	s.writeError(ctx, resp, twirp.WrapError(malformedRequestError(msg), err))
 }
 
-// AdminPathPrefix is a convenience constant that may identify URL paths.
+// AdminServicePathPrefix is a convenience constant that may identify URL paths.
 // Should be used with caution, it only matches routes generated by Twirp Go clients,
 // with the default "/twirp" prefix and default CamelCase service and method names.
 // More info: https://twitchtv.github.io/twirp/docs/routing.html
-const AdminPathPrefix = "/twirp/xeiaso.net.admin.v1.Admin/"
+const AdminServicePathPrefix = "/twirp/xeiaso.net.admin.v1.AdminService/"
 
-func (s *adminServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+func (s *adminServiceServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 	ctx = ctxsetters.WithPackageName(ctx, "xeiaso.net.admin.v1")
-	ctx = ctxsetters.WithServiceName(ctx, "Admin")
+	ctx = ctxsetters.WithServiceName(ctx, "AdminService")
 	ctx = ctxsetters.WithResponseWriter(ctx, resp)
 
 	var err error
@@ -801,7 +802,7 @@ func (s *adminServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 
 	// Verify path format: [<prefix>]/<package>.<Service>/<Method>
 	prefix, pkgService, method := parseTwirpPath(req.URL.Path)
-	if pkgService != "xeiaso.net.admin.v1.Admin" {
+	if pkgService != "xeiaso.net.admin.v1.AdminService" {
 		msg := fmt.Sprintf("no handler for path %q", req.URL.Path)
 		s.writeError(ctx, resp, badRouteError(msg, req.Method, req.URL.Path))
 		return
@@ -823,7 +824,7 @@ func (s *adminServer) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (s *adminServer) serveRebuild(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *adminServiceServer) serveRebuild(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	header := req.Header.Get("Content-Type")
 	i := strings.Index(header, ";")
 	if i == -1 {
@@ -841,7 +842,7 @@ func (s *adminServer) serveRebuild(ctx context.Context, resp http.ResponseWriter
 	}
 }
 
-func (s *adminServer) serveRebuildJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *adminServiceServer) serveRebuildJSON(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx = ctxsetters.WithMethodName(ctx, "Rebuild")
 	ctx, err = callRequestRouted(ctx, s.hooks)
@@ -856,29 +857,29 @@ func (s *adminServer) serveRebuildJSON(ctx context.Context, resp http.ResponseWr
 		s.handleRequestBodyError(ctx, resp, "the json request could not be decoded", err)
 		return
 	}
-	reqContent := new(google_protobuf.Empty)
+	reqContent := new(RebuildRequest)
 	unmarshaler := protojson.UnmarshalOptions{DiscardUnknown: true}
 	if err = unmarshaler.Unmarshal(rawReqBody, reqContent); err != nil {
 		s.handleRequestBodyError(ctx, resp, "the json request could not be decoded", err)
 		return
 	}
 
-	handler := s.Admin.Rebuild
+	handler := s.AdminService.Rebuild
 	if s.interceptor != nil {
-		handler = func(ctx context.Context, req *google_protobuf.Empty) (*xeiaso_net_v1.BuildInfo, error) {
+		handler = func(ctx context.Context, req *RebuildRequest) (*RebuildResponse, error) {
 			resp, err := s.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*RebuildRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*RebuildRequest) when calling interceptor")
 					}
-					return s.Admin.Rebuild(ctx, typedReq)
+					return s.AdminService.Rebuild(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*xeiaso_net_v1.BuildInfo)
+				typedResp, ok := resp.(*RebuildResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*xeiaso_net_v1.BuildInfo) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*RebuildResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -887,7 +888,7 @@ func (s *adminServer) serveRebuildJSON(ctx context.Context, resp http.ResponseWr
 	}
 
 	// Call service method
-	var respContent *xeiaso_net_v1.BuildInfo
+	var respContent *RebuildResponse
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
 		respContent, err = handler(ctx, reqContent)
@@ -898,7 +899,7 @@ func (s *adminServer) serveRebuildJSON(ctx context.Context, resp http.ResponseWr
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *xeiaso_net_v1.BuildInfo and nil error while calling Rebuild. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *RebuildResponse and nil error while calling Rebuild. nil responses are not supported"))
 		return
 	}
 
@@ -924,7 +925,7 @@ func (s *adminServer) serveRebuildJSON(ctx context.Context, resp http.ResponseWr
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *adminServer) serveRebuildProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
+func (s *adminServiceServer) serveRebuildProtobuf(ctx context.Context, resp http.ResponseWriter, req *http.Request) {
 	var err error
 	ctx = ctxsetters.WithMethodName(ctx, "Rebuild")
 	ctx, err = callRequestRouted(ctx, s.hooks)
@@ -938,28 +939,28 @@ func (s *adminServer) serveRebuildProtobuf(ctx context.Context, resp http.Respon
 		s.handleRequestBodyError(ctx, resp, "failed to read request body", err)
 		return
 	}
-	reqContent := new(google_protobuf.Empty)
+	reqContent := new(RebuildRequest)
 	if err = proto.Unmarshal(buf, reqContent); err != nil {
 		s.writeError(ctx, resp, malformedRequestError("the protobuf request could not be decoded"))
 		return
 	}
 
-	handler := s.Admin.Rebuild
+	handler := s.AdminService.Rebuild
 	if s.interceptor != nil {
-		handler = func(ctx context.Context, req *google_protobuf.Empty) (*xeiaso_net_v1.BuildInfo, error) {
+		handler = func(ctx context.Context, req *RebuildRequest) (*RebuildResponse, error) {
 			resp, err := s.interceptor(
 				func(ctx context.Context, req interface{}) (interface{}, error) {
-					typedReq, ok := req.(*google_protobuf.Empty)
+					typedReq, ok := req.(*RebuildRequest)
 					if !ok {
-						return nil, twirp.InternalError("failed type assertion req.(*google_protobuf.Empty) when calling interceptor")
+						return nil, twirp.InternalError("failed type assertion req.(*RebuildRequest) when calling interceptor")
 					}
-					return s.Admin.Rebuild(ctx, typedReq)
+					return s.AdminService.Rebuild(ctx, typedReq)
 				},
 			)(ctx, req)
 			if resp != nil {
-				typedResp, ok := resp.(*xeiaso_net_v1.BuildInfo)
+				typedResp, ok := resp.(*RebuildResponse)
 				if !ok {
-					return nil, twirp.InternalError("failed type assertion resp.(*xeiaso_net_v1.BuildInfo) when calling interceptor")
+					return nil, twirp.InternalError("failed type assertion resp.(*RebuildResponse) when calling interceptor")
 				}
 				return typedResp, err
 			}
@@ -968,7 +969,7 @@ func (s *adminServer) serveRebuildProtobuf(ctx context.Context, resp http.Respon
 	}
 
 	// Call service method
-	var respContent *xeiaso_net_v1.BuildInfo
+	var respContent *RebuildResponse
 	func() {
 		defer ensurePanicResponses(ctx, resp, s.hooks)
 		respContent, err = handler(ctx, reqContent)
@@ -979,7 +980,7 @@ func (s *adminServer) serveRebuildProtobuf(ctx context.Context, resp http.Respon
 		return
 	}
 	if respContent == nil {
-		s.writeError(ctx, resp, twirp.InternalError("received a nil *xeiaso_net_v1.BuildInfo and nil error while calling Rebuild. nil responses are not supported"))
+		s.writeError(ctx, resp, twirp.InternalError("received a nil *RebuildResponse and nil error while calling Rebuild. nil responses are not supported"))
 		return
 	}
 
@@ -1003,19 +1004,19 @@ func (s *adminServer) serveRebuildProtobuf(ctx context.Context, resp http.Respon
 	callResponseSent(ctx, s.hooks)
 }
 
-func (s *adminServer) ServiceDescriptor() ([]byte, int) {
+func (s *adminServiceServer) ServiceDescriptor() ([]byte, int) {
 	return twirpFileDescriptor0, 1
 }
 
-func (s *adminServer) ProtocGenTwirpVersion() string {
+func (s *adminServiceServer) ProtocGenTwirpVersion() string {
 	return "v8.1.3"
 }
 
 // PathPrefix returns the base service path, in the form: "/<prefix>/<package>.<Service>/"
 // that is everything in a Twirp route except for the <Method>. This can be used for routing,
 // for example to identify the requests that are targeted to this service in a mux.
-func (s *adminServer) PathPrefix() string {
-	return baseServicePath(s.pathPrefix, "xeiaso.net.admin.v1", "Admin")
+func (s *adminServiceServer) PathPrefix() string {
+	return baseServicePath(s.pathPrefix, "xeiaso.net.admin.v1", "AdminService")
 }
 
 // =====
@@ -1584,30 +1585,34 @@ func callClientError(ctx context.Context, h *twirp.ClientHooks, err twirp.Error)
 }
 
 var twirpFileDescriptor0 = []byte{
-	// 394 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x92, 0xc1, 0xaa, 0xd3, 0x40,
-	0x14, 0x86, 0x49, 0xae, 0xde, 0xeb, 0x9d, 0x5b, 0x37, 0x29, 0xd4, 0x10, 0x91, 0xb6, 0xba, 0xe9,
-	0xc6, 0x19, 0x26, 0xba, 0x4a, 0x57, 0x0d, 0x96, 0xe2, 0xc2, 0x10, 0x4a, 0x29, 0x45, 0x02, 0x65,
-	0xda, 0x9e, 0xd6, 0x60, 0x93, 0x09, 0xc9, 0x69, 0x68, 0x5e, 0xc7, 0x9d, 0xbe, 0x86, 0x3b, 0x1f,
-	0xc3, 0xa5, 0x4f, 0x21, 0x99, 0x49, 0xb1, 0x68, 0xdc, 0x4d, 0xfe, 0xff, 0x3b, 0xff, 0xe4, 0x3f,
-	0x0c, 0xe9, 0x9f, 0x21, 0x16, 0x85, 0x64, 0x29, 0x20, 0x13, 0xbb, 0x24, 0x4e, 0x59, 0xc9, 0xf5,
-	0x81, 0x66, 0xb9, 0x44, 0x69, 0x75, 0x35, 0x40, 0x53, 0x40, 0xaa, 0xf5, 0x92, 0x3b, 0xcf, 0x0f,
-	0x52, 0x1e, 0x8e, 0xc0, 0x14, 0xb2, 0x39, 0xed, 0x19, 0x24, 0x19, 0x56, 0x7a, 0xc2, 0xe9, 0xff,
-	0x6d, 0x62, 0x9c, 0x40, 0x81, 0x22, 0xc9, 0x1a, 0xc0, 0xb9, 0xba, 0xb3, 0xe4, 0xec, 0x0c, 0x45,
-	0x8c, 0xa0, 0xbd, 0x97, 0x5f, 0x0d, 0xd2, 0x09, 0x05, 0xe6, 0x20, 0xd3, 0x85, 0xfc, 0x0c, 0xa9,
-	0x35, 0x24, 0x1d, 0xb1, 0xdd, 0x42, 0x51, 0xac, 0xb1, 0xfe, 0xb6, 0x8d, 0x81, 0x31, 0xba, 0x9f,
-	0x3f, 0x68, 0x4d, 0x23, 0x2f, 0x08, 0x51, 0xde, 0x1a, 0xab, 0x0c, 0x6c, 0x53, 0x01, 0xf7, 0x4a,
-	0x59, 0x54, 0x19, 0x58, 0xaf, 0xc8, 0xd3, 0x1c, 0xf6, 0x39, 0x14, 0x9f, 0x9a, 0x88, 0x1b, 0x45,
-	0x74, 0x1a, 0x51, 0x67, 0xb8, 0xe4, 0x16, 0xce, 0x59, 0x9c, 0x57, 0xf6, 0xa3, 0x81, 0x31, 0x7a,
-	0x70, 0x1d, 0xaa, 0x5b, 0xd0, 0x4b, 0x0b, 0xba, 0xb8, 0xb4, 0x98, 0x37, 0xa4, 0x1b, 0x92, 0xbb,
-	0xe6, 0x57, 0xad, 0x29, 0x79, 0x32, 0x03, 0xd4, 0x51, 0xbd, 0x7f, 0x46, 0xa7, 0xf5, 0x76, 0x9c,
-	0x21, 0x6d, 0x59, 0x25, 0xbd, 0x2e, 0xeb, 0xbe, 0x23, 0x8f, 0x27, 0xb5, 0x61, 0x8d, 0xc9, 0xdd,
-	0x1c, 0x36, 0xa7, 0xf8, 0xb8, 0xfb, 0x6f, 0x9c, 0x7d, 0x1d, 0x57, 0x72, 0xea, 0xd7, 0xf4, 0xfb,
-	0x74, 0x2f, 0xfd, 0xef, 0x06, 0x79, 0xb6, 0x95, 0x49, 0xdb, 0x75, 0x3e, 0x51, 0xf9, 0x61, 0x1d,
-	0x15, 0x1a, 0x1f, 0x5f, 0xff, 0x41, 0x58, 0xf9, 0x96, 0x1d, 0x20, 0x65, 0x2d, 0xef, 0x61, 0xac,
-	0x0e, 0x25, 0xff, 0x62, 0xde, 0xac, 0x82, 0xc9, 0x37, 0xb3, 0xbb, 0xd2, 0x53, 0x01, 0x20, 0x55,
-	0x71, 0x74, 0xc9, 0x7f, 0x5c, 0xd4, 0x28, 0x00, 0x8c, 0x94, 0x1a, 0x2d, 0xf9, 0x4f, 0xb3, 0xdf,
-	0xa2, 0x46, 0xb3, 0xd0, 0xff, 0x00, 0x28, 0x76, 0x02, 0xc5, 0x2f, 0xb3, 0xa7, 0x09, 0xcf, 0x0b,
-	0x00, 0x3d, 0x4f, 0x31, 0x9e, 0xb7, 0xe4, 0x9b, 0x5b, 0xd5, 0xf7, 0xcd, 0xef, 0x00, 0x00, 0x00,
-	0xff, 0xff, 0x3b, 0xc1, 0x41, 0x2d, 0xa2, 0x02, 0x00, 0x00,
+	// 463 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x92, 0xd1, 0x8a, 0xd3, 0x40,
+	0x14, 0x86, 0x49, 0x56, 0x57, 0x7b, 0xb6, 0xee, 0xae, 0x59, 0xd0, 0x12, 0x90, 0xba, 0xdd, 0x15,
+	0xbc, 0x71, 0x86, 0x54, 0x41, 0x88, 0x57, 0xdb, 0x9b, 0x45, 0xc5, 0x52, 0x62, 0xa9, 0x8b, 0x14,
+	0x4a, 0xda, 0x9e, 0xd6, 0xc1, 0xed, 0x4c, 0xcc, 0x9c, 0x86, 0xf6, 0x75, 0xbc, 0xd3, 0xd7, 0xf0,
+	0xce, 0xc7, 0xf0, 0xd2, 0xa7, 0x90, 0xcc, 0x24, 0x6d, 0x95, 0xe0, 0xde, 0x0d, 0xdf, 0x7c, 0xf3,
+	0xcf, 0xc9, 0x9f, 0x81, 0xe6, 0x0a, 0x45, 0xac, 0x15, 0x97, 0x48, 0x3c, 0x9e, 0x2e, 0x84, 0xe4,
+	0x59, 0x60, 0x17, 0x2c, 0x49, 0x15, 0x29, 0xef, 0xc4, 0x0a, 0x4c, 0x22, 0x31, 0xcb, 0xb3, 0xc0,
+	0x6f, 0xce, 0x95, 0x9a, 0x5f, 0x23, 0x37, 0xca, 0x78, 0x39, 0xe3, 0x24, 0x16, 0xa8, 0x29, 0x5e,
+	0x24, 0xf6, 0x94, 0xef, 0xef, 0xc4, 0x66, 0x01, 0x5f, 0xa1, 0x16, 0x84, 0x76, 0xaf, 0x75, 0x1f,
+	0x8e, 0x2e, 0x91, 0xfa, 0xea, 0x33, 0xca, 0x08, 0xbf, 0x2c, 0x51, 0x53, 0xeb, 0x2d, 0x1c, 0x6f,
+	0x91, 0x4e, 0x94, 0xd4, 0xe8, 0xbd, 0x84, 0xdb, 0x94, 0x83, 0x86, 0xf3, 0xd8, 0x79, 0x7a, 0xd0,
+	0x3e, 0x65, 0x15, 0x83, 0xb0, 0x5e, 0x4c, 0x29, 0x2a, 0x69, 0x4f, 0x5a, 0xbf, 0xf5, 0xcd, 0x81,
+	0xfa, 0x2e, 0xf7, 0x4e, 0xa1, 0x1e, 0x4f, 0x26, 0xa8, 0xf5, 0x68, 0x1b, 0x58, 0x8b, 0x0e, 0x2c,
+	0xb3, 0xca, 0x23, 0x00, 0xb3, 0x37, 0xa2, 0x75, 0x82, 0x0d, 0xd7, 0x08, 0x35, 0x43, 0xfa, 0xeb,
+	0x04, 0xbd, 0x33, 0xb8, 0x97, 0xe2, 0x2c, 0x45, 0xfd, 0xa9, 0x88, 0xd8, 0x33, 0x46, 0xbd, 0x80,
+	0x36, 0xa3, 0x0d, 0xfb, 0xb8, 0x4a, 0x44, 0xba, 0x6e, 0xdc, 0x32, 0x13, 0xfb, 0xcc, 0xb6, 0xc4,
+	0xca, 0x96, 0x58, 0xbf, 0x6c, 0x29, 0x2a, 0xcc, 0xd6, 0x31, 0x1c, 0x46, 0x38, 0x5e, 0x8a, 0xeb,
+	0x69, 0x59, 0xc5, 0x1b, 0x38, 0xda, 0x90, 0x4d, 0x13, 0x60, 0xc0, 0x48, 0xc8, 0x99, 0x2a, 0xea,
+	0x68, 0xec, 0xd6, 0x91, 0x05, 0xac, 0x93, 0x0b, 0xaf, 0xe5, 0x4c, 0x45, 0xb5, 0x71, 0xb9, 0x6c,
+	0x0b, 0x38, 0x2c, 0x8a, 0x78, 0x8f, 0x69, 0x26, 0x26, 0xe8, 0x7d, 0x80, 0xbb, 0x65, 0xd1, 0xde,
+	0x79, 0x65, 0xa3, 0xff, 0xfc, 0x1a, 0xff, 0xc9, 0x0d, 0x96, 0x9d, 0xb1, 0x3d, 0x85, 0xfa, 0x45,
+	0xbe, 0x59, 0x5e, 0xd4, 0x87, 0x3b, 0xc5, 0x67, 0x78, 0x67, 0x95, 0x09, 0x7f, 0x7f, 0xb6, 0x7f,
+	0xfe, 0x7f, 0xc9, 0xde, 0xd2, 0xf9, 0xe1, 0xc0, 0xc3, 0x89, 0x5a, 0x54, 0xb9, 0x1d, 0x30, 0xf7,
+	0xf7, 0xf2, 0xae, 0x7b, 0xce, 0xc7, 0x67, 0x5b, 0x85, 0x67, 0x2f, 0xf8, 0x1c, 0x25, 0xaf, 0x78,
+	0xe9, 0xaf, 0xcc, 0x22, 0x0b, 0xbe, 0xba, 0x7b, 0x57, 0xdd, 0x8b, 0xef, 0xee, 0xc9, 0x95, 0x3d,
+	0xd5, 0x45, 0x62, 0x26, 0x8e, 0x0d, 0x82, 0x9f, 0x25, 0x1d, 0x76, 0x91, 0x86, 0x86, 0x0e, 0x07,
+	0xc1, 0x2f, 0xb7, 0x59, 0x41, 0x87, 0x97, 0xbd, 0xce, 0x3b, 0xa4, 0x78, 0x1a, 0x53, 0xfc, 0xdb,
+	0x7d, 0x60, 0x8d, 0x30, 0xec, 0x22, 0x85, 0xa1, 0x71, 0xc2, 0x70, 0x10, 0x8c, 0xf7, 0xcd, 0x83,
+	0x78, 0xfe, 0x27, 0x00, 0x00, 0xff, 0xff, 0xe3, 0x7a, 0x8d, 0x25, 0x7c, 0x03, 0x00, 0x00,
 }
