@@ -18,6 +18,7 @@ import (
 	pb "xeiaso.net/v4/gen/xeiaso/net/v1"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
+	"xeiaso.net/v4/proto"
 )
 
 var (
@@ -95,6 +96,8 @@ func main() {
 		twirp.WithServerPathPrefix("/api"),
 	)
 	mux.Handle(es.PathPrefix(), es)
+
+	mux.Handle("/api/defs/", http.StripPrefix("/api/defs/", http.FileServerFS(proto.FS)))
 
 	mux.HandleFunc("/blog.atom", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/blog.rss", http.StatusMovedPermanently)

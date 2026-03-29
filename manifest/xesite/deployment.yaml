@@ -2,6 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: xesite
+  annotations:
+    keel.sh/policy: "all"
+    keel.sh/trigger: poll
+    keel.sh/pollSchedule: "@every 5m"
+    keel.sh/match-tag: "true"
 spec:
   selector:
     matchLabels:
