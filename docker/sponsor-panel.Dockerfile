@@ -17,7 +17,7 @@ RUN apk -U add nodejs npm \
   && cd ./cmd/sponsor-panel \
   && go generate ./...
 
-RUN --mount=type=cache,target=/root/.cache GOOS=${TARGETOS} GOARCH=${TARGETARCH} CGO_ENABLED=0 go build -gcflags "all=-N -l" -o /app/bin/sponsor-panel ./cmd/sponsor-panel
+RUN --mount=type=cache,target=/root/.cache GOOS=${TARGETOS} GOARCH=${TARGETARCH} CGO_ENABLED=0 go build -ldflags="-X xeiaso.net/v4.Version=$(git describe --tags --always --dirty)" -gcflags "all=-N -l" -o /app/bin/sponsor-panel ./cmd/sponsor-panel
 
 FROM alpine:${ALPINE_VERSION} AS run
 WORKDIR /app

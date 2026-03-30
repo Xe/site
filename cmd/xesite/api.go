@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
-	"os"
 	"os/exec"
 	"runtime"
 	"strings"
 
 	"github.com/twitchtv/twirp"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	xesite "xeiaso.net/v4"
 	pb "xeiaso.net/v4/gen/xeiaso/net/v1"
 	"xeiaso.net/v4/internal/lume"
 )
@@ -39,7 +39,7 @@ func (ms *MetaServer) Metadata(ctx context.Context, _ *pb.MetadataRequest) (*pb.
 		Commit:        commit,
 		GoVersion:     runtime.Version(),
 		DenoVersion:   denoVersion,
-		XesiteVersion: os.Args[0],
+		XesiteVersion: xesite.Version,
 		BuildTime:     timestamppb.New(ms.fs.BuildTime()),
 	}
 

@@ -1,5 +1,6 @@
 resources:
-  #- patreon-saasproxy
+  - patreon-saasproxy
+  - sponsor-panel
   - xesite
 
 namespace: default
