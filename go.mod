@@ -12,7 +12,7 @@ require (
 	github.com/donatj/hmacsig v1.1.0
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
 	github.com/go-faker/faker/v4 v4.7.0
-	github.com/go-git/go-git/v5 v5.17.0
+	github.com/go-git/go-git/v5 v5.17.1
 	github.com/google/go-github/v82 v82.0.0
 	github.com/google/subcommands v1.2.0
 	github.com/google/uuid v1.6.0
