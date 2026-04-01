@@ -19,15 +19,16 @@ import (
 	"github.com/facebookgo/flagenv"
 	gh "github.com/google/go-github/v82/github"
 	"github.com/gorilla/sessions"
-	slogGorm "github.com/orandin/slog-gorm"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	gormPrometheus "gorm.io/plugin/prometheus"
 	_ "github.com/joho/godotenv/autoload"
-	patreon "gopkg.in/mxpv/patreon-go.v1"
+	slogGorm "github.com/orandin/slog-gorm"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/github"
+	patreon "gopkg.in/mxpv/patreon-go.v1"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	gormPrometheus "gorm.io/plugin/prometheus"
+	"xeiaso.net/v4/cmd/sponsor-panel/internal/thoth"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/web/htmx"
 )
@@ -57,24 +58,29 @@ var (
 	patreonCampaignID   = flag.String("patreon-campaign-id", "", "Patreon campaign ID to check pledges against")
 	patreonFiftyPlus    = flag.String("patreon-fifty-plus", "", "Comma-separated list of Patreon usernames always treated as $50+ sponsors")
 
+	// Thoth settings
+	thothToken = flag.String("thoth-token", "", "Thoth API token (use a god token)")
+	thothURL   = flag.String("thoth-url", "passthrough:///thoth.techaro.lol:443", "URL for the Thoth API server")
+
 	//go:embed static
 	staticFS embed.FS
 )
 
 // Server holds the application dependencies.
 type Server struct {
-	db                *gorm.DB
-	ghClient          *gh.Client
-	oauth             *oauth2.Config
+	db                    *gorm.DB
+	ghClient              *gh.Client
+	oauth                 *oauth2.Config
 	patreonOAuth          *oauth2.Config // nil if Patreon not configured
 	patreonCampaignID     string
 	patreonFiftyPlusSpons map[string]bool // Patreon usernames always treated as $50+
-	discordInvite     string
-	fiftyPlusSponsors map[string]bool // Always treated as $50+ sponsors
-	sessionStore      *sessions.CookieStore
-	cookieSecure      bool
-	bucketName        string
-	s3Client          *s3.Client
+	discordInvite         string
+	fiftyPlusSponsors     map[string]bool // Always treated as $50+ sponsors
+	sessionStore          *sessions.CookieStore
+	cookieSecure          bool
+	bucketName            string
+	s3Client              *s3.Client
+	thothClient           *thoth.Client
 }
 
 func main() {
@@ -260,19 +266,27 @@ func main() {
 		slog.Info("main: S3 client created", "bucket", *bucketName)
 	}
 
+	thothClient, err := thoth.New(context.Background(), *thothURL, *thothToken)
+	if err != nil {
+		slog.Error("can't create thoth client", "err", err)
+		os.Exit(2)
+	}
+	slog.Info("thoth client created")
+
 	server := &Server{
-		db:                db,
-		ghClient:          ghClient,
-		oauth:             oauthConfig,
+		db:                    db,
+		ghClient:              ghClient,
+		oauth:                 oauthConfig,
 		patreonOAuth:          patreonConfig,
 		patreonCampaignID:     *patreonCampaignID,
 		patreonFiftyPlusSpons: patreonFiftyPlusMap,
-		discordInvite:     *discordInvite,
-		fiftyPlusSponsors: fiftyPlusMap,
-		sessionStore:      sessionStore,
-		cookieSecure:      *cookieSecure,
-		bucketName:        *bucketName,
-		s3Client:          s3Client,
+		discordInvite:         *discordInvite,
+		fiftyPlusSponsors:     fiftyPlusMap,
+		sessionStore:          sessionStore,
+		cookieSecure:          *cookieSecure,
+		bucketName:            *bucketName,
+		s3Client:              s3Client,
+		thothClient:           thothClient,
 	}
 
 	mux := http.NewServeMux()
