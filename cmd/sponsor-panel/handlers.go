@@ -16,6 +16,8 @@ import (
 	"github.com/google/go-github/v82/github"
 	"github.com/google/uuid"
 
+	adminv1 "xeiaso.net/v4/gen/techaro/thoth/auth/admin/v1"
+
 	"xeiaso.net/v4/cmd/sponsor-panel/templates"
 )
 
@@ -317,4 +319,83 @@ func renderInviteSuccess(w http.ResponseWriter, username, state string) {
 // renderLogoSuccess renders success response for logo submission.
 func renderLogoSuccess(w http.ResponseWriter, company, issueURL string, issueNumber int) {
 	templates.LogoSuccess(company, issueURL, issueNumber).Render(context.Background(), w)
+}
+
+// thothTokenHandler handles POST /thoth-token - issues a Thoth JWT for the user.
+func (s *Server) thothTokenHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	slog.Debug("thothTokenHandler: processing token request")
+
+	// Get user from session
+	user, err := s.getSessionUser(r)
+	if err != nil {
+		slog.Error("thothTokenHandler: failed to get session user", "err", err)
+		renderError(w, "Authentication required", http.StatusUnauthorized)
+		return
+	}
+
+	slog.Debug("thothTokenHandler: authenticated user", "user_id", user.ID, "login", user.Login)
+
+	// Check sponsorship tier (any active sponsorship)
+	if !user.IsSponsorAtTier(100) {
+		slog.Error("thothTokenHandler: user not a sponsor", "user", user.Login, "user_id", user.ID)
+		renderError(w, "Requires active sponsorship", http.StatusForbidden)
+		return
+	}
+
+	// Create Thoth user if not already provisioned
+	if user.ThothUserID == nil {
+		if user.Email == "" {
+			slog.Error("thothTokenHandler: user has no email address", "user_id", user.ID, "login", user.Login)
+			renderError(w, "Email address required. Please update your profile.", http.StatusBadRequest)
+			return
+		}
+
+		slog.Debug("thothTokenHandler: creating Thoth user", "user_id", user.ID, "login", user.Login)
+
+		resp, err := s.thothClient.AdminUsers.Create(r.Context(), &adminv1.UsersServiceCreateRequest{
+			EmailAddress: user.Email,
+			Name:         user.Login,
+			CustomerId:   user.Provider + ":" + user.Login,
+		})
+		if err != nil {
+			slog.Error("thothTokenHandler: failed to create Thoth user", "err", err, "user_id", user.ID)
+			renderError(w, "Failed to create Thoth user: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		thothID := resp.GetUser().GetId()
+		user.ThothUserID = &thothID
+
+		if err := s.db.Save(user).Error; err != nil {
+			slog.Error("thothTokenHandler: failed to save Thoth user ID", "err", err, "user_id", user.ID)
+			renderError(w, "Failed to save Thoth user: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		slog.Info("thothTokenHandler: Thoth user created", "user_id", user.ID, "login", user.Login, "thoth_user_id", thothID)
+	}
+
+	// Issue JWT
+	slog.Debug("thothTokenHandler: issuing JWT", "user_id", user.ID, "thoth_user_id", *user.ThothUserID)
+
+	jwtResp, err := s.thothClient.AdminUsers.MakeJWT(r.Context(), &adminv1.UsersServiceMakeJWTRequest{
+		UserId:  *user.ThothUserID,
+		Comment: "sponsor-panel token for " + user.Login,
+	})
+	if err != nil {
+		slog.Error("thothTokenHandler: failed to issue JWT", "err", err, "user_id", user.ID)
+		renderError(w, "Failed to issue token: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	slog.Info("thothTokenHandler: token issued", "user_id", user.ID, "login", user.Login)
+
+	w.Header().Set("Content-Type", "text/html")
+	w.WriteHeader(http.StatusOK)
+	templates.ThothTokenSuccess(jwtResp.GetTokenInfo().GetJwt()).Render(context.Background(), w)
 }
