@@ -38,6 +38,11 @@ templ Dashboard(props DashboardProps) {
 				@LogoSubmitCard()
 			}
 		</div>
+		<div class="grid md:grid-cols-2 gap-8 mt-8">
+			if props.IsSponsor {
+				@ThothTokenCard()
+			}
+		</div>
 	</main>
 }
 
@@ -172,5 +177,25 @@ templ LogoSubmitCard() {
 			</button>
 		</form>
 		<div id="logo-result"></div>
+	</div>
+}
+
+templ ThothTokenCard() {
+	<div class="card p-4">
+		<h2 class="card-title flex items-center gap-2">
+			<svg class="w-5 h-5 text-yellow-light dark:text-yellowDark-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+			</svg>
+			Thoth API Token
+		</h2>
+		<p class="card-description">
+			Generate an API token for Thoth services.
+		</p>
+		<form hx-post="/thoth-token" hx-target="#thoth-result">
+			<button type="submit" class="btn btn-dark w-full" hx-disabled-elt="this">
+				Generate Token
+			</button>
+		</form>
+		<div id="thoth-result"></div>
 	</div>
 }

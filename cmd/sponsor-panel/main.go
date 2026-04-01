@@ -322,6 +322,7 @@ func main() {
 	// Feature handlers
 	mux.HandleFunc("/invite", server.inviteHandler)
 	mux.HandleFunc("/logo", server.logoHandler)
+	mux.HandleFunc("/thoth-token", server.thothTokenHandler)
 
 	// Expose Prometheus metrics at /metrics for observability
 	mux.Handle("/metrics", promhttp.Handler())
@@ -336,6 +337,7 @@ func main() {
 			"/",
 			"/invite",
 			"/logo",
+			"/thoth-token",
 			"/metrics",
 		})
 

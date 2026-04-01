@@ -18,6 +18,7 @@ type PanelUser struct {
 	AvatarURL            string    `json:"avatar_url"`
 	Name                 string    `json:"name"`
 	Email                string    `json:"email"`
+	ThothUserID          *string   `json:"thoth_user_id" gorm:"column:thoth_user_id"`
 	SponsorshipData      string    `json:"-" gorm:"type:jsonb"`
 	LastSponsorshipCheck time.Time `json:"last_sponsorship_check"`
 	CreatedAt            time.Time `json:"created_at"`

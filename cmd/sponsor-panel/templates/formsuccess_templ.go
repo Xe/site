@@ -133,4 +133,47 @@ func LogoSuccess(company, issueURL string, issueNumber int) templ.Component {
 	})
 }
 
+// ThothTokenSuccess renders the success response for Thoth token generation.
+func ThothTokenSuccess(token string) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var8 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var8 == nil {
+			templ_7745c5c3_Var8 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div class=\"alert-success mt-3\"><div class=\"flex items-start gap-3\"><svg class=\"w-5 h-5 text-green-light dark:text-greenDark-light flex-shrink-0 mt-0.5\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg><div class=\"w-full\"><p class=\"text-sm text-green-dark dark:text-greenDark-dark font-semibold\">Token generated!</p><p class=\"text-sm text-fg-3 dark:text-fgDark-3 mt-1\">Set these environment variables in your Anubis/Botstopper deployment.</p><div class=\"relative mt-2\"><pre class=\"p-3 pr-12 bg-bg-2 dark:bg-bgDark-2 rounded text-xs font-mono overflow-x-auto whitespace-pre\" id=\"thoth-token-output\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var9 string
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs("THOTH_URL=passthrough:///thoth.techaro.lol:443\nTHOTH_TOKEN=" + token)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/formsuccess.templ`, Line: 58, Col: 206}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</pre><button type=\"button\" class=\"absolute top-2 right-2 p-1.5 rounded bg-bg-3 dark:bg-bgDark-3 hover:bg-bg-4 dark:hover:bg-bgDark-4 transition-colors\" onclick=\"\n\t\t\t\t\t\t\tvar text = document.getElementById('thoth-token-output').textContent;\n\t\t\t\t\t\t\tnavigator.clipboard.writeText(text).then(function() {\n\t\t\t\t\t\t\t\tvar btn = event.currentTarget;\n\t\t\t\t\t\t\t\tbtn.innerHTML = '<svg class=&quot;w-4 h-4 text-green-light dark:text-greenDark-light&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot;><path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; d=&quot;M5 13l4 4L19 7&quot;/></svg>';\n\t\t\t\t\t\t\t\tsetTimeout(function() {\n\t\t\t\t\t\t\t\t\tbtn.innerHTML = '<svg class=&quot;w-4 h-4 text-fg-3 dark:text-fgDark-3&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot;><path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; d=&quot;M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z&quot;/></svg>';\n\t\t\t\t\t\t\t\t}, 2000);\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t\" title=\"Copy to clipboard\"><svg class=\"w-4 h-4 text-fg-3 dark:text-fgDark-3\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z\"></path></svg></button></div></div></div></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
+}
+
 var _ = templruntime.GeneratedTemplate
