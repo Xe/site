@@ -530,6 +530,11 @@ func (s *Server) callbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	slog.Debug("callbackHandler: fetched GitHub user", "github_id", ghUser.ID, "login", ghUser.Login)
 
+	if ghUser.Email == "" {
+		ghUser.Email = ghUser.Login + "@fake-address.invalid"
+		slog.Info("callbackHandler: generated fake email for user", "login", ghUser.Login, "email", ghUser.Email)
+	}
+
 	// Fetch user's organizations via REST API (for allowlist checking)
 	userOrgs, err := fetchUserOrganizations(r.Context(), token.AccessToken)
 	if err != nil {
