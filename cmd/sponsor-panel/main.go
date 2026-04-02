@@ -267,7 +267,7 @@ func main() {
 		slog.Info("main: S3 client created", "bucket", *bucketName)
 	}
 
-	thothClient, err := thoth.New(context.Background(), *thothURL, *thothToken)
+	thothClient, err := thoth.New(context.Background(), *thothURL, *thothToken, *thothInsecure)
 	if err != nil {
 		slog.Error("can't create thoth client", "err", err)
 		os.Exit(2)
