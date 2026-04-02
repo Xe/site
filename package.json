@@ -1,5 +1,5 @@
 {
-  "name": "@xeserv/xesite",
+  "name": "@xe/xesite",
   "version": "4.0.0",
   "description": "Hacking because node",
   "type": "module",
@@ -33,9 +33,15 @@
   },
   "devDependencies": {
     "@octokit/rest": "^21.0.0",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.6",
+    "@semantic-release/npm": "^13.1.5",
+    "@semantic-release/release-notes-generator": "^14.1.0",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.14",
     "gray-matter": "^4.0.3",
+    "semantic-release": "^25.0.3",
     "tailwindcss": "^4.1.18"
   }
 }
