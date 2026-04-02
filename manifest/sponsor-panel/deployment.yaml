@@ -37,6 +37,8 @@ spec:
               value: ":4823"
             - name: SLOG_LEVEL
               value: "info"
+            - name: "THOTH_INSECURE"
+              value: "true"
           ports:
             - containerPort: 4823
               name: http

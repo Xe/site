@@ -11,6 +11,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 	healthv1 "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/metadata"
 	adminv1 "xeiaso.net/v4/gen/techaro/thoth/auth/admin/v1"
@@ -25,7 +26,7 @@ type Client struct {
 	AdminUsers adminv1.UsersServiceClient
 }
 
-func New(ctx context.Context, thothURL, apiToken string) (*Client, error) {
+func New(ctx context.Context, thothURL, apiToken string, noTLS bool) (*Client, error) {
 	clMetrics := grpcprom.NewClientMetrics(
 		grpcprom.WithClientHandlingTimeHistogram(
 			grpcprom.WithHistogramBuckets([]float64{0.001, 0.01, 0.1, 0.3, 0.6, 1, 3, 6, 9, 20, 30, 60, 90, 120}),
@@ -33,10 +34,18 @@ func New(ctx context.Context, thothURL, apiToken string) (*Client, error) {
 	)
 	prometheus.DefaultRegisterer.Register(clMetrics)
 
+	var transportCreds credentials.TransportCredentials
+
+	switch noTLS {
+	case true:
+		transportCreds = insecure.NewCredentials()
+	case false:
+		transportCreds = credentials.NewTLS(&tls.Config{})
+	}
+
 	conn, err := grpc.NewClient(
 		thothURL,
-		grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{})),
-		//grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithTransportCredentials(transportCreds),
 		grpc.WithChainUnaryInterceptor(
 			timeout.UnaryClientInterceptor(5*time.Minute),
 			clMetrics.UnaryClientInterceptor(),

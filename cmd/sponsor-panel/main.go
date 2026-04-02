@@ -59,8 +59,9 @@ var (
 	patreonFiftyPlus    = flag.String("patreon-fifty-plus", "", "Comma-separated list of Patreon usernames always treated as $50+ sponsors")
 
 	// Thoth settings
-	thothToken = flag.String("thoth-token", "", "Thoth API token (use a god token)")
-	thothURL   = flag.String("thoth-url", "passthrough:///thoth.techaro.lol:443", "URL for the Thoth API server")
+	thothInsecure = flag.Bool("thoth-insecure", false, "if true, connect to thoth without TLS")
+	thothToken    = flag.String("thoth-token", "", "Thoth API token (use a god token)")
+	thothURL      = flag.String("thoth-url", "passthrough:///thoth.techaro.lol:443", "URL for the Thoth API server")
 
 	//go:embed static
 	staticFS embed.FS

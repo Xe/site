@@ -12,7 +12,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN apk -U add nodejs npm \
+RUN apk -U add git nodejs npm \
   && npm ci \
   && cd ./cmd/sponsor-panel \
   && go generate ./...
