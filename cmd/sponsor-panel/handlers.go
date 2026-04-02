@@ -34,7 +34,7 @@ func (s *Server) inviteHandler(w http.ResponseWriter, r *http.Request) {
 	user, err := s.getSessionUser(r)
 	if err != nil {
 		slog.Error("inviteHandler: failed to get session user", "err", err)
-		renderError(w, "Authentication required", http.StatusUnauthorized)
+		renderError(w, "Authentication required")
 		return
 	}
 
@@ -43,7 +43,7 @@ func (s *Server) inviteHandler(w http.ResponseWriter, r *http.Request) {
 	// Check $50+ sponsorship tier (5000 cents)
 	if !user.IsSponsorAtTier(5000) {
 		slog.Error("inviteHandler: user not eligible for team invitation", "user", user.Login, "user_id", user.ID)
-		renderError(w, "Requires $50+/month sponsorship", http.StatusForbidden)
+		renderError(w, "Requires $50+/month sponsorship")
 		return
 	}
 
@@ -52,14 +52,14 @@ func (s *Server) inviteHandler(w http.ResponseWriter, r *http.Request) {
 	// Parse form
 	if err := r.ParseForm(); err != nil {
 		slog.Error("inviteHandler: failed to parse form", "err", err)
-		renderError(w, "Invalid form data", http.StatusBadRequest)
+		renderError(w, "Invalid form data")
 		return
 	}
 
 	username := r.FormValue("username")
 	if username == "" {
 		slog.Error("inviteHandler: empty username provided", "user_id", user.ID)
-		renderError(w, "Username required", http.StatusBadRequest)
+		renderError(w, "Username required")
 		return
 	}
 
@@ -80,10 +80,10 @@ func (s *Server) inviteHandler(w http.ResponseWriter, r *http.Request) {
 		slog.Error("inviteHandler: failed to invite to team", "user", username, "err", err, "invited_by", user.Login)
 		// Check for common errors
 		if strings.Contains(err.Error(), "404") || strings.Contains(err.Error(), "422") {
-			renderError(w, "User not found or already invited", http.StatusBadRequest)
+			renderError(w, "User not found or already invited")
 			return
 		}
-		renderError(w, "Failed to invite: "+err.Error(), http.StatusInternalServerError)
+		renderError(w, "Failed to invite: "+err.Error())
 		return
 	}
 
@@ -118,7 +118,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 	user, err := s.getSessionUser(r)
 	if err != nil {
 		slog.Error("logoHandler: failed to get session user", "err", err)
-		renderError(w, "Authentication required", http.StatusUnauthorized)
+		renderError(w, "Authentication required")
 		return
 	}
 
@@ -127,7 +127,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 	// Check user is a sponsor (any tier)
 	if !user.IsSponsorAtTier(100) {
 		slog.Error("logoHandler: user not a sponsor", "user", user.Login, "user_id", user.ID)
-		renderError(w, "Requires active sponsorship", http.StatusForbidden)
+		renderError(w, "Requires active sponsorship")
 		return
 	}
 
@@ -136,7 +136,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 	// Parse multipart form (5MB max)
 	if err := r.ParseMultipartForm(5 * 1024 * 1024); err != nil {
 		slog.Error("logoHandler: failed to parse multipart form", "err", err)
-		renderError(w, "Invalid form data", http.StatusBadRequest)
+		renderError(w, "Invalid form data")
 		return
 	}
 
@@ -145,7 +145,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 
 	if companyName == "" || website == "" {
 		slog.Error("logoHandler: missing required fields", "user_id", user.ID, "company", companyName, "website", website)
-		renderError(w, "Company name and website are required", http.StatusBadRequest)
+		renderError(w, "Company name and website are required")
 		return
 	}
 
@@ -153,7 +153,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 	file, header, err := r.FormFile("logo")
 	if err != nil {
 		slog.Error("logoHandler: failed to get logo file", "err", err)
-		renderError(w, "Logo file required", http.StatusBadRequest)
+		renderError(w, "Logo file required")
 		return
 	}
 	defer file.Close()
@@ -167,7 +167,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 	// Validate file size
 	if header.Size > 5*1024*1024 {
 		slog.Error("logoHandler: file too large", "user_id", user.ID, "size", header.Size)
-		renderError(w, "File too large (max 5MB)", http.StatusBadRequest)
+		renderError(w, "File too large (max 5MB)")
 		return
 	}
 
@@ -175,7 +175,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 	fileData, err := io.ReadAll(file)
 	if err != nil {
 		slog.Error("logoHandler: failed to read file", "err", err)
-		renderError(w, "Failed to read file", http.StatusInternalServerError)
+		renderError(w, "Failed to read file")
 		return
 	}
 
@@ -212,7 +212,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 		_, err := s.s3Client.PutObject(r.Context(), putInput)
 		if err != nil {
 			slog.Error("logoHandler: failed to upload to S3", "err", err, "user_id", user.ID)
-			renderError(w, "Failed to upload logo: "+err.Error(), http.StatusInternalServerError)
+			renderError(w, "Failed to upload logo: "+err.Error())
 			return
 		}
 
@@ -263,7 +263,7 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 	createdIssue, _, err := s.ghClient.Issues.Create(r.Context(), "TecharoHQ", *logoSubmissionRepo, issue)
 	if err != nil {
 		slog.Error("logoHandler: failed to create GitHub issue", "err", err, "user_id", user.ID, "company", companyName)
-		renderError(w, "Failed to create issue: "+err.Error(), http.StatusInternalServerError)
+		renderError(w, "Failed to create issue: "+err.Error())
 		return
 	}
 
@@ -301,9 +301,10 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // renderError renders an error message for HTMX.
-func renderError(w http.ResponseWriter, message string, statusCode int) {
+// Always returns 200 so HTMX swaps the response into the target element.
+func renderError(w http.ResponseWriter, message string) {
 	w.Header().Set("Content-Type", "text/html")
-	w.WriteHeader(statusCode)
+	w.WriteHeader(http.StatusOK)
 	templates.FormResult(message, false).Render(context.Background(), w)
 }
 
@@ -334,7 +335,7 @@ func (s *Server) thothTokenHandler(w http.ResponseWriter, r *http.Request) {
 	user, err := s.getSessionUser(r)
 	if err != nil {
 		slog.Error("thothTokenHandler: failed to get session user", "err", err)
-		renderError(w, "Authentication required", http.StatusUnauthorized)
+		renderError(w, "Authentication required")
 		return
 	}
 
@@ -343,16 +344,20 @@ func (s *Server) thothTokenHandler(w http.ResponseWriter, r *http.Request) {
 	// Check sponsorship tier (any active sponsorship)
 	if !user.IsSponsorAtTier(100) {
 		slog.Error("thothTokenHandler: user not a sponsor", "user", user.Login, "user_id", user.ID)
-		renderError(w, "Requires active sponsorship", http.StatusForbidden)
+		renderError(w, "Requires active sponsorship")
 		return
 	}
 
 	// Create Thoth user if not already provisioned
 	if user.ThothUserID == nil {
 		if user.Email == "" {
-			slog.Error("thothTokenHandler: user has no email address", "user_id", user.ID, "login", user.Login)
-			renderError(w, "Email address required. Please update your profile.", http.StatusBadRequest)
-			return
+			user.Email = user.Login + "@fake-address.invalid"
+			slog.Info("thothTokenHandler: generated fake email for user", "user_id", user.ID, "login", user.Login, "email", user.Email)
+			if err := s.db.Model(user).Update("email", user.Email).Error; err != nil {
+				slog.Error("thothTokenHandler: failed to save fake email", "err", err, "user_id", user.ID)
+				renderError(w, "Failed to save user email")
+				return
+			}
 		}
 
 		slog.Debug("thothTokenHandler: creating Thoth user", "user_id", user.ID, "login", user.Login)
@@ -364,7 +369,7 @@ func (s *Server) thothTokenHandler(w http.ResponseWriter, r *http.Request) {
 		})
 		if err != nil {
 			slog.Error("thothTokenHandler: failed to create Thoth user", "err", err, "user_id", user.ID)
-			renderError(w, "Failed to create Thoth user: "+err.Error(), http.StatusInternalServerError)
+			renderError(w, "Failed to create Thoth user: "+err.Error())
 			return
 		}
 
@@ -373,7 +378,7 @@ func (s *Server) thothTokenHandler(w http.ResponseWriter, r *http.Request) {
 
 		if err := s.db.Save(user).Error; err != nil {
 			slog.Error("thothTokenHandler: failed to save Thoth user ID", "err", err, "user_id", user.ID)
-			renderError(w, "Failed to save Thoth user: "+err.Error(), http.StatusInternalServerError)
+			renderError(w, "Failed to save Thoth user: "+err.Error())
 			return
 		}
 
@@ -389,7 +394,7 @@ func (s *Server) thothTokenHandler(w http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		slog.Error("thothTokenHandler: failed to issue JWT", "err", err, "user_id", user.ID)
-		renderError(w, "Failed to issue token: "+err.Error(), http.StatusInternalServerError)
+		renderError(w, "Failed to issue token: "+err.Error())
 		return
 	}
 
