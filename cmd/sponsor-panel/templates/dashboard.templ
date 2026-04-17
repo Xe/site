@@ -19,183 +19,291 @@ type UserProps struct {
 
 templ Dashboard(props DashboardProps) {
 	@Navbar(props.User.Login, props.User.AvatarURL)
-	<main class="max-w-4xl mx-auto px-4 md:px-10 py-4 md:py-10">
-		<div class="">
-			<h1 class="hero-title mb-3">Welcome back, { props.User.Login }</h1>
-			<p class="text-fg-3 dark:text-fgDark-3">Manage your sponsorship benefits</p>
-		</div>
-		<div class="grid md:grid-cols-2 gap-8 mt-4">
-			if props.IsSponsor {
-				@DiscordCard(props.DiscordInvite)
-			}
-			@SponsorshipCard(props.IsSponsor, props.SponsorAmount, props.SponsorTier, props.User.Provider)
-		</div>
-		<div class="grid md:grid-cols-2 gap-8 mt-8">
-			if props.IsFiftyPlus {
-				@TeamInviteCard()
-			}
-			if props.IsSponsor {
-				@LogoSubmitCard()
-			}
-		</div>
-		<div class="grid md:grid-cols-2 gap-8 mt-8">
-			if props.IsSponsor {
-				@ThothTokenCard()
-			}
-		</div>
-	</main>
+	<section class="welcome-band">
+		<h1 class="hero-title">Welcome back, { props.User.Login }</h1>
+		<p class="welcome-sub">Manage your sponsorship benefits</p>
+	</section>
+	<div class="admin-shell">
+		@Sidebar(props)
+		<main class="admin-panel card card-warm" aria-label="Sponsorship panel">
+			<div class="panel-body">
+				<section class="tabpanel active" id="panel-sponsorship" role="tabpanel" aria-labelledby="tab-sponsorship">
+					@SponsorshipTab(props)
+				</section>
+				if props.IsSponsor {
+					<section class="tabpanel" id="panel-discord" role="tabpanel" aria-labelledby="tab-discord">
+						@DiscordTab(props.DiscordInvite)
+					</section>
+				}
+				if props.IsFiftyPlus {
+					<section class="tabpanel" id="panel-team" role="tabpanel" aria-labelledby="tab-team">
+						@TeamTab()
+					</section>
+				}
+				if props.IsSponsor {
+					<section class="tabpanel" id="panel-logo" role="tabpanel" aria-labelledby="tab-logo">
+						@LogoTab()
+					</section>
+					<section class="tabpanel" id="panel-token" role="tabpanel" aria-labelledby="tab-token">
+						@TokenTab()
+					</section>
+				}
+			</div>
+		</main>
+	</div>
+	<div class="toast" id="admin-toast" role="status" aria-live="polite">
+		<svg class="w-4 h-4 text-green-light dark:text-greenDark-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+			<path d="m5 12 5 5L20 7"></path>
+		</svg>
+		<span id="admin-toast-msg">Saved</span>
+	</div>
+	<script src="/static/js/admin-panel.js" defer></script>
 }
 
 templ Navbar(login, avatarURL string) {
-	<nav class="navbar sticky top-0 z-50 px-8 py-5 md:px-12">
-		<div class="max-w-4xl mx-auto flex items-center justify-between">
+	<nav class="navbar sticky top-0 z-50 px-4 md:px-8 py-4">
+		<div class="max-w-5xl mx-auto flex items-center justify-between">
 			<div class="flex items-center gap-3">
 				<img src={ templ.SafeURL(avatarURL) } class="w-9 h-9 rounded-full ring-2 ring-bg-3 dark:ring-bgDark-3" alt=""/>
 				<span class="font-medium text-fg-1 dark:text-fgDark-1">{ login }</span>
 			</div>
-			<a href="/logout" class="btn btn-ghost text-sm p-2">
-				Logout
-			</a>
+			<a href="/logout" class="btn btn-ghost text-sm px-4 py-2">Logout</a>
 		</div>
 	</nav>
 }
 
-templ DiscordCard(inviteURL string) {
-	<div class="card card-cool p-4">
-		<h2 class="card-title flex items-center gap-3 !mb-4">
-			<svg class="w-6 h-6 text-blue-light dark:text-blueDark-light" viewBox="0 0 24 24" fill="currentColor">
-				<path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"></path>
+templ Sidebar(props DashboardProps) {
+	<nav class="tabs" role="tablist" aria-label="Sponsor benefits">
+		<div class="tab-section-label">Account</div>
+		<button class="tab" role="tab" id="tab-sponsorship" data-tab="sponsorship" aria-selected="true" aria-controls="panel-sponsorship" type="button">
+			<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M19.5 13.572 12 21l-7.5-7.428A5 5 0 1 1 12 6.006a5 5 0 1 1 7.5 7.566Z"></path>
 			</svg>
-			Discord Community
-		</h2>
-		<p class="card-description !mb-6">
-			Connect with other sponsors and get early access to updates.
+			Your Sponsorship
+		</button>
+		if props.IsSponsor {
+			<div class="tab-sep"></div>
+			<div class="tab-section-label">Benefits</div>
+			<button class="tab" role="tab" id="tab-discord" data-tab="discord" aria-selected="false" aria-controls="panel-discord" type="button">
+				<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M8 12a1 1 0 1 0 2 0 1 1 0 0 0-2 0M14 12a1 1 0 1 0 2 0 1 1 0 0 0-2 0M15.5 17c0 1 1.5 3 2 3 1.5 0 2.833-1.667 3.5-3 .667-1.778.5-5.5-1.5-11.5-1.457-1.015-3-1.34-4.5-1.5l-1 2.5M8.5 17c0 1-1.356 3-1.832 3-1.429 0-2.698-1.667-3.333-3-.635-1.778-.476-5.5 1.428-11.5C6.151 4.485 7.545 4.16 9 4l1 2.5M7 16.5c3.5 1 6.5 1 10 0"></path>
+				</svg>
+				Discord Community
+			</button>
+			if props.IsFiftyPlus {
+				<button class="tab" role="tab" id="tab-team" data-tab="team" aria-selected="false" aria-controls="panel-team" type="button">
+					<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M9 7a4 4 0 1 0 8 0 4 4 0 0 0-8 0M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.13a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"></path>
+					</svg>
+					Team Invitations
+				</button>
+			}
+			<button class="tab" role="tab" id="tab-logo" data-tab="logo" aria-selected="false" aria-controls="panel-logo" type="button">
+				<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M15 8h.01M12.5 21H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v6.5M3 16l5-5c.928-.893 2.072-.893 3 0l5 5M14 14l1-1c.679-.653 1.473-.829 2.214-.526"></path>
+				</svg>
+				Logo Submission
+			</button>
+			<div class="tab-sep"></div>
+			<div class="tab-section-label">Developer</div>
+			<button class="tab" role="tab" id="tab-token" data-tab="token" aria-selected="false" aria-controls="panel-token" type="button">
+				<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M8 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM10.85 12.15 21 22l-2 2-1.5-1.5L17 22l-1.5-1.5L14 22l-4-4 1-1-1-1"></path>
+				</svg>
+				Thoth API Token
+			</button>
+		}
+	</nav>
+}
+
+templ SponsorshipTab(props DashboardProps) {
+	<div class="panel-head">
+		<div class="panel-head-icon">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M19.5 13.572 12 21l-7.5-7.428A5 5 0 1 1 12 6.006a5 5 0 1 1 7.5 7.566Z"></path>
+			</svg>
+		</div>
+		<div>
+			<h2 class="panel-title">Your Sponsorship</h2>
+			<p class="panel-sub">A snapshot of your support and benefits.</p>
+		</div>
+	</div>
+	if props.IsSponsor {
+		<div class="stat-grid">
+			<div class="stat-card">
+				<div class="stat-k">Monthly support</div>
+				<div class="stat-v">
+					${ formatDollars(props.SponsorAmount) }
+					<small>/ month</small>
+				</div>
+			</div>
+			<div class="stat-card">
+				<div class="stat-k">Tier</div>
+				<div class="stat-v stat-v-muted">{ props.SponsorTier }</div>
+				<div class="stat-sub">via { props.User.Provider }</div>
+			</div>
+		</div>
+		<div class="thanks-card">
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M19.5 13.572 12 21l-7.5-7.428A5 5 0 1 1 12 6.006a5 5 0 1 1 7.5 7.566Z"></path>
+			</svg>
+			Thank you for your support! Seriously. It keeps the lights on.
+		</div>
+	} else {
+		<p class="panel-sub mb-6">You're not currently an active sponsor.</p>
+		if props.User.Provider == "patreon" {
+			<a href="https://www.patreon.com/cadey" target="_blank" class="btn btn-pink">Become a Patron</a>
+		} else {
+			<a href="https://github.com/sponsors/Xe" target="_blank" class="btn btn-pink">Become a Sponsor</a>
+		}
+		<p class="text-xs text-fg-4 dark:text-fgDark-4 mt-4 leading-relaxed">
+			If you're part of an organization that sponsors Anubis and see this message, please contact me@xeiaso.net for help.
 		</p>
-		<a href={ templ.SafeURL(inviteURL) } target="_blank" class="btn btn-secondary p-2">
+	}
+}
+
+templ DiscordTab(inviteURL string) {
+	<div class="panel-head">
+		<div class="panel-head-icon panel-head-icon--discord">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M8 12a1 1 0 1 0 2 0 1 1 0 0 0-2 0M14 12a1 1 0 1 0 2 0 1 1 0 0 0-2 0M15.5 17c0 1 1.5 3 2 3 1.5 0 2.833-1.667 3.5-3 .667-1.778.5-5.5-1.5-11.5-1.457-1.015-3-1.34-4.5-1.5l-1 2.5M8.5 17c0 1-1.356 3-1.832 3-1.429 0-2.698-1.667-3.333-3-.635-1.778-.476-5.5 1.428-11.5C6.151 4.485 7.545 4.16 9 4l1 2.5M7 16.5c3.5 1 6.5 1 10 0"></path>
+			</svg>
+		</div>
+		<div>
+			<h2 class="panel-title">Discord Community</h2>
+			<p class="panel-sub">Connect with other sponsors and get early access to updates and drafts.</p>
+		</div>
+	</div>
+	<dl class="meta-list">
+		<div>
+			<dt>Access level</dt>
+			<dd>Sponsor channels + early drafts</dd>
+		</div>
+		<div>
+			<dt>Expires</dt>
+			<dd>While sponsorship is active</dd>
+		</div>
+	</dl>
+	<div class="btn-row">
+		<a href={ templ.SafeURL(inviteURL) } target="_blank" class="btn btn-discord">
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+				<path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09c-.01-.02-.04-.03-.07-.03c-1.5.26-2.93.71-4.27 1.33c-.01 0-.02.01-.03.02c-2.72 4.07-3.47 8.03-3.1 11.95c0 .02.01.04.03.05c1.8 1.32 3.53 2.12 5.24 2.65c.03.01.06 0 .07-.02c.4-.55.76-1.13 1.07-1.74c.02-.04 0-.08-.04-.09c-.57-.22-1.11-.48-1.64-.78c-.04-.02-.04-.08-.01-.11c.11-.08.22-.17.33-.25a.08.08 0 0 1 .08-.01c3.44 1.57 7.15 1.57 10.55 0a.08.08 0 0 1 .08.01c.11.09.22.17.33.26c.04.03.04.09-.01.11c-.52.31-1.07.56-1.64.78c-.04.01-.05.06-.04.09c.32.61.68 1.19 1.07 1.74c.03.01.06.02.09.01c1.72-.53 3.45-1.33 5.25-2.65c.02-.01.03-.03.03-.05c.44-4.53-.73-8.46-3.1-11.95c-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.83 2.12-1.89 2.12z"></path>
+			</svg>
 			Join Discord
 		</a>
 	</div>
 }
 
-templ SponsorshipCard(isSponsor bool, amount int, tier string, provider string) {
-	<div class="card card-warm p-4">
-		<h2 class="card-title flex items-center gap-2">
-			<svg class="w-5 h-5 text-orange-light dark:text-orangeDark-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+templ TeamTab() {
+	<div class="panel-head">
+		<div class="panel-head-icon">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M9 7a4 4 0 1 0 8 0 4 4 0 0 0-8 0M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.13a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"></path>
 			</svg>
-			Your Sponsorship
-		</h2>
-		if isSponsor {
-			<div class="flex items-center gap-2 mb-2">
-				<span class="accent-dot"></span>
-				<span class="text-lg font-semibold text-green-light dark:text-greenDark-light">
-					${ formatDollars(amount) }/month
-				</span>
-			</div>
-			<p class="text-sm text-fg-3 dark:text-fgDark-3 mb-3">{ tier }</p>
-			<p class="text-sm font-medium text-orange-light dark:text-orangeDark-light">Thank you for your support!</p>
-		} else {
-			<p class="card-description">You're not currently an active sponsor.</p>
-			if provider == "patreon" {
-				<a href="https://www.patreon.com/cadey" target="_blank" class="btn btn-pink">
-					Become a Patron
-				</a>
-			} else {
-				<a href="https://github.com/sponsors/Xe" target="_blank" class="btn btn-pink">
-					Become a Sponsor
-				</a>
-			}
-			<p class="text-xs text-fg-4 dark:text-fgDark-4 mt-4 leading-relaxed">
-				If you're part of an organization that sponsors Anubis and see this message, please contact me@xeiaso.net for help.
-			</p>
-		}
+		</div>
+		<div>
+			<h2 class="panel-title">Team Invitations</h2>
+			<p class="panel-sub">Invite team members to TecharoHQ as part of your sponsorship.</p>
+		</div>
 	</div>
-}
-
-templ TeamInviteCard() {
-	<div class="card card-green p-4">
-		<h2 class="card-title flex items-center gap-2">
-			<svg class="w-5 h-5 text-green-light dark:text-greenDark-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-			</svg>
-			Team Invitation
-		</h2>
-		<p class="card-description">
-			Invite team members to TecharoHQ as part of your sponsorship.
-		</p>
-		<form hx-post="/invite" hx-target="#invite-result" class="space-y-3">
-			<input
-				type="text"
-				name="username"
-				placeholder="GitHub username"
-				required
-				class="input"
-			/>
-			<button type="submit" class="btn btn-primary w-full">
+	<form hx-post="/invite" hx-target="#invite-result" class="space-y-4">
+		<label class="field-label" for="invite-username">GitHub username</label>
+		<input
+			id="invite-username"
+			type="text"
+			name="username"
+			placeholder="octocat"
+			autocomplete="off"
+			required
+			class="input"
+		/>
+		<div class="btn-row">
+			<button type="submit" class="btn btn-primary">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M5 12h14M12 5v14"></path>
+				</svg>
 				Send Invitation
 			</button>
-		</form>
-		<div id="invite-result"></div>
-	</div>
+		</div>
+	</form>
+	<div id="invite-result"></div>
 }
 
-templ LogoSubmitCard() {
-	<div class="card p-4">
-		<h2 class="card-title flex items-center gap-2">
-			<svg class="w-5 h-5 text-purple-light dark:text-purpleDark-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+templ LogoTab() {
+	<div class="panel-head">
+		<div class="panel-head-icon panel-head-icon--purple">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M15 8h.01M12.5 21H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v6.5M3 16l5-5c.928-.893 2.072-.893 3 0l5 5M14 14l1-1c.679-.653 1.473-.829 2.214-.526"></path>
 			</svg>
-			Logo Submission
-		</h2>
-		<p class="card-description">
-			Submit your company logo for the Anubis README.
-		</p>
-		<form hx-post="/logo" hx-encoding="multipart/form-data" hx-target="#logo-result" class="space-y-3">
-			<input
-				type="text"
-				name="company"
-				placeholder="Company Name"
-				required
-				class="input"
-			/>
-			<input
-				type="url"
-				name="website"
-				placeholder="Website URL"
-				required
-				class="input"
-			/>
-			<input
-				type="file"
-				name="logo"
-				accept="image/png,image/jpeg,image/svg+xml"
-				required
-				class="file-input"
-			/>
-			<button type="submit" class="btn btn-dark w-full">
-				Submit Logo
-			</button>
-		</form>
-		<div id="logo-result"></div>
+		</div>
+		<div>
+			<h2 class="panel-title">Logo Submission</h2>
+			<p class="panel-sub">Submit your company logo for the Anubis README. SVG preferred; PNG at 512×512 accepted.</p>
+		</div>
 	</div>
+	<form hx-post="/logo" hx-encoding="multipart/form-data" hx-target="#logo-result" class="space-y-4">
+		<div class="grid-2">
+			<div>
+				<label class="field-label" for="logo-company">Company name</label>
+				<input id="logo-company" type="text" name="company" placeholder="Techaro Inc." required class="input"/>
+			</div>
+			<div>
+				<label class="field-label" for="logo-website">Website URL</label>
+				<input id="logo-website" type="url" name="website" placeholder="https://techaro.lol" required class="input"/>
+			</div>
+		</div>
+		<div>
+			<label class="field-label" for="logo-file">Logo file</label>
+			<label class="drop-zone" for="logo-file" id="logo-drop">
+				<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M7 18a4.6 4.4 0 0 1 0-9 5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1M9 15l3-3l3 3M12 12v9"></path>
+				</svg>
+				<strong id="logo-drop-name">Drop your logo here, or click to browse</strong>
+				<span class="drop-hint">PNG, JPEG, or SVG · up to 5 MB</span>
+			</label>
+			<input id="logo-file" type="file" name="logo" accept="image/png,image/jpeg,image/svg+xml" required class="sr-only"/>
+		</div>
+		<div class="btn-row">
+			<button type="submit" class="btn btn-dark">Submit Logo</button>
+			<button type="reset" class="btn btn-ghost" id="logo-reset">Clear</button>
+		</div>
+	</form>
+	<div id="logo-result"></div>
 }
 
-templ ThothTokenCard() {
-	<div class="card p-4">
-		<h2 class="card-title flex items-center gap-2">
-			<svg class="w-5 h-5 text-yellow-light dark:text-yellowDark-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+templ TokenTab() {
+	<div class="panel-head">
+		<div class="panel-head-icon panel-head-icon--yellow">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M8 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM10.85 12.15 21 22l-2 2-1.5-1.5L17 22l-1.5-1.5L14 22l-4-4 1-1-1-1"></path>
 			</svg>
-			Thoth API Token
-		</h2>
-		<p class="card-description">
-			Generate an API token for <a href="https://anubis.techaro.lol/docs/admin/thoth" class="underline">Thoth</a>. Use it to enable IP ASN and country code checks.
-		</p>
+		</div>
+		<div>
+			<h2 class="panel-title">Thoth API Token</h2>
+			<p class="panel-sub">
+				Generate an API token for <a href="https://anubis.techaro.lol/docs/admin/thoth" class="underline">Thoth</a>. Use it to enable IP, ASN and country code checks in your Anubis deployment.
+			</p>
+		</div>
+	</div>
+	<dl class="meta-list">
+		<div>
+			<dt>Scope</dt>
+			<dd>read:asn, read:geoip, read:ip</dd>
+		</div>
+		<div>
+			<dt>Endpoint</dt>
+			<dd><code>thoth.techaro.lol:443</code></dd>
+		</div>
+	</dl>
+	<div class="btn-row">
 		<form hx-post="/thoth-token" hx-target="#thoth-result">
-			<button type="submit" class="btn btn-dark w-full" hx-disabled-elt="this">
+			<button type="submit" class="btn btn-accent" hx-disabled-elt="this">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4M4 13a8.1 8.1 0 0 0 15.5 2M20 19v-4h-4"></path>
+				</svg>
 				Generate Token
 			</button>
 		</form>
-		<div id="thoth-result"></div>
 	</div>
+	<div id="thoth-result"></div>
 }
