@@ -39,4 +39,5 @@ Disallow: /
 User-agent: *
 Sitemap: https://xeiaso.net/sitemap.xml
 Disallow: /metrics
-Disallow: /.within/health  
+Disallow: /.within/health
+Content-Signal: ai-train=no, search=yes, ai-input=no
