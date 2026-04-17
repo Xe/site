@@ -206,7 +206,7 @@ templ TeamTab() {
 			<p class="panel-sub">Invite team members to TecharoHQ as part of your sponsorship.</p>
 		</div>
 	</div>
-	<form hx-post="/invite" hx-target="#invite-result" class="space-y-4">
+	<form hx-post="/api/htmx/invite" hx-target="#invite-result" class="space-y-4">
 		<label class="field-label" for="invite-username">GitHub username</label>
 		<input
 			id="invite-username"
@@ -241,7 +241,7 @@ templ LogoTab() {
 			<p class="panel-sub">Submit your company logo for the Anubis README. SVG preferred; PNG at 512×512 accepted.</p>
 		</div>
 	</div>
-	<form hx-post="/logo" hx-encoding="multipart/form-data" hx-target="#logo-result" class="space-y-4">
+	<form hx-post="/api/htmx/logo" hx-encoding="multipart/form-data" hx-target="#logo-result" class="space-y-4">
 		<div class="grid-2">
 			<div>
 				<label class="field-label" for="logo-company">Company name</label>
@@ -296,7 +296,7 @@ templ TokenTab() {
 		</div>
 	</dl>
 	<div class="btn-row">
-		<form hx-post="/thoth-token" hx-target="#thoth-result">
+		<form hx-post="/api/htmx/thoth-token" hx-target="#thoth-result">
 			<button type="submit" class="btn btn-accent" hx-disabled-elt="this">
 				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 					<path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4M4 13a8.1 8.1 0 0 0 15.5 2M20 19v-4h-4"></path>

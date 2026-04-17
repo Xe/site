@@ -131,8 +131,9 @@ The sponsor-panel service provides GitHub sponsors with a self-service dashboard
 | `/login`    | GET    | No   | Initiate GitHub OAuth          |
 | `/callback` | GET    | No   | OAuth callback, create session |
 | `/`         | GET    | Yes  | Dashboard                      |
-| `/invite`   | POST   | Yes  | Invite user to team            |
-| `/logo`     | POST   | Yes  | Submit logo (create issue)     |
+| `/api/htmx/invite`      | POST   | Yes  | Invite user to team            |
+| `/api/htmx/logo`        | POST   | Yes  | Submit logo (create issue)     |
+| `/api/htmx/thoth-token` | POST   | Yes  | Issue Thoth JWT                |
 
 ---
 

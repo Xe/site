@@ -320,10 +320,10 @@ func main() {
 	// Dashboard handler (also serves login page if not authenticated)
 	mux.HandleFunc("/", server.dashboardHandler)
 
-	// Feature handlers
-	mux.HandleFunc("/invite", server.inviteHandler)
-	mux.HandleFunc("/logo", server.logoHandler)
-	mux.HandleFunc("/thoth-token", server.thothTokenHandler)
+	// Feature handlers (HTMX API)
+	mux.HandleFunc("/api/htmx/invite", server.inviteHandler)
+	mux.HandleFunc("/api/htmx/logo", server.logoHandler)
+	mux.HandleFunc("/api/htmx/thoth-token", server.thothTokenHandler)
 
 	// Expose Prometheus metrics at /metrics for observability
 	mux.Handle("/metrics", promhttp.Handler())
@@ -336,9 +336,9 @@ func main() {
 			"/logout",
 			"/login-page",
 			"/",
-			"/invite",
-			"/logo",
-			"/thoth-token",
+			"/api/htmx/invite",
+			"/api/htmx/logo",
+			"/api/htmx/thoth-token",
 			"/metrics",
 		})
 

@@ -21,7 +21,7 @@ import (
 	"xeiaso.net/v4/cmd/sponsor-panel/templates"
 )
 
-// inviteHandler handles POST /invite - invites a user to the GitHub team.
+// inviteHandler handles POST /api/htmx/invite - invites a user to the GitHub team.
 func (s *Server) inviteHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -105,7 +105,7 @@ func (s *Server) inviteHandler(w http.ResponseWriter, r *http.Request) {
 	renderInviteSuccess(w, username, state)
 }
 
-// logoHandler handles POST /logo - submits a logo to a GitHub issue.
+// logoHandler handles POST /api/htmx/logo - submits a logo to a GitHub issue.
 func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -322,7 +322,7 @@ func renderLogoSuccess(w http.ResponseWriter, company, issueURL string, issueNum
 	templates.LogoSuccess(company, issueURL, issueNumber).Render(context.Background(), w)
 }
 
-// thothTokenHandler handles POST /thoth-token - issues a Thoth JWT for the user.
+// thothTokenHandler handles POST /api/htmx/thoth-token - issues a Thoth JWT for the user.
 func (s *Server) thothTokenHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
