@@ -3,6 +3,7 @@ package internal
 import (
 	"expvar"
 	"net/http"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -30,12 +31,7 @@ func init() {
 }
 
 func inValidEncodings(enc string) bool {
-	for _, validEnc := range validEncodings {
-		if enc == validEnc {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(validEncodings, enc)
 }
 
 func AcceptEncodingMiddleware(next http.Handler) http.Handler {
@@ -59,8 +55,8 @@ type EncodingQ struct {
 func ParseAcceptEncoding(acptEnc string) []EncodingQ {
 	var eqs []EncodingQ
 
-	encQStrs := strings.Split(acptEnc, ",")
-	for _, encQStr := range encQStrs {
+	encQStrs := strings.SplitSeq(acptEnc, ",")
+	for encQStr := range encQStrs {
 		trimedEncQStr := strings.Trim(encQStr, " ")
 
 		encQ := strings.Split(trimedEncQStr, ";")
@@ -88,8 +84,8 @@ type LangQ struct {
 func ParseAcceptLanguage(acptLang string) []LangQ {
 	var lqs []LangQ
 
-	langQStrs := strings.Split(acptLang, ",")
-	for _, langQStr := range langQStrs {
+	langQStrs := strings.SplitSeq(acptLang, ",")
+	for langQStr := range langQStrs {
 		trimedLangQStr := strings.Trim(langQStr, " ")
 
 		langQ := strings.Split(trimedLangQStr, ";")

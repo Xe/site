@@ -253,8 +253,8 @@ func (s *Server) logoHandler(w http.ResponseWriter, r *http.Request) {
 	}())
 
 	issue := &github.IssueRequest{
-		Title:  github.Ptr(issueTitle),
-		Body:   github.Ptr(issueBody),
+		Title:  new(issueTitle),
+		Body:   new(issueBody),
 		Labels: &[]string{"logo-submission", "needs-review"},
 	}
 

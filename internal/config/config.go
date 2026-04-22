@@ -102,12 +102,12 @@ type Stock struct {
 }
 
 type Job struct {
-	Company        Company    `json:"company,omitempty" dhall:"company,omitempty"`
+	Company        Company    `json:"company" dhall:"company,omitempty"`
 	Contract       bool       `json:"contract" dhall:"contract"`
 	HideFromResume bool       `json:"hideFromResume" dhall:"hideFromResume"`
 	Highlights     []string   `json:"highlights" dhall:"highlights"`
 	Locations      []Location `json:"locations" dhall:"locations"`
-	Salary         Salary     `json:"salary,omitempty" dhall:"salary,omitempty"`
+	Salary         Salary     `json:"salary" dhall:"salary,omitempty"`
 	StartDate      string     `json:"startDate" dhall:"startDate"`
 	Title          string     `json:"title" dhall:"title"`
 	DaysWorked     int        `json:"daysWorked,omitempty" dhall:"daysWorked,omitempty"`

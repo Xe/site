@@ -1,14 +1,12 @@
 package lume
 
 import (
-	"context"
 	"os"
 	"testing"
 )
 
 func TestCanBuildSite(t *testing.T) {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	ctx := t.Context()
 
 	dir, err := os.MkdirTemp("", "xesite")
 	if err != nil {

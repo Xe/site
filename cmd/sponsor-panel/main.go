@@ -221,7 +221,7 @@ func main() {
 	fiftyPlusMap := make(map[string]bool)
 	if *fiftyPlusSpons != "" {
 		slog.Debug("main: parsing fifty-plus sponsors", "list", *fiftyPlusSpons)
-		for _, sponsor := range strings.Split(*fiftyPlusSpons, ",") {
+		for sponsor := range strings.SplitSeq(*fiftyPlusSpons, ",") {
 			sponsor = strings.TrimSpace(sponsor)
 			if sponsor != "" {
 				fiftyPlusMap[sponsor] = true
@@ -234,7 +234,7 @@ func main() {
 	patreonFiftyPlusMap := make(map[string]bool)
 	if *patreonFiftyPlus != "" {
 		slog.Debug("main: parsing patreon fifty-plus sponsors", "list", *patreonFiftyPlus)
-		for _, sponsor := range strings.Split(*patreonFiftyPlus, ",") {
+		for sponsor := range strings.SplitSeq(*patreonFiftyPlus, ",") {
 			sponsor = strings.TrimSpace(sponsor)
 			if sponsor != "" {
 				patreonFiftyPlusMap[sponsor] = true

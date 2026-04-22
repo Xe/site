@@ -79,8 +79,8 @@ type SponsorUsername struct {
 func (SponsorUsername) TableName() string { return "github_sponsor_usernames" }
 
 // PanelModels returns all sponsor-panel models for AutoMigrate.
-func PanelModels() []interface{} {
-	return []interface{}{
+func PanelModels() []any {
+	return []any{
 		&PanelUser{},
 		&LogoSubmission{},
 		&SponsorUsername{},

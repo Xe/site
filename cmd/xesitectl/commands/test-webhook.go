@@ -106,7 +106,7 @@ func (cmd *TestWebhookCmd) SetFlags(f *flag.FlagSet) {
 }
 
 // Execute runs the command
-func (cmd *TestWebhookCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
+func (cmd *TestWebhookCmd) Execute(ctx context.Context, f *flag.FlagSet, _ ...any) subcommands.ExitStatus {
 	if f.NArg() != 0 {
 		fmt.Fprintf(os.Stderr, "Unexpected arguments: %v\n", f.Args())
 		return subcommands.ExitUsageError

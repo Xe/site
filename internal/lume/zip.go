@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"sync"
 
@@ -110,21 +111,17 @@ func isCompressible(fname string) (bool, error) {
 	ext := filepath.Ext(fname)
 
 	// Loop through the non-compressible extensions and compare with the file extension
-	for _, n := range nonCompressibleExt {
-		if ext == n {
-			// The file is not compressible by its name
-			return false, nil
-		}
+	if slices.Contains(nonCompressibleExt, ext) {
+		// The file is not compressible by its name
+		return false, nil
 	}
 
 	compressibleExt := []string{".js", ".json", ".txt", ".dot", ".css", ".pdf", ".svg"}
 
 	// Loop through the compressible extensions and compare with the file extension
-	for _, n := range compressibleExt {
-		if ext == n {
-			// The file is compressible by its name
-			return true, nil
-		}
+	if slices.Contains(compressibleExt, ext) {
+		// The file is compressible by its name
+		return true, nil
 	}
 
 	// A list of common mime types that are not compressible

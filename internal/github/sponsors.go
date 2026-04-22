@@ -55,8 +55,8 @@ type SponsorsEvent struct {
 	Action       string      `json:"action"`
 	Sponsorship  Sponsorship `json:"sponsorship"`
 	Sender       User        `json:"sender"`
-	Repository   Repository  `json:"repository,omitempty"`
-	Organization User        `json:"organization,omitempty"`
+	Repository   Repository  `json:"repository"`
+	Organization User        `json:"organization"`
 }
 
 // GithubSponsorsWebhookEventTypes contains the possible GitHub Sponsors webhook event types.
