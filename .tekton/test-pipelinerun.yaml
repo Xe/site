@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: xesite-manual-run
+  namespace: ci
+
+spec:
+  params:
+    - name: commit
+      value: main
+    - name: branch
+      value: main
+    - name: actor
+      value: did:plc:e5nncb3dr5thdkjir5cfaqfe
+  pipelineRef:
+    name: xe-site-build-test-deploy
+  taskRunTemplate:
+    serviceAccountName: xe-site-ci
+  timeouts:
+    pipeline: 1h0m0s
+  workspaces:
+    - name: repo-data
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 4Gi
+    - name: go-mod-cache
+      persistentVolumeClaim:
+        claimName: go-mod-cache
+    - name: dockerconfig-atcr
+      secret:
+        secretName: atcr

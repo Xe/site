@@ -1,0 +1,161 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: xe-site-build-test-deploy
+  namespace: ci
+
+spec:
+  description: |
+    The CI/CD pipeline for xeiaso.net
+  params:
+    - name: repo-url
+      type: string
+      description: "Git repo to clone"
+      default: "https://tangled.org/xeiaso.net/site"
+    - name: "branch"
+      type: string
+      description: "Git branch to operate against"
+    - name: "commit"
+      type: string
+      description: "Git revision to check out"
+    - name: "actor"
+      type: string
+      description: "Tangled actor"
+  workspaces:
+    - name: repo-data
+      description: |
+        Cloned repo files.
+    - name: go-mod-cache
+      description: |
+        Go module cache
+    - name: dockerconfig-atcr
+      description: |
+        Docker config for pushing images to atcr
+  tasks:
+    - name: fix-permissions
+      taskRef:
+        name: fix-permissions
+      workspaces:
+        - name: dir
+          workspace: repo-data
+    - name: clone-repo
+      runAfter: ["fix-permissions"]
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: repo-data
+      params:
+        - name: url
+          value: $(params.repo-url)
+        - name: revision
+          value: $(params.commit)
+    - name: go-test
+      runAfter: ["clone-repo"]
+      workspaces:
+        - name: source
+          workspace: repo-data
+        - name: go-mod-cache
+          workspace: go-mod-cache
+      taskSpec:
+        workspaces:
+          - name: source
+            mountPath: /src
+          - name: go-mod-cache
+            mountPath: /go
+        steps:
+          - name: npm-ci
+            image: atcr.io/xeiaso.net/site/ci:latest
+            workingDir: $(workspaces.source.path)/repo
+            script: |
+              npm ci
+          - name: go-mod-download
+            image: atcr.io/xeiaso.net/site/ci:latest
+            workingDir: $(workspaces.source.path)/repo
+            script: |
+              go mod download
+          - name: go-test
+            image: atcr.io/xeiaso.net/site/ci:latest
+            workingDir: $(workspaces.source.path)/repo
+            script: |
+              go test ./...
+    - name: docker-build-ci
+      runAfter: ["go-test"]
+      workspaces:
+        - name: source
+          workspace: repo-data
+        - name: dockerconfig
+          workspace: dockerconfig-atcr
+      taskRef:
+        name: kaniko
+      params:
+        - name: IMAGE
+          value: atcr.io/xeiaso.net/site/ci:latest
+        - name: DOCKERFILE
+          value: ./docker/ci-runtime.Dockerfile
+        - name: EXTRA_ARGS
+          value: [
+              #"--destination=atcr.io/xeiaso.net/site/ci:$(params.commit)",
+              "--destination=atcr.io/xeiaso.net/site/ci:$(params.branch)",
+              "--label=org.tangled.actor=$(params.actor)",
+            ]
+    - name: docker-build-patreon-saasproxy
+      runAfter: ["go-test"]
+      workspaces:
+        - name: source
+          workspace: repo-data
+        - name: dockerconfig
+          workspace: dockerconfig-atcr
+      taskRef:
+        name: kaniko
+      params:
+        - name: IMAGE
+          value: atcr.io/xeiaso.net/site/patreon-saasproxy:latest
+        - name: DOCKERFILE
+          value: ./docker/patreon-saasproxy.Dockerfile
+        - name: EXTRA_ARGS
+          value: [
+              #"--destination=atcr.io/xeiaso.net/site/patreon-saasproxy:$(params.commit)",
+              "--destination=atcr.io/xeiaso.net/site/patreon-sassproxy:$(params.branch)",
+              "--label=org.tangled.actor=$(params.actor)",
+            ]
+    - name: docker-build-sponsor-panel
+      runAfter: ["go-test"]
+      workspaces:
+        - name: source
+          workspace: repo-data
+        - name: dockerconfig
+          workspace: dockerconfig-atcr
+      taskRef:
+        name: kaniko
+      params:
+        - name: IMAGE
+          value: atcr.io/xeiaso.net/site/sponsor-panel:latest
+        - name: DOCKERFILE
+          value: ./docker/sponsor-panel.Dockerfile
+        - name: EXTRA_ARGS
+          value: [
+              #"--destination=atcr.io/xeiaso.net/site/sponsor-panel:$(params.commit)",
+              "--destination=atcr.io/xeiaso.net/site/sponsor-panel:$(params.branch)",
+              "--label=org.tangled.actor=$(params.actor)",
+            ]
+    - name: docker-build-xesite
+      runAfter: ["go-test"]
+      workspaces:
+        - name: source
+          workspace: repo-data
+        - name: dockerconfig
+          workspace: dockerconfig-atcr
+      taskRef:
+        name: kaniko
+      params:
+        - name: IMAGE
+          value: atcr.io/xeiaso.net/site/bin:latest
+        - name: DOCKERFILE
+          value: ./docker/xesite.Dockerfile
+        - name: EXTRA_ARGS
+          value: [
+              #"--destination=atcr.io/xeiaso.net/site/bin:$(params.commit)",
+              "--destination=atcr.io/xeiaso.net/site/bin:$(params.branch)",
+              "--label=org.tangled.actor=$(params.actor)",
+            ]
