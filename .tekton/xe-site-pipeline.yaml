@@ -65,22 +65,22 @@ spec:
             mountPath: /go
         steps:
           - name: npm-ci
-            image: atcr.io/xeiaso.net/site/ci:main
+            image: registry.int.xeserv.us/xeiaso.net/site/ci:latest
             workingDir: $(workspaces.source.path)/repo
             script: |
               npm ci
           - name: go-mod-download
-            image: atcr.io/xeiaso.net/site/ci:main
+            image: registry.int.xeserv.us/xeiaso.net/site/ci:latest
             workingDir: $(workspaces.source.path)/repo
             script: |
               go mod download
           - name: go-test
-            image: atcr.io/xeiaso.net/site/ci:main
+            image: registry.int.xeserv.us/xeiaso.net/site/ci:latest
             workingDir: $(workspaces.source.path)/repo
             script: |
               go test ./...
     - name: docker-build-ci
-      runAfter: ["go-test"]
+      runAfter: ["clone-repo"]
       workspaces:
         - name: source
           workspace: repo-data
@@ -90,13 +90,13 @@ spec:
         name: kaniko
       params:
         - name: IMAGE
-          value: atcr.io/xeiaso.net/site/ci:latest
+          value: registry.int.xeserv.us/xeiaso.net/site/ci:latest
         - name: DOCKERFILE
           value: ./docker/ci-runtime.Dockerfile
         - name: EXTRA_ARGS
           value: [
-              #"--destination=atcr.io/xeiaso.net/site/ci:$(params.commit)",
-              "--destination=atcr.io/xeiaso.net/site/ci:$(params.branch)",
+              #"--destination=registry.int.xeserv.us/xeiaso.net/site/ci:$(params.commit)",
+              "--destination=registry.int.xeserv.us/xeiaso.net/site/ci:$(params.branch)",
               "--label=org.tangled.actor=$(params.actor)",
             ]
     - name: docker-build-patreon-saasproxy
