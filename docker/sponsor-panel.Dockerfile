@@ -30,6 +30,6 @@ EXPOSE 4823
 
 CMD ["/app/bin/sponsor-panel"]
 
-LABEL org.opencontainers.image.source="https://github.com/Xe/site"
+LABEL org.opencontainers.image.source="https://tangled.org/xeiaso.net/site"
 LABEL org.opencontainers.image.title="Sponsor Panel Service"
 LABEL org.opencontainers.image.description="Web panel for GitHub sponsors to manage their benefits"

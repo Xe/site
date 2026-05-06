@@ -13,6 +13,7 @@
     "dev": "go run ./cmd/xesite --site-url https://preview.xeiaso.net --devel",
     "dev:sponsor-panel": "cd ./cmd/sponsor-panel && go generate ./... && go run .",
     "deploy": "kubectl --context limsa-lominsa apply -k manifest",
+    "deploy:ci": "kubectl --context alrest apply -k .tekton",
     "extract-meta": "node scripts/extract-meta.js",
     "validate-content-dates": "node scripts/validate-blog-dates.js"
   },

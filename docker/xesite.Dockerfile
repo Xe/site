@@ -78,4 +78,6 @@ COPY --from=typst /app/typst /usr/local/bin/typst
 
 CMD ["/app/bin/xesite"]
 
-LABEL org.opencontainers.image.source="https://github.com/Xe/site"
+LABEL org.opencontainers.image.source="https://tangled.org/xeiaso.net/site"
+LABEL org.opencontainers.image.title="Xe's website"
+LABEL org.opencontainers.image.description="The docker image for xeiaso.net"

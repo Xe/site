@@ -72,4 +72,6 @@ COPY --from=typst /app/typst /usr/local/bin/typst
 
 RUN go download
 
-LABEL org.opencontainers.image.source="https://github.com/Xe/site"
+LABEL org.opencontainers.image.source="https://tangled.org/xeiaso.net/site"
+LABEL org.opencontainers.image.title="Xesite CI image"
+LABEL org.opencontainers.image.description="Intermediate image with everything installed for Xesite CI"

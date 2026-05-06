@@ -93,7 +93,12 @@ spec:
               go mod download
               npm run generate
               go test ./...
-    - name: docker-build-patreon-saasproxy
+          - name: validate-content-dates
+            image: $(tasks.docker-build-ci.results.IMAGE_URL)@$(tasks.docker-build-ci.results.IMAGE_DIGEST)
+            workingDir: $(workspaces.source.path)/repo
+            script: |
+              npm run validate-content-dates
+    - name: patreon-saasproxy-build
       runAfter: ["go-test"]
       workspaces:
         - name: source
@@ -113,7 +118,7 @@ spec:
               "--destination=atcr.io/xeiaso.net/site/patreon-sassproxy:$(params.branch)",
               "--label=org.tangled.actor=$(params.actor)",
             ]
-    - name: docker-build-sponsor-panel
+    - name: sponsor-panel-build
       runAfter: ["go-test"]
       workspaces:
         - name: source
@@ -133,7 +138,7 @@ spec:
               "--destination=atcr.io/xeiaso.net/site/sponsor-panel:$(params.branch)",
               "--label=org.tangled.actor=$(params.actor)",
             ]
-    - name: docker-build-xesite
+    - name: xesite-build
       runAfter: ["go-test"]
       workspaces:
         - name: source

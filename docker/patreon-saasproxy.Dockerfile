@@ -21,4 +21,6 @@ COPY --from=build /app/bin/patreon-saasproxy /app/bin/patreon-saasproxy
 
 CMD ["/app/bin/patreon-saasproxy"]
 
-LABEL org.opencontainers.image.source="https://github.com/Xe/site"
+LABEL org.opencontainers.image.source="https://tangled.org/xeiaso.net/site"
+LABEL org.opencontainers.image.title="Patreon SAASProxy"
+LABEL org.opencontainers.image.description="Token management proxy for Xesite"
