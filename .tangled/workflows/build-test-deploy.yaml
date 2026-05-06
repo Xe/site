@@ -2,7 +2,7 @@ when:
   - event: ["push"]
     branch: ["main"]
 
-engine: nixery
+engine: tack
 
 tack:
   tekton:
