@@ -51,7 +51,7 @@ spec:
         - name: revision
           value: $(params.commit)
     - name: go-test
-      runAfter: ["clone-repo"]
+      runAfter: ["clone-repo", "docker-build-ci"]
       workspaces:
         - name: source
           workspace: repo-data
@@ -64,20 +64,13 @@ spec:
           - name: go-mod-cache
             mountPath: /go
         steps:
-          - name: npm-ci
-            image: reg.xeiaso.net/xeiaso.net/site/ci:latest
-            workingDir: $(workspaces.source.path)/repo
-            script: |
-              npm ci
-          - name: go-mod-download
-            image: reg.xeiaso.net/xeiaso.net/site/ci:latest
-            workingDir: $(workspaces.source.path)/repo
-            script: |
-              go mod download
           - name: go-test
             image: reg.xeiaso.net/xeiaso.net/site/ci:latest
             workingDir: $(workspaces.source.path)/repo
             script: |
+              npm ci
+              go mod download
+              npm run generate
               go test ./...
     - name: docker-build-ci
       runAfter: ["clone-repo"]
@@ -95,6 +88,7 @@ spec:
           value: ./docker/ci-runtime.Dockerfile
         - name: EXTRA_ARGS
           value: [
+              "--cache",
               #"--destination=registry.int.xeserv.us/xeiaso.net/site/ci:$(params.commit)",
               "--destination=registry.int.xeserv.us/xeiaso.net/site/ci:$(params.branch)",
               "--label=org.tangled.actor=$(params.actor)",
