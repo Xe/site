@@ -65,17 +65,17 @@ spec:
             mountPath: /go
         steps:
           - name: npm-ci
-            image: atcr.io/xeiaso.net/site/ci:latest
+            image: atcr.io/xeiaso.net/site/ci:main
             workingDir: $(workspaces.source.path)/repo
             script: |
               npm ci
           - name: go-mod-download
-            image: atcr.io/xeiaso.net/site/ci:latest
+            image: atcr.io/xeiaso.net/site/ci:main
             workingDir: $(workspaces.source.path)/repo
             script: |
               go mod download
           - name: go-test
-            image: atcr.io/xeiaso.net/site/ci:latest
+            image: atcr.io/xeiaso.net/site/ci:main
             workingDir: $(workspaces.source.path)/repo
             script: |
               go test ./...
