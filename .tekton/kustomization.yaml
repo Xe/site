@@ -1,0 +1,4 @@
+namespace: ci
+resources:
+  - serviceaccount.yaml
+  - xe-site-pipeline.yaml
