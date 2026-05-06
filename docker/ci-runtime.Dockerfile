@@ -58,8 +58,7 @@ RUN mkdir -p /app
 WORKDIR /app
 
 RUN apt-get update \
-  && apt-get -y install ca-certificates media-types curl \
-  && curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+  && apt-get -y install ca-certificates media-types nodejs npm
 
 #RUN apk add -U ca-certificates deno typst mailcap
 ENV TYPST_FONT_PATHS=/app/fonts
