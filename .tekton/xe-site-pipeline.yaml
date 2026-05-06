@@ -50,6 +50,27 @@ spec:
           value: $(params.repo-url)
         - name: revision
           value: $(params.commit)
+    - name: docker-build-ci
+      runAfter: ["clone-repo"]
+      workspaces:
+        - name: source
+          workspace: repo-data
+        - name: dockerconfig
+          workspace: dockerconfig-atcr
+      taskRef:
+        name: kaniko
+      params:
+        - name: IMAGE
+          value: registry.int.xeserv.us/xeiaso.net/site/ci:$(params.commit)
+        - name: DOCKERFILE
+          value: ./docker/ci-runtime.Dockerfile
+        - name: EXTRA_ARGS
+          value:
+            [
+              "--cache",
+              "--cache-repo=registry.int.xeserv.us/xeiaso.net/site/ci/cache:latest",
+              "--label=org.tangled.actor=$(params.actor)",
+            ]
     - name: go-test
       runAfter: ["clone-repo", "docker-build-ci"]
       workspaces:
@@ -65,34 +86,13 @@ spec:
             mountPath: /go
         steps:
           - name: go-test
-            image: reg.xeiaso.net/xeiaso.net/site/ci:latest
+            image: $(tasks.docker-build-ci.results.IMAGE_URL)@$(tasks.docker-build-ci.results.IMAGE_DIGEST)
             workingDir: $(workspaces.source.path)/repo
             script: |
               npm ci
               go mod download
               npm run generate
               go test ./...
-    - name: docker-build-ci
-      runAfter: ["clone-repo"]
-      workspaces:
-        - name: source
-          workspace: repo-data
-        - name: dockerconfig
-          workspace: dockerconfig-atcr
-      taskRef:
-        name: kaniko
-      params:
-        - name: IMAGE
-          value: registry.int.xeserv.us/xeiaso.net/site/ci:latest
-        - name: DOCKERFILE
-          value: ./docker/ci-runtime.Dockerfile
-        - name: EXTRA_ARGS
-          value: [
-              "--cache",
-              #"--destination=registry.int.xeserv.us/xeiaso.net/site/ci:$(params.commit)",
-              "--destination=registry.int.xeserv.us/xeiaso.net/site/ci:$(params.branch)",
-              "--label=org.tangled.actor=$(params.actor)",
-            ]
     - name: docker-build-patreon-saasproxy
       runAfter: ["go-test"]
       workspaces:
