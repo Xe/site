@@ -161,7 +161,7 @@ spec:
         - name: EXTRA_ARGS
           value:
             [
-              "--destination=$(params.docker-image-base)/site/bin:$(params.commit)",
+              "--destination=$(params.docker-image-base)/bin:$(params.commit)",
               "--destination=$(params.docker-image-base)/bin:$(params.branch)",
               "--label=org.tangled.actor=$(params.actor)",
             ]
