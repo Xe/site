@@ -10,7 +10,7 @@ tack:
     workspaces:
       - name: repo-data
         access_modes: ["ReadWriteOnce"]
-        storage: 1Gi
+        storage: 4Gi
       - name: go-mod-cache
         pvc: go-mod-cache
       - name: dockerconfig-atcr
