@@ -21,6 +21,10 @@ spec:
     - name: "actor"
       type: string
       description: "Tangled actor"
+    - name: docker-image-base
+      type: string
+      description: string prefix for production docker images
+      default: "registry.int.xeserv.us/xe/site"
   workspaces:
     - name: repo-data
       description: |
@@ -109,13 +113,14 @@ spec:
         name: kaniko
       params:
         - name: IMAGE
-          value: atcr.io/xeiaso.net/site/patreon-saasproxy:latest
+          value: $(params.docker-image-base)/patreon-saasproxy:latest
         - name: DOCKERFILE
           value: ./docker/patreon-saasproxy.Dockerfile
         - name: EXTRA_ARGS
-          value: [
-              #"--destination=atcr.io/xeiaso.net/site/patreon-saasproxy:$(params.commit)",
-              "--destination=atcr.io/xeiaso.net/site/patreon-sassproxy:$(params.branch)",
+          value:
+            [
+              "--destination=$(params.docker-image-base)/patreon-saasproxy:$(params.commit)",
+              "--destination=$(params.docker-image-base)/patreon-sassproxy:$(params.branch)",
               "--label=org.tangled.actor=$(params.actor)",
             ]
     - name: sponsor-panel-build
@@ -129,13 +134,14 @@ spec:
         name: kaniko
       params:
         - name: IMAGE
-          value: atcr.io/xeiaso.net/site/sponsor-panel:latest
+          value: $(params.docker-image-base)/sponsor-panel:latest
         - name: DOCKERFILE
           value: ./docker/sponsor-panel.Dockerfile
         - name: EXTRA_ARGS
-          value: [
-              #"--destination=atcr.io/xeiaso.net/site/sponsor-panel:$(params.commit)",
-              "--destination=atcr.io/xeiaso.net/site/sponsor-panel:$(params.branch)",
+          value:
+            [
+              "--destination=$(params.docker-image-base)/sponsor-panel:$(params.commit)",
+              "--destination=$(params.docker-image-base)/sponsor-panel:$(params.branch)",
               "--label=org.tangled.actor=$(params.actor)",
             ]
     - name: xesite-build
@@ -149,12 +155,13 @@ spec:
         name: kaniko
       params:
         - name: IMAGE
-          value: atcr.io/xeiaso.net/site/bin:latest
+          value: $(params.docker-image-base)/bin:latest
         - name: DOCKERFILE
           value: ./docker/xesite.Dockerfile
         - name: EXTRA_ARGS
-          value: [
-              #"--destination=atcr.io/xeiaso.net/site/bin:$(params.commit)",
-              "--destination=atcr.io/xeiaso.net/site/bin:$(params.branch)",
+          value:
+            [
+              "--destination=$(params.docker-image-base)/site/bin:$(params.commit)",
+              "--destination=$(params.docker-image-base)/bin:$(params.branch)",
               "--label=org.tangled.actor=$(params.actor)",
             ]
