@@ -21,9 +21,11 @@ spec:
         app.kubernetes.io/name: sponsor-panel
         app.kubernetes.io/component: web
     spec:
+      imagePullSecrets:
+        - name: atcr
       containers:
         - name: web
-          image: ghcr.io/xe/site/sponsor-panel:latest
+          image: atcr.io/xeiaso.net/site/sponsor-panel:latest
           imagePullPolicy: Always
           resources:
             limits:
