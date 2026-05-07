@@ -7,6 +7,7 @@ engine: tack
 tack:
   tekton:
     pipeline: xe-site-build-test-deploy
+    service_account: xe-site-ci
     workspaces:
       - name: repo-data
         access_modes: ["ReadWriteOnce"]
