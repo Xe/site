@@ -1027,7 +1027,7 @@ sigs.k8s.io/structured-merge-diff/v6 v6.3.2 h1:kwVWMx5yS1CrnFWA/2QHyRVJ8jM6dBA80
 sigs.k8s.io/structured-merge-diff/v6 v6.3.2/go.mod h1:M3W8sfWvn2HhQDIbGWj3S099YozAsymCo/wrT5ohRUE=
 sigs.k8s.io/yaml v1.6.0 h1:G8fkbMSAFqgEFgh4b1wmtzDnioxFCUgTZhlbj5P9QYs=
 sigs.k8s.io/yaml v1.6.0/go.mod h1:796bPqUfzR/0jLAl6XjHl3Ck7MiyVv8dbTdyT3/pMf4=
-tailscale.com v1.98.0 h1:b/cdYEdkp/slbMfC9mwnG2sxQpE0Q1KBU5twTpKbGIE=
-tailscale.com v1.98.0/go.mod h1:6WwM2RnFW9gOQjdonp4c4QINm9odc1NlBQykKBncK/Q=
+tailscale.com v1.98.1 h1:dEiQ3OqCzzcjTsP4m+CQTwz7ZdtdhxPbccY7AjUWno0=
+tailscale.com v1.98.1/go.mod h1:6WwM2RnFW9gOQjdonp4c4QINm9odc1NlBQykKBncK/Q=
 within.website/x v1.30.0 h1:evFiKm6uj5YT0CS4Dcn52Jp9KNszAwhTCPbhm4qPLRg=
 within.website/x v1.30.0/go.mod h1:J3+pVlLFZLgXwr8YQKKBLGUog4MbTnSJVQSanOCMcUA=
