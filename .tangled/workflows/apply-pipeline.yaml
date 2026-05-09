@@ -1,0 +1,16 @@
+when:
+  - event: ["push"]
+    branch: ["main"]
+
+engine: tack
+
+tack:
+  tekton:
+    pipeline: apply-pipeline
+    service_account: xeiaso-net-alrest-autoapply
+    params:
+      repo-url: https://tangled.org/xeiaso.net/site
+    workspaces:
+      - name: repo
+        access_modes: ["ReadWriteOnce"]
+        storage: 4Gi
