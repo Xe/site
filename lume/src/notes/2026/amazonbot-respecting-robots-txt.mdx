@@ -1,0 +1,30 @@
+---
+title: "Amazonbot is finally respecting robots.txt"
+desc: "Thanks for giving me a viable business model Amazon!"
+date: 2026-05-14
+---
+
+I just got an email from Amazon saying they're finally going to respect [robots.txt](https://www.robotstxt.org/). Here's the verbatim email I got:
+
+> We are writing to inform you that starting Monday, June 15, 2026, crawl preferences for Amazonbot will be managed solely through the industry-standard directives. This gives you direct, ongoing control over how Amazonbot accesses your site, rather than relying on manual requests. If you do not implement robots.txt directives by that date, Amazonbot will follow standard web crawling practices when accessing your site.
+>
+> How to maintain your current preferences: The robots.txt protocol allows you to control Amazonbot’saccess at the page-, directory-, or site-level and update your preferences at any time. Please find detailed information on Amazonbots approach to these directives here: [https://developer.amazon.com/amazonbot](https://developer.amazon.com/amazonbot).
+>
+> Best,
+>
+> Amazon Publisher Support
+>
+> amazonbot@amazon.com
+>
+> Get Outlook for Mac
+
+<Conv name="Numa" mood="smug">
+  Amazing, they even kept the "sent from my iPhone" message proving they sent it
+  from Outlook for Mac. Looking at the email headers it has a bunch of
+  Exchange-specific headers so it's probably actually from Outlook for Mac. This
+  timeline is absolutely wild.
+</Conv>
+
+This makes me feel kinda weird because [Amazon's scraper is why Anubis exists](https://xeiaso.net/talks/2025/surreal-joy-homelab/).
+
+I'm gonna make sure to merge these robots.txt changes into Anubis if they aren't already there.
