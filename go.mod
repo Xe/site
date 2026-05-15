@@ -1,6 +1,6 @@
 module xeiaso.net/v4
 
-go 1.26.2
+go 1.26.3
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260415201107-50325440f8f2.1
@@ -35,7 +35,7 @@ require (
 	gorm.io/plugin/prometheus v0.1.0
 	k8s.io/apimachinery v0.36.1
 	k8s.io/client-go v0.36.1
-	tailscale.com v1.98.1
+	tailscale.com v1.98.2
 	within.website/x v1.30.0
 )
 
