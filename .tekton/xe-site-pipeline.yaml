@@ -72,7 +72,7 @@ spec:
           value:
             [
               "--cache",
-              "--cache-repo=registry.int.xeserv.us/xeiaso.net/site/ci/cache:latest",
+              "--cache-repo=registry.int.xeserv.us/xeiaso.net/site/ci/cache",
               "--label=org.tangled.actor=$(params.actor)",
             ]
     - name: go-test
