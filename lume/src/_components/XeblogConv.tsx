@@ -33,11 +33,13 @@ const ConvSnippet = ({
       [&:not(:first-child)]:-mt-[1px] [&:not(:first-child)]:py-1`}
     >
       {/* Avatar Container */}
-      <div className="h-16 not-prose">
+      <div className="h-16 w-16 shrink-0 not-prose">
         <img
-          className="h-16 w-16 rounded-xs"
+          className="h-16 w-16 shrink-0 max-w-none object-contain rounded-xs"
           alt={`${name} is ${mood}`}
           loading="lazy"
+          width={64}
+          height={64}
           src={`https://stickers.xeiaso.net/sticker/${nameLower}/${mood}`}
         />
       </div>
