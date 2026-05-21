@@ -63,6 +63,7 @@ func main() {
 			"error writing template %s to %s: %v",
 			*templateName,
 			fout.Name(),
-			err)
+			err,
+		)
 	}
 }
