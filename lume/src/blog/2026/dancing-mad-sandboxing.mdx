@@ -10,6 +10,7 @@ hero:
 ---
 
 import Conv from "../../_components/XeblogConv.tsx";
+import LinkPreviewCard from "../../_components/LinkPreviewCard.tsx";
 
 <ConvP>
   <Conv name="Cadey" mood="enby">
@@ -329,8 +330,16 @@ I want more experimental WebAssembly hacks like this to exist. I'll keep poking 
 
 ## Put your programs in clown jail
 
-This has legs. [yeet](https://github.com/TecharoHQ/yeet) could run [Anubis](https://anubis.techaro.lol) builds on Windows; and if management ever makes you babysit AI agents, clown jail is a decent answer.
+With some effort, [yeet](https://github.com/TecharoHQ/yeet) could use Kefka's shell utilities to run [Anubis](https://anubis.techaro.lol) builds on Windows; and if management ever makes you babysit AI agents, clown jail is a decent answer.
 
 The code lives [on Tangled](https://tangled.org/xeiaso.net/kefka). I'm wiring it into [an agent harness](https://github.com/tigrisdata-community/mithras) so I can automate small tools against a local model (I'm loving Qwen3-36B-A3B).
 
-There's a sister post on the Tigris blog that goes deeper into the AI-agent angle and the porting work using Claude Code. If you want, you can check it out here: [Give your agents disposable environments in Go](https://tigrisdata.com/blog/agent-sandbox-go).
+There's a sister post on the Tigris blog that goes deeper into the AI-agent angle and the porting work using Claude Code. If you want, you can check it out here:
+
+<LinkPreviewCard
+  url="https://tigrisdata.com/blog/agent-sandbox-go"
+  image="https://files.xeiaso.net/blog/tigris/mad-god-with-robots.webp"
+  siteName="Tigris Data"
+  title="Give your agents disposable environments in Go"
+  description="Kefka is a userspace shell sandbox in Go that gives every AI agent its own copy-on-write Tigris bucket fork plus Python, jq, and ripgrep via WebAssembly."
+/>
