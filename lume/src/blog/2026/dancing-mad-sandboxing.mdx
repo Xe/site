@@ -42,7 +42,7 @@ System calls are injected into each operating system process via a process kinda
 
 ## Bashing your head into the wall
 
-A while ago a new JavaScript package got into the meme sphere at work: [just-bash](https://github.com/vercel-labs/just-bash/tree/main/packages/just-bash). It's a sandboxed environment with a shell interpreter that was originally intended for use with AI agents after its author observed that AI agents know how to use a tool called `bash` a lot better than a tool called `search_documentation`. This is backed by a "fake" shell with "fake" core utilities (`cat`, `ls`, etc, hereinafter coreutils) so that when an agent decides to `rm -rf /`, nothing important actually leaves the room.
+A while ago a new JavaScript package got into the meme sphere at work: [just-bash](https://github.com/vercel-labs/just-bash/tree/main/packages/just-bash). It's a sandboxed environment with a shell interpreter that was originally intended for use with AI agents after its author observed that AI agents know how to use a tool called `bash` a lot better than a tool called `search_documentation`. This is backed by a "fake" shell with "fake" core utilities (`cat`, `ls`, etc, hereinafter coreutils) so that when an agent decides to `rm -rf /`, nothing important actually leaves the room. One of my coworkers made [@tigrisdata/agent-shell](https://www.npmjs.com/package/@tigrisdata/agent-shell) on top of this that uses Tigris as its storage layer.
 
 This is great for people in the JavaScript ecosystem, but I am not mainly a JavaScript developer. I really wanted to play with it so I started thinking what it would take to have something like this in Go. mvdan's [shell package](https://pkg.go.dev/mvdan.cc/sh/v3) makes this a heck of a lot easier, meaning that this "fake" shell would be powered by a real shell instead of either porting half of bash to JavaScript or making up hopefully-compatible behaviour.
 
@@ -131,14 +131,18 @@ This is where I started vibe coding things, mostly via a [skill that ports a jus
     >
     > None.
 
-    I would link to the exact page in the POSIX spec, but they use a legacy frameset layout so you have to [dig through the Shell and Utilities section](https://pubs.opengroup.org/onlinepubs/9799919799/).
+    Really, check out [the POSIX spec for `true`](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/true.html). It's trivial to implement, here's a oneliner to implement it in Linux:
+
+    ```
+    touch ./true && chmod +x ./true
+    ```
 
   </Conv>
 </ConvP>
 
 ### I made an operating system\*
 
-This is basically an operating system: it provides interfaces for programs (functions) to get input from a user, send output to a user, interact with a filesystem, and more. Eventually I want to add networking — a network stack on ExecContext, probably tsnet or wireguard-go for the user-level side.
+This is basically an operating system: it provides interfaces for programs (well, in this case functions) to get input from a user, send output to a user, interact with a filesystem, and more. Eventually I want to add networking via a network stack on ExecContext, probably with [tsnet](https://pkg.go.dev/tailscale.com/tsnet) or [wireguard-go's netstack package](https://pkg.go.dev/golang.zx2c4.com/wireguard/tun/netstack) for the user-level side. Maybe there's room for adding [CEL](https://cel.dev/) based network filters there too.
 
 ## Porting applications with WebAssembly
 
@@ -148,7 +152,7 @@ Once I got basic coreutils working, I thought it would be fun to get Python, jq,
 
 At some point I hit a wall and had to switch from io/fs#FS to [billy](https://github.com/go-git/go-billy), another filesystem interface that I think predates the standard library one. This gives you [a bunch more methods](https://pkg.go.dev/github.com/go-git/go-billy/v5@v5.9.0#Filesystem) that map a lot closer to filesystem semantics in ways that coreutils crave. The interface was also mostly compatible with io/fs#FS so most of the hard part was really changing out the type and then chasing down compiler errors until I found enough of a pattern to have Opus automate the rest of it.
 
-From there it was a matter of adapting billy's filesystem to wazero's [experimental sys interface](https://pkg.go.dev/github.com/tetratelabs/wazero@v1.11.0/experimental/sys). Mostly glue code, except where I had to translate Go errors into POSIX errno values. I had to read both the POSIX spec and the wazero source to figure out how to map errors between the two worlds.
+From there it was a matter of adapting billy's filesystem to wazero's [experimental sys interface](https://pkg.go.dev/github.com/tetratelabs/wazero@v1.11.0/experimental/sys). Mostly glue code, except where I had to translate Go errors into POSIX errno values. I had to read both the POSIX spec, the WASI spec, and the wazero source to figure out how to map errors between the two worlds. I think I'm at least 95% correct, which is likely within the margin of porting error.
 
 Adapting that codeinterpreter/python library to the new interface was mostly straightforward, and I ended up with a flow like this:
 
@@ -156,19 +160,24 @@ Adapting that codeinterpreter/python library to the new interface was mostly str
 // from https://tangled.org/xeiaso.net/kefka/blob/main/command/internal/python3/python3.go
 
 func (Impl) Exec(ctx context.Context, ec *command.ExecContext, args []string) error {
-	fsConfig := wazero.NewFSConfig().(sysfs.FSConfig).
+	fsConfig := wazero.NewFSConfig().
+		(sysfs.FSConfig).
 		WithSysFSMount(billyfs.New(ec.FS), "/")
 
 	config := wazero.NewModuleConfig().
+		// Pipe ExecContext stdio
 		WithStdin(ec.Stdin).WithStdout(ec.Stdout).WithStderr(ec.Stderr).
+		// Pipe argv
 		WithArgs(append([]string{"python3"}, args...)...).
 		WithName("python3").
+		// Pipe filesystem
 		WithFSConfig(fsConfig).
+		// Pipe system time
 		WithSysNanosleep().WithSysNanotime().WithSysWalltime()
 
 	mod, err := runtime.InstantiateModule(ctx, compiled, config)
 	if err != nil {
-    // Fit the square peg into the round hole
+		// Fit the square peg into the round hole
 		if exitErr, ok := errors.AsType[*wsys.ExitError](err); ok {
 			if code := exitErr.ExitCode(); code != 0 {
 				return interp.ExitStatus(uint8(code))
@@ -182,14 +191,14 @@ func (Impl) Exec(ctx context.Context, ec *command.ExecContext, args []string) er
 ```
 
 <Conv name="Mara" mood="aha">
-  See? The dependencies such as stdin, stdout, and stderr get _injected_ into
-  the WebAssembly guest. Wazero also makes you inject the implementation of time
-  for boring reasons involving deterministic computing, but I'm sure you can see
-  the ways things hook in. This basic dependency injection flow is how things
-  like the [linuxulator](https://wiki.freebsd.org/Linuxulator) in FreeBSD or the
-  old version of the Windows Subsystem for Linux work (WSL1 before it was made
-  into a Linux VM with WSL2). The table of system calls and filesystem context
-  is effectively an argument to the process.
+  See? The dependencies such as `stdin`, `stdout`, and `stderr` get _injected_
+  into the WebAssembly guest. Wazero also makes you inject the implementation of
+  time for boring reasons involving deterministic computing, but I'm sure you
+  can see the ways things hook in. This basic dependency injection flow is how
+  things like the [linuxulator](https://wiki.freebsd.org/Linuxulator) in FreeBSD
+  or the old version of the Windows Subsystem for Linux work (WSL1 before it was
+  made into a Linux VM with WSL2). The table of system calls and filesystem
+  context is effectively an argument to the process.
 </Conv>
 
 Same trick got me ripgrep and jq. jq was annoying — wasi-sdk doesn't love jq's (ab)use of cmake — but 30 or so minutes of tweaking compiler flags got me a binary that works enough.
@@ -206,9 +215,9 @@ OK, that handles filesystems that (arguably) exist, like the btrfs volume on my 
   like forks and snapshots. I'll be writing more about it soon.
 </Conv>
 
-After finding [a basic implementation of an S3 -> Billy adapter](https://github.com/a-poor/s3fs), I vendored it into the Kefka repo and swapped out the "real" filesystem in cmd/kefka for an s3fs implementation pointed at a sample Tigris bucket. From there it was down to an iterative process of running commands, finding feature gaps when errors showed up, implementing them, and making sure things work the same against Tigris as they do against a local filesystem.
+After finding [a basic implementation of an S3 -> Billy adapter](https://github.com/a-poor/s3fs), I vendored it into the Kefka repo and swapped out the "real" filesystem in cmd/kefka for an s3fs implementation pointed at a sample Tigris bucket. From there it was down to an iterative process of running commands, finding feature gaps when errors showed up, implementing them, fuzzing, and making sure things work mostly the same against Tigris as they do against a local filesystem.
 
-WASI is cursed: it has no process-level "current working directory," which most programs assume exists. You patch around it by passing a `CWD` envvar, or — easier — just use absolute paths. I haven't hit anything broken in casual use, but expect rough edges. Here be dragons and this code may be known by the state of California to cause cancer.
+WASI is cursed: it has no process-level "current working directory," which most programs assume exists. You patch around it by passing a `CWD` envvar, or just use absolute paths. I haven't hit anything broken in casual use, but expect rough edges. Here be dragons and this code may be known by the state of California to cause cancer.
 
 ## Why does it have to use the command line?
 
@@ -293,12 +302,12 @@ func HandleSSH(sess ssh.Session) error {
 }
 ```
 
-[The real handler](https://tangled.org/xeiaso.net/kefka/blob/main/cmd/sophia/main.go#L87) is much messier because Python's REPL needs careful buffering, Ctrl-C has to actually cancel things, pty wiring is its own swamp. None of that shows up if it's working. Tab completion and readline polish are easy enough; I'll let you wire those up as an exercise for the reader.
+[The real handler](https://tangled.org/xeiaso.net/kefka/blob/main/cmd/sophia/main.go#L87) is much messier because Python's REPL needs careful buffering, Ctrl-C has to actually cancel things, and [pty](https://en.wikipedia.org/wiki/Pseudoterminal) wiring is its own can of cans of worms. None of that shows up if it's working. Tab completion and readline polish are easy enough; I'll let you wire those up as an exercise for the reader.
 
-If you want to try it today, you can ssh into `sophia.xeiaso.net` on port 2222:
+If you want to try it today, you can ssh into `sophia.xeiaso.net`:
 
 ```
-$ ssh sophia.xeiaso.net -p 2222
+$ ssh sophia.xeiaso.net
 ```
 
 You'll get an isolated sandbox in your own [bucket fork/branch](https://www.tigrisdata.com/docs/forks/). Every `ls` is a `ListObjectsV2` against the bucket. Every `qjs` or `python3` runs WebAssembly on the server, wired to that same bucket.
@@ -312,12 +321,16 @@ Hello, world!
 
 The demo bucket is seeded with examples. You'll probably have to poke around to find everything. Worst case, run `help`.
 
+<Conv name="Cadey" mood="coffee">
+  I should really hook up session recording to this.
+</Conv>
+
 I want more experimental WebAssembly hacks like this to exist. I'll keep poking at it.
 
 ## Put your programs in clown jail
 
 This has legs. [yeet](https://github.com/TecharoHQ/yeet) could run [Anubis](https://anubis.techaro.lol) builds on Windows; and if management ever makes you babysit AI agents, clown jail is a decent answer.
 
-Code lives [on Tangled](https://tangled.org/xeiaso.net/kefka). I'm wiring it into [an agent harness](https://github.com/tigrisdata-community/mithras) so I can automate small tools against a local model (Qwen3-30B-A3B right now, good enough for what I'm doing).
+The code lives [on Tangled](https://tangled.org/xeiaso.net/kefka). I'm wiring it into [an agent harness](https://github.com/tigrisdata-community/mithras) so I can automate small tools against a local model (I'm loving Qwen3-36B-A3B).
 
-There's a sister post on the Tigris blog that goes deeper into the AI-agent angle and the porting work using Claude Code. If you want, you can check it out here: [Give your agents disposable environments in Go](https://tigrisdata.com/blog/agent-sandbox-go)
+There's a sister post on the Tigris blog that goes deeper into the AI-agent angle and the porting work using Claude Code. If you want, you can check it out here: [Give your agents disposable environments in Go](https://tigrisdata.com/blog/agent-sandbox-go).
