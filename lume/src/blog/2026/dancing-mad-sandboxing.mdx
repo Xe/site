@@ -202,7 +202,7 @@ func (Impl) Exec(ctx context.Context, ec *command.ExecContext, args []string) er
   context is effectively an argument to the process.
 </Conv>
 
-Same trick got me ripgrep and jq. jq was annoying — wasi-sdk doesn't love jq's (ab)use of cmake — but 30 or so minutes of tweaking compiler flags got me a binary that works enough.
+Same trick got me ripgrep and jq. jq was annoying because wasi-sdk doesn't love jq's (ab)use of cmake; however 30 or so minutes of tweaking compiler flags got me a binary that works enough.
 
 I could see it being pretty easy to port over arbitrary programs to Kefka using WebAssembly like this. There's just one small problem: [WASI preview 0.1](https://github.com/WebAssembly/WASI/tree/wasi-0.1) doesn't allow you to open arbitrary network sockets. This has been a huge pain in practice (it means you can't do HTTP requests, database connections, or other common internet things from inside the WASM sandbox) and future work probably would include adapting wazero to use [wasix](https://wasix.org/) instead of WASI 0.1.
 
