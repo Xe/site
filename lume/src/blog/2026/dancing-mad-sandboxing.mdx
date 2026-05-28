@@ -1,0 +1,345 @@
+---
+title: "Dancing mad with sandboxing"
+desc: "Kefka is a Go-native shell sandbox with coreutils, Python via WebAssembly, and more. Learn the works of madness that went into making this happen!"
+date: 2026-05-28
+hero:
+  ai: "Photo by Xe Iaso"
+  file: "seal-vibing-out"
+  prompt: "A sea lion sleeping peacefully on a rocky beach while other sea lions lounge in the background near the water"
+  social: false
+---
+
+import Conv from "../../_components/XeblogConv.tsx";
+import LinkPreviewCard from "../../_components/LinkPreviewCard.tsx";
+
+<ConvP>
+  <Conv name="Cadey" mood="enby">
+    What is an operating system, really?
+  </Conv>
+  <Conv name="Aoi" mood="wut">
+    I mean, isn't it obvious? It's something like FreeBSD or Fedora that has a
+    kernel, userspace, graphics stack, core set of programs, and everything else
+    you need to be able to use a computer. Is this a trick question?
+  </Conv>
+  <Conv name="Numa" mood="smug">
+    Well it depends, is the Nintendo Switch OS an operating system? It doesn't
+    have a shell in the same way FreeBSD does. Is SEL4 an OS? It doesn't ship
+    with core utilities. Is Linux an OS? Is Windows an OS?
+  </Conv>
+  <Conv name="Aoi" mood="facepalm">
+    Oh gods here we go again…
+  </Conv>
+</ConvP>
+
+The definition of an operating system gets really fuzzy when you start looking at the edges of it, but let's say that an operating system is any part of a computer system that doesn't involve pure math. When you print to the screen, render 3d graphics, connect to the internet, and write to files your code calls into the underlying system to do that work. These system calls are defined by your operating system and are exposed as functions\*.
+
+<Conv name="Mara" mood="hacker">
+  Okay they're not actually functions, but they quack enough like functions that
+  you can treat them like functions and not have to worry about the details too
+  much.
+</Conv>
+
+System calls are injected into each operating system process via a process kinda like how you inject dependencies into your applications for database sessions or object storage operations.
+
+## Bashing your head into the wall
+
+A while ago a new JavaScript package got into the meme sphere at work: [just-bash](https://github.com/vercel-labs/just-bash/tree/main/packages/just-bash). It's a sandboxed environment with a shell interpreter that was originally intended for use with AI agents after its author observed that AI agents know how to use a tool called `bash` a lot better than a tool called `search_documentation`. This is backed by a "fake" shell with "fake" core utilities (`cat`, `ls`, etc, hereinafter coreutils) so that when an agent decides to `rm -rf /`, nothing important actually leaves the room. One of my coworkers made [@tigrisdata/agent-shell](https://www.npmjs.com/package/@tigrisdata/agent-shell) on top of this that uses Tigris as its storage layer.
+
+This is great for people in the JavaScript ecosystem, but I am not mainly a JavaScript developer. I really wanted to play with it so I started thinking what it would take to have something like this in Go. mvdan's [shell package](https://pkg.go.dev/mvdan.cc/sh/v3) makes this a heck of a lot easier, meaning that this "fake" shell would be powered by a real shell instead of either porting half of bash to JavaScript or making up hopefully-compatible behaviour.
+
+After a bunch of thought, hacking, and a spot of vibe coding while I did some Dawntrail extreme mount farms, I ended up with [Kefka](https://tangled.org/xeiaso.net/kefka), a "fake" shell with coreutils implementations that lets you put your programs in clown jail. This package lets you add a sandboxed-in-userspace shell to your existing projects without shelling out to the actual implementations of coreutils on your machine.
+
+<Conv name="Mara" mood="hacker">
+  The name is inspired from [Kefka
+  Palazzo](https://finalfantasy.fandom.com/wiki/Kefka_Palazzo), the final boss
+  of Final Fantasy VI. Need to chain uncontrollable demons? Use the power of a
+  mad god driven to the brink of insanity with raw access to magic! What could
+  possibly go wrong!
+</Conv>
+
+## So I did that
+
+So after some thought, I came up with this interface for the "commands" to use: `Execer`. This takes process context and passes it as an argument to a function named `Exec`. `Exec` then does whatever the process needs it to (list files, write to stdout, etc.) and returns an error if things went wrong and no error if things didn't.
+
+```go
+type ExecContext struct {
+	Stdin          io.Reader
+	Stdout, Stderr io.Writer
+	Dir            string
+	Environ        expand.Environ
+	FS             billy.Filesystem
+	// Runner is the active shell runner. Commands that need to dispatch a
+	// child command (for example, `time CMD`) should call Runner.Subshell()
+	// and re-enter the shell so the call goes through the same exec handler
+	// chain instead of poking at the registry directly. May be nil in
+	// embedders or tests that have not wired up a runner.
+	Runner *interp.Runner
+}
+
+type Execer interface {
+	Exec(ctx context.Context, ec *ExecContext, args []string) error
+}
+```
+
+This is where I started vibe coding things, mostly via a [skill that ports a just-bash command to the Execer interface and filesystem in Go](https://tangled.org/xeiaso.net/kefka/blob/main/.claude/skills/just-bash-port/SKILL.md). just-bash itself looks vibe coded from help output and manpages; I tried to go further and stay POSIX compatible, down to matching flag syntax (and in some cases output formats). If your muscle memory fails you, it's a bug in my book.
+
+<ConvP>
+  <Conv name="Aoi" mood="wut">
+    If I recall, some POSIX utilities like `false` aren't usable as Go identifiers, how did you handle package names for that?
+  </Conv>
+  <Conv name="Cadey" mood="aha">
+    By naming them things like `falsecmd`:
+
+    ```go
+    package falsecmd
+
+    // ...
+
+    type Impl struct{}
+
+    func (Impl) Exec(ctx context.Context, ec *command.ExecContext, args []string) error {
+    	return interp.ExitStatus(1)
+    }
+    ```
+
+    Honestly the implementations of `true` and `false` are my favourite part of this implementation. Here's the implementation of `true`:
+
+    ```go
+    package truecmd
+
+    // ...
+
+    type Impl struct{}
+
+    func (Impl) Exec(ctx context.Context, ec *command.ExecContext, args []string) error {
+    	return nil
+    }
+    ```
+
+    This is a fully POSIX compliant implementation of `true`! Here's the relevant part of the spec if you don't believe me:
+
+    > `true` - return true value
+    >
+    > **SYNOPSIS**
+    >
+    > `true`
+    >
+    > **OPTIONS**
+    >
+    > None.
+    >
+    > **OPERANDS**
+    >
+    > None.
+
+    Really, check out [the POSIX spec for `true`](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/true.html). It's trivial to implement, here's a oneliner to implement it in Linux:
+
+    ```
+    touch ./true && chmod +x ./true
+    ```
+
+  </Conv>
+</ConvP>
+
+### I made an operating system\*
+
+This is basically an operating system: it provides interfaces for programs (well, in this case functions) to get input from a user, send output to a user, interact with a filesystem, and more. Eventually I want to add networking via a network stack on ExecContext, probably with [tsnet](https://pkg.go.dev/tailscale.com/tsnet) or [wireguard-go's netstack package](https://pkg.go.dev/golang.zx2c4.com/wireguard/tun/netstack) for the user-level side. Maybe there's room for adding [CEL](https://cel.dev/) based network filters there too.
+
+## Porting applications with WebAssembly
+
+Once I got basic coreutils working, I thought it would be fun to get Python, jq, and ripgrep working. From [previous experimentation](https://tangled.org/xeiaso.net/x/tree/master/llm/codeinterpreter/python) [back in the strawberry era of AI](https://xeiaso.net/blog/2024/strawberry/), I had already gotten Python running in WebAssembly via [wazero](https://github.com/wazero/wazero). This used the stdlib [io/fs#FS](https://pkg.go.dev/io/fs#FS) interface to allow me to inject virtual filesystems into the WebAssembly context. I used this to isolate my chatbot's filesystem state so that it (hopefully) wasn't able to delete anything important by accident.
+
+`io/fs#FS` has methods for the important stuff, and runtime interface assertions let you bridge the gap for things like writes. But it was really designed for [embedded filesystems](https://pkg.go.dev/embed#hdr-File_Systems), and writes get hairy fast once you're talking to object storage or anything that isn't a tree of bytes on disk.
+
+At some point I hit a wall and had to switch from io/fs#FS to [billy](https://github.com/go-git/go-billy), another filesystem interface that I think predates the standard library one. This gives you [a bunch more methods](https://pkg.go.dev/github.com/go-git/go-billy/v5@v5.9.0#Filesystem) that map a lot closer to filesystem semantics in ways that coreutils crave. The interface was also mostly compatible with io/fs#FS so most of the hard part was really changing out the type and then chasing down compiler errors until I found enough of a pattern to have Opus automate the rest of it.
+
+From there it was a matter of adapting billy's filesystem to wazero's [experimental sys interface](https://pkg.go.dev/github.com/tetratelabs/wazero@v1.11.0/experimental/sys). Mostly glue code, except where I had to translate Go errors into POSIX errno values. I had to read both the POSIX spec, the WASI spec, and the wazero source to figure out how to map errors between the two worlds. I think I'm at least 95% correct, which is likely within the margin of porting error.
+
+Adapting that codeinterpreter/python library to the new interface was mostly straightforward, and I ended up with a flow like this:
+
+```go
+// from https://tangled.org/xeiaso.net/kefka/blob/main/command/internal/python3/python3.go
+
+func (Impl) Exec(ctx context.Context, ec *command.ExecContext, args []string) error {
+	fsConfig := wazero.NewFSConfig().
+		(sysfs.FSConfig).
+		WithSysFSMount(billyfs.New(ec.FS), "/")
+
+	config := wazero.NewModuleConfig().
+		// Pipe ExecContext stdio
+		WithStdin(ec.Stdin).WithStdout(ec.Stdout).WithStderr(ec.Stderr).
+		// Pipe argv
+		WithArgs(append([]string{"python3"}, args...)...).
+		WithName("python3").
+		// Pipe filesystem
+		WithFSConfig(fsConfig).
+		// Pipe system time
+		WithSysNanosleep().WithSysNanotime().WithSysWalltime()
+
+	mod, err := runtime.InstantiateModule(ctx, compiled, config)
+	if err != nil {
+		// Fit the square peg into the round hole
+		if exitErr, ok := errors.AsType[*wsys.ExitError](err); ok {
+			if code := exitErr.ExitCode(); code != 0 {
+				return interp.ExitStatus(uint8(code))
+			}
+			return nil
+		}
+		return err
+	}
+	return mod.Close(ctx)
+}
+```
+
+<Conv name="Mara" mood="aha">
+  See? The dependencies such as `stdin`, `stdout`, and `stderr` get _injected_
+  into the WebAssembly guest. Wazero also makes you inject the implementation of
+  time for boring reasons involving deterministic computing, but I'm sure you
+  can see the ways things hook in. This basic dependency injection flow is how
+  things like the [linuxulator](https://wiki.freebsd.org/Linuxulator) in FreeBSD
+  or the old version of the Windows Subsystem for Linux work (WSL1 before it was
+  made into a Linux VM with WSL2). The table of system calls and filesystem
+  context is effectively an argument to the process.
+</Conv>
+
+Same trick got me ripgrep and jq. jq was annoying — wasi-sdk doesn't love jq's (ab)use of cmake — but 30 or so minutes of tweaking compiler flags got me a binary that works enough.
+
+I could see it being pretty easy to port over arbitrary programs to Kefka using WebAssembly like this. There's just one small problem: [WASI preview 0.1](https://github.com/WebAssembly/WASI/tree/wasi-0.1) doesn't allow you to open arbitrary network sockets. This has been a huge pain in practice (it means you can't do HTTP requests, database connections, or other common internet things from inside the WASM sandbox) and future work probably would include adapting wazero to use [wasix](https://wasix.org/) instead of WASI 0.1.
+
+### Using filesystems that don't exist
+
+OK, that handles filesystems that (arguably) exist, like the btrfs volume on my dev box. What about filesystems that don't? For the sake of argument, let's say you want this fake shell to interact with object storage as its main filesystem. At some level all you need to do is adapt the billy interface to object storage using something like [storage-go](https://pkg.go.dev/github.com/tigrisdata/storage-go).
+
+<Conv name="Cadey" mood="coffee">
+  Disclaimer, I work at Tigris and developed this library for them. It's
+  basically the S3 client with more methods to handle additional Tigris features
+  like forks and snapshots. I'll be writing more about it soon.
+</Conv>
+
+After finding [a basic implementation of an S3 -> Billy adapter](https://github.com/a-poor/s3fs), I vendored it into the Kefka repo and swapped out the "real" filesystem in cmd/kefka for an s3fs implementation pointed at a sample Tigris bucket. From there it was down to an iterative process of running commands, finding feature gaps when errors showed up, implementing them, fuzzing, and making sure things work mostly the same against Tigris as they do against a local filesystem.
+
+WASI is cursed: it has no process-level "current working directory," which most programs assume exists. You patch around it by passing a `CWD` envvar, or just use absolute paths. I haven't hit anything broken in casual use, but expect rough edges. Here be dragons and this code may be known by the state of California to cause cancer.
+
+## Why does it have to use the command line?
+
+Once everything got working with s3fs and a local shell, I wondered how hard it would be to make this work as an SSH server using the [github.com/gliderlabs/ssh package](https://pkg.go.dev/github.com/gliderlabs/ssh@v0.3.8). Hooking things up was pretty easy:
+
+```go
+func HandleSSH(sess ssh.Session) error {
+  // Convenience variables for SSH session values
+  var stdout io.Writer = sess
+  var stderr io.Writer = sess.Stderr()
+  var stdin  io.Reader = sess
+  ctx := sess.Context() // cancelled when the user disconnects
+
+  // Kefka command registry with coreutils/python/jq/etc
+  commands := registry.New()
+  coreutils.Register(commands)
+  wasmprog.Register(commands)
+
+  // Base envvars for all programs, needed by POSIX
+  env := expand.ListEnviron(
+    "HOME=/",
+    "PWD=/",
+    "IFS=\n",
+    "HOSTNAME=localhost",
+    "USER="+sess.User(),
+    // not strictly required, but just-bash sets it
+    "MACHTYPE=x86_64-pc-linux-gnu",
+  )
+
+  // Create shell engine
+  sh, err := interp.New(
+    // Set the "interactive" flag so the shell expands aliases
+    interp.Interactive(true),
+    // Forward our envvars
+    interp.Env(env),
+    // Wire up stdio
+    interp.StdIO(stdin, stdout, stderr),
+    // Change the shell exec handler such that it's constrained to the
+    // Kefka registry.
+    //
+    // Strictly speaking you don't have to do this, but if you don't
+    // then any time the registry doesn't have a command
+    // implementation, interp falls back to its default ExecHandler that
+    // executes the command as a subprocess. This is almost certainly
+    // not what you want.
+    interp.ExecHandlers(constrainToRegistry(commands)),
+    // Wire up per-command pwd state to the filesystem implementation
+    interp.CallHandler(billysh.CallHandler(commands, fsys, stdout, stderr)),
+    // Handle shell-level filesystem I/O (redirects, glob expansion, etc)
+    interp.StatHandler(billysh.FsysStatHandler(commands, fsys)),
+    interp.FsysOpenHandler(billysh.FsysOpenHandler(commands, fsys)),
+    interp.ReadDirHandler2(billysh.FsysReadDirHandler(commands, fsys)),
+  )
+
+  // Read shell commands
+  parser := syntax.NewParser()
+  fmt.Fprintf(stdout, "$ ")
+
+  // Split input into commands
+  for stmts, err := range parser.InteractiveSeq(stdin) {
+    if err != nil {
+      return err
+    }
+
+    if parser.Incomplete() {
+      fmt.Fprintf(stdout, "> ")
+      continue
+    }
+
+    for _, stmt := range stmts {
+      err := sh.Run(ctx, stmt)
+      if sh.Exited() {
+        return err
+      }
+    }
+
+    // Show prompt
+    fmt.Fprintf(stdout, "$ ")
+  }
+
+  return nil
+}
+```
+
+[The real handler](https://tangled.org/xeiaso.net/kefka/blob/main/cmd/sophia/main.go#L87) is much messier because Python's REPL needs careful buffering, Ctrl-C has to actually cancel things, and [pty](https://en.wikipedia.org/wiki/Pseudoterminal) wiring is its own can of cans of worms. None of that shows up if it's working. Tab completion and readline polish are easy enough; I'll let you wire those up as an exercise for the reader.
+
+If you want to try it today, you can ssh into `sophia.xeiaso.net`:
+
+```
+$ ssh sophia.xeiaso.net
+```
+
+You'll get an isolated sandbox in your own [bucket fork/branch](https://www.tigrisdata.com/docs/forks/). Every `ls` is a `ListObjectsV2` against the bucket. Every `qjs` or `python3` runs WebAssembly on the server, wired to that same bucket.
+
+```
+$ cat ./samples/hello.js
+console.log("Hello, world!");
+$ qjs ./samples/hello.js
+Hello, world!
+```
+
+The demo bucket is seeded with examples. You'll probably have to poke around to find everything. Worst case, run `help`.
+
+<Conv name="Cadey" mood="coffee">
+  I should really hook up session recording to this.
+</Conv>
+
+I want more experimental WebAssembly hacks like this to exist. I'll keep poking at it.
+
+## Put your programs in clown jail
+
+With some effort, [yeet](https://github.com/TecharoHQ/yeet) could use Kefka's shell utilities to run [Anubis](https://anubis.techaro.lol) builds on Windows; and if management ever makes you babysit AI agents, clown jail is a decent answer.
+
+The code lives [on Tangled](https://tangled.org/xeiaso.net/kefka). I'm wiring it into [an agent harness](https://github.com/tigrisdata-community/mithras) so I can automate small tools against a local model (I'm loving Qwen3-36B-A3B).
+
+There's a sister post on the Tigris blog that goes deeper into the AI-agent angle and the porting work using Claude Code. If you want, you can check it out here:
+
+<LinkPreviewCard
+  url="https://tigrisdata.com/blog/agent-sandbox-go"
+  image="https://files.xeiaso.net/blog/tigris/mad-god-with-robots.webp"
+  siteName="Tigris Data"
+  title="Give your agents disposable environments in Go"
+  description="Kefka is a userspace shell sandbox in Go that gives every AI agent its own copy-on-write Tigris bucket fork plus Python, jq, and ripgrep via WebAssembly."
+/>
