@@ -8,7 +8,6 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
-	"expvar"
 	"flag"
 	"fmt"
 	"log"
@@ -18,6 +17,7 @@ import (
 
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	storage "github.com/tigrisdata/storage-go"
 	"xeiaso.net/v4/internal"
 )
@@ -107,7 +107,7 @@ func main() {
 
 func internalAPI() {
 	mux := http.NewServeMux()
-	mux.Handle("/debug/vars", expvar.Handler())
+	mux.Handle("/metrics", promhttp.Handler())
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "OK")
 	})

@@ -5,20 +5,34 @@ import (
 	"crypto/subtle"
 	"encoding/hex"
 	"errors"
-	"expvar"
 	"io"
 	"log/slog"
 	"net"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 )
 
 var (
-	uploads      = expvar.NewInt("gauge_futuresight_uploads")
-	uploadErrors = expvar.NewInt("gauge_futuresight_upload_errors")
-	serves       = expvar.NewInt("gauge_futuresight_serves")
-	notFounds    = expvar.NewInt("gauge_futuresight_not_founds")
+	uploads = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "futuresight_uploads_total",
+		Help: "Number of preview volumes successfully stored.",
+	})
+	uploadErrors = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "futuresight_upload_errors_total",
+		Help: "Number of failed uploads.",
+	})
+	serves = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "futuresight_serves_total",
+		Help: "Number of preview volumes successfully served.",
+	})
+	notFounds = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "futuresight_not_founds_total",
+		Help: "Number of requests for previews that could not be resolved.",
+	})
 )
 
 // server holds the shared dependencies for the preview HTTP handlers.
@@ -46,7 +60,7 @@ func (s *server) handleUpload(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, s.maxUploadBytes)
 
 	if err := r.ParseMultipartForm(8 << 20); err != nil {
-		uploadErrors.Add(1)
+		uploadErrors.Inc()
 		var tooLarge *http.MaxBytesError
 		if errors.As(err, &tooLarge) {
 			http.Error(w, "upload too large", http.StatusRequestEntityTooLarge)
@@ -58,7 +72,7 @@ func (s *server) handleUpload(w http.ResponseWriter, r *http.Request) {
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		uploadErrors.Add(1)
+		uploadErrors.Inc()
 		http.Error(w, "missing file", http.StatusBadRequest)
 		return
 	}
@@ -70,7 +84,7 @@ func (s *server) handleUpload(w http.ResponseWriter, r *http.Request) {
 	// authoritative on the content address.
 	tmp, err := os.CreateTemp(s.store.cacheDir, "upload.*.erofs")
 	if err != nil {
-		uploadErrors.Add(1)
+		uploadErrors.Inc()
 		slog.Error("can't create temp upload", "err", err)
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
@@ -81,14 +95,14 @@ func (s *server) handleUpload(w http.ResponseWriter, r *http.Request) {
 	if _, err := io.Copy(io.MultiWriter(tmp, h), file); err != nil {
 		tmp.Close()
 		os.Remove(tmpName)
-		uploadErrors.Add(1)
+		uploadErrors.Inc()
 		slog.Error("can't read upload", "err", err)
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
 	if err := tmp.Close(); err != nil {
 		os.Remove(tmpName)
-		uploadErrors.Add(1)
+		uploadErrors.Inc()
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
@@ -97,7 +111,7 @@ func (s *server) handleUpload(w http.ResponseWriter, r *http.Request) {
 
 	if err := s.store.PutVolume(r.Context(), hash, tmpName); err != nil {
 		os.Remove(tmpName)
-		uploadErrors.Add(1)
+		uploadErrors.Inc()
 		slog.Error("can't store volume", "err", err, "hash", hash)
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
@@ -113,14 +127,14 @@ func (s *server) handleUpload(w http.ResponseWriter, r *http.Request) {
 	slug := slugifyBranch(branch)
 	if slug != "" {
 		if err := s.store.SetBranch(r.Context(), slug, hash); err != nil {
-			uploadErrors.Add(1)
+			uploadErrors.Inc()
 			slog.Error("can't set branch pointer", "err", err, "slug", slug, "hash", hash)
 			http.Error(w, "internal error", http.StatusInternalServerError)
 			return
 		}
 	}
 
-	uploads.Add(1)
+	uploads.Inc()
 	slog.Info("stored preview", "hash", hash, "branch", branch, "slug", slug)
 
 	w.Header().Set("Content-Type", "text/plain")
@@ -132,7 +146,7 @@ func (s *server) handleUpload(w http.ResponseWriter, r *http.Request) {
 func (s *server) handleServe(w http.ResponseWriter, r *http.Request) {
 	label, ok := subdomainLabel(r.Host, s.baseDomain)
 	if !ok {
-		notFounds.Add(1)
+		notFounds.Inc()
 		http.NotFound(w, r)
 		return
 	}
@@ -142,7 +156,7 @@ func (s *server) handleServe(w http.ResponseWriter, r *http.Request) {
 		resolved, err := s.store.ResolveBranch(r.Context(), label)
 		if err != nil {
 			if errors.Is(err, ErrNotFound) {
-				notFounds.Add(1)
+				notFounds.Inc()
 				http.Error(w, "no such preview", http.StatusNotFound)
 				return
 			}
@@ -156,7 +170,7 @@ func (s *server) handleServe(w http.ResponseWriter, r *http.Request) {
 	volFS, err := s.store.Volume(r.Context(), hash)
 	if err != nil {
 		if errors.Is(err, ErrNotFound) {
-			notFounds.Add(1)
+			notFounds.Inc()
 			http.Error(w, "no such preview", http.StatusNotFound)
 			return
 		}
@@ -165,7 +179,7 @@ func (s *server) handleServe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	serves.Add(1)
+	serves.Inc()
 	http.FileServerFS(volFS).ServeHTTP(w, r)
 }
 
