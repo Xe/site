@@ -267,4 +267,23 @@ in  [ Person::{
       , Link::{ url = "https://www.linkedin.com/in/aditya-shankar-338641252/", title = "LinkedIn" }
       ]
     }
+    , Person::{
+      , name = "Rocktim Saikia"
+      , tags =
+        [ "generalist"
+        , "full-stack"
+        , "backend"
+        , "typescript"
+        , "nodejs"
+        , "python"
+        , "golang"
+        , "ruby"
+        , "linux"
+        , "opensource"
+        ]
+      , links =
+        [ Link::{ url = "https://github.com/rocktimsaikia", title = "GitHub" }
+        , Link::{ url = "https://rocktim.dev", title = "Website" }
+        ]
+      }
     ]
