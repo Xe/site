@@ -12,7 +12,7 @@ variable "TYPST_VERSION" { default = "0.13.1" }
 variable "UBUNTU_VERSION" { default = "24.04" }
 
 group "default" {
-  targets = [ "patreon-saasproxy", "xesite", "sponsor-panel" ]
+  targets = [ "patreon-saasproxy", "xesite", "sponsor-panel", "futuresight" ]
 }
 
 target "patreon-saasproxy" {
@@ -63,5 +63,19 @@ target "sponsor-panel" {
   pull = true
   tags = [
     "registry.int.xeserv.us/xe/site/sponsor-panel:main"
+  ]
+}
+
+target "futuresight" {
+  args = {
+    ALPINE_VERSION = null
+    GO_VERSION = null
+  }
+  context = "."
+  dockerfile = "./docker/futuresight.Dockerfile"
+  platforms = [ "linux/amd64", "linux/arm64" ]
+  pull = true
+  tags = [
+    "registry.int.xeserv.us/xe/site/futuresight:main"
   ]
 }

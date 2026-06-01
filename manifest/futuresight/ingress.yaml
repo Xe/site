@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: futuresight
+  annotations:
+    # NOTE: a wildcard certificate for *.preview.xeiaso.net requires a DNS-01
+    # solver. The default letsencrypt-prod issuer used elsewhere in this repo is
+    # HTTP-01, which cannot issue wildcards. Point this at a DNS-01 ClusterIssuer
+    # (or pre-provision the preview-xeiaso-net-tls secret) before applying.
+    #
+    # The wildcard also covers the upload host api.preview.xeiaso.net, which
+    # handleUpload (host-agnostic, token-guarded) serves. Dev boxes POST builds
+    # there; in-cluster xesite uses http://futuresight.default.svc instead.
+    cert-manager.io/cluster-issuer: "letsencrypt-dns"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "*.preview.xeiaso.net"
+      secretName: preview-xeiaso-net-tls
+  rules:
+    - host: "*.preview.xeiaso.net"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: futuresight
+                port:
+                  number: 80

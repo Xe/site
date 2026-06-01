@@ -84,6 +84,7 @@ type FS struct {
 	fs   fs.FS
 	lock sync.RWMutex
 
+	volumeHash    string
 	lastBuildTime time.Time
 }
 
@@ -119,6 +120,20 @@ func (f *FS) BuildTime() time.Time {
 	return f.lastBuildTime
 }
 
+// VolumeHash returns the truncated sha256 of the most recently built erofs
+// volume. It content-addresses the current build for the preview site.
+func (f *FS) VolumeHash() string {
+	f.lock.Lock()
+	defer f.lock.Unlock()
+
+	return f.volumeHash
+}
+
+// Branch returns the git branch this site was built from.
+func (f *FS) Branch() string {
+	return f.opt.Branch
+}
+
 func (f *FS) Open(name string) (fs.File, error) {
 	f.lock.RLock()
 	defer f.lock.RUnlock()
@@ -134,15 +149,16 @@ func (f *FS) Open(name string) (fs.File, error) {
 }
 
 type Options struct {
-	Development    bool
-	Branch         string
-	Repo           string
-	StaticSiteDir  string
-	URL            string
-	PatreonClient  *patreon.Client
-	DataDir        string
-	MiURL          string
-	FutureSightURL string
+	Development      bool
+	Branch           string
+	Repo             string
+	StaticSiteDir    string
+	URL              string
+	PatreonClient    *patreon.Client
+	DataDir          string
+	MiURL            string
+	FutureSightURL   string
+	FutureSightToken string
 }
 
 func New(ctx context.Context, o *Options) (*FS, error) {
@@ -181,6 +197,16 @@ func New(ctx context.Context, o *Options) (*FS, error) {
 		fs.repoDir, err = os.Getwd()
 		if err != nil {
 			return nil, err
+		}
+
+		// In dev mode the build reads the working tree rather than the clone, so
+		// discover the branch the developer actually has checked out instead of
+		// trusting the --git-branch flag.
+		if wtRepo, err := git.PlainOpenWithOptions(fs.repoDir, &git.PlainOpenOptions{DetectDotGit: true}); err == nil {
+			if head, err := wtRepo.Head(); err == nil && head.Name().IsBranch() {
+				o.Branch = head.Name().Short()
+				slog.Debug("using working tree branch", "branch", o.Branch)
+			}
 		}
 	} else {
 		wt, err := repo.Worktree()
@@ -365,13 +391,30 @@ func (f *FS) build(ctx context.Context, siteCommit string) error {
 		return fmt.Errorf("lume: can't compress site folder: %w", err)
 	}
 
+	volumeLoc := filepath.Join(f.opt.DataDir, "site.erofs")
+
+	hash, err := buildEROFS(destDir, volumeLoc, begin)
+	if err != nil {
+		return err
+	}
+
+	// Open the new volume before closing the old FS so a failed open keeps the
+	// previous build serving.
+	efs, err := openEROFS(volumeLoc)
+	if err != nil {
+		return err
+	}
+
 	if cl, ok := f.fs.(io.Closer); f.fs != nil && ok {
 		if err := cl.Close(); err != nil {
 			slog.Error("failed to close old fs", "err", err)
 		}
 	}
 
-	f.fs = os.DirFS(destDir)
+	f.fs = efs
+	f.volumeHash = hash
+
+	slog.Info("built erofs volume", "loc", volumeLoc, "hash", hash, "time", dur.String())
 
 	return nil
 }
@@ -649,18 +692,29 @@ func (f *FS) FutureSight(ctx context.Context) {
 }
 
 func (f *FS) futureSight(ctx context.Context) error {
-	zipLoc := filepath.Join(f.opt.DataDir, "site.zip")
+	volumeLoc := filepath.Join(f.opt.DataDir, "site.erofs")
 
-	fin, err := os.Open(zipLoc)
+	fin, err := os.Open(volumeLoc)
 	if err != nil {
-		return fmt.Errorf("lume: can't open site zip for future sight: %w", err)
+		return fmt.Errorf("lume: can't open site volume for future sight: %w", err)
 	}
 	defer fin.Close()
+
+	hash := f.VolumeHash()
 
 	buf := bytes.NewBuffer(nil)
 	writer := multipart.NewWriter(buf)
 
-	part, err := writer.CreateFormFile("file", filepath.Base(zipLoc))
+	// Write metadata fields before the file so a streaming reader sees them first.
+	if err := writer.WriteField("branch", f.opt.Branch); err != nil {
+		return fmt.Errorf("lume: can't write branch field: %w", err)
+	}
+
+	if err := writer.WriteField("hash", hash); err != nil {
+		return fmt.Errorf("lume: can't write hash field: %w", err)
+	}
+
+	part, err := writer.CreateFormFile("file", filepath.Base(volumeLoc))
 	if err != nil {
 		return fmt.Errorf("lume: can't create form file: %w", err)
 	}
@@ -679,17 +733,21 @@ func (f *FS) futureSight(ctx context.Context) error {
 	}
 
 	req.Header.Set("Content-Type", writer.FormDataContentType())
+	if f.opt.FutureSightToken != "" {
+		req.Header.Set("Authorization", "Bearer "+f.opt.FutureSightToken)
+	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("lume: can't post to future sight: %w", err)
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return web.NewError(http.StatusOK, resp)
 	}
 
-	slog.Info("deployed to preview site")
+	slog.Info("deployed to preview site", "hash", hash, "branch", f.opt.Branch)
 
 	return nil
 }

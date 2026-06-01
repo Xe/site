@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: futuresight
+  labels:
+    app.kubernetes.io/name: futuresight
+    app.kubernetes.io/component: web
+  annotations:
+    keel.sh/policy: all
+    keel.sh/trigger: poll
+    keel.sh/pollSchedule: "@every 5m"
+    operator.1password.io/auto-restart: "true"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: futuresight
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: futuresight
+        app.kubernetes.io/component: web
+    spec:
+      volumes:
+        # Scratch cache of downloaded erofs volumes. Losing it on restart just
+        # triggers a re-download from Tigris.
+        - name: cache
+          emptyDir: {}
+      containers:
+        - name: web
+          image: ghcr.io/xe/site/futuresight:latest
+          imagePullPolicy: Always
+          env:
+            - name: "BIND"
+              value: ":3000"
+            - name: "INTERNAL_API_BIND"
+              value: ":3001"
+            - name: "BASE_DOMAIN"
+              value: "preview.xeiaso.net"
+            - name: "CACHE_DIR"
+              value: "/xe/cache"
+            - name: "TIGRIS_BUCKET"
+              value: "xesite-future-sight"
+          envFrom:
+            # AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY for Tigris (reused from
+            # the xesite Tigris credentials).
+            - secretRef:
+                name: xesite-anubis-tigris
+            # UPLOAD_TOKEN, shared with xesite's --future-sight-token.
+            - secretRef:
+                name: futuresight
+          ports:
+            - containerPort: 3000
+              name: http
+          volumeMounts:
+            - mountPath: "/xe/cache"
+              name: cache
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 30
