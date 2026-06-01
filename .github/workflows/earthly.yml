@@ -40,6 +40,7 @@ jobs:
             patreon-saasproxy.tags=ghcr.io/xe/site/patreon-saasproxy:latest
             sponsor-panel.tags=ghcr.io/xe/site/sponsor-panel:latest
             xesite.tags=ghcr.io/xe/site/bin:latest
+            futuresight.tags=ghcr.io/xe/site/futuresight:latest
 
       - name: Build Docker image
         if: github.event_name == 'pull_request'
@@ -51,3 +52,4 @@ jobs:
             patreon-saasproxy.tags=ghcr.io/xe/site/patreon-saasproxy:latest
             sponsor-panel.tags=ghcr.io/xe/site/sponsor-panel:latest
             xesite.tags=ghcr.io/xe/site/bin:latest
+            futuresight.tags=ghcr.io/xe/site/futuresight:latest
