@@ -87,7 +87,7 @@ Yields:
 fe80::4%eth0
 ```
 
-In theory, there is guidance for how to properly handle IPv6 zones in user interfaces in [RFC 9884](https://www.rfc-editor.org/rfc/rfc9844.txt)~~, but there's no such guidance for URLs~~. Go also does not seem to follow this RFC in [net/url](https://pkg.go.dev).
+In theory, there is guidance for how to properly handle IPv6 zones in user interfaces in [RFC 9844](https://www.rfc-editor.org/rfc/rfc9844.txt)~~, but there's no such guidance for URLs~~. Go also does not seem to follow this RFC in [net/url](https://pkg.go.dev).
 
 <Conv name="Cadey" mood="coffee">
 EDIT: It seems that this behaviour is compliant with [RFC 6874](https://www.rfc-editor.org/rfc/rfc6874.html) and that this is in fact how it is meant to be done.
