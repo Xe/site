@@ -1,0 +1,100 @@
+---
+title: "IPv6 zones in URLs are a mistake"
+desc: "Run away while you still can, it's not too late for you to avoid the curse of knowledge."
+date: 2026-06-05
+---
+
+IPv6 is weird. One of the more strange parts of the standard is that every interface's link local addresses are in `fe80::whatever`. If you have a machine with two network interfaces, both of them will be in `fe80::`, so if you have a packet destined to `fe80::4`, how do you disambiguate it?
+
+The answer is you use [IPv6 scopes/zones](<https://en.wikipedia.org/wiki/IPv6_address#Scoped_literal_IPv6_addresses_(with_zone_index)>). The exact format of what goes into a zone is OS dependent, but on Linux it's the interface name and on Windows it's the interface ID. This lets the kernel's routing table know how to handle an address range conflict.
+
+On my tower, this would be represented like this:
+
+```text
+fe80::4%eth0
+```
+
+Where `eth0` is the name of my tower's ethernet device.
+
+When you create a host:port bindhost, you normally separate the hostname and port with a colon. IPv6 uses colons to separate hex groups. In order to disambiguate what's the host and what's the port, you typically format the IPv6 address in square brackets, so `fe80::4` on port 80 would look like this:
+
+```text
+[fe80::4]:80
+```
+
+And with the right scope it looks like this:
+
+```text
+[fe80::4%eth0]:80
+```
+
+Now let's get URL encoding into the mix. From high orbit, you can imagine a URL's format as being something like this:
+
+```
+<scheme>:[//][<username>[:<password>]@][<hostname>][:<port>][/<path>][?<query>][#<fragment>]
+```
+
+An IPv6 zone would then be part of the hostname, just like with that `fe80::4` port 80 example from earlier. So you'd think the URL would be something like this:
+
+```text
+http://[fe80::4%eth0]:80
+```
+
+But if you try to parse this as a URL in Go, you get an error:
+
+```go
+package main
+
+import "net/url"
+
+func main() {
+	if _, err := url.Parse("http://[fe80::4%eth0]:80"); err != nil {
+		panic(err)
+	}
+}
+```
+
+Yields:
+
+```text
+panic: parse "http://[fe80::4%eth0]:80": invalid URL escape "%et"
+```
+
+This happens because URLs can't represent all Unicode values, so any values that don't fit into the grammar of a URL become [percent-encoded](https://en.wikipedia.org/wiki/Percent-encoding). This is why sometimes you'll see a `%20` in URLs in the wild; that's encoding the ascii space key, which is invalid in URLs.
+
+In order to work around this, you need to percent-encode the percent sign in the IPv6 zone:
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/url"
+)
+
+func main() {
+	u, err := url.Parse("http://[fe80::4%25eth0]:80")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(u.Hostname())
+}
+```
+
+Yields:
+
+```text
+fe80::4%eth0
+```
+
+In theory, there is guidance for how to properly handle IPv6 zones in user interfaces in [RFC 9884](https://www.rfc-editor.org/rfc/rfc9844.txt), but there's no such guidance for URLs. Go also does not seem to follow this RFC in [net/url](https://pkg.go.dev).
+
+So in the meantime in order for Anubis to point to IPv6 zoned addresses, you need to encode the `%` with percent encoding. This is horrible, but it seems that this is an edge case that applies to other frameworks, programming languages, and libraries:
+
+- https://trac.nginx.org/nginx/ticket/623
+- https://github.com/psf/requests/issues/6808
+- https://datatracker.ietf.org/doc/html/draft-schinazi-httpbis-link-local-uri-bcp-03 -- Browsers don't currently support IPv6 zones because it breaks the concept of an "origin" which is used for many subtle things, this RFC draft attempts to define an zone origin in IPv6 so that browsers have a leg to stand on
+
+Maybe some day in the future there will be a better option here. In the meantime my policy of not forking the Go standard library means that this somewhat terrible UX for an edge case is acceptable. I hate it, but what can you do?
+
+TL;DR: computers were a mistake.
