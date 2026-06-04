@@ -1,0 +1,11 @@
+---
+title: "Giving your Go apps Tigris superpowers"
+date: 2026-06-09
+redirect_to: "https://www.tigrisdata.com/blog/storage-sdk-go/"
+---
+
+Tigris is S3-compatible, which means you can point the AWS SDK at it and most things just work. The catch is that the Tigris-exclusive features—bucket forking, snapshots, object renaming, and the like—need verbose workarounds because the AWS SDK doesn't know they exist.
+
+So we wrote a Go SDK that does. It comes in two flavors: the `storage` package is a drop-in replacement for the standard S3 client with first-class methods for the Tigris-specific operations, and `simplestorage` is a higher-level client for the common single-bucket case that infers its configuration from the environment so you stop passing the same parameters over and over. You can adopt the Tigris features incrementally without refactoring your existing S3 code, and the simpler API still works against other S3-compatible providers.
+
+I wrote up how it works and why we built it over on the Tigris blog.
