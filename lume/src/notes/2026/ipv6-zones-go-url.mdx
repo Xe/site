@@ -87,7 +87,22 @@ Yields:
 fe80::4%eth0
 ```
 
-In theory, there is guidance for how to properly handle IPv6 zones in user interfaces in [RFC 9884](https://www.rfc-editor.org/rfc/rfc9844.txt), but there's no such guidance for URLs. Go also does not seem to follow this RFC in [net/url](https://pkg.go.dev).
+In theory, there is guidance for how to properly handle IPv6 zones in user interfaces in [RFC 9884](https://www.rfc-editor.org/rfc/rfc9844.txt)~~, but there's no such guidance for URLs~~. Go also does not seem to follow this RFC in [net/url](https://pkg.go.dev).
+
+<Conv name="Cadey" mood="coffee">
+EDIT: It seems that this behaviour is compliant with [RFC 6874](https://www.rfc-editor.org/rfc/rfc6874.html) and that this is in fact how it is meant to be done.
+
+```text
+      IP-literal = "[" ( IPv6address / IPv6addrz / IPvFuture  ) "]"
+
+      ZoneID = 1*( unreserved / pct-encoded )
+
+      IPv6addrz = IPv6address "%25" ZoneID
+```
+
+Our industry confounds me.
+
+</Conv>
 
 So in the meantime in order for Anubis to point to IPv6 zoned addresses, you need to encode the `%` with percent encoding. This is horrible, but it seems that this is an edge case that applies to other frameworks, programming languages, and libraries:
 
