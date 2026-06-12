@@ -1,0 +1,99 @@
+---
+title: "Why are cached input tokens cheaper with AI services?"
+desc: "TL;DR: the GPU doesn't have to math as hard"
+date: 2026-06-12
+---
+
+import Admonition from "../../_components/Admonition.jsx";
+
+When you see AI model pricing pages, you usually see things broken down like this:
+
+| Model               | Context Length | Max CoT Tokens | Max Output Tokens | Input Price (Cache Hit) | Input Price (Cache Miss) | Output Price      |
+| ------------------- | -------------- | -------------- | ----------------- | ----------------------- | ------------------------ | ----------------- |
+| `deepseek-chat`     | 64K            | -              | 8K                | $0.07 / 1M tokens       | $0.27 / 1M tokens        | $1.10 / 1M tokens |
+| `deepseek-reasoner` | 64K            | 32K            | 8K                | $0.14 / 1M tokens       | $0.55 / 1M tokens        | $2.19 / 1M tokens |
+
+[Source: DeepSeek API Docs](https://api-docs.deepseek.com/quick_start/pricing-details-usd/)
+
+If you manage to have most of your input tokens be cached, you save a huge amount, in this case $0.20 per million tokens. What does this mean though? What does caching do that makes you save so much, in some cases upwards of tens of kilodollars?
+
+<center>
+  <blockquote
+    class="bluesky-embed"
+    data-bluesky-uri="at://did:plc:6e6n5nhhy7s2zqr7wx4s6p52/app.bsky.feed.post/3mo2wbjp5xk2g"
+    data-bluesky-cid="bafyreifqure4z4gwlru3cz3nxyuk54uix32xcffydd4wwv3dzipcqqgbom"
+    data-bluesky-embed-color-mode="system"
+  >
+    <p lang="en">
+      Someone explain the cached vs not thing to me for how this is $10,000
+      worth of savings lol
+      <br />
+      <br />
+      <a href="https://bsky.app/profile/did:plc:6e6n5nhhy7s2zqr7wx4s6p52/post/3mo2wbjp5xk2g?ref_src=embed">
+        [image or embed]
+      </a>
+    </p>
+    &mdash; Chimney Sweepers Local 420 FKA yburyug (
+    <a href="https://bsky.app/profile/did:plc:6e6n5nhhy7s2zqr7wx4s6p52?ref_src=embed">
+      @bobbby.online
+    </a>
+    ){" "}
+    <a href="https://bsky.app/profile/did:plc:6e6n5nhhy7s2zqr7wx4s6p52/post/3mo2wbjp5xk2g?ref_src=embed">
+      June 12, 2026 at 12:39 AM
+    </a>
+  </blockquote>
+  <script async src="https://embed.bsky.app/static/embed.js" charset="utf-8" />
+</center>
+
+<Admonition type="warning">
+  I'm gonna be totally honest, I barely understand the basic outline of the math
+  involved here. Where possible I am to not be completely wrong here, but I'm
+  not going to emit something 1:1 accurate with the mathematical truth of large
+  language models' inner workings. Bear with me.
+</Admonition>
+
+When you make an API call to large language model services, you make an API call like the following:
+
+```bash
+curl http://localhost:11434/api/chat -d '{
+  "model": "llama3.2",
+  "messages": [
+    {
+      "role": "user",
+      "content": "why is the sky blue?"
+    }
+  ]
+}'
+```
+
+That `messages` element is the key bit. Every time you accumulate messages from the initial system prompt, initial user request, AI responses and any tool use requests/responses, you add to that array and make it grow bigger and bigger.
+
+A good way to think about this is that sending a conversation to a large language model is like having a pair of people share a roll of paper on two different typewriters. Every time you finish your message, you send the roll of paper back to the AI model and it has to re-read through the entire conversation in order to start typing on the end with its response. As the conversation gets longer, this gets more and more expensive because the model has to recalculate its internal state all over again for every additional message.
+
+However, large language model inference is complicated but _deterministic_. Given the same inputs, you will always get the same output. This means that you can use a technique called [key-value caching](https://huggingface.co/docs/transformers/kv_cache) (KV caching) in order to save that intermediate state and use it for next time. Most of the time this cache is a prefix cache because that allows you to just add on more messages to the end of the request pretty easily and be fine.
+
+Imagine something like this:
+
+```bash
+curl http://localhost:11434/api/chat -d '{
+  "model": "llama3.2",
+  "messages": [
+    {
+      "role": "user",
+      "content": "why is the sky blue?"
+    },
+    {
+      "role": "assistant",
+      "content": "The sky is blue because of a phenomenon..."
+    },
+    {
+      "role": "user",
+      "content": "But I am looking outside right now and it is orange!"
+    }
+  ]
+}'
+```
+
+If the model has already processed the question about the sky being blue and generated the response about Rayleigh scattering, it doesn't need to process both of those messages again to answer the user's question about sunsets. In production AI model deployments you would put that generated intermediate state into the KV cache so that the model doesn't need to run twice for the same data. This saves time and effort on the side of the AI model provider, and currently model providers decide to pass that savings onto API users in the form of cheaper inference costs for cached lookups.
+
+As you develop an application with AI in it, try to avoid changing any inference settings or previous messages between prompts. This makes your application's queries much more likely to read from the cache, making it faster, reducing the environmental impact, and saving you(r users) money.
