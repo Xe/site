@@ -1,0 +1,179 @@
+---
+title: "I hate compilers"
+desc: "You'd think that given the same bytes of input you'd get the same bytes of output. lol. lmao. No, you don't. It's complicated."
+date: 2026-06-18
+---
+
+Anubis is about to get [WebAssembly-based proof of work checks](https://github.com/TecharoHQ/anubis/pull/1684) so that administrators can use a non-SHA256 proof of work method to protect their websites. Part of the implementation goals of this work is that the check logic is defined in _one_ place on both client and server. The client and server will then hook into the WebAssembly in order to make sure they're running in lockstep.
+
+However, one small problem comes up. What do you do when the client has WebAssembly disabled? I really don't want to de-facto lock people out of websites. Anubis exists in an impossible balance of user experience, administrator experience, and developer experience and any change to any of these factors disrupts the balance for other factors.
+
+To work around this and also fulfill the goal of having check logic defined _once_, I decided to take inspiration from the legendary talk [The Birth and Death of JavaScript](https://www.destroyallsoftware.com/talks/the-birth-and-death-of-javascript) and just recompile the WebAssembly to JavaScript. Sure, the resulting JavaScript will be slower than the equivalent WebAssembly (even more so because disabling WASM usually disables the JavaScript JIT, the thing that makes JavaScript fast), but it will finish _eventually_. Hopefully it will be more efficient than the existing JavaScript is on lower end hardware, but research is required.
+
+Luckily enough, the tool I need (`wasm2js` from the [binaryen project](https://github.com/WebAssembly/binaryen)) is packaged in Linux distributions. The bad news is that distributions ship ancient versions of it that don't get the same output as the version on my development machine's copy from [Homebrew](https://brew.sh).
+
+In order to really make sure that the output of this is deterministic (essential for reproducible builds), I need to bundle a copy of `wasm2js`. So I did that by building a version of `wasm2js` compiled to WebAssembly with [wasi-sdk](https://github.com/WebAssembly/wasi-sdk). The rest of the article is the tale of reproducibility woe that lead to the implementation I ended up with. Buckle up and enjoy the ride!
+
+## Reproducible builds are surprisingly hard
+
+<ConvP>
+  <Conv name="Aoi" mood="wut">
+    Back up a sec, this doesn't make sense to me. If you have _the same bytes of
+    input_ to a compiler, you should get _the same bytes_ of output assuming
+    that the compiler flags, target, and other platform details are controlled
+    for right? A compiler is just a deterministic function of input source code
+    becomes output bytecode, right?
+  </Conv>
+  <Conv name="Numa" mood="smug">
+    lol you'd think, but no, it's not. In theory it is (and for small scale
+    compilers it definitely is), but in practice compilers are strange and
+    complicated beasts containing multitudes that no mere mortal can fully
+    comprehend on their own.
+  </Conv>
+</ConvP>
+
+There are a shocking number of ways to accidentally create nondeterministic output when doing C/C++ development. One of the easiest is to use the builtin `__DATE__` and `__TIME__` macros to stamp a build with the time the compiler was executed at:
+
+```cpp
+// hello.cpp
+
+#include <iostream>
+
+int main() {
+    std::cout << __DATE__ << " " << __TIME__ << std::endl;
+    return 0;
+}
+```
+
+Building and running it once gets me this:
+
+```text
+$ make clean && make hello.wasm && wasmtime run -W exceptions=y ./hello.wasm
+rm -f hello.o hello.wasm
+wasi-sdk-33.0-x86_64-linux/bin/wasm32-wasip1-clang++ -O3 -fwasm-exceptions -mllvm -wasm-use-legacy-eh=false  -c hello.cpp -o hello.o
+wasi-sdk-33.0-x86_64-linux/bin/wasm32-wasip1-clang++ -O3 -fwasm-exceptions -mllvm -wasm-use-legacy-eh=false  -fwasm-exceptions -lunwind --no-wasm-opt hello.o -o hello.wasm
+Jun 18 2026 00:00:59
+```
+
+Another time it gets me this:
+
+```text
+$ make clean && make hello.wasm && wasmtime run -W exceptions=y ./hello.wasm
+rm -f hello.o hello.wasm
+wasi-sdk-33.0-x86_64-linux/bin/wasm32-wasip1-clang++ -O3 -fwasm-exceptions -mllvm -wasm-use-legacy-eh=false  -c hello.cpp -o hello.o
+wasi-sdk-33.0-x86_64-linux/bin/wasm32-wasip1-clang++ -O3 -fwasm-exceptions -mllvm -wasm-use-legacy-eh=false  -fwasm-exceptions -lunwind --no-wasm-opt hello.o -o hello.wasm
+Jun 18 2026 00:01:11
+```
+
+Even though the source code had _the same bytes_, the output of the compiler was wildly different.
+
+In order for users and packagers to trust the binaries of `wasm2js` I'm committing to the Anubis repo, I need to make sure that you can build the same version I built, down to _the same bytes_. For an added bonus, you should be able to build this on _your machine_ and get the same bytes I got.
+
+<Conv name="Numa" mood="smug">
+  That sure does sound like a great ideal, it would be horrible if something
+  unforeseen came up to ruin it!
+</Conv>
+
+## Clang silently runs `wasm-opt` from `$PATH` behind your back
+
+Among other tools like `wasm2js`, binaryen has [a bunch of other useful tools](https://github.com/WebAssembly/binaryen/tree/main) such as `wasm-opt`. `wasm-opt` optimizes WebAssembly compiler output to let you eke out more performance. This doesn't work in every circumstance, but when it does work it makes a _huge_ difference. As such, clang shells out to `wasm-opt` when doing builds.
+
+This normally makes sense, but in this case it caused builds to fail on my DGX Spark because its version of `wasm-opt` is too old:
+
+```text
+$ uname -m && which wasm-opt && wasm-opt --version
+aarch64
+/usr/bin/wasm-opt
+wasm-opt version 108
+```
+
+Compared to my workstation which installs `wasm-opt` from [Homebrew](https://brew.sh):
+
+```text
+$ uname -m && which wasm-opt && wasm-opt --version
+x86_64
+/home/linuxbrew/.linuxbrew/bin/wasm-opt
+wasm-opt version 130
+```
+
+Turns out that wasi-sdk and binaryen rely on the [WebAssembly Exceptions extension](https://github.com/WebAssembly/spec/blob/wasm-3.0/proposals/exception-handling/Exceptions.md). This is a reasonable thing to assume given that wasi-sdk mostly assumes you're building things for web browsers and [93.86% of browser users](https://caniuse.com/wf-wasm-exception-handling) have a browser engine new enough to support it. C++ is also one of the main places where exceptions are used, so I guess WebAssembly-native exception handling removes a lot of boilerplate here.
+
+Both wasmtime and wazero require you to flag into exception support. This is fine; we can just pass `-W exceptions=y` to wasmtime and use a custom runner harness for wazero. The annoying part is what happens when my arm machine's anemic build of wasm-opt sees exception handling instructions, causing it to exit. This made the build fail.
+
+The solution was to pass `--no-wasm-opt` at the linking step. This removed one angle of irreproducibility.
+
+<Conv name="Mara" mood="hacker">
+  I guess in the future we could make it use the version of `wasm-opt` it just
+  built to optimize the output, but that may be a premature optimization for
+  now.
+</Conv>
+
+## Clang relies on address layout for ordering things
+
+The version of clang that I use to compile `wasm2js` has some address-sensitive code generation hiding in its exception handling path. Raw pointer values leak into the order a handful of `try_table` blocks come out in. This surfaces as every build differing from the next by about 29 bytes:
+
+```diff
+-002a9af0: 2802 0441 0647 0d00 1f40 0103 0820 0241  (..A.G...@... .A
+-002a9b00: 206a 2103 2002 4138 6a20 0141 086a 10b5   j!. .A8j .A.j..
+-002a9b10: 8881 8000 2104 0b1f 4001 0304 2003 2004  ....!...@... . .
++002a9af0: 2802 0441 0647 0d00 1f40 0103 041f 4001  (..A.G...@....@.
++002a9b00: 0309 2002 4120 6a21 0320 0241 386a 2001  .. .A j!. .A8j .
++002a9b10: 4108 6a10 b588 8180 0021 040b 2003 2004  A.j......!.. . .
+```
+
+To make this easier to spot, here's a partial disassembly:
+
+```diff
+  i32.load  offset=4            ;; 28 02 04
+  i32.const 6                   ;; 41 06
+  i32.ne                        ;; 47
+  br_if     0                   ;; 0d 00
+- try_table (catch_all_ref 8)   ;; 1f 40 01 03 08
++ try_table (catch_all_ref 4)   ;; 1f 40 01 03 04
++ try_table (catch_all_ref 9)   ;; 1f 40 01 03 09
+    local.get 2                 ;; 20 02
+    i32.const 32                ;; 41 20
+    i32.add                     ;; 6a
+    local.set 3                 ;; 21 03
+    local.get 2                 ;; 20 02
+    i32.const 56                ;; 41 38
+    i32.add                     ;; 6a
+    local.get 1                 ;; 20 01
+    i32.const 8                 ;; 41 08
+    i32.add                     ;; 6a
+    call 17461                  ;; 10 b5 88 81 80 00
+    local.set 4                 ;; 21 04
+  end                           ;; 0b
+- try_table (catch_all_ref 4)   ;; 1f 40 01 03 04
+    local.get 3                 ;; 20 03
+    local.get 4                 ;; 20 04
+```
+
+The computation is nearly identical, but the byte order is just different enough to also make the catch references differ. This also fires when you build this pinned version of wasm2js on arm64 machines because its pointer iteration order is different from it is on my workstation.
+
+To work around this, I took two steps:
+
+1. Disable address-space randomization for this build using `setarch --addr-no-randomize`.
+2. Create known good sha256 checksums for both x86_64 and arm64 via building this program on machines I trust.
+
+I also made a CI job ensure this:
+
+```yaml
+- name: Ensure reproducibility
+  run: |
+    cd ./utils/wasm/wasm2js
+    ./build.sh
+    if sha256sum -c --status shasums.x86_64; then
+      echo "OK: rebuilt modules match the recorded x86_64 checksums"
+    elif sha256sum -c --status shasums.arm64; then
+      echo "OK: rebuilt modules match the recorded arm64 checksums"
+    else
+      echo "::error::rebuilt wasm2js/wasm-opt match neither recorded checksum set on ${{ matrix.runner }}" >&2
+      sha256sum wasm-opt_130.wasm wasm2js_130.wasm
+      exit 1
+    fi
+```
+
+To be extra sure, we have this job run on both x86_64 and arm64 hosts. I'd really love to have this be reproducible across hosts, but that's an upstream LLVM bug that I am not powerful enough to tackle. If you work on LLVM and are reading this, it would be nice to set a seed of some kind to ensure that this iteration order is fixed across architectures.
+
+At the very least builds are deterministic _within_ architectures. This may have to be good enough for now.
