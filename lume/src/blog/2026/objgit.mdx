@@ -1,0 +1,403 @@
+---
+title: "I taught a bucket to speak git"
+date: 2026-06-23
+redirect_to: "https://www.tigrisdata.com/blog/objgit/"
+---
+
+import Admonition from "../../_components/Admonition.jsx";
+
+What happens if I just point a git server at an object storage bucket?
+
+Back when I was porting
+[agent sandboxes to Go](https://www.tigrisdata.com/blog/agent-sandbox-go/), I
+built everything on top of
+[billy](https://pkg.go.dev/github.com/go-git/go-billy/v6), a filesystem
+abstraction for Go. The whole trick of the project was teaching a Tigris bucket
+to act enough like a filesystem that a shell interpreter and its tools couldn’t
+tell the difference. Billy was the key layer that made the entire façade fall
+into place.
+
+After I had gotten things working, I learned that I’m using billy way outside
+its normal usecase. It was originally made for
+[go-git](https://pkg.go.dev/github.com/go-git/go-git/v6), a pure-Go
+implementation of git’s protocols and data formats. It doesn’t rely on the
+`/usr/bin/git` binary existing at all. Every method on billy’s filesystem
+interface exists purely because go-git needs it. This gave me a terrible idea: I
+already have a bucket that can quack like a filesystem and go-git’s native
+language is “filesystem”.
+
+Can this Just Work™? Let's find out.
+
+## Git was always an object store
+
+If you strip away the porcelain, a git repository is 4 basic things:
+
+- Objects, or compressed blobs of data. Most of the objects in any individual
+  repository are files.
+- Trees, or objects that map to other objects. TL;DR: trees are folders.
+- Commits, or objects that point at one tree and their parent commit. This lets
+  you pin down which files belong to one logical change set.
+- Refs, branches and tags, they are tiny mutable pointers into the pile of
+  objects.
+
+<Admonition type="note">
+  Until I started working on this I was under the impression that git stored
+  only the patches done to an empty folder and that was how it reconstructed the
+  history of your repository. It does not. It actually keeps track of the entire
+  files, which explains why big binary blobs fudge the tooling so much. The diff
+  mental model works fine for using git day to day; it’s just wrong at the
+  storage layer, which is the layer this post lives in.
+</Admonition>
+
+For example, let’s say I just made a new git repository and committed a
+README.md to it. The tree for the `.git` folder looks something like this:
+
+```
+$ tree .git
+.git
+├── COMMIT_EDITMSG
+├── config
+├── HEAD
+├── index
+├── objects
+│   ├── 5e
+│   │   └── b8151eb669aa4467b6dea2c4bce19183cd0b41
+│   ├── 6a
+│   │   └── 6a8ecfcae2632152486aca3d9150ef83dedd66
+│   ├── f4
+│   │   └── d2487a1c6d742c8037c0296ddf80625190bd80
+│   ├── info
+│   └── pack
+└── refs
+    ├── heads
+    │   └── main
+    └── tags
+```
+
+As you can see there are three objects. One of them is the commit
+`5eb8151eb669aa4467b6dea2c4bce19183cd0b41`, the next is the tree, and the last
+one is the README file. The `main` branch also points to that commit:
+
+```
+$ cat .git/refs/heads/main
+5eb8151eb669aa4467b6dea2c4bce19183cd0b41
+```
+
+The cool part is that half of this is content-addressed. The content-addressed
+bits _never change_ once they’ve been committed. Git objects are a great fit for
+Tigris’ internal model because they are append-only storage, just like
+[the fundamental model Tigris is built upon](https://www.tigrisdata.com/blog/append-only-storage/).
+The things that do change often are the refs, which are updated to point to the
+latest commit. These are _tiny_ files though, which means that Tigris can handle
+them with no effort required.
+
+However, when we host git repositories on a server, we end up creating single
+points of failure. Our git repos are hosted on single machines that can and will
+break. The entire implementation relies on git objects being 1:1 correlated with
+filesystem objects because everyone (even GitHub) shells out to the git binary
+to actually store files. Hosting git repos becomes one of the most stateful
+services in our stateless cloud-native environment.
+
+Sure git is in-theory decentralized, but most of us have ended up using that to
+put our git repositories in one big store that has questionable uptime
+practices: GitHub. To be fair to hubbers, GitHub operates at a scale that none
+of us can really think about. They’ve been pushing the limits since their
+inception where they had to get Engine Yard to keep building them bigger servers
+to handle the load. They have to do everything with a big mounted filesystem
+because git’s tooling gives them no other option.
+
+## A travesty of horrors beyond human comprehension
+
+Now suppose this weirdness bothers you enough to do something about it. To build
+a git server **without** storing everything in the local filesystem, you have to
+speak git somehow, and the conventional options aren’t really all that great:
+
+- If you shell out to the git binary, now your “library” is the argv of the git
+  process and your error handling is screen-scraping output. Internally, git
+  implements its functionality with a billionty subcommands rather than exposing
+  it all as a library. The codebase is held together by load-bearing calls to
+  `die()`, which kills the process.
+- If you link into git’s guts with `libgit`, you inherit the “when things go
+  bad, `die()`” behaviour and your app now suddenly starts crashing at random.
+  This is not good for uptime.
+- If you try to use `libgit2` (the rewrite-that’s-actually-a-library), you have
+  to reckon with the fact that it’s addled by the GPL (with a linking exception,
+  try explaining that to your lawyers), you have to eat the jump to C every time
+  you do anything with git (very often), development has stalled, the Go
+  bindings have been archived, and it still assumes a local filesystem despite
+  assurances it does not.
+
+It might sound hopeless, right? You may be able to use WebAssembly or something
+to contain the madness (assuming you have a good way to implement
+`fork()`/`exec()` or `posix_spawn()` or something similar), but what if there
+was a pure Go library that could handle this all for us?
+
+Enter [go-git](https://pkg.go.dev/github.com/go-git/go-git/v6), a pure-go
+implementation of the git protocol and internals from scratch. This doesn’t rely
+on cgo or `/usr/bin/git` and it does not assume the repositories are stored in
+the local filesystem. Its storage interface is written against billy, the exact
+interface I’ve already taught to speak Tigris. I wanted a git server that was
+just in a bucket and the pieces were sitting there and calling to me.
+
+## Oh no, it works
+
+So I hacked up [objgit](https://github.com/tigrisdata/objgit), a git server
+backed by object storage. The only filesystem call I had to add to get it
+booting was `MkdirAll`. I wired up the
+[`transport`](https://pkg.go.dev/github.com/go-git/go-git/v6/plumbing/transport)
+package to a socket to implement the plaintext `git` protocol, hooked it up to a
+bucket, and pushed the repo I was currently working on.
+
+To my absolute astonishment, it worked.
+
+Git pushed, pulled, logged, blamed, tagged, the whole kit and kaboodle. I didn’t
+have to implement git myself, I just committed an egregious amount of shoving a
+square peg into a round hole until the peg went in.
+
+In hindsight this makes an annoying amount of sense. A bare repo is those four
+kinds of things on a filesystem; swap the filesystem for object storage and
+everything else Just Working™ is perfectly logical. Git’s on-disk format _is_
+its database schema and if you fake open/stat/rename convincingly enough the
+entire façade keeps working because APIs are the lies we tell ourselves to make
+us sleep at night.
+
+After a lot of hacking, I ended up with a feature list kinda like this:
+
+- Push and pull over three transports: HTTP, classic `git://`, and SSH
+- Repositories upserted on first push
+- Absolutely no effort put into authentication as this is an experiment and
+  authentication is annoying and complicated
+- Prometheus metrics so I could optimize the filesystem layer
+
+Everything comes out of one Go binary with no local state, even the generated
+SSH keys are stored in the bucket. You can run this in a Kubernetes cluster with
+only the mutable storage required being temporary files for an optimistic cache
+when doing smart git clones.
+
+The rest of this post is what it took to get from “oh no, it works” to something
+close to usable.
+
+Obligatory disclaimer (like the best things in life): this is an experiment. It
+has not been tested thoroughly or vetted for correctness. If it breaks in half,
+you get to keep both pieces. Please do not move your company’s monorepo onto
+this and then email me when it catches fire.
+
+## That one POSIX idiom that survived
+
+Git is paranoid about durability, and its entire strategy is one Unix idiom that
+you end up seeing many places: write new data to a temporary file and then
+`rename(2)` it into place after you’ve assured it’s correct. POSIX guarantees
+that rename is atomic, so readers either see the old file or the new one, not an
+intermediate state inbetwixt the two. Packfiles (bundles of objects) land as
+temporary files when uploaded then moved to their permanent home. Refs are
+written as locked temporary files and then renamed over the ref. It’s rename all
+the way down.
+
+Object storage traditionally does not have rename as one atomic operation. S3’s
+answer is to create exactly that intermediate state: `CopyObject` to the new
+place and `DeleteObject` on the old one. This makes the most load-bearing idiom
+in Git’s philosophy fall to pieces.
+
+Luckily, Tigris has an extension for this:
+[`RenameObject`](https://www.tigrisdata.com/docs/objects/object-rename). To use
+it, pass an additional `X-Tigris-Rename: true` header to a `CopyObject` call and
+instead of copying then deleting on the client, it moves the metadata around on
+the server. One round trip, no data movement, and the Unix idiom maps on the
+bucket 1:1. Objgit’s implementation of `Rename` is trivial:
+
+```go
+// internal/s3fs/basic.go
+// RenameObject is a Tigris extension that renames in place (no data copy),
+// so we don't need a separate CopyObject + DeleteObject.
+copySource := fs3.bucket + "/" + src
+_, err := fs3.client.RenameObject(ctx, &s3.CopyObjectInput{
+    Bucket:     &fs3.bucket,
+    CopySource: &copySource,
+    Key:        &dst,
+})
+```
+
+A second, sneakier violation hides in the same codepath. When go-git writes a
+temporary file, it creates that temporary file and then **immediately** starts
+opening it for reading so it can build the pack index. You cannot do that with a
+single live object in any object storage system, you are either reading or
+writing, never both. I ended up working around this by cheating a bit and
+buffering the contents of newly written pack files into memory so that this game
+of chicken kept working. I may have to change this to write that pack cache to
+the filesystem as trying to push `gcc.git` made me run out of RAM. At the very
+least, everything lies consistently enough that git doesn’t care, so win!
+
+## Death by a thousand `stat()` calls
+
+With this correctness sorted, I tried pushing the
+[golang/go](https://github.com/golang/go) repository to objgit to see how long
+it would take. It did work, but it took _forever_. Using the prometheus metrics
+I mentioned before, I saw that it was making biblical amounts of `HeadObject`
+calls. Some blocking profile analysis pointed to the fact that the git library
+was using the `stat()` call to detect if a file exists. The flow was like:
+
+- Client has object x
+- Check if object x exists
+- Check if any pack has object x
+
+And so on ad infinitum. This is fine-ish on a local filesystem because those
+syscalls resolve in _microseconds_, not the tens of milliseconds it takes to get
+from my office to the nearest Tigris region (please expand to Ottawa, I would
+love that so much).
+
+This was compounded with a discovery that the transport I was using (SSH —
+classic `git://` shares the same code path) was exploding every packfile into
+_loose objects_ when pushing it. Each loose object write was costing two round
+trips: `stat()` to check if a file exists and then `open()` / `write()` to
+actually put the data into Tigris. This made a 100,000 object packfile cost
+200,000 object storage calls. Call it 10ms of latency for each one, and that’s
+over half an hour of waiting for responses that mostly say “404 not found”.
+
+Caching can’t really save you here either, read caches would absorb the repeated
+reads; but this is a firehose of _writes_ to 100,000 paths that probably have
+never been read and likely will never be seen again.
+
+The reason only two transports had this problem is a deadlock story. The git
+library's fast path stores an incoming pack whole through its `PackfileWriter`,
+by copying from the connection until `io.EOF`. Over HTTP that's fine: the
+request body ends, EOF arrives, everyone goes home. Over `git://` and SSH, the
+connection is a persistent socket and the client is holding it open, politely
+waiting for the server's status report. EOF never comes. The copy waits forever,
+the client waits forever, and you have invented a distributed deadlock with two
+participants. The original workaround was to hide the `PackfileWriter`
+capability on those transports so go-git fell back to its streaming parser that
+writes every object loose. Hence the stat storm.
+
+So the solution was to stop depending on EOF at all. Packfiles are
+self-delimiting: the header says how many objects are coming and a trailing
+checksum marks the end, so a packfile scanner walks the stream and stops at the
+trailer while a `TeeReader` mirrors exactly those bytes into the
+`PackfileWriter`. This makes the rest of the façade fall into place and the git
+library is happy. This made pushes into two uploads: a packfile and its index
+instead of a torrent of round trips that mean nothing.
+
+## What about cloning?
+
+Once I got pushing fixed, I moved on to the read path. In order to emulate
+`ReadAt`, I used ranged `GetObject` requests so that the git library could read
+individual objects out of packfiles. I was happy with this hack, but there was
+one problem: the latency curse struck again. Cloning a simple repo with 318
+objects and a 200KiB packfile made over 8,500 `GetObject` calls before I killed
+it.
+
+A git client cloning a repository reads repository packfiles thousands of times
+with random access, walking objects and candidate delta bases over and over. On
+a local disk you never notice because your page cache eats that for breakfast.
+When every call is an HTTP request, a 200KiB repo turns into dozens of megabytes
+of round trips. A 20MiB repo was effectively unservable.
+
+In other words, I had un-cached the one workload that caching was designed to
+solve.
+
+The fix leans on a gift from git: pack files are immutable and
+content-addressed. `pack-<sha>.pack` will _never_ change for as long as it
+exists. This makes them trivially cacheable to a faster local medium, such as
+the filesystem. No invalidation logic is required. I made objgit download packs
+to a local temporary folder and serve reads from there. To be on the safe side,
+I did add least-recently-used caching to the mix so that my temp folder wouldn’t
+blow up unexpectedly. This does mean that the first request for pack files is
+slower, but then everything else is at filesystem speed.
+
+Yes, this relies on the local disk again, but only as a cache that can and will
+be thrown away. I think trading a stateless ideal for clones that terminate in
+reasonable amounts of time is a worthwhile bargain.
+
+## Why so `ListObjectsV2`, Batman?
+
+Once the other disasters were out of the way, one more remained: the metrics
+showed a flood of `ListObjectsV2` calls every time a clone was made and didn’t
+stop making those calls after it was done.
+
+Two things compounded. First, when git looks up an object that isn't packed, it
+probes for a loose object at `objects/<xx>/<rest-of-hash>`. objgit keeps packs
+whole, so there are no loose objects, so every probe misses, and each miss
+across a distinct two-hex prefix triggered a directory listing to find out.
+There are 256 possible prefixes. A single clone could issue up to 256
+`ListObjectsV2` calls whose collective answer was a resounding "there is nothing
+here."
+
+Second (and more embarrassing), the listing cache already had an optimization
+for this. It collapsed entire subtree lookups into recursive scans so a single
+listing of the repository could answer every stat() and probe beneath it. It was
+completely dead in production. The cache matched recursive prefixes against the
+repo root (`refs/`), but every repo is chrooted to its own directory, so real
+keys look like `myrepo.git/refs/heads/main`. The prefix check wasn’t aware of
+chroots so it never actually matched anything. Nobody noticed because a cache
+that degrades to “no caching” still returns the correct answer, just slowly. To
+rub it in, a cache warmer was dutifully re-listing every one of those useless
+prefixes every 30 seconds for 10 minutes after each clone. Thousands of
+background list calls were burned in the service of caching nothing of use.
+
+The fix was insultingly small: when a repo’s filesystem gets chrooted, register
+that chroot as a recursive subtree root within the cache. This made the cache
+actually useful and resulted in only one `ListObjectsV2` call instead of
+hundreds. Every sufficiently advanced cache is indistinguishable from a no-op
+until someone graphs the miss rate.
+
+None of these disasters were exotic. They’re the things filesystems and kernels
+give you for free — and every perfectly reasonable disk assumption fell to
+pieces once a network round trip sat at the core. Serving Git repositories is an
+accidental filesystem latency benchmark. If your storage abstraction has a weak
+point, Git _will_ find it and the metrics will show you where that problem is.
+
+## Post-receive hooks go in clown jail
+
+One of the most useful parts of hosting your own git server is setting up
+post-receive hooks. These have been used since time immemorial for things like
+[automatic deployments](https://gist.github.com/nonbeing/f3441c96d8577a734fa240039b7113db)
+when you push code to the server. The heart of this is how we get systems like
+GitHub Actions: it’s code that runs when you are done pushing.
+
+When you push to objgit with `--allow-hooks` enabled, it looks for a
+post-receive hook in `.objgit/hooks/receive-pack` (this corresponds to the git
+plumbing action, the name can and will be changed) in the tree of the commit you
+just pushed. It will then spin up a
+[kefka](https://xeiaso.net/blog/2026/dancing-mad-sandboxing/) sandbox with a
+checkout of the git repository at the commit you just pushed mounted at `/src`
+and mutable temporary files at `/tmp`. It gets coreutils and nothing else. No
+host filesystem, no network, no arbitrary binaries. Output streams back into the
+pusher as `remote:` lines just like when you `git push heroku main`. Eventually
+I want to make custom commands to allow you to deploy
+[Tekton](https://tekton.dev/) pipeline changes and kick off CI jobs that way,
+but for now I’m happy with this working at all.
+
+You can’t implement policy using these hooks yet. I’m working on it.
+
+## Now what?
+
+I taught a bucket to speak git. Where this goes next, roughly in order of how
+much the ideas keep me up at night.
+
+CI is the obvious next step. I would wire up commands for things like “apply
+kubernetes object” and “create tekton pipeline run” so that CI would run via
+your friendly neighborhood Kubernetes cluster and then notify you through some
+reasonable mechanism. That’s the first thing I’ll build when I have the time.
+
+It would be nice to have a web UI for this, which is complicated for reasons
+that have _nothing_ to do with git trees, object storage, or anything else and
+everything to do with the current state of the internet. Git lookups are
+expensive in the best cases and with the current torrent of unethical scraping
+ransacking git servers for every scrap of RAM they have, it’s probably a bad
+idea to implement this without a lot of clever optimizations. Maybe the fact
+that this doesn’t have load-bearing dependencies on `/usr/bin/git` would make it
+more resilient against scrapers. The fact that this is based on object storage
+could also mean that caching would be a bit easier (having basically unlimited
+storage is kind of a low-key superpower for caching), but then the main issue
+would be server load. It’s a tough cookie to handle.
+
+Performance and stability are another place this needs to improve. I’ve tested
+this on my developer workstation but that is far different from testing it in
+production. There’s some other performance issues that are easy to fix, but the
+big one is latency to Tigris. Maybe I can get the devops team to set me up a
+[k3k cluster](https://rancher.github.io/k3k-product-docs/k3k/latest/en/introduction.html)
+in production.
+
+Right now this is an experiment as I plug along and feel out the shape of what
+git-on-object-storage can be. A git server with no disk, no git binary, and no
+database. If you want to take a look,
+[check it out on GitHub](https://github.com/tigrisdata/objgit).
