@@ -26,9 +26,6 @@ spec:
           resources:
             requests:
               storage: 4Gi
-    - name: go-mod-cache
-      persistentVolumeClaim:
-        claimName: go-mod-cache
     - name: dockerconfig-atcr
       secret:
         secretName: atcr

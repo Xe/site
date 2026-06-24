@@ -26,6 +26,7 @@ var (
 	devel               = flag.Bool("devel", false, "Enable development mode")
 	dataDir             = flag.String("data-dir", "./var", "Directory to store data in")
 	futureSightURL      = flag.String("future-sight-url", "", "URL to use for future sight preview deploys")
+	futureSightToken    = flag.String("future-sight-token", "", "Bearer token for future sight preview uploads")
 	gitBranch           = flag.String("git-branch", "main", "Git branch to clone")
 	gitRepo             = flag.String("git-repo", "https://github.com/Xe/site", "Git repository to clone")
 	githubSecret        = flag.String("github-secret", "", "GitHub secret to use for webhooks")
@@ -56,15 +57,16 @@ func main() {
 	}
 
 	fs, err := lume.New(ctx, &lume.Options{
-		Branch:         *gitBranch,
-		Repo:           *gitRepo,
-		StaticSiteDir:  "lume",
-		URL:            *siteURL,
-		Development:    *devel,
-		PatreonClient:  pc,
-		DataDir:        *dataDir,
-		MiURL:          *miURL,
-		FutureSightURL: *futureSightURL,
+		Branch:           *gitBranch,
+		Repo:             *gitRepo,
+		StaticSiteDir:    "lume",
+		URL:              *siteURL,
+		Development:      *devel,
+		PatreonClient:    pc,
+		DataDir:          *dataDir,
+		MiURL:            *miURL,
+		FutureSightURL:   *futureSightURL,
+		FutureSightToken: *futureSightToken,
 	})
 	if err != nil {
 		log.Fatal(err)

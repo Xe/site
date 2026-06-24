@@ -72,6 +72,8 @@ github.com/Songmu/gitconfig v0.2.1 h1:cZsqELfMtxWVI8ovq17gbvsR4qLfoYLAiXy5GwtJWb
 github.com/Songmu/gitconfig v0.2.1/go.mod h1:XM4O3SoXFnli9Ql2G7qXK2Fg7LJwf7Hs8GLFEOJlzmM=
 github.com/TecharoHQ/yeet v0.8.1 h1:wriCSlyIDIZKRPmrf6ZXZx7uiAdH+OvshNQkwW+hNw8=
 github.com/TecharoHQ/yeet v0.8.1/go.mod h1:PLlw/OTk9fCvobE5O0I7cIaxKuuB9A46yrEihTFHA9c=
+github.com/Xe/erofs v0.4.0 h1:8NrOSwUnui1UU+QZMhsPjSkcljA9IxVF88507x1vjHE=
+github.com/Xe/erofs v0.4.0/go.mod h1:GGxvJkCKU4yKfJ+Trap2xC8iN0HGuTUEsD5oz+olLJI=
 github.com/a-h/parse v0.0.0-20250122154542-74294addb73e h1:HjVbSQHy+dnlS6C3XajZ69NYAb5jbGNfHanvm1+iYlo=
 github.com/a-h/parse v0.0.0-20250122154542-74294addb73e/go.mod h1:3mnrkvGpurZ4ZrTDbYU84xhwXW2TjTKShSwjRi2ihfQ=
 github.com/a-h/templ v0.3.1020 h1:ypAT/L5ySWEnZ6Zft/5yfoWXYYkhFNvEFOeeqecg4tw=
@@ -485,6 +487,8 @@ github.com/orandin/slog-gorm v1.4.0 h1:FgA8hJufF9/jeNSYoEXmHPPBwET2gwlF3B85JdpsT
 github.com/orandin/slog-gorm v1.4.0/go.mod h1:MoZ51+b7xE9lwGNPYEhxcUtRNrYzjdcKvA8QXQQGEPA=
 github.com/perimeterx/marshmallow v1.1.5 h1:a2LALqQ1BlHM8PZblsDdidgv1mWi1DgC2UmX50IvK2s=
 github.com/perimeterx/marshmallow v1.1.5/go.mod h1:dsXbUu8CRzfYP5a87xpp0xq9S3u0Vchtcl8we9tYaXw=
+github.com/pierrec/lz4/v4 v4.1.26 h1:GrpZw1gZttORinvzBdXPUXATeqlJjqUG/D87TKMnhjY=
+github.com/pierrec/lz4/v4 v4.1.26/go.mod h1:EoQMVJgeeEOMsCqCzqFm2O0cJvljX2nGZjcRIPL34O4=
 github.com/pjbgf/sha1cd v0.6.0 h1:3WJ8Wz8gvDz29quX1OcEmkAlUg9diU4GxJHqs0/XiwU=
 github.com/pjbgf/sha1cd v0.6.0/go.mod h1:lhpGlyHLpQZoxMv8HcgXvZEhcGs0PG/vsZnEJ7H0iCM=
 github.com/pkg/diff v0.0.0-20210226163009-20ebb0f2a09e/go.mod h1:pJLUxLENpZxwdsKMEsNbx1VGcRFpLqf3715MtcvvzbA=
@@ -575,6 +579,8 @@ github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO
 github.com/stretchr/testify v1.8.2/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=
 github.com/stretchr/testify v1.11.1/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
+github.com/tigrisdata/storage-go v0.6.0 h1:1Rxzxp/GAUqwFln8qMXYOQIa47IsT2aBNuxYc55o6D4=
+github.com/tigrisdata/storage-go v0.6.0/go.mod h1:l3u7N9LDIhv4lfpkEBJYzolWJ/SBb6WiBexgy/uq6iQ=
 github.com/twitchtv/twirp v8.1.3+incompatible h1:+F4TdErPgSUbMZMwp13Q/KgDVuI7HJXP61mNV3/7iuU=
 github.com/twitchtv/twirp v8.1.3+incompatible/go.mod h1:RRJoFSAmTEh2weEqWtpPE3vFK5YBhA6bqp2l1kfCC5A=
 github.com/ugorji/go/codec v1.2.7 h1:YPXUKf7fYbp/y8xloBqZOw2qaVggbfwMlI8WM3wZUJ0=

@@ -29,9 +29,6 @@ spec:
     - name: repo-data
       description: |
         Cloned repo files.
-    - name: go-mod-cache
-      description: |
-        Go module cache
     - name: dockerconfig-atcr
       description: |
         Docker config for pushing images to atcr
@@ -80,14 +77,10 @@ spec:
       workspaces:
         - name: source
           workspace: repo-data
-        - name: go-mod-cache
-          workspace: go-mod-cache
       taskSpec:
         workspaces:
           - name: source
             mountPath: /src
-          - name: go-mod-cache
-            mountPath: /go
         steps:
           - name: go-test
             image: $(tasks.docker-build-ci.results.IMAGE_URL)@$(tasks.docker-build-ci.results.IMAGE_DIGEST)
@@ -163,5 +156,26 @@ spec:
             [
               "--destination=$(params.docker-image-base)/bin:$(params.commit)",
               "--destination=$(params.docker-image-base)/bin:$(params.branch)",
+              "--label=org.tangled.actor=$(params.actor)",
+            ]
+    - name: futuresight-build
+      runAfter: ["go-test"]
+      workspaces:
+        - name: source
+          workspace: repo-data
+        - name: dockerconfig
+          workspace: dockerconfig-atcr
+      taskRef:
+        name: kaniko
+      params:
+        - name: IMAGE
+          value: $(params.docker-image-base)/futuresight:latest
+        - name: DOCKERFILE
+          value: ./docker/futuresight.Dockerfile
+        - name: EXTRA_ARGS
+          value:
+            [
+              "--destination=$(params.docker-image-base)/futuresight:$(params.commit)",
+              "--destination=$(params.docker-image-base)/futuresight:$(params.branch)",
               "--label=org.tangled.actor=$(params.actor)",
             ]
