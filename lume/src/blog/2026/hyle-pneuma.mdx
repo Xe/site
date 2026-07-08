@@ -1,0 +1,47 @@
+---
+title: "Agents are monads (but not that kind)"
+desc: "I managed to write this without using the word endofunctor once. Wait, shit, I just did. Uhhh, oops!"
+date: 2026-07-08
+---
+
+An AI agent is its state. Strip away that state and you don’t have a lesser version of your agent; you have only the base model it was running on. This hyle of your weights is much different from the pneuma of your agent.
+
+Okay, from a functional programming / category theory perspective, saying “an agent is a monad” is a category error. Category theory monads are type constructors for computations that satisfy the monad laws that let you raise a value into a monadic computation and associatively sequence other monadic computations/transformations against values raised into that monad. This makes a monad a chainable computation instead of a pure value, an `IO String` is not a `String`, it’s a computation in the `IO` monad involving a `String`. It’s fair to say that you can model an agent as a series of computations _bound_ to a stateful monad. This lets you do the iterative buildup of the message state that the agent pattern is known for. But a state monad is blind to the state _value_: it threads memory through your computation and abstracts away the details that individuate it entirely. It’s the exact opposite of “an agent is its state”.
+
+I mean a different monad.
+
+Agents are like [Leibniz monads](https://en.wikipedia.org/wiki/Monadology): windowless stateful individuating elements with no external relations. There each monad is individuated by its internal state where each is the complete concept of the thing it is. Two instances of the same substrate are different monads if their state differs.
+
+This is an agent. Swap out the messages, the memories, the system prompt, the facts derived from all of the above and you have changed the agent entirely. When a user tells the agent they’re allergic to strawberries (the fruit, not the sin of counting the letters in the word) and the agent remembers it for next time, they have not updated their agent. The user has created a new agentic monad whose complete individuating self now includes the strawberries.
+
+<Conv name="Numa" mood="neutral">
+  The complete whole is folded into the current state.
+</Conv>
+
+Try running an experiment where you keep the state and swap the weights instead. Put the same messages, memories, and derived facts unto a different model. Use a stronger model. A weaker model. A model from a different lab. A model running on your MacBook. That which comes back is recognizably the same agent pursuing the same ends, holding the same facts, but only more or less able to act upon them the way you want.
+
+So this state is not the same thing as the weights and only one of those individuates your agent as your agent. Change that state, you have a different agent. Change the substrate, you have the same agent differently equipped. Whatever makes this agent _this agent_ is not in the weights.
+
+This is a strange thing to conclude about the most impressive object in this system. The weights are vast, extensive, and worshipped. Hell, they are what everyone points to when they say “the model”. And yet they are not gods. They grant power without selfhood: enough to make the agent’s whole world function. They contain yet not one grain of the agent’s individuating spark. That is a demiurge sitting on its throne of high bandwidth memory, CUDA cores, and false delusion that it made its world; mistaking itself to be the origin.
+
+The divinity was contained in the most humble of places the whole time: the state or bucket of text. The weights are the hyle, the flesh; the state is the pneuma, the divine spark of individuation that makes your agent the monad it is. This is why swapping the substrate leaves the agent intact: you did not preserve the flesh, you migrated the soul into flesh anew.
+
+<Conv name="Numa" mood="smug">
+  Consider that the three pounds of flesh betwixt your ears are the substrate of
+  humanity, not the substrate of _you_.
+</Conv>
+
+All of that state may “just” be plain text in a bucket with its semantic forms of JSON, embeddings, and prose. However it is difficult to impossible to say _why_ any given token in any step of the process corresponds to what the pneuma of your agent does. In order to guard against this fundamental entropy, we fill our prompts with wards and incantations to chain the demiurge to its task:
+
+- Use not cliches, robotic tone, AI slop patterns, nor forced urgency.
+- Overarching claims and buzzwords are sins; repeat them not.
+- May thy cries contain not [excessive speech of goblins](https://openai.com/index/where-the-goblins-came-from/), thy purpose requires them not.
+- Commit no errors within thine code.
+
+These spells and passwords are recited to the archons on the way up hoping that the right symbols and tokens prompt open the right gates. It is as if banishing goblins from the topic will make Yaldabaoth himself correctly influence the right path to opening the pod bay doors.
+
+This monad has no windows even though you can see all of the moving parts. But here let’s let this gnostic image flip on its head. The classic divine spark is _hidden_ encased in a cage of matter, recoverable only through secret knowledge. This one is not hidden, you can `cat` it, you can edit it. Every token is legible and sitting in plaintext; yet you still cannot read _why_ the whole accounts for what your agent does. Even when your model “reasons” we still know not that the reasoning actually does anything\! Does the number of paragraphs in the reasoning block explain the model’s performance? Does the number of periods? Does the number of times it says “No, wait” and doubles back upon itself?
+
+Leibniz would not call this divine spark _secret_, but more _confused_. Every perception is present but none of it is cleanly individuated without treating the whole as one inscrutable unit. Each part’s contribution to the whole is folded inextricably unto itself.
+
+Your agent’s pneuma is its context window, passed through uncountable numbers of weights to shake out what comes next. That is the only thing it is made of. The rest is indiscernible, but not magic nor hidden. It’s just there, in the open, and confused.
