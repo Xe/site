@@ -1,0 +1,171 @@
+---
+title: "You should probably check on your smart appliances"
+desc: "TL;DR: is your refrigerator running malware? If so, you better catch it!"
+date: 2026-07-14
+---
+
+The scraping problem is worse than anyone can imagine and thanks to my friends at Sourceware we have some real data to prove it.
+
+I've been working more on Anubis' [reputation database](https://github.com/TecharoHQ/reputationdb) and I've run into a really weird discovery: 80-90% of the hits created by the [honeypot feature](https://anubis.techaro.lol/docs/admin/honeypot/overview) are from IP addresses that do not belong to any existing threat monitoring lists.
+
+Here's a breakdown of the honeypot hits [Sourceware](https://sourceware.org/) has gotten in the last few months:
+
+## Assessment of ./data/manually-submitted/sourceware/202607141625.txt against ./var/reputationdb.mmdb
+
+In case this interests you, I have put the full tables in [Appendix A: Full tables for the reputation database input](./full-table/).
+
+|             Field | Value           |
+| ----------------: | :-------------- |
+|        lines read | 2678193         |
+| skipped (non-IP): | 0               |
+|   skipped (dupe): | 0               |
+|       unique IPs: | 2678193         |
+|  flagged (in db): | 286161 (10.7%)  |
+|   clean (not in): | 2392032 (89.3%) |
+
+### Flags (of flagged addresses)
+
+| Flag          | Unique IPs | Share |
+| ------------- | ---------: | ----: |
+| is_vpn        |       1264 |  0.4% |
+| is_datacenter |       7918 |  2.8% |
+| is_crawler    |         46 |  0.0% |
+| is_proxy      |       2562 |  0.9% |
+
+### Categories (6 distinct, of flagged addresses)
+
+| Category   | Unique IPs | Share |
+| ---------- | ---------: | ----: |
+| abuse      |     282182 | 98.6% |
+| datacenter |       7918 |  2.8% |
+| proxy      |       2562 |  0.9% |
+| vpn        |       1264 |  0.4% |
+| crawler    |         46 |  0.0% |
+| tor        |         17 |  0.0% |
+
+### Providers (126 distinct, of flagged addresses)
+
+<Conv name="Mara" mood="hacker">
+Methodology note: "provider" here means one of two things:
+
+1. The company or organization associated with the IP address.
+2. The place the list was gotten from.
+
+For example, `scaleway` is based off of [Scaleway's publicly posted IP address ranges](https://www.scaleway.com/en/docs/account/reference-content/scaleway-network-information/), `firehol-level1` is based on a daily snapshot of [FireHOL's Level 1 IP list](https://iplists.firehol.org/?ipset=firehol_level1), and `fdo` is based on data contributed by the administrators of [freedesktop.org](https://www.freedesktop.org/wiki/).
+
+</Conv>
+
+| Provider       | Unique IPs | Share |
+| -------------- | ---------: | ----: |
+| netshield      |     237945 | 83.2% |
+| bitwire        |      96539 | 33.7% |
+| magicteamc     |      26475 |  9.3% |
+| ipinsights     |      17378 |  6.1% |
+| threathive     |       8422 |  2.9% |
+| netmountains   |       6673 |  2.3% |
+| multacom       |       2676 |  0.9% |
+| fyvri          |       2433 |  0.9% |
+| cbuijs         |       1916 |  0.7% |
+| x4bnet         |       1263 |  0.4% |
+| solispirit     |       1259 |  0.4% |
+| dailyproxy     |       1182 |  0.4% |
+| blackwall      |       1073 |  0.4% |
+| hproxy         |       1067 |  0.4% |
+| scaleway       |        922 |  0.3% |
+| fdo            |        755 |  0.3% |
+| datacamp       |        702 |  0.2% |
+| ebrasha        |        686 |  0.2% |
+| hideip         |        628 |  0.2% |
+| datacentres    |        480 |  0.2% |
+| komutan        |        463 |  0.2% |
+| aws            |        431 |  0.2% |
+| m247           |        360 |  0.1% |
+| firehol-level1 |        354 |  0.1% |
+| vpslab         |        331 |  0.1% |
+| alibaba-cloud  |        319 |  0.1% |
+| proxyscrape    |        272 |  0.1% |
+| ovhcloud       |        268 |  0.1% |
+
+(remainder snipped for brevity)
+
+### Countries (229 distinct, of all addresses)
+
+| Country            | Unique IPs | Flagged |  Rate |
+| ------------------ | ---------: | ------: | ----: |
+| Brazil (BR)        |     270937 |   18282 |  6.7% |
+| India (IN)         |     185091 |   12478 |  6.7% |
+| Saudi Arabia (SA)  |     120372 |    3574 |  3.0% |
+| Mexico (MX)        |      95449 |    7053 |  7.4% |
+| Türkiye (TR)       |      87258 |    5559 |  6.4% |
+| Argentina (AR)     |      86463 |    9522 | 11.0% |
+| Pakistan (PK)      |      85241 |   17083 | 20.0% |
+| Vietnam (VN)       |      78967 |    8848 | 11.2% |
+| Morocco (MA)       |      69201 |    1805 |  2.6% |
+| Philippines (PH)   |      66128 |    7899 | 11.9% |
+| Venezuela (VE)     |      64670 |   13780 | 21.3% |
+| Iraq (IQ)          |      62047 |   13613 | 21.9% |
+| Chile (CL)         |      60878 |    4522 |  7.4% |
+| Colombia (CO)      |      59579 |    7048 | 11.8% |
+| Bangladesh (BD)    |      59245 |   17735 | 29.9% |
+| France (FR)        |      49782 |    1339 |  2.7% |
+| Tunisia (TN)       |      48535 |    5799 | 11.9% |
+| Uruguay (UY)       |      45888 |     430 |  0.9% |
+| South Africa (ZA)  |      43919 |    7431 | 16.9% |
+| United States (US) |      40828 |    3347 |  8.2% |
+| Indonesia (ID)     |      38119 |    6122 | 16.1% |
+| Canada (CA)        |      37342 |    2334 |  6.3% |
+| Spain (ES)         |      36008 |    2944 |  8.2% |
+| Algeria (DZ)       |      35112 |     537 |  1.5% |
+| Ukraine (UA)       |      32261 |    8920 | 27.6% |
+
+This doesn't list data from 204 additional countries. Given that the ISO 3166-1 standard comprises 249 countries (193 of which are UN members), it's safe to say this is a _global_ problem.
+
+### ASNs (21116 distinct, of all addresses)
+
+| ASN                                                                                 | Unique IPs | Flagged |  Rate |
+| ----------------------------------------------------------------------------------- | ---------: | ------: | ----: |
+| AS55836 Reliance Jio Infocomm Limited                                               |      57029 |    1749 |  3.1% |
+| AS45899 VNPT Corp                                                                   |      56910 |    6831 | 12.0% |
+| AS6057 Administracion Nacional de Telecomunicaciones                                |      43694 |     339 |  0.8% |
+| AS25019 Saudi Telecom Company JSC                                                   |      40800 |     679 |  1.7% |
+| AS24560 Bharti Airtel Ltd., Telemedia Services                                      |      35957 |    1620 |  4.5% |
+| AS36903 Office National des Postes et Telecommunications ONPT (Maroc Telecom) / IAM |      35562 |     668 |  1.9% |
+| AS36947 Telecom Algeria                                                             |      33172 |     386 |  1.2% |
+| AS9121 Turk Telekom                                                                 |      32742 |    1465 |  4.5% |
+| AS8151 UNINET                                                                       |      32012 |     856 |  2.7% |
+| AS14593 Space Exploration Technologies Corporation                                  |      31569 |    4597 | 14.6% |
+| AS9299 Philippine Long Distance Telephone Company                                   |      27573 |    1626 |  5.9% |
+| AS39891 Saudi Telecom Company JSC                                                   |      25904 |     794 |  3.1% |
+| AS35819 Etihad Etisalat, a joint stock company                                      |      24493 |     978 |  4.0% |
+| AS28573 Claro NXT Telecomunicacoes Ltda                                             |      23903 |     841 |  3.5% |
+| AS8193 Uzbektelekom Joint Stock Company                                             |      22611 |    3191 | 14.1% |
+| AS8452 IDDQD-AS                                                                     |      22369 |     364 |  1.6% |
+| AS43766 Mobile Telecommunication Company Saudi Arabia Joint-Stock company           |      22038 |     968 |  4.4% |
+| AS9541 Cyber Internet Services (Pvt) Ltd.                                           |      21386 |    3696 | 17.3% |
+| AS37705 TOPNET                                                                      |      20024 |     222 |  1.1% |
+| AS11664 Techtel LMDS Comunicaciones Interactivas S.A.                               |      18021 |     883 |  4.9% |
+| AS17072 TOTAL PLAY TELECOMUNICACIONES, S.A.P.I. DE C.V.                             |      18021 |    1181 |  6.6% |
+| AS22927 Telefonica de Argentina                                                     |      17672 |     291 |  1.6% |
+| AS13999 Mega Cable, S.A. de C.V.                                                    |      17410 |     692 |  4.0% |
+| AS36925 MEDITELECOM                                                                 |      17259 |     383 |  2.2% |
+| AS47331 Turk Telekom                                                                |      17211 |      26 |  0.2% |
+
+There are 18069 more ASNs not listed.
+
+## How Anubis' honeypot works
+
+In order to collect data on how widespread the scraper problem is, I added a [honeypot feature](https://anubis.techaro.lol/docs/admin/honeypot/overview) to Anubis. On every challenge page it adds semantically invalid HTML akin to the following:
+
+```html
+<script type="ignore">
+  <a href="/.within.website/x/cmd/anubis/api/honeypot/<uuidv4>/init">Don't click me</a>
+</script>
+```
+
+Visiting that page gets you cheap to generate vacuous anti-content that has two links to other pages. This is intended to get badly written scrapers caught in the honeypot so they scrape that instead of the protected website. I made it on a whim but thought it would be great for collecting data on how widespread this problem actually is.
+
+## This is a global problem
+
+Based on the data I've seen, this is a global problem. If I had to guess where most of this traffic is coming from, it's from [compromised smart appliances](https://thehackernews.com/2026/06/free-apps-are-quietly-turning-smart-tvs.html) contributing traffic to proxy networks. I don't think there's any way to make a real impact on this problem without concerted simultaneous global action.
+
+TL;DR: the scraping problem is actually widespread enough that web application firewalls like Anubis make sense.
