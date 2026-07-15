@@ -5,8 +5,8 @@ import (
 	"flag"
 	"os"
 
-	_ "github.com/joho/godotenv/autoload"
 	"github.com/google/subcommands"
+	_ "github.com/joho/godotenv/autoload"
 	"xeiaso.net/v4/cmd/xesitectl/commands"
 )
 

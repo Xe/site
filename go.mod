@@ -27,14 +27,14 @@ require (
 	github.com/twitchtv/twirp v8.1.3+incompatible
 	golang.org/x/oauth2 v0.36.0
 	google.golang.org/grpc v1.82.0
-	google.golang.org/protobuf v1.36.12-0.20260120151049-f2248ac996af
+	google.golang.org/protobuf v1.36.11
 	gopkg.in/fsnotify.v1 v1.4.7
 	gopkg.in/mxpv/patreon-go.v1 v1.0.0-20171031001022-1d2f253ac700
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.31.2
 	gorm.io/plugin/prometheus v0.1.0
-	k8s.io/apimachinery v0.36.2
-	k8s.io/client-go v0.36.2
+	k8s.io/apimachinery v0.36.0-alpha.2
+	k8s.io/client-go v0.36.0-alpha.2
 	tailscale.com v1.100.0
 	within.website/x v1.31.0
 )
@@ -183,12 +183,13 @@ require (
 	golang.org/x/time v0.14.0 // indirect
 	golang.org/x/tools v0.44.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260414002931-afd174a4e478 // indirect
+	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.6.2 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.7.0 // indirect
-	k8s.io/api v0.36.2 // indirect
+	k8s.io/api v0.36.0-alpha.2 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
 	k8s.io/kube-openapi v0.0.0-20260317180543-43fb72c5454a // indirect
 	k8s.io/utils v0.0.0-20260210185600-b8788abfbbc2 // indirect
@@ -204,7 +205,10 @@ tool (
 	github.com/a-h/templ/cmd/templ
 	github.com/blockthrough/twirp-openapi-gen/cmd/twirp-openapi-gen
 	github.com/caarlos0/pinata
+	github.com/twitchtv/twirp/protoc-gen-twirp
 	golang.org/x/tools/cmd/goimports
 	golang.org/x/tools/cmd/stringer
+	google.golang.org/grpc/cmd/protoc-gen-go-grpc
+	google.golang.org/protobuf/cmd/protoc-gen-go
 	honnef.co/go/tools/cmd/staticcheck
 )

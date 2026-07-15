@@ -184,7 +184,7 @@ func fetchUserOrganizationsWithSponsorship(ctx context.Context, token string, us
 
 	// Build the request body as a map and marshal to JSON
 	reqBody := map[string]any{
-		"query": `query ($userLogin: String!) { user(login: $userLogin) { organizations(first: 20) { nodes { login name sponsorshipForViewer { isActive tier { name monthlyPriceInCents } } } } } }`,
+		"query":     `query ($userLogin: String!) { user(login: $userLogin) { organizations(first: 20) { nodes { login name sponsorshipForViewer { isActive tier { name monthlyPriceInCents } } } } } }`,
 		"variables": map[string]string{"userLogin": userLogin},
 	}
 

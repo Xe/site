@@ -5,6 +5,8 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/denylist-source-range: "216.73.216.145/32"
+    nginx.ingress.kubernetes.io/limit-rpm: "15"
 spec:
   ingressClassName: nginx
   tls:

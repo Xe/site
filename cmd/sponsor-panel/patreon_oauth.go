@@ -38,7 +38,7 @@ type patreonMember struct {
 	Type       string `json:"type"`
 	ID         string `json:"id"`
 	Attributes struct {
-		PatronStatus                string `json:"patron_status"`
+		PatronStatus                 string `json:"patron_status"`
 		CurrentlyEntitledAmountCents int    `json:"currently_entitled_amount_cents"`
 	} `json:"attributes"`
 	Relationships struct {
