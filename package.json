@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "npm run generate && go test ./...",
-    "generate": "go generate ./... && buf generate",
+    "generate": "go generate ./... && buf generate && go run ./cmd/xesitectl merge-openapi",
     "format": "go tool goimports -w . && buf format -w",
     "dev": "go run ./cmd/xesite --site-url https://preview.xeiaso.net --devel",
     "dev:sponsor-panel": "cd ./cmd/sponsor-panel && go generate ./... && go run .",

@@ -1,0 +1,1267 @@
+{
+  "components": {
+    "schemas": {
+      "TwirpError": {
+        "properties": {
+          "code": {
+            "enum": [
+              "canceled",
+              "unknown",
+              "invalid_argument",
+              "malformed",
+              "deadline_exceeded",
+              "not_found",
+              "bad_route",
+              "already_exists",
+              "permission_denied",
+              "unauthenticated",
+              "resource_exhausted",
+              "failed_precondition",
+              "aborted",
+              "out_of_range",
+              "unimplemented",
+              "internal",
+              "unavailable",
+              "dataloss"
+            ],
+            "type": "string"
+          },
+          "msg": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "google.protobuf.Empty": {
+        "description": "A generic empty message that you can re-use to avoid defining duplicated\n empty messages in your APIs. A typical example is to use it as the request\n or the response type of an API method. For instance:\n\n     service Foo {\n       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);\n     }",
+        "type": "object"
+      },
+      "google.protobuf.Timestamp": {
+        "description": "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(\u0026tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(\u0026ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) \u003c\u003c 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format.",
+        "examples": [
+          "2023-01-15T01:30:15.01Z",
+          "2024-12-25T12:00:00Z"
+        ],
+        "format": "date-time",
+        "type": "string"
+      },
+      "protofeed.Attachment": {
+        "additionalProperties": false,
+        "description": "Attachment is an object representing a file associated with an item.",
+        "properties": {
+          "durationInSeconds": {
+            "description": "(optional, number) specifies how long it takes to listen to or watch, when\n played at normal speed.",
+            "format": "int32",
+            "title": "duration_in_seconds",
+            "type": "integer"
+          },
+          "mimeType": {
+            "description": "(required, string) specifies the type of the attachment, such as\n “audio/mpeg.”",
+            "title": "mime_type",
+            "type": "string"
+          },
+          "sizeInBytes": {
+            "description": "(optional, number) specifies how large the file is.",
+            "format": "int32",
+            "title": "size_in_bytes",
+            "type": "integer"
+          },
+          "title": {
+            "description": "(optional, string) specifies the title of the attachment.",
+            "title": "title",
+            "type": "string"
+          },
+          "url": {
+            "description": "(required, string) specifies the location of the attachment.",
+            "title": "url",
+            "type": "string"
+          }
+        },
+        "title": "Attachment",
+        "type": "object"
+      },
+      "protofeed.Author": {
+        "additionalProperties": false,
+        "description": "Author is an object representing the author of the feed or item.",
+        "properties": {
+          "avatar": {
+            "description": "(optional, string) is the URL for an image for the author. As with icon, it\n should be square and relatively large — such as 512 x 512 pixels — and\n should use transparency where appropriate, since it may be rendered on a\n non-white background.",
+            "title": "avatar",
+            "type": "string"
+          },
+          "name": {
+            "description": "(optional, string) is the author’s name.",
+            "title": "name",
+            "type": "string"
+          },
+          "url": {
+            "description": "(optional, string) is the URL of a site owned by the author. It could be a\n blog, micro-blog, Twitter account, and so on. Ideally the linked-to page\n provides a way to contact the author, but that’s not required. The URL\n could be a mailto: link, though we suspect that will be rare.",
+            "title": "url",
+            "type": "string"
+          }
+        },
+        "title": "Author",
+        "type": "object"
+      },
+      "protofeed.Feed": {
+        "additionalProperties": false,
+        "description": "Feed is the root of a Proto Feed document. A feed must at least contain a\n title and items.",
+        "properties": {
+          "authors": {
+            "description": "(optional, array of objects) specifies the feed authors.",
+            "items": {
+              "$ref": "#/components/schemas/protofeed.Author"
+            },
+            "title": "authors",
+            "type": "array"
+          },
+          "description": {
+            "description": "(optional, string) provides more detail, beyond the title, on what the feed\n is about. A feed reader may display this text.",
+            "title": "description",
+            "type": "string"
+          },
+          "expired": {
+            "description": "(optional, boolean) says whether or not the feed is finished — that is,\n whether or not it will ever update again. A feed for a temporary event,\n such as an instance of the Olympics, could expire. If the value is true,\n then it’s expired. Any other value, or the absence of expired, means the\n feed may continue to update.",
+            "title": "expired",
+            "type": "boolean"
+          },
+          "favicon": {
+            "description": "(optional, string) is the URL of an image for the feed suitable to be used\n in a source list. It should be square and relatively small, but not smaller\n than 64 x 64.",
+            "title": "favicon",
+            "type": "string"
+          },
+          "feedUrl": {
+            "description": "(optional but strongly recommended, string) is the URL of the feed, and\n serves as the unique identifier for the feed. As with home_page_url, this\n should be considered required for feeds on the public web.",
+            "title": "feed_url",
+            "type": "string"
+          },
+          "homePageUrl": {
+            "description": "(optional but strongly recommended, string) is the URL of the resource that\n the feed describes. This resource may or may not actually be a “home” page,\n but it should be an HTML page. If a feed is published on the public web,\n this should be considered as required. But it may not make sense in the\n case of a file created on a desktop computer, when that file is not shared\n or is shared only privately.",
+            "title": "home_page_url",
+            "type": "string"
+          },
+          "icon": {
+            "description": "(optional, string) is the URL of an image for the feed suitable to be used\n in a source list. It should be square and relatively large — such as 512 x\n 512 — so that it can be scaled down and so that it can look good on retina\n displays. It should use transparency where appropriate, since it may be\n rendered on a non-white background.",
+            "title": "icon",
+            "type": "string"
+          },
+          "items": {
+            "description": "(required, array of objects) contains the items in the feed. This is the\n most important element of the feed after the version field. Each item is a\n story, blog post, article, photograph, video, or other thing. For example,\n if a feed contains a long article, a podcast episode, and a photo, those\n three items would be included in items.",
+            "items": {
+              "$ref": "#/components/schemas/protofeed.Item"
+            },
+            "title": "items",
+            "type": "array"
+          },
+          "language": {
+            "description": "(optional, string) is the primary language for the feed.",
+            "title": "language",
+            "type": "string"
+          },
+          "title": {
+            "description": "(required, string) is the name of the feed, which will often correspond to\n the name of the website (blog, for instance), though not necessarily.",
+            "title": "title",
+            "type": "string"
+          },
+          "userComment": {
+            "description": "(optional, string) is a description of the purpose of the feed. This is for\n the use of people looking at the raw Protobuf, and should be ignored by\n feed readers.",
+            "title": "user_comment",
+            "type": "string"
+          }
+        },
+        "title": "Feed",
+        "type": "object"
+      },
+      "protofeed.Item": {
+        "additionalProperties": false,
+        "description": "Item is an object representing a single story, blog post, article,\n photograph, video, or other thing within a feed.",
+        "properties": {
+          "attachments": {
+            "description": "(optional, array of objects) specifies the attachments associated with the\n item. Attachments are files that are associated with an item. The value of\n the attachments field is an array of objects, each of which has a url\n field, and other fields as specified in the attachment object definition.",
+            "items": {
+              "$ref": "#/components/schemas/protofeed.Attachment"
+            },
+            "title": "attachments",
+            "type": "array"
+          },
+          "authors": {
+            "description": "(optional, array of objects) has the same structure as the top-level\n authors. If not specified in an item, then the top-level authors, if\n present, are the authors of the item.",
+            "items": {
+              "$ref": "#/components/schemas/protofeed.Author"
+            },
+            "title": "authors",
+            "type": "array"
+          },
+          "bannerImage": {
+            "description": "(optional, string) is the URL of an image to use as a banner. Some blogging\n systems (such as Medium) display a different banner image in the list view\n from the detail view. In those systems, this image should be used in the\n list view, and image in the detail view.",
+            "title": "banner_image",
+            "type": "string"
+          },
+          "contentHtml": {
+            "description": "(optional, string) is the body of the item. It can be plain text, HTML, or\n a snippet of Markdown. (It should not be the entire Markdown document; just\n a snippet.) This is complete enough that it can be displayed alone in a\n reader.",
+            "title": "content_html",
+            "type": "string"
+          },
+          "contentText": {
+            "description": "(optional, string) is the body of the item. It can be plain text, HTML, or\n a snippet of Markdown. (It should not be the entire Markdown document; just\n a snippet.) This is complete enough that it can be displayed alone in a\n reader.",
+            "title": "content_text",
+            "type": "string"
+          },
+          "dateModified": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "description": "(optional, string) specifies the modification date in RFC 3339 format.",
+            "title": "date_modified"
+          },
+          "datePublished": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "description": "(optional, string) specifies the date in RFC 3339 format.",
+            "title": "date_published"
+          },
+          "externalUrl": {
+            "description": "(optional, string) is the URL of a page elsewhere. This is especially\n useful for linkblogs. If url links to where you’re talking about a thing,\n then external_url links to the thing you’re talking about.",
+            "title": "external_url",
+            "type": "string"
+          },
+          "id": {
+            "description": "(required, string) is unique for that item for that feed over time. If an\n item is ever updated, the id should be unchanged. New items should never\n use a previously-used id. If an id is presented as a number or other type,\n a JSON Feed reader must coerce it to a string. Ideally, the id is the full\n URL of the resource described by the item, since URLs make great unique\n identifiers.",
+            "title": "id",
+            "type": "string"
+          },
+          "image": {
+            "description": "(optional, string) is the URL of the main image for the item. This image\n may also appear in the content_html — if so, it’s a hint to the feed reader\n that this is the main, featured image. Even if it’s not, it will appear in\n the detail view. Images should be square, with a 4:3 aspect ratio. (We will\n be flexible on this in the future.)",
+            "title": "image",
+            "type": "string"
+          },
+          "language": {
+            "description": "(optional, string) is the language for this item, using the same format as\n the top-level language field. The value can be different than the primary\n language for the feed when a specific item is written in a different\n language than other items in the feed.",
+            "title": "language",
+            "type": "string"
+          },
+          "summary": {
+            "description": "(optional, string) is a plain text sentence or two describing the item.\n This might be presented in a timeline, for instance, where a detail view\n would display all of content_html or content_text.",
+            "title": "summary",
+            "type": "string"
+          },
+          "tags": {
+            "description": "(optional, array of strings) can have any plain text values you want. Tags\n tend to be just one word, but they may be anything. Note: they are not the\n equivalent of Twitter hashtags. Some blogging systems and other feed\n formats call these categories.",
+            "items": {
+              "type": "string"
+            },
+            "title": "tags",
+            "type": "array"
+          },
+          "title": {
+            "description": "(optional, string) is plain text. Microblog items in particular may omit\n titles.",
+            "title": "title",
+            "type": "string"
+          },
+          "url": {
+            "description": "(optional, string) is the URL of the resource described by the item. It’s\n the permalink. This may be the same as the id — but should be present\n regardless.",
+            "title": "url",
+            "type": "string"
+          }
+        },
+        "title": "Item",
+        "type": "object"
+      },
+      "techaro.thoth.auth.admin.v1.User": {
+        "additionalProperties": false,
+        "properties": {
+          "createdAt": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "title": "created_at"
+          },
+          "customerId": {
+            "title": "customer_id",
+            "type": "string"
+          },
+          "deletedAt": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "title": "deleted_at"
+          },
+          "emailAddress": {
+            "title": "email_address",
+            "type": "string"
+          },
+          "id": {
+            "title": "id",
+            "type": "string"
+          },
+          "isAdmin": {
+            "title": "is_admin",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "name",
+            "type": "string"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "title": "updated_at"
+          }
+        },
+        "title": "User",
+        "type": "object"
+      },
+      "techaro.thoth.auth.admin.v1.UsersServiceCreateRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "customerId": {
+            "title": "customer_id",
+            "type": "string"
+          },
+          "emailAddress": {
+            "title": "email_address",
+            "type": "string"
+          },
+          "name": {
+            "title": "name",
+            "type": "string"
+          }
+        },
+        "title": "UsersServiceCreateRequest",
+        "type": "object"
+      },
+      "techaro.thoth.auth.admin.v1.UsersServiceCreateResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/techaro.thoth.auth.admin.v1.User",
+            "title": "user"
+          }
+        },
+        "title": "UsersServiceCreateResponse",
+        "type": "object"
+      },
+      "techaro.thoth.auth.admin.v1.UsersServiceDisableRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "id",
+            "type": "string"
+          }
+        },
+        "title": "UsersServiceDisableRequest",
+        "type": "object"
+      },
+      "techaro.thoth.auth.admin.v1.UsersServiceDisableResponse": {
+        "additionalProperties": false,
+        "title": "UsersServiceDisableResponse",
+        "type": "object"
+      },
+      "techaro.thoth.auth.admin.v1.UsersServiceListRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "format": "int32",
+            "title": "count",
+            "type": "integer"
+          },
+          "page": {
+            "format": "int32",
+            "title": "page",
+            "type": "integer"
+          }
+        },
+        "title": "UsersServiceListRequest",
+        "type": "object"
+      },
+      "techaro.thoth.auth.admin.v1.UsersServiceListResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/techaro.thoth.auth.admin.v1.User"
+            },
+            "title": "users",
+            "type": "array"
+          }
+        },
+        "title": "UsersServiceListResponse",
+        "type": "object"
+      },
+      "techaro.thoth.auth.admin.v1.UsersServiceMakeJWTRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "comment": {
+            "title": "comment",
+            "type": "string"
+          },
+          "userId": {
+            "title": "user_id",
+            "type": "string"
+          }
+        },
+        "title": "UsersServiceMakeJWTRequest",
+        "type": "object"
+      },
+      "techaro.thoth.auth.admin.v1.UsersServiceMakeJWTResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "tokenInfo": {
+            "$ref": "#/components/schemas/techaro.thoth.auth.v1.JWTServiceCreateResponse",
+            "title": "token_info"
+          }
+        },
+        "title": "UsersServiceMakeJWTResponse",
+        "type": "object"
+      },
+      "techaro.thoth.auth.v1.JWT": {
+        "additionalProperties": false,
+        "properties": {
+          "comment": {
+            "title": "comment",
+            "type": "string"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "title": "created_at"
+          },
+          "expiresAt": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "title": "expires_at"
+          },
+          "id": {
+            "title": "id",
+            "type": "string"
+          }
+        },
+        "title": "JWT",
+        "type": "object"
+      },
+      "techaro.thoth.auth.v1.JWTServiceCreateRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "comment": {
+            "title": "comment",
+            "type": "string"
+          }
+        },
+        "title": "JWTServiceCreateRequest",
+        "type": "object"
+      },
+      "techaro.thoth.auth.v1.JWTServiceCreateResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "expires": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "title": "expires"
+          },
+          "jti": {
+            "title": "jti",
+            "type": "string"
+          },
+          "jwt": {
+            "title": "jwt",
+            "type": "string"
+          }
+        },
+        "title": "JWTServiceCreateResponse",
+        "type": "object"
+      },
+      "techaro.thoth.auth.v1.JWTServiceDeleteRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "jti": {
+            "title": "jti",
+            "type": "string"
+          }
+        },
+        "title": "JWTServiceDeleteRequest",
+        "type": "object"
+      },
+      "techaro.thoth.auth.v1.JWTServiceDeleteResponse": {
+        "additionalProperties": false,
+        "title": "JWTServiceDeleteResponse",
+        "type": "object"
+      },
+      "techaro.thoth.auth.v1.JWTServiceListRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "format": "int32",
+            "title": "count",
+            "type": "integer"
+          },
+          "page": {
+            "format": "int32",
+            "title": "page",
+            "type": "integer"
+          }
+        },
+        "title": "JWTServiceListRequest",
+        "type": "object"
+      },
+      "techaro.thoth.auth.v1.JWTServiceListResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "tokens": {
+            "items": {
+              "$ref": "#/components/schemas/techaro.thoth.auth.v1.JWT"
+            },
+            "title": "tokens",
+            "type": "array"
+          }
+        },
+        "title": "JWTServiceListResponse",
+        "type": "object"
+      },
+      "within.website.x.mi.v1.Event": {
+        "additionalProperties": false,
+        "description": "Event is a single event that Xe will be attending.",
+        "properties": {
+          "description": {
+            "description": "The description of the event",
+            "title": "description",
+            "type": "string"
+          },
+          "endDate": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "description": "The day the event ends",
+            "title": "end_date"
+          },
+          "id": {
+            "description": "The ID of the event",
+            "format": "int32",
+            "title": "id",
+            "type": "integer"
+          },
+          "location": {
+            "description": "The location of the event (human-readable)",
+            "title": "location",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the event",
+            "title": "name",
+            "type": "string"
+          },
+          "startDate": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "description": "The day the event starts",
+            "title": "start_date"
+          },
+          "url": {
+            "description": "The URL for the event",
+            "title": "url",
+            "type": "string"
+          }
+        },
+        "title": "Event",
+        "type": "object"
+      },
+      "within.website.x.mi.v1.EventFeed": {
+        "additionalProperties": false,
+        "description": "A feed of events, result from mi query.",
+        "properties": {
+          "events": {
+            "description": "The events in the feed",
+            "items": {
+              "$ref": "#/components/schemas/within.website.x.mi.v1.Event"
+            },
+            "title": "events",
+            "type": "array"
+          }
+        },
+        "title": "EventFeed",
+        "type": "object"
+      },
+      "xeiaso.net.admin.v1.GetTokenRequest": {
+        "additionalProperties": false,
+        "description": "GetTokenRequest is the request for PatreonService.GetToken.",
+        "title": "GetTokenRequest",
+        "type": "object"
+      },
+      "xeiaso.net.admin.v1.GetTokenResponse": {
+        "additionalProperties": false,
+        "description": "GetTokenResponse is the response for PatreonService.GetToken.",
+        "properties": {
+          "token": {
+            "$ref": "#/components/schemas/xeiaso.net.admin.v1.PatreonToken",
+            "description": "The Patreon OAuth token.",
+            "title": "token"
+          }
+        },
+        "title": "GetTokenResponse",
+        "type": "object"
+      },
+      "xeiaso.net.admin.v1.PatreonToken": {
+        "additionalProperties": false,
+        "description": "PatreonToken contains a Patreon OAuth token.",
+        "properties": {
+          "accessToken": {
+            "title": "access_token",
+            "type": "string"
+          },
+          "expiry": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "title": "expiry"
+          },
+          "refreshToken": {
+            "title": "refresh_token",
+            "type": "string"
+          },
+          "tokenType": {
+            "title": "token_type",
+            "type": "string"
+          }
+        },
+        "title": "PatreonToken",
+        "type": "object"
+      },
+      "xeiaso.net.admin.v1.RebuildRequest": {
+        "additionalProperties": false,
+        "description": "RebuildRequest is the request for AdminService.Rebuild.",
+        "title": "RebuildRequest",
+        "type": "object"
+      },
+      "xeiaso.net.admin.v1.RebuildResponse": {
+        "additionalProperties": false,
+        "description": "RebuildResponse is the response for AdminService.Rebuild.",
+        "properties": {
+          "buildInfo": {
+            "$ref": "#/components/schemas/xeiaso.net.v1.BuildInfo",
+            "description": "The build info of the rebuilt site.",
+            "title": "build_info"
+          }
+        },
+        "title": "RebuildResponse",
+        "type": "object"
+      },
+      "xeiaso.net.v1.BuildInfo": {
+        "additionalProperties": false,
+        "description": "BuildInfo contains metadata about a build of the site.",
+        "properties": {
+          "buildTime": {
+            "$ref": "#/components/schemas/google.protobuf.Timestamp",
+            "description": "When the site was last rebuilt",
+            "title": "build_time"
+          },
+          "commit": {
+            "description": "The commit of Xe/site that was built",
+            "title": "commit",
+            "type": "string"
+          },
+          "denoVersion": {
+            "description": "The version of Deno used to build the site",
+            "title": "deno_version",
+            "type": "string"
+          },
+          "goVersion": {
+            "description": "The version of Go running on the server",
+            "title": "go_version",
+            "type": "string"
+          },
+          "xesiteVersion": {
+            "description": "The version of the xesite binary",
+            "title": "xesite_version",
+            "type": "string"
+          }
+        },
+        "title": "BuildInfo",
+        "type": "object"
+      },
+      "xeiaso.net.v1.FeedServiceGetRequest": {
+        "additionalProperties": false,
+        "description": "FeedServiceGetRequest is the request for FeedService.Get.",
+        "title": "FeedServiceGetRequest",
+        "type": "object"
+      },
+      "xeiaso.net.v1.FeedServiceGetResponse": {
+        "additionalProperties": false,
+        "description": "FeedServiceGetResponse is the response for FeedService.Get.",
+        "properties": {
+          "feed": {
+            "$ref": "#/components/schemas/protofeed.Feed",
+            "description": "The feed of posts.",
+            "title": "feed"
+          }
+        },
+        "title": "FeedServiceGetResponse",
+        "type": "object"
+      },
+      "xeiaso.net.v1.MetadataRequest": {
+        "additionalProperties": false,
+        "description": "MetadataRequest is the request for MetaService.Metadata.",
+        "title": "MetadataRequest",
+        "type": "object"
+      },
+      "xeiaso.net.v1.MetadataResponse": {
+        "additionalProperties": false,
+        "description": "MetadataResponse is the response for MetaService.Metadata.",
+        "properties": {
+          "buildInfo": {
+            "$ref": "#/components/schemas/xeiaso.net.v1.BuildInfo",
+            "description": "The build info of the currently running xesite instance.",
+            "title": "build_info"
+          }
+        },
+        "title": "MetadataResponse",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "me@xeiaso.net",
+      "name": "Xe Iaso",
+      "url": "https://xeiaso.net/contact"
+    },
+    "description": "Every endpoint here is a Twirp method generated from the protocol buffer definitions in the Xe/site repository. Requests are HTTP POST with a JSON body and responses are JSON. These endpoints take no authentication and accept no credentials.",
+    "summary": "The RPC surface behind xeiaso.net.",
+    "title": "xeiaso.net",
+    "version": "4"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/twirp/techaro.thoth.auth.admin.v1.UsersService/Create": {
+      "post": {
+        "operationId": "techaro.thoth.auth.admin.v1.UsersService.Create",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/techaro.thoth.auth.admin.v1.UsersServiceCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/techaro.thoth.auth.admin.v1.UsersServiceCreateResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "techaro.thoth.auth.admin.v1.UsersService"
+        ]
+      }
+    },
+    "/twirp/techaro.thoth.auth.admin.v1.UsersService/Disable": {
+      "post": {
+        "operationId": "techaro.thoth.auth.admin.v1.UsersService.Disable",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/techaro.thoth.auth.admin.v1.UsersServiceDisableRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/techaro.thoth.auth.admin.v1.UsersServiceDisableResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "techaro.thoth.auth.admin.v1.UsersService"
+        ]
+      }
+    },
+    "/twirp/techaro.thoth.auth.admin.v1.UsersService/List": {
+      "post": {
+        "operationId": "techaro.thoth.auth.admin.v1.UsersService.List",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/techaro.thoth.auth.admin.v1.UsersServiceListRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/techaro.thoth.auth.admin.v1.UsersServiceListResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "techaro.thoth.auth.admin.v1.UsersService"
+        ]
+      }
+    },
+    "/twirp/techaro.thoth.auth.admin.v1.UsersService/MakeJWT": {
+      "post": {
+        "operationId": "techaro.thoth.auth.admin.v1.UsersService.MakeJWT",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/techaro.thoth.auth.admin.v1.UsersServiceMakeJWTRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/techaro.thoth.auth.admin.v1.UsersServiceMakeJWTResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "techaro.thoth.auth.admin.v1.UsersService"
+        ]
+      }
+    },
+    "/twirp/techaro.thoth.auth.v1.JWTService/Create": {
+      "post": {
+        "operationId": "techaro.thoth.auth.v1.JWTService.Create",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/techaro.thoth.auth.v1.JWTServiceCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/techaro.thoth.auth.v1.JWTServiceCreateResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "techaro.thoth.auth.v1.JWTService"
+        ]
+      }
+    },
+    "/twirp/techaro.thoth.auth.v1.JWTService/Delete": {
+      "post": {
+        "operationId": "techaro.thoth.auth.v1.JWTService.Delete",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/techaro.thoth.auth.v1.JWTServiceDeleteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/techaro.thoth.auth.v1.JWTServiceDeleteResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "techaro.thoth.auth.v1.JWTService"
+        ]
+      }
+    },
+    "/twirp/techaro.thoth.auth.v1.JWTService/List": {
+      "post": {
+        "operationId": "techaro.thoth.auth.v1.JWTService.List",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/techaro.thoth.auth.v1.JWTServiceListRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/techaro.thoth.auth.v1.JWTServiceListResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "techaro.thoth.auth.v1.JWTService"
+        ]
+      }
+    },
+    "/twirp/within.website.x.mi.v1.Events/Get": {
+      "post": {
+        "operationId": "within.website.x.mi.v1.Events.Get",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/google.protobuf.Empty"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/within.website.x.mi.v1.EventFeed"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "within.website.x.mi.v1.Events"
+        ]
+      }
+    },
+    "/twirp/within.website.x.mimi.announce.v1.Announce/Announce": {
+      "post": {
+        "operationId": "within.website.x.mimi.announce.v1.Announce.Announce",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/protofeed.Item"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/google.protobuf.Empty"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "within.website.x.mimi.announce.v1.Announce"
+        ]
+      }
+    },
+    "/twirp/xeiaso.net.admin.v1.AdminService/Rebuild": {
+      "post": {
+        "operationId": "xeiaso.net.admin.v1.AdminService.Rebuild",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/xeiaso.net.admin.v1.RebuildRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/xeiaso.net.admin.v1.RebuildResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "xeiaso.net.admin.v1.AdminService"
+        ]
+      }
+    },
+    "/twirp/xeiaso.net.admin.v1.PatreonService/GetToken": {
+      "post": {
+        "operationId": "xeiaso.net.admin.v1.PatreonService.GetToken",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/xeiaso.net.admin.v1.GetTokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/xeiaso.net.admin.v1.GetTokenResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "xeiaso.net.admin.v1.PatreonService"
+        ]
+      }
+    },
+    "/twirp/xeiaso.net.v1.FeedService/Get": {
+      "post": {
+        "operationId": "xeiaso.net.v1.FeedService.Get",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/xeiaso.net.v1.FeedServiceGetRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/xeiaso.net.v1.FeedServiceGetResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "xeiaso.net.v1.FeedService"
+        ]
+      }
+    },
+    "/twirp/xeiaso.net.v1.MetaService/Metadata": {
+      "post": {
+        "operationId": "xeiaso.net.v1.MetaService.Metadata",
+        "requestBody": {
+          "content": {
+            "json": {
+              "schema": {
+                "$ref": "#/components/schemas/xeiaso.net.v1.MetadataRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "json": {
+                "schema": {
+                  "$ref": "#/components/schemas/xeiaso.net.v1.MetadataResponse"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwirpError"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "tags": [
+          "xeiaso.net.v1.MetaService"
+        ]
+      }
+    }
+  },
+  "security": [],
+  "servers": [
+    {
+      "description": "Production",
+      "url": "https://xeiaso.net"
+    },
+    {
+      "description": "Preview builds",
+      "url": "https://preview.xeiaso.net"
+    }
+  ],
+  "tags": [
+    {
+      "name": "techaro.thoth.auth.admin.v1.UsersService"
+    },
+    {
+      "name": "techaro.thoth.auth.v1.JWTService"
+    },
+    {
+      "description": "Events lets users fetch the current feed of events that Xe will be attending.",
+      "name": "within.website.x.mi.v1.Events"
+    },
+    {
+      "name": "within.website.x.mimi.announce.v1.Announce"
+    },
+    {
+      "description": "AdminService provides administrative operations.",
+      "name": "xeiaso.net.admin.v1.AdminService"
+    },
+    {
+      "description": "PatreonService provides access to Patreon OAuth tokens.",
+      "name": "xeiaso.net.admin.v1.PatreonService"
+    },
+    {
+      "description": "FeedService lets users fetch the current feed of posts.",
+      "name": "xeiaso.net.v1.FeedService"
+    },
+    {
+      "description": "MetaService lets users fetch site metadata.",
+      "name": "xeiaso.net.v1.MetaService"
+    }
+  ]
+}

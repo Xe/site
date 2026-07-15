@@ -8,6 +8,7 @@ import (
 	"github.com/google/subcommands"
 	_ "github.com/joho/godotenv/autoload"
 	"xeiaso.net/v4/cmd/xesitectl/commands"
+	"xeiaso.net/v4/cmd/xesitectl/commands/openapi"
 )
 
 func main() {
@@ -15,6 +16,7 @@ func main() {
 	subcommands.Register(subcommands.FlagsCommand(), "")
 	subcommands.Register(subcommands.CommandsCommand(), "")
 	subcommands.Register(&commands.TestWebhookCmd{}, "")
+	subcommands.Register(&openapi.MergeCmd{}, "")
 
 	flag.Parse()
 
