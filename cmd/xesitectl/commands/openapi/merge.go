@@ -54,19 +54,31 @@ func Merge(base []byte, fragments []Fragment) ([]byte, error) {
 	}
 
 	for _, f := range fragments {
-		frag := map[string]any{}
-		if err := json.Unmarshal(f.Data, &frag); err != nil {
+		fragDoc := map[string]any{}
+		if err := json.Unmarshal(f.Data, &fragDoc); err != nil {
 			return nil, fmt.Errorf("openapi: parse %s: %w", f.Path, err)
 		}
 
-		if fp, ok := frag["paths"].(map[string]any); ok {
+		fp, ok, err := fragObject(fragDoc, "paths")
+		if err != nil {
+			return nil, fmt.Errorf("openapi: %s: %w", f.Path, err)
+		}
+		if ok {
 			if err := mergeInto(paths, fp, "path", f.Path); err != nil {
 				return nil, err
 			}
 		}
 
-		if fc, ok := frag["components"].(map[string]any); ok {
-			if fs, ok := fc["schemas"].(map[string]any); ok {
+		fc, ok, err := fragObject(fragDoc, "components")
+		if err != nil {
+			return nil, fmt.Errorf("openapi: %s: %w", f.Path, err)
+		}
+		if ok {
+			fs, ok, err := fragObject(fc, "schemas")
+			if err != nil {
+				return nil, fmt.Errorf("openapi: %s: components: %w", f.Path, err)
+			}
+			if ok {
 				if err := mergeInto(schemas, fs, "schema", f.Path); err != nil {
 					return nil, err
 				}
@@ -74,8 +86,13 @@ func Merge(base []byte, fragments []Fragment) ([]byte, error) {
 		}
 
 		// Message-only protos have no services, so connect-openapi omits their
-		// tags entirely. A nil tags key is normal rather than a defect.
-		if err := indexTags(tags, list(frag["tags"]), f.Path); err != nil {
+		// tags entirely. An absent or null tags key is normal rather than a
+		// defect; only a tags value of the wrong shape is an error.
+		fragTags, err := fragList(fragDoc, "tags")
+		if err != nil {
+			return nil, fmt.Errorf("openapi: %s: %w", f.Path, err)
+		}
+		if err := indexTags(tags, fragTags, f.Path); err != nil {
 			return nil, err
 		}
 	}
@@ -118,7 +135,7 @@ func indexTags(dst map[string]any, tags []any, srcPath string) error {
 
 		name, ok := tag["name"].(string)
 		if !ok {
-			return fmt.Errorf("openapi: %s: tag has no name", srcPath)
+			return fmt.Errorf("openapi: %s: tag name is missing or not a string", srcPath)
 		}
 
 		if err := mergeInto(dst, map[string]any{name: tag}, "tag", srcPath); err != nil {
@@ -153,6 +170,41 @@ func list(v any) []any {
 	l, _ := v.([]any)
 
 	return l
+}
+
+// fragObject returns m[key] as an object. A key that is absent or explicitly
+// null is normal for a fragment (e.g. message-only protos omit "tags"
+// entirely) and reports as not-ok without an error. A key that is present
+// with a different, non-object shape is a defect in the generator output and
+// must not be silently dropped, so it is reported as an error.
+func fragObject(m map[string]any, key string) (obj map[string]any, ok bool, err error) {
+	v, present := m[key]
+	if !present || v == nil {
+		return nil, false, nil
+	}
+
+	obj, ok = v.(map[string]any)
+	if !ok {
+		return nil, false, fmt.Errorf("%q is not an object", key)
+	}
+
+	return obj, true, nil
+}
+
+// fragList returns m[key] as a JSON list, with the same absent/null-is-fine,
+// wrong-type-is-an-error rules as fragObject.
+func fragList(m map[string]any, key string) ([]any, error) {
+	v, present := m[key]
+	if !present || v == nil {
+		return nil, nil
+	}
+
+	l, ok := v.([]any)
+	if !ok {
+		return nil, fmt.Errorf("%q is not a list", key)
+	}
+
+	return l, nil
 }
 
 // valuesByKey returns m's values ordered by key. Map iteration order is random

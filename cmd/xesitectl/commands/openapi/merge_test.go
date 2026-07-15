@@ -94,23 +94,75 @@ func TestMerge(t *testing.T) {
 			},
 		},
 		{
+			name: "fragment with no fields at all is fine",
+			base: minimalBase,
+			fragments: []Fragment{
+				frag("empty.openapi.json", `{}`),
+			},
+			check: func(t *testing.T, doc map[string]any) {
+				if got := doc["tags"].([]any); len(got) != 0 {
+					t.Errorf("got %d tags, want 0", len(got))
+				}
+				paths := doc["paths"].(map[string]any)
+				if len(paths) != 0 {
+					t.Errorf("got %d paths, want 0: %v", len(paths), paths)
+				}
+			},
+		},
+		{
+			name: "fragment with paths of the wrong type is an error",
+			base: minimalBase,
+			fragments: []Fragment{
+				frag("bad.openapi.json", `{"paths": "not an object"}`),
+			},
+			wantErr: `bad.openapi.json: "paths" is not an object`,
+		},
+		{
+			name: "fragment with components of the wrong type is an error",
+			base: minimalBase,
+			fragments: []Fragment{
+				frag("bad.openapi.json", `{"components": "not an object"}`),
+			},
+			wantErr: `bad.openapi.json: "components" is not an object`,
+		},
+		{
+			name: "fragment with components.schemas of the wrong type is an error",
+			base: minimalBase,
+			fragments: []Fragment{
+				frag("bad.openapi.json", `{"components": {"schemas": "not an object"}}`),
+			},
+			wantErr: `bad.openapi.json: components: "schemas" is not an object`,
+		},
+		{
+			name: "fragment with tags of the wrong type is an error",
+			base: minimalBase,
+			fragments: []Fragment{
+				frag("bad.openapi.json", `{"tags": "not a list"}`),
+			},
+			wantErr: `bad.openapi.json: "tags" is not a list`,
+		},
+		{
 			name: "tags are deduped and sorted by name",
 			base: minimalBase,
 			fragments: []Fragment{
-				frag("b.openapi.json", `{"tags": [{"name": "zeta"}, {"name": "alpha"}]}`),
+				frag("b.openapi.json", `{"tags": [{"name": "zeta"}, {"name": "gamma"}]}`),
 				frag("a.openapi.json", `{"tags": [{"name": "alpha"}]}`),
 			},
 			check: func(t *testing.T, doc map[string]any) {
 				tags := doc["tags"].([]any)
-				if len(tags) != 2 {
-					t.Fatalf("got %d tags, want 2: %v", len(tags), tags)
+				if len(tags) != 3 {
+					t.Fatalf("got %d tags, want 3: %v", len(tags), tags)
 				}
 				var names []string
 				for _, tag := range tags {
 					names = append(names, tag.(map[string]any)["name"].(string))
 				}
-				if names[0] != "alpha" || names[1] != "zeta" {
-					t.Errorf("got tag order %v, want [alpha zeta]", names)
+				want := []string{"alpha", "gamma", "zeta"}
+				for i, name := range names {
+					if name != want[i] {
+						t.Errorf("got tag order %v, want %v", names, want)
+						break
+					}
 				}
 			},
 		},
@@ -183,6 +235,28 @@ func TestMerge(t *testing.T) {
 				tt.check(t, doc)
 			}
 		})
+	}
+}
+
+func TestMergeOutputFormat(t *testing.T) {
+	got, err := Merge([]byte(minimalBase), []Fragment{
+		frag("a.openapi.json", `{"paths": {"/twirp/a.A/Get": {"post": {}}}}`),
+	})
+	if err != nil {
+		t.Fatalf("Merge: %v", err)
+	}
+
+	if len(got) == 0 || got[len(got)-1] != '\n' {
+		t.Fatalf("output does not end with a newline: %q", got)
+	}
+	if strings.HasSuffix(string(got), "\n\n") {
+		t.Fatalf("output has more than one trailing newline: %q", got)
+	}
+
+	// json.MarshalIndent with a two-space prefix nests the top-level
+	// "paths" key's first entry two spaces deep and its own children four.
+	if !strings.Contains(string(got), "\n  \"paths\": {\n    \"/twirp/a.A/Get\": {\n") {
+		t.Fatalf("output is not indented with two spaces per level:\n%s", got)
 	}
 }
 
