@@ -22,3 +22,8 @@ plugins:
     out: gen
     opt:
       - paths=source_relative
+  - local: ["go", "tool", "protoc-gen-connect-openapi"]
+    out: gen
+    opt:
+      - features=twirp
+      - format=json

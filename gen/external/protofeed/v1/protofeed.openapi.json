@@ -1,0 +1,240 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "protofeed"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "google.protobuf.Timestamp": {
+        "type": "string",
+        "examples": [
+          "2023-01-15T01:30:15.01Z",
+          "2024-12-25T12:00:00Z"
+        ],
+        "format": "date-time",
+        "description": "A Timestamp represents a point in time independent of any time zone or local\n calendar, encoded as a count of seconds and fractions of seconds at\n nanosecond resolution. The count is relative to an epoch at UTC midnight on\n January 1, 1970, in the proleptic Gregorian calendar which extends the\n Gregorian calendar backwards to year one.\n\n All minutes are 60 seconds long. Leap seconds are \"smeared\" so that no leap\n second table is needed for interpretation, using a [24-hour linear\n smear](https://developers.google.com/time/smear).\n\n The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By\n restricting to that range, we ensure that we can convert to and from [RFC\n 3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.\n\n # Examples\n\n Example 1: Compute Timestamp from POSIX `time()`.\n\n     Timestamp timestamp;\n     timestamp.set_seconds(time(NULL));\n     timestamp.set_nanos(0);\n\n Example 2: Compute Timestamp from POSIX `gettimeofday()`.\n\n     struct timeval tv;\n     gettimeofday(\u0026tv, NULL);\n\n     Timestamp timestamp;\n     timestamp.set_seconds(tv.tv_sec);\n     timestamp.set_nanos(tv.tv_usec * 1000);\n\n Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.\n\n     FILETIME ft;\n     GetSystemTimeAsFileTime(\u0026ft);\n     UINT64 ticks = (((UINT64)ft.dwHighDateTime) \u003c\u003c 32) | ft.dwLowDateTime;\n\n     // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z\n     // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.\n     Timestamp timestamp;\n     timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));\n     timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));\n\n Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.\n\n     long millis = System.currentTimeMillis();\n\n     Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)\n         .setNanos((int) ((millis % 1000) * 1000000)).build();\n\n Example 5: Compute Timestamp from Java `Instant.now()`.\n\n     Instant now = Instant.now();\n\n     Timestamp timestamp =\n         Timestamp.newBuilder().setSeconds(now.getEpochSecond())\n             .setNanos(now.getNano()).build();\n\n Example 6: Compute Timestamp from current time in Python.\n\n     timestamp = Timestamp()\n     timestamp.GetCurrentTime()\n\n # JSON Mapping\n\n In JSON format, the Timestamp type is encoded as a string in the\n [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the\n format is \"{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z\"\n where {year} is always expressed using four digits while {month}, {day},\n {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional\n seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),\n are optional. The \"Z\" suffix indicates the timezone (\"UTC\"); the timezone\n is required. A proto3 JSON serializer should always use UTC (as indicated by\n \"Z\") when printing the Timestamp type and a proto3 JSON parser should be\n able to accept both UTC and other timezones (as indicated by an offset).\n\n For example, \"2017-01-15T01:30:15.01Z\" encodes 15.01 seconds past\n 01:30 UTC on January 15, 2017.\n\n In JavaScript, one can convert a Date object to this format using the\n standard\n [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)\n method. In Python, a standard `datetime.datetime` object can be converted\n to this format using\n [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with\n the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use\n the Joda Time's [`ISODateTimeFormat.dateTime()`](\n http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()\n ) to obtain a formatter capable of generating timestamps in this format."
+      },
+      "protofeed.Attachment": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "url",
+            "description": "(required, string) specifies the location of the attachment."
+          },
+          "mimeType": {
+            "type": "string",
+            "title": "mime_type",
+            "description": "(required, string) specifies the type of the attachment, such as\n “audio/mpeg.”"
+          },
+          "title": {
+            "type": "string",
+            "title": "title",
+            "description": "(optional, string) specifies the title of the attachment."
+          },
+          "sizeInBytes": {
+            "type": "integer",
+            "title": "size_in_bytes",
+            "format": "int32",
+            "description": "(optional, number) specifies how large the file is."
+          },
+          "durationInSeconds": {
+            "type": "integer",
+            "title": "duration_in_seconds",
+            "format": "int32",
+            "description": "(optional, number) specifies how long it takes to listen to or watch, when\n played at normal speed."
+          }
+        },
+        "title": "Attachment",
+        "additionalProperties": false,
+        "description": "Attachment is an object representing a file associated with an item."
+      },
+      "protofeed.Author": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "name",
+            "description": "(optional, string) is the author’s name."
+          },
+          "url": {
+            "type": "string",
+            "title": "url",
+            "description": "(optional, string) is the URL of a site owned by the author. It could be a\n blog, micro-blog, Twitter account, and so on. Ideally the linked-to page\n provides a way to contact the author, but that’s not required. The URL\n could be a mailto: link, though we suspect that will be rare."
+          },
+          "avatar": {
+            "type": "string",
+            "title": "avatar",
+            "description": "(optional, string) is the URL for an image for the author. As with icon, it\n should be square and relatively large — such as 512 x 512 pixels — and\n should use transparency where appropriate, since it may be rendered on a\n non-white background."
+          }
+        },
+        "title": "Author",
+        "additionalProperties": false,
+        "description": "Author is an object representing the author of the feed or item."
+      },
+      "protofeed.Feed": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "title",
+            "description": "(required, string) is the name of the feed, which will often correspond to\n the name of the website (blog, for instance), though not necessarily."
+          },
+          "homePageUrl": {
+            "type": "string",
+            "title": "home_page_url",
+            "description": "(optional but strongly recommended, string) is the URL of the resource that\n the feed describes. This resource may or may not actually be a “home” page,\n but it should be an HTML page. If a feed is published on the public web,\n this should be considered as required. But it may not make sense in the\n case of a file created on a desktop computer, when that file is not shared\n or is shared only privately."
+          },
+          "feedUrl": {
+            "type": "string",
+            "title": "feed_url",
+            "description": "(optional but strongly recommended, string) is the URL of the feed, and\n serves as the unique identifier for the feed. As with home_page_url, this\n should be considered required for feeds on the public web."
+          },
+          "description": {
+            "type": "string",
+            "title": "description",
+            "description": "(optional, string) provides more detail, beyond the title, on what the feed\n is about. A feed reader may display this text."
+          },
+          "userComment": {
+            "type": "string",
+            "title": "user_comment",
+            "description": "(optional, string) is a description of the purpose of the feed. This is for\n the use of people looking at the raw Protobuf, and should be ignored by\n feed readers."
+          },
+          "icon": {
+            "type": "string",
+            "title": "icon",
+            "description": "(optional, string) is the URL of an image for the feed suitable to be used\n in a source list. It should be square and relatively large — such as 512 x\n 512 — so that it can be scaled down and so that it can look good on retina\n displays. It should use transparency where appropriate, since it may be\n rendered on a non-white background."
+          },
+          "favicon": {
+            "type": "string",
+            "title": "favicon",
+            "description": "(optional, string) is the URL of an image for the feed suitable to be used\n in a source list. It should be square and relatively small, but not smaller\n than 64 x 64."
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protofeed.Author"
+            },
+            "title": "authors",
+            "description": "(optional, array of objects) specifies the feed authors."
+          },
+          "language": {
+            "type": "string",
+            "title": "language",
+            "description": "(optional, string) is the primary language for the feed."
+          },
+          "expired": {
+            "type": "boolean",
+            "title": "expired",
+            "description": "(optional, boolean) says whether or not the feed is finished — that is,\n whether or not it will ever update again. A feed for a temporary event,\n such as an instance of the Olympics, could expire. If the value is true,\n then it’s expired. Any other value, or the absence of expired, means the\n feed may continue to update."
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protofeed.Item"
+            },
+            "title": "items",
+            "description": "(required, array of objects) contains the items in the feed. This is the\n most important element of the feed after the version field. Each item is a\n story, blog post, article, photograph, video, or other thing. For example,\n if a feed contains a long article, a podcast episode, and a photo, those\n three items would be included in items."
+          }
+        },
+        "title": "Feed",
+        "additionalProperties": false,
+        "description": "Feed is the root of a Proto Feed document. A feed must at least contain a\n title and items."
+      },
+      "protofeed.Item": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "id",
+            "description": "(required, string) is unique for that item for that feed over time. If an\n item is ever updated, the id should be unchanged. New items should never\n use a previously-used id. If an id is presented as a number or other type,\n a JSON Feed reader must coerce it to a string. Ideally, the id is the full\n URL of the resource described by the item, since URLs make great unique\n identifiers."
+          },
+          "url": {
+            "type": "string",
+            "title": "url",
+            "description": "(optional, string) is the URL of the resource described by the item. It’s\n the permalink. This may be the same as the id — but should be present\n regardless."
+          },
+          "externalUrl": {
+            "type": "string",
+            "title": "external_url",
+            "description": "(optional, string) is the URL of a page elsewhere. This is especially\n useful for linkblogs. If url links to where you’re talking about a thing,\n then external_url links to the thing you’re talking about."
+          },
+          "title": {
+            "type": "string",
+            "title": "title",
+            "description": "(optional, string) is plain text. Microblog items in particular may omit\n titles."
+          },
+          "contentText": {
+            "type": "string",
+            "title": "content_text",
+            "description": "(optional, string) is the body of the item. It can be plain text, HTML, or\n a snippet of Markdown. (It should not be the entire Markdown document; just\n a snippet.) This is complete enough that it can be displayed alone in a\n reader."
+          },
+          "contentHtml": {
+            "type": "string",
+            "title": "content_html",
+            "description": "(optional, string) is the body of the item. It can be plain text, HTML, or\n a snippet of Markdown. (It should not be the entire Markdown document; just\n a snippet.) This is complete enough that it can be displayed alone in a\n reader."
+          },
+          "summary": {
+            "type": "string",
+            "title": "summary",
+            "description": "(optional, string) is a plain text sentence or two describing the item.\n This might be presented in a timeline, for instance, where a detail view\n would display all of content_html or content_text."
+          },
+          "image": {
+            "type": "string",
+            "title": "image",
+            "description": "(optional, string) is the URL of the main image for the item. This image\n may also appear in the content_html — if so, it’s a hint to the feed reader\n that this is the main, featured image. Even if it’s not, it will appear in\n the detail view. Images should be square, with a 4:3 aspect ratio. (We will\n be flexible on this in the future.)"
+          },
+          "bannerImage": {
+            "type": "string",
+            "title": "banner_image",
+            "description": "(optional, string) is the URL of an image to use as a banner. Some blogging\n systems (such as Medium) display a different banner image in the list view\n from the detail view. In those systems, this image should be used in the\n list view, and image in the detail view."
+          },
+          "datePublished": {
+            "title": "date_published",
+            "description": "(optional, string) specifies the date in RFC 3339 format.",
+            "$ref": "#/components/schemas/google.protobuf.Timestamp"
+          },
+          "dateModified": {
+            "title": "date_modified",
+            "description": "(optional, string) specifies the modification date in RFC 3339 format.",
+            "$ref": "#/components/schemas/google.protobuf.Timestamp"
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protofeed.Author"
+            },
+            "title": "authors",
+            "description": "(optional, array of objects) has the same structure as the top-level\n authors. If not specified in an item, then the top-level authors, if\n present, are the authors of the item."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "tags",
+            "description": "(optional, array of strings) can have any plain text values you want. Tags\n tend to be just one word, but they may be anything. Note: they are not the\n equivalent of Twitter hashtags. Some blogging systems and other feed\n formats call these categories."
+          },
+          "language": {
+            "type": "string",
+            "title": "language",
+            "description": "(optional, string) is the language for this item, using the same format as\n the top-level language field. The value can be different than the primary\n language for the feed when a specific item is written in a different\n language than other items in the feed."
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/protofeed.Attachment"
+            },
+            "title": "attachments",
+            "description": "(optional, array of objects) specifies the attachments associated with the\n item. Attachments are files that are associated with an item. The value of\n the attachments field is an array of objects, each of which has a url\n field, and other fields as specified in the attachment object definition."
+          }
+        },
+        "title": "Item",
+        "additionalProperties": false,
+        "description": "Item is an object representing a single story, blog post, article,\n photograph, video, or other thing within a feed."
+      }
+    }
+  },
+  "security": []
+}
