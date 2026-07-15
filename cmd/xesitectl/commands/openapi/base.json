@@ -1,0 +1,30 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "xeiaso.net",
+    "summary": "The RPC surface behind xeiaso.net.",
+    "description": "Every endpoint here is a Twirp method generated from the protocol buffer definitions in the Xe/site repository. Requests are HTTP POST with a JSON body and responses are JSON. These endpoints take no authentication and accept no credentials.",
+    "version": "4",
+    "contact": {
+      "name": "Xe Iaso",
+      "url": "https://xeiaso.net/contact",
+      "email": "me@xeiaso.net"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://xeiaso.net",
+      "description": "Production"
+    },
+    {
+      "url": "https://preview.xeiaso.net",
+      "description": "Preview builds"
+    }
+  ],
+  "security": [],
+  "tags": [],
+  "paths": {},
+  "components": {
+    "schemas": {}
+  }
+}
