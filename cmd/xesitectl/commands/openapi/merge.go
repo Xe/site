@@ -4,8 +4,10 @@
 package openapi
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"reflect"
 	"slices"
 )
@@ -27,7 +29,7 @@ type Fragment struct {
 // otherwise silently decide which one wins.
 func Merge(base []byte, fragments []Fragment) ([]byte, error) {
 	doc := map[string]any{}
-	if err := json.Unmarshal(base, &doc); err != nil {
+	if err := decodeJSON(base, &doc); err != nil {
 		return nil, fmt.Errorf("openapi: parse base document: %w", err)
 	}
 
@@ -48,14 +50,19 @@ func Merge(base []byte, fragments []Fragment) ([]byte, error) {
 
 	// Tags are a list in the document but dedupe by name, so they get indexed
 	// into a map for the duration of the merge and re-listed at the end.
+	baseTags, err := fragList(doc, "tags")
+	if err != nil {
+		return nil, fmt.Errorf("openapi: base document: %w", err)
+	}
+
 	tags := map[string]any{}
-	if err := indexTags(tags, list(doc["tags"]), "base document"); err != nil {
+	if err := indexTags(tags, baseTags, "base document"); err != nil {
 		return nil, err
 	}
 
 	for _, f := range fragments {
 		fragDoc := map[string]any{}
-		if err := json.Unmarshal(f.Data, &fragDoc); err != nil {
+		if err := decodeJSON(f.Data, &fragDoc); err != nil {
 			return nil, fmt.Errorf("openapi: parse %s: %w", f.Path, err)
 		}
 
@@ -165,11 +172,23 @@ func objectAt(doc map[string]any, key string) (map[string]any, error) {
 	return m, nil
 }
 
-// list returns v as a JSON list, or nil if it isn't one.
-func list(v any) []any {
-	l, _ := v.([]any)
+// decodeJSON parses data into v using json.Number for numeric literals
+// instead of float64, so integers wider than 2^53 (an int64 maximum or
+// default value, for instance) survive a decode/re-encode round trip
+// byte-exact instead of being silently rounded. It otherwise matches
+// json.Unmarshal, including rejecting trailing non-whitespace content.
+func decodeJSON(data []byte, v any) error {
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.UseNumber()
+	if err := dec.Decode(v); err != nil {
+		return err
+	}
 
-	return l
+	if _, err := dec.Token(); err != io.EOF {
+		return fmt.Errorf("unexpected trailing data after JSON value")
+	}
+
+	return nil
 }
 
 // fragObject returns m[key] as an object. A key that is absent or explicitly

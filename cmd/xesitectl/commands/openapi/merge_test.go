@@ -82,6 +82,30 @@ func TestMerge(t *testing.T) {
 			wantErr: `conflicting path "/twirp/a.A/Get"`,
 		},
 		{
+			name:      "base document with tags of the wrong type is an error",
+			base:      `{"openapi": "3.1.0", "info": {}, "tags": "not a list", "paths": {}, "components": {"schemas": {}}}`,
+			fragments: nil,
+			wantErr:   `base document: "tags" is not a list`,
+		},
+		{
+			name: "base document with null tags is fine",
+			base: `{"openapi": "3.1.0", "info": {}, "tags": null, "paths": {}, "components": {"schemas": {}}}`,
+			check: func(t *testing.T, doc map[string]any) {
+				if got := doc["tags"].([]any); len(got) != 0 {
+					t.Errorf("got %d tags, want 0", len(got))
+				}
+			},
+		},
+		{
+			name: "base document with absent tags is fine",
+			base: `{"openapi": "3.1.0", "info": {}, "paths": {}, "components": {"schemas": {}}}`,
+			check: func(t *testing.T, doc map[string]any) {
+				if got := doc["tags"].([]any); len(got) != 0 {
+					t.Errorf("got %d tags, want 0", len(got))
+				}
+			},
+		},
+		{
 			name: "fragment with null tags is fine",
 			base: minimalBase,
 			fragments: []Fragment{
@@ -258,6 +282,60 @@ func TestMergeOutputFormat(t *testing.T) {
 	if !strings.Contains(string(got), "\n  \"paths\": {\n    \"/twirp/a.A/Get\": {\n") {
 		t.Fatalf("output is not indented with two spaces per level:\n%s", got)
 	}
+}
+
+// TestMergeLargeIntegers guards against the silent corruption that
+// encoding/json's default float64 decoding would otherwise inflict on any
+// int64-sized "maximum", "default" or "example" value: json.Unmarshal turns
+// 9223372036854775807 into the float64 nearest to it, and re-encoding that
+// float64 prints a different, wrong integer. Decoding with UseNumber keeps
+// the original digits verbatim through the round trip.
+func TestMergeLargeIntegers(t *testing.T) {
+	const maxInt64 = "9223372036854775807"
+
+	got, err := Merge([]byte(minimalBase), []Fragment{
+		frag("a.openapi.json", `{"components": {"schemas": {"Big": {"type": "integer", "maximum": `+maxInt64+`, "default": 1234567890123456789}}}}`),
+	})
+	if err != nil {
+		t.Fatalf("Merge: %v", err)
+	}
+
+	if !strings.Contains(string(got), `"maximum": `+maxInt64) {
+		t.Fatalf("large maximum was not preserved byte-exact:\n%s", got)
+	}
+	if !strings.Contains(string(got), `"default": 1234567890123456789`) {
+		t.Fatalf("large default was not preserved byte-exact:\n%s", got)
+	}
+}
+
+// TestMergeLargeIntegerDuplicates proves duplicate detection still works once
+// numbers decode as json.Number instead of float64: two fragments declaring
+// an identical large number must still merge cleanly, and a genuine
+// difference must still be caught, even when the values involved are too big
+// for float64 to represent exactly.
+func TestMergeLargeIntegerDuplicates(t *testing.T) {
+	t.Run("identical large numbers are not a conflict", func(t *testing.T) {
+		_, err := Merge([]byte(minimalBase), []Fragment{
+			frag("a.openapi.json", `{"components": {"schemas": {"Big": {"type": "integer", "maximum": 9223372036854775807}}}}`),
+			frag("b.openapi.json", `{"components": {"schemas": {"Big": {"type": "integer", "maximum": 9223372036854775807}}}}`),
+		})
+		if err != nil {
+			t.Fatalf("Merge: %v", err)
+		}
+	})
+
+	t.Run("differing large numbers still conflict", func(t *testing.T) {
+		_, err := Merge([]byte(minimalBase), []Fragment{
+			frag("a.openapi.json", `{"components": {"schemas": {"Big": {"type": "integer", "maximum": 9223372036854775807}}}}`),
+			frag("b.openapi.json", `{"components": {"schemas": {"Big": {"type": "integer", "maximum": 9223372036854775806}}}}`),
+		})
+		if err == nil {
+			t.Fatal("got nil error, want a conflicting schema error")
+		}
+		if !strings.Contains(err.Error(), `conflicting schema "Big"`) {
+			t.Fatalf("got error %q, want it to contain %q", err, `conflicting schema "Big"`)
+		}
+	})
 }
 
 func TestMergeIsDeterministic(t *testing.T) {

@@ -26,6 +26,13 @@ func TestBaseDocument(t *testing.T) {
 		t.Errorf("got info.title %v, want xeiaso.net", got)
 	}
 
+	// info.version tracks the xeiaso.net/v4 module major, not the repo's
+	// package.json version (semantic-release bumps that on every release).
+	// Do not "helpfully" sync it to package.json.
+	if got := info["version"]; got != "4" {
+		t.Errorf("got info.version %v, want 4", got)
+	}
+
 	contact, ok := info["contact"].(map[string]any)
 	if !ok {
 		t.Fatal("base.json has no info.contact object")
