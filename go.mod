@@ -11,7 +11,7 @@ require (
 	github.com/bep/debounce v1.2.1
 	github.com/donatj/hmacsig v1.2.0
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
-	github.com/go-faker/faker/v4 v4.9.0
+	github.com/go-faker/faker/v4 v4.10.0
 	github.com/go-git/go-git/v5 v5.19.1
 	github.com/google/go-github/v82 v82.0.0
 	github.com/google/subcommands v1.2.0
