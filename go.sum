@@ -594,8 +594,8 @@ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+
 github.com/stretchr/objx v0.1.1/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
-github.com/stretchr/objx v0.5.2 h1:xuMeJ0Sdp5ZMRXx/aWO6RZxdr3beISkG5/G/aIRr3pY=
-github.com/stretchr/objx v0.5.2/go.mod h1:FRsXN1f5AsAjCGJKqEizvkpNtU+EGNCLh3NxZ/8L+MA=
+github.com/stretchr/objx v0.5.3 h1:jmXUvGomnU1o3W/V5h2VEradbpJDwGrzugQQvL0POH4=
+github.com/stretchr/objx v0.5.3/go.mod h1:rDQraq+vQZU7Fde9LOZLr8Tax6zZvy4kuNKF+QYS+U0=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
@@ -1032,12 +1032,12 @@ honnef.co/go/tools v0.0.1-2020.1.3/go.mod h1:X/FiERA/W4tHapMX5mGpAtMSVEeEUOyHaw9
 honnef.co/go/tools v0.0.1-2020.1.4/go.mod h1:X/FiERA/W4tHapMX5mGpAtMSVEeEUOyHaw9vFzvIQ3k=
 honnef.co/go/tools v0.7.0 h1:w6WUp1VbkqPEgLz4rkBzH/CSU6HkoqNLp6GstyTx3lU=
 honnef.co/go/tools v0.7.0/go.mod h1:pm29oPxeP3P82ISxZDgIYeOaf9ta6Pi0EWvCFoLG2vc=
-k8s.io/api v0.36.0-alpha.2 h1:5VQ17JO0v+9X/meq70nUzb6Ec7zuAfP+izKiJMeu9zM=
-k8s.io/api v0.36.0-alpha.2/go.mod h1:VrBGsSGpBoBDkL0gV2hd11bLXcW3xX0/dg352BZthWs=
+k8s.io/api v0.37.0-beta.0 h1:5OA+YtMLhsSsrBVGwD24bMElfe8pm3DHjoLt9XyNYI0=
+k8s.io/api v0.37.0-beta.0/go.mod h1:aIaUwCd8eIILpyYn1h5+O188xbEz4A3MMXZfzOrVMYg=
 k8s.io/apimachinery v0.37.0-beta.0 h1:AgONL5RlVP+UzEzmDx1R2RHd/lp6YJ2QS9AHD92dTFI=
 k8s.io/apimachinery v0.37.0-beta.0/go.mod h1:RLRmd2kYSdlBaTwCmVbVETZqxaNoqGWOF0S0SG/gThg=
-k8s.io/client-go v0.36.0-alpha.2 h1:Tk1GnYEd9KjzRG9QN84DWghJ4I91Cy5pbxSyffEZlhw=
-k8s.io/client-go v0.36.0-alpha.2/go.mod h1:exn5BZg49XPJN4xNe18t4O3LJah8seb2Fxl7IyUJ6jY=
+k8s.io/client-go v0.37.0-beta.0 h1:WfKGOp3Ai9fCvZlS4HaBxgpyPMMKaX6fKya2WM3xmq8=
+k8s.io/client-go v0.37.0-beta.0/go.mod h1:4ftZEJQaLYQOzc78hg8y7IzGyivzZ2ICL3qOZ7rDxzg=
 k8s.io/klog/v2 v2.140.0 h1:Tf+J3AH7xnUzZyVVXhTgGhEKnFqye14aadWv7bzXdzc=
 k8s.io/klog/v2 v2.140.0/go.mod h1:o+/RWfJ6PwpnFn7OyAG3QnO47BFsymfEfrz6XyYSSp0=
 k8s.io/kube-openapi v0.0.0-20260618221249-bc653b64f974 h1:JVogoTvOj6gutlx8bUwGh0e8o8L4X8nDbTLyONmoVvk=
