@@ -76,7 +76,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/blakesmith/ar v0.0.0-20190502131153-809d4375e1fb // indirect
 	github.com/blockthrough/twirp-openapi-gen v0.0.0-20231107141308-45a52eb7d856 // indirect
-	github.com/buger/jsonparser v1.1.1 // indirect
+	github.com/buger/jsonparser v1.1.2 // indirect
 	github.com/caarlos0/log v0.5.3 // indirect
 	github.com/caarlos0/pinata v0.3.4 // indirect
 	github.com/cavaliergopher/cpio v1.0.1 // indirect

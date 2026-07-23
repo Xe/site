@@ -150,8 +150,8 @@ github.com/blockthrough/twirp-openapi-gen v0.0.0-20231107141308-45a52eb7d856 h1:
 github.com/blockthrough/twirp-openapi-gen v0.0.0-20231107141308-45a52eb7d856/go.mod h1:UN1OFH6gXrM9qKvXPcs4dOAAMB1tC4kw/eUzdA/bmI8=
 github.com/brianvoe/gofakeit/v6 v6.28.0 h1:Xib46XXuQfmlLS2EXRuJpqcw8St6qSZz75OUo0tgAW4=
 github.com/brianvoe/gofakeit/v6 v6.28.0/go.mod h1:Xj58BMSnFqcn/fAQeSK+/PLtC5kSb7FJIq4JyGa8vEs=
-github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMUs=
-github.com/buger/jsonparser v1.1.1/go.mod h1:6RYKKt7H4d4+iWqouImQ9R2FZql3VbhNgx27UK13J/0=
+github.com/buger/jsonparser v1.1.2 h1:frqHqw7otoVbk5M8LlE/L7HTnIq2v9RX6EJ48i9AxJk=
+github.com/buger/jsonparser v1.1.2/go.mod h1:6RYKKt7H4d4+iWqouImQ9R2FZql3VbhNgx27UK13J/0=
 github.com/caarlos0/log v0.5.3 h1:ocxCwZWjI9u9eNFMnEJN2OzS7FXkfaKxg5afC4uOltc=
 github.com/caarlos0/log v0.5.3/go.mod h1:n6BAWZiYv9obEy89jSNAmBo0m3x93chRBElXhyqpg4c=
 github.com/caarlos0/pinata v0.3.4 h1:7EJ6rs8oFn1EMW7QNffOSlC6sgrZ2siKCC/4RHWRVrU=
