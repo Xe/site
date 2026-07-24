@@ -72,7 +72,6 @@ in  Config::{
       , Link::{ url = "https://www.patreon.com/cadey", title = "Patreon" }
       , Link::{ url = "https://www.twitch.tv/princessxen", title = "Twitch" }
       , Link::{ url = "https://pony.social/@cadey", title = "Fediverse" }
-      , Link::{ url = "https://t.me/miamorecadenza", title = "Telegram" }
       , Link::{ url = "irc://irc.libera.chat/#xeserv", title = "IRC" }
       , Link::{
         , url =
