@@ -129,7 +129,7 @@ require (
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/goccy/go-yaml v1.18.0 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
-	github.com/google/cel-go v0.26.1 // indirect
+	github.com/google/cel-go v0.29.0 // indirect
 	github.com/google/gnostic v0.7.1 // indirect
 	github.com/google/gnostic-models v0.7.0 // indirect
 	github.com/google/go-querystring v1.2.0 // indirect
@@ -185,7 +185,6 @@ require (
 	github.com/skeema/knownhosts v1.3.1 // indirect
 	github.com/spf13/cast v1.7.1 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
-	github.com/stoewer/go-strcase v1.3.1 // indirect
 	github.com/sudorandom/protoc-gen-connect-openapi v0.25.7 // indirect
 	github.com/ulikunitz/xz v0.5.15 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
