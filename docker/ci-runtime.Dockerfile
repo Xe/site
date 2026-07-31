@@ -33,7 +33,7 @@ RUN set -x \
 
 # deno 
 FROM alpine:${ALPINE_VERSION} AS deno
-ARG DENO_VERSION=2.2.11
+ARG DENO_VERSION=2.9.3
 RUN mkdir -p /app
 WORKDIR /app
 RUN apk add -U curl unzip ca-certificates \
