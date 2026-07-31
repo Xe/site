@@ -1,5 +1,5 @@
 import lume from "lume/mod.ts";
-import jsx_preact from "lume/plugins/jsx_preact.ts";
+import jsx from "lume/plugins/jsx.ts";
 import attributes from "lume/plugins/attributes.ts";
 import nunjucks from "lume/plugins/nunjucks.ts";
 import date from "lume/plugins/date.ts";
@@ -16,8 +16,6 @@ import podcast_feed from "./plugins/podcast_feed.ts";
 
 //import pagefind from "lume/plugins/pagefind.ts";
 //import _ from "npm:@pagefind/linux-x64";
-
-import tailwindOptions from "./tailwind.config.js";
 
 import BlockQuote from "./src/_components/BlockQuote.jsx";
 import ChatFrame from "./src/_components/ChatFrame.jsx";
@@ -37,7 +35,7 @@ import XeblogSticker from "./src/_components/XeblogSticker.tsx";
 import XeblogToot from "./src/_components/XeblogToot.tsx";
 import XeblogVideo from "./src/_components/XeblogVideo.tsx";
 
-import rehypePrism from "npm:rehype-prism-plus/all";
+import rehypePrism from "npm:rehype-prism-plus@2.0.2/all";
 
 const site = lume({
   src: "./src",
@@ -46,9 +44,12 @@ const site = lume({
 
 site.copy("static");
 site.copy("favicon.ico");
-site.copy("static/font/inter/inter.css");
-site.copy("static/img");
-site.copy("src/static", "static");
+site.copy("robots.txt");
+
+// Assets that need processing (Lume 3 no longer picks these up implicitly).
+site.add("styles.css");
+site.add("sw.js");
+site.add("js");
 
 site.data("getYear", () => {
   return new Date().getFullYear();
@@ -56,7 +57,9 @@ site.data("getYear", () => {
 
 
 site.use(nunjucks());
-site.use(jsx_preact());
+// Lume 3 defaults JSX pages to a ".page.jsx" sub-extension. This site names
+// its pages "foo.jsx", so turn the sub-extension off.
+site.use(jsx({ pageSubExtension: "" }));
 site.use(attributes());
 site.use(date({
   formats: {
@@ -151,10 +154,7 @@ site.use(mdx({
     rehypePrism,
   ],
 }));
-site.use(tailwindcss({
-  extensions: [".mdx", ".jsx", ".tsx", ".md", ".html", ".njx"],
-  options: tailwindOptions,
-}));
+site.use(tailwindcss());
 site.use(postcss());
 site.use(sitemap({
   query: "index=true",

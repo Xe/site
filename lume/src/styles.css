@@ -1,8 +1,99 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 @import url(https://files.xeiaso.net/static/font/inter/inter.css);
 @import url(https://files.xeiaso.net/static/font/iosevka/family.css);
+@import "tailwindcss";
+
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: "Schibsted Grotesk", "Iosevka Aile Iaso", sans-serif;
+  --font-mono: "Iosevka Curly Iaso", monospace;
+  --font-serif: "Podkova", "Iosevka Etoile Iaso", serif;
+  --font-aile: "Iosevka Aile Iaso", "Inter";
+  --font-startup: sans-serif;
+
+  --color-bg-hard: #f9f5d7;
+  --color-bg-soft: #f2e5bc;
+  --color-bg-0: #fbf1c7;
+  --color-bg-1: #ebdbb2;
+  --color-bg-2: #d5c4a1;
+  --color-bg-3: #bdae93;
+  --color-bg-4: #a89984;
+
+  --color-bgDark-hard: #1d2021;
+  --color-bgDark-soft: #32302f;
+  --color-bgDark-0: #282828;
+  --color-bgDark-1: #3c3836;
+  --color-bgDark-2: #504945;
+  --color-bgDark-3: #665c54;
+  --color-bgDark-4: #7c6f64;
+
+  --color-fg-0: #282828;
+  --color-fg-1: #3c3836;
+  --color-fg-2: #504945;
+  --color-fg-3: #665c54;
+  --color-fg-4: #7c6f64;
+
+  --color-fgDark-0: #fbf1c7;
+  --color-fgDark-1: #ebdbb2;
+  --color-fgDark-2: #d5c4a1;
+  --color-fgDark-3: #bdae93;
+  --color-fgDark-4: #a89984;
+
+  --color-red-dark: #9d0006;
+  --color-red-light: #cc241d;
+  --color-redDark-dark: #cc241d;
+  --color-redDark-light: #fb4934;
+
+  --color-green-light: #98971a;
+  --color-green-dark: #79740e;
+  --color-greenDark-dark: #98971a;
+  --color-greenDark-light: #b8bb26;
+
+  --color-yellow-light: #d79921;
+  --color-yellow-dark: #b57614;
+  --color-yellowDark-light: #d79921;
+  --color-yellowDark-dark: #fabd2f;
+
+  --color-blue-light: #458588;
+  --color-blue-dark: #076678;
+  --color-blueDark-dark: #458588;
+  --color-blueDark-light: #83a598;
+
+  --color-purple-light: #b16286;
+  --color-purple-dark: #8f3f71;
+  --color-purpleDark-dark: #b16286;
+  --color-purpleDark-light: #d3869b;
+
+  --color-aqua-light: #689d6a;
+  --color-aqua-dark: #427b58;
+  --color-aquaDark-dark: #689d6a;
+  --color-aquaDark-light: #8ec07c;
+
+  --color-orange-light: #d65d0e;
+  --color-orange-dark: #af3a03;
+  --color-orangeDark-dark: #d65d0e;
+  --color-orangeDark-light: #fe8019;
+
+  --color-gray-light: #928374;
+  --color-gray-dark: #7c6f64;
+  --color-grayDark-dark: #928374;
+  --color-grayDark-light: #a89984;
+
+  --color-link-light-normal: #b80050;
+  --color-link-light-hoverBg: #9e0045;
+  --color-link-light-hover: #fdf4c1;
+  --color-link-light-visited: #53493c;
+  --color-link-light-visitedHover: #fff;
+  --color-link-light-visitedHoverBg: #282828;
+
+  --color-link-dark-normal: #ffa8ce;
+  --color-link-dark-hoverBg: #b3004d;
+  --color-link-dark-hover: #fff;
+  --color-link-dark-visited: #c1b7a9;
+  --color-link-dark-visitedHover: #fdf4c1;
+  --color-link-dark-visitedHoverBg: #282828;
+}
 
 @font-face {
   font-family: "Podkova";

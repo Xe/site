@@ -1,17 +1,23 @@
-import { sha256 } from "https://denopkg.com/chiefbiiko/sha256@v1.0.0/mod.ts";
+import { sha256 } from "npm:js-sha256";
 
 export interface XeblogTootProps {
   url: string;
 }
 
+interface TootAttachment {
+  mediaType: string;
+  url: string;
+  name?: string;
+}
+
 export default function XeblogToot({ url }: XeblogTootProps) {
-  const tootHash = sha256(url + ".json", "utf8", "hex");
+  const tootHash = sha256(url + ".json");
   const tootJSON = (new TextDecoder("utf-8")).decode(
     Deno.readFileSync(`./src/_data/toots/${tootHash}.json`),
   );
   const toot = JSON.parse(tootJSON);
 
-  const userHash = sha256(toot.attributedTo + ".json", "utf8", "hex");
+  const userHash = sha256(toot.attributedTo + ".json");
   const userJSON = (new TextDecoder("utf-8")).decode(
     Deno.readFileSync(`./src/_data/users/${userHash}.json`),
   );
@@ -36,7 +42,7 @@ export default function XeblogToot({ url }: XeblogTootProps) {
           </div>
         </div>
         <div class={`grid grid-cols-${toot.attachment.length > 1 ? 2 : 1} px-4`}>
-          {toot.attachment.map((attachment) => {
+          {toot.attachment.map((attachment: TootAttachment) => {
             if (attachment.mediaType.startsWith("image/")) {
               return (
                 <div class="flex flex-row items-center justify-center m-1 max-w-xs">
