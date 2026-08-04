@@ -5,9 +5,9 @@ go 1.26.5
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260709200747-435963d16310.1
 	github.com/a-h/templ v0.3.1020
-	github.com/aws/aws-sdk-go-v2 v1.43.2
+	github.com/aws/aws-sdk-go-v2 v1.43.3
 	github.com/aws/aws-sdk-go-v2/config v1.32.33
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.106.2
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.106.3
 	github.com/bep/debounce v1.2.1
 	github.com/donatj/hmacsig v1.2.0
 	github.com/facebookgo/flagenv v0.0.0-20160425205200-fcd59fca7456
@@ -57,21 +57,21 @@ require (
 	github.com/a-h/parse v0.0.0-20250122154542-74294addb73e // indirect
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
-	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.15 // indirect
+	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.16 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.19.32 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.18.33 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.33 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.33 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.4.34 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.14 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.9.26 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.33 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.19.34 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.34 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.34 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.4.35 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.15 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.9.27 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.34 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.19.35 // indirect
 	github.com/aws/aws-sdk-go-v2/service/signin v1.5.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.33.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.38.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.45.2 // indirect
-	github.com/aws/smithy-go v1.27.5 // indirect
+	github.com/aws/smithy-go v1.27.6 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/blakesmith/ar v0.0.0-20190502131153-809d4375e1fb // indirect
