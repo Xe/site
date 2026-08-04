@@ -1,15 +1,13 @@
 import { getExtension } from "lume/core/utils/path.ts";
-import { isPlainObject, merge } from "lume/core/utils/object.ts";
-import { getGenerator } from "lume/core/utils/lume_version.ts";
-import { getDataValue, getPlainDataValue } from "lume/core/utils/data_values.ts";
-import { cdata, stringify } from "lume/deps/xml.ts";
+import { merge } from "lume/core/utils/object.ts";
+import { getCurrentVersion } from "lume/core/utils/lume_version.ts";
+import { getDataValue } from "lume/core/utils/data_values.ts";
+import { $XML, stringify } from "lume/deps/xml.ts";
 import { Page } from "lume/core/file.ts";
-import { log } from "lume/core/utils/log.ts";
-import { parseDate } from "lume/core/utils/date.ts";
 
 import type Site from "lume/core/site.ts";
-import type { Data } from "lume/types.ts";
-import type { stringifyable } from "lume/deps/xml.ts";
+import type { Data } from "lume/core/file.ts";
+import { info } from "lume/deps/log.ts";
 
 export interface Options {
     /** The output filenames */
@@ -76,11 +74,10 @@ export interface FeedItemOptions {
     /** The item language */
     lang?: string | ((data: Data) => string | undefined);
 
-    /** The item audio enclosure */
     podcast?: string | ((data: Data) => FeedPodcastItem | undefined);
 }
 
-export const defaults = {
+export const defaults: Options = {
     /** The output filenames */
     output: "/feed.rss",
 
@@ -109,7 +106,7 @@ export const defaults = {
         content: "=children",
         lang: "=lang",
     },
-} satisfies Options;
+};
 
 export interface FeedData {
     title: string;
@@ -139,13 +136,13 @@ export interface FeedPodcastItem {
     length: number;
 }
 
-const defaultGenerator = getGenerator();
+const defaultGenerator = `Lume ${getCurrentVersion()}`;
 
 export default function (userOptions?: Options) {
     const options = merge(defaults, userOptions);
 
     return (site: Site) => {
-        site.process(function processPodcastFeed() {
+        site.addEventListener("beforeSave", () => {
             const output = Array.isArray(options.output)
                 ? options.output
                 : [options.output];
@@ -154,36 +151,33 @@ export default function (userOptions?: Options) {
                 options.query,
                 options.sort,
                 options.limit,
-            );
+            ) as Data[];
 
             const { info, items } = options;
             const rootData = site.source.data.get("/") || {};
-            const author = getPlainDataValue(rootData, info.author);
 
             const feed: FeedData = {
-                title: getPlainDataValue(rootData, info.title),
-                description: getPlainDataValue(rootData, info.description),
-                published: toDate(getDataValue(rootData, info.published)) ??
-                    new Date(),
+                title: getDataValue(rootData, info.title),
+                description: getDataValue(rootData, info.description),
+                published: getDataValue(rootData, info.published),
                 lang: getDataValue(rootData, info.lang),
                 url: site.url("", true),
                 generator: info.generator === true
                     ? defaultGenerator
                     : info.generator || undefined,
-                copyright: `© ${new Date().getFullYear()} ${author}`,
-                author,
+                copyright: `© ${new Date().getFullYear()} ${getDataValue(rootData, info.author)}`,
+                author: getDataValue(rootData, info.author),
                 items: pages.map((data): FeedItem => {
                     const content = getDataValue(data, items.content)?.toString();
                     const pageUrl = site.url(data.url, true);
                     const fixedContent = fixUrls(new URL(pageUrl), content || "");
 
                     return {
-                        title: getPlainDataValue(data, items.title),
-                        url: pageUrl,
-                        description: getPlainDataValue(data, items.description),
-                        published: toDate(getDataValue(data, items.published)) ??
-                            new Date(),
-                        updated: toDate(getDataValue(data, items.updated)),
+                        title: getDataValue(data, items.title),
+                        url: site.url(data.url, true),
+                        description: getDataValue(data, items.description),
+                        published: getDataValue(data, items.published),
+                        updated: getDataValue(data, items.updated),
                         content: fixedContent,
                         lang: getDataValue(data, items.lang),
                         podcast: getDataValue(data, items.podcast),
@@ -192,19 +186,19 @@ export default function (userOptions?: Options) {
             };
 
             for (const filename of output) {
+                const format = getExtension(filename).slice(1);
                 const file = site.url(filename, true);
 
-                switch (getMimeType(filename)) {
-                    case "application/rss+xml":
+                switch (format) {
+                    case "rss":
+                    case "xml":
                         site.pages.push(
                             Page.create({ url: filename, content: generateRss(feed, file) }),
                         );
                         break;
 
                     default:
-                        log.error(
-                            `[podcast_feed plugin] Invalid output format: ${filename}`,
-                        );
+                        throw new Error(`Invalid Feed format "${format}"`);
                 }
             }
         });
@@ -219,9 +213,12 @@ function fixUrls(base: URL, html: string): string {
 }
 
 function generateRss(data: FeedData, file: string): string {
-    const feed: stringifyable = {
-        "@version": "1.0",
-        "@encoding": "UTF-8",
+    const feed = {
+        [$XML]: { cdata: [["rss", "channel", "item", "content:encoded"]] },
+        xml: {
+            "@version": "1.0",
+            "@encoding": "UTF-8",
+        },
         rss: {
             "@xmlns:content": "http://purl.org/rss/1.0/modules/content/",
             "@xmlns:wfw": "http://wellformedweb.org/CommentAPI/",
@@ -232,7 +229,7 @@ function generateRss(data: FeedData, file: string): string {
             "@xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
             "@xmlns:podcast": "https://podcastindex.org/namespace/1.0",
             "@version": "2.0",
-            channel: {
+            channel: clean({
                 title: data.title,
                 link: data.url,
                 "atom:link": {
@@ -248,90 +245,48 @@ function generateRss(data: FeedData, file: string): string {
                 "itunes:author": data.author,
                 "itunes:name": data.title,
                 "itunes:category": {
-                    "@text": "Technology",
+                    "@text": "Technology"
                 },
                 "itunes:explicit": "false",
                 "itunes:image": {
-                    "@href":
-                        "https://cdn.xeiaso.net/file/christine-static/xecast/itunes-image.jpg",
+                    "@href": "https://cdn.xeiaso.net/file/christine-static/xecast/itunes-image.jpg",
                 },
-                author: "xecast@xeserv.us",
+                "author": "xecast@xeserv.us",
                 "itunes:owner": {
                     "itunes:name": "Xe Iaso",
                     "itunes:email": "xecast@xeserv.us",
                 },
-                item: data.items.map((item) => ({
-                    title: item.title,
-                    link: item.url,
-                    "itunes:title": item.title,
-                    "itunes:summary": item.description,
-                    guid: {
-                        "@isPermaLink": false,
-                        "#text": item.url,
-                    },
-                    description: item.description,
-                    "content:encoded": cdata(item.content),
-                    pubDate: item.published.toUTCString(),
-                    "atom:updated": item.updated?.toISOString(),
-                    enclosure: item.podcast
-                        ? {
-                            "@url": item.podcast.link,
-                            "@length": item.podcast.length,
+                item: data.items.map((item) =>
+                    clean({
+                        title: item.title,
+                        link: item.url,
+                        "itunes:title": item.title,
+                        "itunes:summary": item.description,
+                        guid: {
+                            "@isPermaLink": false,
+                            "#text": item.url,
+                        },
+                        description: item.description,
+                        "content:encoded": item.content,
+                        pubDate: item.published.toUTCString(),
+                        "atom:updated": item.updated?.toISOString(),
+                        enclosure: {
+                            "@url": item.podcast?.link,
+                            "@length": item.podcast?.length,
                             "@type": "audio/mpeg",
                         }
-                        : undefined,
-                })),
-            },
+                    })
+                ),
+            }),
         },
     };
 
-    return stringify(clean(feed));
+    return stringify(feed);
 }
 
-/** Remove undefined values of an object recursively */
-function clean(obj: Record<string, unknown>): Record<string, unknown> {
+/** Remove undefined values of an object */
+function clean(obj: Record<string, unknown>) {
     return Object.fromEntries(
-        Object.entries(obj)
-            .map(([key, value]): [string, unknown] => {
-                if (isPlainObject(value)) {
-                    const cleanValue = clean(value);
-                    return [
-                        key,
-                        Object.keys(cleanValue).length > 0 ? cleanValue : undefined,
-                    ];
-                }
-                if (Array.isArray(value)) {
-                    const cleanValue = value
-                        .map((v) => isPlainObject(v) ? clean(v) : v)
-                        .filter((v) => v !== undefined);
-                    return [
-                        key,
-                        cleanValue.length > 0 ? cleanValue : undefined,
-                    ];
-                }
-                return [key, value];
-            })
-            .filter(([, value]) => value !== undefined),
+        Object.entries(obj).filter(([, value]) => value !== undefined),
     );
-}
-
-function toDate(date?: string | number | Date): Date | undefined {
-    if (date instanceof Date) {
-        return date;
-    }
-    if (date === undefined) {
-        return;
-    }
-    return parseDate(date);
-}
-
-function getMimeType(filename: string): string | undefined {
-    const format = getExtension(filename).slice(1);
-
-    switch (format) {
-        case "rss":
-        case "feed":
-        case "xml":
-            return "application/rss+xml";
-    }
 }

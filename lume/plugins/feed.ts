@@ -1,15 +1,12 @@
 import { getExtension } from "lume/core/utils/path.ts";
-import { isPlainObject, merge } from "lume/core/utils/object.ts";
-import { getGenerator } from "lume/core/utils/lume_version.ts";
-import { getDataValue, getPlainDataValue } from "lume/core/utils/data_values.ts";
-import { cdata, stringify } from "lume/deps/xml.ts";
+import { merge } from "lume/core/utils/object.ts";
+import { getCurrentVersion } from "lume/core/utils/lume_version.ts";
+import { getDataValue } from "lume/core/utils/data_values.ts";
+import { $XML, stringify } from "lume/deps/xml.ts";
 import { Page } from "lume/core/file.ts";
-import { log } from "lume/core/utils/log.ts";
-import { parseDate } from "lume/core/utils/date.ts";
 
 import type Site from "lume/core/site.ts";
-import type { Data } from "lume/types.ts";
-import type { stringifyable } from "lume/deps/xml.ts";
+import type { Data } from "lume/core/file.ts";
 
 export interface Options {
     /** The output filenames */
@@ -70,14 +67,11 @@ export interface FeedItemOptions {
     /** The item content */
     content?: string | ((data: Data) => string | undefined);
 
-    /** The item categories */
-    categories?: string | ((data: Data) => string[] | undefined);
-
     /** The item language */
     lang?: string | ((data: Data) => string | undefined);
 }
 
-export const defaults = {
+export const defaults: Options = {
     /** The output filenames */
     output: "/feed.rss",
 
@@ -103,10 +97,9 @@ export const defaults = {
         description: "=description",
         published: "=date",
         content: "=children",
-        categories: "=tags",
         lang: "=lang",
     },
-} satisfies Options;
+};
 
 export interface FeedData {
     title: string;
@@ -129,13 +122,13 @@ export interface FeedItem {
     categories?: string[];
 }
 
-const defaultGenerator = getGenerator();
+const defaultGenerator = `Lume ${getCurrentVersion()}`;
 
 export default function (userOptions?: Options) {
     const options = merge(defaults, userOptions);
 
     return (site: Site) => {
-        site.process(function processFeed() {
+        site.addEventListener("beforeSave", () => {
             const output = Array.isArray(options.output)
                 ? options.output
                 : [options.output];
@@ -144,16 +137,15 @@ export default function (userOptions?: Options) {
                 options.query,
                 options.sort,
                 options.limit,
-            );
+            ) as Data[];
 
             const { info, items } = options;
             const rootData = site.source.data.get("/") || {};
 
             const feed: FeedData = {
-                title: getPlainDataValue(rootData, info.title),
-                description: getPlainDataValue(rootData, info.description),
-                published: toDate(getDataValue(rootData, info.published)) ??
-                    new Date(),
+                title: getDataValue(rootData, info.title),
+                description: getDataValue(rootData, info.description),
+                published: getDataValue(rootData, info.published),
                 lang: getDataValue(rootData, info.lang),
                 url: site.url("", true),
                 generator: info.generator === true
@@ -164,26 +156,23 @@ export default function (userOptions?: Options) {
                     const pageUrl = site.url(data.url, true);
                     const fixedContent = fixUrls(new URL(pageUrl), content || "");
 
-                    // Linkposts point at the external article instead of the
-                    // page on this site, and get an extra "external" tag.
-                    const redirectTo = getDataValue(data, "=redirect_to");
-                    const isLinkpost = redirectTo !== undefined;
-                    const link = isLinkpost ? redirectTo : pageUrl;
+                    const link = getDataValue(data, "=redirect_to") ?? site.url(data.url, true);
+                    const isLinkpost = getDataValue(data, "=redirect_to") !== undefined;
 
-                    const existingTags = toStringArray(
-                        getDataValue(data, items.categories),
-                    );
+                    // Get existing tags from frontmatter
+                    const existingTags = getDataValue(data, "=tags") as string[] || [];
+
+                    // Add "external" tag for linkposts
                     const categories = isLinkpost
                         ? [...existingTags, "external"]
                         : existingTags;
 
                     return {
-                        title: getPlainDataValue(data, items.title),
+                        title: getDataValue(data, items.title),
                         url: link,
-                        description: getPlainDataValue(data, items.description),
-                        published: toDate(getDataValue(data, items.published)) ??
-                            new Date(),
-                        updated: toDate(getDataValue(data, items.updated)),
+                        description: getDataValue(data, items.description),
+                        published: getDataValue(data, items.published),
+                        updated: getDataValue(data, items.updated),
                         content: fixedContent,
                         lang: getDataValue(data, items.lang),
                         categories,
@@ -192,23 +181,26 @@ export default function (userOptions?: Options) {
             };
 
             for (const filename of output) {
+                const format = getExtension(filename).slice(1);
                 const file = site.url(filename, true);
 
-                switch (getMimeType(filename)) {
-                    case "application/rss+xml":
+                switch (format) {
+                    case "rss":
+                    case "feed":
+                    case "xml":
                         site.pages.push(
                             Page.create({ url: filename, content: generateRss(feed, file) }),
                         );
                         break;
 
-                    case "application/feed+json":
+                    case "json":
                         site.pages.push(
                             Page.create({ url: filename, content: generateJson(feed, file) }),
                         );
                         break;
 
                     default:
-                        log.error(`[feed plugin] Invalid output format: ${filename}`);
+                        throw new Error(`Invalid Feed format "${format}"`);
                 }
             }
         });
@@ -223,9 +215,12 @@ function fixUrls(base: URL, html: string): string {
 }
 
 function generateRss(data: FeedData, file: string): string {
-    const feed: stringifyable = {
-        "@version": "1.0",
-        "@encoding": "UTF-8",
+    const feed = {
+        [$XML]: { cdata: [["rss", "channel", "item", "content:encoded"]] },
+        xml: {
+            "@version": "1.0",
+            "@encoding": "UTF-8",
+        },
         rss: {
             "@xmlns:content": "http://purl.org/rss/1.0/modules/content/",
             "@xmlns:wfw": "http://wellformedweb.org/CommentAPI/",
@@ -234,7 +229,7 @@ function generateRss(data: FeedData, file: string): string {
             "@xmlns:sy": "http://purl.org/rss/1.0/modules/syndication/",
             "@xmlns:slash": "http://purl.org/rss/1.0/modules/slash/",
             "@version": "2.0",
-            channel: {
+            channel: clean({
                 title: data.title,
                 link: data.url,
                 "atom:link": {
@@ -246,103 +241,56 @@ function generateRss(data: FeedData, file: string): string {
                 lastBuildDate: data.published.toUTCString(),
                 language: data.lang,
                 generator: data.generator,
-                item: data.items.map((item) => ({
-                    title: item.title,
-                    link: item.url,
-                    guid: {
-                        "@isPermaLink": false,
-                        "#text": item.url,
-                    },
-                    description: item.description,
-                    "content:encoded": cdata(item.content),
-                    category: item.categories,
-                    pubDate: item.published.toUTCString(),
-                    "atom:updated": item.updated?.toISOString(),
-                })),
-            },
+                item: data.items.map((item) =>
+                    clean({
+                        title: item.title,
+                        link: item.url,
+                        guid: {
+                            "@isPermaLink": false,
+                            "#text": item.url,
+                        },
+                        description: item.description,
+                        "content:encoded": item.content,
+                        pubDate: item.published.toUTCString(),
+                        "atom:updated": item.updated?.toISOString(),
+                        category: item.categories?.map((category) => ({
+                            "#text": category,
+                        })),
+                    })
+                ),
+            }),
         },
     };
 
-    return stringify(clean(feed));
+    return stringify(feed);
 }
 
 function generateJson(data: FeedData, file: string): string {
-    const feed = {
-        version: "https://jsonfeed.org/version/1.1",
+    const feed = clean({
+        version: "https://jsonfeed.org/version/1",
         title: data.title,
         home_page_url: data.url,
         feed_url: file,
         description: data.description,
-        language: data.lang,
-        items: data.items.map((item) => ({
-            id: item.url,
-            url: item.url,
-            title: item.title,
-            language: item.lang,
-            content_html: item.content,
-            tags: item.categories,
-            date_published: item.published.toISOString(),
-            date_modified: item.updated?.toISOString(),
-        })),
-    };
-
-    return JSON.stringify(clean(feed));
-}
-
-/** Remove undefined values of an object recursively */
-function clean(obj: Record<string, unknown>): Record<string, unknown> {
-    return Object.fromEntries(
-        Object.entries(obj)
-            .map(([key, value]): [string, unknown] => {
-                if (isPlainObject(value)) {
-                    const cleanValue = clean(value);
-                    return [
-                        key,
-                        Object.keys(cleanValue).length > 0 ? cleanValue : undefined,
-                    ];
-                }
-                if (Array.isArray(value)) {
-                    const cleanValue = value
-                        .map((v) => isPlainObject(v) ? clean(v) : v)
-                        .filter((v) => v !== undefined);
-                    return [
-                        key,
-                        cleanValue.length > 0 ? cleanValue : undefined,
-                    ];
-                }
-                return [key, value];
+        items: data.items.map((item) =>
+            clean({
+                id: item.url,
+                url: item.url,
+                title: item.title,
+                content_html: item.content,
+                date_published: item.published.toISOString(),
+                date_modified: item.updated?.toISOString(),
+                tags: item.categories,
             })
-            .filter(([, value]) => value !== undefined),
+        ),
+    });
+
+    return JSON.stringify(feed);
+}
+
+/** Remove undefined values of an object */
+function clean(obj: Record<string, unknown>) {
+    return Object.fromEntries(
+        Object.entries(obj).filter(([, value]) => value !== undefined),
     );
-}
-
-function toStringArray(value: unknown): string[] {
-    if (!value) {
-        return [];
-    }
-    const array = Array.isArray(value) ? value : [value];
-    return array.map((v) => typeof v === "string" ? v : String(v));
-}
-
-function toDate(date?: string | number | Date): Date | undefined {
-    if (date instanceof Date) {
-        return date;
-    }
-    if (date === undefined) {
-        return;
-    }
-    return parseDate(date);
-}
-
-function getMimeType(filename: string): string | undefined {
-    const format = getExtension(filename).slice(1);
-
-    switch (format) {
-        case "rss":
-        case "feed":
-        case "xml":
-            return "application/rss+xml";
-        case "json":
-            return "application/feed+json";
-    }
 }

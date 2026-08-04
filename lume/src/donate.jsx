@@ -22,7 +22,7 @@ const DonationCard = ({ icon, backgroundImageUrl, name, link, accentColor }) => 
         src={backgroundImageUrl}
         alt="" // This is a decorative image, so the alt text is empty.
         className="absolute inset-0 w-full h-full object-cover filter blur-md opacity-20 z-0"
-        onerror="this.style.display = 'none';"
+        onError={(e) => { e.target.style.display = 'none'; }}
       />
 
       {/* Card Content Wrapper */}

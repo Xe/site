@@ -1,65 +1,14 @@
 {
-  "imports": {
-    "lume/": "https://cdn.jsdelivr.net/gh/lumeland/lume@3.3.0/",
-    "lume/jsx-runtime": "https://cdn.jsdelivr.net/gh/oscarotero/ssx@0.1.15/jsx-runtime.ts"
-  },
-  "lock": false,
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "lume",
-    "types": [
-      "lume/types.ts"
-    ]
+    "jsxImportSource": "npm:preact"
   },
   "tasks": {
-    "build": {
-      "description": "Build the site for production",
-      "command": "deno task lume"
-    },
-    "serve": {
-      "description": "Run and serve the site for development",
-      "command": "deno task lume -s"
-    },
-    "lume": {
-      "description": "Run Lume command",
-      "command": "deno run -P=lume lume/cli.ts"
-    }
+    "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
+    "build": "deno task lume",
+    "serve": "deno task lume -s"
   },
-  "lint": {
-    "rules": {
-      "exclude": [
-        "no-import-prefix"
-      ]
-    },
-    "plugins": [
-      "https://cdn.jsdelivr.net/gh/lumeland/lume@3.3.0/lint.ts"
-    ]
-  },
-  "unstable": [
-    "temporal",
-    "fmt-component"
-  ],
-  "permissions": {
-    "lume": {
-      "read": true,
-      "write": true,
-      "import": [
-        "cdn.jsdelivr.net:443",
-        "jsr.io:443",
-        "deno.land:443",
-        "esm.sh:443"
-      ],
-      "net": [
-        "0.0.0.0",
-        "jsr.io:443",
-        "cdn.jsdelivr.net:443",
-        "data.jsdelivr.com:443",
-        "registry.npmjs.org:443"
-      ],
-      "env": true,
-      "run": true,
-      "ffi": true,
-      "sys": true
-    }
+  "imports": {
+    "lume/": "https://deno.land/x/lume@v2.2.0/"
   }
 }
