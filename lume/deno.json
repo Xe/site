@@ -9,6 +9,8 @@
     "serve": "deno task lume -s"
   },
   "imports": {
-    "lume/": "https://deno.land/x/lume@v2.2.0/"
+    "lume/": "https://deno.land/x/lume@v2.2.0/",
+    "@std/crypto": "jsr:@std/crypto@^1.0.5",
+    "@std/encoding/hex": "jsr:@std/encoding@^1.0.10/hex"
   }
 }
