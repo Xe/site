@@ -1,0 +1,1077 @@
+---
+title: "Extending immutability: deletion without losing data"
+date: 2026-08-11
+redirect_to: "https://www.tigrisdata.com/blog/soft-delete-deep-dive/"
+---
+
+import Admonition from "../../_components/Admonition.jsx";
+
+export const preStyle = {
+  margin: "0",
+  background: "#0f172a",
+  border: "1px solid #16202f",
+  borderRadius: "6px",
+  padding: "32px",
+  overflowX: "auto",
+  lineHeight: "1.3",
+  color: "#cbd5e1",
+  fontFamily: "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+  fontSize: "13px",
+  whiteSpace: "pre",
+  textAlign: "left",
+};
+
+export function Fig({ label, title, children }) {
+  return (
+    <figure
+      style={{
+        margin: 0,
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+        textAlign: "left",
+      }}
+    >
+      <figcaption
+        style={{
+          display: "flex",
+          alignItems: "baseline",
+          gap: 14,
+          fontFamily: preStyle.fontFamily,
+        }}
+      >
+        <span
+          style={{ fontSize: 11, color: "#475569", letterSpacing: "0.14em" }}
+        >
+          {label}
+        </span>
+        <span style={{ fontSize: 12, color: "#94a3b8" }}>{title}</span>
+      </figcaption>
+      <pre style={preStyle}>{children}</pre>
+    </figure>
+  );
+}
+
+export function DeleteMarker() {
+  return (
+    <Fig label="FIG 01" title="DeleteObject writes a delete marker">
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>
+          {"┌───────────────────┐  ┌───────────────────┐  "}
+        </span>
+        <span style={{ color: "#f87171" }}>
+          {"┌───────────────────┐ ◀── DeleteObject"}
+        </span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        <span style={{ color: "#64748b" }}>{" v1                "}</span>
+        <span style={{ color: "#475569" }}>{"│  │"}</span>
+        <span style={{ color: "#64748b" }}>{" v2                "}</span>
+        <span style={{ color: "#475569" }}>{"│  "}</span>
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+        <span style={{ color: "#64748b" }}>{" v3        "}</span>
+        <span style={{ color: "#f87171" }}>{"current │"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        {" report.pdf        "}
+        <span style={{ color: "#475569" }}>{"│  │"}</span>
+        {" report.pdf        "}
+        <span style={{ color: "#475569" }}>{"│  "}</span>
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+        {" report.pdf        "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        <span style={{ color: "#64748b" }}>{" …198086           "}</span>
+        <span style={{ color: "#475569" }}>{"│  │"}</span>
+        <span style={{ color: "#64748b" }}>{" …198088           "}</span>
+        <span style={{ color: "#475569" }}>{"│  "}</span>
+        <span style={{ color: "#f87171" }}>{"│ delete marker     │"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>
+          {"└─────────┬─────────┘  └─────────┬─────────┘  "}
+        </span>
+        <span style={{ color: "#f87171" }}>{"└───────────────────┘"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#60a5fa" }}>
+          {"          │                      │              "}
+        </span>
+        <span style={{ color: "#f87171" }}>{"no data"}</span>
+      </div>
+      <div style={{ color: "#60a5fa" }}>{"            ▼                      ▼"}</div>
+      <div style={{ color: "#475569" }}>
+        {"  ┌───────────────────────────────────────────────────────────────────┐"}
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        <span style={{ color: "#64748b" }}>
+          {" sea of data                                                       "}
+        </span>
+        <span style={{ color: "#475569" }}>{"│"}</span>
+      </div>
+      <div style={{ color: "#475569" }}>
+        {"  │    ┌──────────┐         ┌──────────┐                              │"}
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│    │"}</span>
+        {" v1 bytes "}
+        <span style={{ color: "#475569" }}>{"│         │"}</span>
+        {" v2 bytes "}
+        <span style={{ color: "#475569" }}>{"│                              │"}</span>
+      </div>
+      <div style={{ color: "#475569" }}>
+        {"  │    └──────────┘         └──────────┘                              │"}
+      </div>
+      <div style={{ color: "#475569" }}>
+        {"  └───────────────────────────────────────────────────────────────────┘"}
+      </div>
+      <div> </div>
+      <div style={{ color: "#64748b" }}>
+        {"  // the bytes stay. only the newest record says the object is gone."}
+      </div>
+    </Fig>
+  );
+}
+
+export function ForkPoint() {
+  return (
+    <Fig
+      label="FIG 02"
+      title="fork at any version timestamp to see the bucket's past"
+    >
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>
+          {"every write appends a new version entry"}
+        </span>
+      </div>
+      <div> </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"v1"}</span>
+        {"              "}
+        <span style={{ color: "#4ade80" }}>{"v2"}</span>
+        {"              "}
+        <span style={{ color: "#4ade80" }}>{"╎"}</span>
+        {"   "}
+        <span style={{ color: "#475569" }}>{"v3"}</span>
+        {"              "}
+        <span style={{ color: "#475569" }}>{"v4"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"┌────────────┐"}</span>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"┌────────────┐"}</span>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"╎"}</span>
+        {"   "}
+        <span style={{ color: "#475569" }}>{"┌────────────┐"}</span>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"┌────────────┐"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"…198086"}</span>
+        {"    "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"…431907"}</span>
+        {"    "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"╎"}</span>
+        {"   "}
+        <span style={{ color: "#475569" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"…764522"}</span>
+        {"    "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"…055310"}</span>
+        {"    "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {" 4.1 MB     "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {" 4.3 MB     "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"╎"}</span>
+        {"   "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        {" 4.4 MB     "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        {" 5.0 MB     "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"└─────┬──────┘"}</span>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"└─────┬──────┘"}</span>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"╎"}</span>
+        {"   "}
+        <span style={{ color: "#475569" }}>{"└─────┬──────┘"}</span>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"└─────┬──────┘"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>
+          {"──────┴───────────────┴─────────"}
+        </span>
+        <span style={{ color: "#4ade80" }}>{"╎"}</span>
+        <span style={{ color: "#475569" }}>
+          {"─────────┴───────────────┴───────▶"}
+        </span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>{"earlier"}</span>
+        {"                         "}
+        <span style={{ color: "#4ade80" }}>{"╎ fork point"}</span>
+        {"                "}
+        <span style={{ color: "#64748b" }}>{"later"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"the fork inherits these"}</span>
+        {"         "}
+        <span style={{ color: "#4ade80" }}>{"╎"}</span>
+        {"   "}
+        <span style={{ color: "#64748b" }}>
+          {"written later — the fork never sees them"}
+        </span>
+      </div>
+      <div>
+        {"                                  "}
+        <span style={{ color: "#4ade80" }}>{"▼"}</span>
+      </div>
+      <div>
+        {"                      "}
+        <span style={{ color: "#4ade80" }}>
+          {"┌──────────────────────────────┐"}
+        </span>
+      </div>
+      <div>
+        {"                      "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {" uploads/report.pdf           "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+      </div>
+      <div>
+        {"                      "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"current version"}</span>{" "}
+        <span style={{ color: "#4ade80" }}>{"v2"}</span>
+        {"           "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+      </div>
+      <div>
+        {"                      "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"as of 1775929812004431907"}</span>
+        {"    "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+      </div>
+      <div>
+        {"                      "}
+        <span style={{ color: "#4ade80" }}>
+          {"└──────────────────────────────┘"}
+        </span>
+      </div>
+      <div> </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>
+          {"// appending metadata instead of overwriting keeps any past instant addressable."}
+        </span>
+      </div>
+    </Fig>
+  );
+}
+
+export function RecycleBin() {
+  return (
+    <Fig
+      label="FIG 03"
+      title="delete moves the metadata record to the soft-delete keyspace"
+    >
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>{"main table · live keyspace"}</span>
+        {"                "}
+        <span style={{ color: "#64748b" }}>
+          {"soft-delete keyspace · newest first"}
+        </span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>
+          {"┌────────────────────────────┐"}
+        </span>
+        {"            "}
+        <span style={{ color: "#f59e0b" }}>
+          {"┌──────────────────────────────────┐"}
+        </span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {" uploads/report.pdf         "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {"            "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>
+        {" uploads/report.pdf   "}
+        <span style={{ color: "#64748b" }}>{"3rd delete"}</span>
+        {"  "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"live metadata record"}</span>
+        {"       "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        <span style={{ color: "#f59e0b" }}>{"───────▶"}</span>
+        {"    "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"deleted …768707198086"}</span>
+        {"            "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"in ListObjectsV2 output"}</span>
+        {"    "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        <span style={{ color: "#4ade80" }}>{"◀╌╌╌╌╌╌"}</span>
+        {"     "}
+        <span style={{ color: "#f59e0b" }}>
+          {"└──────────────────────────────────┘"}
+        </span>
+      </div>
+      <div>
+        {"                                            "}
+        <span style={{ color: "#f59e0b" }}>
+          {"┌──────────────────────────────────┐"}
+        </span>
+      </div>
+      <div>
+        {"                                            "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>
+        {" uploads/report.pdf   "}
+        <span style={{ color: "#64748b" }}>{"2nd delete"}</span>
+        {"  "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>
+      </div>
+      <div>
+        {"                                            "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"deleted …412888100731"}</span>
+        {"            "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>
+          {"┌────────────────────────────┐"}
+        </span>
+        {"            "}
+        <span style={{ color: "#f59e0b" }}>
+          {"└──────────────────────────────────┘"}
+        </span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        {" uploads/notes.md           "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        {"            "}
+        <span style={{ color: "#f59e0b" }}>
+          {"┌──────────────────────────────────┐"}
+        </span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"untouched by the delete"}</span>
+        {"    "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        {"            "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>
+        {" uploads/report.pdf   "}
+        <span style={{ color: "#64748b" }}>{"1st delete"}</span>
+        {"  "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>
+          {"└────────────────────────────┘"}
+        </span>
+        {"            "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"deleted …104233715492"}</span>
+        {"            "}
+        <span style={{ color: "#f59e0b" }}>{"│"}</span>
+      </div>
+      <div>
+        {"                                            "}
+        <span style={{ color: "#f59e0b" }}>
+          {"└──────────────────────────────────┘"}
+        </span>
+      </div>
+      <div> </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#f59e0b" }}>{"───────▶"}</span>
+        {"  "}
+        <span style={{ color: "#64748b" }}>
+          {"DeleteObject moves the record out — one entry per delete"}
+        </span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"◀╌╌╌╌╌╌"}</span>
+        {"   "}
+        <span style={{ color: "#64748b" }}>
+          {"RestoreObject moves the same metadata back"}
+        </span>
+      </div>
+      <div> </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>
+          {"// the bin entry is a copy of the metadata, not a marker. restoring is a move."}
+        </span>
+      </div>
+    </Fig>
+  );
+}
+
+export function TwoWriters() {
+  return (
+    <Fig label="FIG 04" title="two regions write to one key at the same time">
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>{"ORD (Chicago)"}</span>
+        {"                               "}
+        <span style={{ color: "#64748b" }}>{"IAD (Ashburn)"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"┌──────────────────────────┐"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#4ade80" }}>{"PutObject"}</span>
+        {"  "}
+        <span style={{ color: "#64748b" }}>{"· agent A"}</span>
+        {"     "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {" uploads/report.pdf       "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {"  "}
+        <span style={{ color: "#60a5fa" }}>{"──── replicates PUT ────▶"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"t = …768707198086"}</span>
+        {"        "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"└──────────────────────────┘"}</span>
+      </div>
+      <div> </div>
+      <div>
+        {"                                              "}
+        <span style={{ color: "#f87171" }}>{"┌──────────────────────────┐"}</span>
+      </div>
+      <div>
+        {"                                              "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>{" "}
+        <span style={{ color: "#f87171" }}>{"DeleteObject"}</span>
+        {"  "}
+        <span style={{ color: "#64748b" }}>{"· agent B"}</span>
+        {"  "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#60a5fa" }}>{"◀── replicates DELETE ──"}</span>
+        {"                    "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+        {" uploads/report.pdf       "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+      </div>
+      <div>
+        {"                                              "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"t = …768984210773"}</span>
+        {"        "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+      </div>
+      <div>
+        {"                                              "}
+        <span style={{ color: "#f87171" }}>{"└──────────────────────────┘"}</span>
+      </div>
+      <div> </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>{"ORD applies"}</span>
+        {"   PUT  ▸  DELETE    "}
+        <span style={{ color: "#64748b" }}>{"deleted, as expected"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>{"IAD applies"}</span>
+        {"   DELETE  ▸  PUT    "}
+        <span style={{ color: "#f59e0b" }}>{"the put looks brand new"}</span>
+      </div>
+      <div> </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>
+          {"// two writers, one key. the regions disagree about whether it exists."}
+        </span>
+      </div>
+    </Fig>
+  );
+}
+
+export function LastWriteWins() {
+  return (
+    <Fig
+      label="FIG 05"
+      title="replication records are timestamped in Unix nanoseconds"
+    >
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>{"produced first"}</span>
+        {"                          "}
+        <span style={{ color: "#64748b" }}>{"produced 277 ms later"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>
+          {"┌──────────────────────────────────┐"}
+        </span>
+        {"    "}
+        <span style={{ color: "#f87171" }}>
+          {"┌──────────────────────────────────┐"}
+        </span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {" uploads/report.pdf               "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {"    "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+        {" uploads/report.pdf               "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {" op: "}
+        <span style={{ color: "#4ade80" }}>{"PUT"}</span>
+        {"                          "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {"    "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+        {" op: "}
+        <span style={{ color: "#f87171" }}>{"DELETE"}</span>
+        {"                       "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"LastModified"}</span>
+        {"  1775929768"}
+        <span style={{ color: "#4ade80" }}>{"707198086"}</span>
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {"    "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"LastModified"}</span>
+        {"  1775929768"}
+        <span style={{ color: "#f87171" }}>{"984210773"}</span>
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>
+          {"block 0x3f2ac701 · origin ORD"}
+        </span>
+        {"    "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {"    "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>
+          {"block 0x3f2ac701 · origin IAD"}
+        </span>
+        {"    "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>
+          {"└──────────────────────────────────┘"}
+        </span>
+        {"    "}
+        <span style={{ color: "#f87171" }}>
+          {"└──────────────────────────────────┘"}
+        </span>
+      </div>
+      <div> </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>{"last write wins"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#f87171" }}>{"984210773"}</span>
+        {"   "}
+        <span style={{ color: "#64748b" }}>{"is greater than"}</span>
+        {"  "}
+        <span style={{ color: "#4ade80" }}>{"707198086"}</span>
+      </div>
+      <div> </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>
+          {"// the delete carries the newer LastModified, so the delete survives"}
+        </span>
+      </div>
+    </Fig>
+  );
+}
+
+export function TombstoneGuard() {
+  return (
+    <Fig label="FIG 06" title="the tombstone is what a stale write must beat">
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>{"ORD · agent PutObject"}</span>
+        {"                     "}
+        <span style={{ color: "#64748b" }}>{"IAD · user DeleteObject"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"┌──────────────────────────┐"}</span>
+        {"              "}
+        <span style={{ color: "#f87171" }}>{"┌──────────────────────────┐"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        {" uploads/report.pdf       "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        {"              "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+        {" uploads/report.pdf       "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"new version · v2"}</span>
+        {"         "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        <span style={{ color: "#f87171" }}>{"◀─────────────"}</span>
+        <span style={{ color: "#f87171" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"row deleted · marker kept"}</span>
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>{"t = 15"}</span>
+        {"                   "}
+        <span style={{ color: "#475569" }}>{"│"}</span>
+        {"   "}
+        <span style={{ color: "#f87171" }}>{"delete"}</span>
+        {"     "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>{" "}
+        <span style={{ color: "#f87171" }}>{"tombstone t = 25"}</span>
+        {"         "}
+        <span style={{ color: "#f87171" }}>{"│"}</span>
+      </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#475569" }}>{"└────────────┬─────────────┘"}</span>
+        {"              "}
+        <span style={{ color: "#f87171" }}>{"└────────────┬─────────────┘"}</span>
+      </div>
+      <div>
+        {"               "}
+        <span style={{ color: "#60a5fa" }}>
+          {"└────────────────────┬────────────────────┘"}
+        </span>
+      </div>
+      <div>
+        {"                                    "}
+        <span style={{ color: "#60a5fa" }}>{"▼"}</span>
+      </div>
+      <div>
+        {"    "}
+        <span style={{ color: "#4ade80" }}>
+          {"┌────────────────────────────────────────────────────────────┐"}
+        </span>
+      </div>
+      <div>
+        {"    "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+        {" at IAD: is the write newer than the marker?                "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+      </div>
+      <div>
+        {"    "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>
+          {"write t = 15  ·  marker t = 25  ·  is 15 > 25 ?"}
+        </span>
+        {"            "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+      </div>
+      <div>
+        {"    "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#f87171" }}>
+          {"no — not strictly newer, so the write is dropped"}
+        </span>
+        {"           "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+      </div>
+      <div>
+        {"    "}
+        <span style={{ color: "#4ade80" }}>{"│"}</span>{" "}
+        <span style={{ color: "#64748b" }}>
+          {"equal timestamps lose too · the guard runs for every bucket"}
+        </span>
+        <span style={{ color: "#4ade80" }}>{"│"}</span>
+      </div>
+      <div>
+        {"    "}
+        <span style={{ color: "#4ade80" }}>
+          {"└────────────────────────────────────────────────────────────┘"}
+        </span>
+      </div>
+      <div> </div>
+      <div>
+        {"  "}
+        <span style={{ color: "#64748b" }}>
+          {"// without the marker, an empty slot looks exactly like a key that never existed."}
+        </span>
+      </div>
+    </Fig>
+  );
+}
+
+Tigris has a pretty advanced replication scheme for writes. What happens when
+you actually need to delete things? Turns out deleting things is hard in
+distributed systems. Especially when you have a geo-replicated active-active
+database like Tigris does. We can (and do) use tombstones to mark where data
+once was, but how do you let people undo an accidental delete?
+
+Tigris wants to turn storage
+[inside out](https://martin.kleppmann.com/2015/03/04/turning-the-database-inside-out.html),
+so our implementation of soft deletion is by giving users the Recycle Bin for
+objects and buckets. Today we're going to dig into how this works, why it works,
+and what this gives you in terms of using object storage today.
+
+## Recycle bins and you
+
+In Windows and macOS, the Recycle Bin (or Trash can) is a form of purgatory
+where deleted files wait for their storage to be deallocated by the user. This
+allows users to hit "delete" fearlessly because if they made a mistake they can
+just drag it back out and go on with life.
+
+This works great in your local filesystem because there's only one writer in one
+region. This kinda falls apart when you have multiple regions in your database
+and any one of them could be writing to it. How do you name things in the
+recycle bin? How do you handle the conflict of an update happening in one region
+before the deletion was fully replicated out from another region?
+
+This is the fun of distributed systems, which is the kind of problem space that
+Tigris lives in.
+
+One way to think about how the Recycle Bin works is that the file metadata gets
+moved there when the user hits delete. No data bytes move around on the disk,
+but the file doesn't show up in My Documents anymore. In a distributed systems
+context you can't just move the metadata around, you have to leave a tombstone
+behind to record where that metadata once was. This prevents other regions from
+being confused when actions happen really close to each other in time.
+
+## Soft deletes in some universes
+
+At a high level, a [soft-delete](https://www.metabase.com/glossary/soft-delete)
+is when a DELETE action doesn't actually remove the data. When data is
+soft-deleted, it's still there but just not visible in the main usage flow. This
+lets you get the data back when a delete is made by accident.
+
+### Your database becomes your API
+
+One of the interesting side effects of designing any API is that you end up
+leaking the internals of how your database works to your users. Many object
+storage systems were designed with overwriting or deleting data as one of the
+primary operations, and as such have had to bolt versioning onto the side. For
+the most part this does work; but once you get into advanced versioning schemes
+everything starts to fall apart. Tigris doesn't suffer from the same problems
+because we built immutability into the core from day one, and in immutable
+systems you have to append new data on the end instead of overwriting data.
+
+At the least, actually storing the data en masse is a boring problem. You put
+the data somewhere, maybe name it after the checksum of its contents, and then
+have a daemon make sure it's copied three places. That daemon also handles cases
+when drives go offline and new ones are added to make sure data is shuffled
+around the cluster. This is largely a solved problem with projects like Ceph,
+Longhorn, or other distributed storage systems.
+
+### S3 uses delete markers
+
+Some object storage systems like S3 expose platform internals to make soft
+deletion work. In S3 deleting an object creates a delete marker (tombstone). A
+delete marker is an explicit marker that the object is deleted and should not be
+returned in normal operation. Here's what that looks like in practice:
+
+<DeleteMarker />
+
+I don't know how I feel about this flow. Based on reading between the lines in
+the
+[delete marker documentation](https://docs.aws.amazon.com/en_es/AmazonS3/latest/userguide/ManagingDelMarkers.html)
+it really feels like this is a leaked internal implementation detail of how S3's
+eventually consistent database works instead of a full fledged feature of the
+storage system. If I had to choose between leaking internal database details in
+the API and implementing a higher level API for something complicated like soft
+deletion, I'd want to implement the higher level API.
+
+### Tigris' soft deletes are external references
+
+Let's rethink what soft deletes really are. What if they were like the Recycle
+Bin in Windows?
+
+Soft-deletes are external references to buckets or objects that live in a
+different namespace from normal buckets or objects. We implemented them as
+external references instead of tombstones because this is effectively moving
+object metadata to the recycle bin. Tombstones mark the data as not being there,
+but soft-delete markers are a copy of the data that was there. This makes it
+easy to put the object back in place if you deleted it by mistake.
+
+### Garbage collection roots
+
+One way to think about objects and buckets is that they are garbage collection
+roots for points in the endless sea of data. Any data in the sea without a root
+anchoring it down is eligible to be deleted. Uploading multiple versions of an
+object with a forkable bucket creates multiple metadata entries at their
+different timestamped version numbers. You can then fork a bucket from any one
+of those timestamps to see what the bucket was like at that point:
+
+<ForkPoint />
+
+This would solve the soft-delete problem, but our existing database schema using
+FoundationDB requires us to enable forking and snapshots at bucket creation
+time. In essence, we need something that's halfway between what we have (each
+bucket being a globally mutable namespace) and the bucket forking land of every
+action being appending metadata onto the end.
+
+To do that, we basically implemented most of that appending metadata on the end
+trick but to a different place: the soft deletion corner. When you enable
+soft-deletion and delete an object, its metadata gets moved to the trashcan so
+you can pluck it back into place:
+
+<RecycleBin />
+
+It's the same basic idea as the recycle bin on your desktop. Any buckets or
+objects left in the recycle bin for long enough become eligible to be deleted,
+which then makes the backend go and securely erase things. Effectively, any bits
+of metadata in the soft deletion corner are still considered garbage collection
+roots, they're just not shown when you do a normal `ListObjectsV2` call.
+
+### Distributed systems are fun\*
+
+The real fun comes into play when you remember that Tigris has a globally
+replicated active-active database where any region can change any object at any
+time. Most of the time things work out and objects are replicated without too
+much strife. The annoying part comes when two events are ordered weirdly.
+Imagine a scenario where one agent in one datacentre deletes an object _after_
+another agent in another datacentre:
+
+<TwoWriters />
+
+How would this replicate out? Well for one each change is timestamped by when
+it's done in terms of Unix nanoseconds, so the replication messages kinda look
+like this:
+
+<LastWriteWins />
+
+This means that in theory, a user could DELETE an object _before_ an update is
+processed by another region, and that would make the regions disagree about if
+the object exists or not. This is a horrible state to be in and usually requires
+support intervention or to recreate/re-delete the object.
+
+The root cause boils down to deleting objects actually deleting metadata from
+the database doesn't scale past a single region. Updates to metadata include the
+entire metadata object, so if you delete it locally and a new version is pushed
+remotely, the object will gain the remote state.
+
+We don't want users to have to deal with that, so we added the concept of
+anti-resurrection to Tigris. Any write to an object must prove it is newer than
+the deletion.
+
+<TombstoneGuard />
+
+In this circumstance, a user sent a DeleteObject request to the IAD datacentre
+at time 25, but an agent sent a new version of the object with PutObject to the
+ORD datacentre at time 15. The user's delete is newer than the agent's put, so
+the new version is rejected and the delete gets sent back to ORD.
+
+## Using soft deletes
+
+Tigris extends the S3 API by having users add headers to their requests. For
+example, to create a bucket with soft deletion enabled:
+
+```go
+import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/tigrisdata/storage-go"
+)
+
+client, err := storage.New(ctx,
+	storage.WithGlobalEndpoint(),
+	storage.WithAccessKeypair(
+		os.Getenv("TIGRIS_STORAGE_ACCESS_KEY_ID"),
+		os.Getenv("TIGRIS_STORAGE_SECRET_ACCESS_KEY"),
+	),
+)
+
+_, err := client.CreateBucketWithSoftDelete(ctx, &storage.CreateBucketWithSoftDeleteInput{
+	CreateBucketInput: &s3.CreateBucketInput{Bucket: aws.String("my-bucket")},
+	RetentionDays:     30, // 0 uses the 7-day default
+})
+```
+
+Or to list soft-deleted objects:
+
+```go
+out, err := client.ListSoftDeletedObjects(ctx, &storage.ListSoftDeletedObjectsInput{
+	Bucket: "my-bucket",
+	Prefix: "uploads/",
+})
+if err != nil {
+	return err
+}
+for _, o := range out.Objects {
+	log.Printf("%s v=%s %d bytes deleted=%s", o.Key, o.VersionID, o.Size, o.LastModified)
+}
+```
+
+Or to permanently delete one soft-deleted version:
+
+```go
+_, err := client.PermanentlyDeleteObject(ctx,
+	"my-bucket", "uploads/report.pdf", "1775929768707198086")
+```
+
+When you have a soft-delete enabled bucket, you can also forcibly delete an
+entire bucket:
+
+```go
+_, err := client.ForceDeleteBucket(ctx, &s3.DeleteBucketInput{
+	Bucket: aws.String("my-bucket"),
+})
+```
+
+<Admonition type="warning">
+  If you use this call on a bucket that doesn't have soft deletion enabled, you
+  have permanently deleted your bucket. Please call this with care. Support
+  cannot help you if you use this call wrongly.
+</Admonition>
+
+And then bring it back from the dead:
+
+```go
+trash, err := client.ListSoftDeletedBuckets(ctx, nil)
+if err != nil {
+	return err
+}
+for _, b := range trash.Buckets {
+	log.Printf("%s (%d day retention)", b.Name, b.RetentionDays)
+	if _, err := client.RestoreBucket(ctx, &storage.RestoreBucketInput{Bucket: b.Name}); err != nil {
+		return err
+	}
+}
+```
+
+## Now what?
+
+Object storage entered our stacks as an unlimited FTP server we all used for
+backups. A distressing amount of the world's most important data lives in object
+storage buckets because it's the best place to put it. This is why having an
+"undo" button matters, it's what makes it safe to trust your backups in the
+cloud. To err is human, and mistakes are a "when" to plan for, not an "if" that
+you hopefully never have happen. The blast radius of one overly wide
+`--recursive` flag is measured in years of people's lives.
+
+One of the biggest usecases that comes to mind is ransomware prevention. Imagine
+a case where an attacker downloads everything in your bucket, deletes it, and
+asks for a ransom to send you the files back. With Tigris, soft deletes means
+that the ransom can be ignored, you can un-delete your data, and be on your
+merry way with incident response. The other big usecase is for agents, where
+they somehow get the idea that deleting production data is the right way to
+solve a problem. Both cases mean you need a quick and fast way to go back to
+before things went wrong.
+
+If you want true isolation instead of recovery, that's why we have
+[bucket forking](https://www.tigrisdata.com/docs/buckets/snapshots-and-forks/).
+Bucket forking needs to be enabled before a bucket is created, but you can
+enable soft deletion on any bucket in the dashboard whenever you want.
+
+Every storage system is going to make you choose between ones that hide how the
+platform works and ones that expose the gorey internals to users. I think that
+hiding the internals and exposing the high level operations built on top of them
+is the right way to go, if only because the higher level operations are much
+easier to make safe in our globally distributed future.
+
+Enable soft delete on any Tigris bucket, new or existing, and every delete
+becomes recoverable for up to 90 days. Restoring a whole bucket is one call.
+[Read the soft delete docs](https://www.tigrisdata.com/docs/buckets/soft-delete/).
