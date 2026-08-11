@@ -173,6 +173,12 @@ func main() {
 
 	slog.Info("main: database connection established")
 
+	// Merge the split GitHub ID columns before AutoMigrate inspects them.
+	if err := consolidateGitHubIDColumn(db); err != nil {
+		slog.Error("failed to consolidate GitHub ID columns", "err", err)
+		os.Exit(1)
+	}
+
 	// Run GORM AutoMigrate
 	slog.Debug("main: running GORM auto-migration")
 	if err := db.AutoMigrate(PanelModels()...); err != nil {
@@ -180,6 +186,11 @@ func main() {
 		os.Exit(1)
 	}
 	slog.Info("main: auto-migration completed")
+
+	if err := dropEmailUniqueIndex(db); err != nil {
+		slog.Error("failed to drop email unique index", "err", err)
+		os.Exit(1)
+	}
 
 	// Start sponsor sync loop in background
 	syncCtx, syncCancel := context.WithCancel(context.Background())
