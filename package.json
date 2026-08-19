@@ -1,6 +1,6 @@
 {
   "name": "@xe/xesite",
-  "version": "4.17.0",
+  "version": "4.18.0",
   "description": "Hacking because node",
   "type": "module",
   "main": "index.js",
