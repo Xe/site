@@ -1,0 +1,102 @@
+---
+title: "Anubis continues to expose new ways people configure webservers"
+desc: "TL;DR: if admins turn off browser features, those features won't work in confusing ways that are annoying to debug"
+date: 2026-08-19
+---
+
+One of the most annoying parts of writing web applications is that in general: you can't trust browsers. But, you have to trust browsers at _some_ level because that's how users interact with your software. As browsers get more capable with APIs like [WebUSB](https://developer.mozilla.org/en-US/docs/Web/API/WebUSB_API), [Built-in AI](https://developer.chrome.com/docs/ai/built-in), or other absurd things; administrators want to be able to turn off the features that their web applications don't use. This is the crux of why [Content-Security-Policies (CSPs)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP) exist.
+
+<Conv name="Mara" mood="hacker">
+  Normally we avoid acronyms when writing posts like this, but for the purpose
+  of this article when you see "CSP", think "Content-Security-Policy".
+</Conv>
+
+In general, a CSP disables all browser features and then selectively enables the features the website actually needs. For example (stolen from [the Anubis docs](https://anubis.techaro.lol/docs/admin/configuration/content-security-policy)):
+
+```text
+default-src 'none';
+script-src  'self' 'unsafe-inline';
+style-src   'self' 'unsafe-inline';
+img-src     'self';
+font-src    'self' data:;
+connect-src 'self';
+worker-src  'self' blob:;
+base-uri    'none';
+form-action 'self';
+```
+
+This disables all browser features except loading scripts from the same [origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin), inline JavaScript in `<script>` tags, inline CSS, loading CSS from the same origin, loading images from the same origin, loading fonts from the same origin, loading fonts inline to CSS files (via [`data:` URIs](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data)), making `fetch()` requests to the same origin, loading [Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) scripts from the same origin, loading Worker scripts from [`blob:` URIs](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/blob), disallowing the use of the [`<base>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/base), and only allowing HTML `<form>` actions against the same origin.
+
+Extra fun, when you have a CSP that forbids loading Worker scripts from `blob:` URIs, you don't get the error until _after_ the Worker is constructed and the browser forks a background thread:
+
+```js
+blobURL = URL.createObjectURL(
+  new Blob([`console.log("Hello, world!");`], { type: "text/javascript" }),
+);
+const w = new Worker(blobURL);
+// does not throw an error
+```
+
+You have to catch it in the async `.onerror` callback:
+
+```js
+w.onerror = (event) => {
+  console.error(`Got an error: ${event}`);
+};
+```
+
+So if you (like me) [implemented fallback logic that depends on this](https://github.com/TecharoHQ/anubis/pull/1766), you need to adapt your logic to account for this.
+
+Let's face it, users don't like it when they get an Anubis challenge page. I've tried to make them show up less often, but this doesn't scale as the scrapers adapt to the changes I make. One of the ways Anubis mitigates the pain of seeing a challenge page is by making it _go away_ as fast as possible by running its proof of work checks run in parallel. This works out pretty well as most CPU advancements in the past decade or so are around multi-core performance, not single-core performance.
+
+By default, when you create a Worker pointed to a JavaScript program on your web server, browsers make requests to the server to load that program:
+
+```js
+const w = new Worker("/static/js/worker/test1.mjs");
+```
+
+This results in the browser sending a `GET /static/js/worker/test1.mjs` request to the server which hopefully results in getting JavaScript source back. The browser then executes that JavaScript code in parallel and sets up the [worker environment](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) so that the program can do whatever it is that it needs to do.
+
+One of the horrible parts of this is that when you spawn many workers in parallel, such as how Anubis does it:
+
+```ts
+const getHardwareConcurrency = () =>
+  navigator.hardwareConcurrency !== undefined
+    ? navigator.hardwareConcurrency
+    : 1;
+
+let workers: Worker[] = [];
+const threads = Math.trunc(Math.max(getHardwareConcurrency() / 2, 1));
+
+for (let i = 0; i < threads; i++) {
+  let w: Worker;
+  try {
+    w = new Worker("/whatever/worker.mjs");
+  } catch (err) {
+    magic!(cleanup);
+    magic!(throwError);
+    return;
+  }
+
+  workers.push(w);
+
+  // Draw the rest of the owl
+}
+```
+
+This results in `threads` number of HTTP requests to the server. In circumstances where the server is already overloaded (such as when scrapers [attack in droves from nearly every ISO country code on the planet](/notes/2026/check-your-smart-tv/)), this means that a user getting through to the webpage can result in as many as 16 extra HTTP requests to the server. Even worse, there's not an easy way to do [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) without adding fiddly logic to the parts surrounding the Worker constructor.
+
+In order to work around this, Anubis loads the worker source _once_ from the server with a standard `fetch()` request and then packs that into a `blob:` URI so clients don't need to make many parallel requests to the server.
+
+The old logic that fans out requests is maintained in case admins have a CSP that forbids the use of `blob:` URIs. It's kinda sucky that it has to be there and mandates adding extra testing to ensure this works, but in this era of late stage capitalism we kinda need to make sure that things are reliable on the client even if this can cause increased request pressure on an already overloaded server.
+
+<Conv name="Cadey" mood="coffee">
+As a side note, this only really works because Anubis assumes that its worker code is inerrant unless something _completely unrecoverable_ happens. Most of the proof of work code is "just math"\*, so if the math fails then the user's CPU or ram is probably failing and the server will disagree anyways.
+
+Ideally, you'd want the entire challenge solve attempt to get killed if any worker threads error after they start crunching solutions, but in practice it's "fine-ish" to lose a worker or two as long as there's at least one worker running.
+
+One way to think about how the proof of work solver works is that each worker is a thread that gets its own "lane" of the nonce space to find solutions within. In general it's fair to assume that solutions are "dense" enough that losing any workers is "fine-ish" at the cost of skipping over solutions that may be in that "lane". Future improvements may involve trying to re-launch failed workers where they left off, but that is out of scope for now.
+
+</Conv>
+
+This is the kind of stuff I have to deal with when working on Anubis and why I end up [writing essays in PR commit messages](https://github.com/TecharoHQ/anubis/pull/1874). Turns out most of this is edge cases. The joys of modern software know no bounds.
