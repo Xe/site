@@ -44,6 +44,8 @@ require (
 	buf.build/go/protovalidate v1.1.2 // indirect
 	cel.dev/expr v0.25.2 // indirect
 	charm.land/lipgloss/v2 v2.0.0-beta.3.0.20251120230642-dcccabe2cd63 // indirect
+	connectrpc.com/connect v1.20.0 // indirect
+	connectrpc.com/vanguard v0.4.0 // indirect
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/AlekSi/pointer v1.2.0 // indirect
 	github.com/BurntSushi/toml v1.5.0 // indirect
@@ -226,6 +228,7 @@ require (
 )
 
 tool (
+	connectrpc.com/connect/cmd/protoc-gen-connect-go
 	github.com/TecharoHQ/yeet/cmd/yeet
 	github.com/a-h/templ/cmd/templ
 	github.com/blockthrough/twirp-openapi-gen/cmd/twirp-openapi-gen

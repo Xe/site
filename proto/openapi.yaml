@@ -1,0 +1,542 @@
+openapi: 3.1.0
+info:
+  title: Xe Iaso Dot Net API
+  description: The public HTTP API of https://xeiaso.net, served under /api/ as REST over JSON and over the Connect protocol.
+  version: 4.0.0
+servers:
+  - url: https://xeiaso.net
+paths:
+  /api/v1/events:
+    get:
+      tags:
+        - within.website.x.mi.v1.Events
+      summary: Get
+      description: Get fetches the current feed of upcoming events.
+      operationId: within.website.x.mi.v1.Events.Get
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/within.website.x.mi.v1.EventFeed'
+  /api/v1/feed:
+    get:
+      tags:
+        - xeiaso.net.v1.FeedService
+      summary: Get
+      description: Get fetches the current feed of posts.
+      operationId: xeiaso.net.v1.FeedService.Get
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/xeiaso.net.v1.FeedServiceGetResponse'
+  /api/v1/meta:
+    get:
+      tags:
+        - xeiaso.net.v1.MetaService
+      summary: Metadata
+      description: |-
+        Metadata fetches the build metadata of the version of xesite that is
+         currently running.
+      operationId: xeiaso.net.v1.MetaService.Metadata
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/xeiaso.net.v1.MetadataResponse'
+components:
+  schemas:
+    google.protobuf.Empty:
+      type: object
+      description: |-
+        A generic empty message that you can re-use to avoid defining duplicated
+         empty messages in your APIs. A typical example is to use it as the request
+         or the response type of an API method. For instance:
+
+             service Foo {
+               rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
+             }
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+        - "2023-01-15T01:30:15.01Z"
+        - "2024-12-25T12:00:00Z"
+      format: date-time
+      description: |-
+        A Timestamp represents a point in time independent of any time zone or local
+         calendar, encoded as a count of seconds and fractions of seconds at
+         nanosecond resolution. The count is relative to an epoch at UTC midnight on
+         January 1, 1970, in the proleptic Gregorian calendar which extends the
+         Gregorian calendar backwards to year one.
+
+         All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
+         second table is needed for interpretation, using a [24-hour linear
+         smear](https://developers.google.com/time/smear).
+
+         The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By
+         restricting to that range, we ensure that we can convert to and from [RFC
+         3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
+
+         # Examples
+
+         Example 1: Compute Timestamp from POSIX `time()`.
+
+             Timestamp timestamp;
+             timestamp.set_seconds(time(NULL));
+             timestamp.set_nanos(0);
+
+         Example 2: Compute Timestamp from POSIX `gettimeofday()`.
+
+             struct timeval tv;
+             gettimeofday(&tv, NULL);
+
+             Timestamp timestamp;
+             timestamp.set_seconds(tv.tv_sec);
+             timestamp.set_nanos(tv.tv_usec * 1000);
+
+         Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.
+
+             FILETIME ft;
+             GetSystemTimeAsFileTime(&ft);
+             UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+
+             // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+             // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+             Timestamp timestamp;
+             timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));
+             timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));
+
+         Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.
+
+             long millis = System.currentTimeMillis();
+
+             Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
+                 .setNanos((int) ((millis % 1000) * 1000000)).build();
+
+         Example 5: Compute Timestamp from Java `Instant.now()`.
+
+             Instant now = Instant.now();
+
+             Timestamp timestamp =
+                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
+                     .setNanos(now.getNano()).build();
+
+         Example 6: Compute Timestamp from current time in Python.
+
+             timestamp = Timestamp()
+             timestamp.GetCurrentTime()
+
+         # JSON Mapping
+
+         In JSON format, the Timestamp type is encoded as a string in the
+         [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
+         format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
+         where {year} is always expressed using four digits while {month}, {day},
+         {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
+         seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
+         are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
+         is required. A proto3 JSON serializer should always use UTC (as indicated by
+         "Z") when printing the Timestamp type and a proto3 JSON parser should be
+         able to accept both UTC and other timezones (as indicated by an offset).
+
+         For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
+         01:30 UTC on January 15, 2017.
+
+         In JavaScript, one can convert a Date object to this format using the
+         standard
+         [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+         method. In Python, a standard `datetime.datetime` object can be converted
+         to this format using
+         [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
+         the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+         the Joda Time's [`ISODateTimeFormat.dateTime()`](
+         http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+         ) to obtain a formatter capable of generating timestamps in this format.
+    protofeed.Attachment:
+      type: object
+      properties:
+        url:
+          type: string
+          title: url
+          description: (required, string) specifies the location of the attachment. (proto string)
+        mime_type:
+          type: string
+          title: mime_type
+          description: |-
+            (required, string) specifies the type of the attachment, such as
+             “audio/mpeg.” (proto string)
+        title:
+          type: string
+          title: title
+          description: (optional, string) specifies the title of the attachment. (proto string)
+        size_in_bytes:
+          type: integer
+          title: size_in_bytes
+          format: int32
+          description: (optional, number) specifies how large the file is. (proto int32)
+        duration_in_seconds:
+          type: integer
+          title: duration_in_seconds
+          format: int32
+          description: |-
+            (optional, number) specifies how long it takes to listen to or watch, when
+             played at normal speed. (proto int32)
+      title: Attachment
+      additionalProperties: false
+      description: Attachment is an object representing a file associated with an item.
+    protofeed.Author:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+          description: (optional, string) is the author’s name. (proto string)
+        url:
+          type: string
+          title: url
+          description: |-
+            (optional, string) is the URL of a site owned by the author. It could be a
+             blog, micro-blog, Twitter account, and so on. Ideally the linked-to page
+             provides a way to contact the author, but that’s not required. The URL
+             could be a mailto: link, though we suspect that will be rare. (proto string)
+        avatar:
+          type: string
+          title: avatar
+          description: |-
+            (optional, string) is the URL for an image for the author. As with icon, it
+             should be square and relatively large — such as 512 x 512 pixels — and
+             should use transparency where appropriate, since it may be rendered on a
+             non-white background. (proto string)
+      title: Author
+      additionalProperties: false
+      description: Author is an object representing the author of the feed or item.
+    protofeed.Feed:
+      type: object
+      properties:
+        title:
+          type: string
+          title: title
+          description: |-
+            (required, string) is the name of the feed, which will often correspond to
+             the name of the website (blog, for instance), though not necessarily. (proto string)
+        home_page_url:
+          type: string
+          title: home_page_url
+          description: |-
+            (optional but strongly recommended, string) is the URL of the resource that
+             the feed describes. This resource may or may not actually be a “home” page,
+             but it should be an HTML page. If a feed is published on the public web,
+             this should be considered as required. But it may not make sense in the
+             case of a file created on a desktop computer, when that file is not shared
+             or is shared only privately. (proto string)
+        feed_url:
+          type: string
+          title: feed_url
+          description: |-
+            (optional but strongly recommended, string) is the URL of the feed, and
+             serves as the unique identifier for the feed. As with home_page_url, this
+             should be considered required for feeds on the public web. (proto string)
+        description:
+          type: string
+          title: description
+          description: |-
+            (optional, string) provides more detail, beyond the title, on what the feed
+             is about. A feed reader may display this text. (proto string)
+        user_comment:
+          type: string
+          title: user_comment
+          description: |-
+            (optional, string) is a description of the purpose of the feed. This is for
+             the use of people looking at the raw Protobuf, and should be ignored by
+             feed readers. (proto string)
+        icon:
+          type: string
+          title: icon
+          description: |-
+            (optional, string) is the URL of an image for the feed suitable to be used
+             in a source list. It should be square and relatively large — such as 512 x
+             512 — so that it can be scaled down and so that it can look good on retina
+             displays. It should use transparency where appropriate, since it may be
+             rendered on a non-white background. (proto string)
+        favicon:
+          type: string
+          title: favicon
+          description: |-
+            (optional, string) is the URL of an image for the feed suitable to be used
+             in a source list. It should be square and relatively small, but not smaller
+             than 64 x 64. (proto string)
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/protofeed.Author'
+          title: authors
+          description: (optional, array of objects) specifies the feed authors. (proto protofeed.Author)
+        language:
+          type: string
+          title: language
+          description: (optional, string) is the primary language for the feed. (proto string)
+        expired:
+          type: boolean
+          title: expired
+          description: |-
+            (optional, boolean) says whether or not the feed is finished — that is,
+             whether or not it will ever update again. A feed for a temporary event,
+             such as an instance of the Olympics, could expire. If the value is true,
+             then it’s expired. Any other value, or the absence of expired, means the
+             feed may continue to update. (proto bool)
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/protofeed.Item'
+          title: items
+          description: |-
+            (required, array of objects) contains the items in the feed. This is the
+             most important element of the feed after the version field. Each item is a
+             story, blog post, article, photograph, video, or other thing. For example,
+             if a feed contains a long article, a podcast episode, and a photo, those
+             three items would be included in items. (proto protofeed.Item)
+      title: Feed
+      additionalProperties: false
+      description: |-
+        Feed is the root of a Proto Feed document. A feed must at least contain a
+         title and items.
+    protofeed.Item:
+      type: object
+      properties:
+        id:
+          type: string
+          title: id
+          description: |-
+            (required, string) is unique for that item for that feed over time. If an
+             item is ever updated, the id should be unchanged. New items should never
+             use a previously-used id. If an id is presented as a number or other type,
+             a JSON Feed reader must coerce it to a string. Ideally, the id is the full
+             URL of the resource described by the item, since URLs make great unique
+             identifiers. (proto string)
+        url:
+          type: string
+          title: url
+          description: |-
+            (optional, string) is the URL of the resource described by the item. It’s
+             the permalink. This may be the same as the id — but should be present
+             regardless. (proto string)
+        external_url:
+          type: string
+          title: external_url
+          description: |-
+            (optional, string) is the URL of a page elsewhere. This is especially
+             useful for linkblogs. If url links to where you’re talking about a thing,
+             then external_url links to the thing you’re talking about. (proto string)
+        title:
+          type: string
+          title: title
+          description: |-
+            (optional, string) is plain text. Microblog items in particular may omit
+             titles. (proto string)
+        content_text:
+          type: string
+          title: content_text
+          description: |-
+            (optional, string) is the body of the item. It can be plain text, HTML, or
+             a snippet of Markdown. (It should not be the entire Markdown document; just
+             a snippet.) This is complete enough that it can be displayed alone in a
+             reader. (proto string)
+        content_html:
+          type: string
+          title: content_html
+          description: |-
+            (optional, string) is the body of the item. It can be plain text, HTML, or
+             a snippet of Markdown. (It should not be the entire Markdown document; just
+             a snippet.) This is complete enough that it can be displayed alone in a
+             reader. (proto string)
+        summary:
+          type: string
+          title: summary
+          description: |-
+            (optional, string) is a plain text sentence or two describing the item.
+             This might be presented in a timeline, for instance, where a detail view
+             would display all of content_html or content_text. (proto string)
+        image:
+          type: string
+          title: image
+          description: |-
+            (optional, string) is the URL of the main image for the item. This image
+             may also appear in the content_html — if so, it’s a hint to the feed reader
+             that this is the main, featured image. Even if it’s not, it will appear in
+             the detail view. Images should be square, with a 4:3 aspect ratio. (We will
+             be flexible on this in the future.) (proto string)
+        banner_image:
+          type: string
+          title: banner_image
+          description: |-
+            (optional, string) is the URL of an image to use as a banner. Some blogging
+             systems (such as Medium) display a different banner image in the list view
+             from the detail view. In those systems, this image should be used in the
+             list view, and image in the detail view. (proto string)
+        date_published:
+          title: date_published
+          description: (optional, string) specifies the date in RFC 3339 format. (proto google.protobuf.Timestamp)
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        date_modified:
+          title: date_modified
+          description: (optional, string) specifies the modification date in RFC 3339 format. (proto google.protobuf.Timestamp)
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/protofeed.Author'
+          title: authors
+          description: |-
+            (optional, array of objects) has the same structure as the top-level
+             authors. If not specified in an item, then the top-level authors, if
+             present, are the authors of the item. (proto protofeed.Author)
+        tags:
+          type: array
+          items:
+            type: string
+          title: tags
+          description: |-
+            (optional, array of strings) can have any plain text values you want. Tags
+             tend to be just one word, but they may be anything. Note: they are not the
+             equivalent of Twitter hashtags. Some blogging systems and other feed
+             formats call these categories. (proto string)
+        language:
+          type: string
+          title: language
+          description: |-
+            (optional, string) is the language for this item, using the same format as
+             the top-level language field. The value can be different than the primary
+             language for the feed when a specific item is written in a different
+             language than other items in the feed. (proto string)
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/protofeed.Attachment'
+          title: attachments
+          description: |-
+            (optional, array of objects) specifies the attachments associated with the
+             item. Attachments are files that are associated with an item. The value of
+             the attachments field is an array of objects, each of which has a url
+             field, and other fields as specified in the attachment object definition. (proto protofeed.Attachment)
+      title: Item
+      additionalProperties: false
+      description: |-
+        Item is an object representing a single story, blog post, article,
+         photograph, video, or other thing within a feed.
+    within.website.x.mi.v1.Event:
+      type: object
+      properties:
+        name:
+          type: string
+          title: name
+          description: The name of the event (proto string)
+        url:
+          type: string
+          title: url
+          description: The URL for the event (proto string)
+        start_date:
+          title: start_date
+          description: The day the event starts (proto google.protobuf.Timestamp)
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        end_date:
+          title: end_date
+          description: The day the event ends (proto google.protobuf.Timestamp)
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        location:
+          type: string
+          title: location
+          description: The location of the event (human-readable) (proto string)
+        id:
+          type: integer
+          title: id
+          format: int32
+          description: The ID of the event (proto int32)
+        description:
+          type: string
+          title: description
+          description: The description of the event (proto string)
+      title: Event
+      additionalProperties: false
+      description: Event is a single event that Xe will be attending.
+    within.website.x.mi.v1.EventFeed:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/within.website.x.mi.v1.Event'
+          title: events
+          description: The events in the feed (proto within.website.x.mi.v1.Event)
+      title: EventFeed
+      additionalProperties: false
+      description: A feed of events, result from mi query.
+    xeiaso.net.v1.BuildInfo:
+      type: object
+      properties:
+        commit:
+          type: string
+          title: commit
+          description: The commit of Xe/site that was built (proto string)
+        build_time:
+          title: build_time
+          description: When the site was last rebuilt (proto google.protobuf.Timestamp)
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        go_version:
+          type: string
+          title: go_version
+          description: The version of Go running on the server (proto string)
+        deno_version:
+          type: string
+          title: deno_version
+          description: The version of Deno used to build the site (proto string)
+        xesite_version:
+          type: string
+          title: xesite_version
+          description: The version of the xesite binary (proto string)
+      title: BuildInfo
+      additionalProperties: false
+      description: BuildInfo contains metadata about a build of the site.
+    xeiaso.net.v1.FeedServiceGetRequest:
+      type: object
+      title: FeedServiceGetRequest
+      additionalProperties: false
+      description: FeedServiceGetRequest is the request for FeedService.Get.
+    xeiaso.net.v1.FeedServiceGetResponse:
+      type: object
+      properties:
+        feed:
+          title: feed
+          description: The feed of posts. (proto protofeed.Feed)
+          $ref: '#/components/schemas/protofeed.Feed'
+      title: FeedServiceGetResponse
+      additionalProperties: false
+      description: FeedServiceGetResponse is the response for FeedService.Get.
+    xeiaso.net.v1.MetadataRequest:
+      type: object
+      title: MetadataRequest
+      additionalProperties: false
+      description: MetadataRequest is the request for MetaService.Metadata.
+    xeiaso.net.v1.MetadataResponse:
+      type: object
+      properties:
+        build_info:
+          title: build_info
+          description: The build info of the currently running xesite instance. (proto xeiaso.net.v1.BuildInfo)
+          $ref: '#/components/schemas/xeiaso.net.v1.BuildInfo'
+      title: MetadataResponse
+      additionalProperties: false
+      description: MetadataResponse is the response for MetaService.Metadata.
+security: []
+tags:
+  - name: within.website.x.mi.v1.Events
+    description: Events lets users fetch the current feed of events that Xe will be attending.
+  - name: xeiaso.net.v1.MetaService
+    description: MetaService lets users fetch site metadata.
+  - name: xeiaso.net.v1.FeedService
+    description: FeedService lets users fetch the current feed of posts.
