@@ -1,6 +1,7 @@
 syntax = "proto3";
 package protofeed;
 
+import "google/api/visibility.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "xeiaso.net/v4/pb/external/protofeed";
@@ -8,6 +9,8 @@ option go_package = "xeiaso.net/v4/pb/external/protofeed";
 // Feed is the root of a Proto Feed document. A feed must at least contain a
 // title and items.
 message Feed {
+  option (google.api.message_visibility).restriction = "PUBLIC";
+
   // (required, string) is the name of the feed, which will often correspond to
   // the name of the website (blog, for instance), though not necessarily.
   string title = 2;
@@ -59,6 +62,8 @@ message Feed {
 
 // Author is an object representing the author of the feed or item.
 message Author {
+  option (google.api.message_visibility).restriction = "PUBLIC";
+
   // (optional, string) is the author’s name.
   string name = 1;
   // (optional, string) is the URL of a site owned by the author. It could be a
@@ -76,6 +81,8 @@ message Author {
 // Item is an object representing a single story, blog post, article,
 // photograph, video, or other thing within a feed.
 message Item {
+  option (google.api.message_visibility).restriction = "PUBLIC";
+
   // (required, string) is unique for that item for that feed over time. If an
   // item is ever updated, the id should be unchanged. New items should never
   // use a previously-used id. If an id is presented as a number or other type,
@@ -146,6 +153,8 @@ message Item {
 
 // Attachment is an object representing a file associated with an item.
 message Attachment {
+  option (google.api.message_visibility).restriction = "PUBLIC";
+
   // (required, string) specifies the location of the attachment.
   string url = 1;
   // (required, string) specifies the type of the attachment, such as
