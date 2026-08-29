@@ -8,17 +8,19 @@ on:
 
 jobs:
   manual_invocation:
+    # Gate: only repo OWNER, MEMBER, or COLLABORATOR comments run this job; GitHub evaluates && and || strictly left-to-right, so the trailing && gates the whole expression.
     if: |
-      startsWith(github.event.comment.body, '/reviewbot')
+      startsWith(github.event.comment.body, '/reviewbot') &&
+      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
 
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: read
       pull-requests: write
       issues: write
     steps:
       - name: Run reviewbot
+        # TODO pin this image by sha256 digest once known.
         uses: docker://ghcr.io/xe/x/reviewbot:latest
         env:
           GITHUB_REPO: ${{ github.repository }}

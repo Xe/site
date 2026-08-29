@@ -640,21 +640,10 @@ func (s *Server) logoutHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) getSessionUser(r *http.Request) (*PanelUser, error) {
 	session, err := s.sessionStore.Get(r, "session")
 	if err != nil {
-		// Failed to decode session - might be old format, try to read raw cookie
-		slog.Debug("getSessionUser: failed to get session, trying old format", "err", err)
-		cookie, err := r.Cookie("session")
-		if err != nil {
-			return nil, fmt.Errorf("no session cookie")
-		}
-		var userID int
-		if _, err := fmt.Sscanf(cookie.Value, "%d", &userID); err != nil {
-			return nil, fmt.Errorf("invalid session format")
-		}
-		if userID == 0 {
-			return nil, fmt.Errorf("invalid user id in session")
-		}
-		slog.Debug("getSessionUser: fetched user from old session format", "user_id", userID)
-		return getUserByID(s.db, userID)
+		// An undecodable cookie is not a session. Never fall back to parsing
+		// the raw cookie value: that would trust attacker-controlled data.
+		slog.Debug("getSessionUser: invalid session cookie", "err", err)
+		return nil, fmt.Errorf("invalid session")
 	}
 
 	userID, ok := session.Values["user_id"].(int)

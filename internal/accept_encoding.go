@@ -60,18 +60,17 @@ func ParseAcceptEncoding(acptEnc string) []EncodingQ {
 		trimedEncQStr := strings.Trim(encQStr, " ")
 
 		encQ := strings.Split(trimedEncQStr, ";")
-		if len(encQ) == 1 {
-			eq := EncodingQ{encQ[0], 1}
-			eqs = append(eqs, eq)
-		} else {
+		q := 1.0
+		if len(encQ) > 1 {
 			qp := strings.Split(encQ[1], "=")
-			q, err := strconv.ParseFloat(qp[1], 64)
-			if err != nil {
-				panic(err)
+			if len(qp) > 1 {
+				if parsed, err := strconv.ParseFloat(qp[1], 64); err == nil {
+					q = parsed
+				}
 			}
-			eq := EncodingQ{encQ[0], q}
-			eqs = append(eqs, eq)
 		}
+		eq := EncodingQ{encQ[0], q}
+		eqs = append(eqs, eq)
 	}
 	return eqs
 }
@@ -89,18 +88,17 @@ func ParseAcceptLanguage(acptLang string) []LangQ {
 		trimedLangQStr := strings.Trim(langQStr, " ")
 
 		langQ := strings.Split(trimedLangQStr, ";")
-		if len(langQ) == 1 {
-			lq := LangQ{langQ[0], 1}
-			lqs = append(lqs, lq)
-		} else {
+		q := 1.0
+		if len(langQ) > 1 {
 			qp := strings.Split(langQ[1], "=")
-			q, err := strconv.ParseFloat(qp[1], 64)
-			if err != nil {
-				panic(err)
+			if len(qp) > 1 {
+				if parsed, err := strconv.ParseFloat(qp[1], 64); err == nil {
+					q = parsed
+				}
 			}
-			lq := LangQ{langQ[0], q}
-			lqs = append(lqs, lq)
 		}
+		lq := LangQ{langQ[0], q}
+		lqs = append(lqs, lq)
 	}
 	return lqs
 }
