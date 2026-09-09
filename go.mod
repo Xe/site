@@ -25,7 +25,7 @@ require (
 	github.com/prometheus/client_golang v1.24.1
 	github.com/stretchr/testify v1.12.1
 	github.com/twitchtv/twirp v8.1.3+incompatible
-	golang.org/x/oauth2 v0.36.0
+	golang.org/x/oauth2 v0.37.0
 	google.golang.org/grpc v1.83.2
 	google.golang.org/protobuf v1.36.12
 	gopkg.in/fsnotify.v1 v1.4.7
