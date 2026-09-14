@@ -35,7 +35,7 @@ require (
 	gorm.io/plugin/prometheus v0.1.0
 	k8s.io/apimachinery v0.38.0-alpha.0
 	k8s.io/client-go v0.38.0-alpha.0
-	tailscale.com v1.102.3
+	tailscale.com v1.102.4
 	within.website/x v1.31.0
 )
 
