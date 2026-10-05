@@ -8,7 +8,14 @@ import Admonition from "../../_components/Admonition.jsx";
 
 export const Diagram = ({ file }) => {
   return (
-    <video controls playsinline preload="metadata" width="1280" height="720">
+    <video
+      controls
+      playsinline
+      preload="metadata"
+      width="1280"
+      height="720"
+      style={{ maxWidth: "100%", height: "auto" }}
+    >
       <source
         src={`https://files.xeiaso.net/xiv/m9s/${file}.webm`}
         type="video/webm"
