@@ -1,0 +1,29 @@
+---
+title: "How to make VS Code go back to the old UI"
+desc: "What do you wanna bet someone's gonna get promoted for deleting this workaround from the code?"
+date: 2026-08-26
+---
+
+Someone on the VS Code team decided to do a redesign of the product. This makes VS Code look like this:
+
+<center>
+  <Picture
+    path="notes/2026/vscode-ui-revert/vscode-bad-ui"
+    desc="A picture of the VS Code UI that has a design I don't like."
+  />
+</center>
+
+This design is fine, I guess? It's got some rounded corners that look nice, I guess, but I really just want it to look like what I'm used to. I can tolerate this kind of redesign in my chat app, but I use VS Code professionally and kinda want things to look the same so I don't have to think as much.
+
+You can revert the design change by setting `"workbench.experimental.modernUI": false` in your settings.json. Then it looks like this:
+
+<center>
+  <Picture
+    path="notes/2026/vscode-ui-revert/vscode-good-ui"
+    desc="A picture of the VS Code UI that has the design I'm used to."
+  />
+</center>
+
+Who knows how long this is going to last, but at the very least it should work for now.
+
+Thanks to jtagcat and Hugo ARNAL for letting me know about this setting.

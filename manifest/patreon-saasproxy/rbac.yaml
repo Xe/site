@@ -7,7 +7,7 @@ rules:
 - apiGroups: [""]
   resources: ["secrets"]
   resourceNames: ["xesite-patreon-saasproxy-state"]
-  verbs: ["get", "update", "list"]
+  verbs: ["get", "update"]
 ---
 apiVersion: v1
 kind: ServiceAccount

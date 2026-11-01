@@ -1,0 +1,10 @@
+---
+layout: base.njk
+---
+
+{% for content in content.toString().split('<span data-article-break="true"></span>') %}
+    {% set articleNumber = "-" + loop.index %}
+    {% set articleInfo = content | striptags | readingInfo %}
+    {% set readingInfo = { words: articleInfo.words, minutes: 2 } %}
+    {% include "blog-article.njk" %}
+{% endfor %}

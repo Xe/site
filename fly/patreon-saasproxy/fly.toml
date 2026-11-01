@@ -15,6 +15,7 @@ DATA_DIR = "/data"
 [build]
 image = "ghcr.io/xe/site/patreon:latest"
 
+# private (flycast) service only — no public ports; the app serves a credential endpoint with no auth
 [[services]]
   internal_port = 80
   processes = ["app"]
@@ -27,7 +28,3 @@ image = "ghcr.io/xe/site/patreon:latest"
     hard_limit = 300
     soft_limit = 250
     type = "connections"
-
-  [[services.ports]]
-    handlers = ["http"]
-    port = 80

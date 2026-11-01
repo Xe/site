@@ -1,0 +1,29 @@
+---
+title: "If your VS Code remotes stopped working, downgrade to v1.124.x"
+desc: "Quality software reigns again"
+date: 2026-08-26
+---
+
+Today I woke up and saw a brand new VS Code error when I remoted into my coding box:
+
+<center>
+  <Picture
+    path="notes/2026/vscode-remotes-not-working-downgrade/vscode-error"
+    desc="A VS Code error saying that the remote SSH extension can't use the API terminalRemoteResolver and that I have to start VS Code with some weird command line flag or something."
+  />
+</center>
+
+Trying to update my extensions didn't work. I still got that error. The only thing that worked was to downgrade to VS Code v1.124.2. This also undid the redesign that I kinda hate.
+
+<center>
+  <Picture
+    path="notes/2026/vscode-remotes-not-working-downgrade/vscode-back"
+    desc="The VS Code UI drafting an early version of this post."
+  />
+</center>
+
+Obviously keeping things at this older version of VS Code is not a viable strategy, so maybe [this issue will actually be fixed](https://github.com/microsoft/vscode/issues/329735) instead of just being closed for no reason.
+
+<Conv name="Numa" mood="smug">
+  Quality software reigns again!
+</Conv>

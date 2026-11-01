@@ -1,6 +1,9 @@
 package internal
 
-import "testing"
+import (
+	"slices"
+	"testing"
+)
 
 func TestInValidEncodings(t *testing.T) {
 	tests := []struct {
@@ -77,5 +80,49 @@ func TestParseAcceptEncoding(t *testing.T) {
 	}
 	if eqs[2].Q != 1 {
 		t.Errorf("eqs[2].Q = %f, want 1", eqs[2].Q)
+	}
+}
+
+func TestParseAcceptEncodingMalformed(t *testing.T) {
+	tests := []struct {
+		name string
+		in   string
+		want []EncodingQ
+	}{
+		{"missing q value", "gzip;q", []EncodingQ{{"gzip", 1}}},
+		{"invalid q value", "gzip;q=abc", []EncodingQ{{"gzip", 1}}},
+		{"space before q param", "gzip; q=0.5", []EncodingQ{{"gzip", 0.5}}},
+		{"no params", "gzip", []EncodingQ{{"gzip", 1}}},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			eqs := ParseAcceptEncoding(test.in)
+			if !slices.Equal(eqs, test.want) {
+				t.Errorf("ParseAcceptEncoding(%q) = %v, want %v", test.in, eqs, test.want)
+			}
+		})
+	}
+}
+
+func TestParseAcceptLanguageMalformed(t *testing.T) {
+	tests := []struct {
+		name string
+		in   string
+		want []LangQ
+	}{
+		{"missing q value", "en;q", []LangQ{{"en", 1}}},
+		{"invalid q value", "en;q=zzz", []LangQ{{"en", 1}}},
+		{"space before q param", "en; q=0.5", []LangQ{{"en", 0.5}}},
+		{"no params", "en", []LangQ{{"en", 1}}},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			lqs := ParseAcceptLanguage(test.in)
+			if !slices.Equal(lqs, test.want) {
+				t.Errorf("ParseAcceptLanguage(%q) = %v, want %v", test.in, lqs, test.want)
+			}
+		})
 	}
 }
