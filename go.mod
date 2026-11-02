@@ -26,7 +26,7 @@ require (
 	github.com/stretchr/testify v1.12.1
 	github.com/twitchtv/twirp v8.1.3+incompatible
 	golang.org/x/oauth2 v0.37.0
-	google.golang.org/grpc v1.84.0
+	google.golang.org/grpc v1.85.0
 	google.golang.org/protobuf v1.36.12
 	gopkg.in/fsnotify.v1 v1.4.7
 	gopkg.in/mxpv/patreon-go.v1 v1.0.0-20171031001022-1d2f253ac700
@@ -42,7 +42,7 @@ require (
 require (
 	al.essio.dev/pkg/shellescape v1.6.0 // indirect
 	buf.build/go/protovalidate v1.1.2 // indirect
-	cel.dev/expr v0.25.2 // indirect
+	cel.dev/expr v0.25.3 // indirect
 	charm.land/lipgloss/v2 v2.0.6 // indirect
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/AlekSi/pointer v1.2.0 // indirect
@@ -189,8 +189,8 @@ require (
 	golang.org/x/text v0.43.0 // indirect
 	golang.org/x/time v0.16.0 // indirect
 	golang.org/x/tools v0.51.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260706201446-f0a921348800 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260706201446-f0a921348800 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260817212433-ac3dfec99bb1 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260817212433-ac3dfec99bb1 // indirect
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.6.2 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
