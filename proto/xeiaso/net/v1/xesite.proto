@@ -2,28 +2,50 @@ syntax = "proto3";
 package xeiaso.net.v1;
 
 import "external/protofeed/v1/protofeed.proto";
+import "google/api/annotations.proto";
+import "google/api/visibility.proto";
 import "google/protobuf/timestamp.proto";
+import "gnostic/openapi/v3/annotations.proto";
 
 option go_package = "xesitev1";
+option (gnostic.openapi.v3.document) = {
+  info: {
+    title: "Xe Iaso Dot Net API"
+    version: "4.0.0"
+    description: "The public HTTP API of https://xeiaso.net, served under /api/ as REST over JSON and over the Connect protocol."
+  }
+  servers: {url: "https://xeiaso.net"}
+};
 
 // MetaService lets users fetch site metadata.
 service MetaService {
+  option (google.api.api_visibility).restriction = "PUBLIC";
+
   // Metadata fetches the build metadata of the version of xesite that is
   // currently running.
-  rpc Metadata(MetadataRequest) returns (MetadataResponse);
+  rpc Metadata(MetadataRequest) returns (MetadataResponse) {
+    option (google.api.http) = {get: "/v1/meta"};
+    option (google.api.method_visibility).restriction = "PUBLIC";
+  }
 }
 
 // MetadataRequest is the request for MetaService.Metadata.
-message MetadataRequest {}
+message MetadataRequest {
+  option (google.api.message_visibility).restriction = "PUBLIC";
+}
 
 // MetadataResponse is the response for MetaService.Metadata.
 message MetadataResponse {
+  option (google.api.message_visibility).restriction = "PUBLIC";
+
   // The build info of the currently running xesite instance.
   BuildInfo build_info = 1;
 }
 
 // BuildInfo contains metadata about a build of the site.
 message BuildInfo {
+  option (google.api.message_visibility).restriction = "PUBLIC";
+
   // The commit of Xe/site that was built
   string commit = 1;
   // When the site was last rebuilt
@@ -38,15 +60,24 @@ message BuildInfo {
 
 // FeedService lets users fetch the current feed of posts.
 service FeedService {
+  option (google.api.api_visibility).restriction = "PUBLIC";
+
   // Get fetches the current feed of posts.
-  rpc Get(FeedServiceGetRequest) returns (FeedServiceGetResponse);
+  rpc Get(FeedServiceGetRequest) returns (FeedServiceGetResponse) {
+    option (google.api.http) = {get: "/v1/feed"};
+    option (google.api.method_visibility).restriction = "PUBLIC";
+  }
 }
 
 // FeedServiceGetRequest is the request for FeedService.Get.
-message FeedServiceGetRequest {}
+message FeedServiceGetRequest {
+  option (google.api.message_visibility).restriction = "PUBLIC";
+}
 
 // FeedServiceGetResponse is the response for FeedService.Get.
 message FeedServiceGetResponse {
+  option (google.api.message_visibility).restriction = "PUBLIC";
+
   // The feed of posts.
   protofeed.Feed feed = 1;
 }

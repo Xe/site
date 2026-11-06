@@ -3,6 +3,8 @@
 syntax = "proto3";
 package within.website.x.mi.v1;
 
+import "google/api/annotations.proto";
+import "google/api/visibility.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -10,6 +12,8 @@ option go_package = "miv1";
 
 // Event is a single event that Xe will be attending.
 message Event {
+  option (google.api.message_visibility).restriction = "PUBLIC";
+
   // The name of the event
   string name = 1;
   // The URL for the event
@@ -28,12 +32,19 @@ message Event {
 
 // A feed of events, result from mi query.
 message EventFeed {
+  option (google.api.message_visibility).restriction = "PUBLIC";
+
   // The events in the feed
   repeated Event events = 1;
 }
 
 // Events lets users fetch the current feed of events that Xe will be attending.
 service Events {
+  option (google.api.api_visibility).restriction = "PUBLIC";
+
   // Get fetches the current feed of upcoming events.
-  rpc Get(google.protobuf.Empty) returns (EventFeed);
+  rpc Get(google.protobuf.Empty) returns (EventFeed) {
+    option (google.api.http) = {get: "/v1/events"};
+    option (google.api.method_visibility).restriction = "PUBLIC";
+  }
 }

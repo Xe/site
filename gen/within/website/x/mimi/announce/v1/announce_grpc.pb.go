@@ -27,6 +27,8 @@ const (
 // AnnounceClient is the client API for Announce service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Announce tells mimi about new content.
 type AnnounceClient interface {
 	Announce(ctx context.Context, in *v1.Item, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
@@ -52,6 +54,8 @@ func (c *announceClient) Announce(ctx context.Context, in *v1.Item, opts ...grpc
 // AnnounceServer is the server API for Announce service.
 // All implementations must embed UnimplementedAnnounceServer
 // for forward compatibility.
+//
+// Announce tells mimi about new content.
 type AnnounceServer interface {
 	Announce(context.Context, *v1.Item) (*emptypb.Empty, error)
 	mustEmbedUnimplementedAnnounceServer()
