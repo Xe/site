@@ -33,7 +33,7 @@ require (
 	gorm.io/driver/postgres v1.6.3
 	gorm.io/gorm v1.31.2
 	gorm.io/plugin/prometheus v0.1.0
-	k8s.io/apimachinery v0.38.0-alpha.3
+	k8s.io/apimachinery v0.38.0-beta.0
 	k8s.io/client-go v0.38.0-alpha.3
 	tailscale.com v1.104.5
 	within.website/x v1.31.0
@@ -181,7 +181,7 @@ require (
 	golang.org/x/exp v0.0.0-20260908205506-85c1c2202aba // indirect
 	golang.org/x/exp/typeparams v0.0.0-20260811152304-ee035b5b010f // indirect
 	golang.org/x/mod v0.41.0 // indirect
-	golang.org/x/net v0.61.0 // indirect
+	golang.org/x/net v0.62.0 // indirect
 	golang.org/x/sync v0.24.0 // indirect
 	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/telemetry v0.0.0-20260924152758-ed294f943157 // indirect
