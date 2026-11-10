@@ -2,10 +2,21 @@ syntax = "proto3";
 package within.website.x.mimi.announce.v1;
 
 import "external/protofeed/v1/protofeed.proto";
+import "google/api/annotations.proto";
+import "google/api/visibility.proto";
 import "google/protobuf/empty.proto";
 
 option go_package = "announcev1";
 
+// Announce tells mimi about new content.
 service Announce {
-  rpc Announce(protofeed.Item) returns (google.protobuf.Empty) {}
+  option (google.api.api_visibility).restriction = "PRIVATE";
+
+  rpc Announce(protofeed.Item) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/announce"
+      body: "*"
+    };
+    option (google.api.method_visibility).restriction = "PRIVATE";
+  }
 }

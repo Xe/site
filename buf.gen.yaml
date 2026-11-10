@@ -8,6 +8,10 @@ managed:
   disable:
     - module: buf.build/bufbuild/protovalidate
       file_option: go_package_prefix
+    - module: buf.build/googleapis/googleapis
+      file_option: go_package_prefix
+    - module: buf.build/gnostic/gnostic
+      file_option: go_package_prefix
 
 plugins:
   - local: [go, tool, protoc-gen-go]
@@ -18,12 +22,19 @@ plugins:
     out: gen
     opt:
       - paths=source_relative
-  - local: [go, tool, protoc-gen-twirp]
+  - local: [go, tool, protoc-gen-connect-go]
     out: gen
     opt:
       - paths=source_relative
   - local: ["go", "tool", "protoc-gen-connect-openapi"]
-    out: gen
+    out: proto
+    strategy: all
     opt:
-      - features=twirp
-      - format=json
+      - path=openapi.yaml
+      - format=yaml
+      - path-prefix=/api
+      - features=google.api.http;protovalidate;gnostic
+      - content-types=json;proto
+      - with-proto-annotations
+      - with-proto-names
+      - allowed-visibilities=PUBLIC

@@ -2,10 +2,13 @@ syntax = "proto3";
 package techaro.thoth.auth.admin.v1;
 
 import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/api/visibility.proto";
 import "google/protobuf/timestamp.proto";
 import "techaro/thoth/auth/v1/auth.proto";
 
 message User {
+  option (google.api.message_visibility).restriction = "PRIVATE";
   string id = 1 [(buf.validate.field).required = true];
   string email_address = 2 [
     (buf.validate.field).required = true,
@@ -24,13 +27,35 @@ message User {
 }
 
 service UsersService {
-  rpc Create(UsersServiceCreateRequest) returns (UsersServiceCreateResponse);
-  rpc Disable(UsersServiceDisableRequest) returns (UsersServiceDisableResponse);
-  rpc List(UsersServiceListRequest) returns (UsersServiceListResponse);
-  rpc MakeJWT(UsersServiceMakeJWTRequest) returns (UsersServiceMakeJWTResponse);
+  option (google.api.api_visibility).restriction = "PRIVATE";
+
+  rpc Create(UsersServiceCreateRequest) returns (UsersServiceCreateResponse) {
+    option (google.api.http) = {
+      post: "/v1/users"
+      body: "*"
+    };
+    option (google.api.method_visibility).restriction = "PRIVATE";
+  }
+  rpc Disable(UsersServiceDisableRequest) returns (UsersServiceDisableResponse) {
+    option (google.api.http) = {post: "/v1/users/{id}:disable"};
+    option (google.api.method_visibility).restriction = "PRIVATE";
+  }
+  rpc List(UsersServiceListRequest) returns (UsersServiceListResponse) {
+    option (google.api.http) = {get: "/v1/users"};
+    option (google.api.method_visibility).restriction = "PRIVATE";
+  }
+  rpc MakeJWT(UsersServiceMakeJWTRequest) returns (UsersServiceMakeJWTResponse) {
+    option (google.api.http) = {
+      post: "/v1/users/{user_id}/jwts"
+      body: "*"
+    };
+    option (google.api.method_visibility).restriction = "PRIVATE";
+  }
 }
 
 message UsersServiceCreateRequest {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   string email_address = 1 [
     (buf.validate.field).required = true,
     (buf.validate.field).cel = {
@@ -44,29 +69,43 @@ message UsersServiceCreateRequest {
 }
 
 message UsersServiceCreateResponse {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   User user = 1;
 }
 
 message UsersServiceDisableRequest {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   string id = 1 [(buf.validate.field).required = true];
 }
 
-message UsersServiceDisableResponse {}
+message UsersServiceDisableResponse {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+}
 
 message UsersServiceListRequest {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   int32 count = 1;
   int32 page = 2;
 }
 
 message UsersServiceListResponse {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   repeated User users = 1;
 }
 
 message UsersServiceMakeJWTRequest {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   string user_id = 1 [(buf.validate.field).required = true];
   string comment = 2 [(buf.validate.field).required = true];
 }
 
 message UsersServiceMakeJWTResponse {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   techaro.thoth.auth.v1.JWTServiceCreateResponse token_info = 1;
 }
