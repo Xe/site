@@ -19,7 +19,7 @@ require (
 	github.com/gorilla/sessions v1.4.0
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus v1.1.1
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.4
-	github.com/jackc/pgx/v5 v5.12.0
+	github.com/jackc/pgx/v5 v5.13.0
 	github.com/joho/godotenv v1.5.1
 	github.com/orandin/slog-gorm v1.4.0
 	github.com/prometheus/client_golang v1.25.0
