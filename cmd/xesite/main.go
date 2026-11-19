@@ -13,9 +13,8 @@ import (
 	"github.com/donatj/hmacsig"
 	"github.com/facebookgo/flagenv"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/twitchtv/twirp"
-	mi "xeiaso.net/v4/gen/within/website/x/mi/v1"
-	pb "xeiaso.net/v4/gen/xeiaso/net/v1"
+	_ "google.golang.org/genproto/googleapis/api/annotations" // registers google.api.http extensions for vanguard
+	miv1connect "xeiaso.net/v4/gen/within/website/x/mi/v1/miv1connect"
 	"xeiaso.net/v4/internal"
 	"xeiaso.net/v4/internal/lume"
 	"xeiaso.net/v4/proto"
@@ -85,17 +84,11 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServerFS(fs))
 
-	ms := pb.NewMetaServiceServer(&MetaServer{fs}, twirp.WithServerPathPrefix("/api"))
-	mux.Handle(ms.PathPrefix(), ms)
-
-	fsrv := pb.NewFeedServiceServer(&FeedServer{fs}, twirp.WithServerPathPrefix("/api"))
-	mux.Handle(fsrv.PathPrefix(), fsrv)
-
-	es := mi.NewEventsServer(
-		mi.NewEventsProtobufClient(*miURL, http.DefaultClient),
-		twirp.WithServerPathPrefix("/api"),
-	)
-	mux.Handle(es.PathPrefix(), es)
+	apiHandler, err := newPublicAPIHandler(fs, fs, miv1connect.NewEventsClient(http.DefaultClient, *miURL))
+	if err != nil {
+		log.Fatal(err)
+	}
+	mux.Handle("/api/", apiHandler)
 
 	mux.Handle("/api/defs/", http.StripPrefix("/api/defs/", http.FileServerFS(proto.FS)))
 
