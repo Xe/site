@@ -2,9 +2,12 @@ syntax = "proto3";
 package techaro.thoth.auth.v1;
 
 import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/api/visibility.proto";
 import "google/protobuf/timestamp.proto";
 
 message JWT {
+  option (google.api.message_visibility).restriction = "PRIVATE";
   string id = 1;
   google.protobuf.Timestamp created_at = 2;
   google.protobuf.Timestamp expires_at = 3;
@@ -12,32 +15,58 @@ message JWT {
 }
 
 service JWTService {
-  rpc Create(JWTServiceCreateRequest) returns (JWTServiceCreateResponse);
-  rpc Delete(JWTServiceDeleteRequest) returns (JWTServiceDeleteResponse);
-  rpc List(JWTServiceListRequest) returns (JWTServiceListResponse);
+  option (google.api.api_visibility).restriction = "PRIVATE";
+
+  rpc Create(JWTServiceCreateRequest) returns (JWTServiceCreateResponse) {
+    option (google.api.http) = {
+      post: "/v1/jwts"
+      body: "*"
+    };
+    option (google.api.method_visibility).restriction = "PRIVATE";
+  }
+  rpc Delete(JWTServiceDeleteRequest) returns (JWTServiceDeleteResponse) {
+    option (google.api.http) = {delete: "/v1/jwts/{jti}"};
+    option (google.api.method_visibility).restriction = "PRIVATE";
+  }
+  rpc List(JWTServiceListRequest) returns (JWTServiceListResponse) {
+    option (google.api.http) = {get: "/v1/jwts"};
+    option (google.api.method_visibility).restriction = "PRIVATE";
+  }
 }
 
 message JWTServiceListRequest {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   int32 count = 1;
   int32 page = 2;
 }
 
 message JWTServiceListResponse {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   repeated JWT tokens = 1;
 }
 
 message JWTServiceCreateRequest {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   string comment = 1 [(buf.validate.field).required = true];
 }
 
 message JWTServiceCreateResponse {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   string jwt = 1;
   google.protobuf.Timestamp expires = 2;
   string jti = 3;
 }
 
 message JWTServiceDeleteRequest {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   string jti = 1 [(buf.validate.field).required = true];
 }
 
-message JWTServiceDeleteResponse {}
+message JWTServiceDeleteResponse {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+}

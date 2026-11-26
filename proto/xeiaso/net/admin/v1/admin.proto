@@ -1,6 +1,8 @@
 syntax = "proto3";
 package xeiaso.net.admin.v1;
 
+import "google/api/annotations.proto";
+import "google/api/visibility.proto";
 import "google/protobuf/timestamp.proto";
 import "xeiaso/net/v1/xesite.proto";
 
@@ -8,21 +10,32 @@ option go_package = "adminv1";
 
 // PatreonService provides access to Patreon OAuth tokens.
 service PatreonService {
+  option (google.api.api_visibility).restriction = "PRIVATE";
+
   // GetToken returns the current Patreon OAuth token.
-  rpc GetToken(GetTokenRequest) returns (GetTokenResponse);
+  rpc GetToken(GetTokenRequest) returns (GetTokenResponse) {
+    option (google.api.http) = {get: "/v1/patreon/token"};
+    option (google.api.method_visibility).restriction = "PRIVATE";
+  }
 }
 
 // GetTokenRequest is the request for PatreonService.GetToken.
-message GetTokenRequest {}
+message GetTokenRequest {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+}
 
 // GetTokenResponse is the response for PatreonService.GetToken.
 message GetTokenResponse {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   // The Patreon OAuth token.
   PatreonToken token = 1;
 }
 
 // PatreonToken contains a Patreon OAuth token.
 message PatreonToken {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   string access_token = 1;
   string token_type = 2;
   string refresh_token = 3;
@@ -31,15 +44,24 @@ message PatreonToken {
 
 // AdminService provides administrative operations.
 service AdminService {
+  option (google.api.api_visibility).restriction = "PRIVATE";
+
   // Rebuild triggers a site rebuild.
-  rpc Rebuild(RebuildRequest) returns (RebuildResponse);
+  rpc Rebuild(RebuildRequest) returns (RebuildResponse) {
+    option (google.api.http) = {post: "/v1/admin/rebuild"};
+    option (google.api.method_visibility).restriction = "PRIVATE";
+  }
 }
 
 // RebuildRequest is the request for AdminService.Rebuild.
-message RebuildRequest {}
+message RebuildRequest {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+}
 
 // RebuildResponse is the response for AdminService.Rebuild.
 message RebuildResponse {
+  option (google.api.message_visibility).restriction = "PRIVATE";
+
   // The build info of the rebuilt site.
   xeiaso.net.v1.BuildInfo build_info = 1;
 }
